@@ -1,11 +1,11 @@
 <template lang="pug">
-//- material-detail-file-preview(
-//-   v-if="openMagnifierMode != null && getMenuTree"
-//-   :startIndex="previewStartIndex"
-//-   :fileList="fileList"
-//-   :getMenuTree="getMenuTree"
-//-   @close="openMagnifierMode = null"
-//- )
+modal-view-mode(
+  v-if="viewModeOpen != null && getMenuTree"
+  :startIndex="viewModeStartIndex"
+  :fileList="ViewModeFileList"
+  :getMenuTree="getMenuTree"
+  @close="viewModeOpen = null"
+)
 div(class="flex flex-col gap-y-15")
   div(class="flex flex-col gap-y-15")
     div(class="flex flex-col gap-y-5")
@@ -36,8 +36,9 @@ div(class="flex flex-col gap-y-15")
                 :isCover="multimedia.isCover"
                 :thumbnailUrl="multimedia.thumbnailUrl"
                 :fileName="multimedia.displayFileName"
-                :menuTree="getMultimediaMenuTree(index)"
-                @setCover="setMultimediaAsCover(index)"
+                :menuTree="getMultimediaMenuTree(multimedia.id)"
+                @setCover="setMultimediaAsCover(multimedia.id)"
+                @edit="startCropMultimedia(multimedia.id)"
                 @click="openMultimediaPreview(index)"
               )
     div(class="flex flex-col gap-y-5")
@@ -130,24 +131,25 @@ import useNavigation from '@/composables/useNavigation'
 import {
   NOTIFY_TYPE,
   DISPLAY,
-  materialU3mUpdateServiceKey,
+  materialU3mSelectServiceKey,
   materialMultimediaCreateServiceKey,
   materialAttachmentCreateServiceKey,
   THEME,
 } from '@/utils/constants'
 import AttachmentCard from '@/components/common/material/attachment/AttachmentCard.vue'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
-// import MaterialDetailFilePreview from '@/components/common/material/detail/MaterialDetailFilePreview.vue'
+import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
 import type {
-  MaterialU3mCreateService,
+  MaterialU3mSelectService,
   MaterialMultimediaCreateService,
   MaterialAttachmentCreateService,
+  MaterialViewModeFile,
 } from '@/types'
 import type { MenuTree } from '@frontier/ui-component'
-import { getFileExtension } from '@frontier/lib'
+import { EXTENSION, getFileExtension } from '@frontier/lib'
 
-const u3mSelectService = inject<MaterialU3mCreateService>(
-  materialU3mUpdateServiceKey
+const u3mSelectService = inject<MaterialU3mSelectService>(
+  materialU3mSelectServiceKey
 )
 const multimediaCreateService = inject<MaterialMultimediaCreateService>(
   materialMultimediaCreateServiceKey
@@ -172,6 +174,7 @@ const {
   setMultimediaAsCover,
   getMultimediaMenuTree,
   updateMultimediaList,
+  startCropMultimedia,
 } = multimediaCreateService
 const {
   attachmentList,
@@ -191,7 +194,7 @@ const {
 
 const { goToBillings } = useNavigation()
 
-const openMagnifierMode = ref<'multimedia' | 'attachment' | null>(null)
+const viewModeOpen = ref<'multimedia' | 'attachment' | null>(null)
 
 const multimediaListForDraggable = computed({
   get: () => multimediaList,
@@ -212,27 +215,29 @@ const cardDragOptions = {
   disabled: false,
 }
 
-const previewStartIndex = ref(0)
-const getMenuTree = ref<((index: number, theme: THEME) => MenuTree) | null>(
-  null
-)
+const viewModeStartIndex = ref(0)
+const getMenuTree = ref<
+  ((index: number | string, theme: THEME) => MenuTree) | null
+>(null)
 
-const fileList = computed(() => {
-  if (openMagnifierMode.value === 'multimedia') {
+const ViewModeFileList = computed<MaterialViewModeFile[]>(() => {
+  if (viewModeOpen.value === 'multimedia') {
     return multimediaList.map((m) => ({
+      id: m.id,
       originalUrl: m.originalUrl,
       thumbnailUrl: m.thumbnailUrl,
       displayName: m.displayFileName,
-      extension: getFileExtension(m.displayFileName),
+      extension: getFileExtension(m.displayFileName) as EXTENSION,
     }))
   }
 
-  if (openMagnifierMode.value === 'attachment') {
+  if (viewModeOpen.value === 'attachment') {
     return attachmentList.map((a) => ({
+      id: a.id,
       originalUrl: a.originalUrl,
       thumbnailUrl: a.thumbnailUrl,
       displayName: a.displayFileName,
-      extension: getFileExtension(a.displayFileName),
+      extension: getFileExtension(a.displayFileName) as EXTENSION,
     }))
   }
 
@@ -240,28 +245,28 @@ const fileList = computed(() => {
 })
 
 watchEffect(() => {
-  if (openMagnifierMode.value === 'multimedia') {
+  if (viewModeOpen.value === 'multimedia') {
     if (multimediaList.length === 0) {
-      openMagnifierMode.value = null
+      viewModeOpen.value = null
     }
   }
 
-  if (openMagnifierMode.value === 'attachment') {
+  if (viewModeOpen.value === 'attachment') {
     if (attachmentList.length === 0) {
-      openMagnifierMode.value = null
+      viewModeOpen.value = null
     }
   }
 })
 
 const openMultimediaPreview = (index: number) => {
-  openMagnifierMode.value = 'multimedia'
-  previewStartIndex.value = index
+  viewModeOpen.value = 'multimedia'
+  viewModeStartIndex.value = index
   getMenuTree.value = getMultimediaMenuTree
 }
 
 const openAttachmentPreview = (index: number) => {
-  openMagnifierMode.value = 'attachment'
-  previewStartIndex.value = index
+  viewModeOpen.value = 'attachment'
+  viewModeStartIndex.value = index
   getMenuTree.value = getAttachmentMenuTree
 }
 </script>

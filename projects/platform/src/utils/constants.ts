@@ -376,8 +376,7 @@ export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
 
 export const materialFormServiceKey = Symbol('MaterialFormService')
-export const materialU3mCreateServiceKey = Symbol('MaterialU3mCreateService')
-export const materialU3mUpdateServiceKey = Symbol('MaterialU3mUpdateService')
+export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')
 export const materialMultimediaCreateServiceKey = Symbol(
   'MaterialMultimediaCreateService'
 )

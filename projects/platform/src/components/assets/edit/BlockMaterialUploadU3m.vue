@@ -45,7 +45,7 @@ div(class="flex flex-col gap-y-2.5")
         iconName="delete"
         size="24"
         class="text-grey-600 cursor-pointer"
-        @click="remove"
+        @click="removeU3mFile"
       )
     div(v-if="!hasPhysicalData")
       f-input-checkbox(
@@ -63,57 +63,39 @@ div(class="flex flex-col gap-y-2.5")
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue'
 import {
   NOTIFY_TYPE,
   CREATE_EDIT,
   DISPLAY,
   U3M_STATUS,
+  materialU3mSelectServiceKey,
 } from '@/utils/constants'
-import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
+import type { MaterialU3mSelectService } from '@/types'
 
 defineProps<{
   mode: CREATE_EDIT
   status?: U3M_STATUS
 }>()
 
-const store = useStore()
 const { goToBillings } = useNavigation()
 
-const hasU3mQuota = computed(() => store.getters['polling/hasU3mQuota'])
-const u3mFile = ref<File | null>(null)
-const hasPhysicalData = ref(false)
-const hasUploadedU3mFile = computed(() => u3mFile.value !== null)
-const needToGeneratePhysical = ref(true)
-const openModalUploadU3mFile = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-upload-u3m-file',
-    properties: {
-      uploadedHandler: (payload: {
-        u3mFile: File
-        hasPhysicalData: boolean
-      }) => {
-        u3mFile.value = payload.u3mFile
-        hasPhysicalData.value = payload.hasPhysicalData
+const u3mSelectService = inject<MaterialU3mSelectService>(
+  materialU3mSelectServiceKey
+)
 
-        if (hasPhysicalData.value) {
-          needToGeneratePhysical.value = false
-        }
-      },
-    },
-  })
+if (!u3mSelectService) {
+  throw new Error('MaterialU3mSelectService is not provided')
 }
 
-const remove = () => {
-  u3mFile.value = null
-  hasPhysicalData.value = false
-  needToGeneratePhysical.value = true
-}
-
-defineExpose({
-  hasUploadedU3mFile,
+const {
   u3mFile,
+  hasU3mQuota,
+  hasPhysicalData,
+  hasUploadedU3mFile,
   needToGeneratePhysical,
-})
+  openModalUploadU3mFile,
+  removeU3mFile,
+} = u3mSelectService
 </script>

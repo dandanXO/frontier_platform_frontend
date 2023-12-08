@@ -36,8 +36,8 @@ import { U3M_CUT_SIDE, U3M_CUT_SIDE_EDIT_STATE } from '@/utils/constants'
 const props = defineProps<{
   isDoubleSideMaterial: boolean
   currentSideName?: U3M_CUT_SIDE
-  faceSideUrl: string | false
-  backSideUrl: string | false
+  faceSideUrl: string | null | undefined
+  backSideUrl: string | null | undefined
 }>()
 
 const doubleSideMaterialFaceStepState = computed(() => {

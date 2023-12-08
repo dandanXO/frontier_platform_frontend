@@ -39,7 +39,7 @@ import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.
 import BlockMaterialUploadFiles from '@/components/assets/edit/BlockMaterialUploadFiles.vue'
 import type {
   MaterialFormService,
-  MaterialU3mCreateService,
+  MaterialU3mSelectService,
   MaterialMultimediaCreateService,
   MaterialAttachmentCreateService,
 } from '@/types'
@@ -53,7 +53,7 @@ import {
   materialAttachmentCreateServiceKey,
   materialFormServiceKey,
   materialMultimediaCreateServiceKey,
-  materialU3mUpdateServiceKey,
+  materialU3mSelectServiceKey,
 } from '@/utils/constants'
 
 const props = defineProps<{
@@ -82,14 +82,14 @@ const materialFormService: MaterialFormService = useMaterialForm({
   materialOptions: props.materialOptions,
 })
 
-const u3mSelectService: MaterialU3mCreateService = useU3mSelect()
+const u3mSelectService: MaterialU3mSelectService = useU3mSelect()
 const multimediaCreateService: MaterialMultimediaCreateService =
   useMultimediaCreate()
 const attachmentCreateService: MaterialAttachmentCreateService =
   useAttachmentCreate()
 
 provide(materialFormServiceKey, materialFormService)
-provide(materialU3mUpdateServiceKey, u3mSelectService)
+provide(materialU3mSelectServiceKey, u3mSelectService)
 provide(materialMultimediaCreateServiceKey, multimediaCreateService)
 provide(materialAttachmentCreateServiceKey, attachmentCreateService)
 

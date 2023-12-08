@@ -3,9 +3,18 @@ div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
-  div(class="absolute w-min bg-grey-0 rounded card-show pt-5 shadow-32")
-    div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-grey-100")
-      p(class="text-body2 font-bold text-grey-900") {{ header }}
+  div(
+    class="absolute w-min rounded card-show pt-5 shadow-32"
+    :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0']"
+  )
+    div(
+      class="h-8.5 px-5 pb-5 flex justify-between items-start border-b"
+      :class="[theme === THEME.DARK ? 'border-grey-700' : 'border-grey-100']"
+    )
+      p(
+        class="text-body2 font-bold"
+        :class="[theme === THEME.DARK ? 'text-grey-100' : 'text-grey-900']"
+      ) {{ header }}
       f-svg-icon(
         v-if="closable"
         iconName="clear"
@@ -17,7 +26,8 @@ div(
       slot(name="default")
     div(
       v-if="footer"
-      class="p-5 h-18.5 border-content border-t border-grey-100 flex items-center"
+      class="p-5 h-18.5 border-content border-t flex items-center"
+      :class="[theme === THEME.DARK ? 'border-grey-700' : 'border-grey-100']"
     )
       div(class="w-full flex justify-between")
         div(class="flex items-center text-caption leading-1.6")
@@ -25,6 +35,7 @@ div(
         div(class="flex items-center gap-x-2.5")
           f-button(
             v-if="textBtnText !== ''"
+            :theme="theme"
             :size="btnSize"
             type="text"
             :prependIcon="textBtnIcon"
@@ -34,6 +45,7 @@ div(
           ) {{ textBtnText }}
           f-button(
             v-if="secondaryBtnText !== ''"
+            :theme="theme"
             :size="btnSize"
             type="secondary"
             :prependIcon="secondaryBtnIcon"
@@ -43,6 +55,7 @@ div(
           ) {{ secondaryBtnText }}
           f-button(
             v-if="primaryBtnText !== ''"
+            :theme="theme"
             :size="btnSize"
             type="primary"
             :prependIcon="primaryBtnIcon"
@@ -60,9 +73,14 @@ export default {
 
 <script setup>
 import { useStore } from 'vuex'
+import { THEME } from '@/utils/constants'
 
 defineEmits(['click:primary', 'click:secondary', 'click:text'])
 defineProps({
+  theme: {
+    type: String,
+    default: THEME.LIGHT,
+  },
   header: {
     type: String,
     required: true,

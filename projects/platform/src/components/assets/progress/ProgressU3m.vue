@@ -125,7 +125,7 @@ f-table(
                   @click="openModalU3mDownload(item); collapsePopper()"
                 ) {{ $t('RR0059') }}
                 f-list-item(
-                  @click="openModalCreate3DMaterial(); collapsePopper()"
+                  @click="openModalCreate3DMaterial(item); collapsePopper()"
                 ) {{ $t('PP0019') }}
                 f-list-item(
                   @click="handleViewMaterial(item); collapsePopper()"
@@ -313,9 +313,11 @@ const openModalU3mDownload = async (item: ProgressU3mItem) => {
   })
 }
 
-const openModalCreate3DMaterial = async () => {
+const openModalCreate3DMaterial = async (item: ProgressU3mItem) => {
+  const material = await getMaterial(item.materialId)
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-preview',
+    properties: { material },
   })
 }
 

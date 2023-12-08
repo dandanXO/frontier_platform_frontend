@@ -43,8 +43,8 @@ const props = defineProps<{
   isValid: boolean
   isDoubleSideMaterial: boolean
   currentSideName?: U3M_CUT_SIDE
-  faceSideUrl: string | false
-  backSideUrl: string | false
+  faceSideUrl: string | null | undefined
+  backSideUrl: string | null | undefined
 }>()
 
 const emit = defineEmits<{
@@ -61,7 +61,9 @@ const readyToSubmit = computed(() => {
   if (props.currentSideName === U3M_CUT_SIDE.BACK_SIDE) {
     return true
   }
-  if (!props.backSideUrl) return true
+  if (!props.backSideUrl) {
+    return true
+  }
   return false
 })
 </script>

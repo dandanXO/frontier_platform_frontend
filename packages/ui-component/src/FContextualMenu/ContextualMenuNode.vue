@@ -45,7 +45,7 @@ div(
           v-if="innerMenu.icon"
           :iconName="innerMenu.icon"
           size="24"
-          :class="[innerMenu.disabled ? 'text-grey-250' : 'text-grey-900']"
+          :class="[innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
         )
         //- Thumbnail
         img(

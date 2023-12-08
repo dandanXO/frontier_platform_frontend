@@ -6,22 +6,22 @@ modal-behavior(
   @click:primary="handleCreateU3mAuto"
   @click:secondary="handleRecutImage"
 )
-  div(:class="[isDoubleSideMaterial ? 'w-152' : 'w-70']")
+  div(:class="[isDoubleSide ? 'w-152' : 'w-70']")
     div(class="flex justify-between items-center gap-12")
-      div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70")
+      div(v-if="isDoubleSide || sideType === MaterialSideType.FACE_SIDE" class="w-70")
         div(class="text-center text-grey-900 text-body2 font-bold mb-3.5") {{ $t('EE0051') }}
         div(
           class="rounded overflow-hidden h-70"
-          :class="[!isFaceSideU3mCropExist ? 'border border-dashed border-grey-250' : '']"
+          :class="[!faceSideU3mImage ? 'border border-dashed border-grey-250' : '']"
         )
-          img(v-if="isFaceSideU3mCropExist" :src="faceSideImg.u3mCrop" class="w-full")
-      div(v-if="isDoubleSideMaterial || isBackSideMaterial" class="w-70")
+          img(v-if="faceSideU3mImage" :src="faceSideU3mImage?.crop" class="w-full")
+      div(v-if="isDoubleSide || sideType === MaterialSideType.BACK_SIDE" class="w-70")
         div(class="text-center text-grey-900 text-body2 font-bold mb-3.5") {{ $t('EE0052') }}
         div(
           class="rounded overflow-hidden h-70"
-          :class="[!isBackSideU3mCropExist ? 'border border-dashed border-grey-250' : '']"
+          :class="[!backSideU3mImage ? 'border border-dashed border-grey-250' : '']"
         )
-          img(v-if="isBackSideU3mCropExist" :src="backSideImg.u3mCrop" class="w-full")
+          img(v-if="backSideU3mImage" :src="backSideU3mImage?.crop" class="w-full")
     i18n-t(
       keypath="EE0068"
       tag="div"
@@ -34,36 +34,53 @@ modal-behavior(
         strong {{ $t('EE0086') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
-import useMaterialImage from '@/composables/useMaterialImage'
+import { computed, toRef } from 'vue'
+import { type Material, MaterialSideType } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE } from '@/utils/constants'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import assetsApi from '@/apis/assets'
+
+const props = defineProps<{
+  material: Material
+}>()
 
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const material = computed(() => store.getters['assets/material'])
-const { faceSideImg, backSideImg } = material.value
-const {
-  isDoubleSideMaterial,
-  isFaceSideMaterial,
-  isBackSideMaterial,
-  isFaceSideU3mCropExist,
-  isBackSideU3mCropExist,
-} = useMaterialImage(material.value, 'u3m')
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+
+const material = toRef(props.material)
+
+const faceSideU3mImage = computed(
+  () => material.value.faceSide?.u3mImage || null
+)
+const backSideU3mImage = computed(
+  () => material.value.backSide?.u3mImage || null
+)
+
+const isDoubleSide = computed(() => material.value.isDoubleSide)
+const sideType = computed(() => material.value.sideType)
 
 const handleRecutImage = () => {
   store.dispatch('helper/replaceModal', {
     component: 'modal-u3m-recut',
+    properties: { material },
   })
 }
 
 const handleCreateU3mAuto = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('assets/generateU3m', { isAutoRepeat: true })
+  const result = await ogBaseAssetsApi('generateAssetsMaterialU3m', {
+    materialId: material.value.materialId,
+    faceSide: null,
+    backSide: null,
+    isAutoRepeat: true,
+  })
+  material.value.u3m.status = result.data.result!.u3mStatus
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/openModalConfirm', {
     type: NOTIFY_TYPE.SUCCESS,

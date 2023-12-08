@@ -3,7 +3,7 @@ modal-behavior(
   :header="$t('EE0050')"
   :primaryBtnText="$t('UU0018')"
   primaryBtnIcon="done"
-  :secondaryBtnText="$t('UU0002')"
+  :secondaryBtnText="$t('Edit Later')"
   :primaryBtnDisabled="!isAllSideImgLoaded"
   @click:primary="confirm"
   @click:secondary="closeModal"
@@ -11,12 +11,12 @@ modal-behavior(
 )
   div(class="flex")
     div(
-      v-if="isDoubleSideMaterial || isFaceSideMaterial"
+      v-if="isDoubleSide || sideType === MaterialSideType.FACE_SIDE"
       class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5"
     ) {{ $t('EE0051') }}
-    div(v-if="isDoubleSideMaterial" class="w-40")
+    div(v-if="isDoubleSide" class="w-40")
     div(
-      v-if="isDoubleSideMaterial || !isFaceSideMaterial"
+      v-if="isDoubleSide || sideType === MaterialSideType.BACK_SIDE"
       class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5"
     ) {{ $t('EE0052') }}
   div(
@@ -31,7 +31,7 @@ modal-behavior(
         :scaleInputStep="scaleOptions.step"
         :scaleStart="initScaleSizeInCm"
         :scaleRange="[scaleOptions.min, scaleOptions.max]"
-        :showScale="!isDoubleSideMaterial"
+        :showScale="!isDoubleSide"
         :rotateStart="side.rotateStart"
         :config="side.config"
         @update:rotateDeg="side.config.rotateDeg = $event"
@@ -53,7 +53,7 @@ modal-behavior(
       //- 避免在沒有 faceSide 的情況下，backSide cropper 跑到 faceSide cropper 的位置
       div(v-else)
       div(
-        v-if="isDoubleSideMaterial && sides.length < 2"
+        v-if="isDoubleSide && sides.length < 2"
         class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]"
       )
         div(
@@ -61,7 +61,7 @@ modal-behavior(
           :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }"
         )
     div(
-      v-if="isDoubleSideMaterial"
+      v-if="isDoubleSide"
       class="absolute inset-x-0 w-full h-88.5 flex flex-col items-center"
     )
       f-input-slider(
@@ -86,12 +86,17 @@ import Decimal from 'decimal.js'
 import { FInputSlider } from '@frontier/ui-component'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
-import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
 import { U3M_CUT_SIDE } from '@/utils/constants'
-import type { Side, SquareCropRecord, ScannedImage } from '@/types'
+import type { Side, SquareCropRecord } from '@/types'
+import { MaterialSideType } from '@frontier/platform-web-sdk'
+import type { MaterialSideImage } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
+  isDoubleSide: boolean
+  sideType: MaterialSideType | null
+  faceSideImg: MaterialSideImage
+  backSideImg: MaterialSideImage
   afterCropHandler: (params: {
     faceSideCropImg: File | null
     backSideCropImg: File | null
@@ -112,17 +117,9 @@ const sides = computed(() => {
 })
 
 const store = useStore()
-const material = computed(() => store.getters['assets/material'])
-const {
-  faceSideImg,
-  backSideImg,
-}: {
-  faceSideImg: ScannedImage
-  backSideImg: ScannedImage
-} = material.value
 const defaultScaleSizeInCm = 4
-const initScaleSizeInCm: number =
-  faceSideImg.cropRecord?.scaleRatio || defaultScaleSizeInCm
+const initScaleSizeInCm =
+  props.faceSideImg.cropRecord?.scaleRatio || defaultScaleSizeInCm
 const scaleSizeInCm = ref(initScaleSizeInCm)
 const scaleOptions = {
   min: 1,
@@ -134,9 +131,6 @@ const scaleOptions = {
 }
 const isExchange = ref(false)
 const cropRectSize = 176
-
-const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } =
-  useMaterialImage(material.value)
 
 const handleUpdateScaleSize = (side: Side, newScaleSizeInCm: number) => {
   if (
@@ -169,6 +163,14 @@ const handleUpdateDoubleMaterialScaleSize = (
   if (fromInputChange) refDoubleSideScale.value.setValue(newScaleSizeInCm)
 }
 
+const faceSideUrl = computed(() => {
+  return props.faceSideImg?.originalUrl || null
+})
+
+const backSideUrl = computed(() => {
+  return props.backSideImg?.originalUrl || null
+})
+
 const confirm = async () => {
   store.dispatch('helper/pushModalLoading')
 
@@ -198,8 +200,8 @@ const confirm = async () => {
 
   await props.afterCropHandler({
     isExchange: isExchange.value,
-    faceSideCropImg: await getCropImage(faceSideUrl, refFaceSide.value),
-    backSideCropImg: await getCropImage(backSideUrl, refBackSide.value),
+    faceSideCropImg: await getCropImage(faceSideUrl.value, refFaceSide.value),
+    backSideCropImg: await getCropImage(backSideUrl.value, refBackSide.value),
     faceSideCropImageRecord: toRecord(faceSide.value),
     backSideCropImageRecord: toRecord(backSide.value),
   })
@@ -224,7 +226,7 @@ const sideImgLoadCount = ref(0)
 const isAllSideImgLoaded = computed(
   () =>
     sideImgLoadCount.value >=
-    [faceSideUrl, backSideUrl].filter((url) => !!url).length
+    [faceSideUrl.value, backSideUrl.value].filter((url) => !!url).length
 )
 const handleLoad = () => {
   sideImgLoadCount.value++
@@ -241,20 +243,19 @@ store.dispatch('helper/pushModalLoading')
 onMounted(async () => {
   const getSide = async (
     sideName: U3M_CUT_SIDE,
-    imageSrc: string,
-    image: ScannedImage
+    sideImage: MaterialSideImage
   ): Promise<Side> => {
     const sideCropper = new Cropper({
-      src: imageSrc,
-      dpi: image.dpi,
+      src: sideImage.originalUrl,
+      dpi: sideImage.dpi,
       cropRectSize,
     })
     await sideCropper.formatImage()
     const { config } = sideCropper
     const widthInCm = pixelToCm(config.image.width, config.dpi)
     config.scaleRatio = widthInCm.div(scaleSizeInCm.value).toNumber()
-    if (image.cropRecord) {
-      const { x, y, rotateDeg } = image.cropRecord
+    if (sideImage.cropRecord) {
+      const { x, y, rotateDeg } = sideImage.cropRecord
       config.options.x = x
       config.options.y = y
       config.rotateDeg = rotateDeg
@@ -262,20 +263,12 @@ onMounted(async () => {
     return { sideName, config, rotateStart: config.rotateDeg }
   }
 
-  if (faceSideUrl) {
-    faceSide.value = await getSide(
-      U3M_CUT_SIDE.FACE_SIDE,
-      faceSideUrl,
-      faceSideImg
-    )
+  if (props.faceSideImg) {
+    faceSide.value = await getSide(U3M_CUT_SIDE.FACE_SIDE, props.faceSideImg)
   }
 
-  if (backSideUrl) {
-    backSide.value = await getSide(
-      U3M_CUT_SIDE.BACK_SIDE,
-      backSideUrl,
-      backSideImg
-    )
+  if (props.backSideImg) {
+    backSide.value = await getSide(U3M_CUT_SIDE.BACK_SIDE, props.backSideImg)
   }
 })
 </script>

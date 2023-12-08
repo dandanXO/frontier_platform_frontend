@@ -2,10 +2,10 @@
 div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overflow-y-auto")
   modal-u3m-recut-header(
     :isValid="isValid"
-    :isDoubleSideMaterial="isDoubleSideMaterial"
+    :isDoubleSideMaterial="material.isDoubleSide"
     :currentSideName="currentSideName"
-    :faceSideUrl="faceSideUrl"
-    :backSideUrl="backSideUrl"
+    :faceSideUrl="faceSideU3mImage?.original"
+    :backSideUrl="backSideU3mImage?.original"
     @back="handleGoBack"
     @next="handleGoNext"
     @confirm="handleConfirm"
@@ -72,11 +72,10 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, toRef } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
-import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
@@ -92,7 +91,20 @@ import {
   THEME,
 } from '@/utils/constants'
 import { coordToDP1, Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
-import type { EditStatus, U3mCropRecord, U3mImage, U3mSide } from '@/types'
+import type { EditStatus, U3mCropRecord, U3mSide } from '@/types'
+import type {
+  Material,
+  MaterialGenerateU3mSide,
+  MaterialU3mImage,
+  MaterialSideImage,
+} from '@frontier/platform-web-sdk'
+import assetsApi from '@/apis/assets'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import { uploadFileToS3 } from '@/utils/fileUpload'
+
+const props = defineProps<{
+  material: Material
+}>()
 
 const cropRectSize = 176
 const scaleOptions = {
@@ -102,21 +114,20 @@ const scaleOptions = {
   defaultScaleSizeInCm: 4,
 }
 
-const material = computed(() => store.getters['assets/material'])
+const material = toRef(props.material)
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const {
-  faceSideImg,
-  backSideImg,
-}: { faceSideImg: U3mImage; backSideImg: U3mImage } = material.value
-const {
-  isDoubleSideMaterial,
-  isFaceSideMaterial,
-  isBackSideMaterial,
-  faceSideUrl,
-  backSideUrl,
-} = useMaterialImage(material.value, 'u3m')
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+
+const faceSideImage = computed(() => material.value.faceSide?.sideImage || null)
+const faceSideU3mImage = computed(
+  () => material.value.faceSide?.u3mImage || null
+)
+const backSideImage = computed(() => material.value.backSide?.sideImage || null)
+const backSideU3mImage = computed(
+  () => material.value.backSide?.u3mImage || null
+)
 
 const previewRect = ref<HTMLDivElement | null>(null)
 const refFaceSideCropLayout = ref<any | null>(null)
@@ -252,7 +263,10 @@ const handleRestore = () => {
 }
 
 const handleGoBack = async () => {
-  if (currentSideName.value === U3M_CUT_SIDE.BACK_SIDE && faceSideUrl) {
+  if (
+    currentSideName.value === U3M_CUT_SIDE.BACK_SIDE &&
+    !!faceSideU3mImage.value
+  ) {
     if (!backSide.value) {
       throw new Error('backSide is null')
     }
@@ -270,6 +284,7 @@ const handleGoBack = async () => {
   } else {
     store.dispatch('helper/replaceModalBehavior', {
       component: 'modal-u3m-preview',
+      properties: { material },
     })
   }
 }
@@ -365,7 +380,9 @@ const handleConfirm = async () => {
         throw new Error('refFaceSidePerspectiveCropArea undefined')
       }
       const result = await refFaceSidePerspectiveCropArea.value.cropImage()
-      if (!result) throw new Error('perspective crop result undefined')
+      if (!result) {
+        throw new Error('perspective crop result undefined')
+      }
       currentSide.value.croppedImage = result.imageFile
       currentSide.value.perspectiveCropRecord = result.cropRecord
     } else {
@@ -373,19 +390,53 @@ const handleConfirm = async () => {
         throw new Error('refFaceSidePerspectiveCropArea undefined')
       }
       const result = await refBackSidePerspectiveCropArea.value.cropImage()
-      if (!result) throw new Error('perspective crop result undefined')
+      if (!result) {
+        throw new Error('perspective crop result undefined')
+      }
       currentSide.value.croppedImage = result.imageFile
       currentSide.value.perspectiveCropRecord = result.cropRecord
     }
   }
 
-  await store.dispatch('assets/generateU3m', {
-    faceSideCropImg: faceSide.value?.croppedImage,
-    backSideCropImg: backSide.value?.croppedImage,
+  const getSideReq = async (
+    side: U3mSide | undefined
+  ): Promise<MaterialGenerateU3mSide | null> => {
+    if (!side) {
+      return null
+    }
+
+    const { croppedImage } = side
+    const cropImageRecord = getRecord(side)
+
+    if (!croppedImage || !cropImageRecord) {
+      return null
+    }
+
+    const { s3UploadId, fileName } = await uploadFileToS3(
+      croppedImage,
+      croppedImage.name
+    )
+
+    return {
+      s3UploadId,
+      fileName,
+      squareCropRecord: cropImageRecord.squareCropRecord || null,
+      perspectiveCropRecord: cropImageRecord.perspectiveCropRecord || null,
+    }
+  }
+
+  const [faceSideReq, backSideReq] = await Promise.all([
+    getSideReq(faceSide.value),
+    getSideReq(backSide.value),
+  ])
+
+  const result = await ogBaseAssetsApi('generateAssetsMaterialU3m', {
+    materialId: material.value.materialId,
+    faceSide: faceSideReq,
+    backSide: backSideReq,
     isAutoRepeat: false,
-    faceSideCropImageRecord: getRecord(faceSide.value),
-    backSideCropImageRecord: getRecord(backSide.value),
   })
+  material.value.u3m.status = result.data.result!.u3mStatus
 
   store.dispatch('helper/closeModalLoading')
   handleClose()
@@ -438,7 +489,9 @@ const handleClose = () => {
 }
 
 const handlePerspectiveEditStatusChange = (editStatus: EditStatus) => {
-  if (!currentSide.value) throw new Error('current side undefined')
+  if (!currentSide.value) {
+    throw new Error('current side undefined')
+  }
   currentSide.value.perspectiveEditStatus = editStatus
 }
 
@@ -446,23 +499,23 @@ onMounted(async () => {
   const getSide = async (
     sideName: U3M_CUT_SIDE,
     sideTitle: string,
-    imageSrc: string,
-    image: U3mImage
+    sideImage: MaterialSideImage,
+    u3mImage: MaterialU3mImage
   ): Promise<U3mSide> => {
     const sideCropper = new Cropper({
-      src: imageSrc,
-      dpi: image.dpi,
+      src: sideImage.originalUrl,
+      dpi: sideImage.dpi,
       cropRectSize,
     })
     await sideCropper.formatImage()
     const { config } = sideCropper
     const widthInCm = pixelToCm(config.image.width, config.dpi)
     const scaleSizeInCm =
-      image.u3mCropRecord.squareCropRecord?.scaleRatio ||
+      u3mImage.cropRecord.squareCropRecord?.scaleRatio ||
       scaleOptions.defaultScaleSizeInCm
     config.scaleRatio = widthInCm.div(scaleSizeInCm).toNumber()
-    if (image.u3mCropRecord.squareCropRecord) {
-      const { x, y, rotateDeg } = image.u3mCropRecord.squareCropRecord
+    if (u3mImage.cropRecord.squareCropRecord) {
+      const { x, y, rotateDeg } = u3mImage.cropRecord.squareCropRecord
       config.options.x = x
       config.options.y = y
       config.rotateDeg = rotateDeg
@@ -471,12 +524,15 @@ onMounted(async () => {
     return {
       sideName,
       title: sideTitle,
-      image,
-      cropMode: image.u3mCropRecord.perspectiveCropRecord
+      image: {
+        u3mCropRecord: u3mImage.cropRecord,
+        dpi: sideImage.dpi,
+      },
+      cropMode: u3mImage.cropRecord.perspectiveCropRecord
         ? CROP_MODE.PERSPECTIVE
         : CROP_MODE.SQUARE,
       croppedImage: null,
-      perspectiveCropRecord: image.u3mCropRecord.perspectiveCropRecord,
+      perspectiveCropRecord: u3mImage.cropRecord.perspectiveCropRecord,
       config,
       scaleSizeInCm,
       scaleStartInCm: scaleSizeInCm,
@@ -491,32 +547,34 @@ onMounted(async () => {
   }
 
   const getCurrentSide = () => {
-    if (isFaceSideMaterial) {
+    if (material.value.isDoubleSide) {
+      return faceSideU3mImage.value ? faceSide.value : backSide.value
+    }
+    if (faceSideU3mImage.value) {
       return faceSide.value
     }
-    if (isBackSideMaterial) {
+    if (backSideU3mImage.value) {
       return backSide.value
     }
-    return faceSideUrl ? faceSide.value : backSide.value
   }
 
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 
-  if (faceSideUrl) {
+  if (faceSideImage.value && faceSideU3mImage.value) {
     faceSide.value = await getSide(
       U3M_CUT_SIDE.FACE_SIDE,
       t('EE0051'),
-      faceSideUrl,
-      faceSideImg
+      faceSideImage.value,
+      faceSideU3mImage.value
     )
   }
 
-  if (backSideUrl) {
+  if (backSideImage.value && backSideU3mImage.value) {
     backSide.value = await getSide(
       U3M_CUT_SIDE.BACK_SIDE,
       t('EE0052'),
-      backSideUrl,
-      backSideImg
+      backSideImage.value,
+      backSideU3mImage.value
     )
   }
 

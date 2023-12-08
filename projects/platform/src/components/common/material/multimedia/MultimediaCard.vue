@@ -4,12 +4,19 @@ material-file-card(
   :displayFileName="fileName"
   :menuTree="menuTree"
 )
-  f-svg-icon(
-    :class="[isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
-    iconName="star"
-    size="24"
-    @click.stop="emits('setCover')"
-  )
+  div(class="flex flex-row gap-x-1 p-1")
+    f-svg-icon(
+      :class="[isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
+      iconName="star"
+      size="24"
+      @click.stop="emits('setCover')"
+    )
+    f-svg-icon(
+      class="text-grey-400 cursor-pointer"
+      iconName="create"
+      size="24"
+      @click.stop="emits('edit')"
+    )
 </template>
 
 <script setup lang="ts">
@@ -25,5 +32,6 @@ defineProps<{
 
 const emits = defineEmits<{
   (e: 'setCover'): void
+  (e: 'edit'): void
 }>()
 </script>

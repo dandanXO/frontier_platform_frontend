@@ -29,6 +29,7 @@ import {
   type CreateAssetsMaterialRequest,
   type MaterialInternalInventoryInfo,
   type MaterialInternalInventoryInfoSampleCardsRemainingListInner,
+  type CreateMultimediaFile,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import type { AttachmentCreateItem, MultimediaCreateItem } from '@/types'
@@ -38,8 +39,12 @@ import { uploadFileToS3 } from '@/utils/fileUpload'
 const { t } = useI18n()
 const store = useStore()
 const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
-const { goToAssets, goToMaterialUpload, goToAssetsMaterialCreate } =
-  useNavigation()
+const {
+  goToAssets,
+  goToMaterialUpload,
+  goToAssetsMaterialCreate,
+  goToAssetMaterialDetail,
+} = useNavigation()
 
 const isConfirmedToLeave = ref(false)
 const breadcrumbList = computed(() => {
@@ -80,14 +85,35 @@ const createMaterial = async (payload: {
 
   const uploadMultiMediaTasks = Promise.all(
     multimediaList.map(async (m) => {
-      const result = await uploadFileToS3(m.file, m.file.name)
-      return {
-        ...result,
+      const uploadOriginalFileTask = uploadFileToS3(m.file, m.file.name)
+      const uploadCroppedImageTask =
+        m.croppedImage && m.cropRecord
+          ? uploadFileToS3(m.croppedImage, m.croppedImage.name)
+          : Promise.resolve(null)
+
+      const [uploadRes, cropUploadRes] = await Promise.all([
+        uploadOriginalFileTask,
+        uploadCroppedImageTask,
+      ])
+
+      const result: CreateMultimediaFile = {
+        s3UploadId: uploadRes.s3UploadId,
+        fileName: uploadRes.fileName,
         displayFileName: m.displayFileName,
         isCover: m.isCover,
+        croppedImage: cropUploadRes
+          ? {
+              s3UploadId: cropUploadRes.s3UploadId,
+              fileName: cropUploadRes.fileName,
+              cropRecord: m.cropRecord!,
+            }
+          : null,
       }
+
+      return result
     })
   )
+
   const uploadAttachmentTasks = Promise.all(
     attachmentList.map(async (a) => {
       const result = await uploadFileToS3(a.file, a.file.name)
@@ -229,7 +255,7 @@ const createMaterial = async (payload: {
         fileName: m.fileName,
         displayFileName: m.displayFileName,
         isCover: m.isCover,
-        croppedImage: null,
+        croppedImage: m.croppedImage,
       })),
       internalInfo: {
         ...form.internalInfo,
@@ -276,7 +302,7 @@ const createMaterial = async (payload: {
     },
   })
 
-  return material
+  goToAssetMaterialDetail({}, material.materialId)
 }
 
 const openModalMassUpload = () => {

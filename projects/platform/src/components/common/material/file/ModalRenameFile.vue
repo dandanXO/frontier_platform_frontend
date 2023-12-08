@@ -1,5 +1,6 @@
 <template lang="pug">
 modal-behavior(
+  :theme="theme"
   :header="$t('rename')"
   :primaryBtnText="$t('save')"
   :primaryBtnDisabled="!isFileNameValid"
@@ -10,19 +11,22 @@ modal-behavior(
 )
   div(class="min-w-88")
     f-input-text(
+      :theme="theme"
       v-model:textValue="fileName"
       :placeholder="$t('Enter file name')"
     )
 </template>
 
 <script setup lang="ts">
+import type { THEME } from '@frontier/constants'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
 const props = defineProps<{
+  theme: THEME
   fileName: string
-  onSubmit: (newFileName: string) => void
+  onSubmit: (newFileName: string) => Promise<void>
 }>()
 
 const fileName = ref<string | null>(props.fileName)
@@ -50,7 +54,7 @@ const primaryHandler = async () => {
   if (fileName.value == null) {
     throw new Error('fileName is null')
   }
-  props.onSubmit(fileName.value)
+  await props.onSubmit(fileName.value)
   closeModal()
 }
 </script>

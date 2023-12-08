@@ -13,7 +13,7 @@ div(class="w-full h-full flex justify-center")
           size="md"
           :disabled="!valid"
           @click="refBlockMaterialEdit?.submit()"
-        ) {{ $t('UU0020') }}
+        ) {{ $t('UU0018') }}
     block-material-edit(
       ref="refBlockMaterialEdit"
       :material="material"
@@ -32,14 +32,8 @@ import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
-import {
-  OgType,
-  type MaterialOptions,
-  type Material,
-  type PantoneColor,
-} from '@frontier/platform-web-sdk'
-import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
-import assetsApi from '@/apis/assets'
+import { useAssetsStore } from '@/stores/assets'
+import { OgType, type PantoneColor } from '@frontier/platform-web-sdk'
 import BlockMaterialEdit from '@/components/assets/edit/BlockMaterialEdit.vue'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
 
@@ -49,7 +43,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useStore()
-const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
 const notify = useNotifyStore()
 const { goToAssets, goToAssetMaterialDetail, goToAssetMaterialEdit } =
   useNavigation()
@@ -107,22 +101,21 @@ const updateMaterial = async (payload: {
   } | null
 }) => {
   store.dispatch('helper/pushModalLoading')
-  // const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
-  //   refBlockMaterialU3m.value
-  // await store.dispatch('assets/updateMaterial', {
-  //   hasCustomU3mUploading: hasUploadedU3mFile,
-  //   u3mFile,
-  //   needToGeneratePhysical,
-  // })
-
   const { form, u3m } = payload
-
   const req = {
     materialId: materialId.value,
     ...form,
-    hasCustomU3mUploading: u3m?.hasUploadedU3mFile || false,
+    hasCustomU3mUploading: u3m != null,
   }
-  const res = await ogBaseAssetsApi('updateAssetsMaterial', req)
+  await ogBaseAssetsApi('updateAssetsMaterial', req)
+
+  if (u3m) {
+    uploadCustomU3m({
+      materialId: material.value.materialId,
+      u3mFile: u3m.u3mFile,
+      needToGeneratePhysical: u3m.needToGeneratePhysical,
+    })
+  }
 
   store.dispatch('helper/closeModalLoading')
   isConfirmedToLeave.value = true

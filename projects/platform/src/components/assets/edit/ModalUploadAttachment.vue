@@ -24,8 +24,6 @@ modal-behavior(
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
         div(class="text-grey-600") {{ $t('RR0145') }}
         div(class="text-grey-900 font-bold") {{ fileSizeMaxLimit / Math.pow(1024, 3) }} GB
-        //- i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
-        //-   template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 2) }}
       div(
         class="rounded border-grey-250 bg-grey-50 border border-dashed h-57 flex justify-center items-center"
         data-cy="modal-smart-upload_dropzone"
@@ -79,7 +77,7 @@ import { FileOperator } from '@frontier/lib'
 import { MATERIAL_UPLOAD_FILE_ACCEPT_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
-  uploadHandler: (fileList: File[]) => void
+  uploadHandler: (fileList: File[]) => Promise<void>
 }>()
 
 const store = useStore()
@@ -110,8 +108,8 @@ fileOperator.on('error', (code: string) => {
   errorCode.value = code
 })
 
-const handleConfirm = () => {
-  props.uploadHandler(attachmentList)
+const handleConfirm = async () => {
+  await props.uploadHandler(attachmentList)
   closeModalBehavior()
 }
 

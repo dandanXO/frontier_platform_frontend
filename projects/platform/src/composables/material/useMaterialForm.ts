@@ -307,6 +307,21 @@ const useMaterialForm = ({
     )
   }
 
+  const updatePantoneList = ({
+    faceSidePantoneList,
+    backSidePantoneList,
+  }: {
+    faceSidePantoneList: string[] | null
+    backSidePantoneList: string[] | null
+  }) => {
+    if (faceSidePantoneList) {
+      setFieldValue(`faceSide.pantoneList`, faceSidePantoneList)
+    }
+    if (backSidePantoneList) {
+      setFieldValue(`backSide.pantoneList`, backSidePantoneList)
+    }
+  }
+
   watch(
     () => values.isDoubleSide,
     () => {
@@ -384,6 +399,7 @@ const useMaterialForm = ({
     selectSeason,
     addPantone,
     removePantone,
+    updatePantoneList,
     validate,
     copyFaceSideToBackSide,
     clearMaterialTypeConstructionFields,

@@ -1,26 +1,23 @@
-import type { Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { EXTENSION, NOTIFY_TYPE, THEME } from '@frontier/constants'
 import { downloadDataURLFile, getFileNameExcludeExtension } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
-import type { AttachmentFile } from '@frontier/platform-web-sdk'
+import type { AttachmentFile, Material } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 
-const useAttachmentUpdate = (
-  materialId: number,
-  attachmentList: Ref<AttachmentFile[]>
-) => {
+const useAttachmentUpdate = (material: Ref<Material>) => {
   const { t } = useI18n()
   const store = useStore()
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
-  // const attachmentList = reactive<AttachmentFile[]>(originAttachmentList)
+  const attachmentList = computed(
+    () => material.value.internalInfo?.attachmentList || []
+  )
 
-  const getAttachmentById: (fileId: number) => AttachmentFile | undefined = (
-    fileId: number
-  ) => {
+  const getAttachmentById = (fileId: number): AttachmentFile | undefined => {
     return attachmentList.value.find((file) => file.fileId === fileId)
   }
 
@@ -29,45 +26,31 @@ const useAttachmentUpdate = (
       component: 'modal-upload-attachment',
       properties: {
         uploadHandler: async (fileList: File[]) => {
+          store.dispatch('helper/pushModalLoading')
+
           const s3FileList = await Promise.all(
             fileList.map((file) => uploadFileToS3(file, file.name))
           )
-          const result = await ogBaseAssetsApi(
-            'uploadAssetsMaterialAttachment',
-            {
-              materialId,
-              attachmentList: s3FileList.map((file) => {
-                {
-                  return {
-                    s3UploadId: file.s3UploadId,
-                    fileName: file.fileName,
-                    displayFileName: file.fileName,
-                  }
-                }
-              }),
-            }
-          )
 
-          // TODO: update edit material attachmentList
-          result.data.result.attachmentList
+          const res = await ogBaseAssetsApi('uploadAssetsMaterialAttachment', {
+            materialId: material.value.materialId,
+            attachmentList: s3FileList.map((file) => {
+              {
+                return {
+                  s3UploadId: file.s3UploadId,
+                  fileName: file.fileName,
+                  displayFileName: file.fileName,
+                }
+              }
+            }),
+          })
+
+          attachmentList.value = res.data.result.attachmentList
+          store.dispatch('helper/closeModalLoading')
         },
       },
     })
   }
-
-  // const openModalPreviewAttachment = (openIndex: number) => {
-  //   store.dispatch('helper/pushModal', {
-  //     component: 'modal-preview-file',
-  //     header: t('DD0060'),
-  //     properties: {
-  //       fileList: attachmentList.value,
-  //       index: openIndex,
-  //       getMenuTree: getAttachmentMenuTree,
-  //       onRename: (index: number) => renameAttachmentSelect(index),
-  //       onRemove: (index: number) => removeAttachmentSelect(index),
-  //     },
-  //   })
-  // }
 
   const removeAttachmentSelect = (id: number, theme: THEME) => {
     store.dispatch('helper/pushModalConfirm', {
@@ -79,13 +62,19 @@ const useAttachmentUpdate = (
       primaryBtnHandler: async () => {
         const target = getAttachmentById(id)
         if (!target) {
-          throw new Error('Multimedia not found')
+          throw new Error('attachment not found')
         }
 
-        ogBaseAssetsApi('removeAssetsMaterialAttachment', {
-          materialId,
+        store.dispatch('helper/pushModalLoading', { theme })
+        const res = await ogBaseAssetsApi('removeAssetsMaterialAttachment', {
+          materialId: material.value.materialId,
           fileId: target.fileId,
         })
+        if (material.value.internalInfo) {
+          material.value.internalInfo.attachmentList =
+            res.data.result.attachmentList
+        }
+        store.dispatch('helper/closeModalLoading')
       },
       secondaryBtnText: t('UU0002'),
     })
@@ -94,7 +83,7 @@ const useAttachmentUpdate = (
   const renameAttachmentSelect = (id: number, theme: THEME) => {
     const target = getAttachmentById(id)
     if (!target) {
-      throw new Error('Multimedia not found')
+      throw new Error('attachment not found')
     }
 
     store.dispatch('helper/pushModalBehavior', {
@@ -102,12 +91,18 @@ const useAttachmentUpdate = (
       properties: {
         theme,
         fileName: getFileNameExcludeExtension(target.displayFileName),
-        onSubmit: (newFileNameExcludeExtension: string) => {
-          ogBaseAssetsApi('renameAssetsMaterialAttachment', {
-            materialId,
+        onSubmit: async (newFileNameExcludeExtension: string) => {
+          store.dispatch('helper/pushModalLoading', { theme })
+          const res = await ogBaseAssetsApi('renameAssetsMaterialAttachment', {
+            materialId: material.value.materialId,
             fileId: target.fileId,
             displayFileName: `${newFileNameExcludeExtension}.${target.extension}`,
           })
+          if (material.value.internalInfo) {
+            material.value.internalInfo.attachmentList =
+              res.data.result.attachmentList
+          }
+          store.dispatch('helper/closeModalLoading')
         },
       },
     })
@@ -116,7 +111,7 @@ const useAttachmentUpdate = (
   const downloadAttachmentSelect = (id: number) => {
     const target = getAttachmentById(id)
     if (!target) {
-      throw new Error('Multimedia not found')
+      throw new Error('attachment not found')
     }
 
     downloadDataURLFile(target.originalUrl, target.displayFileName)
@@ -125,7 +120,7 @@ const useAttachmentUpdate = (
   const getAttachmentMenuTree = (id: number, theme = THEME.LIGHT): MenuTree => {
     const target = getAttachmentById(id)
     if (!target) {
-      throw new Error('Multimedia not found')
+      throw new Error('attachment not found')
     }
 
     return {
@@ -168,19 +163,42 @@ const useAttachmentUpdate = (
     }
   }
 
-  const updateAttachmentList = (list: AttachmentFile[]) => {
+  const moveAttachment = async (fileId: number, newIndex: number) => {
+    store.dispatch('helper/pushModalLoading')
+    const target = getAttachmentById(fileId)
+    if (!target) {
+      throw new Error('attachment not found')
+    }
+
+    const res = await ogBaseAssetsApi('moveAssetsMaterialAttachment', {
+      materialId: material.value.materialId,
+      fileId,
+      targetFileId:
+        attachmentList.value[newIndex === 0 ? newIndex + 1 : newIndex - 1]
+          .fileId,
+      isMoveToBeforeTarget: newIndex === 0,
+    })
+    if (material.value.internalInfo) {
+      material.value.internalInfo.attachmentList =
+        res.data.result.attachmentList
+    }
+    store.dispatch('helper/closeModalLoading')
+  }
+
+  const updateAttachmentList = async (list: AttachmentFile[]) => {
     attachmentList.value.splice(0, attachmentList.value.length, ...list)
   }
 
   return {
+    material,
     attachmentList,
     getAttachmentMenuTree,
     openModalAttachmentSelect,
-    // openModalPreviewAttachment,
     renameAttachmentSelect,
     removeAttachmentSelect,
     downloadAttachmentSelect,
     updateAttachmentList,
+    moveAttachment,
   }
 }
 

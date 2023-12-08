@@ -3,6 +3,7 @@ import type {
   FolderBookmark,
   WorkflowStage,
   CropAssetsMaterialMultimediaRequestAllOfCroppedImage,
+  CropImageRecord,
 } from '@frontier/platform-web-sdk'
 import type { CROP_MODE, EXTENSION, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
@@ -49,7 +50,7 @@ export interface U3mSide extends Side {
   scaleStartInCm: number
   croppedImage: File | null
   perspectiveEditStatus: EditStatus
-  perspectiveCropRecord?: PerspectiveCropRecord
+  perspectiveCropRecord?: PerspectiveCropRecord | null
   image: U3mImage
 }
 
@@ -75,8 +76,8 @@ export interface PerspectiveCropRecord extends PerspectiveCropPositions {
 }
 
 export interface U3mCropRecord {
-  squareCropRecord?: SquareCropRecord
-  perspectiveCropRecord?: PerspectiveCropRecord
+  squareCropRecord?: SquareCropRecord | null
+  perspectiveCropRecord?: PerspectiveCropRecord | null
 }
 
 export interface ScannedImage {
@@ -155,7 +156,7 @@ export interface FunctionOption<Type, Id = number> {
 }
 
 export type MaterialFormService = ReturnType<typeof useMaterialForm>
-export type MaterialU3mCreateService = ReturnType<typeof useU3mSelect>
+export type MaterialU3mSelectService = ReturnType<typeof useU3mSelect>
 export type MaterialU3mUpdateService = ReturnType<typeof useU3mSelect>
 export type MaterialMultimediaCreateService = ReturnType<
   typeof useMultimediaCreate
@@ -189,5 +190,40 @@ export interface MultimediaCreateItem {
   extension: EXTENSION
   displayFileNameExcludeExtension: string
   isCover: boolean
-  croppedImage: CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null
+  // croppedImage: CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null
+  croppedImage: File | null
+  cropRecord: CropImageRecord | null
+}
+
+export type MaterialFileId =
+  | 'cover'
+  | 'faceSide'
+  | 'faceSideRuler'
+  | 'backSide'
+  | 'backSideRuler'
+  | number
+
+export interface MaterialDisplayImage {
+  id: MaterialFileId
+  displayUrl: string | null
+  thumbnailUrl: string | null
+  imgName: string
+  caption: string | null
+}
+
+export interface MaterialFile {
+  id: MaterialFileId
+  fileId: number | null
+  originalUrl: string | null
+  thumbnailUrl: string | null
+  displayName: string
+  extension: EXTENSION
+}
+
+export type MaterialViewModeFile = {
+  id: MaterialFileId | string
+  originalUrl: string
+  thumbnailUrl: string | null
+  displayName: string
+  extension: EXTENSION
 }

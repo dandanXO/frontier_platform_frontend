@@ -236,6 +236,7 @@ export default function useAssets() {
       if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
         store.dispatch('helper/openModalBehavior', {
           component: 'modal-u3m-preview',
+          properties: { material },
         })
       } else {
         localStorage.setItem('haveReadU3mInstruction', 'y')
@@ -246,6 +247,7 @@ export default function useAssets() {
             primaryHandler: () => {
               store.dispatch('helper/replaceModalBehavior', {
                 component: 'modal-u3m-preview',
+                properties: { material },
               })
             },
             secondaryBtnText: t('UU0026'),

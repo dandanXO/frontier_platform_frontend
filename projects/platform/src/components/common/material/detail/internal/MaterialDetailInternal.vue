@@ -1,5 +1,11 @@
 <template lang="pug">
 div
+  modal-view-mode(
+    v-if="viewModeOpen"
+    :startIndex="viewModeStartIndex"
+    :fileList="attachmentViewModeList"
+    @close="viewModeOpen = false"
+  )
   //- Header
   div(class="pt-10 pb-15 flex items-center justify-between")
     //- BreadCrumb
@@ -207,11 +213,12 @@ div
           div(class="rounded-md bg-grey-50 p-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 flex flex-wrap gap-5")
-              material-file-item(
+              material-file-card(
                 v-for="(attachment, index) in material.internalInfo?.attachmentList"
-                :key="`attachment-${index}`"
-                :file="attachment"
-                isReadOnly
+                :key="attachment.fileId"
+                :thumbnailUrl="attachment.thumbnailUrl"
+                :displayFileName="attachment.displayFileName"
+                @click="handleAttachmentCardClick(index)"
               )
         template(v-else-if="currentTab === TAB.INDICATOR")
           div(class="-mt-10")
@@ -245,7 +252,7 @@ import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vu
 import MaterialDetailUpperContent from '@/components/common/material/detail/internal/MaterialDetailUpperContent.vue'
 import MaterialDetailInventoryTable from '@/components/common/material/detail/internal/MaterialDetailInventoryTable.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
-import MaterialFileItem from '@/components/common/material/file/MaterialFileItem.vue'
+import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 import useAssets from '@/composables/useAssets'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
@@ -253,6 +260,7 @@ import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
 
 const props = defineProps<{
   material: Material
@@ -275,6 +283,13 @@ const {
   printA4Swatch,
   deleteMaterial,
 } = useAssets()
+
+const viewModeOpen = ref(false)
+const viewModeStartIndex = ref(0)
+const handleAttachmentCardClick = (index: number) => {
+  viewModeOpen.value = true
+  viewModeStartIndex.value = index
+}
 
 const menuTree = computed<MenuTree>(() => {
   const optionList = [
@@ -334,7 +349,9 @@ const tabList = computed(() => [
   },
 ])
 
-const { hasScannedImage } = useMaterial(ref(props.material))
+const { attachmentViewModeList, hasScannedImage } = useMaterial(
+  ref(props.material)
+)
 
 const sampleCardsRemaining = computed(() => {
   return {

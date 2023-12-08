@@ -113,100 +113,60 @@ div(class="w-79")
               @click="openModalSendFeedback"
             ) {{ $t('RR0123') }}
         block-material-upload-u3m(
-          ref="refBlockMaterialUploadU3m"
           :mode="CREATE_EDIT.EDIT"
           :status="material.customU3m.status"
         )
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
-import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
+import { useI18n } from 'vue-i18n'
+import { z } from 'zod'
+import { MaterialU3mStatus, type Material } from '@frontier/platform-web-sdk'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
-import useAssetsOld from '@/composables/useAssetsOld'
-import { U3M_STATUS, CREATE_EDIT } from '@/utils/constants'
+import { CREATE_EDIT } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
-import { inputValidator } from '@frontier/lib'
-import type { Material } from '@frontier/platform-web-sdk'
-import type { MakePropertiesRequired } from '@/types'
+import useAssets from '@/composables/useAssets'
+import useMaterial from '@/composables/material/useMaterial'
+import useMaterialSchema from '@/composables/material/useMaterialSchema'
 
 const props = defineProps<{
-  material: MakePropertiesRequired<
-    Material,
-    'materialId' | 'u3m' | 'customU3m' | 'faceSideImg' | 'backSideImg'
-  >
+  material: Material
 }>()
 
-const { UNQUALIFIED, INITIAL, COMPLETED, UNSUCCESSFUL } = U3M_STATUS
-
-const material = computed(() => props.material)
+const { UNQUALIFIED, INITIAL, COMPLETED, UNSUCCESSFUL } = MaterialU3mStatus
 
 const { t } = useI18n()
 const store = useStore()
-const { create3DMaterial } = useAssetsOld()
 
-const refBlockMaterialUploadU3m =
-  ref<InstanceType<typeof BlockMaterialUploadU3m>>()
+const material = computed(() => props.material)
+const { hasScannedImage } = useMaterial(material)
+const materialSchema = useMaterialSchema()
+const { createU3m } = useAssets()
 
-defineExpose({
-  hasUploadedU3mFile: computed(
-    () => refBlockMaterialUploadU3m.value?.hasUploadedU3mFile
-  ),
-  u3mFile: computed(() => refBlockMaterialUploadU3m.value?.u3mFile),
-  needToGeneratePhysical: computed(
-    () => refBlockMaterialUploadU3m.value?.needToGeneratePhysical
-  ),
-})
-
-const handleCreateU3m = () => {
-  create3DMaterial.func(props.material)
-}
-
-const hasScannedImage = computed<boolean>(() => {
-  const { faceSideImg, backSideImg } = props.material
-  return !!faceSideImg.original || !!backSideImg.original
-})
 const hasU3mQuota = computed<boolean>(
   () => store.getters['polling/hasU3mQuota']
 )
-const hasFilledRequiredFields = computed<boolean>(() => {
-  const { required, maxIntegerDecimal } = inputValidator
-  const { materialNo, width, weight, contentList } = material.value
+const hasFilledRequiredFields = computed(() => {
+  const u3mRequiredMaterialSchema = z.object({
+    itemNo: materialSchema.shape.itemNo,
+    width: materialSchema.shape.width,
+    weight: materialSchema.shape.weight,
+    faceSide: materialSchema.shape.faceSide
+      .pick({ contentList: true })
+      .nullable(),
+    backSide: materialSchema.shape.faceSide
+      .pick({ contentList: true })
+      .nullable(),
+  })
 
-  if (!contentList || contentList?.length === 0) {
-    return false
-  }
-
-  if (
-    new Set(contentList.map(({ name }) => name)).size !== contentList.length
-  ) {
-    return false
-  }
-
-  let total = 0
-  for (let i = 0; i < contentList.length; i++) {
-    const { name, percentage } = contentList[i]
-
-    if (!required(name)) {
-      return false
-    }
-
-    if (!maxIntegerDecimal(3, 2, percentage)) {
-      return false
-    }
-
-    total += Number(percentage)
-  }
-  if (Number(total.toFixed(3)) !== 100) {
-    return false
-  }
-
-  return required(materialNo) && required(width) && required(weight)
+  const result = u3mRequiredMaterialSchema.safeParse(material.value)
+  return result.success
 })
+
 const requirementList = computed(() => [
   {
     text: t('EE0117'),
@@ -221,6 +181,10 @@ const requirementList = computed(() => [
     isMeet: hasFilledRequiredFields.value,
   },
 ])
+
+const handleCreateU3m = () => {
+  createU3m.func(props.material)
+}
 
 const openModalSendFeedback = () => {
   store.dispatch('helper/openModalBehavior', {

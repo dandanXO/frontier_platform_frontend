@@ -1,4 +1,11 @@
 <template lang="pug">
+modal-view-mode(
+  v-if="isFilePreviewOpen && openViewModeFileListIndex != null"
+  :fileList="viewModeFileList"
+  :startIndex="openViewModeFileListIndex"
+  :getMenuTree="getMenuTree"
+  @close="isFilePreviewOpen = false"
+)
 div(class="flex flex-col gap-y-3")
   div(class="w-125 h-125 relative")
     img(
@@ -17,7 +24,13 @@ div(class="flex flex-col gap-y-3")
     button(
       v-if="canEdit"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-20 flex items-center justify-center cursor-pointer"
-      @click="openModalEditSideImage"
+      @click="emits('editScannedImage')"
+    )
+      f-svg-icon(iconName="image_file" size="32" class="text-grey-900")
+    button(
+      v-if="canEdit"
+      class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-35 flex items-center justify-center cursor-pointer"
+      @click="emits('editMultimedia')"
     )
       f-svg-icon(iconName="create" size="32" class="text-grey-900")
   slider(heightLinerBg="h-19.5" :scrollPerItem="5")
@@ -45,17 +58,18 @@ div(class="flex flex-col gap-y-3")
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import Slider from '@/components/common/Slider.vue'
-import { ref } from 'vue'
+import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
+import type { THEME } from '@frontier/lib'
+import type { MenuTree } from '@frontier/ui-component'
+import type { MaterialDisplayImage, MaterialViewModeFile } from '@/types'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
-    displayImageList: Array<{
-      displayUrl: string | null
-      thumbnailUrl: string | null
-      imgName: string
-      caption: string | null
-    }>
+    displayImageList: Array<MaterialDisplayImage>
+    viewModeFileList: Array<MaterialViewModeFile>
+    getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
   }>(),
   {
@@ -63,8 +77,34 @@ withDefaults(
   }
 )
 
-const currentDisplayIndex = ref(0)
+const emits = defineEmits<{
+  (e: 'editMultimedia'): void
+  (e: 'editScannedImage'): void
+}>()
 
-const openModalFileViewer = () => {}
-const openModalEditSideImage = () => {}
+const currentDisplayIndex = ref(0)
+const isFilePreviewOpen = ref(false)
+
+const currentImage = computed(() => {
+  return props.displayImageList[currentDisplayIndex.value]
+})
+
+const openViewModeFileListIndex = computed(() => {
+  if (!currentImage.value) {
+    return null
+  }
+
+  const targetIndex = props.viewModeFileList.findIndex(
+    (f) => f.id === currentImage.value.id
+  )
+  if (targetIndex == -1) {
+    return null
+  }
+
+  return targetIndex
+})
+
+const openModalFileViewer = () => {
+  isFilePreviewOpen.value = true
+}
 </script>

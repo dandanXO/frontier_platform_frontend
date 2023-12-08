@@ -279,9 +279,14 @@ export default {
     ModalUploadAttachment: defineAsyncComponent(() =>
       import('@/components/assets/edit/ModalUploadAttachment.vue')
     ),
-    ModalMaterialSpecification: defineAsyncComponent(() =>
+    ModalMultimediaUpload: defineAsyncComponent(() =>
       import(
-        '@/components/common/material/detail/external/ModalMaterialSpecification.vue'
+        '@/components/common/material/multimedia/ModalMultimediaUpload.vue'
+      )
+    ),
+    ModalScannedImageUpdate: defineAsyncComponent(() =>
+      import(
+        '@/components/common/material/scannedImage/ModalScannedImageUpdate.vue'
       )
     ),
   },

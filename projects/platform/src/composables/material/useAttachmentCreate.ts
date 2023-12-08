@@ -51,20 +51,6 @@ const useAttachmentCreate = () => {
     })
   }
 
-  // const openModalPreviewAttachment = (openIndex: number) => {
-  //   store.dispatch('helper/pushModal', {
-  //     component: 'modal-preview-file',
-  //     header: t('DD0060'),
-  //     properties: {
-  //       fileList: attachmentList,
-  //       index: openIndex,
-  //       getMenuTree: getAttachmentMenuTree,
-  //       onRename: (index: number) => renameAttachmentSelect(index),
-  //       onRemove: (index: number) => removeAttachmentSelect(index),
-  //     },
-  //   })
-  // }
-
   const removeAttachmentSelect = (index: number, theme: THEME) => {
     store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
@@ -156,7 +142,6 @@ const useAttachmentCreate = () => {
     attachmentList,
     getAttachmentMenuTree,
     openModalAttachmentSelect,
-    // openModalPreviewAttachment,
     renameAttachmentSelect,
     removeAttachmentSelect,
     downloadAttachmentSelect,

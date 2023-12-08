@@ -8,9 +8,14 @@ import {
 import type { ComputedRef, Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { EXTENSION, MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
-import { useBreakpoints } from '@frontier/lib'
+import { useBreakpoints, getFileExtension } from '@frontier/lib'
+import type {
+  MaterialDisplayImage,
+  MaterialFile,
+  MaterialViewModeFile,
+} from '@/types'
 
 export type MaterialSpecificationInfo = {
   seasonInfo: {
@@ -129,6 +134,11 @@ export default function useMaterial(
     return { iconName, tooltipMessage }
   })
 
+  const primarySideImage = computed(() => {
+    const { faceSide, backSide } = material.value
+    return faceSide?.sideImage || backSide?.sideImage || null
+  })
+
   /**
    * A: cover image
    * B: face side original image + ruler image
@@ -140,34 +150,39 @@ export default function useMaterial(
   const displayImageList = computed(() => {
     const { coverImage, faceSide, backSide, multimediaList } = material.value
 
-    const list = [
+    const list: Array<MaterialDisplayImage> = [
       {
+        id: 'cover',
         displayUrl: coverImage?.displayUrl ?? null,
         thumbnailUrl: coverImage?.thumbnailUrl ?? null,
         imgName: t('RR0081'),
         caption: null,
       },
       {
+        id: 'faceSide',
         displayUrl: faceSide?.sideImage?.displayUrl ?? null,
         thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
         imgName: t('RR0075'),
         caption: null,
       },
       {
+        id: 'faceSideRuler',
         displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
+        thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
         imgName: t('RR0075'),
         caption: t('RR0080'),
       },
       {
+        id: 'backSide',
         displayUrl: backSide?.sideImage?.displayUrl ?? null,
         thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
         imgName: t('RR0078'),
         caption: null,
       },
       {
+        id: 'backSideRuler',
         displayUrl: backSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
+        thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
         imgName: t('RR0078'),
         caption: t('RR0080'),
       },
@@ -176,14 +191,114 @@ export default function useMaterial(
     multimediaList.length > 0 &&
       list.push(
         ...multimediaList.map((multimedia) => ({
+          id: multimedia.fileId,
           displayUrl: multimedia.displayUrl,
           thumbnailUrl: multimedia.thumbnailUrl,
-          imgName: multimedia.fileName,
+          imgName: multimedia.displayFileName,
           caption: null,
         }))
       )
 
     return list
+  })
+
+  const publicFileList = computed(() => {
+    const list: Array<MaterialFile> = []
+    const { coverImage, faceSide, backSide, multimediaList } = material.value
+
+    if (coverImage) {
+      list.push({
+        id: 'cover',
+        fileId: null,
+        originalUrl: coverImage.displayUrl || '',
+        thumbnailUrl: coverImage.thumbnailUrl,
+        displayName: t('RR0081'),
+        extension: getFileExtension(coverImage.displayUrl || '') as EXTENSION,
+      })
+    }
+
+    if (faceSide?.sideImage?.originalUrl) {
+      list.push({
+        id: 'faceSide',
+        fileId: null,
+        originalUrl: faceSide.sideImage.originalUrl,
+        thumbnailUrl: faceSide.sideImage.thumbnailUrl,
+        displayName: t('RR0081'),
+        extension: getFileExtension(
+          faceSide.sideImage.originalUrl
+        ) as EXTENSION,
+      })
+    }
+
+    if (faceSide?.sideImage?.rulerUrl) {
+      list.push({
+        id: 'faceSideRuler',
+        fileId: null,
+        originalUrl: faceSide.sideImage.rulerUrl,
+        thumbnailUrl: faceSide.sideImage.rulerThumbnailUrl,
+        displayName: t('RR0081'),
+        extension: getFileExtension(faceSide.sideImage.rulerUrl) as EXTENSION,
+      })
+    }
+
+    if (backSide?.sideImage?.originalUrl) {
+      list.push({
+        id: 'backSide',
+        fileId: null,
+        originalUrl: backSide.sideImage.originalUrl,
+        thumbnailUrl: backSide.sideImage.thumbnailUrl,
+        displayName: t('RR0081'),
+        extension: getFileExtension(
+          backSide.sideImage.originalUrl
+        ) as EXTENSION,
+      })
+    }
+
+    if (backSide?.sideImage?.rulerUrl) {
+      list.push({
+        id: 'backSideRuler',
+        fileId: null,
+        originalUrl: backSide.sideImage.rulerUrl,
+        thumbnailUrl: backSide.sideImage.rulerThumbnailUrl,
+        displayName: t('RR0081'),
+        extension: getFileExtension(backSide.sideImage.rulerUrl) as EXTENSION,
+      })
+    }
+
+    multimediaList.length > 0 &&
+      list.push(
+        ...multimediaList.map((multimedia) => ({
+          id: multimedia.fileId,
+          fileId: multimedia.fileId,
+          originalUrl: multimedia.originalUrl,
+          thumbnailUrl: multimedia.thumbnailUrl,
+          displayName: multimedia.displayFileName,
+          extension: getFileExtension(multimedia.displayFileName) as EXTENSION,
+        }))
+      )
+
+    return list
+  })
+
+  const publicFileViewModeList = computed(() => {
+    return publicFileList.value.filter(
+      (f) => !!f.originalUrl
+    ) as MaterialViewModeFile[]
+  })
+
+  const attachmentViewModeList = computed<MaterialViewModeFile[]>(() => {
+    const attachmentList = material.value.internalInfo?.attachmentList
+    if (!attachmentList) {
+      return []
+    }
+
+    return attachmentList.map((a) => ({
+      id: a.fileId,
+      originalUrl: a.originalUrl,
+      thumbnailUrl: a.thumbnailUrl,
+      displayName: a.displayFileName,
+      extension: a.extension as EXTENSION,
+    }))
   })
 
   const currentSideType = ref<MATERIAL_SIDE_TYPE>(mainSideType.value)
@@ -405,7 +520,11 @@ export default function useMaterial(
   })
 
   return {
+    primarySideImage,
     displayImageList,
+    publicFileList,
+    publicFileViewModeList,
+    attachmentViewModeList,
     currentSide,
     currentSideType,
     sideOptionList,

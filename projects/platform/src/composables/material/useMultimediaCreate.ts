@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import { EXTENSION } from '@/utils/constants'
+import { EXTENSION, THEME } from '@/utils/constants'
 import {
   NOTIFY_TYPE,
   downloadDataURLFile,
@@ -12,6 +12,8 @@ import {
 import type { MenuTree } from '@frontier/ui-component'
 import type { MultimediaCreateItem } from '@/types'
 import { getPreviewUrl } from '@/utils/pdf'
+import { image2Object } from '@/utils/cropper'
+import type { CropImageRecord } from '@frontier/platform-web-sdk'
 
 const useMultimediaCreate = () => {
   const { t } = useI18n()
@@ -19,12 +21,18 @@ const useMultimediaCreate = () => {
 
   const multimediaList = reactive<MultimediaCreateItem[]>([])
 
+  const getMultimediaById = (id: string): MultimediaCreateItem | undefined => {
+    return multimediaList.find((file) => file.id === id)
+  }
+
   const openModalMultimediaSelect = () => {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-upload-attachment',
       properties: {
         uploadHandler: async (fileList: File[]) => {
-          const toMultimedia = async (file: File) => {
+          const toMultimedia = async (
+            file: File
+          ): Promise<MultimediaCreateItem> => {
             const extension = getFileExtension(file.name) as EXTENSION
             const originalUrl = URL.createObjectURL(file)
             const thumbnailUrl = await (extension === EXTENSION.PDF
@@ -43,6 +51,7 @@ const useMultimediaCreate = () => {
               ),
               isCover: false,
               croppedImage: null,
+              cropRecord: null,
             }
           }
 
@@ -55,46 +64,45 @@ const useMultimediaCreate = () => {
     })
   }
 
-  const openModalPreviewMultimedia = (openIndex: number) => {
-    store.dispatch('helper/pushModal', {
-      component: 'modal-preview-file',
-      header: t('DD0060'),
-      properties: {
-        fileList: multimediaList,
-        index: openIndex,
-        getMenuTree: getMultimediaMenuTree,
-        onRename: (index: number) => renameMultimediaSelect(index),
-        onRemove: (index: number) => removeMultimediaSelect(index),
-      },
-    })
-  }
-
-  const downloadMultimediaSelect = (index: number) => {
-    const target = multimediaList[index]
+  const downloadMultimediaSelect = (id: string) => {
+    const target = getMultimediaById(id)
+    if (!target) {
+      throw new Error('Multimedia not found')
+    }
     downloadDataURLFile(target.originalUrl, target.displayFileName)
   }
 
-  const removeMultimediaSelect = (index: number) => {
+  const removeMultimediaSelect = (id: string, theme: THEME) => {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
+      theme,
       header: t('DD0068'),
       contentText: t('DD0069'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
-        const target = multimediaList[index]
+        const target = getMultimediaById(id)
+        if (!target) {
+          throw new Error('Multimedia not found')
+        }
         URL.revokeObjectURL(target.originalUrl)
         URL.revokeObjectURL(target.thumbnailUrl)
-        multimediaList.splice(index, 1)
+
+        const targetIndex = multimediaList.findIndex((m) => m.id === id)
+        multimediaList.splice(targetIndex, 1)
       },
       secondaryBtnText: t('UU0002'),
     })
   }
 
-  const renameMultimediaSelect = (index: number) => {
-    const target = multimediaList[index]
+  const renameMultimediaSelect = (id: string, theme: THEME) => {
+    const target = getMultimediaById(id)
+    if (!target) {
+      throw new Error('Multimedia not found')
+    }
     store.dispatch('helper/pushModalBehavior', {
       component: 'modal-rename-file',
       properties: {
+        theme,
         fileName: target.displayFileNameExcludeExtension,
         onSubmit: (newFileNameExcludeExtension: string) => {
           target.displayFileNameExcludeExtension = newFileNameExcludeExtension
@@ -118,8 +126,41 @@ const useMultimediaCreate = () => {
     })
   }
 
-  const getMultimediaMenuTree = (index: number): MenuTree => {
-    const target = multimediaList[index]
+  const startCropMultimedia = async (id: string) => {
+    const target = getMultimediaById(id)
+    if (!target) {
+      throw new Error('Multimedia not found')
+    }
+
+    const image = await image2Object(target.originalUrl)
+    store.dispatch('helper/pushModalBehavior', {
+      component: 'modal-crop-image',
+      properties: {
+        title: 'Edit Image',
+        image,
+        cropRectSize: 200,
+        cropRecord: target.cropRecord,
+        afterCropHandler: async (
+          croppedImageFile: File,
+          _originalImage: File,
+          cropRecord: CropImageRecord
+        ) => {
+          target.croppedImage = croppedImageFile
+          target.cropRecord = cropRecord
+          if (target.thumbnailUrl !== target.originalUrl) {
+            URL.revokeObjectURL(target.thumbnailUrl)
+          }
+          target.thumbnailUrl = URL.createObjectURL(croppedImageFile)
+        },
+      },
+    })
+  }
+
+  const getMultimediaMenuTree = (id: string, theme = THEME.LIGHT): MenuTree => {
+    const target = getMultimediaById(id)
+    if (!target) {
+      throw new Error('Multimedia not found')
+    }
     return {
       width: 'w-44',
       blockList: [
@@ -129,12 +170,12 @@ const useMultimediaCreate = () => {
               {
                 title: 'Download',
                 icon: 'download',
-                clickHandler: () => downloadMultimediaSelect(index),
+                clickHandler: () => downloadMultimediaSelect(id),
               },
               {
                 title: 'Rename',
                 icon: 'create',
-                clickHandler: () => renameMultimediaSelect(index),
+                clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
             if (target.extension === EXTENSION.PDF) {
@@ -152,7 +193,7 @@ const useMultimediaCreate = () => {
             {
               title: 'Delete',
               icon: 'delete',
-              clickHandler: () => removeMultimediaSelect(index),
+              clickHandler: () => removeMultimediaSelect(id, theme),
             },
           ],
         },
@@ -164,11 +205,11 @@ const useMultimediaCreate = () => {
     multimediaList,
     getMultimediaMenuTree,
     openModalMultimediaSelect,
-    openModalPreviewMultimedia,
     downloadMultimediaSelect,
     renameMultimediaSelect,
     removeMultimediaSelect,
     updateMultimediaList,
+    startCropMultimedia,
     setMultimediaAsCover,
   }
 }
