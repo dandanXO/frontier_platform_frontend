@@ -46,7 +46,14 @@ export const useSearchStore = defineStore('search', () => {
     setSelectedTagList(tempSelectedTagList)
   }
 
-  const paginationRes = ref<PaginationRes>()
+  const paginationRes = ref<PaginationRes>({
+    isShowMatch: false,
+    currentPage: 1,
+    perPageCount: 40,
+    totalCount: 0,
+    totalPage: 1,
+    sort: 1,
+  })
   const setPaginationRes = (res: PaginationRes) => (paginationRes.value = res)
 
   const getSearchLog = () => {

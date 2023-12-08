@@ -270,7 +270,7 @@ const {
   cloneTo,
   addToWorkspace,
   createU3m,
-  exportExcel,
+  // exportExcel,
   printLabel,
   printA4Swatch,
   deleteMaterial,
@@ -280,7 +280,8 @@ const menuTree = computed<MenuTree>(() => {
   const optionList = [
     [editMaterial],
     [cloneTo, addToWorkspace],
-    [createU3m, downloadU3m, exportExcel],
+    // [createU3m, downloadU3m, exportExcel],
+    [createU3m, downloadU3m],
     [printLabel, printA4Swatch],
     [deleteMaterial],
   ]

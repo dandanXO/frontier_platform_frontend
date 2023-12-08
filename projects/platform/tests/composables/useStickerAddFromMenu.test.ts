@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import useStickerAddFromMenu from '@/composables/useStickerAddFromMenu'
-import { OgType } from 'frontier/platform-web-sdk'
+import { OgType } from '@frontier/platform-web-sdk'
 
 const mockStore = createStore({
   modules: {

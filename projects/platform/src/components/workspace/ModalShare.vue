@@ -45,22 +45,13 @@ modal-behavior(:header="$t('RR0079')")
           div(
             class="grid gap-8.5 grid-cols-4 bg-grey-50 py-5 px-8 justify-items-center text-grey-900"
           )
-            div(
-              class="cursor-pointer"
-              @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.LINKEDIN)"
-            )
+            div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.LINKEDIN)")
               img(src="@/assets/images/linkedin.png")
               p(class="text-caption text-center pt-3") {{ $t('RR0151') }}
-            div(
-              class="cursor-pointer"
-              @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.FACEBOOK)"
-            )
+            div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.FACEBOOK)")
               img(src="@/assets/images/facebook.png")
               p(class="text-caption text-center pt-3") {{ $t('RR0152') }}
-            div(
-              class="cursor-pointer"
-              @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.TWITTER)"
-            )
+            div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.TWITTER)")
               img(src="@/assets/images/twitter.png")
               p(class="text-caption text-center pt-3") {{ $t('RR0153') }}
         template(v-else-if="currentTab === TAB.EMBED")
@@ -68,6 +59,7 @@ modal-behavior(:header="$t('RR0079')")
             div(class="flex items-center justify-between")
               f-input-container(:label="$t('FF0067')")
                 f-input-switch(
+                  v-if="embed"
                   iconSize="30"
                   :label="$t('FF0033')"
                   v-model:inputValue="embed.isCanDownloadU3M"
@@ -82,13 +74,13 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import {
-  shareViaCopyLink,
-  shareViaSocialMedia,
-  SOCIAL_MEDIA_TYPE,
-} from '@/utils/share'
+import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share'
 import { copyText } from '@frontier/lib'
-import { type NodeChild, NodeType } from '@frontier/platform-web-sdk'
+import {
+  type NodeChild,
+  NodeType,
+  SocialMedia,
+} from '@frontier/platform-web-sdk'
 import { useWorkspaceStore } from '@/stores/workspace'
 import { storeToRefs } from 'pinia'
 
@@ -156,7 +148,7 @@ const openModalShareAssignedList = () => {
   })
 }
 
-const shareToSocialMedia = async (type: SOCIAL_MEDIA_TYPE) => {
+const shareToSocialMedia = async (type: SocialMedia) => {
   const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareSocial', {
     nodeId: nodeId.value,
     type,

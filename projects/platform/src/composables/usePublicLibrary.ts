@@ -7,6 +7,7 @@ import { type NodeChild, NodeType } from '@frontier/platform-web-sdk'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
 import generalApi from '@/apis/general'
 import { usePublicLibraryStore } from '@/stores/publicLibrary'
+import type { PropsModalPublicLibraryShare } from '@/components/publicLibrary/ModalPublicLibraryShare.vue'
 
 enum PUBLIC_LIBRARY_FUNCTION {
   CLONE = 0,
@@ -84,13 +85,11 @@ export default function usePublicLibrary() {
     id: PUBLIC_LIBRARY_FUNCTION.SHARE,
     name: () => t('RR0079'),
     func: (n) => {
-      const node = toNode(n)
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-public-library-share',
         properties: {
-          nodeKey: node.nodeMeta.nodeId,
-          isCanShared: node.nodeMeta.isCanShared,
-        },
+          node: toNode(n),
+        } as PropsModalPublicLibraryShare,
       })
     },
   }

@@ -17,13 +17,13 @@ modal-behavior(
   div(
     class="grid gap-10 grid-cols-4 bg-grey-50 py-5 px-10 justify-items-center text-grey-900"
   )
-    div(class="cursor-pointer" @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.LINKEDIN)")
+    div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.LINKEDIN)")
       img(src="@/assets/images/linkedin.png" class="w-14")
       p(class="text-caption text-center pt-3") {{ $t('RR0151') }}
-    div(class="cursor-pointer" @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.FACEBOOK)")
+    div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.FACEBOOK)")
       img(src="@/assets/images/facebook.png" class="w-14")
       p(class="text-caption text-center pt-3") {{ $t('RR0152') }}
-    div(class="cursor-pointer" @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.TWITTER)")
+    div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.TWITTER)")
       img(src="@/assets/images/twitter.png" class="w-14")
       p(class="text-caption text-center pt-3") {{ $t('RR0153') }}
     div(
@@ -43,49 +43,52 @@ modal-behavior(
       ) {{ $t('RR0154') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import {
-  shareViaCopyLink,
-  shareViaSocialMedia,
-  SOCIAL_MEDIA_TYPE,
-} from '@/utils/share'
+import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share'
+import { type NodeChild, SocialMedia } from '@frontier/platform-web-sdk'
+import { usePublicLibraryStore } from '@/stores/publicLibrary'
+import { computed } from 'vue'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-  isCanShared: {
-    type: Boolean,
-    required: true,
-  },
-})
+export interface PropsModalPublicLibraryShare {
+  node: NodeChild
+}
+
+const props = defineProps<PropsModalPublicLibraryShare>()
 
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
+const { ogBasePublicLibraryApi } = usePublicLibraryStore()
 
-const shareToSocialMedia = async (type) => {
-  const sharingKey = await store.dispatch('publicLibrary/generateSocialMedia', {
-    nodeKey: props.nodeKey,
-    type,
-  })
-  shareViaSocialMedia(sharingKey, type)
+const isCanShared = computed(() => props.node.nodeMeta.isCanShared)
+
+const shareToSocialMedia = async (type: SocialMedia) => {
+  const { data } = await ogBasePublicLibraryApi(
+    'generatePublicLibraryNodeShareSocial',
+    {
+      nodeId: props.node.nodeMeta.nodeId,
+      type,
+    }
+  )
+  shareViaSocialMedia(data.result.key, type)
 }
 
 const generateCopyLink = async () => {
-  if (!props.isCanShared) {
+  if (!isCanShared.value) {
     return
   }
 
   store.dispatch('helper/pushModalLoading')
-  const sharingKey = await store.dispatch('publicLibrary/generateCopyLink', {
-    nodeKey: props.nodeKey,
-  })
-  shareViaCopyLink(sharingKey)
+  const { data } = await ogBasePublicLibraryApi(
+    'generatePublicLibraryNodeShareCopyLink',
+    {
+      nodeId: props.node.nodeMeta.nodeId,
+    }
+  )
+  shareViaCopyLink(data.result.key)
   store.dispatch('helper/closeModalLoading')
   notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
@@ -94,7 +97,7 @@ const openModalPublicLibraryShareAssigned = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-public-library-share-assigned',
     properties: {
-      nodeKey: props.nodeKey,
+      nodeId: props.node.nodeMeta.nodeId,
     },
   })
 }
