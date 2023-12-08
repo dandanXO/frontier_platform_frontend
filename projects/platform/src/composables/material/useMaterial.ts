@@ -16,6 +16,7 @@ import type {
   MaterialFile,
   MaterialViewModeFile,
 } from '@/types'
+import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 
 export type MaterialSpecificationInfo = {
   seasonInfo: {
@@ -84,18 +85,7 @@ export default function useMaterial(
   const { t } = useI18n()
   const { isMobile } = useBreakpoints()
 
-  const mainSideType = computed(() => {
-    const { isDoubleSide, faceSide, sideType } = material.value
-    if (isDoubleSide && faceSide) {
-      return faceSide.isMainSide
-        ? MATERIAL_SIDE_TYPE.FACE
-        : MATERIAL_SIDE_TYPE.BACK
-    } else {
-      return sideType === MaterialSideType.FACE_SIDE
-        ? MATERIAL_SIDE_TYPE.FACE
-        : MATERIAL_SIDE_TYPE.BACK
-    }
-  })
+  const mainSideType = computed(() => getMaterialMainSideType(material.value))
 
   const hasScannedImage = computed(() => {
     const { faceSide, backSide } = material.value

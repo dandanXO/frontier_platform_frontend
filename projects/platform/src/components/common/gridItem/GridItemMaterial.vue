@@ -42,13 +42,10 @@ import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { computed } from 'vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import { useStore } from 'vuex'
-import type {
-  Material,
-  MaterialBackSide,
-  MaterialFaceSide,
-} from '@frontier/platform-web-sdk'
+import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
 
 const props = withDefaults(
   defineProps<{
@@ -78,22 +75,9 @@ const innerSelectedValue = computed({
 })
 
 const materialInfo = computed(() => {
-  const { isComposite, width, weight, isDoubleSide, faceSide, backSide } =
-    props.material
-  let mainSide
-
-  if (faceSide) {
-    mainSide = faceSide
-  } else if (backSide) {
-    mainSide = backSide
-  }
-  if (isDoubleSide && faceSide) {
-    mainSide = faceSide
-  }
-
-  const { contentList, finishList, descriptionList } = mainSide as
-    | MaterialFaceSide
-    | MaterialBackSide
+  const mainSide = getMaterialMainSide(props.material)
+  const { isComposite, width, weight, faceSide, backSide } = props.material
+  const { contentList, finishList, descriptionList } = mainSide
 
   const list = [
     materialInfoForDisplay.materialType(isComposite, {

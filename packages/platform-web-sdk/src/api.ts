@@ -14773,19 +14773,19 @@ export interface MergeAssetsMaterialListRequestAllOfMergedListInner {
      * @type {number}
      * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
      */
-    'faceSideMaterialSideId': number;
+    'faceSideMaterialSideId': number | null;
     /**
      * 
      * @type {number}
      * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
      */
-    'backSideMaterialSideId': number;
+    'backSideMaterialSideId': number | null;
     /**
      * 
      * @type {number}
      * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
      */
-    'detailMaterialSideId': number;
+    'detailMaterialSideId': number | null;
 }
 /**
  * 
@@ -25557,11 +25557,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 合併布卡
-         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeAssetsMaterialList: async (mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        mergeAssetsMaterialList: async (mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mergeAssetsMaterialListRequest' is not null or undefined
+            assertParamExists('mergeAssetsMaterialList', 'mergeAssetsMaterialListRequest', mergeAssetsMaterialListRequest)
             const localVarPath = `/assets/material/merge`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26422,11 +26424,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 合併布卡
-         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26780,11 +26782,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 合併布卡
-         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27150,12 +27152,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 合併布卡
-     * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+     * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

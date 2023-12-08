@@ -15,6 +15,7 @@ import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import frontierLogo from '@/assets/images/frontier_logo.png'
 import imgPdfOutLine from '@/assets/images/pdf_outline.png'
+import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
@@ -125,8 +126,7 @@ const usePrint = () => {
         width,
         weight,
       } = material
-      const mainSide: MaterialFaceSide | MaterialBackSide =
-        sideType === MaterialSideType.FACE_SIDE ? faceSide! : backSide!
+      const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
         featureList,
@@ -249,8 +249,7 @@ const usePrint = () => {
     }) => {
       const { sideType, material } = item
       const { itemNo, isComposite, faceSide, backSide, weight } = material
-      const mainSide: MaterialFaceSide | MaterialBackSide =
-        sideType === MaterialSideType.FACE_SIDE ? faceSide! : backSide!
+      const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
         descriptionList,

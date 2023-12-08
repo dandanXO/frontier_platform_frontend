@@ -1,164 +1,145 @@
 <template lang="pug">
-div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
+div(class="flex h-47.5 gap-x-11 content-start")
   template(v-if="droppable")
-    template(v-for="(material, blockType) in rowData")
-      div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")
-        div(
-          v-if="length > 1 && blockType === BLOCK_TYPE.FACE"
-          class="absolute -left-8.5 top-20"
-          @click="deleteRow"
+    div(
+      v-for="(val, blockType) in rowData.block"
+      :key="blockType"
+      class="relative h-full"
+      :class="{ 'flex-grow': blockType === BLOCK_TYPE.DETAIL }"
+    )
+      div(
+        v-if="length && length > 1 && blockType === BLOCK_TYPE.FACE"
+        class="absolute right-full top-1/2 transform -translate-y-1/2"
+        @click="$emit('deleteRow')"
+      )
+        f-svg-icon(iconName="delete" size="24" class="cursor-pointer text-grey-600")
+      div(
+        v-if="val"
+        class="flex justify-center items-center absolute right-2 top-2 w-5 h-5 rounded-full cursor-pointer group hover:shadow-4"
+        :class="[blockType === BLOCK_TYPE.DETAIL ? 'bg-grey-100 hover:bg-grey-0/80' : 'bg-grey-0/80']"
+        @click="$emit('clearBlock', blockType)"
+      )
+        f-svg-icon(
+          iconName="clear"
+          size="14"
+          class="text-grey-900 group-hover:text-primary-400"
         )
-          f-svg-icon(iconName="delete" size="24" class="cursor-pointer text-grey-600")
-        div(
-          v-if="material.exist"
-          class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-grey-0/70 cursor-pointer"
-          @click="clearBlock(blockType)"
+      div(
+        v-if="blockType !== BLOCK_TYPE.DETAIL"
+        class="w-47.5 h-full rounded bg-cover flex-shrink-0"
+        :style="{ 'background-image': `url(${val?.sideImage?.thumbnailUrl})` }"
+        :class="[!val ? emptyBoxClass : '']"
+        :data-type="blockType"
+        @drop="onDrop($event, blockType)"
+        @dragover.prevent
+      )
+        p(v-if="!val" class="px-4 leading-1.6 text-center pointer-events-none") {{ blockType === BLOCK_TYPE.FACE ? $t('EE0007') : $t('EE0008') }}
+      div(
+        v-else
+        class="h-full rounded"
+        :class="[!val ? emptyBoxClass : filledTextBoxClass]"
+        :data-type="blockType"
+        @drop="onDrop($event, blockType)"
+        @dragover.prevent
+      )
+        p(v-if="!val" class="px-4 leading-1.6 text-center pointer-events-none") {{ $t('EE0009') }}
+        material-merge-row-detail(
+          v-else
+          :material="val.material"
+          :key="Number(val.materialSideId)"
         )
-          f-svg-icon(iconName="clear" size="14" class="text-grey-600")
-        div(
-          class="w-47.5 h-47.5 rounded bg-cover"
-          :style="getBgImg(blockType)"
-          :class="[!material.exist ? emptyBoxClass : '']"
-          :data-type="blockType"
-          @drop="onDrop($event)"
-          @dragover.prevent
-        )
-          p(
-            v-if="!material.exist"
-            class="px-4 leading-1.6 text-center pointer-events-none"
-          ) {{ blockType === BLOCK_TYPE.FACE ? $t('EE0007') : $t('EE0008') }}
-      div(v-else class="relative w-full")
-        div(
-          v-if="material.exist"
-          class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-grey-0/70 cursor-pointer"
-          @click="clearBlock(blockType)"
-        )
-          f-svg-icon(iconName="clear" size="14" class="text-grey-600")
-        div(
-          class="h-47.5 rounded"
-          :class="[!material.exist ? emptyBoxClass : filledTextBoxClass]"
-          :data-type="blockType"
-          @drop="onDrop($event)"
-          @dragover.prevent
-        )
-          p(
-            v-if="!material.exist"
-            class="px-4 leading-1.6 text-center pointer-events-none"
-          ) {{ $t('EE0009') }}
-          material-merge-row-detail(v-else :material="material")
   template(v-else)
-    template(v-for="(material, blockType) in rowData")
-      div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")
-        div(v-if="material.imageInfo.crop" class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-250")
-        div(
-          class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-250"
-          :class="{ 'border-none': material.imageInfo.crop }"
-        )
-          img(
-            v-if="material.imageInfo.crop"
-            :src="material.imageInfo.crop"
-            class="w-full h-full cursor-move rounded"
-            :data-type="blockType"
-            draggable="true"
-            @dragstart="startDrag($event)"
-          )
-      div(v-else class="relative w-full")
-        div(class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-250")
-        div(
-          class="h-47.5 rounded border-2 border-solid border-grey-250 cursor-move"
+    div(
+      v-for="(val, blockType) in rowData.block"
+      :key="blockType"
+      class="relative h-full"
+      :class="{ 'flex-grow': blockType === BLOCK_TYPE.DETAIL }"
+    )
+      div(v-if="val" class="absolute right-full top-1/2 transform -translate-y-1/2")
+        f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-250")
+      div(
+        v-if="blockType !== BLOCK_TYPE.DETAIL"
+        class="w-47.5 h-full rounded border-2 border-solid border-grey-250"
+        :class="{ 'border-none': val !== null }"
+      )
+        img(
+          v-if="val"
+          :src="val.sideImage?.thumbnailUrl"
+          class="w-full h-full cursor-move rounded"
           :data-type="blockType"
           draggable="true"
-          @dragstart="startDrag($event)"
+          @dragstart="startDrag($event, blockType)"
         )
-          material-merge-row-detail(:material="material")
+      div(
+        v-else
+        class="rounded border-2 border-solid border-grey-250 cursor-move"
+        :data-type="blockType"
+        draggable="true"
+        @dragstart="startDrag($event, blockType)"
+      )
+        material-merge-row-detail(v-if="val" :material="val.material")
 </template>
 
-<script>
+<script setup lang="ts">
 import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail.vue'
+import type { MergeRow } from '@/components/assets/merge/ModalMaterialMerge.vue'
 
-export default {
-  name: 'MaterialMergeRow',
-  components: { MaterialMergeRowDetail },
-  props: {
-    droppable: {
-      type: Boolean,
-      default: false,
-    },
-    rowData: {
-      type: Object,
-    },
-    length: {
-      type: Number,
-      default: 0,
-    },
-  },
-  emits: ['deleteRow', 'setRow', 'clearBlock'],
-  setup(props, { emit }) {
-    const emptyBoxClass =
-      'flex justify-center items-center border-2 border-dashed border-grey-600 text-grey-900 text-caption'
-    const filledTextBoxClass = 'border-2 border-solid border-grey-250'
+const props = defineProps<{
+  rowData: MergeRow
+  droppable?: boolean
+  length?: number
+}>()
 
-    const BLOCK_TYPE = {
-      FACE: 'faceSide',
-      BACK: 'backSide',
-      DETAIL: 'detail',
+const emit = defineEmits<{
+  (e: 'deleteRow'): void
+  (
+    e: 'setRow',
+    payload: {
+      blockType: keyof MergeRow['block']
+      blockData:
+        | MergeRow['block']['faceSide']
+        | MergeRow['block']['backSide']
+        | MergeRow['block']['detail']
     }
+  ): void
+  (e: 'clearBlock', blockType: keyof MergeRow['block']): void
+}>()
 
-    const getBgImg = (blockType) => {
-      if (props.rowData[blockType]?.materialId) {
-        const path = props.rowData[blockType].imageInfo.crop
-        return { 'background-image': `url(${path})` }
-      }
-    }
+const emptyBoxClass =
+  'flex justify-center items-center border-2 border-dashed border-grey-600 text-grey-900 text-caption'
+const filledTextBoxClass = 'border-2 border-solid border-grey-250'
 
-    const startDrag = (e) => {
-      const fromType = e.target.dataset.type
-      const item = { ...props.rowData, fromType, exist: true }
-      e.dataTransfer.setData('item', JSON.stringify(item))
-      e.dataTransfer.setDragImage(e.target, 95, 95)
-    }
+const BLOCK_TYPE = {
+  FACE: 'faceSide',
+  BACK: 'backSide',
+  DETAIL: 'detail',
+}
 
-    const onDrop = (e) => {
-      const copyRowData = JSON.parse(JSON.stringify(props.rowData))
-      const toType = e.target.dataset.type
-      const item = JSON.parse(e.dataTransfer.getData('item'))
+const startDrag = (e: DragEvent, fromType: keyof MergeRow['block']) => {
+  const item = { block: props.rowData.block, fromType }
 
-      // 防止將圖檔和文檔拖曳到不該放置的區域
-      if (item.fromType === BLOCK_TYPE.DETAIL && toType !== BLOCK_TYPE.DETAIL)
-        return
-      if (item.fromType !== BLOCK_TYPE.DETAIL && toType === BLOCK_TYPE.DETAIL)
-        return
+  if (e.dataTransfer) {
+    e.dataTransfer.setData('item', JSON.stringify(item))
+    e.dataTransfer.setDragImage(e.target, 95, 95)
+  }
+}
 
-      if (toType) {
-        copyRowData[toType] = {
-          ...item[item.fromType],
-          fromType: item.fromType,
-          exist: item.exist,
-        }
-        emit('setRow', copyRowData)
-      }
-    }
+const onDrop = (e: DragEvent, toType: keyof MergeRow['block']) => {
+  const item = JSON.parse(e.dataTransfer.getData('item'))
 
-    const deleteRow = () => {
-      emit('deleteRow')
-    }
+  // 防止將圖檔和文檔拖曳到不該放置的區域
+  if (item.fromType === BLOCK_TYPE.DETAIL && toType !== BLOCK_TYPE.DETAIL) {
+    return
+  }
+  if (item.fromType !== BLOCK_TYPE.DETAIL && toType === BLOCK_TYPE.DETAIL) {
+    return
+  }
 
-    const clearBlock = (blockType) => {
-      emit('clearBlock', blockType)
-    }
-
-    return {
-      BLOCK_TYPE,
-      emptyBoxClass,
-      filledTextBoxClass,
-      getBgImg,
-      onDrop,
-      startDrag,
-      deleteRow,
-      clearBlock,
-    }
-  },
+  if (toType) {
+    emit('setRow', {
+      blockType: toType,
+      blockData: item.block[item.fromType],
+    })
+  }
 }
 </script>
