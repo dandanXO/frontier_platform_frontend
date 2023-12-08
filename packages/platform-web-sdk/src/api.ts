@@ -110,6 +110,31 @@ export interface AddMoodboardShareRequest {
 /**
  * 
  * @export
+ * @interface AddMoodboardShareRequestAllOf
+ */
+export interface AddMoodboardShareRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof AddMoodboardShareRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {Array<ShareTarget>}
+     * @memberof AddMoodboardShareRequestAllOf
+     */
+    'targetList': Array<ShareTarget>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddMoodboardShareRequestAllOf
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
  * @interface AddOrgBookmarkRequest
  */
 export interface AddOrgBookmarkRequest {
@@ -199,6 +224,19 @@ export interface AddWorkspaceNodeShareAssigned200Response {
 /**
  * 
  * @export
+ * @interface AddWorkspaceNodeShareAssigned200ResponseAllOf
+ */
+export interface AddWorkspaceNodeShareAssigned200ResponseAllOf {
+    /**
+     * 
+     * @type {AddWorkspaceNodeShareAssigned200ResponseAllOfResult}
+     * @memberof AddWorkspaceNodeShareAssigned200ResponseAllOf
+     */
+    'result': AddWorkspaceNodeShareAssigned200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult
  */
 export interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult {
@@ -266,6 +304,43 @@ export interface AddWorkspaceNodeShareAssignedRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface AddWorkspaceNodeShareAssignedRequestAllOf
+ */
+export interface AddWorkspaceNodeShareAssignedRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<ShareTarget>}
+     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'targetList': Array<ShareTarget>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'isCanClone': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'isCanDownloadU3M': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'messages'?: string;
+}
 /**
  * 
  * @export
@@ -414,6 +489,42 @@ export type AssetsFilterStatusEnum = typeof AssetsFilterStatusEnum[keyof typeof 
 /**
  * 
  * @export
+ * @interface AssetsFilterAllOf
+ */
+export interface AssetsFilterAllOf {
+    /**
+     * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof AssetsFilterAllOf
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetsFilterAllOf
+     */
+    'withOutEcoImpactor': boolean | null;
+    /**
+     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
+     * @type {number}
+     * @memberof AssetsFilterAllOf
+     */
+    'status': AssetsFilterAllOfStatusEnum;
+}
+
+export const AssetsFilterAllOfStatusEnum = {
+    NOT_IN_WORKSPACE: 1,
+    NO_SCAN_IMAGE: 2,
+    NO_IMAGE: 3,
+    NO_REQUIRED_FIELD: 4,
+    DUPLICATE_ITEM_NO: 5
+} as const;
+
+export type AssetsFilterAllOfStatusEnum = typeof AssetsFilterAllOfStatusEnum[keyof typeof AssetsFilterAllOfStatusEnum];
+
+/**
+ * 
+ * @export
  * @interface AssetsFilterAllOfInventory
  */
 export interface AssetsFilterAllOfInventory {
@@ -476,6 +587,19 @@ export interface AssetsMaterialAddToWorkspace200Response {
 /**
  * 
  * @export
+ * @interface AssetsMaterialAddToWorkspace200ResponseAllOf
+ */
+export interface AssetsMaterialAddToWorkspace200ResponseAllOf {
+    /**
+     * 
+     * @type {AssetsMaterialAddToWorkspace200ResponseAllOfResult}
+     * @memberof AssetsMaterialAddToWorkspace200ResponseAllOf
+     */
+    'result': AssetsMaterialAddToWorkspace200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface AssetsMaterialAddToWorkspace200ResponseAllOfResult
  */
 export interface AssetsMaterialAddToWorkspace200ResponseAllOfResult {
@@ -528,6 +652,25 @@ export interface AssetsMaterialAddToWorkspaceRequest {
 /**
  * 
  * @export
+ * @interface AssetsMaterialAddToWorkspaceRequestAllOf
+ */
+export interface AssetsMaterialAddToWorkspaceRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
+     */
+    'targetNodeIdList': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface AttachmentFile
  */
 export interface AttachmentFile {
@@ -556,7 +699,7 @@ export interface AttachmentFile {
      */
     'originalUrl': string;
     /**
-     * 用來呈現的大圖URL，非 image、pdf 時為 null
+     * 用來呈現的大圖URL，非 image 時為 null
      * @type {string}
      * @memberof AttachmentFile
      */
@@ -664,6 +807,19 @@ export interface BatchUploadAssetsMaterialList200Response {
      * @memberof BatchUploadAssetsMaterialList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialList200ResponseAllOf
+ */
+export interface BatchUploadAssetsMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {BatchUploadAssetsMaterialList200ResponseAllOfResult}
+     * @memberof BatchUploadAssetsMaterialList200ResponseAllOf
+     */
+    'result': BatchUploadAssetsMaterialList200ResponseAllOfResult | null;
 }
 /**
  * 
@@ -798,6 +954,25 @@ export interface CancelAssetsMaterialCustomU3mUploadRequest {
 /**
  * 
  * @export
+ * @interface CancelAssetsMaterialCustomU3mUploadRequestAllOf
+ */
+export interface CancelAssetsMaterialCustomU3mUploadRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
+     */
+    'accessToken': string;
+}
+/**
+ * 
+ * @export
  * @interface CancelMaterialUploadProgressRequest
  */
 export interface CancelMaterialUploadProgressRequest {
@@ -828,6 +1003,19 @@ export interface CancelMaterialUploadProgressRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface CancelMaterialUploadProgressRequestAllOf
+ */
+export interface CancelMaterialUploadProgressRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CancelMaterialUploadProgressRequestAllOf
+     */
+    'progressId': number;
+}
 /**
  * 
  * @export
@@ -969,6 +1157,19 @@ export interface CheckDeleteAssetsMaterialList200Response {
 /**
  * 
  * @export
+ * @interface CheckDeleteAssetsMaterialList200ResponseAllOf
+ */
+export interface CheckDeleteAssetsMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {CheckDeleteAssetsMaterialList200ResponseAllOfResult}
+     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOf
+     */
+    'result': CheckDeleteAssetsMaterialList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface CheckDeleteAssetsMaterialList200ResponseAllOfResult
  */
 export interface CheckDeleteAssetsMaterialList200ResponseAllOfResult {
@@ -1097,6 +1298,19 @@ export interface CheckTokenStatus200Response {
 /**
  * 
  * @export
+ * @interface CheckTokenStatus200ResponseAllOf
+ */
+export interface CheckTokenStatus200ResponseAllOf {
+    /**
+     * 
+     * @type {CheckTokenStatus200ResponseAllOfResult}
+     * @memberof CheckTokenStatus200ResponseAllOf
+     */
+    'result': CheckTokenStatus200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface CheckTokenStatus200ResponseAllOfResult
  */
 export interface CheckTokenStatus200ResponseAllOfResult {
@@ -1177,6 +1391,31 @@ export interface CloneAssetsMaterialListRequest {
 /**
  * 
  * @export
+ * @interface CloneAssetsMaterialListRequestAllOf
+ */
+export interface CloneAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<TargetOg>}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'targetOgList': Array<TargetOg>;
+    /**
+     * 
+     * @type {CloneOption}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'optional': CloneOption;
+}
+/**
+ * 
+ * @export
  * @interface CloneCheckByMaterialRequest
  */
 export interface CloneCheckByMaterialRequest {
@@ -1210,6 +1449,19 @@ export interface CloneCheckByMaterialRequest {
 /**
  * 
  * @export
+ * @interface CloneCheckByMaterialRequestAllOf
+ */
+export interface CloneCheckByMaterialRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneCheckByMaterialRequestAllOf
+     */
+    'materialIdList': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface CloneCheckByNode200Response
  */
 export interface CloneCheckByNode200Response {
@@ -1237,6 +1489,19 @@ export interface CloneCheckByNode200Response {
      * @memberof CloneCheckByNode200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CloneCheckByNode200ResponseAllOf
+ */
+export interface CloneCheckByNode200ResponseAllOf {
+    /**
+     * 
+     * @type {CloneCheckByNode200ResponseAllOfResult}
+     * @memberof CloneCheckByNode200ResponseAllOf
+     */
+    'result': CloneCheckByNode200ResponseAllOfResult;
 }
 /**
  * 
@@ -1334,6 +1599,31 @@ export interface CloneMoodboardNodeRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface CloneMoodboardNodeRequestAllOf
+ */
+export interface CloneMoodboardNodeRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneMoodboardNodeRequestAllOf
+     */
+    'nodeIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<TargetOg>}
+     * @memberof CloneMoodboardNodeRequestAllOf
+     */
+    'targetOgList': Array<TargetOg>;
+    /**
+     * 
+     * @type {CloneOption}
+     * @memberof CloneMoodboardNodeRequestAllOf
+     */
+    'optional': CloneOption;
+}
 /**
  * 
  * @export
@@ -1472,6 +1762,37 @@ export interface CloneShareToMeNodeRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface CloneShareToMeNodeRequestAllOf
+ */
+export interface CloneShareToMeNodeRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CloneShareToMeNodeRequestAllOf
+     */
+    'sharingId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneShareToMeNodeRequestAllOf
+     */
+    'nodeIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<TargetOg>}
+     * @memberof CloneShareToMeNodeRequestAllOf
+     */
+    'targetOgList': Array<TargetOg>;
+    /**
+     * 
+     * @type {CloneOption}
+     * @memberof CloneShareToMeNodeRequestAllOf
+     */
+    'optional': CloneOption;
+}
 /**
  * 
  * @export
@@ -1994,6 +2315,19 @@ export interface CreateAndEditAttachmentFile {
 /**
  * 
  * @export
+ * @interface CreateAndEditAttachmentFileAllOf
+ */
+export interface CreateAndEditAttachmentFileAllOf {
+    /**
+     * 顯示檔案名稱
+     * @type {string}
+     * @memberof CreateAndEditAttachmentFileAllOf
+     */
+    'displayFileName': string;
+}
+/**
+ * 
+ * @export
  * @interface CreateAssetsMaterial200Response
  */
 export interface CreateAssetsMaterial200Response {
@@ -2240,6 +2574,31 @@ export interface CreateMoodboardCommentRequest {
 /**
  * 
  * @export
+ * @interface CreateMoodboardCommentRequestAllOf
+ */
+export interface CreateMoodboardCommentRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateMoodboardCommentRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateMoodboardCommentRequestAllOf
+     */
+    'offerId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardCommentRequestAllOf
+     */
+    'comment': string;
+}
+/**
+ * 
+ * @export
  * @interface CreateMoodboardOfferNodeCollectionRequest
  */
 export interface CreateMoodboardOfferNodeCollectionRequest {
@@ -2291,6 +2650,37 @@ export interface CreateMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
+ * @interface CreateMoodboardOfferNodeCollectionRequestAllOf
+ */
+export interface CreateMoodboardOfferNodeCollectionRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'description': string | null;
+    /**
+     * 
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
+     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
+}
+/**
+ * 
+ * @export
  * @interface CreateMoodboardOfferNodeMaterialRequest
  */
 export interface CreateMoodboardOfferNodeMaterialRequest {
@@ -2327,6 +2717,25 @@ export interface CreateMoodboardOfferNodeMaterialRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface CreateMoodboardOfferNodeMaterialRequestAllOf
+ */
+export interface CreateMoodboardOfferNodeMaterialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateMoodboardOfferNodeMaterialRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CreateMoodboardOfferNodeMaterialRequestAllOf
+     */
+    'materialIdList': Array<number>;
+}
 /**
  * 
  * @export
@@ -2381,6 +2790,37 @@ export interface CreateMoodboardRequest {
 /**
  * 
  * @export
+ * @interface CreateMoodboardRequestAllOf
+ */
+export interface CreateMoodboardRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardRequestAllOf
+     */
+    'moodboardName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardRequestAllOf
+     */
+    'description': string;
+    /**
+     * 
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
+     * @memberof CreateMoodboardRequestAllOf
+     */
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
+    /**
+     * 
+     * @type {Array<S3UploadedObject>}
+     * @memberof CreateMoodboardRequestAllOf
+     */
+    'attachmentList': Array<S3UploadedObject> | null;
+}
+/**
+ * 
+ * @export
  * @interface CreateMoodboardRequestAllOfTrendBoard
  */
 export interface CreateMoodboardRequestAllOfTrendBoard {
@@ -2431,6 +2871,25 @@ export interface CreateMultimediaFile {
      * 
      * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
      * @memberof CreateMultimediaFile
+     */
+    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateMultimediaFileAllOf
+ */
+export interface CreateMultimediaFileAllOf {
+    /**
+     * 是否為封面圖
+     * @type {boolean}
+     * @memberof CreateMultimediaFileAllOf
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
+     * @memberof CreateMultimediaFileAllOf
      */
     'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
 }
@@ -2588,6 +3047,37 @@ export interface CreateWorkspaceCollectionRequest {
 /**
  * 
  * @export
+ * @interface CreateWorkspaceCollectionRequestAllOf
+ */
+export interface CreateWorkspaceCollectionRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkspaceCollectionRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateWorkspaceCollectionRequestAllOf
+     */
+    'collectionName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateWorkspaceCollectionRequestAllOf
+     */
+    'description': string | null;
+    /**
+     * 
+     * @type {S3UploadedObject}
+     * @memberof CreateWorkspaceCollectionRequestAllOf
+     */
+    'trendBoard': S3UploadedObject | null;
+}
+/**
+ * 
+ * @export
  * @interface CropAssetsMaterialMultimediaRequest
  */
 export interface CropAssetsMaterialMultimediaRequest {
@@ -2633,6 +3123,31 @@ export interface CropAssetsMaterialMultimediaRequest {
 /**
  * 
  * @export
+ * @interface CropAssetsMaterialMultimediaRequestAllOf
+ */
+export interface CropAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'fileId': number;
+    /**
+     * 
+     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+}
+/**
+ * 
+ * @export
  * @interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage
  */
 export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage {
@@ -2652,6 +3167,19 @@ export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage {
      * 
      * @type {CropImageRecord}
      * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImage
+     */
+    'cropRecord': CropImageRecord;
+}
+/**
+ * 
+ * @export
+ * @interface CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf
+ */
+export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf {
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf
      */
     'cropRecord': CropImageRecord;
 }
@@ -2683,6 +3211,25 @@ export interface CropImageRecord {
      * 
      * @type {number}
      * @memberof CropImageRecord
+     */
+    'scaleRatio': number;
+}
+/**
+ * 記錄正方形裁切圖片的參數
+ * @export
+ * @interface CropImageRecordAllOf
+ */
+export interface CropImageRecordAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CropImageRecordAllOf
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CropImageRecordAllOf
      */
     'scaleRatio': number;
 }
@@ -2991,6 +3538,19 @@ export interface DeleteAssetsMaterialListRequest {
 /**
  * 
  * @export
+ * @interface DeleteAssetsMaterialListRequestAllOf
+ */
+export interface DeleteAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof DeleteAssetsMaterialListRequestAllOf
+     */
+    'materialIdList': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface DeleteWorkspaceNodeRequest
  */
 export interface DeleteWorkspaceNodeRequest {
@@ -3021,6 +3581,19 @@ export interface DeleteWorkspaceNodeRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface DeleteWorkspaceNodeRequestAllOf
+ */
+export interface DeleteWorkspaceNodeRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof DeleteWorkspaceNodeRequestAllOf
+     */
+    'nodeIdList': Array<number>;
+}
 /**
  * 
  * @export
@@ -3614,11 +4187,188 @@ export interface DigitalThreadGetListPost200Response {
 export interface DigitalThreadGetListPost200ResponseResult {
     /**
      * 
-     * @type {Array<DigitalThreadBase>}
+     * @type {Array<DigitalThreadGetListPost200ResponseResultDigitalThreadListInner>}
      * @memberof DigitalThreadGetListPost200ResponseResult
      */
-    'digitalThreadList'?: Array<DigitalThreadBase>;
+    'digitalThreadList'?: Array<DigitalThreadGetListPost200ResponseResultDigitalThreadListInner>;
 }
+/**
+ * 
+ * @export
+ * @interface DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+ */
+export interface DigitalThreadGetListPost200ResponseResultDigitalThreadListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'digitalThreadSideId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'digitalThreadName': string;
+    /**
+     * 檢視該DigitalThread的使用者是否為建立方組織的成員
+     * @type {boolean}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'isCreatorSide': boolean;
+    /**
+     * 檢視該DigitalThread的使用者是否為布片擁有者組織的成員
+     * @type {boolean}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'isMaterialOwnerSide': boolean;
+    /**
+     * 檢視該DigitalThread的使用者的side的ogType
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'sideOGType': number;
+    /**
+     * 檢視該DigitalThread的使用者的side的ogId
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'sideOGId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'materialCoverImg': string;
+    /**
+     * 布片擁有者的單位名稱，IsMaterialOwnerSide為true時:Thread summary為布片擁有者的組織(+團隊)名稱、All Thread drawer呈現建立者的組織名稱，IsMaterialOwnerSide為false時:布片擁有者的組織名稱
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'materialOwnerUnitName'?: string;
+    /**
+     * 布片擁有者的單位Logo
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'materialOwnerUnitLogo': string;
+    /**
+     * 布片擁有者的單位標籤顏色，若IsMaterialOwnerSide為true:呈現布片擁有者單位的標籤顏色，IsMaterialOwnerSide為false:為null值
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'materialOwnerUnitLabelColor': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'hasMaterialDeleted': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'hasMaterialNoAccess': boolean;
+    /**
+     * 
+     * @type {FeatureType}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'addFromLocationType': FeatureType;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'addFromLocationList': Array<string>;
+    /**
+     * 建立者單位，若isCreatorSide為true:Thread summary呈現建立者的組織(+團隊)名稱、All Thread drawer呈現建立者的組織名稱，isCreatorSide為false:呈現建立者的組織名稱
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'creatorUnitName': string;
+    /**
+     * 建立者的單位的Logo
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'creatorUnitLogo': string;
+    /**
+     * 建立者的單位的標籤顏色，若isCreatorSide為true:呈現建立者的單位的標籤顏色，isCreatorSide為false:為null值
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'creatorUnitLabelColor': string | null;
+    /**
+     * 建立者的使用者名稱，若isCreatorSide為false，則為null值
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'creator': string | null;
+    /**
+     * 建立者的大頭貼，若isCreatorSide為false，則為null值
+     * @type {string}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'creatorAvatar': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {DigitalThreadBaseStickerStatistics}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'stickerStatistics': DigitalThreadBaseStickerStatistics;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'tagList': Array<string>;
+    /**
+     * 
+     * @type {Array<DigitalThreadBaseParticipantListInner>}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'participantList': Array<DigitalThreadBaseParticipantListInner>;
+    /**
+     * 
+     * @type {Array<DigitalThreadBaseParticipantListInner>}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'participantAndMentionList'?: Array<DigitalThreadBaseParticipantListInner>;
+    /**
+     * 顯示Digital Thread 底下未讀sticker總數
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'unreadStickerQty': number;
+    /**
+     * 該digital thread在該所屬單位的workflowStageId
+     * @type {number}
+     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
+     */
+    'workflowStageId': number;
+}
+
+
 /**
  * 
  * @export
@@ -3989,6 +4739,25 @@ export interface DuplicateWorkspaceNodeRequest {
 /**
  * 
  * @export
+ * @interface DuplicateWorkspaceNodeRequestAllOf
+ */
+export interface DuplicateWorkspaceNodeRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof DuplicateWorkspaceNodeRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof DuplicateWorkspaceNodeRequestAllOf
+     */
+    'targetNodeIdList': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface EditAssetsMaterialSideImage200Response
  */
 export interface EditAssetsMaterialSideImage200Response {
@@ -4153,6 +4922,19 @@ export interface EditAssetsMaterialSideImageRequestFaceSideImageCropped {
 /**
  * 
  * @export
+ * @interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
+ */
+export interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf {
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
+     */
+    'cropImageRecord': CropImageRecord;
+}
+/**
+ * 
+ * @export
  * @interface ExportAssetsMaterialExcel200Response
  */
 export interface ExportAssetsMaterialExcel200Response {
@@ -4180,6 +4962,19 @@ export interface ExportAssetsMaterialExcel200Response {
      * @memberof ExportAssetsMaterialExcel200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcel200ResponseAllOf
+ */
+export interface ExportAssetsMaterialExcel200ResponseAllOf {
+    /**
+     * 
+     * @type {ExportAssetsMaterialExcel200ResponseAllOfResult}
+     * @memberof ExportAssetsMaterialExcel200ResponseAllOf
+     */
+    'result'?: ExportAssetsMaterialExcel200ResponseAllOfResult;
 }
 /**
  * 
@@ -4242,6 +5037,19 @@ export interface ExportAssetsMaterialExcelRequest {
 /**
  * 
  * @export
+ * @interface ExportAssetsMaterialExcelRequestAllOf
+ */
+export interface ExportAssetsMaterialExcelRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportAssetsMaterialExcelRequestAllOf
+     */
+    'materialIdList': Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface ExportMoodboardOfferPicked200Response
  */
 export interface ExportMoodboardOfferPicked200Response {
@@ -4269,6 +5077,19 @@ export interface ExportMoodboardOfferPicked200Response {
      * @memberof ExportMoodboardOfferPicked200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExportMoodboardOfferPicked200ResponseAllOf
+ */
+export interface ExportMoodboardOfferPicked200ResponseAllOf {
+    /**
+     * 
+     * @type {ExportMoodboardOfferPicked200ResponseAllOfResult}
+     * @memberof ExportMoodboardOfferPicked200ResponseAllOf
+     */
+    'result': ExportMoodboardOfferPicked200ResponseAllOfResult;
 }
 /**
  * 
@@ -4334,6 +5155,25 @@ export interface ExportMoodboardOfferPickedRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface ExportMoodboardOfferPickedRequestAllOf
+ */
+export interface ExportMoodboardOfferPickedRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof ExportMoodboardOfferPickedRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportMoodboardOfferPickedRequestAllOf
+     */
+    'nodeIdList': Array<number>;
+}
 /**
  * 
  * @export
@@ -4410,6 +5250,19 @@ export interface ExternalFilter {
      * 
      * @type {ExternalFilterAllOfInventory}
      * @memberof ExternalFilter
+     */
+    'inventory': ExternalFilterAllOfInventory | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilterAllOf
+ */
+export interface ExternalFilterAllOf {
+    /**
+     * 
+     * @type {ExternalFilterAllOfInventory}
+     * @memberof ExternalFilterAllOf
      */
     'inventory': ExternalFilterAllOfInventory | null;
 }
@@ -4883,6 +5736,31 @@ export interface FolderBookmark {
 /**
  * 
  * @export
+ * @interface FolderBookmarkAllOf
+ */
+export interface FolderBookmarkAllOf {
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof FolderBookmarkAllOf
+     */
+    'folderName': string;
+    /**
+     * 書籤內容
+     * @type {Array<FolderBookmarkAllOfOrgList>}
+     * @memberof FolderBookmarkAllOf
+     */
+    'orgList': Array<FolderBookmarkAllOfOrgList>;
+    /**
+     * 是否為所有討論串
+     * @type {boolean}
+     * @memberof FolderBookmarkAllOf
+     */
+    'isAllThread': boolean;
+}
+/**
+ * 
+ * @export
  * @interface FolderBookmarkAllOfOrgList
  */
 export interface FolderBookmarkAllOfOrgList {
@@ -5011,6 +5889,37 @@ export interface GenerateAssetsMaterialU3mRequest {
 /**
  * 
  * @export
+ * @interface GenerateAssetsMaterialU3mRequestAllOf
+ */
+export interface GenerateAssetsMaterialU3mRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'isAutoRepeat': boolean;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'faceSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide | null;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'backSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide | null;
+}
+/**
+ * 
+ * @export
  * @interface GenerateAssetsMaterialU3mRequestAllOfFaceSide
  */
 export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
@@ -5119,6 +6028,19 @@ export interface GenerateWorkspaceNodeShareCopyLink200Response {
 /**
  * 
  * @export
+ * @interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOf
+ */
+export interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOf {
+    /**
+     * 
+     * @type {GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult}
+     * @memberof GenerateWorkspaceNodeShareCopyLink200ResponseAllOf
+     */
+    'result': GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult
  */
 export interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult {
@@ -5171,6 +6093,27 @@ export interface GenerateWorkspaceNodeShareSocialRequest {
 /**
  * 
  * @export
+ * @interface GenerateWorkspaceNodeShareSocialRequestAllOf
+ */
+export interface GenerateWorkspaceNodeShareSocialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GenerateWorkspaceNodeShareSocialRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SocialMedia}
+     * @memberof GenerateWorkspaceNodeShareSocialRequestAllOf
+     */
+    'type': SocialMedia;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetAssetMaterialList200Response
  */
 export interface GetAssetMaterialList200Response {
@@ -5198,6 +6141,19 @@ export interface GetAssetMaterialList200Response {
      * @memberof GetAssetMaterialList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialList200ResponseAllOf
+ */
+export interface GetAssetMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetAssetMaterialList200ResponseAllOfResult}
+     * @memberof GetAssetMaterialList200ResponseAllOf
+     */
+    'result': GetAssetMaterialList200ResponseAllOfResult;
 }
 /**
  * 
@@ -5266,6 +6222,31 @@ export interface GetAssetMaterialListRequest {
 /**
  * 
  * @export
+ * @interface GetAssetMaterialListRequestAllOf
+ */
+export interface GetAssetMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {AssetsFilter}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'filter': AssetsFilter | null;
+}
+/**
+ * 
+ * @export
  * @interface GetAssetsMaterial200Response
  */
 export interface GetAssetsMaterial200Response {
@@ -5293,6 +6274,19 @@ export interface GetAssetsMaterial200Response {
      * @memberof GetAssetsMaterial200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200ResponseAllOf
+ */
+export interface GetAssetsMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200ResponseAllOf
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -5340,6 +6334,19 @@ export interface GetAssetsMaterialRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialRequestAllOf
+ */
+export interface GetAssetsMaterialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAssetsMaterialRequestAllOf
+     */
+    'materialId': number;
+}
 /**
  * 
  * @export
@@ -5597,6 +6604,19 @@ export interface GetExcelProgressList200Response {
 /**
  * 
  * @export
+ * @interface GetExcelProgressList200ResponseAllOf
+ */
+export interface GetExcelProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExcelProgressList200ResponseAllOfResult}
+     * @memberof GetExcelProgressList200ResponseAllOf
+     */
+    'result': GetExcelProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetExcelProgressList200ResponseAllOfResult
  */
 export interface GetExcelProgressList200ResponseAllOfResult {
@@ -5735,6 +6755,58 @@ export type GetExcelProgressListRequestCategoryEnum = typeof GetExcelProgressLis
 /**
  * 
  * @export
+ * @interface GetExcelProgressListRequestAllOf
+ */
+export interface GetExcelProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'status': ProgressStatus;
+    /**
+     * 0: ALL 1: Upload 2: Export 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'category': GetExcelProgressListRequestAllOfCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetExcelProgressListRequestAllOfPagination}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'pagination': GetExcelProgressListRequestAllOfPagination;
+}
+
+export const GetExcelProgressListRequestAllOfCategoryEnum = {
+    ALL: 0,
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type GetExcelProgressListRequestAllOfCategoryEnum = typeof GetExcelProgressListRequestAllOfCategoryEnum[keyof typeof GetExcelProgressListRequestAllOfCategoryEnum];
+
+/**
+ * 
+ * @export
  * @interface GetExcelProgressListRequestAllOfPagination
  */
 export interface GetExcelProgressListRequestAllOfPagination {
@@ -5803,6 +6875,19 @@ export interface GetExcelProgressMaterialList200Response {
 /**
  * 
  * @export
+ * @interface GetExcelProgressMaterialList200ResponseAllOf
+ */
+export interface GetExcelProgressMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExcelProgressMaterialList200ResponseAllOfResult}
+     * @memberof GetExcelProgressMaterialList200ResponseAllOf
+     */
+    'result': GetExcelProgressMaterialList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetExcelProgressMaterialList200ResponseAllOfResult
  */
 export interface GetExcelProgressMaterialList200ResponseAllOfResult {
@@ -5843,6 +6928,19 @@ export interface GetExternalSearchFilterOptions200Response {
      * @memberof GetExternalSearchFilterOptions200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetExternalSearchFilterOptions200ResponseAllOf
+ */
+export interface GetExternalSearchFilterOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOf
+     */
+    'result': GetExternalSearchFilterOptions200ResponseAllOfResult;
 }
 /**
  * 
@@ -5936,6 +7034,19 @@ export interface GetInternalSearchFilterOptions200Response {
      * @memberof GetInternalSearchFilterOptions200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOf
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOf
+     */
+    'result': GetInternalSearchFilterOptions200ResponseAllOfResult;
 }
 /**
  * 
@@ -6039,6 +7150,33 @@ export interface GetInternalSearchFilterOptions200ResponseAllOfResultDescription
 /**
  * 
  * @export
+ * @interface GetInternalSearchFilterOptionsRequest
+ */
+export interface GetInternalSearchFilterOptionsRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetMaterialOptions200Response
  */
 export interface GetMaterialOptions200Response {
@@ -6070,6 +7208,19 @@ export interface GetMaterialOptions200Response {
 /**
  * 
  * @export
+ * @interface GetMaterialOptions200ResponseAllOf
+ */
+export interface GetMaterialOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {MaterialOptions}
+     * @memberof GetMaterialOptions200ResponseAllOf
+     */
+    'result'?: MaterialOptions;
+}
+/**
+ * 
+ * @export
  * @interface GetMaterialUploadProgressList200Response
  */
 export interface GetMaterialUploadProgressList200Response {
@@ -6097,6 +7248,19 @@ export interface GetMaterialUploadProgressList200Response {
      * @memberof GetMaterialUploadProgressList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOf
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMaterialUploadProgressList200ResponseAllOfResult}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOf
+     */
+    'result': GetMaterialUploadProgressList200ResponseAllOfResult;
 }
 /**
  * 
@@ -6218,6 +7382,39 @@ export interface GetMaterialUploadProgressListRequest {
 /**
  * 
  * @export
+ * @interface GetMaterialUploadProgressListRequestAllOf
+ */
+export interface GetMaterialUploadProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'status': ProgressStatus;
+    /**
+     * 
+     * @type {GetMaterialUploadProgressListRequestAllOfPagination}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'pagination': GetMaterialUploadProgressListRequestAllOfPagination;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetMaterialUploadProgressListRequestAllOfPagination
  */
 export interface GetMaterialUploadProgressListRequestAllOfPagination {
@@ -6284,6 +7481,19 @@ export interface GetMoodboard200Response {
 /**
  * 
  * @export
+ * @interface GetMoodboard200ResponseAllOf
+ */
+export interface GetMoodboard200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboard200ResponseAllOfResult}
+     * @memberof GetMoodboard200ResponseAllOf
+     */
+    'result': GetMoodboard200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetMoodboard200ResponseAllOfResult
  */
 export interface GetMoodboard200ResponseAllOfResult {
@@ -6324,6 +7534,19 @@ export interface GetMoodboardComment200Response {
      * @memberof GetMoodboardComment200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardComment200ResponseAllOf
+ */
+export interface GetMoodboardComment200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardComment200ResponseAllOfResult}
+     * @memberof GetMoodboardComment200ResponseAllOf
+     */
+    'result': GetMoodboardComment200ResponseAllOfResult;
 }
 /**
  * 
@@ -6380,6 +7603,25 @@ export interface GetMoodboardCommentRequest {
 /**
  * 
  * @export
+ * @interface GetMoodboardCommentRequestAllOf
+ */
+export interface GetMoodboardCommentRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardCommentRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardCommentRequestAllOf
+     */
+    'offerId': number;
+}
+/**
+ * 
+ * @export
  * @interface GetMoodboardList200Response
  */
 export interface GetMoodboardList200Response {
@@ -6407,6 +7649,19 @@ export interface GetMoodboardList200Response {
      * @memberof GetMoodboardList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardList200ResponseAllOf
+ */
+export interface GetMoodboardList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardList200ResponseAllOfResult}
+     * @memberof GetMoodboardList200ResponseAllOf
+     */
+    'result': GetMoodboardList200ResponseAllOfResult;
 }
 /**
  * 
@@ -6469,6 +7724,31 @@ export interface GetMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
+ * @interface GetMoodboardOfferNodeCollectionRequestAllOf
+ */
+export interface GetMoodboardOfferNodeCollectionRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'nodeId': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'keyword': string | null;
+}
+/**
+ * 
+ * @export
  * @interface GetMoodboardOfferNodeMaterial200Response
  */
 export interface GetMoodboardOfferNodeMaterial200Response {
@@ -6496,6 +7776,19 @@ export interface GetMoodboardOfferNodeMaterial200Response {
      * @memberof GetMoodboardOfferNodeMaterial200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardOfferNodeMaterial200ResponseAllOf
+ */
+export interface GetMoodboardOfferNodeMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardOfferNodeMaterial200ResponseAllOfResult}
+     * @memberof GetMoodboardOfferNodeMaterial200ResponseAllOf
+     */
+    'result': GetMoodboardOfferNodeMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -6540,6 +7833,19 @@ export interface GetMoodboardOfferPickedList200Response {
      * @memberof GetMoodboardOfferPickedList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardOfferPickedList200ResponseAllOf
+ */
+export interface GetMoodboardOfferPickedList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardOfferPickedList200ResponseAllOfResult}
+     * @memberof GetMoodboardOfferPickedList200ResponseAllOf
+     */
+    'result': GetMoodboardOfferPickedList200ResponseAllOfResult;
 }
 /**
  * 
@@ -6602,6 +7908,31 @@ export interface GetMoodboardOfferPickedListRequest {
 /**
  * 
  * @export
+ * @interface GetMoodboardOfferPickedListRequestAllOf
+ */
+export interface GetMoodboardOfferPickedListRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardOfferPickedListRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 不傳時為撈All Items
+     * @type {number}
+     * @memberof GetMoodboardOfferPickedListRequestAllOf
+     */
+    'offerId': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMoodboardOfferPickedListRequestAllOf
+     */
+    'keyword': string | null;
+}
+/**
+ * 
+ * @export
  * @interface GetMoodboardRequest
  */
 export interface GetMoodboardRequest {
@@ -6635,6 +7966,19 @@ export interface GetMoodboardRequest {
 /**
  * 
  * @export
+ * @interface GetMoodboardRequestAllOf
+ */
+export interface GetMoodboardRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardRequestAllOf
+     */
+    'moodboardId': number;
+}
+/**
+ * 
+ * @export
  * @interface GetMoodboardShareReceivedInfo200Response
  */
 export interface GetMoodboardShareReceivedInfo200Response {
@@ -6662,6 +8006,19 @@ export interface GetMoodboardShareReceivedInfo200Response {
      * @memberof GetMoodboardShareReceivedInfo200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardShareReceivedInfo200ResponseAllOf
+ */
+export interface GetMoodboardShareReceivedInfo200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardShareReceivedInfo200ResponseAllOfResult}
+     * @memberof GetMoodboardShareReceivedInfo200ResponseAllOf
+     */
+    'result': GetMoodboardShareReceivedInfo200ResponseAllOfResult;
 }
 /**
  * 
@@ -6777,6 +8134,25 @@ export interface GetMoodboardShareTargetRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface GetMoodboardShareTargetRequestAllOf
+ */
+export interface GetMoodboardShareTargetRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMoodboardShareTargetRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMoodboardShareTargetRequestAllOf
+     */
+    'targetNumber': string;
+}
 /**
  * 
  * @export
@@ -6961,6 +8337,19 @@ export interface GetReceivedShareInfo200Response {
 /**
  * 
  * @export
+ * @interface GetReceivedShareInfo200ResponseAllOf
+ */
+export interface GetReceivedShareInfo200ResponseAllOf {
+    /**
+     * 
+     * @type {GetReceivedShareInfo200ResponseAllOfResult}
+     * @memberof GetReceivedShareInfo200ResponseAllOf
+     */
+    'result': GetReceivedShareInfo200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetReceivedShareInfo200ResponseAllOfResult
  */
 export interface GetReceivedShareInfo200ResponseAllOfResult {
@@ -7092,6 +8481,19 @@ export interface GetS3UploadUrl200Response {
 /**
  * 
  * @export
+ * @interface GetS3UploadUrl200ResponseAllOf
+ */
+export interface GetS3UploadUrl200ResponseAllOf {
+    /**
+     * 
+     * @type {GetS3UploadUrl200ResponseAllOfResult}
+     * @memberof GetS3UploadUrl200ResponseAllOf
+     */
+    'result': GetS3UploadUrl200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetS3UploadUrl200ResponseAllOfResult
  */
 export interface GetS3UploadUrl200ResponseAllOfResult {
@@ -7138,6 +8540,19 @@ export interface GetShareToMeList200Response {
      * @memberof GetShareToMeList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShareToMeList200ResponseAllOf
+ */
+export interface GetShareToMeList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShareToMeList200ResponseAllOfResult}
+     * @memberof GetShareToMeList200ResponseAllOf
+     */
+    'result': GetShareToMeList200ResponseAllOfResult;
 }
 /**
  * 
@@ -7218,6 +8633,43 @@ export interface GetShareToMeListRequest {
 /**
  * 
  * @export
+ * @interface GetShareToMeListRequestAllOf
+ */
+export interface GetShareToMeListRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShareToMeListRequestAllOf
+     */
+    'sharingId': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShareToMeListRequestAllOf
+     */
+    'nodeId': number | null;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetShareToMeListRequestAllOf
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetShareToMeListRequestAllOf
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {InnerExternalFilter}
+     * @memberof GetShareToMeListRequestAllOf
+     */
+    'filter': InnerExternalFilter | null;
+}
+/**
+ * 
+ * @export
  * @interface GetShareToMeMaterial200Response
  */
 export interface GetShareToMeMaterial200Response {
@@ -7245,6 +8697,19 @@ export interface GetShareToMeMaterial200Response {
      * @memberof GetShareToMeMaterial200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShareToMeMaterial200ResponseAllOf
+ */
+export interface GetShareToMeMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShareToMeMaterial200ResponseAllOfResult}
+     * @memberof GetShareToMeMaterial200ResponseAllOf
+     */
+    'result': GetShareToMeMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -7307,6 +8772,31 @@ export interface GetShareToMeMaterialRequest {
 /**
  * 
  * @export
+ * @interface GetShareToMeMaterialRequestAllOf
+ */
+export interface GetShareToMeMaterialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShareToMeMaterialRequestAllOf
+     */
+    'sharingId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShareToMeMaterialRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SearchLog}
+     * @memberof GetShareToMeMaterialRequestAllOf
+     */
+    'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
  * @interface GetShowroom200Response
  */
 export interface GetShowroom200Response {
@@ -7334,6 +8824,19 @@ export interface GetShowroom200Response {
      * @memberof GetShowroom200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroom200ResponseAllOf
+ */
+export interface GetShowroom200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroom200ResponseAllOfResult}
+     * @memberof GetShowroom200ResponseAllOf
+     */
+    'result': GetShowroom200ResponseAllOfResult;
 }
 /**
  * 
@@ -7378,6 +8881,19 @@ export interface GetShowroomAnnouncement200Response {
      * @memberof GetShowroomAnnouncement200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomAnnouncement200ResponseAllOf
+ */
+export interface GetShowroomAnnouncement200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroomAnnouncement200ResponseAllOfResult}
+     * @memberof GetShowroomAnnouncement200ResponseAllOf
+     */
+    'result': GetShowroomAnnouncement200ResponseAllOfResult;
 }
 /**
  * 
@@ -7441,6 +8957,19 @@ export interface GetShowroomBannerAndShowroomList200Response {
      * @memberof GetShowroomBannerAndShowroomList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomBannerAndShowroomList200ResponseAllOf
+ */
+export interface GetShowroomBannerAndShowroomList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroomBannerAndShowroomList200ResponseAllOfResult}
+     * @memberof GetShowroomBannerAndShowroomList200ResponseAllOf
+     */
+    'result': GetShowroomBannerAndShowroomList200ResponseAllOfResult;
 }
 /**
  * 
@@ -7683,6 +9212,33 @@ export interface GetThreadBoardMostParticipant200ResponseResult {
 /**
  * 
  * @export
+ * @interface GetThreadBoardMostParticipantRequest
+ */
+export interface GetThreadBoardMostParticipantRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetThreadBoardMostParticipantRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetThreadBoardMostParticipantRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetThreadBoardMostParticipantRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetThreadBoardQuery200Response
  */
 export interface GetThreadBoardQuery200Response {
@@ -7849,6 +9405,19 @@ export interface GetU3mProgressList200Response {
 /**
  * 
  * @export
+ * @interface GetU3mProgressList200ResponseAllOf
+ */
+export interface GetU3mProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetU3mProgressList200ResponseAllOfResult}
+     * @memberof GetU3mProgressList200ResponseAllOf
+     */
+    'result': GetU3mProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface GetU3mProgressList200ResponseAllOfResult
  */
 export interface GetU3mProgressList200ResponseAllOfResult {
@@ -7964,6 +9533,45 @@ export interface GetU3mProgressListRequest {
 /**
  * 
  * @export
+ * @interface GetU3mProgressListRequestAllOf
+ */
+export interface GetU3mProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'status': ProgressStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetU3mProgressListRequestAllOfPagination}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'pagination': GetU3mProgressListRequestAllOfPagination;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetU3mProgressListRequestAllOfPagination
  */
 export interface GetU3mProgressListRequestAllOfPagination {
@@ -8018,6 +9626,19 @@ export interface GetUploadUrl200Response {
      * @memberof GetUploadUrl200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetUploadUrl200ResponseAllOf
+ */
+export interface GetUploadUrl200ResponseAllOf {
+    /**
+     * 
+     * @type {GetUploadUrl200ResponseAllOfResult}
+     * @memberof GetUploadUrl200ResponseAllOf
+     */
+    'result': GetUploadUrl200ResponseAllOfResult;
 }
 /**
  * 
@@ -8081,6 +9702,19 @@ export interface GetWorkspaceList200Response {
      * @memberof GetWorkspaceList200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceList200ResponseAllOf
+ */
+export interface GetWorkspaceList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetWorkspaceList200ResponseAllOfResult}
+     * @memberof GetWorkspaceList200ResponseAllOf
+     */
+    'result': GetWorkspaceList200ResponseAllOfResult;
 }
 /**
  * 
@@ -8155,6 +9789,37 @@ export interface GetWorkspaceListRequest {
 /**
  * 
  * @export
+ * @interface GetWorkspaceListRequestAllOf
+ */
+export interface GetWorkspaceListRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetWorkspaceListRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetWorkspaceListRequestAllOf
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetWorkspaceListRequestAllOf
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {WorkspaceFilter}
+     * @memberof GetWorkspaceListRequestAllOf
+     */
+    'filter': WorkspaceFilter | null;
+}
+/**
+ * 
+ * @export
  * @interface GetWorkspaceMaterial200Response
  */
 export interface GetWorkspaceMaterial200Response {
@@ -8182,6 +9847,19 @@ export interface GetWorkspaceMaterial200Response {
      * @memberof GetWorkspaceMaterial200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceMaterial200ResponseAllOf
+ */
+export interface GetWorkspaceMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetWorkspaceMaterial200ResponseAllOfResult}
+     * @memberof GetWorkspaceMaterial200ResponseAllOf
+     */
+    'result': GetWorkspaceMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -8238,6 +9916,25 @@ export interface GetWorkspaceMaterialRequest {
 /**
  * 
  * @export
+ * @interface GetWorkspaceMaterialRequestAllOf
+ */
+export interface GetWorkspaceMaterialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetWorkspaceMaterialRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SearchLog}
+     * @memberof GetWorkspaceMaterialRequestAllOf
+     */
+    'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
  * @interface GetWorkspaceNodeShareAssignedTarget200Response
  */
 export interface GetWorkspaceNodeShareAssignedTarget200Response {
@@ -8265,6 +9962,19 @@ export interface GetWorkspaceNodeShareAssignedTarget200Response {
      * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOf
+ */
+export interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOf {
+    /**
+     * 
+     * @type {GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult}
+     * @memberof GetWorkspaceNodeShareAssignedTarget200ResponseAllOf
+     */
+    'result': GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult;
 }
 /**
  * 
@@ -8321,6 +10031,25 @@ export interface GetWorkspaceNodeShareAssignedTargetRequest {
 /**
  * 
  * @export
+ * @interface GetWorkspaceNodeShareAssignedTargetRequestAllOf
+ */
+export interface GetWorkspaceNodeShareAssignedTargetRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequestAllOf
+     */
+    'targetNumber': string;
+}
+/**
+ * 
+ * @export
  * @interface GetWorkspaceNodeShareInfo200Response
  */
 export interface GetWorkspaceNodeShareInfo200Response {
@@ -8348,6 +10077,19 @@ export interface GetWorkspaceNodeShareInfo200Response {
      * @memberof GetWorkspaceNodeShareInfo200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceNodeShareInfo200ResponseAllOf
+ */
+export interface GetWorkspaceNodeShareInfo200ResponseAllOf {
+    /**
+     * 
+     * @type {GetWorkspaceNodeShareInfo200ResponseAllOfResult}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOf
+     */
+    'result': GetWorkspaceNodeShareInfo200ResponseAllOfResult;
 }
 /**
  * 
@@ -8447,6 +10189,31 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner {
 /**
  * 
  * @export
+ * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
+ */
+export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf {
+    /**
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
+     * @type {number}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
+     */
+    'id': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
+     */
+    'isCanClone': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
+     */
+    'isCanDownloadU3M': boolean;
+}
+/**
+ * 
+ * @export
  * @interface GetWorkspaceNodeShareInfoRequest
  */
 export interface GetWorkspaceNodeShareInfoRequest {
@@ -8477,6 +10244,19 @@ export interface GetWorkspaceNodeShareInfoRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceNodeShareInfoRequestAllOf
+ */
+export interface GetWorkspaceNodeShareInfoRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetWorkspaceNodeShareInfoRequestAllOf
+     */
+    'nodeId': number;
+}
 /**
  * 
  * @export
@@ -8726,6 +10506,19 @@ export interface InnerExternalFilter {
      * 
      * @type {Array<string>}
      * @memberof InnerExternalFilter
+     */
+    'countryList': Array<string> | null;
+}
+/**
+ * 
+ * @export
+ * @interface InnerExternalFilterAllOf
+ */
+export interface InnerExternalFilterAllOf {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InnerExternalFilterAllOf
      */
     'countryList': Array<string> | null;
 }
@@ -9970,6 +11763,19 @@ export interface MaterialCustomU3m {
 
 
 /**
+ * 
+ * @export
+ * @interface MaterialCustomU3mAllOf
+ */
+export interface MaterialCustomU3mAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3mAllOf
+     */
+    'customFileName': string | null;
+}
+/**
  * 布種材料描述
  * @export
  * @interface MaterialDescription
@@ -10159,6 +11965,25 @@ export interface MaterialGenerateU3mSide {
 /**
  * 
  * @export
+ * @interface MaterialGenerateU3mSideAllOf
+ */
+export interface MaterialGenerateU3mSideAllOf {
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof MaterialGenerateU3mSideAllOf
+     */
+    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    /**
+     * 
+     * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
+     * @memberof MaterialGenerateU3mSideAllOf
+     */
+    'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
+}
+/**
+ * 
+ * @export
  * @interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord
  */
 export interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord {
@@ -10311,6 +12136,19 @@ export interface MaterialInternalInventoryInfoSampleCardsRemainingListInner {
     'qtyInPcs': number | null;
 }
 /**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
+ */
+export interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf {
+    /**
+     * 庫存數量 1~999，整數 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
+     */
+    'qtyInPcs': number | null;
+}
+/**
  * 剩餘碼數資訊
  * @export
  * @interface MaterialInternalInventoryInfoYardageRemainingInfo
@@ -10383,6 +12221,37 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInner {
      * 庫存數量 1~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'qty': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+ */
+export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf {
+    /**
+     * 生產編號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'productionNo': string | null;
+    /**
+     * 疋號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'roll': string | null;
+    /**
+     * 缸號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'lot': string | null;
+    /**
+     * 庫存數量 1~999999，可填寫至小數2位 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
     'qty': number | null;
 }
@@ -10537,6 +12406,19 @@ export interface MaterialMiddleSide {
 /**
  * 
  * @export
+ * @interface MaterialMiddleSideAllOf
+ */
+export interface MaterialMiddleSideAllOf {
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSideAllOf
+     */
+    'customPropertyList': Array<MaterialMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
  * @interface MaterialMiddleSideAllOfCustomPropertyList
  */
 export interface MaterialMiddleSideAllOfCustomPropertyList {
@@ -10587,6 +12469,19 @@ export interface MaterialMiddleSideCreate {
      * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
      * @memberof MaterialMiddleSideCreate
+     */
+    'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideCreateAllOf
+ */
+export interface MaterialMiddleSideCreateAllOf {
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSideCreateAllOf
      */
     'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
 }
@@ -11042,10 +12937,10 @@ export interface MaterialPriceInfoPricing {
 export interface MaterialPrivateMetaData {
     /**
      * 
-     * @type {MaterialUserInfo}
+     * @type {MaterialPrivateMetaDataCreatedByInfo}
      * @memberof MaterialPrivateMetaData
      */
-    'createdByInfo': MaterialUserInfo;
+    'createdByInfo': MaterialPrivateMetaDataCreatedByInfo;
     /**
      * 
      * @type {MaterialPrivateMetaDataLastModifiedByInfo}
@@ -11089,6 +12984,43 @@ export interface MaterialPrivateMetaDataCopiedFromInfo {
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'copiedFromItemNo'?: string;
+}
+/**
+ * Created By - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name - 若布料為 Copy得來，建立者顯示複製布料的 user   Org or Group name + Color label + Avatar+User name - 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示   Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示 由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。 
+ * @export
+ * @interface MaterialPrivateMetaDataCreatedByInfo
+ */
+export interface MaterialPrivateMetaDataCreatedByInfo {
+    /**
+     * 使用者名稱
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'userName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'avatar': string;
+    /**
+     * 使用者單位標籤顏色
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'unitName': string;
+    /**
+     * 使用者單位標籤顏色
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'unitLabelColor': string | null;
+    /**
+     * 新增或修改日期
+     * @type {number}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'date': number;
 }
 /**
  * Last modified by - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name 由於布料編輯者一定是同組織成員建置，因此組織資訊非必要不秀。 
@@ -11395,6 +13327,81 @@ export interface MaterialSide {
 /**
  * 
  * @export
+ * @interface MaterialSideAllOf
+ */
+export interface MaterialSideAllOf {
+    /**
+     * 是否為主要布面
+     * @type {boolean}
+     * @memberof MaterialSideAllOf
+     */
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideAllOfSideImage}
+     * @memberof MaterialSideAllOf
+     */
+    'sideImage': MaterialSideAllOfSideImage | null;
+    /**
+     * 
+     * @type {MaterialU3mImage}
+     * @memberof MaterialSideAllOf
+     */
+    'u3mImage': MaterialU3mImage | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSideAllOf
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialSideAllOf
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialConstruction}
+     * @memberof MaterialSideAllOf
+     */
+    'construction': MaterialConstruction | null;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @memberof MaterialSideAllOf
+     */
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    /**
+     * 
+     * @type {Array<MaterialSideAllOfContentList>}
+     * @memberof MaterialSideAllOf
+     */
+    'contentList': Array<MaterialSideAllOfContentList>;
+    /**
+     * Pantone Color清單
+     * @type {Array<MaterialSideAllOfPantoneListInner>}
+     * @memberof MaterialSideAllOf
+     */
+    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
+    /**
+     * 
+     * @type {MaterialPatternInfo}
+     * @memberof MaterialSideAllOf
+     */
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof MaterialSideAllOf
+     */
+    'colorInfo': MaterialColorInfo;
+}
+
+
+/**
+ * 
+ * @export
  * @interface MaterialSideAllOfConstructionCustomPropertyListInner
  */
 export interface MaterialSideAllOfConstructionCustomPropertyListInner {
@@ -11420,6 +13427,19 @@ export interface MaterialSideAllOfConstructionCustomPropertyListInner {
      * 
      * @type {number}
      * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     */
+    'customId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
+ */
+export interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
      */
     'customId': number;
 }
@@ -11500,6 +13520,19 @@ export interface MaterialSideAllOfPantoneListInner {
      * 
      * @type {number}
      * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'materialPantoneId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfPantoneListInnerAllOf
+ */
+export interface MaterialSideAllOfPantoneListInnerAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInnerAllOf
      */
     'materialPantoneId': number;
 }
@@ -11641,6 +13674,57 @@ export interface MaterialSideCreate {
      * 
      * @type {MaterialColorInfoCreate}
      * @memberof MaterialSideCreate
+     */
+    'colorInfo': MaterialColorInfoCreate;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOf
+ */
+export interface MaterialSideCreateAllOf {
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialConstruction}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'construction': MaterialConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof MaterialSideCreateAllOf
      */
     'colorInfo': MaterialColorInfoCreate;
 }
@@ -12662,6 +14746,19 @@ export interface MergeAssetsMaterialListRequest {
 /**
  * 
  * @export
+ * @interface MergeAssetsMaterialListRequestAllOf
+ */
+export interface MergeAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<MergeAssetsMaterialListRequestAllOfMergedListInner>}
+     * @memberof MergeAssetsMaterialListRequestAllOf
+     */
+    'mergedList': Array<MergeAssetsMaterialListRequestAllOfMergedListInner>;
+}
+/**
+ * 
+ * @export
  * @interface MergeAssetsMaterialListRequestAllOfMergedListInner
  */
 export interface MergeAssetsMaterialListRequestAllOfMergedListInner {
@@ -12771,6 +14868,25 @@ export interface Moodboard {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface MoodboardAllOf
+ */
+export interface MoodboardAllOf {
+    /**
+     * 
+     * @type {Array<MoodboardAllOfAttachmentList>}
+     * @memberof MoodboardAllOf
+     */
+    'attachmentList': Array<MoodboardAllOfAttachmentList>;
+    /**
+     * 
+     * @type {MoodboardAllOfProperties}
+     * @memberof MoodboardAllOf
+     */
+    'properties': MoodboardAllOfProperties;
+}
 /**
  * 
  * @export
@@ -12992,6 +15108,25 @@ export interface MoodboardNodeCollection {
 /**
  * 
  * @export
+ * @interface MoodboardNodeCollectionAllOf
+ */
+export interface MoodboardNodeCollectionAllOf {
+    /**
+     * 
+     * @type {Array<MoodboardNodeChild>}
+     * @memberof MoodboardNodeCollectionAllOf
+     */
+    'childNodeList': Array<MoodboardNodeChild>;
+    /**
+     * 
+     * @type {MoodboardInfo}
+     * @memberof MoodboardNodeCollectionAllOf
+     */
+    'moodboardInfo': MoodboardInfo;
+}
+/**
+ * 
+ * @export
  * @interface MoodboardNodeMaterial
  */
 export interface MoodboardNodeMaterial {
@@ -13011,6 +15146,19 @@ export interface MoodboardNodeMaterial {
      * 
      * @type {MoodboardInfo}
      * @memberof MoodboardNodeMaterial
+     */
+    'moodboardInfo': MoodboardInfo;
+}
+/**
+ * 
+ * @export
+ * @interface MoodboardNodeMaterialAllOf
+ */
+export interface MoodboardNodeMaterialAllOf {
+    /**
+     * 
+     * @type {MoodboardInfo}
+     * @memberof MoodboardNodeMaterialAllOf
      */
     'moodboardInfo': MoodboardInfo;
 }
@@ -13209,6 +15357,37 @@ export interface MoveAssetsMaterialAttachmentRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface MoveAssetsMaterialAttachmentRequestAllOf
+ */
+export interface MoveAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 欲移動之 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': number;
+    /**
+     * 目標位置的 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'targetFileId': number;
+    /**
+     * 是否移動至目標的前方(上方或左方)，後端預設為false移動至目標的後方(下方或右方)
+     * @type {boolean}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'isMoveToBeforeTarget': boolean;
+}
 /**
  * 
  * @export
@@ -13488,6 +15667,25 @@ export interface MoveWorkspaceNodeRequest {
 /**
  * 
  * @export
+ * @interface MoveWorkspaceNodeRequestAllOf
+ */
+export interface MoveWorkspaceNodeRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof MoveWorkspaceNodeRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MoveWorkspaceNodeRequestAllOf
+     */
+    'targetNodeId': number;
+}
+/**
+ * 
+ * @export
  * @interface MultimediaFile
  */
 export interface MultimediaFile {
@@ -13516,7 +15714,7 @@ export interface MultimediaFile {
      */
     'originalUrl': string;
     /**
-     * 用來呈現的大圖URL，非 image、pdf 時為 null
+     * 用來呈現的大圖URL，非 image 時為 null
      * @type {string}
      * @memberof MultimediaFile
      */
@@ -13543,6 +15741,25 @@ export interface MultimediaFile {
      * 
      * @type {MultimediaFileAllOfCropRecord}
      * @memberof MultimediaFile
+     */
+    'cropRecord': MultimediaFileAllOfCropRecord | null;
+}
+/**
+ * 
+ * @export
+ * @interface MultimediaFileAllOf
+ */
+export interface MultimediaFileAllOf {
+    /**
+     * 是否為封面圖
+     * @type {boolean}
+     * @memberof MultimediaFileAllOf
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof MultimediaFileAllOf
      */
     'cropRecord': MultimediaFileAllOfCropRecord | null;
 }
@@ -13756,6 +15973,25 @@ export interface NotificationListInner {
 /**
  * 
  * @export
+ * @interface NotificationListInnerAllOf
+ */
+export interface NotificationListInnerAllOf {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof NotificationListInnerAllOf
+     */
+    'isRead': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof NotificationListInnerAllOf
+     */
+    'createDate': number;
+}
+/**
+ * 
+ * @export
  * @interface OGBaseRequestBody
  */
 export interface OGBaseRequestBody {
@@ -13821,6 +16057,19 @@ export interface OrgBookmark {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface OrgBookmarkAllOf
+ */
+export interface OrgBookmarkAllOf {
+    /**
+     * 
+     * @type {OrgBookmarkAllOfOrg}
+     * @memberof OrgBookmarkAllOf
+     */
+    'org': OrgBookmarkAllOfOrg;
+}
 /**
  * 
  * @export
@@ -15128,11 +17377,98 @@ export interface OrgPaymentInvoiceGetPost200Response {
 export interface OrgPaymentInvoiceGetPost200ResponseResult {
     /**
      * 
-     * @type {InvoiceInfo}
+     * @type {OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo}
      * @memberof OrgPaymentInvoiceGetPost200ResponseResult
      */
-    'invoiceInfo'?: InvoiceInfo;
+    'invoiceInfo'?: OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo;
 }
+/**
+ * 
+ * @export
+ * @interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+ */
+export interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'invoiceId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'invoiceNumber'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'invoiceDate'?: number;
+    /**
+     * 接收者名稱
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'recipient'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'email'?: string;
+    /**
+     * 國家代碼
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'countryCode'?: string;
+    /**
+     * 接收者區號
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'zipCode'?: string;
+    /**
+     * 接收者城市
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'city'?: string;
+    /**
+     * 接收者地址
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'address'?: string;
+    /**
+     * 
+     * @type {Array<InvoiceInfoServiceItemListInner>}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'serviceItemList'?: Array<InvoiceInfoServiceItemListInner>;
+    /**
+     * 
+     * @type {OrganizationPaymentDetailCardInfo}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'cardInfo'?: OrganizationPaymentDetailCardInfo;
+    /**
+     * 
+     * @type {CurrencyCode}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'currency'?: CurrencyCode;
+    /**
+     * 總費用
+     * @type {string}
+     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
+     */
+    'totalPrice'?: string;
+}
+
+
 /**
  * 
  * @export
@@ -16644,6 +18980,19 @@ export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof Pa
 /**
  * 
  * @export
+ * @interface PaginationReqAllOf
+ */
+export interface PaginationReqAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationReqAllOf
+     */
+    'targetPage': number;
+}
+/**
+ * 
+ * @export
  * @interface PaginationRes
  */
 export interface PaginationRes {
@@ -16705,6 +19054,31 @@ export const PaginationResSortEnum = {
 
 export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof PaginationResSortEnum];
 
+/**
+ * 
+ * @export
+ * @interface PaginationResAllOf
+ */
+export interface PaginationResAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'currentPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'totalCount': number;
+}
 /**
  * 
  * @export
@@ -17550,6 +19924,37 @@ export interface PublishWorkspaceNodeRequest {
 /**
  * 
  * @export
+ * @interface PublishWorkspaceNodeRequestAllOf
+ */
+export interface PublishWorkspaceNodeRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof PublishWorkspaceNodeRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PublishWorkspaceNodeRequestAllOf
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PublishWorkspaceNodeRequestAllOf
+     */
+    'isCanClone': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PublishWorkspaceNodeRequestAllOf
+     */
+    'isCanDownloadU3M': boolean;
+}
+/**
+ * 
+ * @export
  * @interface ReadAllUnreadDigitalThreadRequest
  */
 export interface ReadAllUnreadDigitalThreadRequest {
@@ -17610,6 +20015,19 @@ export interface RefreshToken200Response {
      * @memberof RefreshToken200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface RefreshToken200ResponseAllOf
+ */
+export interface RefreshToken200ResponseAllOf {
+    /**
+     * 
+     * @type {RefreshToken200ResponseAllOfResult}
+     * @memberof RefreshToken200ResponseAllOf
+     */
+    'result': RefreshToken200ResponseAllOfResult;
 }
 /**
  * 
@@ -17685,6 +20103,25 @@ export interface RemoveAssetsMaterialAttachmentRequest {
 /**
  * 
  * @export
+ * @interface RemoveAssetsMaterialAttachmentRequestAllOf
+ */
+export interface RemoveAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': string;
+}
+/**
+ * 
+ * @export
  * @interface RemoveMoodboardShareRequest
  */
 export interface RemoveMoodboardShareRequest {
@@ -17718,6 +20155,19 @@ export interface RemoveMoodboardShareRequest {
 /**
  * 
  * @export
+ * @interface RemoveMoodboardShareRequestAllOf
+ */
+export interface RemoveMoodboardShareRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof RemoveMoodboardShareRequestAllOf
+     */
+    'shareId': number;
+}
+/**
+ * 
+ * @export
  * @interface RemoveWorkspaceCollectionTrendBoardRequest
  */
 export interface RemoveWorkspaceCollectionTrendBoardRequest {
@@ -17748,6 +20198,19 @@ export interface RemoveWorkspaceCollectionTrendBoardRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface RemoveWorkspaceCollectionTrendBoardRequestAllOf
+ */
+export interface RemoveWorkspaceCollectionTrendBoardRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof RemoveWorkspaceCollectionTrendBoardRequestAllOf
+     */
+    'collectionId': number;
+}
 /**
  * 
  * @export
@@ -17788,6 +20251,33 @@ export interface RemoveWorkspaceNodeShareAssignedRequest {
      * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
      * @type {number}
      * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'id': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface RemoveWorkspaceNodeShareAssignedRequestAllOf
+ */
+export interface RemoveWorkspaceNodeShareAssignedRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {ShareToType}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'type': ShareToType;
+    /**
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
      */
     'id': number;
 }
@@ -17838,6 +20328,31 @@ export interface RenameAssetsMaterialAttachmentRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface RenameAssetsMaterialAttachmentRequestAllOf
+ */
+export interface RenameAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'displayFileName': string;
+}
 /**
  * 
  * @export
@@ -18276,6 +20791,19 @@ export interface SearchGetAiTagsPost200Response {
 /**
  * 
  * @export
+ * @interface SearchGetAiTagsPost200ResponseAllOf
+ */
+export interface SearchGetAiTagsPost200ResponseAllOf {
+    /**
+     * 
+     * @type {SearchGetAiTagsPost200ResponseAllOfResult}
+     * @memberof SearchGetAiTagsPost200ResponseAllOf
+     */
+    'result': SearchGetAiTagsPost200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface SearchGetAiTagsPost200ResponseAllOfResult
  */
 export interface SearchGetAiTagsPost200ResponseAllOfResult {
@@ -18395,6 +20923,19 @@ export interface SetAssetsMaterialCover200Response {
 /**
  * 
  * @export
+ * @interface SetAssetsMaterialCover200ResponseAllOf
+ */
+export interface SetAssetsMaterialCover200ResponseAllOf {
+    /**
+     * 
+     * @type {SetAssetsMaterialCover200ResponseAllOfResult}
+     * @memberof SetAssetsMaterialCover200ResponseAllOf
+     */
+    'result': SetAssetsMaterialCover200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
  * @interface SetAssetsMaterialCover200ResponseAllOfResult
  */
 export interface SetAssetsMaterialCover200ResponseAllOfResult {
@@ -18451,6 +20992,33 @@ export interface SetAssetsMaterialCoverRequest {
      * coverMode=3時才有值
      * @type {number}
      * @memberof SetAssetsMaterialCoverRequest
+     */
+    'multimediaFileId': number | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCoverRequestAllOf
+ */
+export interface SetAssetsMaterialCoverRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
+     */
+    'coverMode': CoverMode;
+    /**
+     * coverMode=3時才有值
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
      */
     'multimediaFileId': number | null;
 }
@@ -18614,6 +21182,25 @@ export interface ShareNodeCollection {
 /**
  * 
  * @export
+ * @interface ShareNodeCollectionAllOf
+ */
+export interface ShareNodeCollectionAllOf {
+    /**
+     * 
+     * @type {Array<ShareNodeChild>}
+     * @memberof ShareNodeCollectionAllOf
+     */
+    'childNodeList': Array<ShareNodeChild>;
+    /**
+     * 
+     * @type {ShareInfo}
+     * @memberof ShareNodeCollectionAllOf
+     */
+    'shareInfo': ShareInfo;
+}
+/**
+ * 
+ * @export
  * @interface ShareNodeMaterial
  */
 export interface ShareNodeMaterial {
@@ -18633,6 +21220,19 @@ export interface ShareNodeMaterial {
      * 
      * @type {ShareInfo}
      * @memberof ShareNodeMaterial
+     */
+    'shareInfo': ShareInfo;
+}
+/**
+ * 
+ * @export
+ * @interface ShareNodeMaterialAllOf
+ */
+export interface ShareNodeMaterialAllOf {
+    /**
+     * 
+     * @type {ShareInfo}
+     * @memberof ShareNodeMaterialAllOf
      */
     'shareInfo': ShareInfo;
 }
@@ -18765,6 +21365,25 @@ export const ShowroomColorEnum = {
 
 export type ShowroomColorEnum = typeof ShowroomColorEnum[keyof typeof ShowroomColorEnum];
 
+/**
+ * 
+ * @export
+ * @interface ShowroomAllOf
+ */
+export interface ShowroomAllOf {
+    /**
+     * 
+     * @type {SlotContent}
+     * @memberof ShowroomAllOf
+     */
+    'description': SlotContent;
+    /**
+     * 
+     * @type {Array<ShowroomAllOfParticipatedOrgList>}
+     * @memberof ShowroomAllOf
+     */
+    'participatedOrgList': Array<ShowroomAllOfParticipatedOrgList>;
+}
 /**
  * 
  * @export
@@ -19067,6 +21686,37 @@ export type SignInGooglePostRequestPlatformEnum = typeof SignInGooglePostRequest
 /**
  * 
  * @export
+ * @interface SignUpRequestPost200Response
+ */
+export interface SignUpRequestPost200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SignUpRequestPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignUpRequestPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof SignUpRequestPost200Response
+     */
+    'result'?: object | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof SignUpRequestPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
  * @interface SignUpRequestPostRequest
  */
 export interface SignUpRequestPostRequest {
@@ -19194,6 +21844,19 @@ export interface SmartUploadAssetsMaterialListRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsMaterialListRequestAllOf
+ */
+export interface SmartUploadAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<S3UploadedObject>}
+     * @memberof SmartUploadAssetsMaterialListRequestAllOf
+     */
+    'fileList': Array<S3UploadedObject>;
+}
 /**
  * 
  * @export
@@ -19330,6 +21993,31 @@ export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnu
 /**
  * 
  * @export
+ * @interface StickerAllOf
+ */
+export interface StickerAllOf {
+    /**
+     * 檢視者是否有尚未查看的Child Sticker
+     * @type {boolean}
+     * @memberof StickerAllOf
+     */
+    'hasChildStickerUnread': boolean;
+    /**
+     * ChildSticker數量，不受filter影響數量
+     * @type {number}
+     * @memberof StickerAllOf
+     */
+    'childStickerCount': number;
+    /**
+     * 
+     * @type {Array<StickerAllOfChildStickerListInner>}
+     * @memberof StickerAllOf
+     */
+    'childStickerList': Array<StickerAllOfChildStickerListInner>;
+}
+/**
+ * 
+ * @export
  * @interface StickerAllOfChildStickerListInner
  */
 export interface StickerAllOfChildStickerListInner {
@@ -19433,6 +22121,19 @@ export const StickerAllOfChildStickerListInnerTypeEnum = {
 
 export type StickerAllOfChildStickerListInnerTypeEnum = typeof StickerAllOfChildStickerListInnerTypeEnum[keyof typeof StickerAllOfChildStickerListInnerTypeEnum];
 
+/**
+ * 
+ * @export
+ * @interface StickerAllOfChildStickerListInnerAllOf
+ */
+export interface StickerAllOfChildStickerListInnerAllOf {
+    /**
+     * sticker排序號碼
+     * @type {number}
+     * @memberof StickerAllOfChildStickerListInnerAllOf
+     */
+    'order': number;
+}
 /**
  * 
  * @export
@@ -19562,10 +22263,10 @@ export interface TargetOg {
 export interface ThreadBoard {
     /**
      * workflowStage清單
-     * @type {Array<WorkflowStage>}
+     * @type {Array<ThreadBoardWorkflowStageListInner>}
      * @memberof ThreadBoard
      */
-    'workflowStageList': Array<WorkflowStage>;
+    'workflowStageList': Array<ThreadBoardWorkflowStageListInner>;
 }
 /**
  * 
@@ -19687,6 +22388,55 @@ export interface ThreadBoardQueryFilterStickerType {
      * @memberof ThreadBoardQueryFilterStickerType
      */
     'external': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ThreadBoardWorkflowStageListInner
+ */
+export interface ThreadBoardWorkflowStageListInner {
+    /**
+     * workflowStage的Id
+     * @type {number}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'workflowStageId': number;
+    /**
+     * workflowStage名稱
+     * @type {string}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'workflowStageName': string;
+    /**
+     * 是否可被刪除
+     * @type {boolean}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'canDelete': boolean;
+    /**
+     * 是否可被隱藏
+     * @type {boolean}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'canHide'?: boolean;
+    /**
+     * 是否為預設的WorkflowStage
+     * @type {boolean}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'isDefault': boolean;
+    /**
+     * 是否被隱藏
+     * @type {boolean}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'isHidden': boolean;
+    /**
+     * DigitalThread清單
+     * @type {Array<DigitalThreadBase>}
+     * @memberof ThreadBoardWorkflowStageListInner
+     */
+    'digitalThreadList': Array<DigitalThreadBase>;
 }
 /**
  * 
@@ -20127,6 +22877,43 @@ export interface UpdateMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
+ * @interface UpdateMoodboardOfferNodeCollectionRequestAllOf
+ */
+export interface UpdateMoodboardOfferNodeCollectionRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'description': string | null;
+    /**
+     * 
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
+     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
+     */
+    'isDeleteTrendBoard': boolean;
+}
+/**
+ * 
+ * @export
  * @interface UpdateMoodboardRequest
  */
 export interface UpdateMoodboardRequest {
@@ -20196,6 +22983,55 @@ export interface UpdateMoodboardRequest {
 /**
  * 
  * @export
+ * @interface UpdateMoodboardRequestAllOf
+ */
+export interface UpdateMoodboardRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'moodboardId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'moodboardName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'description': string;
+    /**
+     * 
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
+    /**
+     * 
+     * @type {Array<S3UploadedObject>}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'newAttachmentList': Array<S3UploadedObject> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'deleteAttachmentIdList': Array<number> | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateMoodboardRequestAllOf
+     */
+    'isDeleteTrendBoard': boolean;
+}
+/**
+ * 
+ * @export
  * @interface UpdateWorkspaceCollectionRequest
  */
 export interface UpdateWorkspaceCollectionRequest {
@@ -20247,6 +23083,37 @@ export interface UpdateWorkspaceCollectionRequest {
 /**
  * 
  * @export
+ * @interface UpdateWorkspaceCollectionRequestAllOf
+ */
+export interface UpdateWorkspaceCollectionRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     */
+    'collectionId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     */
+    'collectionName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     */
+    'description': string | null;
+    /**
+     * 
+     * @type {S3UploadedObject}
+     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     */
+    'trendBoard': S3UploadedObject | null;
+}
+/**
+ * 
+ * @export
  * @interface UpdateWorkspaceNodeShareAssignedRequest
  */
 export interface UpdateWorkspaceNodeShareAssignedRequest {
@@ -20289,6 +23156,31 @@ export interface UpdateWorkspaceNodeShareAssignedRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UpdateWorkspaceNodeShareAssignedRequestAllOf
+ */
+export interface UpdateWorkspaceNodeShareAssignedRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'removeList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>;
+    /**
+     * 
+     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
+     */
+    'updateList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>;
+}
 /**
  * 
  * @export
@@ -20385,6 +23277,25 @@ export interface UpdateWorkspaceNodeShareCopyLinkRequest {
 /**
  * 
  * @export
+ * @interface UpdateWorkspaceNodeShareCopyLinkRequestAllOf
+ */
+export interface UpdateWorkspaceNodeShareCopyLinkRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareCopyLinkRequestAllOf
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateWorkspaceNodeShareCopyLinkRequestAllOf
+     */
+    'isCanShared': boolean;
+}
+/**
+ * 
+ * @export
  * @interface UpdateWorkspaceNodeShareEmbedRequest
  */
 export interface UpdateWorkspaceNodeShareEmbedRequest {
@@ -20424,6 +23335,25 @@ export interface UpdateWorkspaceNodeShareEmbedRequest {
 /**
  * 
  * @export
+ * @interface UpdateWorkspaceNodeShareEmbedRequestAllOf
+ */
+export interface UpdateWorkspaceNodeShareEmbedRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkspaceNodeShareEmbedRequestAllOf
+     */
+    'embedKey': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateWorkspaceNodeShareEmbedRequestAllOf
+     */
+    'isCanDownloadU3M': boolean;
+}
+/**
+ * 
+ * @export
  * @interface UploadAssetsMaterialAttachment200Response
  */
 export interface UploadAssetsMaterialAttachment200Response {
@@ -20451,6 +23381,19 @@ export interface UploadAssetsMaterialAttachment200Response {
      * @memberof UploadAssetsMaterialAttachment200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachment200ResponseAllOf
+ */
+export interface UploadAssetsMaterialAttachment200ResponseAllOf {
+    /**
+     * 
+     * @type {UploadAssetsMaterialAttachment200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialAttachment200ResponseAllOf
+     */
+    'result': UploadAssetsMaterialAttachment200ResponseAllOfResult;
 }
 /**
  * 
@@ -20507,6 +23450,25 @@ export interface UploadAssetsMaterialAttachmentRequest {
 /**
  * 
  * @export
+ * @interface UploadAssetsMaterialAttachmentRequestAllOf
+ */
+export interface UploadAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
+     */
+    'attachmentList': Array<CreateAndEditAttachmentFile>;
+}
+/**
+ * 
+ * @export
  * @interface UploadAssetsMaterialCustomU3mRequest
  */
 export interface UploadAssetsMaterialCustomU3mRequest {
@@ -20558,6 +23520,25 @@ export interface UploadAssetsMaterialCustomU3mRequest {
 /**
  * 
  * @export
+ * @interface UploadAssetsMaterialCustomU3mRequestAllOf
+ */
+export interface UploadAssetsMaterialCustomU3mRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 是否需要產生物理檔案
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    'needToGeneratePhysical': boolean;
+}
+/**
+ * 
+ * @export
  * @interface UploadAssetsMaterialMultimedia200Response
  */
 export interface UploadAssetsMaterialMultimedia200Response {
@@ -20585,6 +23566,19 @@ export interface UploadAssetsMaterialMultimedia200Response {
      * @memberof UploadAssetsMaterialMultimedia200Response
      */
     'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimedia200ResponseAllOf
+ */
+export interface UploadAssetsMaterialMultimedia200ResponseAllOf {
+    /**
+     * 
+     * @type {UploadAssetsMaterialMultimedia200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialMultimedia200ResponseAllOf
+     */
+    'result': UploadAssetsMaterialMultimedia200ResponseAllOfResult;
 }
 /**
  * 
@@ -20638,6 +23632,25 @@ export interface UploadAssetsMaterialMultimediaRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimediaRequestAllOf
+ */
+export interface UploadAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
+     */
+    'multimediaList': Array<CreateAndEditAttachmentFile>;
+}
 /**
  * 
  * @export
@@ -20835,10 +23848,29 @@ export interface UploadAssetsMaterialSideImageRequest {
 export interface UploadAssetsMaterialSideImageRequestFaceSideImage {
     /**
      * 
-     * @type {S3UploadedObject}
+     * @type {UploadAssetsMaterialSideImageRequestFaceSideImageOriginal}
      * @memberof UploadAssetsMaterialSideImageRequestFaceSideImage
      */
-    'original': S3UploadedObject;
+    'original': UploadAssetsMaterialSideImageRequestFaceSideImageOriginal;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+ */
+export interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal {
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+     */
+    'fileName': string;
 }
 /**
  * 
@@ -21865,6 +24897,25 @@ export interface WorkspaceFilter {
      * 
      * @type {boolean}
      * @memberof WorkspaceFilter
+     */
+    'withOutEcoImpactor': boolean | null;
+}
+/**
+ * 
+ * @export
+ * @interface WorkspaceFilterAllOf
+ */
+export interface WorkspaceFilterAllOf {
+    /**
+     * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof WorkspaceFilterAllOf
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilterAllOf
      */
     'withOutEcoImpactor': boolean | null;
 }
@@ -23232,7 +26283,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23254,7 +26305,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23287,7 +26338,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23364,7 +26415,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23375,7 +26426,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23463,7 +26514,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23474,7 +26525,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterial(updateAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23485,7 +26536,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23496,7 +26547,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23507,7 +26558,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23540,7 +26591,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -23603,7 +26654,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23623,7 +26674,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23653,7 +26704,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23723,7 +26774,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23733,7 +26784,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23813,7 +26864,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23823,7 +26874,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23833,7 +26884,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23843,7 +26894,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23853,7 +26904,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -23883,7 +26934,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -24314,7 +27365,6 @@ export class AssetsApi extends BaseAPI {
 }
 
 
-
 /**
  * CodeApi - axios parameter creator
  * @export
@@ -24573,7 +27623,7 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeRolePermissionGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async codeRolePermissionGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRolePermissionGet(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -24639,7 +27689,7 @@ export const CodeApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeRolePermissionGet(options?: any): AxiosPromise<ResSuccessTrue> {
+        codeRolePermissionGet(options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.codeRolePermissionGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -24727,7 +27777,6 @@ export class CodeApi extends BaseAPI {
         return CodeApiFp(this.configuration).getPantoneList(options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -24981,7 +28030,7 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createDownloadLog(createDownloadLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -24992,7 +28041,7 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(createReceivePageLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25003,7 +28052,7 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(createReceivePageLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25014,7 +28063,7 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createStickerTagFilterLog(createStickerTagFilterLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25025,7 +28074,7 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createViewerLog(createViewerLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25057,7 +28106,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createDownloadLog(createDownloadLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25067,7 +28116,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createEmbedPageLog(createReceivePageLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25077,7 +28126,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createReceivePageLog(createReceivePageLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25087,7 +28136,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createStickerTagFilterLog(createStickerTagFilterLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25097,7 +28146,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createViewerLog(createViewerLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25192,7 +28241,6 @@ export class DashboardApi extends BaseAPI {
         return DashboardApiFp(this.configuration).getDashboard(getDashboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -25771,7 +28819,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25782,7 +28830,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25793,7 +28841,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25804,7 +28852,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25815,7 +28863,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25826,7 +28874,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25837,7 +28885,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25919,7 +28967,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25929,7 +28977,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25939,7 +28987,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25949,7 +28997,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25959,7 +29007,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25969,7 +29017,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -25979,7 +29027,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26158,7 +29206,6 @@ export class DigitalThreadApi extends BaseAPI {
         return DigitalThreadApiFp(this.configuration).getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -26404,7 +29451,6 @@ export class EmbedApi extends BaseAPI {
         return EmbedApiFp(this.configuration).getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -26875,7 +29921,6 @@ export class GeneralApi extends BaseAPI {
 }
 
 
-
 /**
  * GroupApi - axios parameter creator
  * @export
@@ -27198,7 +30243,6 @@ export class GroupApi extends BaseAPI {
 }
 
 
-
 /**
  * GroupMemberApi - axios parameter creator
  * @export
@@ -27505,7 +30549,7 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -27576,7 +30620,7 @@ export const GroupMemberApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -27661,7 +30705,6 @@ export class GroupMemberApi extends BaseAPI {
         return GroupMemberApiFp(this.configuration).orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -27771,7 +30814,6 @@ export class GroupUserApi extends BaseAPI {
         return GroupUserApiFp(this.configuration).orgGroupUserGetPost(orgGroupUserGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -28263,13 +31305,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList: async (uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'uNKNOWNBASETYPE' is not null or undefined
-            assertParamExists('getMoodboardList', 'uNKNOWNBASETYPE', uNKNOWNBASETYPE)
+        getMoodboardList: async (getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getInternalSearchFilterOptionsRequest' is not null or undefined
+            assertParamExists('getMoodboardList', 'getInternalSearchFilterOptionsRequest', getInternalSearchFilterOptionsRequest)
             const localVarPath = `/moodboard/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28293,7 +31335,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(uNKNOWNBASETYPE, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28819,7 +31861,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneMoodboardNode(cloneMoodboardNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28885,7 +31927,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28925,12 +31967,12 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardList(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(uNKNOWNBASETYPE, options);
+        async getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(getInternalSearchFilterOptionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -28995,7 +32037,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29006,7 +32048,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29028,7 +32070,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29039,7 +32081,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29102,7 +32144,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneMoodboardNode(cloneMoodboardNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29162,7 +32204,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29198,12 +32240,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: any): AxiosPromise<GetMoodboardList200Response> {
-            return localVarFp.getMoodboardList(uNKNOWNBASETYPE, options).then((request) => request(axios, basePath));
+        getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetMoodboardList200Response> {
+            return localVarFp.getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -29262,7 +32304,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29272,7 +32314,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29292,7 +32334,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29302,7 +32344,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29482,13 +32524,13 @@ export class MoodboardApi extends BaseAPI {
     /**
      * 
      * @summary 取得 Moodboard 清單
-     * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+     * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardList(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).getMoodboardList(uNKNOWNBASETYPE, options).then((request) => request(this.axios, this.basePath));
+    public getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -29635,7 +32677,6 @@ export class MoodboardApi extends BaseAPI {
         return MoodboardApiFp(this.configuration).updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -30317,7 +33358,6 @@ export class OrgApi extends BaseAPI {
 }
 
 
-
 /**
  * OrgMemberApi - axios parameter creator
  * @export
@@ -30575,7 +33615,7 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -30636,7 +33676,7 @@ export const OrgMemberApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -30709,7 +33749,6 @@ export class OrgMemberApi extends BaseAPI {
         return OrgMemberApiFp(this.configuration).orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -31475,7 +34514,7 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -31650,7 +34689,7 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -31691,7 +34730,7 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -31850,7 +34889,7 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -32090,7 +35129,6 @@ export class OrgPaymentApi extends BaseAPI {
         return OrgPaymentApiFp(this.configuration).orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -32557,7 +35595,6 @@ export class OrgUserApi extends BaseAPI {
 }
 
 
-
 /**
  * OrgValueAddedServiceApi - axios parameter creator
  * @export
@@ -32665,7 +35702,6 @@ export class OrgValueAddedServiceApi extends BaseAPI {
         return OrgValueAddedServiceApiFp(this.configuration).orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -32838,7 +35874,6 @@ export class PollingApi extends BaseAPI {
         return PollingApiFp(this.configuration).pollingSidebarPost(pollingSidebarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -33144,7 +36179,7 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelExcelProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -33155,7 +36190,7 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -33166,7 +36201,7 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelU3mProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -33231,7 +36266,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33241,7 +36276,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33251,7 +36286,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33388,7 +36423,6 @@ export class ProgressApi extends BaseAPI {
         return ProgressApiFp(this.configuration).getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -33693,7 +36727,7 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -33704,7 +36738,7 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.clonePublicLibraryNode(clonePublicLibraryNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -33779,7 +36813,7 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33789,7 +36823,7 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.clonePublicLibraryNode(clonePublicLibraryNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33934,7 +36968,6 @@ export class PublicLibraryApi extends BaseAPI {
         return PublicLibraryApiFp(this.configuration).getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -34197,7 +37230,7 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -34241,7 +37274,7 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveReceivedShare(saveReceivedShareRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -34272,7 +37305,7 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -34312,7 +37345,7 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -34397,7 +37430,6 @@ export class ReceivedShareApi extends BaseAPI {
         return ReceivedShareApiFp(this.configuration).saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -34505,7 +37537,6 @@ export class SampleApi extends BaseAPI {
 }
 
 
-
 /**
  * SearchApi - axios parameter creator
  * @export
@@ -34545,11 +37576,11 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {UNKNOWN_BASE_TYPE} [uNKNOWNBASETYPE] 
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInternalSearchFilterOptions: async (uNKNOWNBASETYPE?: UNKNOWN_BASE_TYPE, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getInternalSearchFilterOptions: async (getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/search/filter-internal-options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34569,7 +37600,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(uNKNOWNBASETYPE, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -34637,12 +37668,12 @@ export const SearchApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {UNKNOWN_BASE_TYPE} [uNKNOWNBASETYPE] 
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInternalSearchFilterOptions(uNKNOWNBASETYPE?: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(uNKNOWNBASETYPE, options);
+        async getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -34678,12 +37709,12 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {UNKNOWN_BASE_TYPE} [uNKNOWNBASETYPE] 
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInternalSearchFilterOptions(uNKNOWNBASETYPE?: UNKNOWN_BASE_TYPE, options?: any): AxiosPromise<GetInternalSearchFilterOptions200Response> {
-            return localVarFp.getInternalSearchFilterOptions(uNKNOWNBASETYPE, options).then((request) => request(axios, basePath));
+        getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetInternalSearchFilterOptions200Response> {
+            return localVarFp.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -34719,13 +37750,13 @@ export class SearchApi extends BaseAPI {
     /**
      * 
      * @summary 取得 internal search filter 選項
-     * @param {UNKNOWN_BASE_TYPE} [uNKNOWNBASETYPE] 
+     * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public getInternalSearchFilterOptions(uNKNOWNBASETYPE?: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).getInternalSearchFilterOptions(uNKNOWNBASETYPE, options).then((request) => request(this.axios, this.basePath));
+    public getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
+        return SearchApiFp(this.configuration).getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -34740,7 +37771,6 @@ export class SearchApi extends BaseAPI {
         return SearchApiFp(this.configuration).searchGetAiTagsPost(searchGetAiTagsPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -34926,7 +37956,7 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneShareToMeNode(cloneShareToMeNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -34937,7 +37967,7 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShareToMeNode(deleteWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -34980,7 +38010,7 @@ export const ShareToMeApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneShareToMeNode(cloneShareToMeNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -34990,7 +38020,7 @@ export const ShareToMeApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.deleteShareToMeNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -35071,7 +38101,6 @@ export class ShareToMeApi extends BaseAPI {
         return ShareToMeApiFp(this.configuration).getShareToMeMaterial(getShareToMeMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -35392,7 +38421,7 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sendShowroomEmail(sendShowroomEmailRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -35463,7 +38492,7 @@ export const ShowroomApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -35548,7 +38577,6 @@ export class ShowroomApi extends BaseAPI {
         return ShowroomApiFp(this.configuration).sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -35723,7 +38751,6 @@ export class SignInApi extends BaseAPI {
 }
 
 
-
 /**
  * SignUpApi - axios parameter creator
  * @export
@@ -35781,7 +38808,7 @@ export const SignUpApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signUpRequestPost(signUpRequestPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -35802,7 +38829,7 @@ export const SignUpApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.signUpRequestPost(signUpRequestPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -35827,7 +38854,6 @@ export class SignUpApi extends BaseAPI {
         return SignUpApiFp(this.configuration).signUpRequestPost(signUpRequestPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -36159,13 +39185,13 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant: async (uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'uNKNOWNBASETYPE' is not null or undefined
-            assertParamExists('getThreadBoardMostParticipant', 'uNKNOWNBASETYPE', uNKNOWNBASETYPE)
+        getThreadBoardMostParticipant: async (getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getThreadBoardMostParticipantRequest' is not null or undefined
+            assertParamExists('getThreadBoardMostParticipant', 'getThreadBoardMostParticipantRequest', getThreadBoardMostParticipantRequest)
             const localVarPath = `/thread-board/get-most-participant`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36189,7 +39215,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(uNKNOWNBASETYPE, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardMostParticipantRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -36766,7 +39792,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkflowStage(createWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36817,12 +39843,12 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options);
+        async getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -36843,7 +39869,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hideWorkflowStage(hideWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36865,7 +39891,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStage(moveWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36887,7 +39913,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36898,7 +39924,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36920,7 +39946,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameWorkflowStage(renameWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36942,7 +39968,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardQuery(saveThreadBoardQueryRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36953,7 +39979,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.showWorkflowStage(hideWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -37015,7 +40041,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createWorkflowStage(createWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37061,12 +40087,12 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
-            return localVarFp.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(axios, basePath));
+        getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
+            return localVarFp.getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -37085,7 +40111,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.hideWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37105,7 +40131,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.moveWorkflowStage(moveWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37125,7 +40151,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37135,7 +40161,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37155,7 +40181,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.renameWorkflowStage(renameWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37175,7 +40201,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.saveThreadBoardQuery(saveThreadBoardQueryRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37185,7 +40211,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.showWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37307,13 +40333,13 @@ export class ThreadBoardApi extends BaseAPI {
     /**
      * 
      * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-     * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+     * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: AxiosRequestConfig) {
-        return ThreadBoardApiFp(this.configuration).getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(this.axios, this.basePath));
+    public getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -37472,7 +40498,6 @@ export class ThreadBoardApi extends BaseAPI {
         return ThreadBoardApiFp(this.configuration).updateFolderBookmark(updateFolderBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -38107,7 +41132,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangePasswordPost(userChangePasswordPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -38129,7 +41154,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackSendPost(userFeedbackSendPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -38225,7 +41250,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userReadAnnouncementPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userReadAnnouncementPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userReadAnnouncementPost(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -38236,7 +41261,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -38269,7 +41294,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userVerifyPost(userVerifyPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -38300,7 +41325,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.userChangePasswordPost(userChangePasswordPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38320,7 +41345,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.userFeedbackSendPost(userFeedbackSendPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38407,7 +41432,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userReadAnnouncementPost(options?: any): AxiosPromise<ResSuccessTrue> {
+        userReadAnnouncementPost(options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.userReadAnnouncementPost(options).then((request) => request(axios, basePath));
         },
         /**
@@ -38417,7 +41442,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38447,7 +41472,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.userVerifyPost(userVerifyPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -38661,7 +41686,6 @@ export class UserApi extends BaseAPI {
         return UserApiFp(this.configuration).userVerifyPost(userVerifyPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
 /**
@@ -39417,7 +42441,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkspaceCollection(createWorkspaceCollectionRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39428,7 +42452,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkspaceNode(deleteWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39439,7 +42463,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39515,7 +42539,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkspaceNode(moveWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39526,7 +42550,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.publishWorkspaceNode(publishWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39537,7 +42561,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39548,7 +42572,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39559,7 +42583,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39570,7 +42594,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39581,7 +42605,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39592,7 +42616,7 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -39623,7 +42647,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.createWorkspaceCollection(createWorkspaceCollectionRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39633,7 +42657,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.deleteWorkspaceNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39643,7 +42667,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39712,7 +42736,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.moveWorkspaceNode(moveWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39722,7 +42746,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.publishWorkspaceNode(publishWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39732,7 +42756,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39742,7 +42766,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39752,7 +42776,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39762,7 +42786,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39772,7 +42796,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39782,7 +42806,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+        updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -40010,6 +43034,5 @@ export class WorkspaceApi extends BaseAPI {
         return WorkspaceApiFp(this.configuration).updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
-
 
 
