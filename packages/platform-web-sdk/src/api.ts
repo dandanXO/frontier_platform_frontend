@@ -778,121 +778,6 @@ export interface BaseBookmark {
 
 
 /**
- * 
- * @export
- * @interface BatchUploadAssetsMaterialList200Response
- */
-export interface BatchUploadAssetsMaterialList200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BatchUploadAssetsMaterialList200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof BatchUploadAssetsMaterialList200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {BatchUploadAssetsMaterialList200ResponseAllOfResult}
-     * @memberof BatchUploadAssetsMaterialList200Response
-     */
-    'result': BatchUploadAssetsMaterialList200ResponseAllOfResult | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof BatchUploadAssetsMaterialList200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface BatchUploadAssetsMaterialList200ResponseAllOf
- */
-export interface BatchUploadAssetsMaterialList200ResponseAllOf {
-    /**
-     * 
-     * @type {BatchUploadAssetsMaterialList200ResponseAllOfResult}
-     * @memberof BatchUploadAssetsMaterialList200ResponseAllOf
-     */
-    'result': BatchUploadAssetsMaterialList200ResponseAllOfResult | null;
-}
-/**
- * 
- * @export
- * @interface BatchUploadAssetsMaterialList200ResponseAllOfResult
- */
-export interface BatchUploadAssetsMaterialList200ResponseAllOfResult {
-    /**
-     * 
-     * @type {Array<BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner>}
-     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResult
-     */
-    'errorList': Array<BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner>;
-}
-/**
- * 
- * @export
- * @interface BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
- */
-export interface BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
-     */
-    'key': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
-     */
-    'value': string;
-}
-/**
- * 
- * @export
- * @interface BatchUploadAssetsMaterialListRequest
- */
-export interface BatchUploadAssetsMaterialListRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof BatchUploadAssetsMaterialListRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof BatchUploadAssetsMaterialListRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof BatchUploadAssetsMaterialListRequest
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof BatchUploadAssetsMaterialListRequest
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BatchUploadAssetsMaterialListRequest
-     */
-    'fileName': string;
-}
-
-
-/**
  * @type BookmarkListInner
  * @export
  */
@@ -8156,6 +8041,69 @@ export interface GetMoodboardShareTargetRequestAllOf {
 /**
  * 
  * @export
+ * @interface GetOnlineSpreadSheetProgressList200Response
+ */
+export interface GetOnlineSpreadSheetProgressList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetOnlineSpreadSheetProgressList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetOnlineSpreadSheetProgressList200ResponseAllOfResult}
+     * @memberof GetOnlineSpreadSheetProgressList200Response
+     */
+    'result': GetOnlineSpreadSheetProgressList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetOnlineSpreadSheetProgressList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressList200ResponseAllOf
+ */
+export interface GetOnlineSpreadSheetProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetOnlineSpreadSheetProgressList200ResponseAllOfResult}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOf
+     */
+    'result': GetOnlineSpreadSheetProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressList200ResponseAllOfResult
+ */
+export interface GetOnlineSpreadSheetProgressList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<ProgressOnlineSpreadSheetItem>}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResult
+     */
+    'progressList': Array<ProgressOnlineSpreadSheetItem>;
+    /**
+     * 
+     * @type {GetExcelProgressList200ResponseAllOfResultPagination}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResult
+     */
+    'pagination': GetExcelProgressList200ResponseAllOfResultPagination;
+}
+/**
+ * 
+ * @export
  * @interface GetPantoneList200Response
  */
 export interface GetPantoneList200Response {
@@ -10844,6 +10792,121 @@ export interface MainMaterialMetaData {
      * @memberof MainMaterialMetaData
      */
     'materialOwnerOGType': OgType;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MassCreateUpdateDeleteAssetsMaterialList200Response
+ */
+export interface MassCreateUpdateDeleteAssetsMaterialList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200Response
+     */
+    'result': MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf
+ */
+export interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf
+     */
+    'result': MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult | null;
+}
+/**
+ * 
+ * @export
+ * @interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult
+ */
+export interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner>}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult
+     */
+    'errorList': Array<MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner
+ */
+export interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner
+     */
+    'key': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResultErrorListInner
+     */
+    'value': string;
+}
+/**
+ * 
+ * @export
+ * @interface MassCreateUpdateDeleteAssetsMaterialListRequest
+ */
+export interface MassCreateUpdateDeleteAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialListRequest
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MassCreateUpdateDeleteAssetsMaterialListRequest
+     */
+    'fileName': string;
 }
 
 
@@ -19592,11 +19655,11 @@ export interface ProgressExcelItem {
      */
     'fileUrl': string;
     /**
-     * 
+     * 產品編號清單，只有category是2 Export時才有值 
      * @type {Array<string>}
      * @memberof ProgressExcelItem
      */
-    'itemNoList': Array<string>;
+    'itemNoList': Array<string> | null;
     /**
      * 
      * @type {number}
@@ -19735,6 +19798,88 @@ export const ProgressMaterialUploadUnsuccessfulMsgCode = {
 
 export type ProgressMaterialUploadUnsuccessfulMsgCode = typeof ProgressMaterialUploadUnsuccessfulMsgCode[keyof typeof ProgressMaterialUploadUnsuccessfulMsgCode];
 
+
+/**
+ * 
+ * @export
+ * @interface ProgressOnlineSpreadSheetItem
+ */
+export interface ProgressOnlineSpreadSheetItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'progressId': number;
+    /**
+     * 1: Upload 2: Export 
+     * @type {number}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'type': ProgressOnlineSpreadSheetItemTypeEnum;
+    /**
+     * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 
+     * @type {string}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'fileUrl': string;
+    /**
+     * 產品編號清單，只有category是2 Export時才有值 
+     * @type {Array<string>}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'itemNoList': Array<string> | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'createUser': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'createAvatar': string;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'status': ProgressStatus;
+    /**
+     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 該組織停用中 - 2 該組織方案中的空間不足 - 3 系統錯誤 
+     * @type {number}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'unsuccessfulMsgCode': ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum;
+    /**
+     * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 去掉成功的只留下失敗的資料的檔案的url。 status 為 3 Unsuccessful 時 failedUrl 才有值 
+     * @type {string}
+     * @memberof ProgressOnlineSpreadSheetItem
+     */
+    'failedFileUrl': string;
+}
+
+export const ProgressOnlineSpreadSheetItemTypeEnum = {
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type ProgressOnlineSpreadSheetItemTypeEnum = typeof ProgressOnlineSpreadSheetItemTypeEnum[keyof typeof ProgressOnlineSpreadSheetItemTypeEnum];
+export const ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = {
+    ORG_DEACTIVATED: 1,
+    ORG_STORAGE_NOT_ENOUGH: 2,
+    SYSTEM_ERROR: 3
+} as const;
+
+export type ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = typeof ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum[keyof typeof ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum];
 
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
@@ -25011,46 +25156,6 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         *  **Access roles:** To be clear define
-         * @summary 透過 Excel 批量上傳布料
-         * @param {BatchUploadAssetsMaterialListRequest} batchUploadAssetsMaterialListRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        batchUploadAssetsMaterialList: async (batchUploadAssetsMaterialListRequest: BatchUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'batchUploadAssetsMaterialListRequest' is not null or undefined
-            assertParamExists('batchUploadAssetsMaterialList', 'batchUploadAssetsMaterialListRequest', batchUploadAssetsMaterialListRequest)
-            const localVarPath = `/assets/material/batch-upload`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(batchUploadAssetsMaterialListRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
          * @summary 取消上傳 Custom 3D Material
          * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
@@ -25510,6 +25615,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
+         * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        massCreateUpdateDeleteAssetsMaterialList: async (massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'massCreateUpdateDeleteAssetsMaterialListRequest' is not null or undefined
+            assertParamExists('massCreateUpdateDeleteAssetsMaterialList', 'massCreateUpdateDeleteAssetsMaterialListRequest', massCreateUpdateDeleteAssetsMaterialListRequest)
+            const localVarPath = `/assets/material/mass-create-update-delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(massCreateUpdateDeleteAssetsMaterialListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -26268,17 +26413,6 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         *  **Access roles:** To be clear define
-         * @summary 透過 Excel 批量上傳布料
-         * @param {BatchUploadAssetsMaterialListRequest} batchUploadAssetsMaterialListRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest: BatchUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BatchUploadAssetsMaterialList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
          * @summary 取消上傳 Custom 3D Material
          * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
@@ -26408,6 +26542,17 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialOptions(oGBaseRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
+         * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MassCreateUpdateDeleteAssetsMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26640,16 +26785,6 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *  **Access roles:** To be clear define
-         * @summary 透過 Excel 批量上傳布料
-         * @param {BatchUploadAssetsMaterialListRequest} batchUploadAssetsMaterialListRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest: BatchUploadAssetsMaterialListRequest, options?: any): AxiosPromise<BatchUploadAssetsMaterialList200Response> {
-            return localVarFp.batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
          * @summary 取消上傳 Custom 3D Material
          * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
@@ -26768,6 +26903,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<GetMaterialOptions200Response> {
             return localVarFp.getMaterialOptions(oGBaseRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
+         * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: any): AxiosPromise<MassCreateUpdateDeleteAssetsMaterialList200Response> {
+            return localVarFp.massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26982,18 +27127,6 @@ export class AssetsApi extends BaseAPI {
     }
 
     /**
-     *  **Access roles:** To be clear define
-     * @summary 透過 Excel 批量上傳布料
-     * @param {BatchUploadAssetsMaterialListRequest} batchUploadAssetsMaterialListRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AssetsApi
-     */
-    public batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest: BatchUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
-        return AssetsApiFp(this.configuration).batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
      * @summary 取消上傳 Custom 3D Material
      * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
@@ -27135,6 +27268,18 @@ export class AssetsApi extends BaseAPI {
      */
     public getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getMaterialOptions(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     *  **Access roles:** To be clear define
+     * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
+     * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -35966,6 +36111,46 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Progress - OnlineSpreadSheet - 取消排程
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelOnlineSpreadSheetProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('cancelOnlineSpreadSheetProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
+            const localVarPath = `/progress/online-spread-sheet/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 停止 U3M 排程
          * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
@@ -36126,6 +36311,86 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress清單
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgressList: async (getExcelProgressListRequest: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getExcelProgressListRequest' is not null or undefined
+            assertParamExists('getOnlineSpreadSheetProgressList', 'getExcelProgressListRequest', getExcelProgressListRequest)
+            const localVarPath = `/progress/online-spread-sheet/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getExcelProgressListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 透過progressId取得Material清單 只會取得新增或修改的Material 
+         * @summary Progress - OnlineSpreadSheet - 取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('getOnlineSpreadSheetProgressMaterialList', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
+            const localVarPath = `/progress/online-spread-sheet/get-material-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Upload Progress - u3m
          * @param {GetU3mProgressListRequest} getU3mProgressListRequest 
          * @param {*} [options] Override http request option.
@@ -36198,6 +36463,17 @@ export const ProgressApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Progress - OnlineSpreadSheet - 取消排程
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 停止 U3M 排程
          * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
@@ -36238,6 +36514,28 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress清單
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 透過progressId取得Material清單 只會取得新增或修改的Material 
+         * @summary Progress - OnlineSpreadSheet - 取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -36283,6 +36581,16 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
+         * @summary Progress - OnlineSpreadSheet - 取消排程
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+            return localVarFp.cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 停止 U3M 排程
          * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
@@ -36320,6 +36628,26 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          */
         getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: any): AxiosPromise<GetMaterialUploadProgressList200Response> {
             return localVarFp.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress清單
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: any): AxiosPromise<GetOnlineSpreadSheetProgressList200Response> {
+            return localVarFp.getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 透過progressId取得Material清單 只會取得新增或修改的Material 
+         * @summary Progress - OnlineSpreadSheet - 取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<GetExcelProgressMaterialList200Response> {
+            return localVarFp.getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -36363,6 +36691,18 @@ export class ProgressApi extends BaseAPI {
      */
     public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Progress - OnlineSpreadSheet - 取消排程
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -36411,6 +36751,30 @@ export class ProgressApi extends BaseAPI {
      */
     public getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Progress - OnlineSpreadSheet - 取得Progress清單
+     * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 透過progressId取得Material清單 只會取得新增或修改的Material 
+     * @summary Progress - OnlineSpreadSheet - 取得Material清單
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

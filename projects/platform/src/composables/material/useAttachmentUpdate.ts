@@ -1,4 +1,4 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { EXTENSION, NOTIFY_TYPE, THEME } from '@frontier/constants'
@@ -45,7 +45,11 @@ const useAttachmentUpdate = (material: Ref<Material>) => {
             }),
           })
 
-          attachmentList.value = res.data.result.attachmentList
+          if (material.value.internalInfo) {
+            material.value.internalInfo.attachmentList =
+              res.data.result.attachmentList
+          }
+
           store.dispatch('helper/closeModalLoading')
         },
       },

@@ -1,12 +1,5 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-7.5")
-  modal-view-mode(
-    v-if="openMagnifierMode"
-    :startIndex="previewStartIndex"
-    :fileList="attachmentViewModeList"
-    :getMenuTree="getAttachmentMenuTree"
-    @close="openMagnifierMode = false"
-  )
   div(class="flex flex-col gap-y-4")
     h6(class="text-h6 text-grey-600 font-bold") {{ $t('Internal Information') }}
     div(class="flex flex-col gap-y-5")
@@ -26,7 +19,7 @@ div(class="flex flex-col gap-y-7.5")
       draggable(
         class="flex flex-wrap gap-5"
         v-model="attachmentListForDraggable"
-        v-bind="cardDragOptions"
+        v-bind="fileCardDragOptions"
         group="attachment"
         @change="handleAttachmentListChange"
       )
@@ -41,15 +34,15 @@ div(class="flex flex-col gap-y-7.5")
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue'
+import { computed, inject } from 'vue'
+import { useStore } from 'vuex'
 import Draggable from 'vuedraggable'
-import { materialAttachmentUpdateServiceKey } from '@/utils/constants'
+import {
+  materialAttachmentUpdateServiceKey,
+  fileCardDragOptions,
+} from '@/utils/constants'
 import AttachmentCard from '@/components/common/material/attachment/AttachmentCard.vue'
-import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
-import type {
-  MaterialAttachmentUpdateService,
-  MaterialViewModeFile,
-} from '@/types'
+import type { MaterialAttachmentUpdateService } from '@/types'
 import useMaterial from '@/composables/material/useMaterial'
 
 const attachmentUpdateService = inject<MaterialAttachmentUpdateService>(
@@ -69,6 +62,8 @@ const {
   moveAttachment,
 } = attachmentUpdateService
 
+const store = useStore()
+
 const { attachmentViewModeList } = useMaterial(material)
 
 const attachmentListForDraggable = computed({
@@ -76,21 +71,17 @@ const attachmentListForDraggable = computed({
   set: updateAttachmentList,
 })
 
-const cardDragOptions = {
-  itemKey: 'id',
-  forceFallback: true,
-  scrollSensitivity: 40,
-  scrollSpeed: 7,
-  animation: 250,
-  disabled: false,
-}
-
-const previewStartIndex = ref(0)
-const openMagnifierMode = ref(false)
-
 const openAttachmentPreview = (index: number) => {
-  openMagnifierMode.value = true
-  previewStartIndex.value = index
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: attachmentViewModeList,
+        getMenuTree: getAttachmentMenuTree,
+      },
+    },
+  })
 }
 
 const handleAttachmentListChange = (e: any) => {

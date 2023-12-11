@@ -7,33 +7,75 @@ div(class="w-full h-full flex justify-center")
         @click:item="$event.goTo?.()"
       )
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
-    block-material-create(
-      v-if="materialOptions != null"
-      :materialOptions="materialOptions"
-      @submit="createMaterial"
-    )
+    div(v-if="materialOptions" class="flex flex-col gap-y-17.5")
+      div(class="flex items-center h-16")
+        h5(class="text-h5 font-bold") Material Information
+      div(class="flex flex-col divide-y divide-grey-250")
+        div(class="pl-15")
+          block-material-type
+        div(class="pl-15")
+          f-tabs(:tabList="tabList" keyField="id" class="pt-10")
+            template(#default="{ currentTab }")
+              div(class="pt-10 grid gap-y-10")
+                block-material-specification(
+                  v-show="currentTab === TAB.SPECIFICATION"
+                )
+                block-material-tags(v-show="currentTab === TAB.TAGS")
+                block-material-pricing(v-show="currentTab === TAB.PRICING")
+                block-material-inventory(v-show="currentTab === TAB.INVENTORY")
+                block-material-upload-files(
+                  v-show="currentTab === TAB.UPLOAD_FILES"
+                )
+      div(class="flex flex-row gap-x-2 pl-15 justify-end w-full")
+        f-button(type="secondary" size="md" @click="cancel") {{ $t('UU0002') }}
+        f-button(
+          type="primary"
+          size="md"
+          :disabled="submitCount > 0 && !meta.valid"
+          @click="submit"
+        ) {{ $t('UU0020') }}
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, provide } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
-import BlockMaterialCreate from '@/components/assets/edit/BlockMaterialCreate.vue'
 import useNavigation from '@/composables/useNavigation'
 import { useAssetsStore } from '@/stores/assets'
 import {
   MaterialSideType,
-  type MaterialOptions,
   type MaterialPriceInfo,
   type CreateAssetsMaterialRequest,
   type MaterialInternalInventoryInfo,
   type MaterialInternalInventoryInfoSampleCardsRemainingListInner,
   type CreateMultimediaFile,
 } from '@frontier/platform-web-sdk'
-import { NOTIFY_TYPE } from '@/utils/constants'
-import type { AttachmentCreateItem, MultimediaCreateItem } from '@/types'
-import type useMaterialForm from '@/composables/material/useMaterialForm'
+import BlockMaterialType from '@/components/assets/edit/BlockMaterialType.vue'
+import BlockMaterialSpecification from '@/components/assets/edit/blockMaterialSpecification/BlockMaterialSpecification.vue'
+import BlockMaterialTags from '@/components/assets/edit/BlockMaterialTags.vue'
+import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
+import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
+import BlockMaterialUploadFiles from '@/components/assets/edit/BlockMaterialUploadFiles.vue'
+import {
+  NOTIFY_TYPE,
+  materialAttachmentCreateServiceKey,
+  materialFormServiceKey,
+  materialMultimediaCreateServiceKey,
+  materialU3mSelectServiceKey,
+} from '@/utils/constants'
+import type {
+  AttachmentCreateItem,
+  MaterialAttachmentCreateService,
+  MaterialFormService,
+  MaterialMultimediaCreateService,
+  MaterialU3mSelectService,
+  MultimediaCreateItem,
+} from '@/types'
+import useMaterialForm from '@/composables/material/useMaterialForm'
+import useU3mSelect from '@/composables/material/useU3mSelect'
+import useMultimediaCreate from '@/composables/material/useMultimediaCreate'
+import useAttachmentCreate from '@/composables/material/useAttachmentCreate'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 
 const { t } = useI18n()
@@ -64,12 +106,54 @@ const breadcrumbList = computed(() => {
   ]
 })
 
-const materialOptions = ref<MaterialOptions | null>(null)
+const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
+const materialOptions = materialOptionsRes.data.result!
 
-const fetchMaterialOptions = async () => {
-  const res = await ogBaseAssetsApi('getMaterialOptions')
-  materialOptions.value = res.data.result!
+const materialFormService: MaterialFormService = useMaterialForm({
+  materialOptions,
+})
+const u3mSelectService: MaterialU3mSelectService = useU3mSelect()
+const multimediaCreateService: MaterialMultimediaCreateService =
+  useMultimediaCreate()
+const attachmentCreateService: MaterialAttachmentCreateService =
+  useAttachmentCreate()
+
+provide(materialFormServiceKey, materialFormService)
+provide(materialU3mSelectServiceKey, u3mSelectService)
+provide(materialMultimediaCreateServiceKey, multimediaCreateService)
+provide(materialAttachmentCreateServiceKey, attachmentCreateService)
+
+const { submitCount, meta, handleSubmit } = materialFormService
+
+const TAB = {
+  SPECIFICATION: 0,
+  TAGS: 1,
+  PRICING: 2,
+  INVENTORY: 3,
+  UPLOAD_FILES: 4,
 }
+
+const tabList = computed(() => [
+  { name: 'Specification', id: TAB.SPECIFICATION },
+  { name: t('RR0133'), id: TAB.TAGS },
+  { name: t('RR0134'), id: TAB.PRICING },
+  { name: t('RR0135'), id: TAB.INVENTORY },
+  { name: t('Upload Files'), id: TAB.UPLOAD_FILES },
+])
+
+const submit = handleSubmit(async (form) =>
+  createMaterial({
+    form,
+    multimediaList: multimediaCreateService.multimediaList,
+    attachmentList: attachmentCreateService.attachmentList,
+    u3m: u3mSelectService.u3mFile.value
+      ? {
+          u3mFile: u3mSelectService.u3mFile.value,
+          needToGeneratePhysical: u3mSelectService.needToGeneratePhysical.value,
+        }
+      : undefined,
+  })
+)
 
 const createMaterial = async (payload: {
   form: ReturnType<typeof useMaterialForm>['values']
@@ -311,6 +395,20 @@ const openModalMassUpload = () => {
   })
 }
 
+const cancel = async () => {
+  store.dispatch('helper/pushModalConfirm', {
+    type: NOTIFY_TYPE.WARNING,
+    header: t('EE0045'),
+    contentText: t('EE0046'),
+    primaryBtnText: t('UU0001'),
+    primaryBtnHandler: () => {
+      isConfirmedToLeave.value = true
+      goToAssets()
+    },
+    secondaryBtnText: t('UU0002'),
+  })
+}
+
 onBeforeRouteLeave(async () => {
   if (isConfirmedToLeave.value) {
     return true
@@ -329,6 +427,4 @@ onBeforeRouteLeave(async () => {
 
   return result === 'confirm'
 })
-
-fetchMaterialOptions()
 </script>

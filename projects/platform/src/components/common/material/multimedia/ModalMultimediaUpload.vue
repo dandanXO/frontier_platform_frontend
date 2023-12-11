@@ -11,13 +11,6 @@ modal-behavior(
       f-svg-icon(class="text-grey-600" iconName="info_outline" size="14")
       span {{ $t('The image set as the cover will be copied in the first one. Move the images to adjust their order.') }}
   div(class="w-200 flex flex-col gap-y-6")
-    modal-view-mode(
-      v-if="openMagnifierMode"
-      :startIndex="previewStartIndex"
-      :fileList="publicFileViewModeList"
-      :getMenuTree="getMultimediaMenuTree"
-      @close="openMagnifierMode = false"
-    )
     p(class="text-body2 text-grey-900 font-bold") {{ $t('Preview your material image') }}
     div(class="grid grid-flow-col gap-x-2 justify-start")
       template(v-for="image in coverAndSideImageList" :key="image.id")
@@ -56,7 +49,7 @@ modal-behavior(
           v-if="multimediaList.length > 0"
           class="flex flex-wrap gap-5"
           v-model="multimediaListForDraggable"
-          v-bind="cardDragOptions"
+          v-bind="fileCardDragOptions"
           group="multimedia"
           @change="handleMultimediaListChange"
         )
@@ -69,18 +62,18 @@ modal-behavior(
               :menuTree="getMultimediaMenuTree(multimedia.fileId)"
               @setCover="selectCover(multimedia.fileId)"
               @edit="startCropMultimedia(multimedia.fileId)"
-              @click="openMultimediaPreview(index)"
+              @click="openMultimediaViewMode(index)"
             )
 </template>
 
 <script setup lang="ts">
-import { ref, computed, toRaw } from 'vue'
+import { computed, onMounted, onUnmounted, toRaw } from 'vue'
 import { useStore } from 'vuex'
 import Draggable from 'vuedraggable'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
-import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
-import type { MaterialMultimediaUpdateService } from '@/types'
 import useMaterial from '@/composables/material/useMaterial'
+import { fileCardDragOptions } from '@/utils/constants'
+import type { MaterialMultimediaUpdateService } from '@/types'
 
 const props = defineProps<{
   multimediaUpdateService: MaterialMultimediaUpdateService
@@ -112,15 +105,6 @@ const multimediaListForDraggable = computed({
   set: updateMultimediaList,
 })
 
-const cardDragOptions = {
-  itemKey: 'id',
-  forceFallback: true,
-  scrollSensitivity: 40,
-  scrollSpeed: 7,
-  animation: 250,
-  disabled: false,
-}
-
 const handleCoverAndSideImageClick = () => {
   // TODO
 }
@@ -130,20 +114,41 @@ const handleMultimediaListChange = (e: any) => {
   moveMultimedia(element.fileId, newIndex)
 }
 
-const previewStartIndex = ref(0)
-const openMagnifierMode = ref(false)
-
 const { publicFileViewModeList } = useMaterial(material)
 
-const openMultimediaPreview = (index: number) => {
-  openMagnifierMode.value = true
-  previewStartIndex.value = index
+const openMultimediaViewMode = (index: number) => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: publicFileViewModeList,
+        getMenuTree: getMultimediaMenuTree,
+      },
+    },
+  })
 }
+
+onMounted(() => {
+  const id = coverAndSideImageList.value.find((image) => image.isCover)?.id
+  if (!id) {
+    throw new Error('Cover is not found')
+  }
+
+  if (id === 'faceSideRuler' || id === 'backSideRuler' || id === 'cover') {
+    throw new Error('Cover cannot be a ruler')
+  }
+  selectedCoverId.value = id
+})
+
+onUnmounted(() => {
+  selectedCoverId.value = null
+})
 
 const closeModal = () => {
   store.dispatch('helper/closeModalBehavior')
-  selectedCoverId.value = null
 }
+
 const handleSave = async () => {
   await saveCover()
   closeModal()

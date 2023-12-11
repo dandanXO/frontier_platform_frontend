@@ -1,11 +1,4 @@
 <template lang="pug">
-modal-view-mode(
-  v-if="isFilePreviewOpen && openViewModeFileListIndex != null"
-  :fileList="viewModeFileList"
-  :startIndex="openViewModeFileListIndex"
-  :getMenuTree="getMenuTree"
-  @close="isFilePreviewOpen = false"
-)
 div(class="flex flex-col gap-y-3")
   div(class="w-125 h-125 relative")
     img(
@@ -18,7 +11,7 @@ div(class="flex flex-col gap-y-3")
     button(
       v-if="!!displayImageList[currentDisplayIndex].displayUrl"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-5 flex items-center justify-center cursor-pointer"
-      @click="openModalFileViewer"
+      @click="openViewMode"
     )
       f-svg-icon(iconName="search" size="32" class="text-grey-900")
     button(
@@ -59,8 +52,8 @@ div(class="flex flex-col gap-y-3")
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import Slider from '@/components/common/Slider.vue'
-import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
 import type { THEME } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialDisplayImage, MaterialViewModeFile } from '@/types'
@@ -82,9 +75,9 @@ const emits = defineEmits<{
   (e: 'editScannedImage'): void
 }>()
 
-const currentDisplayIndex = ref(0)
-const isFilePreviewOpen = ref(false)
+const store = useStore()
 
+const currentDisplayIndex = ref(0)
 const currentImage = computed(() => {
   return props.displayImageList[currentDisplayIndex.value]
 })
@@ -104,7 +97,18 @@ const openViewModeFileListIndex = computed(() => {
   return targetIndex
 })
 
-const openModalFileViewer = () => {
-  isFilePreviewOpen.value = true
+const viewModeFileList = computed(() => props.viewModeFileList)
+
+const openViewMode = () => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: openViewModeFileListIndex.value,
+        fileList: viewModeFileList,
+        getMenuTree: props.getMenuTree,
+      },
+    },
+  })
 }
 </script>

@@ -73,7 +73,7 @@ const useMultimediaCreate = () => {
   }
 
   const removeMultimediaSelect = (id: string, theme: THEME) => {
-    store.dispatch('helper/openModalConfirm', {
+    store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
       theme,
       header: t('DD0068'),

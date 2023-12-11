@@ -1,11 +1,4 @@
 <template lang="pug">
-modal-view-mode(
-  v-if="viewModeOpen != null && getMenuTree"
-  :startIndex="viewModeStartIndex"
-  :fileList="ViewModeFileList"
-  :getMenuTree="getMenuTree"
-  @close="viewModeOpen = null"
-)
 div(class="flex flex-col gap-y-15")
   div(class="flex flex-col gap-y-15")
     div(class="flex flex-col gap-y-5")
@@ -27,7 +20,7 @@ div(class="flex flex-col gap-y-15")
           draggable(
             class="flex flex-wrap gap-5"
             v-model="multimediaListForDraggable"
-            v-bind="cardDragOptions"
+            v-bind="fileCardDragOptions"
             group="multimedia"
           )
             template(#item="{ element: multimedia, index }")
@@ -111,7 +104,7 @@ div(class="flex flex-col gap-y-15")
           draggable(
             class="flex flex-wrap gap-5"
             v-model="attachmentListForDraggable"
-            v-bind="cardDragOptions"
+            v-bind="fileCardDragOptions"
             group="attachment"
           )
             template(#item="{ element: attachment, index }")
@@ -119,13 +112,14 @@ div(class="flex flex-col gap-y-15")
                 :key="attachment.id"
                 :thumbnailUrl="attachment.thumbnailUrl"
                 :fileName="attachment.displayFileName"
-                :menuTree="getAttachmentMenuTree(index)"
+                :menuTree="getAttachmentMenuTree(attachment.id)"
                 @click="openAttachmentPreview(index)"
               )
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, watchEffect } from 'vue'
+import { computed, inject } from 'vue'
+import { useStore } from 'vuex'
 import Draggable from 'vuedraggable'
 import useNavigation from '@/composables/useNavigation'
 import {
@@ -134,18 +128,16 @@ import {
   materialU3mSelectServiceKey,
   materialMultimediaCreateServiceKey,
   materialAttachmentCreateServiceKey,
-  THEME,
+  fileCardDragOptions,
 } from '@/utils/constants'
 import AttachmentCard from '@/components/common/material/attachment/AttachmentCard.vue'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
-import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
 import type {
   MaterialU3mSelectService,
   MaterialMultimediaCreateService,
   MaterialAttachmentCreateService,
   MaterialViewModeFile,
 } from '@/types'
-import type { MenuTree } from '@frontier/ui-component'
 import { EXTENSION, getFileExtension } from '@frontier/lib'
 
 const u3mSelectService = inject<MaterialU3mSelectService>(
@@ -192,9 +184,8 @@ const {
   removeU3mFile,
 } = u3mSelectService
 
+const store = useStore()
 const { goToBillings } = useNavigation()
-
-const viewModeOpen = ref<'multimedia' | 'attachment' | null>(null)
 
 const multimediaListForDraggable = computed({
   get: () => multimediaList,
@@ -206,68 +197,50 @@ const attachmentListForDraggable = computed({
   set: updateAttachmentList,
 })
 
-const cardDragOptions = {
-  itemKey: 'id',
-  forceFallback: true,
-  scrollSensitivity: 40,
-  scrollSpeed: 7,
-  animation: 250,
-  disabled: false,
-}
+const multimediaViewModeFileList = computed<MaterialViewModeFile[]>(() =>
+  multimediaList.map((m) => ({
+    id: m.id,
+    originalUrl: m.originalUrl,
+    thumbnailUrl: m.thumbnailUrl,
+    displayName: m.displayFileName,
+    extension: getFileExtension(m.displayFileName) as EXTENSION,
+  }))
+)
 
-const viewModeStartIndex = ref(0)
-const getMenuTree = ref<
-  ((index: number | string, theme: THEME) => MenuTree) | null
->(null)
-
-const ViewModeFileList = computed<MaterialViewModeFile[]>(() => {
-  if (viewModeOpen.value === 'multimedia') {
-    return multimediaList.map((m) => ({
-      id: m.id,
-      originalUrl: m.originalUrl,
-      thumbnailUrl: m.thumbnailUrl,
-      displayName: m.displayFileName,
-      extension: getFileExtension(m.displayFileName) as EXTENSION,
-    }))
-  }
-
-  if (viewModeOpen.value === 'attachment') {
-    return attachmentList.map((a) => ({
-      id: a.id,
-      originalUrl: a.originalUrl,
-      thumbnailUrl: a.thumbnailUrl,
-      displayName: a.displayFileName,
-      extension: getFileExtension(a.displayFileName) as EXTENSION,
-    }))
-  }
-
-  return []
-})
-
-watchEffect(() => {
-  if (viewModeOpen.value === 'multimedia') {
-    if (multimediaList.length === 0) {
-      viewModeOpen.value = null
-    }
-  }
-
-  if (viewModeOpen.value === 'attachment') {
-    if (attachmentList.length === 0) {
-      viewModeOpen.value = null
-    }
-  }
-})
+const attachmentViewModeFileList = computed<MaterialViewModeFile[]>(() =>
+  attachmentList.map((a) => ({
+    id: a.id,
+    originalUrl: a.originalUrl,
+    thumbnailUrl: a.thumbnailUrl,
+    displayName: a.displayFileName,
+    extension: getFileExtension(a.displayFileName) as EXTENSION,
+  }))
+)
 
 const openMultimediaPreview = (index: number) => {
-  viewModeOpen.value = 'multimedia'
-  viewModeStartIndex.value = index
-  getMenuTree.value = getMultimediaMenuTree
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: multimediaViewModeFileList,
+        getMenuTree: getMultimediaMenuTree,
+      },
+    },
+  })
 }
 
 const openAttachmentPreview = (index: number) => {
-  viewModeOpen.value = 'attachment'
-  viewModeStartIndex.value = index
-  getMenuTree.value = getAttachmentMenuTree
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: attachmentViewModeFileList,
+        getMenuTree: getAttachmentMenuTree,
+      },
+    },
+  })
 }
 </script>
 

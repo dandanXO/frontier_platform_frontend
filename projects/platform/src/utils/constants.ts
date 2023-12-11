@@ -389,3 +389,12 @@ export const materialAttachmentCreateServiceKey = Symbol(
 export const materialAttachmentUpdateServiceKey = Symbol(
   'MaterialAttachmentUpdateService'
 )
+
+export const fileCardDragOptions = {
+  itemKey: 'id',
+  forceFallback: true,
+  scrollSensitivity: 40,
+  scrollSpeed: 7,
+  animation: 250,
+  disabled: false,
+}

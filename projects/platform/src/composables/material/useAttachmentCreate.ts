@@ -18,6 +18,10 @@ const useAttachmentCreate = () => {
 
   const attachmentList = reactive<AttachmentCreateItem[]>([])
 
+  const getAttachmentById = (id: string): AttachmentCreateItem | undefined => {
+    return attachmentList.find((file) => file.id === id)
+  }
+
   const openModalAttachmentSelect = () => {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-upload-attachment',
@@ -51,7 +55,7 @@ const useAttachmentCreate = () => {
     })
   }
 
-  const removeAttachmentSelect = (index: number, theme: THEME) => {
+  const removeAttachmentSelect = (id: string, theme: THEME) => {
     store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
       theme,
@@ -59,17 +63,26 @@ const useAttachmentCreate = () => {
       contentText: t('DD0069'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
-        const target = attachmentList[index]
+        const target = getAttachmentById(id)
+        if (!target) {
+          throw new Error('attachment not found')
+        }
         URL.revokeObjectURL(target.originalUrl)
         URL.revokeObjectURL(target.thumbnailUrl)
-        attachmentList.splice(index, 1)
+
+        const targetIndex = attachmentList.findIndex((m) => m.id === id)
+        attachmentList.splice(targetIndex, 1)
       },
       secondaryBtnText: t('UU0002'),
     })
   }
 
-  const renameAttachmentSelect = (index: number, theme: THEME) => {
-    const target = attachmentList[index]
+  const renameAttachmentSelect = (id: string, theme: THEME) => {
+    const target = getAttachmentById(id)
+    if (!target) {
+      throw new Error('attachment not found')
+    }
+
     store.dispatch('helper/pushModalBehavior', {
       component: 'modal-rename-file',
       properties: {
@@ -84,16 +97,19 @@ const useAttachmentCreate = () => {
     })
   }
 
-  const downloadAttachmentSelect = (index: number) => {
-    const target = attachmentList[index]
+  const downloadAttachmentSelect = (id: string) => {
+    const target = getAttachmentById(id)
+    if (!target) {
+      throw new Error('attachment not found')
+    }
     downloadDataURLFile(target.originalUrl, target.displayFileName)
   }
 
-  const getAttachmentMenuTree = (
-    index: number,
-    theme = THEME.LIGHT
-  ): MenuTree => {
-    const target = attachmentList[index]
+  const getAttachmentMenuTree = (id: string, theme = THEME.LIGHT): MenuTree => {
+    const target = getAttachmentById(id)
+    if (!target) {
+      throw new Error('attachment not found')
+    }
     return {
       width: 'w-44',
       blockList: [
@@ -103,12 +119,12 @@ const useAttachmentCreate = () => {
               {
                 title: 'Download',
                 icon: 'download',
-                clickHandler: () => downloadAttachmentSelect(index),
+                clickHandler: () => downloadAttachmentSelect(id),
               },
               {
                 title: 'Rename',
                 icon: 'create',
-                clickHandler: () => renameAttachmentSelect(index, theme),
+                clickHandler: () => renameAttachmentSelect(id, theme),
               },
             ]
             if (target.extension === EXTENSION.PDF) {
@@ -126,7 +142,7 @@ const useAttachmentCreate = () => {
             {
               title: 'Delete',
               icon: 'delete',
-              clickHandler: () => removeAttachmentSelect(index, theme),
+              clickHandler: () => removeAttachmentSelect(id, theme),
             },
           ],
         },

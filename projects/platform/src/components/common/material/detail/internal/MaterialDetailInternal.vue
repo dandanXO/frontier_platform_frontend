@@ -1,11 +1,5 @@
 <template lang="pug">
 div
-  modal-view-mode(
-    v-if="viewModeOpen"
-    :startIndex="viewModeStartIndex"
-    :fileList="attachmentViewModeList"
-    @close="viewModeOpen = false"
-  )
   //- Header
   div(class="pt-10 pb-15 flex items-center justify-between")
     //- BreadCrumb
@@ -218,7 +212,7 @@ div
                 :key="attachment.fileId"
                 :thumbnailUrl="attachment.thumbnailUrl"
                 :displayFileName="attachment.displayFileName"
-                @click="handleAttachmentCardClick(index)"
+                @click="openAttachmentViewMode(index)"
               )
         template(v-else-if="currentTab === TAB.INDICATOR")
           div(class="-mt-10")
@@ -247,6 +241,7 @@ div
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import MaterialDetailUpperContent from '@/components/common/material/detail/internal/MaterialDetailUpperContent.vue'
@@ -260,7 +255,6 @@ import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
-import ModalViewMode from '@/components/common/material/file/viewMode/ModalViewMode.vue'
 
 const props = defineProps<{
   material: Material
@@ -271,6 +265,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const store = useStore()
 
 const {
   editMaterial,
@@ -284,11 +279,16 @@ const {
   deleteMaterial,
 } = useAssets()
 
-const viewModeOpen = ref(false)
-const viewModeStartIndex = ref(0)
-const handleAttachmentCardClick = (index: number) => {
-  viewModeOpen.value = true
-  viewModeStartIndex.value = index
+const openAttachmentViewMode = (index: number) => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: attachmentViewModeList,
+      },
+    },
+  })
 }
 
 const menuTree = computed<MenuTree>(() => {

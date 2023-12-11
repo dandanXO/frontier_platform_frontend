@@ -50,6 +50,9 @@ export default {
     ModalAnnouncement: defineAsyncComponent(() =>
       import('@/components/common/ModalAnnouncement.vue')
     ),
+    ModalViewMode: defineAsyncComponent(() =>
+      import('@/components/common/material/file/viewMode/ModalViewMode.vue')
+    ),
   },
   props: {
     component: {
