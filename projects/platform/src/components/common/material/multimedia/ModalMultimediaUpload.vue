@@ -72,8 +72,8 @@ import { useStore } from 'vuex'
 import Draggable from 'vuedraggable'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import useMaterial from '@/composables/material/useMaterial'
-import { fileCardDragOptions } from '@/utils/constants'
-import type { MaterialMultimediaUpdateService } from '@/types'
+import { COVER_MODE, fileCardDragOptions } from '@/utils/constants'
+import type { CoverId, MaterialMultimediaUpdateService } from '@/types'
 
 const props = defineProps<{
   multimediaUpdateService: MaterialMultimediaUpdateService
@@ -130,15 +130,27 @@ const openMultimediaViewMode = (index: number) => {
 }
 
 onMounted(() => {
-  const id = coverAndSideImageList.value.find((image) => image.isCover)?.id
-  if (!id) {
-    throw new Error('Cover is not found')
+  const getSelectedCoverId = (): CoverId => {
+    const coverImageMode = material.value.coverImage.mode
+    switch (coverImageMode) {
+      case COVER_MODE.FACE:
+        return 'faceSide'
+      case COVER_MODE.BACK:
+        return 'backSide'
+      case COVER_MODE.SUP: {
+        const multimediaId = multimediaList.value.find(
+          (file) => file.isCover
+        )?.fileId
+        if (!multimediaId) {
+          throw new Error('Cover is not found')
+        }
+        return multimediaId
+      }
+      default:
+        throw new Error('Invalid cover mode')
+    }
   }
-
-  if (id === 'faceSideRuler' || id === 'backSideRuler' || id === 'cover') {
-    throw new Error('Cover cannot be a ruler')
-  }
-  selectedCoverId.value = id
+  selectedCoverId.value = getSelectedCoverId()
 })
 
 onUnmounted(() => {

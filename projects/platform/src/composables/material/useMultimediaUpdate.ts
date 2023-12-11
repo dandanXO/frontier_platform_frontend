@@ -18,10 +18,8 @@ import {
 } from '@frontier/platform-web-sdk'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { image2Object } from '@/utils/cropper'
-import type { MaterialFileId, SquareCropRecord } from '@/types'
+import type { CoverId, MaterialFileId, SquareCropRecord } from '@/types'
 import { useNotifyStore } from '@/stores/notify'
-
-type CoverId = 'faceSide' | 'backSide' | number
 
 const useMultimediaUpdate = (
   material: Ref<Material>,

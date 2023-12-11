@@ -2,7 +2,6 @@ import type {
   OrgBookmark,
   FolderBookmark,
   WorkflowStage,
-  CropAssetsMaterialMultimediaRequestAllOfCroppedImage,
   CropImageRecord,
 } from '@frontier/platform-web-sdk'
 import type { CROP_MODE, EXTENSION, U3M_CUT_SIDE } from '@/utils/constants'
@@ -194,6 +193,8 @@ export interface MultimediaCreateItem {
   croppedImage: File | null
   cropRecord: CropImageRecord | null
 }
+
+export type CoverId = 'faceSide' | 'backSide' | number
 
 export type MaterialFileId =
   | 'cover'
