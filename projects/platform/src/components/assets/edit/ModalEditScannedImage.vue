@@ -29,7 +29,7 @@ modal-behavior(
         class="w-70 z-100"
         scaleUnit="cm"
         :scaleInputStep="scaleOptions.step"
-        :scaleStart="initScaleSizeInCm"
+        :scaleStart="initialScaleSizeInCm"
         :scaleRange="[scaleOptions.min, scaleOptions.max]"
         :showScale="!isDoubleSide"
         :rotateStart="side.rotateStart"
@@ -95,8 +95,8 @@ import type { MaterialSideImage } from '@frontier/platform-web-sdk'
 const props = defineProps<{
   isDoubleSide: boolean
   sideType: MaterialSideType | null
-  faceSideImg: MaterialSideImage
-  backSideImg: MaterialSideImage
+  faceSideImg: MaterialSideImage | null
+  backSideImg: MaterialSideImage | null
   afterCropHandler: (params: {
     faceSideCropImg: File | null
     backSideCropImg: File | null
@@ -118,16 +118,27 @@ const sides = computed(() => {
 
 const store = useStore()
 const defaultScaleSizeInCm = 4
-const initScaleSizeInCm =
-  props.faceSideImg.cropRecord?.scaleRatio || defaultScaleSizeInCm
-const scaleSizeInCm = ref(initScaleSizeInCm)
+
+const getInitialScaleSizeInCm = () => {
+  if (props.isDoubleSide || props.sideType === MaterialSideType.FACE_SIDE) {
+    return props.faceSideImg?.cropRecord?.scaleRatio || defaultScaleSizeInCm
+  }
+  if (props.sideType === MaterialSideType.BACK_SIDE) {
+    return props.backSideImg?.cropRecord?.scaleRatio || defaultScaleSizeInCm
+  }
+
+  throw new Error('sideType is not invalid')
+}
+
+const initialScaleSizeInCm = getInitialScaleSizeInCm()
+const scaleSizeInCm = ref(initialScaleSizeInCm)
 const scaleOptions = {
   min: 1,
   max: 21,
   step: 0.1,
   tooltips: false,
   orientation: 'vertical',
-  defaultRange: initScaleSizeInCm,
+  defaultRange: initialScaleSizeInCm,
 }
 const isExchange = ref(false)
 const cropRectSize = 176
@@ -160,7 +171,9 @@ const handleUpdateDoubleMaterialScaleSize = (
       handleUpdateScaleSize(side, newScaleSizeInCm)
     }
   }
-  if (fromInputChange) refDoubleSideScale.value.setValue(newScaleSizeInCm)
+  if (fromInputChange) {
+    refDoubleSideScale.value?.setValue(newScaleSizeInCm)
+  }
 }
 
 const faceSideUrl = computed(() => {
@@ -173,16 +186,6 @@ const backSideUrl = computed(() => {
 
 const confirm = async () => {
   store.dispatch('helper/pushModalLoading')
-
-  const getCropImage = async (
-    url: string,
-    refSide: InstanceType<typeof ImageCropArea> | null
-  ) => {
-    if (!url || !refSide) {
-      return null
-    }
-    return refSide.cropImage()
-  }
 
   const toRecord = (side?: Side): SquareCropRecord | null => {
     if (!side) {
@@ -198,10 +201,15 @@ const confirm = async () => {
     }
   }
 
+  const [faceSideCropImg, backSideCropImg] = await Promise.all([
+    refFaceSide.value?.cropImage() ?? null,
+    refBackSide.value?.cropImage() ?? null,
+  ])
+
   await props.afterCropHandler({
     isExchange: isExchange.value,
-    faceSideCropImg: await getCropImage(faceSideUrl.value, refFaceSide.value),
-    backSideCropImg: await getCropImage(backSideUrl.value, refBackSide.value),
+    faceSideCropImg,
+    backSideCropImg,
     faceSideCropImageRecord: toRecord(faceSide.value),
     backSideCropImageRecord: toRecord(backSide.value),
   })

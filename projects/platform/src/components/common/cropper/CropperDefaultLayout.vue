@@ -35,56 +35,43 @@ div
   )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { THEME } from '@/utils/constants'
+import type { CropperConfig } from '@/types'
+import type { FInputSlider } from '@frontier/ui-component'
 
-const props = defineProps({
-  theme: {
-    type: String,
-    default: THEME.LIGHT,
-  },
-  config: {
-    type: Object,
-    required: true,
-  },
-  showScale: {
-    type: Boolean,
-    default: true,
-  },
-  scaleUnit: {
-    type: String,
-    default: '%',
-  },
-  scaleInputStep: {
-    type: Number,
-    default: 1,
-  },
-  scaleRange: {
-    type: Array,
-    default: () => {
+const props = withDefaults(
+  defineProps<{
+    theme?: string
+    showScale?: boolean
+    scaleUnit?: string
+    scaleInputStep?: number
+    scaleRange?: number[]
+    scaleStart?: number
+    scaleInitial?: number
+    rotateStart: number
+    config: CropperConfig
+  }>(),
+  {
+    theme: THEME.LIGHT,
+    showScale: true,
+    scaleUnit: '%',
+    scaleInputStep: 1,
+    scaleRange: () => {
       return [100, 800]
     },
-  },
-  scaleStart: {
-    type: Number,
-  },
-  scaleInitial: {
-    type: Number,
-  },
-  rotateStart: {
-    type: Number,
-  },
-})
+  }
+)
 
-const emit = defineEmits([
-  'update:rotateDeg',
-  'update:scaleRatio',
-  'update:options',
-])
+const emit = defineEmits<{
+  'update:rotateDeg': [val: number]
+  'update:scaleRatio': [val: number]
+  'update:options': [val: CropperConfig]
+}>()
 
-const refScale = ref(null)
-const refRotateDeg = ref(null)
+const refScale = ref<InstanceType<typeof FInputSlider> | null>(null)
+const refRotateDeg = ref<InstanceType<typeof FInputSlider> | null>(null)
 const scaleSetting = {
   step: props.scaleInputStep,
   tooltips: false,
@@ -111,7 +98,9 @@ const innerRotateDeg = computed({
 const formattedScaleValue = computed({
   get: () => scaleValue.value,
   set: (val) => {
-    if (val > props.scaleRange[1] || val < props.scaleRange[0]) return
+    if (val > props.scaleRange[1] || val < props.scaleRange[0]) {
+      return
+    }
     scaleValue.value = val
   },
 })
@@ -119,17 +108,19 @@ const formattedScaleValue = computed({
 const formattedRotateDeg = computed({
   get: () => parseFloat(innerRotateDeg.value.toFixed(2)),
   set: (val) => {
-    if (val.length === 0) return
+    if (val.length === 0) {
+      return
+    }
     innerRotateDeg.value = val
   },
 })
 
 const resetRotate = () => {
-  refRotateDeg.value.reset()
+  refRotateDeg.value?.reset()
 }
 
 const resetScale = () => {
-  refScale.value.reset()
+  refScale.value?.reset()
 }
 
 defineExpose({ resetRotate, resetScale })
