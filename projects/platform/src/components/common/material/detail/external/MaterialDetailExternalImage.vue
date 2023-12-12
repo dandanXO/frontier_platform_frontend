@@ -21,40 +21,34 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
     div(v-if="remainingDistance > 0" class="rwd-right-cover")
     div(
       ref="refSlider"
-      class="tablet:w-16 tablet:h-auto h-16 grid gap-2 tablet:grid-flow-row grid-flow-col content-start transition-all duration-500"
+      class="tablet:w-16 tablet:h-auto h-16 grid gap-2 tablet:grid-flow-row grid-flow-col justify-start content-start transition-all duration-500"
       :style="styleTranslateY"
       @wheel.prevent="wheelHandler"
       @touchstart.prevent="touchstartHandler"
       @touchmove.prevent="touchmoveHandler"
       @touchend.prevent="touchendHandler"
     )
-      div(
-        v-for="(image, index) in displayImageList"
-        :key="image.imgName"
-        class="w-16 h-16 rounded box-border overflow-hidden border-grey-250 bg-grey-100"
-        :class="[currentIndex === index ? 'border-4 border-primary-400' : 'border']"
-        @click.prevent="currentIndex = index"
+      file-thumbnail(
+        v-for="(image, index) in publicFileList"
+        :key="image.displayNameShort"
+        class="w-16 h-16 hover:border-2 hover:border-primary-300"
+        :thumbnailUrl="image.thumbnailUrl"
+        :originalUrl="image.originalUrl"
+        :extension="image.extension"
+        :class="{ 'border-2 border-primary-300': currentIndex === index }"
+        @click="currentIndex = index"
         @touchend.prevent="!isTouchMoving && (currentIndex = index)"
       )
-        img(
-          v-if="!!image.thumbnailUrl"
-          :src="image.thumbnailUrl"
-          class="w-full h-full"
-          v-default-img
-        )
-        div(v-else class="w-full h-full flex items-center justify-center")
-          p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
   div(ref="refImage" class="flex-grow relative aspect-square")
-    img(
-      class="w-full aspect-square overflow-hidden rounded object-cover"
-      :class="{ 'border border-grey-250': !displayImageList[currentIndex].displayUrl }"
-      :src="displayImageList[currentIndex].displayUrl || undefined"
+    file-display(
+      class="w-full h-full"
       :key="currentIndex"
-      v-default-img
+      :displayUrl="publicFileList[currentIndex].displayUrl"
+      :originalUrl="publicFileList[currentIndex].originalUrl"
+      :extension="publicFileList[currentIndex].extension"
     )
     template(v-if="!isMobile")
       button(
-        v-if="!!displayImageList[currentIndex].displayUrl"
         class="absolute w-10 h-10 rounded-full bg-grey-0/80 bottom-5 left-5 flex items-center justify-center cursor-pointer"
         @click="openModalFileViewer"
       )
@@ -77,13 +71,17 @@ import type { Material } from '@frontier/platform-web-sdk'
 import { ref, computed, onMounted } from 'vue'
 import useMaterial from '@/composables/material/useMaterial'
 import { useBreakpoints } from '@frontier/lib'
+import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
+import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
+import { useStore } from 'vuex'
 
 const props = defineProps<{
   material: Material
 }>()
 
+const store = useStore()
 const { isMobile } = useBreakpoints()
-const { displayImageList } = useMaterial(ref(props.material))
+const { publicFileList } = useMaterial(ref(props.material))
 const currentIndex = ref(0)
 
 const refSlider = ref<HTMLDivElement | null>(null)
@@ -110,7 +108,7 @@ const maxElement = computed(() => {
 })
 
 const forward = () => {
-  if (currentIndex.value === displayImageList.value.length - 1) {
+  if (currentIndex.value === publicFileList.value.length - 1) {
     return
   }
   currentIndex.value++
@@ -127,7 +125,7 @@ const backward = () => {
   }
   currentIndex.value--
 
-  if (currentIndex.value < displayImageList.value.length - maxElement.value) {
+  if (currentIndex.value < publicFileList.value.length - maxElement.value) {
     currentTranslate.value = Math.min(
       0,
       currentTranslate.value + ELEMENT_HEIGHT_AND_GAP
@@ -207,5 +205,15 @@ onMounted(() => {
   }
 })
 
-const openModalFileViewer = () => {}
+const openModalFileViewer = () => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: currentIndex,
+        fileList: publicFileList,
+      },
+    },
+  })
+}
 </script>

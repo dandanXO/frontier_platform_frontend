@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-25 relative cursor-pointer" @click="emits('click')")
   div(
-    class="group aspect-square relative w-25 h-25 rounded overflow-hidden border border-grey-300 hover:border-4 hover:border-grey-250"
+    class="group aspect-square relative w-25 h-25 rounded overflow-hidden hover:border-4 hover:border-grey-250"
   )
     div(class="group-hover:visible invisible z-1 absolute inset-0 bg-grey-900/40")
     f-svg-icon(
@@ -9,27 +9,12 @@ div(class="w-25 relative cursor-pointer" @click="emits('click')")
       size="20"
       class="group-hover:visible invisible z-2 absolute top-2 left-2 text-grey-0 cursor-pointer"
     )
-    img(
-      v-if="[PNG, JPEG, JPG, PDF].includes(extension)"
-      :src="thumbnailUrl"
-      class="w-full h-full object-contain"
+    file-thumbnail(
+      class="w-full h-full"
+      :thumbnailUrl="thumbnailUrl"
+      :originalUrl="originalUrl"
+      :extension="extension"
     )
-    div(
-      v-else-if="[GIF, MOV, MP4].includes(extension)"
-      class="relative flex justify-center items-center w-full h-full"
-    )
-      video(class="w-full h-full object-contain")
-        source(:src="thumbnailUrl" type="video/mp4")
-      div(
-        class="absolute w-16 h-16 rounded-full bg-grey-900/70 flex justify-center items-center"
-      )
-        f-svg-icon(iconName="play_arrow" size="40" class="text-grey-0")
-    div(
-      v-else-if="extension === ZIP"
-      class="flex justify-center items-center w-full h-full bg-grey-250"
-    )
-      f-svg-icon(iconName="file_zip" size="40" class="text-grey-0")
-    f-svg-icon(v-else iconName="file" size="50" class="text-grey-0")
   div(class="px-0.5 w-full h-6 flex items-center justify-between")
     div(class="flex flex-row items-center text-grey-900 text-caption")
       div(class="line-clamp-1") {{ displayFileNameExcludeExtension }}
@@ -53,23 +38,24 @@ div(class="w-25 relative cursor-pointer" @click="emits('click')")
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { EXTENSION } from '@frontier/constants'
-import { getFileExtension, getFileNameExcludeExtension } from '@frontier/lib'
+import { getFileNameExcludeExtension } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
+import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
+import type { Extension } from '@frontier/platform-web-sdk'
 
-const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF } = EXTENSION
-
-const props = defineProps<{
-  thumbnailUrl: string
+export interface PropsMaterialFileCard {
+  thumbnailUrl: string | null
+  originalUrl: string | null
+  extension: Extension
   displayFileName: string
   menuTree?: MenuTree
-}>()
+}
+
+const props = defineProps<PropsMaterialFileCard>()
 
 const emits = defineEmits<{
   (e: 'click'): void
 }>()
-
-const extension = computed(() => getFileExtension(props.displayFileName))
 
 const displayFileNameExcludeExtension = computed(() =>
   getFileNameExcludeExtension(props.displayFileName)

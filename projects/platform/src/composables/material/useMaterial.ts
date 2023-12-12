@@ -4,18 +4,15 @@ import {
   type MaterialFaceSide,
   type MaterialMiddleSide,
   MaterialSideType,
+  Extension,
 } from '@frontier/platform-web-sdk'
 import type { ComputedRef, Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EXTENSION, MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
-import { useBreakpoints, getFileExtension } from '@frontier/lib'
-import type {
-  MaterialDisplayImage,
-  MaterialFile,
-  MaterialViewModeFile,
-} from '@/types'
+import { useBreakpoints } from '@frontier/lib'
+import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 
 export type MaterialSpecificationInfo = {
@@ -135,46 +132,66 @@ export default function useMaterial(
    * C: back side original image + ruler image
    * D: multimedia
    *
-   * displayImageList = A + B + C + D
+   * publicFileList = A + B + C + D
    */
-  const displayImageList = computed(() => {
+  const publicFileList = computed(() => {
     const { coverImage, faceSide, backSide, multimediaList } = material.value
 
-    const list: Array<MaterialDisplayImage> = [
+    const list: Array<MaterialFile> = [
       {
         id: 'cover',
+        fileId: null,
         displayUrl: coverImage?.displayUrl ?? null,
+        originalUrl: coverImage.displayUrl ?? null,
         thumbnailUrl: coverImage?.thumbnailUrl ?? null,
-        imgName: t('RR0081'),
+        displayName: t('RR0081'),
+        displayNameShort: t('RR0081'),
         caption: null,
+        extension: Extension.JPG,
       },
       {
         id: 'faceSide',
+        fileId: null,
         displayUrl: faceSide?.sideImage?.displayUrl ?? null,
+        originalUrl: faceSide?.sideImage?.originalUrl ?? null,
         thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
-        imgName: t('RR0075'),
+        displayName: `${t('RR0075')}(${t('RR0081')})`,
+        displayNameShort: t('RR0075'),
         caption: null,
+        extension: Extension.JPG,
       },
       {
         id: 'faceSideRuler',
+        fileId: null,
         displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
+        originalUrl: faceSide?.sideImage?.rulerUrl ?? null,
         thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
-        imgName: t('RR0075'),
+        displayName: t('RR0075'),
+        displayNameShort: t('RR0075'),
         caption: t('RR0080'),
+        extension: Extension.JPG,
       },
       {
         id: 'backSide',
+        fileId: null,
         displayUrl: backSide?.sideImage?.displayUrl ?? null,
+        originalUrl: backSide?.sideImage?.originalUrl ?? null,
         thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
-        imgName: t('RR0078'),
+        displayName: t('RR0078'),
+        displayNameShort: t('RR0078'),
         caption: null,
+        extension: Extension.JPG,
       },
       {
         id: 'backSideRuler',
+        fileId: null,
         displayUrl: backSide?.sideImage?.rulerUrl ?? null,
+        originalUrl: backSide?.sideImage?.rulerUrl ?? null,
         thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
-        imgName: t('RR0078'),
+        displayName: `${t('RR0078')}(${t('RR0081')})`,
+        displayNameShort: t('RR0078'),
         caption: t('RR0080'),
+        extension: Extension.JPG,
       },
     ]
 
@@ -182,98 +199,18 @@ export default function useMaterial(
       list.push(
         ...multimediaList.map((multimedia) => ({
           id: multimedia.fileId,
-          displayUrl: multimedia.displayUrl,
-          thumbnailUrl: multimedia.thumbnailUrl,
-          imgName: multimedia.displayFileName,
-          caption: null,
-        }))
-      )
-
-    return list
-  })
-
-  const publicFileList = computed(() => {
-    const list: Array<MaterialFile> = []
-    const { coverImage, faceSide, backSide, multimediaList } = material.value
-
-    if (coverImage) {
-      list.push({
-        id: 'cover',
-        fileId: null,
-        originalUrl: coverImage.displayUrl || '',
-        thumbnailUrl: coverImage.thumbnailUrl,
-        displayName: t('RR0081'),
-        extension: getFileExtension(coverImage.displayUrl || '') as EXTENSION,
-      })
-    }
-
-    if (faceSide?.sideImage?.originalUrl) {
-      list.push({
-        id: 'faceSide',
-        fileId: null,
-        originalUrl: faceSide.sideImage.originalUrl,
-        thumbnailUrl: faceSide.sideImage.thumbnailUrl,
-        displayName: t('RR0081'),
-        extension: getFileExtension(
-          faceSide.sideImage.originalUrl
-        ) as EXTENSION,
-      })
-    }
-
-    if (faceSide?.sideImage?.rulerUrl) {
-      list.push({
-        id: 'faceSideRuler',
-        fileId: null,
-        originalUrl: faceSide.sideImage.rulerUrl,
-        thumbnailUrl: faceSide.sideImage.rulerThumbnailUrl,
-        displayName: t('RR0081'),
-        extension: getFileExtension(faceSide.sideImage.rulerUrl) as EXTENSION,
-      })
-    }
-
-    if (backSide?.sideImage?.originalUrl) {
-      list.push({
-        id: 'backSide',
-        fileId: null,
-        originalUrl: backSide.sideImage.originalUrl,
-        thumbnailUrl: backSide.sideImage.thumbnailUrl,
-        displayName: t('RR0081'),
-        extension: getFileExtension(
-          backSide.sideImage.originalUrl
-        ) as EXTENSION,
-      })
-    }
-
-    if (backSide?.sideImage?.rulerUrl) {
-      list.push({
-        id: 'backSideRuler',
-        fileId: null,
-        originalUrl: backSide.sideImage.rulerUrl,
-        thumbnailUrl: backSide.sideImage.rulerThumbnailUrl,
-        displayName: t('RR0081'),
-        extension: getFileExtension(backSide.sideImage.rulerUrl) as EXTENSION,
-      })
-    }
-
-    multimediaList.length > 0 &&
-      list.push(
-        ...multimediaList.map((multimedia) => ({
-          id: multimedia.fileId,
           fileId: multimedia.fileId,
+          displayUrl: multimedia.displayUrl,
           originalUrl: multimedia.originalUrl,
           thumbnailUrl: multimedia.thumbnailUrl,
           displayName: multimedia.displayFileName,
-          extension: getFileExtension(multimedia.displayFileName) as EXTENSION,
+          displayNameShort: multimedia.displayFileName,
+          caption: null,
+          extension: multimedia.extension,
         }))
       )
 
     return list
-  })
-
-  const publicFileViewModeList = computed(() => {
-    return publicFileList.value.filter(
-      (f) => !!f.originalUrl
-    ) as MaterialViewModeFile[]
   })
 
   const attachmentViewModeList = computed<MaterialViewModeFile[]>(() => {
@@ -284,10 +221,12 @@ export default function useMaterial(
 
     return attachmentList.map((a) => ({
       id: a.fileId,
+      fileId: a.fileId,
+      displayUrl: a.displayUrl,
       originalUrl: a.originalUrl,
       thumbnailUrl: a.thumbnailUrl,
       displayName: a.displayFileName,
-      extension: a.extension as EXTENSION,
+      extension: a.extension,
     }))
   })
 
@@ -511,9 +450,7 @@ export default function useMaterial(
 
   return {
     primarySideImage,
-    displayImageList,
     publicFileList,
-    publicFileViewModeList,
     attachmentViewModeList,
     currentSide,
     currentSideType,

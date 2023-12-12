@@ -14,26 +14,24 @@ modal-behavior(
     p(class="text-body2 text-grey-900 font-bold") {{ $t('Preview your material image') }}
     div(class="grid grid-flow-col gap-x-2 justify-start")
       template(v-for="image in coverAndSideImageList" :key="image.id")
-        div(class="w-18 flex flex-col items-center gap-y-0.5")
+        div(class="w-25 flex flex-col items-center gap-y-0.5")
           div(
-            class="relative w-18 h-18 rounded border box-border overflow-hidden border-grey-250 bg-grey-100"
+            class="relative w-25 h-25 rounded border box-border overflow-hidden border-grey-250 bg-grey-100"
             @click="handleCoverAndSideImageClick"
           )
-            div(v-if="image.canSetCover" class="absolute right-0 bottom-0")
+            div(v-if="image.canSetCover" class="absolute right-0 bottom-0 z-1")
               f-svg-icon(
                 :class="[image.isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
                 iconName="star"
                 size="24"
                 @click.stop="selectCover(image.id)"
               )
-            img(
-              v-if="!!image.thumbnailUrl"
-              :src="image.thumbnailUrl"
-              class="w-full h-full"
-              v-default-img
+            file-thumbnail(
+              class="w-25 h-25"
+              :thumbnailUrl="image.thumbnailUrl"
+              :originalUrl="null"
+              :extension="image.extension"
             )
-            div(v-else class="w-full h-full flex items-center justify-center")
-              p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
           span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.imgName }}
           span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
     div(class="w-full h-[1px] bg-grey-150")
@@ -58,7 +56,9 @@ modal-behavior(
               :key="multimedia.fileId"
               :isCover="selectedCoverId != null ? selectedCoverId === multimedia.fileId : multimedia.isCover"
               :thumbnailUrl="multimedia.thumbnailUrl"
-              :fileName="multimedia.displayFileName"
+              :originalUrl="multimedia.originalUrl"
+              :extension="multimedia.extension"
+              :displayFileName="multimedia.displayFileName"
               :menuTree="getMultimediaMenuTree(multimedia.fileId)"
               @setCover="selectCover(multimedia.fileId)"
               @edit="startCropMultimedia(multimedia.fileId)"
@@ -74,6 +74,7 @@ import MultimediaCard from '@/components/common/material/multimedia/MultimediaCa
 import useMaterial from '@/composables/material/useMaterial'
 import { COVER_MODE, fileCardDragOptions } from '@/utils/constants'
 import type { CoverId, MaterialMultimediaUpdateService } from '@/types'
+import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 
 const props = defineProps<{
   multimediaUpdateService: MaterialMultimediaUpdateService
@@ -114,7 +115,7 @@ const handleMultimediaListChange = (e: any) => {
   moveMultimedia(element.fileId, newIndex)
 }
 
-const { publicFileViewModeList } = useMaterial(material)
+const { publicFileList } = useMaterial(material)
 
 const openMultimediaViewMode = (index: number) => {
   store.dispatch('helper/pushModal', {
@@ -122,7 +123,7 @@ const openMultimediaViewMode = (index: number) => {
     properties: {
       viewModeService: {
         startIndex: index,
-        fileList: publicFileViewModeList,
+        fileList: publicFileList,
         getMenuTree: getMultimediaMenuTree,
       },
     },

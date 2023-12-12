@@ -19,8 +19,7 @@ div(class="w-full h-full flex justify-center")
         material-detail-image(
           class="w-125 shrink-0"
           canEdit
-          :displayImageList="displayImageList"
-          :viewModeFileList="publicFileViewModeList"
+          :publicFileList="publicFileList"
           :getMenuTree="multimediaUpdateService.getMultimediaMenuTree"
           @editMultimedia="openModalMultimediaUpdate"
           @editScannedImage="openModalScannedImageUpdate"
@@ -202,8 +201,7 @@ const tabList = computed(() => [
   { name: t('Attachments'), id: TAB.ATTACHMENTS },
 ])
 
-const { primarySideImage, displayImageList, publicFileViewModeList } =
-  useMaterial(material)
+const { primarySideImage, publicFileList } = useMaterial(material)
 
 const cropperConfig: CropperConfig = reactive({})
 const isOpenSampleCard = ref(false)

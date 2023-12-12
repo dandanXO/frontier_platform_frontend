@@ -22,13 +22,20 @@ import ViewModeHeader from '@/components/common/material/file/viewMode/ViewModeH
 import ViewModeContent from '@/components/common/material/file/viewMode/ViewModeContent.vue'
 import type { MaterialViewModeFile } from '@/types'
 
-const props = defineProps<{
-  viewModeService: {
-    startIndex: number
-    fileList: ComputedRef<MaterialViewModeFile[]>
-    getMenuTree?: ((id: number | string, theme: THEME) => MenuTree) | null
-  }
-}>()
+interface ViewModeService {
+  startIndex: number
+  fileList: ComputedRef<MaterialViewModeFile[]>
+  getMenuTree?: ((id: number | string, theme: THEME) => MenuTree) | null
+}
+/**
+ * 因為 ModalPipeline 會將 properties 透過 v-bind 解構傳入，而解構會造成響應式失效
+ * 所以多包一層 viewModeService 來解決此問題。
+ */
+export interface PropsModalViewMode {
+  viewModeService: ViewModeService
+}
+
+const props = defineProps<PropsModalViewMode>()
 
 const { startIndex, fileList, getMenuTree } = toRaw(props.viewModeService)
 

@@ -86,7 +86,7 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, bytesToSize, inputRules } from '@frontier/lib'
 import { CREATE_EDIT } from '@/utils/constants'
-import { type UPLOAD_ERROR_CODE, EXTENSION } from '@frontier/constants'
+import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import useNavigation from '@/composables/useNavigation'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import { FInputText } from '@frontier/ui-component'
@@ -98,6 +98,7 @@ import type {
   TrendBoard,
 } from '@frontier/platform-web-sdk'
 import InputTrendBoardUpload from '@/components/common/collection/InputTrendBoardUpload.vue'
+import { Extension } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
   moodboard?: Moodboard
@@ -132,14 +133,14 @@ if (mode.value === CREATE_EDIT.EDIT && moodboard.value) {
 const fileUploadErrorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const attachmentFileAcceptType = [
-  EXTENSION.PDF,
-  EXTENSION.JPG,
-  EXTENSION.JPEG,
-  EXTENSION.PNG,
-  EXTENSION.ZIP,
-  EXTENSION.GIF,
-  EXTENSION.MOV,
-  EXTENSION.MP4,
+  Extension.PDF,
+  Extension.JPG,
+  Extension.JPEG,
+  Extension.PNG,
+  Extension.ZIP,
+  Extension.GIF,
+  Extension.MOV,
+  Extension.MP4,
 ]
 const attachmentFileOperator = new FileOperator(
   attachmentFileAcceptType,

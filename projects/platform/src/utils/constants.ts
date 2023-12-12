@@ -2,9 +2,8 @@ export * from '@frontier/constants'
 import i18n from '@frontier/i18n'
 import { computed } from 'vue'
 import colors from '@frontier/tailwindcss/colors'
-import { WeightUnit } from '@frontier/platform-web-sdk'
+import { WeightUnit, Extension } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
-import { EXTENSION } from '@frontier/constants'
 
 export const ROLE_ID = {
   OWNER: 1,
@@ -75,16 +74,16 @@ export const MATERIAL_PRICING_CURRENCY = {
 }
 
 export const MATERIAL_UPLOAD_FILE_ACCEPT_TYPE = [
-  EXTENSION.PDF,
-  EXTENSION.JPG,
-  EXTENSION.JPEG,
-  EXTENSION.PNG,
-  EXTENSION.ZIP,
-  EXTENSION.GIF,
-  EXTENSION.MOV,
-  EXTENSION.MP4,
-  EXTENSION.SCCH,
-  EXTENSION.YDT,
+  Extension.PDF,
+  Extension.JPG,
+  Extension.JPEG,
+  Extension.PNG,
+  Extension.ZIP,
+  Extension.GIF,
+  Extension.MOV,
+  Extension.MP4,
+  Extension.SCCH,
+  Extension.YDT,
 ]
 
 export const COVER_MODE = {

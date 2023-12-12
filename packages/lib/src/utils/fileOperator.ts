@@ -1,13 +1,14 @@
 import { EventEmitter } from 'events'
-import { UPLOAD_ERROR_CODE, NATIVE_EXTENSION, EXTENSION } from '../constants'
+import { UPLOAD_ERROR_CODE, NATIVE_EXTENSION } from '../constants'
 import JSZip from 'jszip'
+import { Extension } from '@frontier/platform-web-sdk'
 
 export interface UnzippedFile {
   file: JSZip.JSZipObject
   isDir: boolean
   path: string
   content: string
-  extension: EXTENSION
+  extension: Extension
 }
 
 /**
@@ -90,18 +91,18 @@ const previewFile = (file: Blob | string) => {
   a.remove()
 }
 
-const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
+const unzip = async (zipFile: File, parseExtensionTypeList: Extension[]) => {
   const zip = new JSZip()
   const zipData = await zip.loadAsync(zipFile)
 
   return (await Promise.all(
     Object.values(zipData.files).map(async (file) => {
-      let extension: EXTENSION = EXTENSION.FOLDER
+      let extension: Extension = Extension.FOLDER
       const isDir = file.dir
       if (!isDir) {
         const pathSplitList = file.name.split('.')
         const pathSplitLength = pathSplitList.length
-        extension = pathSplitList[pathSplitLength - 1] as EXTENSION
+        extension = pathSplitList[pathSplitLength - 1] as Extension
       }
 
       let content = null
@@ -121,9 +122,9 @@ const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
 const getFileExtension = (filename: string) => {
   const parts = filename.split('.')
   if (parts.length === 1) {
-    return ''
+    throw new Error('unknown file extension')
   }
-  return parts[parts.length - 1]
+  return parts[parts.length - 1] as Extension
 }
 
 const getFileNameExcludeExtension = (filename: string) => {
@@ -132,14 +133,14 @@ const getFileNameExcludeExtension = (filename: string) => {
 }
 
 class FileOperator {
-  validType: EXTENSION[]
+  validType: Extension[]
   acceptedExtension: string
   fileSizeMaxLimit: number
   event: EventEmitter
   eventHash: { [key: string]: any } = {}
 
   constructor(
-    validType: EXTENSION[] = generalImageType,
+    validType: Extension[] = generalImageType,
     fileSizeMaxLimit = 20971520
   ) {
     this.validType = validType

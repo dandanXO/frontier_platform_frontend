@@ -1,7 +1,7 @@
 import { computed, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { EXTENSION, THEME } from '@/utils/constants'
+import { THEME } from '@/utils/constants'
 import {
   NOTIFY_TYPE,
   downloadDataURLFile,
@@ -12,6 +12,7 @@ import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import {
   CoverMode,
+  Extension,
   type CropImageRecord,
   type Material,
   type MultimediaFile,
@@ -51,6 +52,7 @@ const useMultimediaUpdate = (
       isCoverDisplay: boolean
       isCover: boolean
       canSetCover: boolean
+      extension: Extension
     }> = [
       {
         id: 'cover',
@@ -61,6 +63,7 @@ const useMultimediaUpdate = (
         isCoverDisplay: true,
         isCover: false,
         canSetCover: false,
+        extension: Extension.JPG,
       },
       {
         id: 'faceSide',
@@ -76,6 +79,7 @@ const useMultimediaUpdate = (
           return coverImage.mode === CoverMode.FACE
         })(),
         canSetCover: true,
+        extension: Extension.JPG,
       },
       {
         id: 'faceSideRuler',
@@ -86,6 +90,7 @@ const useMultimediaUpdate = (
         isCoverDisplay: false,
         isCover: false,
         canSetCover: false,
+        extension: Extension.JPG,
       },
       {
         id: 'backSide',
@@ -101,6 +106,7 @@ const useMultimediaUpdate = (
           return coverImage.mode === CoverMode.BACK
         })(),
         canSetCover: true,
+        extension: Extension.JPG,
       },
       {
         id: 'backSideRuler',
@@ -111,6 +117,7 @@ const useMultimediaUpdate = (
         isCoverDisplay: false,
         isCover: false,
         canSetCover: false,
+        extension: Extension.JPG,
       },
     ]
     return list
@@ -335,7 +342,7 @@ const useMultimediaUpdate = (
                 clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
-            if (target.extension === EXTENSION.PDF) {
+            if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',

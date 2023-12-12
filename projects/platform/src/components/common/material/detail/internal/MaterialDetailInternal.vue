@@ -211,6 +211,8 @@ div
                 v-for="(attachment, index) in material.internalInfo?.attachmentList"
                 :key="attachment.fileId"
                 :thumbnailUrl="attachment.thumbnailUrl"
+                :originalUrl="attachment.originalUrl"
+                :extension="attachment.extension"
                 :displayFileName="attachment.displayFileName"
                 @click="openAttachmentViewMode(index)"
               )

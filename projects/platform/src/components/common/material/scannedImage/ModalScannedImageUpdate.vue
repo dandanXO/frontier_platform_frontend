@@ -62,9 +62,9 @@ modal-behavior(
 <script setup lang="ts">
 import { computed, ref, toRaw, watch } from 'vue'
 import { useStore } from 'vuex'
-import { MaterialSideType } from '@frontier/platform-web-sdk'
+import { MaterialSideType, Extension } from '@frontier/platform-web-sdk'
 import { useI18n } from 'vue-i18n'
-import { EXTENSION, FileOperator, NOTIFY_TYPE } from '@frontier/lib'
+import { FileOperator, NOTIFY_TYPE } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
 import SideImageRow from './SideImageRow.vue'
 import type { MaterialMultimediaUpdateService } from '@/types'
@@ -78,7 +78,7 @@ const { t } = useI18n()
 const { goToMaterialUpload } = useNavigation()
 
 const fileSizeMaxLimit = 100 * Math.pow(1024, 3)
-const acceptType = [EXTENSION.PNG, EXTENSION.JPEG, EXTENSION.JPG]
+const acceptType = [Extension.PNG, Extension.JPEG, Extension.JPG]
 const faceSideFileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 const backSideFileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 

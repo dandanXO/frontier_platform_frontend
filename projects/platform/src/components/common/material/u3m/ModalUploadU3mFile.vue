@@ -50,9 +50,10 @@ modal-behavior(
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, unzip } from '@frontier/lib'
-import { UPLOAD_ERROR_CODE, EXTENSION, NOTIFY_TYPE } from '@/utils/constants'
+import { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { bytesToSize } from '@frontier/lib'
+import { Extension } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
   uploadedHandler: (payload: {
@@ -66,7 +67,7 @@ const store = useStore()
 
 const errorCode = ref<UPLOAD_ERROR_CODE | string>('')
 const fileSizeMaxLimit = 5 * Math.pow(1024, 3)
-const acceptType = [EXTENSION.ZIP]
+const acceptType = [Extension.ZIP]
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 const customizedErrorMsg = ref('')
 const chooseFile = () => {
@@ -81,11 +82,11 @@ fileOperator.on('finish', async (file: File) => {
   errorCode.value = ''
   customizedErrorMsg.value = ''
   let hasPhysicalData = false
-  const unzippedU3mFileList = await unzip(file, [EXTENSION.U3M])
+  const unzippedU3mFileList = await unzip(file, [Extension.U3M])
 
   try {
     const u3m = unzippedU3mFileList.find(
-      (item) => item.extension === EXTENSION.U3M
+      (item) => item.extension === Extension.U3M
     )
 
     // 1. check if it's valid JSON format

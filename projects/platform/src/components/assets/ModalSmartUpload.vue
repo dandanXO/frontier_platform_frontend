@@ -116,10 +116,10 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
-import { EXTENSION, UPLOAD_ERROR_CODE } from '@frontier/constants'
+import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { useAssetsStore } from '@/stores/assets'
-import type { S3UploadedObject } from '@frontier/platform-web-sdk'
+import { type S3UploadedObject, Extension } from '@frontier/platform-web-sdk'
 
 interface ImageItem {
   file: File
@@ -142,7 +142,7 @@ const removeImage = (imageItem: ImageItem, index: number) => {
 const disabledUpload = computed(() => materialImageList.value.length === 0)
 
 const fileSizeMaxLimit = 100 * Math.pow(1024, 2)
-const acceptType = [EXTENSION.JPG, EXTENSION.JPEG, EXTENSION.PNG]
+const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {

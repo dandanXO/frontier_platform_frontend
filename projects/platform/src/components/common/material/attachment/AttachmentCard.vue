@@ -1,18 +1,17 @@
 <template lang="pug">
 material-file-card(
   :thumbnailUrl="thumbnailUrl"
-  :displayFileName="fileName"
+  :originalUrl="originalUrl"
+  :displayFileName="displayFileName"
+  :extension="extension"
   :menuTree="menuTree"
 )
 </template>
 
 <script setup lang="ts">
-import type { MenuTree } from '@frontier/ui-component'
-import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
+import MaterialFileCard, {
+  type PropsMaterialFileCard,
+} from '@/components/common/material/file/MaterialFileCard.vue'
 
-defineProps<{
-  thumbnailUrl: string
-  fileName: string
-  menuTree?: MenuTree
-}>()
+defineProps<PropsMaterialFileCard>()
 </script>

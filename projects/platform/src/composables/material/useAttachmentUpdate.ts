@@ -1,10 +1,11 @@
 import { computed, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { EXTENSION, NOTIFY_TYPE, THEME } from '@frontier/constants'
+import { NOTIFY_TYPE, THEME } from '@frontier/constants'
 import { downloadDataURLFile, getFileNameExcludeExtension } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
 import type { AttachmentFile, Material } from '@frontier/platform-web-sdk'
+import { Extension } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
@@ -144,7 +145,7 @@ const useAttachmentUpdate = (material: Ref<Material>) => {
                 clickHandler: () => renameAttachmentSelect(id, theme),
               },
             ]
-            if (target.extension === EXTENSION.PDF) {
+            if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',

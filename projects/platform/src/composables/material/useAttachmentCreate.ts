@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import { EXTENSION, NOTIFY_TYPE, THEME } from '@frontier/constants'
+import { NOTIFY_TYPE, THEME } from '@frontier/constants'
 import {
   downloadDataURLFile,
   getFileExtension,
@@ -11,6 +11,7 @@ import {
 import type { MenuTree } from '@frontier/ui-component'
 import type { AttachmentCreateItem } from '@/types'
 import { getPreviewUrl } from '@/utils/pdf'
+import { Extension } from '@frontier/platform-web-sdk'
 
 const useAttachmentCreate = () => {
   const { t } = useI18n()
@@ -28,9 +29,9 @@ const useAttachmentCreate = () => {
       properties: {
         uploadHandler: async (fileList: File[]) => {
           const toAttachment = async (file: File) => {
-            const extension = getFileExtension(file.name) as EXTENSION
+            const extension = getFileExtension(file.name)
             const originalUrl = URL.createObjectURL(file)
-            const thumbnailUrl = await (extension === EXTENSION.PDF
+            const thumbnailUrl = await (extension === Extension.PDF
               ? getPreviewUrl(URL.createObjectURL(file))
               : Promise.resolve(originalUrl))
 
@@ -127,7 +128,7 @@ const useAttachmentCreate = () => {
                 clickHandler: () => renameAttachmentSelect(id, theme),
               },
             ]
-            if (target.extension === EXTENSION.PDF) {
+            if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',

@@ -28,7 +28,9 @@ div(class="flex flex-col gap-y-15")
                 :key="multimedia.id"
                 :isCover="multimedia.isCover"
                 :thumbnailUrl="multimedia.thumbnailUrl"
-                :fileName="multimedia.displayFileName"
+                :originalUrl="multimedia.originalUrl"
+                :extension="multimedia.extension"
+                :displayFileName="multimedia.displayFileName"
                 :menuTree="getMultimediaMenuTree(multimedia.id)"
                 @setCover="setMultimediaAsCover(multimedia.id)"
                 @edit="startCropMultimedia(multimedia.id)"
@@ -111,7 +113,9 @@ div(class="flex flex-col gap-y-15")
               attachment-card(
                 :key="attachment.id"
                 :thumbnailUrl="attachment.thumbnailUrl"
-                :fileName="attachment.displayFileName"
+                :originalUrl="attachment.originalUrl"
+                :displayFileName="attachment.displayFileName"
+                :extension="attachment.extension"
                 :menuTree="getAttachmentMenuTree(attachment.id)"
                 @click="openAttachmentPreview(index)"
               )
@@ -138,7 +142,6 @@ import type {
   MaterialAttachmentCreateService,
   MaterialViewModeFile,
 } from '@/types'
-import { EXTENSION, getFileExtension } from '@frontier/lib'
 
 const u3mSelectService = inject<MaterialU3mSelectService>(
   materialU3mSelectServiceKey
@@ -203,7 +206,7 @@ const multimediaViewModeFileList = computed<MaterialViewModeFile[]>(() =>
     originalUrl: m.originalUrl,
     thumbnailUrl: m.thumbnailUrl,
     displayName: m.displayFileName,
-    extension: getFileExtension(m.displayFileName) as EXTENSION,
+    extension: m.extension,
   }))
 )
 
@@ -213,7 +216,7 @@ const attachmentViewModeFileList = computed<MaterialViewModeFile[]>(() =>
     originalUrl: a.originalUrl,
     thumbnailUrl: a.thumbnailUrl,
     displayName: a.displayFileName,
-    extension: getFileExtension(a.displayFileName) as EXTENSION,
+    extension: a.extension,
   }))
 )
 

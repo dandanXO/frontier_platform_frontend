@@ -3,8 +3,9 @@ import type {
   FolderBookmark,
   WorkflowStage,
   CropImageRecord,
+  Extension,
 } from '@frontier/platform-web-sdk'
-import type { CROP_MODE, EXTENSION, U3M_CUT_SIDE } from '@/utils/constants'
+import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
 import type useU3mSelect from '@/composables/material/useU3mSelect'
@@ -176,7 +177,7 @@ export interface AttachmentCreateItem {
   originalUrl: string
   thumbnailUrl: string
   displayFileName: string
-  extension: EXTENSION
+  extension: Extension
   displayFileNameExcludeExtension: string
 }
 
@@ -186,7 +187,7 @@ export interface MultimediaCreateItem {
   originalUrl: string
   thumbnailUrl: string
   displayFileName: string
-  extension: EXTENSION
+  extension: Extension
   displayFileNameExcludeExtension: string
   isCover: boolean
   // croppedImage: CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null
@@ -204,21 +205,16 @@ export type MaterialFileId =
   | 'backSideRuler'
   | number
 
-export interface MaterialDisplayImage {
-  id: MaterialFileId
-  displayUrl: string | null
-  thumbnailUrl: string | null
-  imgName: string
-  caption: string | null
-}
-
 export interface MaterialFile {
   id: MaterialFileId
   fileId: number | null
+  displayUrl: string | null
   originalUrl: string | null
   thumbnailUrl: string | null
   displayName: string
-  extension: EXTENSION
+  displayNameShort: string
+  caption: string | null
+  extension: Extension
 }
 
 export type MaterialViewModeFile = {
@@ -226,5 +222,5 @@ export type MaterialViewModeFile = {
   originalUrl: string
   thumbnailUrl: string | null
   displayName: string
-  extension: EXTENSION
+  extension: Extension
 }

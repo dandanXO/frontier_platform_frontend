@@ -24,10 +24,10 @@ div
 <script setup lang="ts">
 import { ref } from 'vue'
 import { previewFile } from '@frontier/lib'
-import { type UPLOAD_ERROR_CODE, EXTENSION } from '@frontier/constants'
+import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { defineExpose } from 'vue'
 import { uploadFileToS3 } from '@/utils/fileUpload'
-import type { TrendBoard } from '@frontier/platform-web-sdk'
+import { type TrendBoard, Extension } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
   defaultTrendBoard?: TrendBoard | null
@@ -39,7 +39,7 @@ const emit = defineEmits<{
 
 const isDeleteTrendBoard = ref(false)
 
-const acceptType = [EXTENSION.PDF]
+const acceptType = [Extension.PDF]
 const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 

@@ -24,7 +24,7 @@ modal-behavior(
     f-input-file(
       class="w-full mb-12"
       :label="$t('DD0038')"
-      :acceptType="[EXTENSION.XLSX]"
+      :acceptType="[Extension.XLSX]"
       :maximumSize="fileSizeMaxLimit"
       :text="$t('UU0025')"
       @finish="onFinish"
@@ -53,8 +53,8 @@ import type {
   BatchUploadAssetsMaterialList200Response,
   BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner,
 } from '@frontier/platform-web-sdk'
-import { EXTENSION } from '@frontier/constants'
 import { PROGRESS_TAB } from '@/utils/constants'
+import { Extension } from '@frontier/platform-web-sdk'
 
 const { t, locale } = useI18n()
 const store = useStore()

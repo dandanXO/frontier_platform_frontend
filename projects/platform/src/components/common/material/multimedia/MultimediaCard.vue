@@ -1,7 +1,9 @@
 <template lang="pug">
 material-file-card(
   :thumbnailUrl="thumbnailUrl"
-  :displayFileName="fileName"
+  :originalUrl="originalUrl"
+  :extension="extension"
+  :displayFileName="displayFileName"
   :menuTree="menuTree"
 )
   div(class="flex flex-row gap-x-1 p-1")
@@ -22,11 +24,14 @@ material-file-card(
 <script setup lang="ts">
 import MaterialFileCard from '../file/MaterialFileCard.vue'
 import type { MenuTree } from '@frontier/ui-component'
+import type { Extension } from '@frontier/platform-web-sdk'
 
 defineProps<{
   isCover: boolean
-  thumbnailUrl: string
-  fileName: string
+  thumbnailUrl: string | null
+  originalUrl: string | null
+  extension: Extension
+  displayFileName: string
   menuTree: MenuTree
 }>()
 

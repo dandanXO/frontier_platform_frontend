@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import { EXTENSION, THEME } from '@/utils/constants'
+import { THEME } from '@/utils/constants'
 import {
   NOTIFY_TYPE,
   downloadDataURLFile,
@@ -13,7 +13,7 @@ import type { MenuTree } from '@frontier/ui-component'
 import type { MultimediaCreateItem } from '@/types'
 import { getPreviewUrl } from '@/utils/pdf'
 import { image2Object } from '@/utils/cropper'
-import type { CropImageRecord } from '@frontier/platform-web-sdk'
+import { type CropImageRecord, Extension } from '@frontier/platform-web-sdk'
 
 const useMultimediaCreate = () => {
   const { t } = useI18n()
@@ -33,9 +33,9 @@ const useMultimediaCreate = () => {
           const toMultimedia = async (
             file: File
           ): Promise<MultimediaCreateItem> => {
-            const extension = getFileExtension(file.name) as EXTENSION
+            const extension = getFileExtension(file.name)
             const originalUrl = URL.createObjectURL(file)
-            const thumbnailUrl = await (extension === EXTENSION.PDF
+            const thumbnailUrl = await (extension === Extension.PDF
               ? getPreviewUrl(URL.createObjectURL(file))
               : Promise.resolve(originalUrl))
 
@@ -178,7 +178,7 @@ const useMultimediaCreate = () => {
                 clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
-            if (target.extension === EXTENSION.PDF) {
+            if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',

@@ -27,7 +27,9 @@ div(class="flex flex-col gap-y-7.5")
           attachment-card(
             :key="attachment.id"
             :thumbnailUrl="attachment.thumbnailUrl"
-            :fileName="attachment.displayFileName"
+            :originalUrl="attachment.originalUrl"
+            :displayFileName="attachment.displayFileName"
+            :extension="attachment.extension"
             :menuTree="getAttachmentMenuTree(attachment.fileId)"
             @click="openAttachmentPreview(index)"
           )

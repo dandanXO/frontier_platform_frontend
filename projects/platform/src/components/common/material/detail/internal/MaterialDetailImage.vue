@@ -1,15 +1,13 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-3")
   div(class="w-125 h-125 relative")
-    img(
-      class="w-full h-full overflow-hidden rounded object-cover"
-      :class="{ 'border border-grey-250': !displayImageList[currentDisplayIndex].displayUrl }"
-      :src="displayImageList[currentDisplayIndex].displayUrl || undefined"
-      :key="currentDisplayIndex"
-      v-default-img
+    file-display(
+      class="w-full h-full"
+      :displayUrl="publicFileList[currentDisplayIndex].displayUrl"
+      :originalUrl="publicFileList[currentDisplayIndex].originalUrl"
+      :extension="publicFileList[currentDisplayIndex].extension"
     )
     button(
-      v-if="!!displayImageList[currentDisplayIndex].displayUrl"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-5 flex items-center justify-center cursor-pointer"
       @click="openViewMode"
     )
@@ -29,24 +27,19 @@ div(class="flex flex-col gap-y-3")
   slider(heightLinerBg="h-19.5" :scrollPerItem="5")
     div(class="grid grid-flow-col gap-x-2 justify-start")
       div(
-        v-for="(image, index) in displayImageList"
-        :key="image.imgName"
+        v-for="(image, index) in publicFileList"
+        :key="image.displayNameShort"
         class="w-18 flex flex-col items-center gap-y-0.5"
       )
-        div(
-          class="w-18 h-18 rounded box-border overflow-hidden border-grey-250 bg-grey-100"
-          :class="[currentDisplayIndex === index ? 'border-4 border-primary-400' : 'border']"
+        file-thumbnail(
+          class="w-18 h-18 hover:border-2 hover:border-primary-300"
+          :thumbnailUrl="image.thumbnailUrl"
+          :originalUrl="image.originalUrl"
+          :extension="image.extension"
+          :class="{ 'border-2 border-primary-300': currentDisplayIndex === index }"
           @click="currentDisplayIndex = index"
         )
-          img(
-            v-if="!!image.thumbnailUrl"
-            :src="image.thumbnailUrl"
-            class="w-full h-full"
-            v-default-img
-          )
-          div(v-else class="w-full h-full flex items-center justify-center")
-            p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
-        span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.imgName }}
+        span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.displayNameShort }}
         span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
 </template>
 
@@ -56,12 +49,13 @@ import { useStore } from 'vuex'
 import Slider from '@/components/common/Slider.vue'
 import type { THEME } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
-import type { MaterialDisplayImage, MaterialViewModeFile } from '@/types'
+import type { MaterialFile } from '@/types'
+import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
+import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 
 const props = withDefaults(
   defineProps<{
-    displayImageList: Array<MaterialDisplayImage>
-    viewModeFileList: Array<MaterialViewModeFile>
+    publicFileList: Array<MaterialFile>
     getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
   }>(),
@@ -78,34 +72,14 @@ const emits = defineEmits<{
 const store = useStore()
 
 const currentDisplayIndex = ref(0)
-const currentImage = computed(() => {
-  return props.displayImageList[currentDisplayIndex.value]
-})
-
-const openViewModeFileListIndex = computed(() => {
-  if (!currentImage.value) {
-    return null
-  }
-
-  const targetIndex = props.viewModeFileList.findIndex(
-    (f) => f.id === currentImage.value.id
-  )
-  if (targetIndex == -1) {
-    return null
-  }
-
-  return targetIndex
-})
-
-const viewModeFileList = computed(() => props.viewModeFileList)
 
 const openViewMode = () => {
   store.dispatch('helper/pushModal', {
     component: 'modal-view-mode',
     properties: {
       viewModeService: {
-        startIndex: openViewModeFileListIndex.value,
-        fileList: viewModeFileList,
+        startIndex: currentDisplayIndex.value,
+        fileList: computed(() => props.publicFileList),
         getMenuTree: props.getMenuTree,
       },
     },

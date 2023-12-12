@@ -1,26 +1,30 @@
 <template lang="pug">
-div(
-  class="w-full h-full"
-  @mouseleave.prevent="isOpenMagnifier = false"
-  @touchend.prevent="isOpenMagnifier = false"
-  @mousemove.stop.prevent="moveMagnifier($event)"
-  @touchmove.stop.prevent="moveMagnifier($event)"
-)
-  img(
-    ref="refMagnifierSourceImage"
-    class="w-full h-full rounded-2xl overflow-hidden object-contain"
-    :src="src"
-    @mousemove.prevent="!isOpenMagnifier && openMagnifier($event)"
-    @touchmove.prevent="!isOpenMagnifier && openMagnifier($event)"
+template(v-if="src")
+  div(
+    class="w-full h-full"
+    @mouseleave.prevent="isOpenMagnifier = false"
+    @touchend.prevent="isOpenMagnifier = false"
+    @mousemove.stop.prevent="moveMagnifier($event)"
+    @touchmove.stop.prevent="moveMagnifier($event)"
   )
-  div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
+    img(
+      ref="refMagnifierSourceImage"
+      class="w-full h-full rounded-2xl overflow-hidden object-contain"
+      :src="src"
+      @mousemove.prevent="!isOpenMagnifier && openMagnifier($event)"
+      @touchmove.prevent="!isOpenMagnifier && openMagnifier($event)"
+    )
+    div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
+template(v-else)
+  div(class="w-full h-full flex items-center justify-center bg-grey-100")
+    p(class="text-h4 font-bold text-grey-250") {{ $t('RR0103') }}
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
 
 const props = defineProps<{
-  src: string
+  src: string | null
 }>()
 
 // const hideMagnifier = computed(
