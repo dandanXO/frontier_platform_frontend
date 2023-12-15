@@ -517,7 +517,7 @@ const useMaterialSchema = () => {
         .multipleOf(...getMaxDecimalPlacesParams(3))
         .min(...getMinNumberParams(1))
         .max(...getMaxNumberParams(999)),
-      unit: z.nativeEnum(WeightUnit).default(WeightUnit.OZ),
+      unit: z.nativeEnum(WeightUnit).default(WeightUnit.GSM),
     }),
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
     faceSide: materialSideSchema,
