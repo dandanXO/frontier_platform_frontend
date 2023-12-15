@@ -221,7 +221,10 @@ const useMaterialSchema = () => {
 
   const contentSchema = z.object({
     contentId: z.number().int().nullable(),
-    name: z.string(nonNullParams).max(...getMaxLengthParams(100)),
+    name: z
+      .string(nonNullParams)
+      .nonempty(requiredMessage)
+      .max(...getMaxLengthParams(100)),
     percentage: z
       .number(nonNullParams)
       .min(...getMinNumberParams(1))

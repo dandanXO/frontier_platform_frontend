@@ -28,11 +28,17 @@ const mapMaterialToForm = (
     ...material,
     faceSide: {
       ...material.faceSide,
+      contentList: material.faceSide?.contentList?.length
+        ? material.faceSide.contentList
+        : [{ contentId: null, name: '', percentage: 100 }],
       pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
     },
     middleSide: { ...material.middleSide },
     backSide: {
       ...material.backSide,
+      contentList: material.backSide?.contentList?.length
+        ? material.backSide.contentList
+        : [{ contentId: null, name: '', percentage: 100 }],
       pantoneList: material.backSide?.pantoneList.map((p) => p.name) || [],
     },
     tagInfo: {
