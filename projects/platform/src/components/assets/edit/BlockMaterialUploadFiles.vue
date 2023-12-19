@@ -15,7 +15,6 @@ div(class="flex flex-col gap-y-15")
         div(class="text-caption2 text-grey-600 mt-1")
           p Supported file formats : JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
           p Maximum file size : 20MB (per file)
-          p Remark : The file name of the uploaded supplemental data must not contain any of the following characters \ / ; * ? " |
         div(v-if="multimediaList.length > 0" class="flex flex-wrap gap-5 mt-10")
           draggable(
             class="flex flex-wrap gap-5"
@@ -101,7 +100,6 @@ div(class="flex flex-col gap-y-15")
         div(class="text-caption2 text-grey-600 mt-1")
           p Supported file formats : JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
           p Maximum file size : 20MB (per file)
-          p Remark : The file name of the uploaded supplemental data must not contain any of the following characters \ / ; * ? " |
         div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5 mt-10")
           draggable(
             class="flex flex-wrap gap-5"
