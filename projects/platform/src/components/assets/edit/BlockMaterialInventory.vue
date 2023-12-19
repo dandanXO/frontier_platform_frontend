@@ -374,7 +374,7 @@ const hangersRemainingAllErrors = computed(() => {
       locationError = `Location : ${rowLocationError}`
     }
     if (rowQtyValueError && !qtyInPcsError) {
-      qtyInPcsError = `Quantity : ${rowQtyInPcsError}`
+      qtyInPcsError = `Quantity : ${rowQtyValueError}`
     }
   }
 
