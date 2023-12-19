@@ -4,18 +4,21 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { clone } from 'ramda'
 import {
   MaterialSideType,
+  MaterialType,
+  CurrencyCode,
+  MaterialQuantityUnit,
   type Material,
   type MaterialOptions,
-  MaterialType,
   type PantoneColor,
-  MaterialQuantityUnit,
 } from '@frontier/platform-web-sdk'
 import { CREATE_EDIT } from '@/utils/constants'
-import useMaterialSchema from '@/composables/material/useMaterialSchema'
+import useMaterialSchema, {
+  getDefaults,
+} from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { getInventoryQtyInY } from '@/utils/material'
-import type { z } from 'zod'
+import { z } from 'zod'
 
 configure({ validateOnInput: true })
 
@@ -26,31 +29,65 @@ const mapMaterialToForm = (
 ): z.infer<ReturnType<typeof useMaterialSchema>> => {
   return {
     ...material,
-    faceSide: {
-      ...material.faceSide,
-      contentList: material.faceSide?.contentList?.length
-        ? material.faceSide.contentList
-        : [{ contentId: null, name: '', percentage: 100 }],
-      pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
-    },
+    faceSide: material.faceSide
+      ? {
+          ...material.faceSide,
+          contentList: material.faceSide?.contentList?.length
+            ? material.faceSide.contentList
+            : [{ contentId: null, name: '', percentage: 100 }],
+          pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
+        }
+      : null,
     middleSide: { ...material.middleSide },
-    backSide: {
-      ...material.backSide,
-      contentList: material.backSide?.contentList?.length
-        ? material.backSide.contentList
-        : [{ contentId: null, name: '', percentage: 100 }],
-      pantoneList: material.backSide?.pantoneList.map((p) => p.name) || [],
-    },
+    backSide: material.backSide
+      ? {
+          ...material.backSide,
+          contentList: material.backSide?.contentList?.length
+            ? material.backSide.contentList
+            : [{ contentId: null, name: '', percentage: 100 }],
+          pantoneList: material.backSide?.pantoneList.map((p) => p.name) || [],
+        }
+      : null,
     tagInfo: {
       ...material.tagInfo,
       certificationTagIdList:
         material.tagInfo?.certificationTagList.map((t) => t.certificateId) ||
         [],
     },
-    priceInfo: { ...material.priceInfo },
+    priceInfo: {
+      ...material.priceInfo,
+      pricing: material.priceInfo?.pricing || {
+        currencyCode: CurrencyCode.USD,
+        price: null,
+        unit: MaterialQuantityUnit.Y,
+      },
+      minimumOrder: material.priceInfo?.minimumOrder || {
+        unit: MaterialQuantityUnit.Y,
+        qty: null,
+      },
+      minimumColor: material.priceInfo?.minimumColor || {
+        unit: MaterialQuantityUnit.Y,
+        qty: null,
+      },
+    },
     internalInfo: {
       ...material.internalInfo,
-      priceInfo: { ...material.internalInfo?.priceInfo },
+      priceInfo: {
+        ...material.internalInfo?.priceInfo,
+        pricing: material.internalInfo?.priceInfo?.pricing || {
+          currencyCode: CurrencyCode.USD,
+          price: null,
+          unit: MaterialQuantityUnit.Y,
+        },
+        minimumOrder: material.internalInfo?.priceInfo?.minimumOrder || {
+          unit: MaterialQuantityUnit.Y,
+          qty: null,
+        },
+        minimumColor: material.internalInfo?.priceInfo?.minimumColor || {
+          unit: MaterialQuantityUnit.Y,
+          qty: null,
+        },
+      },
       inventoryInfo: {
         ...material.internalInfo?.inventoryInfo,
         hangersRemainingList: material.internalInfo?.inventoryInfo
@@ -111,6 +148,29 @@ const useMaterialForm = ({
 }) => {
   const materialSchema = useMaterialSchema()
 
+  const materialSchemaWithPreprocess = z.preprocess((val) => {
+    const material = val as z.infer<typeof materialSchema>
+    if (material.isDoubleSide) {
+      if (material.isComposite) {
+        return material
+      } else {
+        return {
+          ...material,
+          backSide: {
+            ...material.backSide,
+            contentList: null,
+          },
+        }
+      }
+    }
+    if (material.sideType === MaterialSideType.FACE_SIDE) {
+      return { ...material, backSide: null }
+    }
+    if (material.sideType === MaterialSideType.BACK_SIDE) {
+      return { ...material, faceSide: null }
+    }
+  }, materialSchema)
+
   const {
     values,
     defineInputBinds,
@@ -122,8 +182,15 @@ const useMaterialForm = ({
     handleSubmit,
     submitCount,
   } = useForm({
-    initialValues: material ? mapMaterialToForm(material) : undefined,
-    validationSchema: toTypedSchema(materialSchema),
+    // initialValues: mapMaterialToForm(material),
+    initialValues: material
+      ? mapMaterialToForm(material)
+      : (getDefaults(materialSchema) as z.infer<
+          ReturnType<typeof useMaterialSchema>
+        >),
+    validationSchema: toTypedSchema(
+      materialSchemaWithPreprocess
+    ) as typeof materialSchema,
   })
 
   const mode = computed(() =>

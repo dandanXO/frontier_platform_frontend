@@ -12,6 +12,39 @@ import {
 const integerOnlyMessage = i18n.global.t('WW0007')
 const requiredMessage = i18n.global.t('WW0002')
 
+// https://github.com/colinhacks/zod/discussions/1953
+export function getDefaults<T extends z.ZodTypeAny>(
+  schema: z.AnyZodObject | z.ZodEffects<any>
+): z.infer<T> {
+  // Check if it's a ZodEffect
+  if (schema instanceof z.ZodEffects) {
+    // Check if it's a recursive ZodEffect
+    if (schema.innerType() instanceof z.ZodEffects)
+      return getDefaults(schema.innerType())
+    // return schema inner shape as a fresh zodObject
+    return getDefaults(z.ZodObject.create(schema.innerType().shape))
+  }
+
+  function getDefaultValue(schema: z.ZodTypeAny): unknown {
+    if (schema instanceof z.ZodDefault) return schema._def.defaultValue()
+    // return an empty array if it is
+    if (schema instanceof z.ZodArray) return []
+    // return an empty string if it is
+    if (schema instanceof z.ZodString) return ''
+    // return an content of object recursivly
+    if (schema instanceof z.ZodObject) return getDefaults(schema)
+
+    if (!('innerType' in schema._def)) return undefined
+    return getDefaultValue(schema._def.innerType)
+  }
+
+  return Object.fromEntries(
+    Object.entries(schema.shape).map(([key, value]) => {
+      return [key, getDefaultValue(value)]
+    })
+  )
+}
+
 const nonNullErrorMap: ZodErrorMap = (_, ctx) => ({
   message: ctx.data == null ? requiredMessage : ctx.defaultError,
 })
@@ -45,252 +78,253 @@ const getMaxDecimalPlacesParams = (dp: number) => {
   return [multipleOf, message] as const
 }
 
-const useMaterialSchema = () => {
-  const featureListSchema = z.array(z.string()).default([])
+const featureListSchema = z.array(z.string()).default([])
 
-  const finishListSchema = z
-    .array(
-      z.object({
-        finishId: z.number().int(integerOnlyMessage).nullable(),
-        name: z
-          .string()
-          .max(...getMaxLengthParams(500))
-          .nullable(),
-      })
-    )
-    .default([])
-
-  const descriptionListSchema = z
-    .array(
-      z.object({
-        descriptionId: z.number().int(integerOnlyMessage).nullable(),
-        name: z
-          .string()
-          .max(...getMaxLengthParams(50))
-          .nullable(),
-      })
-    )
-    .default([])
-
-  const materialWovenConstructionSchema = z.object({
-    isPublic: z.boolean(nonNullParams).default(false),
-    warpDensity: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    weftDensity: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    warpYarnSize: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    weftYarnSize: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-  })
-
-  const materialKnitConstructionSchema = z.object({
-    isPublic: z.boolean(nonNullParams).default(false),
-    machineType: z
-      .string()
-      .max(...getMaxLengthParams(20))
-      .nullable()
-      .default(null),
-    walesPerInch: z
-      .number()
-      .int(integerOnlyMessage)
-      .min(...getMinNumberParams(0))
-      .max(...getMaxNumberParams(999))
-      .nullable()
-      .default(null),
-    coursesPerInch: z
-      .number()
-      .int(integerOnlyMessage)
-      .min(...getMinNumberParams(0))
-      .max(...getMaxNumberParams(999))
-      .nullable()
-      .default(null),
-    yarnSize: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    machineGaugeInGg: z
-      .number()
-      .int(integerOnlyMessage)
-      .min(...getMinNumberParams(0))
-      .max(...getMaxNumberParams(999))
-      .nullable()
-      .default(null),
-  })
-
-  const materialLeatherConstructionSchema = z.object({
-    isPublic: z.boolean(nonNullParams).default(false),
-    averageSkinPerMeterSquare: z
-      .string()
-      .max(...getMaxLengthParams(20))
-      .nullable()
-      .default(null),
-    grade: z
-      .string()
-      .max(...getMaxLengthParams(20))
-      .nullable()
-      .default(null),
-    tannage: z
-      .string()
-      .max(...getMaxLengthParams(20))
-      .nullable()
-      .default(null),
-    thicknessPerMm: z
-      .number()
-      .int(integerOnlyMessage)
-      .min(...getMinNumberParams(0))
-      .max(...getMaxNumberParams(999))
-      .nullable()
-      .default(null),
-  })
-
-  const materialNonWovenConstructionSchema = z.object({
-    isPublic: z.boolean(nonNullParams).default(false),
-    bondingMethod: z
-      .string()
-      .max(...getMaxLengthParams(50))
-      .nullable()
-      .default(null),
-    thicknessPerMm: z
-      .number()
-      .int(integerOnlyMessage)
-      .min(...getMinNumberParams(0))
-      .max(...getMaxNumberParams(999))
-      .nullable()
-      .default(null),
-  })
-
-  const materialTrimConstructionSchema = z.object({
-    isPublic: z.boolean(nonNullParams).default(false),
-    outerDiameter: z
-      .string()
-      .max(...getMaxLengthParams(50))
-      .nullable()
-      .default(null),
-    length: z
-      .string()
-      .max(...getMaxLengthParams(50))
-      .nullable()
-      .default(null),
-    thickness: z
-      .string()
-      .max(...getMaxLengthParams(50))
-      .nullable()
-      .default(null),
-    width: z
-      .string()
-      .max(...getMaxLengthParams(50))
-      .nullable()
-      .default(null),
-  })
-
-  const materialConstructionSchema = materialWovenConstructionSchema
-    .merge(materialKnitConstructionSchema)
-    .merge(materialLeatherConstructionSchema)
-    .merge(materialNonWovenConstructionSchema)
-    .merge(materialTrimConstructionSchema)
-
-  const customPropertyListSchema = z.array(
+const finishListSchema = z
+  .array(
     z.object({
-      isPublic: z.boolean(nonNullParams).default(false),
+      finishId: z.number().int(integerOnlyMessage).nullable(),
       name: z
-        .string(nonNullParams)
-        .nonempty(requiredMessage)
-        .max(...getMaxLengthParams(15))
-        .default(''),
-      value: z
-        .string(nonNullParams)
-        .nonempty(requiredMessage)
-        .max(...getMaxLengthParams(50))
-        .default(''),
+        .string()
+        .max(...getMaxLengthParams(500))
+        .nullable(),
     })
   )
+  .default([])
 
-  const contentSchema = z.object({
-    contentId: z.number().int().nullable(),
+const descriptionListSchema = z
+  .array(
+    z.object({
+      descriptionId: z.number().int(integerOnlyMessage).nullable(),
+      name: z
+        .string()
+        .max(...getMaxLengthParams(50))
+        .nullable(),
+    })
+  )
+  .default([])
+
+const materialWovenConstructionSchema = z.object({
+  isPublic: z.boolean(nonNullParams).default(false),
+  warpDensity: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  weftDensity: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  warpYarnSize: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  weftYarnSize: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+})
+
+const materialKnitConstructionSchema = z.object({
+  isPublic: z.boolean(nonNullParams).default(false),
+  machineType: z
+    .string()
+    .max(...getMaxLengthParams(20))
+    .nullable()
+    .default(null),
+  walesPerInch: z
+    .number()
+    .int(integerOnlyMessage)
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(999))
+    .nullable()
+    .default(null),
+  coursesPerInch: z
+    .number()
+    .int(integerOnlyMessage)
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(999))
+    .nullable()
+    .default(null),
+  yarnSize: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  machineGaugeInGg: z
+    .number()
+    .int(integerOnlyMessage)
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(999))
+    .nullable()
+    .default(null),
+})
+
+const materialLeatherConstructionSchema = z.object({
+  isPublic: z.boolean(nonNullParams).default(false),
+  averageSkinPerMeterSquare: z
+    .string()
+    .max(...getMaxLengthParams(20))
+    .nullable()
+    .default(null),
+  grade: z
+    .string()
+    .max(...getMaxLengthParams(20))
+    .nullable()
+    .default(null),
+  tannage: z
+    .string()
+    .max(...getMaxLengthParams(20))
+    .nullable()
+    .default(null),
+  thicknessPerMm: z
+    .number()
+    .int(integerOnlyMessage)
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(999))
+    .nullable()
+    .default(null),
+})
+
+const materialNonWovenConstructionSchema = z.object({
+  isPublic: z.boolean(nonNullParams).default(false),
+  bondingMethod: z
+    .string()
+    .max(...getMaxLengthParams(50))
+    .nullable()
+    .default(null),
+  thicknessPerMm: z
+    .number()
+    .int(integerOnlyMessage)
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(999))
+    .nullable()
+    .default(null),
+})
+
+const materialTrimConstructionSchema = z.object({
+  isPublic: z.boolean(nonNullParams).default(false),
+  outerDiameter: z
+    .string()
+    .max(...getMaxLengthParams(50))
+    .nullable()
+    .default(null),
+  length: z
+    .string()
+    .max(...getMaxLengthParams(50))
+    .nullable()
+    .default(null),
+  thickness: z
+    .string()
+    .max(...getMaxLengthParams(50))
+    .nullable()
+    .default(null),
+  width: z
+    .string()
+    .max(...getMaxLengthParams(50))
+    .nullable()
+    .default(null),
+})
+
+const materialConstructionSchema = materialWovenConstructionSchema
+  .merge(materialKnitConstructionSchema)
+  .merge(materialLeatherConstructionSchema)
+  .merge(materialNonWovenConstructionSchema)
+  .merge(materialTrimConstructionSchema)
+
+const customPropertyListSchema = z.array(
+  z.object({
+    isPublic: z.boolean(nonNullParams).default(false),
     name: z
       .string(nonNullParams)
       .nonempty(requiredMessage)
-      .max(...getMaxLengthParams(100)),
-    percentage: z
-      .number(nonNullParams)
-      .min(...getMinNumberParams(1))
-      .max(...getMaxNumberParams(100))
-      .multipleOf(...getMaxDecimalPlacesParams(2)),
+      .max(...getMaxLengthParams(15))
+      .default(''),
+    value: z
+      .string(nonNullParams)
+      .nonempty(requiredMessage)
+      .max(...getMaxLengthParams(50))
+      .default(''),
   })
+)
 
-  const materialMiddleSideSchema = z.object({
-    featureList: featureListSchema,
-    finishList: finishListSchema,
+const contentSchema = z.object({
+  contentId: z.number().int().nullable(),
+  name: z
+    .string(nonNullParams)
+    .nonempty(requiredMessage)
+    .max(...getMaxLengthParams(100)),
+  percentage: z
+    .number(nonNullParams)
+    .min(...getMinNumberParams(1))
+    .max(...getMaxNumberParams(100))
+    .multipleOf(...getMaxDecimalPlacesParams(2)),
+})
+
+const materialMiddleSideSchema = z.object({
+  featureList: featureListSchema,
+  finishList: finishListSchema,
+  customPropertyList: customPropertyListSchema.default([]),
+})
+
+export const materialSideSchema = z.object({
+  featureList: featureListSchema,
+  finishList: finishListSchema,
+  materialType: z.nativeEnum(MaterialType).default(MaterialType.WOVEN),
+  descriptionList: descriptionListSchema,
+  construction: materialConstructionSchema,
+  constructionCustomPropertyList: customPropertyListSchema.default([]),
+  contentList: z
+    .array(contentSchema)
+    .refine(
+      (val) => {
+        const contentNameList = val.map((item) => item.name)
+        return new Set(contentNameList).size === contentNameList.length
+      },
+      { message: i18n.global.t('WW0089') }
+    )
+    .refine(
+      (val) => {
+        const total = val.reduce((acc, cur) => {
+          const { percentage = 0 } = cur
+          return acc + Number(percentage)
+        }, 0)
+        return Number(total.toFixed(3)) === 100
+      },
+      { message: i18n.global.t('WW0005') }
+    )
+    .nullable()
+    .default([{ contentId: null, name: '', percentage: 100 }]),
+  patternInfo: z.object({
+    pattern: z
+      .string()
+      .max(...getMaxLengthParams(100))
+      .nullable()
+      .default(null),
     customPropertyList: customPropertyListSchema.default([]),
-  })
+  }),
+  colorInfo: z.object({
+    color: z
+      .string()
+      .max(...getMaxLengthParams(100))
+      .nullable()
+      .default(null),
+    customPropertyList: customPropertyListSchema.default([]),
+  }),
+  pantoneList: z
+    .array(
+      z
+        .string(nonNullParams)
+        .nonempty(requiredMessage)
+        .max(...getMaxLengthParams(20))
+    )
+    .default([]),
+})
 
-  const materialSideSchema = z.object({
-    featureList: featureListSchema,
-    finishList: finishListSchema,
-    materialType: z.nativeEnum(MaterialType).default(MaterialType.WOVEN),
-    descriptionList: descriptionListSchema,
-    construction: materialConstructionSchema,
-    constructionCustomPropertyList: customPropertyListSchema.default([]),
-    contentList: z
-      .array(contentSchema)
-      .refine(
-        (val) => {
-          const contentNameList = val.map((item) => item.name)
-          return new Set(contentNameList).size === contentNameList.length
-        },
-        { message: i18n.global.t('WW0089') }
-      )
-      .refine(
-        (val) => {
-          const total = val.reduce((acc, cur) => {
-            const { percentage = 0 } = cur
-            return acc + Number(percentage)
-          }, 0)
-          return Number(total.toFixed(3)) === 100
-        },
-        { message: i18n.global.t('WW0005') }
-      )
-      .default([{ contentId: null, name: '', percentage: 100 }]),
-    patternInfo: z.object({
-      pattern: z
-        .string()
-        .max(...getMaxLengthParams(100))
-        .nullable()
-        .default(null),
-      customPropertyList: customPropertyListSchema.default([]),
-    }),
-    colorInfo: z.object({
-      color: z
-        .string()
-        .max(...getMaxLengthParams(100))
-        .nullable()
-        .default(null),
-      customPropertyList: customPropertyListSchema.default([]),
-    }),
-    pantoneList: z
-      .array(
-        z
-          .string(nonNullParams)
-          .nonempty(requiredMessage)
-          .max(...getMaxLengthParams(20))
-      )
-      .default([]),
-  })
-
+const useMaterialSchema = () => {
   const materialPriceInfoSchema = z.object({
     countryOfOriginal: z
       .string()
@@ -523,9 +557,15 @@ const useMaterialSchema = () => {
       unit: z.nativeEnum(WeightUnit).default(WeightUnit.GSM),
     }),
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
-    faceSide: materialSideSchema,
-    middleSide: materialMiddleSideSchema,
-    backSide: materialSideSchema,
+    faceSide: materialSideSchema
+      .nullable()
+      .default(getDefaults(materialSideSchema)),
+    middleSide: materialMiddleSideSchema
+      .nullable()
+      .default(getDefaults(materialMiddleSideSchema)),
+    backSide: materialSideSchema
+      .nullable()
+      .default(getDefaults(materialSideSchema)),
     tagInfo: z.object({
       tagList: tagListSchema,
       certificationTagIdList: z.array(z.number().int()).nullable().default([]),

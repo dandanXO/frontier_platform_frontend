@@ -44,12 +44,14 @@ div
           class="w-64"
         )
     face-side-specification(
+      v-if="mode === CREATE_EDIT.CREATE || values.faceSide"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.FACE"
     )
     middle-side-specification(
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.MIDDLE"
     )
     back-side-specification(
+      v-if="mode === CREATE_EDIT.CREATE || values.backSide"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.BACK"
     )
 </template>
@@ -62,6 +64,7 @@ import FaceSideSpecification from '@/components/assets/edit/blockMaterialSpecifi
 import MiddleSideSpecification from '@/components/assets/edit/blockMaterialSpecification/MiddleSideSpecification.vue'
 import BackSideSpecification from '@/components/assets/edit/blockMaterialSpecification/BackSideSpecification.vue'
 import { MATERIAL_SIDE_TYPE, materialFormServiceKey } from '@/utils/constants'
+import { CREATE_EDIT } from '@/utils/constants'
 import type { MaterialFormService } from '@/types'
 
 const { t } = useI18n()
@@ -71,6 +74,7 @@ if (!materialFormService) {
   throw new Error('useMaterialForm is not provided')
 }
 const {
+  mode,
   values,
   currentMaterialSide,
   selectSeason,

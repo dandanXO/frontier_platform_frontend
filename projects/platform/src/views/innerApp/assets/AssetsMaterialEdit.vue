@@ -90,7 +90,11 @@ import { onBeforeRouteLeave } from 'vue-router'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { useAssetsStore } from '@/stores/assets'
-import { OgType, type PantoneColor } from '@frontier/platform-web-sdk'
+import {
+  OgType,
+  type PantoneColor,
+  type UpdateAssetsMaterialRequest,
+} from '@frontier/platform-web-sdk'
 import useMaterialForm from '@/composables/material/useMaterialForm'
 import useU3mSelect from '@/composables/material/useU3mSelect'
 import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
@@ -119,6 +123,10 @@ import type {
   MaterialU3mSelectService,
 } from '@/types'
 import { Cropper } from '@/utils/cropper'
+import {
+  convertInventoryFormToReq,
+  convertPriceInfoFormToReq,
+} from '@/utils/material'
 
 const props = defineProps<{
   materialId: string
@@ -259,12 +267,32 @@ const updateMaterial = async (payload: {
 }) => {
   store.dispatch('helper/pushModalLoading')
   const { form, u3m } = payload
-  const req = {
-    materialId: materialId.value,
-    ...form,
-    hasCustomU3mUploading: u3m != null,
+
+  const getReq = () => {
+    let req: Omit<UpdateAssetsMaterialRequest, 'orgId' | 'ogType' | 'ogId'> = {
+      ...form,
+    }
+
+    req.priceInfo = convertPriceInfoFormToReq(req.priceInfo)
+    if (req.internalInfo) {
+      req.internalInfo.priceInfo = convertPriceInfoFormToReq(
+        req.internalInfo.priceInfo
+      )
+      req.internalInfo.inventoryInfo = convertInventoryFormToReq(
+        req.internalInfo.inventoryInfo
+      )
+    }
+
+    req = {
+      ...req,
+      materialId: materialId.value,
+      hasCustomU3mUploading: u3m != null,
+    }
+
+    return req
   }
-  await ogBaseAssetsApi('updateAssetsMaterial', req)
+
+  await ogBaseAssetsApi('updateAssetsMaterial', getReq())
 
   if (u3m) {
     uploadCustomU3m({

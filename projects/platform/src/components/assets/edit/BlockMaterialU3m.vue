@@ -131,7 +131,9 @@ import { CREATE_EDIT } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import useAssets from '@/composables/useAssets'
 import useMaterial from '@/composables/material/useMaterial'
-import useMaterialSchema from '@/composables/material/useMaterialSchema'
+import useMaterialSchema, {
+  materialSideSchema,
+} from '@/composables/material/useMaterialSchema'
 
 const props = defineProps<{
   material: Material
@@ -155,12 +157,8 @@ const hasFilledRequiredFields = computed(() => {
     itemNo: materialSchema.shape.itemNo,
     width: materialSchema.shape.width,
     weight: materialSchema.shape.weight,
-    faceSide: materialSchema.shape.faceSide
-      .pick({ contentList: true })
-      .nullable(),
-    backSide: materialSchema.shape.faceSide
-      .pick({ contentList: true })
-      .nullable(),
+    faceSide: materialSideSchema.pick({ contentList: true }).nullable(),
+    backSide: materialSideSchema.pick({ contentList: true }).nullable(),
   })
 
   const result = u3mRequiredMaterialSchema.safeParse(material.value)

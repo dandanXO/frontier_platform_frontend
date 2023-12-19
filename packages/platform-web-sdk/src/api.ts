@@ -26080,11 +26080,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {UpdateAssetsMaterialRequest} updateAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterial: async (updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateAssetsMaterial: async (updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateAssetsMaterialRequest' is not null or undefined
+            assertParamExists('updateAssetsMaterial', 'updateAssetsMaterialRequest', updateAssetsMaterialRequest)
             const localVarPath = `/assets/material/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26698,11 +26700,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {UpdateAssetsMaterialRequest} updateAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterial(updateAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -27047,11 +27049,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {UpdateAssetsMaterialRequest} updateAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27435,12 +27437,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * **Access roles:** To be clear define
      * @summary 編輯布料資訊
-     * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+     * @param {UpdateAssetsMaterialRequest} updateAssetsMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

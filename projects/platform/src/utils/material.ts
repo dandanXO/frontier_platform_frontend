@@ -2,6 +2,9 @@ import {
   LengthUnit,
   MaterialQuantityUnit,
   WeightUnit,
+  type MaterialPriceInfo,
+  type MaterialInternalInventoryInfo,
+  type MaterialInternalInventoryInfoSampleCardsRemainingListInner,
 } from '@frontier/platform-web-sdk'
 import { CM_PER_INCH, toDP2 } from './cropper'
 
@@ -56,4 +59,90 @@ export const getInventoryQtyInY = (
 
   const totalInventoryInY = toQtyInY()
   return totalInventoryInY
+}
+
+export const convertInventoryFormToReq = (
+  inventoryInfo: MaterialInternalInventoryInfo
+): MaterialInternalInventoryInfo => {
+  const processRemainingList = (
+    list: MaterialInternalInventoryInfoSampleCardsRemainingListInner[] | null
+  ): MaterialInternalInventoryInfoSampleCardsRemainingListInner[] | null => {
+    if (!list) {
+      return null
+    }
+
+    const haveValues = list.some((h) => {
+      if (
+        h.location ||
+        h.qtyInPcs != null ||
+        h.shelf1 ||
+        h.shelf2 ||
+        h.source
+      ) {
+        return true
+      }
+      return false
+    })
+    return haveValues ? inventoryInfo.hangersRemainingList : null
+  }
+
+  const processYardageRemainingInfo = (
+    info: MaterialInternalInventoryInfo['yardageRemainingInfo']
+  ): MaterialInternalInventoryInfo['yardageRemainingInfo'] => {
+    if (!info) {
+      return null
+    }
+
+    const haveValues = info.list.some((i) => {
+      if (
+        i.location ||
+        i.lot ||
+        i.productionNo ||
+        i.qty != null ||
+        i.roll ||
+        i.shelf1 ||
+        i.shelf2 ||
+        i.source
+      ) {
+        return true
+      }
+      return false
+    })
+
+    return haveValues ? info : null
+  }
+
+  return {
+    isTotalPublic: inventoryInfo.isTotalPublic,
+    hangersRemainingList: processRemainingList(
+      inventoryInfo.hangersRemainingList
+    ),
+    sampleCardsRemainingList: processRemainingList(
+      inventoryInfo.sampleCardsRemainingList
+    ),
+    yardageRemainingInfo: processYardageRemainingInfo(
+      inventoryInfo.yardageRemainingInfo
+    ),
+  }
+}
+
+export const convertPriceInfoFormToReq = (
+  priceInfo: MaterialPriceInfo
+): MaterialPriceInfo => {
+  return {
+    ...priceInfo,
+    pricing: priceInfo.pricing?.price ? priceInfo.pricing : null,
+    minimumColor: priceInfo.minimumColor?.qty
+      ? {
+          qty: priceInfo.minimumColor.qty,
+          unit: priceInfo.minimumColor.unit,
+        }
+      : null,
+    minimumOrder: priceInfo.minimumOrder?.qty
+      ? {
+          qty: priceInfo.minimumOrder.qty,
+          unit: priceInfo.minimumOrder.unit,
+        }
+      : null,
+  }
 }
