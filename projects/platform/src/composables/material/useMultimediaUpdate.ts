@@ -25,11 +25,11 @@ import { useNotifyStore } from '@/stores/notify'
 const useMultimediaUpdate = (
   material: Ref<Material>,
   updatePantoneList: ({
-    faceSidePantoneList,
-    backSidePantoneList,
+    faceSidePantoneNameList,
+    backSidePantoneNameList,
   }: {
-    faceSidePantoneList: string[] | null
-    backSidePantoneList: string[] | null
+    faceSidePantoneNameList: string[] | null
+    backSidePantoneNameList: string[] | null
   }) => void
 ) => {
   const { t } = useI18n()
@@ -409,8 +409,8 @@ const useMultimediaUpdate = (
     material.value.u3m.status = result.u3mStatus
 
     updatePantoneList({
-      faceSidePantoneList: faceSide?.pantoneList?.map((p) => p.name) || [],
-      backSidePantoneList: backSide?.pantoneList?.map((p) => p.name) || [],
+      faceSidePantoneNameList: faceSide?.pantoneList?.map((p) => p.name) || [],
+      backSidePantoneNameList: backSide?.pantoneList?.map((p) => p.name) || [],
     })
 
     store.dispatch('helper/closeModalLoading')
@@ -496,9 +496,9 @@ const useMultimediaUpdate = (
           }
 
           updatePantoneList({
-            faceSidePantoneList:
+            faceSidePantoneNameList:
               faceSideRes?.pantoneList?.map((p) => p.name) || null,
-            backSidePantoneList:
+            backSidePantoneNameList:
               backSideRes?.pantoneList?.map((p) => p.name) || null,
           })
 

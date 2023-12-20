@@ -909,10 +909,10 @@ const showInfoBar = computed(() => {
 
 const pantoneValueDisplayList = computed(() => {
   return (
-    values[props.primarySideType]?.pantoneList?.map((pantoneCode) => {
-      const result = pantoneList?.find((p) => p.name === pantoneCode)
+    values[props.primarySideType]?.pantoneNameList?.map((pantoneName) => {
+      const result = pantoneList?.find((p) => p.name === pantoneName)
       if (!result) {
-        throw new Error(`Pantone ${pantoneCode} not found`)
+        throw new Error(`Pantone ${pantoneName} not found`)
       }
       return result
     }) || []

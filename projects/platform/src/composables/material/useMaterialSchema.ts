@@ -314,7 +314,7 @@ export const materialSideSchema = z.object({
       .default(null),
     customPropertyList: customPropertyListSchema.default([]),
   }),
-  pantoneList: z
+  pantoneNameList: z
     .array(
       z
         .string(nonNullParams)

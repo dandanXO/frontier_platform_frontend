@@ -36,7 +36,8 @@ const mapMaterialToForm = (
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
             : [{ contentId: null, name: '', percentage: 100 }],
-          pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
+          pantoneNameList:
+            material.faceSide?.pantoneList.map((p) => p.name) || [],
         }
       : null,
     backSide: material.backSide
@@ -46,7 +47,8 @@ const mapMaterialToForm = (
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
             : [{ contentId: null, name: '', percentage: 100 }],
-          pantoneList: material.backSide?.pantoneList.map((p) => p.name) || [],
+          pantoneNameList:
+            material.backSide?.pantoneList.map((p) => p.name) || [],
         }
       : null,
     tagInfo: {
@@ -159,7 +161,11 @@ const useMaterialForm = ({
           ...material,
           backSide: {
             ...material.backSide,
-            contentList: null,
+            contentList: material.faceSide?.contentList,
+            materialType: material.faceSide?.materialType,
+            construction: material.faceSide?.construction,
+            constructionCustomPropertyList:
+              material.faceSide?.constructionCustomPropertyList,
           },
         }
       }
@@ -364,7 +370,7 @@ const useMaterialForm = ({
   }
 
   const addPantone = (newPantoneCode: string, sideKey: PrimarySideKey) => {
-    const oldValues = values[sideKey]?.pantoneList || []
+    const oldValues = values[sideKey]?.pantoneNameList || []
 
     if (oldValues.includes(newPantoneCode)) {
       return
@@ -374,29 +380,29 @@ const useMaterialForm = ({
       return
     }
 
-    setFieldValue(`${sideKey}.pantoneList`, [...oldValues, newPantoneCode])
+    setFieldValue(`${sideKey}.pantoneNameList`, [...oldValues, newPantoneCode])
   }
 
   const removePantone = (pantoneCode: string, sideKey: PrimarySideKey) => {
-    const oldValues = values[sideKey]?.pantoneList || []
+    const oldValues = values[sideKey]?.pantoneNameList || []
     setFieldValue(
-      `${sideKey}.pantoneList`,
+      `${sideKey}.pantoneNameList`,
       oldValues.filter((p) => p !== pantoneCode)
     )
   }
 
   const updatePantoneList = ({
-    faceSidePantoneList,
-    backSidePantoneList,
+    faceSidePantoneNameList,
+    backSidePantoneNameList,
   }: {
-    faceSidePantoneList: string[] | null
-    backSidePantoneList: string[] | null
+    faceSidePantoneNameList: string[] | null
+    backSidePantoneNameList: string[] | null
   }) => {
-    if (faceSidePantoneList) {
-      setFieldValue(`faceSide.pantoneList`, faceSidePantoneList)
+    if (faceSidePantoneNameList) {
+      setFieldValue(`faceSide.pantoneNameList`, faceSidePantoneNameList)
     }
-    if (backSidePantoneList) {
-      setFieldValue(`backSide.pantoneList`, backSidePantoneList)
+    if (backSidePantoneNameList) {
+      setFieldValue(`backSide.pantoneNameList`, backSidePantoneNameList)
     }
   }
 

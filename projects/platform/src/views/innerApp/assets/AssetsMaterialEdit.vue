@@ -82,7 +82,7 @@ div(class="w-full h-full flex justify-center")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, provide, watchEffect } from 'vue'
+import { computed, ref, reactive, provide, watchEffect, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -189,7 +189,7 @@ provide(materialU3mSelectServiceKey, u3mSelectService)
 provide(materialMultimediaUpdateServiceKey, multimediaUpdateService)
 provide(materialAttachmentUpdateServiceKey, attachmentUpdateService)
 
-const { meta, handleSubmit } = materialFormService
+const { meta, handleSubmit, validate } = materialFormService
 
 const TAB = {
   SPECIFICATION: 0,
@@ -343,4 +343,8 @@ onBeforeRouteLeave(async () => {
 })
 
 watchEffect(getCropperConfig)
+
+onMounted(() => {
+  validate()
+})
 </script>
