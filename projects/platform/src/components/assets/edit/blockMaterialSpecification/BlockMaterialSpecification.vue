@@ -21,6 +21,7 @@ div
       template(#slot:suffix)
         f-input-switch(
           :inputValue="isSeasonPublic.value"
+          :disabled="!values.seasonInfo.season || values.seasonInfo.year == null"
           @update:inputValue="isSeasonPublic.onInput"
           label="Publish"
           class="w-50"

@@ -322,7 +322,7 @@ div(class="flex flex-col gap-y-7.5")
               class="w-50"
             )
             f-input-switch(
-              :disabled="disableBackSideFields"
+              :disabled="disableBackSideFields || !field.value.name || !field.value.value"
               v-model:inputValue="field.value.isPublic"
               label="Publish"
               class="w-50"
@@ -339,10 +339,6 @@ div(class="flex flex-col gap-y-7.5")
             prependIcon="add"
             @click="() => pushConstructionCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
           ) Add form
-  span(
-    v-for="(error, index) in colorInfoCustomPropertyDisplayErrors"
-    :key="index"
-  ) {{ error }}
   f-input-container(
     v-if="!hideBackSideFields"
     :label="$t('RR0021')"
@@ -386,11 +382,6 @@ div(class="flex flex-col gap-y-7.5")
         :disabled="disableBackSideFields"
         @click="() => pushContentField({ contentId: null, name: null, percentage: null })"
       ) Add form
-      span(
-        v-for="(error, index) in colorInfoCustomPropertyDisplayErrors"
-        :key="index"
-      ) {{ error }}
-
   f-input-container(v-if="showWidthAndWeight" label="Width" required)
     div(class="flex flex-row gap-3")
       f-input-text(
@@ -517,7 +508,7 @@ div(class="flex flex-col gap-y-7.5")
             class="w-50"
           )
           f-input-switch(
-            :disabled="disableBackSideFields"
+            :disabled="disableBackSideFields || !field.value.name || !field.value.value"
             v-model:inputValue="field.value.isPublic"
             label="Publish"
             class="w-50"
@@ -574,7 +565,7 @@ div(class="flex flex-col gap-y-7.5")
             class="w-50"
           )
           f-input-switch(
-            :disabled="disableBackSideFields"
+            :disabled="disableBackSideFields || !field.value.name || !field.value.value"
             v-model:inputValue="field.value.isPublic"
             label="Publish"
             class="w-50"
@@ -591,14 +582,10 @@ div(class="flex flex-col gap-y-7.5")
           prependIcon="add"
           @click="() => pushPatternInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
         ) Add form
-        span(
-          v-for="(error, index) in patternInfoCustomPropertyDisplayErrors"
-          :key="index"
-        ) {{ error }}
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue'
+import { computed, inject, nextTick, ref, watch } from 'vue'
 import { useFieldArray } from 'vee-validate'
 import { useStore } from 'vuex'
 import {
@@ -793,8 +780,30 @@ const {
   fields: constructionCustomPropertyFields,
   push: pushConstructionCustomPropertyField,
   remove: removeConstructionCustomPropertyField,
+  update: updateConstructionCustomPropertyField,
 } = useFieldArray<MaterialPatternCustomPropertyBase>(
   `${props.primarySideType}.constructionCustomPropertyList`
+)
+
+watch(
+  constructionCustomPropertyFields,
+  (fields) => {
+    fields.forEach((field, index) => {
+      if (!field.value.isPublic) {
+        return
+      }
+
+      if (!field.value.name || !field.value.value) {
+        nextTick().then(() => {
+          updateConstructionCustomPropertyField(index, {
+            ...field.value,
+            isPublic: false,
+          })
+        })
+      }
+    })
+  },
+  { deep: true }
 )
 
 const pattern = defineInputBinds(`${props.primarySideType}.patternInfo.pattern`)
@@ -802,46 +811,62 @@ const {
   fields: patternInfoCustomPropertyFields,
   push: pushPatternInfoCustomPropertyField,
   remove: removePatternInfoCustomPropertyField,
+  update: updatePatternInfoCustomPropertyField,
 } = useFieldArray<MaterialPatternCustomPropertyBase>(
   `${props.primarySideType}.patternInfo.customPropertyList`
 )
-const patternInfoCustomPropertyDisplayErrors = computed(() => {
-  const errors = []
-  for (let i = 0; i < patternInfoCustomPropertyFields.value.length; i++) {
-    const fieldError =
-      displayErrors.value[
-        `${props.primarySideType}.patternInfo.customPropertyList[${i}].value`
-      ]
-    if (fieldError) {
-      errors.push(fieldError)
-    }
-  }
 
-  return errors
-})
+watch(
+  patternInfoCustomPropertyFields,
+  (fields) => {
+    fields.forEach((field, index) => {
+      if (!field.value.isPublic) {
+        return
+      }
+
+      if (!field.value.name || !field.value.value) {
+        nextTick().then(() => {
+          updatePatternInfoCustomPropertyField(index, {
+            ...field.value,
+            isPublic: false,
+          })
+        })
+      }
+    })
+  },
+  { deep: true }
+)
 
 const color = defineInputBinds(`${props.primarySideType}.colorInfo.color`)
 const {
   fields: colorInfoCustomPropertyFields,
   push: pushColorInfoCustomPropertyField,
   remove: removeColorInfoCustomPropertyField,
+  update: updateColorInfoCustomPropertyField,
 } = useFieldArray<MaterialPatternCustomPropertyBase>(
   `${props.primarySideType}.colorInfo.customPropertyList`
 )
-const colorInfoCustomPropertyDisplayErrors = computed(() => {
-  const errors = []
-  for (let i = 0; i < patternInfoCustomPropertyFields.value.length; i++) {
-    const fieldError =
-      displayErrors.value[
-        `${props.primarySideType}.colorInfo.customPropertyList[${i}].value`
-      ]
-    if (fieldError) {
-      errors.push(fieldError)
-    }
-  }
 
-  return errors
-})
+watch(
+  colorInfoCustomPropertyFields,
+  (fields) => {
+    fields.forEach((field, index) => {
+      if (!field.value.isPublic) {
+        return
+      }
+
+      if (!field.value.name || !field.value.value) {
+        nextTick().then(() => {
+          updateColorInfoCustomPropertyField(index, {
+            ...field.value,
+            isPublic: false,
+          })
+        })
+      }
+    })
+  },
+  { deep: true }
+)
 
 const pantoneColor = ref<string | null>('')
 

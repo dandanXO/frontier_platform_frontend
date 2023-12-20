@@ -351,6 +351,10 @@ const useMaterialForm = ({
   }
 
   const selectSeason = (name: string) => {
+    if (!name) {
+      setFieldValue('seasonInfo.season', null)
+      return
+    }
     const targetSeason = inputMenu.allSeasonList.value.find(
       (s) => s.name === name
     )
@@ -451,6 +455,20 @@ const useMaterialForm = ({
     () => {
       if (values.isAutoSyncFaceToBackSideInfo) {
         copyFaceSideToBackSide()
+      }
+    },
+    { deep: true }
+  )
+
+  watch(
+    () => values.seasonInfo,
+    (seasonInfo) => {
+      if (!seasonInfo.isPublic) {
+        return
+      }
+
+      if (!seasonInfo.season || seasonInfo.year == null) {
+        setFieldValue('seasonInfo.isPublic', false)
       }
     },
     { deep: true }
