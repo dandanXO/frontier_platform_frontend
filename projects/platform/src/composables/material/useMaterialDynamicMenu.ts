@@ -114,7 +114,7 @@ const useMaterialDynamicMenu = (
       case MaterialType.OTHERS:
         return 'others'
       default:
-        throw new Error('currentSideMaterialType is null')
+        return null
     }
   })
 

@@ -49,6 +49,7 @@ div
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.FACE"
     )
     middle-side-specification(
+      v-if="mode === CREATE_EDIT.CREATE || values.middleSide"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.MIDDLE"
     )
     back-side-specification(

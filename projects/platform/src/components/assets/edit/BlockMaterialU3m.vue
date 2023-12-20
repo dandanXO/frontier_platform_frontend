@@ -157,8 +157,12 @@ const hasFilledRequiredFields = computed(() => {
     itemNo: materialSchema.shape.itemNo,
     width: materialSchema.shape.width,
     weight: materialSchema.shape.weight,
-    faceSide: materialSideSchema.pick({ contentList: true }).nullable(),
-    backSide: materialSideSchema.pick({ contentList: true }).nullable(),
+    faceSide: materialSideSchema
+      .pick({ contentList: true, materialType: true })
+      .nullable(),
+    backSide: materialSideSchema
+      .pick({ contentList: true, materialType: true })
+      .nullable(),
   })
 
   const result = u3mRequiredMaterialSchema.safeParse(material.value)

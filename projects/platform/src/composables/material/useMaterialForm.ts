@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { useForm, configure } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import { z } from 'zod'
 import { clone } from 'ramda'
 import {
   MaterialSideType,
@@ -18,7 +19,6 @@ import useMaterialSchema, {
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { getInventoryQtyInY } from '@/utils/material'
-import { z } from 'zod'
 
 configure({ validateOnInput: true })
 
@@ -32,16 +32,17 @@ const mapMaterialToForm = (
     faceSide: material.faceSide
       ? {
           ...material.faceSide,
+          construction: material.faceSide?.construction ?? {},
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
             : [{ contentId: null, name: '', percentage: 100 }],
           pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
         }
       : null,
-    middleSide: { ...material.middleSide },
     backSide: material.backSide
       ? {
           ...material.backSide,
+          construction: material.backSide?.construction ?? {},
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
             : [{ contentId: null, name: '', percentage: 100 }],

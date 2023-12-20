@@ -53,7 +53,7 @@ div(class="flex flex-col gap-y-7.5")
             class="mt-4"
           )
         div(
-          v-if="[MaterialType.LEATHER, MaterialType.NON_WOVEN, MaterialType.TRIM, MaterialType.OTHERS].includes(values[primarySideType]?.materialType)"
+          v-if="[MaterialType.LEATHER, MaterialType.NON_WOVEN, MaterialType.TRIM, MaterialType.OTHERS].includes(materialTypeValue)"
           class="flex flex-col gap-y-4"
         )
           f-infobar(
@@ -64,7 +64,7 @@ div(class="flex flex-col gap-y-7.5")
             :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
           )
           f-infobar(
-            v-if="values[primarySideType]?.materialType === MaterialType.OTHERS"
+            v-if="materialTypeValue === MaterialType.OTHERS"
             class="w-130"
             :notifyType="NOTIFY_TYPE.INFO"
             :display="DISPLAY.BLOCK"
@@ -72,31 +72,29 @@ div(class="flex flex-col gap-y-7.5")
           )
             p Contact us for asking further material spec fields
             p(class="font-bold text-grey-600") support@frontier.cool
-        f-select-input(
-          :disabled="disableBackSideFields"
-          :selectValue="descriptionList.value"
-          @update:selectValue="descriptionList.onInput"
-          :dropdownMenuTree="specOptions.descriptionList"
-          @addNew="addDescriptionOption($event)"
-          label="Material Description"
-          :placeholder="'Select or enter keywords related to this weaving / type'"
-          :hintError="displayErrors[`${primarySideType}.descriptionList`]"
-          multiple
-          class="w-full"
-        )
-        f-input-container(label="Construction")
-          template(#slot:suffix)
-            f-input-switch(
-              :disabled="disableBackSideFields"
-              :inputValue="constructionIsPublic.value"
-              @update:inputValue="constructionIsPublic.onInput"
-              label="Publish"
-              class="w-50"
-            )
-        div(
-          v-if="values[primarySideType]?.materialType === MaterialType.WOVEN"
-          class="flex flex-col gap-y-4"
-        )
+        template(v-if="materialTypeValue != null")
+          f-select-input(
+            :disabled="disableBackSideFields"
+            :selectValue="descriptionList.value"
+            @update:selectValue="descriptionList.onInput"
+            :dropdownMenuTree="specOptions.descriptionList"
+            @addNew="addDescriptionOption($event)"
+            label="Material Description"
+            :placeholder="'Select or enter keywords related to this weaving / type'"
+            :hintError="displayErrors[`${primarySideType}.descriptionList`]"
+            multiple
+            class="w-full"
+          )
+          f-input-container(label="Construction")
+            template(#slot:suffix)
+              f-input-switch(
+                :disabled="disableBackSideFields"
+                :inputValue="constructionIsPublic.value"
+                @update:inputValue="constructionIsPublic.onInput"
+                label="Publish"
+                class="w-50"
+              )
+        div(v-if="materialTypeValue === MaterialType.WOVEN" class="flex flex-col gap-y-4")
           f-input-container(label="Density (warp ✕ weft)")
             div(class="flex fle-row items-center gap-x-3")
               f-input-text(
@@ -135,10 +133,7 @@ div(class="flex flex-col gap-y-7.5")
                 :placeholder="'Enter your number'"
                 class="w-64"
               )
-        div(
-          v-if="values[primarySideType]?.materialType === MaterialType.KNIT"
-          class="flex flex-col gap-y-4"
-        )
+        div(v-if="materialTypeValue === MaterialType.KNIT" class="flex flex-col gap-y-4")
           div(class="pb-5")
             f-input-text(
               :disabled="disableBackSideFields"
@@ -193,7 +188,7 @@ div(class="flex flex-col gap-y-7.5")
             class="w-70"
           )
         div(
-          v-if="values[primarySideType]?.materialType === MaterialType.LEATHER"
+          v-if="materialTypeValue === MaterialType.LEATHER"
           class="flex flex-col gap-y-2"
         )
           f-input-text(
@@ -238,7 +233,7 @@ div(class="flex flex-col gap-y-7.5")
             class="w-70"
           )
         div(
-          v-if="values[primarySideType]?.materialType === MaterialType.NON_WOVEN"
+          v-if="materialTypeValue === MaterialType.NON_WOVEN"
           class="flex flex-col gap-y-2"
         )
           f-input-text(
@@ -261,10 +256,7 @@ div(class="flex flex-col gap-y-7.5")
             addOnRight="mm"
             class="w-70"
           )
-        div(
-          v-if="values[primarySideType]?.materialType === MaterialType.TRIM"
-          class="flex flex-col gap-y-2"
-        )
+        div(v-if="materialTypeValue === MaterialType.TRIM" class="flex flex-col gap-y-2")
           f-input-text(
             :disabled="disableBackSideFields"
             :textValue="trimConstructionOuterDiameter.value"
@@ -643,6 +635,9 @@ const descriptionList = defineInputBinds(
   `${props.primarySideType}.descriptionList`
 )
 const materialType = defineInputBinds(`${props.primarySideType}.materialType`)
+const materialTypeValue = computed(
+  () => values[props.primarySideType]?.materialType ?? null
+)
 
 const cuttableWidth = defineInputBinds('width.cuttable')
 const fullWidth = defineInputBinds('width.full')
