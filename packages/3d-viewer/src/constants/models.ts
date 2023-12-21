@@ -56,7 +56,7 @@ const MODELS: Model[] = [
   {
     name: 'backpack',
     filePath: baseUrl + 'backpack/scene.glb',
-    coverImg: baseUrl,
+    coverImg: baseUrl + 'backpack/cover.jpg',
     size: 5,
   },
   {
