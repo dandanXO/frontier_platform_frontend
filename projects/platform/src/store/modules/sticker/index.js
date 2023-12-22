@@ -9,7 +9,6 @@ import { useNotifyStore } from '@/stores/notify'
 import { OgType, FeatureType } from '@frontier/platform-web-sdk'
 import router from '@/router'
 import { useOuterStore } from '@/stores/outer'
-import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -165,9 +164,22 @@ export default {
       state.digitalThreadList.unshift(digitalThread)
     },
     SET_drawerOpenFromLocationList(state, drawerOpenFromLocationList) {
-      state.drawerOpenFromLocationList = useStickerLocationList(
-        drawerOpenFromLocationList
-      )
+      const getDrawerOpenFromLocationList = () => {
+        const routePath = router.currentRoute.value.path
+        // 在 public library 第一層 的 material node location 後端回應 null，為了維持資料一致性使用空陣列
+        if (!drawerOpenFromLocationList) {
+          return []
+        }
+        // 若路徑不是 embed, received-share，material node location 或是 material detail breadcrumb 不會包含 location type
+        // => 去除陣列第一個元素
+        if (!routePath.match(/embed|received-share/)) {
+          drawerOpenFromLocationList = drawerOpenFromLocationList.slice(1)
+        }
+        // 從 material node location 或是 material detail breadcrumb 包含 materialNo
+        // 但是 digital thread 的 created from 不需要紀錄 => 去除陣列最後一個元素
+        return drawerOpenFromLocationList.slice(0, -1)
+      }
+      state.drawerOpenFromLocationList = getDrawerOpenFromLocationList()
     },
     SET_drawerOpenFromLocationType(state, drawerOpenFromLocationType = null) {
       if (drawerOpenFromLocationType !== null) {
