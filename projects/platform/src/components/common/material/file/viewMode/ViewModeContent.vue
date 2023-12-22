@@ -21,7 +21,7 @@ div(class="flex-grow relative flex flex-col items-center pt-11.5 gap-y-5")
     )
   div(class="w-full flex gap-x-4 items-center justify-center")
     p(class="text-grey-100 text-h4") {{ file.displayName }}
-    div(v-if="getMenuTree == null")
+    div(v-if="getMenuTree == null && file.originalUrl")
       f-svg-icon(
         class="text-grey-100 cursor-pointer"
         iconName="download"
