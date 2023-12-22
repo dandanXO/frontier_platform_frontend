@@ -1,18 +1,34 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-2.5")
-  div(v-if="mode === CREATE_EDIT.CREATE" class="flex items-center gap-x-6.5")
-    f-button(
-      size="md"
-      :disabled="!hasU3mQuota"
-      @click="openModalUploadU3mFile"
-    ) {{ $t('UU0022') }}
-    f-infobar(
-      v-if="!hasU3mQuota"
-      :display="DISPLAY.FLEX"
-      :notifyType="NOTIFY_TYPE.WARNING"
-      :messageText="$t('WW0094')"
-      :action="{ text: $t('UU0085'), handler: goToBillings }"
+  template(v-if="mode === CREATE_EDIT.CREATE")
+    div(class="flex items-center gap-x-6.5")
+      f-button(
+        size="md"
+        :disabled="!hasU3mQuota"
+        @click="openModalUploadU3mFile()"
+      ) {{ $t('UU0022') }}
+      f-infobar(
+        v-if="!hasU3mQuota"
+        :display="DISPLAY.FLEX"
+        :notifyType="NOTIFY_TYPE.WARNING"
+        :messageText="$t('WW0094')"
+        :action="{ text: $t('UU0085'), handler: goToBillings }"
+      )
+    button(
+      class="border outline-none rounded pt-2 pr-4 pl-3 pb-3.5 w-75.5 flex justify-between items-end"
+      :class="[hasU3mQuota ? 'border-grey-150' : 'border-grey-100']"
+      @click="openModalUploadU3mFile(true)"
     )
+      p(
+        class="text-body2"
+        :class="[hasU3mQuota ? 'text-grey-600 underline' : 'text-grey-250']"
+      ) {{ $t('DD0122') }}
+      a(
+        href="https://www.shimaseiki.com/product/design/software/"
+        target="_blank"
+        @click.stop
+      )
+        img(:src="APEXFIZ" alt="APEXFIZ" class="w-21 h-5")
   template(v-if="mode === CREATE_EDIT.EDIT && status")
     f-button(
       v-if="status === U3M_STATUS.COMPLETED"
@@ -20,20 +36,33 @@ div(class="flex flex-col gap-y-2.5")
       type="text"
       class="self-end"
       prependIcon="rotate_right"
-      @click="openModalUploadU3mFile"
+      @click="openModalUploadU3mFile()"
     ) {{ $t('UU0022') }}
     f-button(
       v-if="status === U3M_STATUS.UNSUCCESSFUL"
       size="md"
       class="self-end"
-      @click="openModalUploadU3mFile"
+      @click="openModalUploadU3mFile()"
     ) {{ $t('UU0022') }}
-    f-button(
+    template(
       v-if="hasU3mQuota && [U3M_STATUS.INITIAL, U3M_STATUS.UNQUALIFIED].includes(status)"
-      size="md"
-      class="self-end"
-      @click="openModalUploadU3mFile"
-    ) {{ $t('UU0022') }}
+    )
+      f-button(size="md" class="self-end" @click="openModalUploadU3mFile()") {{ $t('UU0022') }}
+      button(
+        class="self-end border outline-none rounded pt-2 pr-4 pl-3 pb-3.5 w-75.5 flex justify-between items-end"
+        :class="[hasU3mQuota ? 'border-grey-150' : 'border-grey-100']"
+        @click="openModalUploadU3mFile(true)"
+      )
+        p(
+          class="text-body2"
+          :class="[hasU3mQuota ? 'text-grey-600 underline' : 'text-grey-250']"
+        ) {{ $t('DD0122') }}
+        a(
+          href="https://www.shimaseiki.com/product/design/software/"
+          target="_blank"
+          @click.stop
+        )
+          img(:src="APEXFIZ" alt="APEXFIZ" class="w-21 h-5")
   div(v-if="hasUploadedU3mFile" class="flex flex-col gap-y-2")
     div(class="bg-grey-100 py-3 px-4 flex items-center rounded")
       div(class="bg-grey-150 flex items-center justify-center p-2 rounded")
@@ -58,7 +87,7 @@ div(class="flex flex-col gap-y-2.5")
       class="mt-0.5"
       :notifyType="NOTIFY_TYPE.INFO"
       :title="$t('EE0172')"
-      :messageText="$t('EE0173')"
+      :messageText="$t('EE0173', { PP0001: $t('PP0001') })"
     )
 </template>
 
@@ -73,6 +102,7 @@ import {
 } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import type { MaterialU3mSelectService } from '@/types'
+import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 defineProps<{
   mode: CREATE_EDIT

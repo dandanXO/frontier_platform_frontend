@@ -80,17 +80,31 @@ f-scrollbar-container(class="w-full h-full")
         div(class="pt-26 pb-18")
           div(class="text-h6 font-bold text-grey-600 pb-5") {{ $t('DD0087') }}
           div(class="grid gap-3")
-            div(
+            template(
               v-for="option in alternativeUploadOptions"
-              :key="option.title"
-              class="flex py-6 px-7.5 cursor-pointer border border-grey-250 rounded"
-              :data-cy="option.testId"
-              @click="option.action"
-            )
-              f-svg-icon(:iconName="option.icon" size="32" class="text-primary-400")
-              div(class="grid gap-3 pl-7.5")
-                div(class="text-body1 font-bold text-grey-900") {{ option.title }}
-                div(class="text-caption text-grey-600") {{ option.content }}
+              :key="option.id"
+            ) 
+              div(
+                class="flex py-6 px-7.5 cursor-pointer border border-grey-250 rounded"
+                :data-cy="option.testId"
+                @click="option.action"
+              )
+                f-svg-icon(:iconName="option.icon" size="32" class="text-primary-400")
+                div(class="flex-grow flex justify-between")
+                  div(class="grid gap-3 pl-7.5")
+                    div(class="text-body1 font-bold text-grey-900") {{ option.title }}
+                    div(class="text-caption text-grey-600") {{ option.content }}
+                  div(
+                    v-if="option.id === 'manual-upload'"
+                    class="w-40 border-l border-grey-150 pl-5"
+                  )
+                    p(class="text-caption2/1.3 text-grey-400") {{ $t('DD0120') }}
+                    a(
+                      href="https://www.shimaseiki.com/product/design/software/"
+                      target="_blank"
+                      @click.stop
+                    )
+                      img(:src="APEXFIZ" alt="APEXFIZ" class="w-21")
 </template>
 
 <script setup lang="ts">
@@ -100,6 +114,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import usePrint from '@/composables/material/usePrint'
+import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 const { t } = useI18n()
 const store = useStore()
@@ -120,6 +135,7 @@ const openModalMassUpload = () => {
 }
 const alternativeUploadOptions = [
   {
+    id: 'smart-upload',
     icon: 'image_file',
     title: t('DD0088'),
     content: t('DD0089'),
@@ -127,6 +143,7 @@ const alternativeUploadOptions = [
     testId: 'smart-upload',
   },
   {
+    id: 'manual-upload',
     icon: 'add_box_outline',
     title: t('DD0116'),
     content: t('DD0117'),
@@ -134,6 +151,7 @@ const alternativeUploadOptions = [
     testId: 'manual-upload',
   },
   {
+    id: 'mass-upload',
     icon: 'multiple_file',
     title: t('DD0092'),
     content: t('DD0093'),

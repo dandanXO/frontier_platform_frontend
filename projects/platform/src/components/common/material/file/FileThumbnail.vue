@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="aspect-square relative rounded overflow-hidden"
+  class="aspect-square relative rounded overflow-hidden flex items-center justify-center"
   :class="{ 'border border-grey-250': !!thumbnailUrl || !!originalUrl }"
 )
   template(v-if="[PNG, JPEG, JPG, PDF, GIF].includes(extension)")
@@ -19,6 +19,8 @@ div(
       selfControl
       :canPlay="false"
     )
+  img(v-else-if="extension === YDT" src="@/assets/images/YDT.png")
+  img(v-else-if="extension === SCCH" src="@/assets/images/SCCH.png")
   div(
     v-else-if="extension === ZIP"
     class="flex justify-center items-center w-full h-full bg-grey-250"
@@ -31,7 +33,7 @@ div(
 import { Extension } from '@frontier/platform-web-sdk'
 import VideoView from '@/components/common/material/file/viewMode/VideoView.vue'
 
-const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF } = Extension
+const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF, YDT, SCCH } = Extension
 
 export interface PropsFileThumbnail {
   thumbnailUrl: string | null

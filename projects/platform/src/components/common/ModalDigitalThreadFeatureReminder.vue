@@ -72,7 +72,7 @@ const contentList = computed<Content[]>(
         iconName: 'teams',
         title: t('TT0118'),
         description: t('TT0124'),
-        image: locale.value === 'en-US' ? teams_en : teams_tw,
+        image: locale.value === 'zh-TW' ? teams_tw : teams_en,
       },
       {
         iconName: 'starred',
@@ -84,7 +84,7 @@ const contentList = computed<Content[]>(
         iconName: 'summary',
         title: t('TT0120'),
         description: t('TT0126'),
-        image: locale.value === 'en-US' ? analyze_en : analyze_tw,
+        image: locale.value === 'zh-TW' ? analyze_tw : analyze_en,
       },
     ] as Content[]
 )

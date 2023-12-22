@@ -19,6 +19,14 @@ div(class="w-44 rounded bg-grey-50")
       class="max-h-full max-w-full"
     )
       source(:src="attachment.url" type="video/mp4")
+    img(
+      v-else-if="['.ydt'].includes(attachment.extension)"
+      src="@/assets/images/YDT.png"
+    )
+    img(
+      v-else-if="['.scch'].includes(attachment.extension)"
+      src="@/assets/images/SCCH.png"
+    )
     f-svg-icon(v-else iconName="file" size="50" class="text-grey-50")
   div(class="h-11 flex justify-between items-center px-3 py-4")
     div(class="text-grey-900 text-caption line-clamp-1") {{ attachment.displayFileName }}

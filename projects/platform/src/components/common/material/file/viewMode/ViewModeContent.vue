@@ -67,13 +67,13 @@ defineProps<{
   getMenuTree?: ((id: number | string, theme: THEME) => MenuTree) | null
 }>()
 
-const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF } = Extension
+const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF, YDT, SCCH } = Extension
 
 const fileType = {
   image: [PNG, JPEG, JPG, GIF],
   video: [MOV, MP4],
   pdf: [PDF],
-  others: [ZIP],
+  others: [YDT, SCCH, ZIP],
 }
 </script>
 

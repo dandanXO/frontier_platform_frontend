@@ -41,13 +41,28 @@ div(class="flex flex-col gap-y-15")
         p(class="text-caption text-grey-600") Add pictures, videos, test reports, and other information that can be helpful to the material.
       div(class="flex items-center gap-x-6.5")
         div
-          div
+          div(class="flex flex-col gap-y-1 items-start")
             f-button(
               type="secondary"
               size="md"
               prependIcon="add"
-              @click="openModalUploadU3mFile"
+              @click="openModalUploadU3mFile()"
             ) {{ $t('UU0022') }}
+            button(
+              class="border outline-none rounded pt-2 pr-4 pl-3 pb-3.5 w-75.5 flex justify-between items-end"
+              :class="[hasU3mQuota ? 'border-grey-150' : 'border-grey-100']"
+              @click="openModalUploadU3mFile(true)"
+            )
+              p(
+                class="text-body2"
+                :class="[hasU3mQuota ? 'text-grey-600 underline' : 'text-grey-250']"
+              ) {{ $t('DD0122') }}
+              a(
+                href="https://www.shimaseiki.com/product/design/software/"
+                target="_blank"
+                @click.stop
+              )
+                img(:src="APEXFIZ" alt="APEXFIZ" class="w-21 h-5")
             div(class="text-caption2 text-grey-600 mt-1")
               p Supported file formats : ZIP
               p Maximum file size : 5GB
@@ -140,6 +155,7 @@ import type {
   MaterialAttachmentCreateService,
   MaterialViewModeFile,
 } from '@/types'
+import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 const u3mSelectService = inject<MaterialU3mSelectService>(
   materialU3mSelectServiceKey

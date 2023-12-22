@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="'Upload 3D Material'"
+  :header="$t('DD0123')"
   :secondaryBtnText="$t('UU0002')"
   @click:secondary="closeModalBehavior"
 )
@@ -19,9 +19,12 @@ modal-behavior(
         p {{ customizedErrorMsg }}
         p {{ $t('WW0139') }}
   div(class="w-94 flex flex-col gap-y-2")
-    div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-2")
+    h6(v-if="isShimaseiki" class="text-h6 text-grey-900 font-bold pb-3") {{ $t('DD0124') }}
+    div(class="text-caption/1.6 grid grid-cols-2 grid-rows-2")
       div(class="text-grey-600") {{ $t('RR0243') }}
-      div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
+      div(class="text-grey-900")
+        span(class="font-bold") ZIP &nbsp;
+        span {{ $t('RR0287') }}
       div(class="text-grey-600") {{ $t('RR0145') }}
       div(class="text-grey-900 font-bold") {{ bytesToSize(fileSizeMaxLimit) }}
     div(
@@ -31,7 +34,7 @@ modal-behavior(
       @dragover.prevent
       @dragenter.prevent
     )
-      div(class="w-44 flex flex-col items-center")
+      div(class="flex flex-col items-center")
         f-svg-icon(iconName="cloud_upload" size="60" class="text-primary-400")
         p(class="font-bold text-grey-600 text-body2/1.6") {{ $t('EE0167') }}
         p(class="text-caption/1.6 text-grey-600 py-1") {{ $t('DD0105') }}
@@ -40,6 +43,9 @@ modal-behavior(
           data-cy="modal-smart-upload_browse"
           @click="chooseFile"
         ) {{ $t('UU0025') }}
+        div(v-if="isShimaseiki" class="flex items-end gap-x-1 pt-2")
+          p(class="text-caption/1.3 text-grey-400 relative top-0.5") {{ $t('DD0125') }}
+          img(:src="APEXFIZ" alt="APEXFIZ" class="w-16")
     f-infobar(:notifyType="NOTIFY_TYPE.TIPS")
       i18n-t(keypath="EE0168" class="text-caption text-grey-600/1.6" scope="global")
         template(#UU0078)
@@ -54,8 +60,10 @@ import { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { bytesToSize } from '@frontier/lib'
 import { Extension } from '@frontier/platform-web-sdk'
+import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 const props = defineProps<{
+  isShimaseiki: boolean
   uploadedHandler: (payload: {
     u3mFile: File
     hasPhysicalData: boolean

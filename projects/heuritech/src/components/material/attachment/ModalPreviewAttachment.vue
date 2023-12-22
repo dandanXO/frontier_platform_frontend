@@ -16,6 +16,14 @@ div(class="w-200")
       controls
     )
       source(:src="currentAttachment.url" type="video/mp4")
+    img(
+      v-else-if="['.ydt'].includes(attachment.extension)"
+      src="@/assets/images/YDT.png"
+    )
+    img(
+      v-else-if="['.scch'].includes(attachment.extension)"
+      src="@/assets/images/SCCH.png"
+    )
     f-svg-icon(
       v-else
       :iconName="extensionInfo[currentAttachment.extension].placeholder"
@@ -57,6 +65,8 @@ div(class="w-200")
 
 <script>
 import { ref, computed } from 'vue'
+import SCCH from '@/assets/images/SCCH.png'
+import YDT from '@/assets/images/YDT.png'
 
 export default {
   name: 'ModalPreviewAttachment',
@@ -78,6 +88,8 @@ export default {
       '.png': { placeholder: null, display: 'image' },
       '.jpg': { placeholder: null, display: 'image' },
       '.jpeg': { placeholder: null, display: 'image' },
+      '.scch': { placeholder: SCCH, display: 'thumbnail' },
+      '.ydt': { placeholder: YDT, display: 'thumbnail' },
       '.gif': { placeholder: 'file_gif', display: 'image' },
       '.mov': { placeholder: 'file_mov', display: 'video' },
       '.mp4': { placeholder: 'file_mp4', display: 'video' },

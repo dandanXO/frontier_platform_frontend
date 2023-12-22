@@ -14,10 +14,11 @@ const useU3mSelect = () => {
   const hasUploadedU3mFile = computed(() => u3mFile.value !== null)
   const hasU3mQuota = computed(() => store.getters['polling/hasU3mQuota'])
 
-  const openModalUploadU3mFile = () => {
+  const openModalUploadU3mFile = (isShimaseiki = false) => {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-upload-u3m-file',
       properties: {
+        isShimaseiki,
         uploadedHandler: (payload: {
           u3mFile: File
           hasPhysicalData: boolean
