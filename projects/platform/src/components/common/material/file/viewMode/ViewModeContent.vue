@@ -1,24 +1,34 @@
 <template lang="pug">
-div(class="flex-grow relative flex flex-col items-center pt-11.5 gap-y-5")
-  div(class="w-[min(640px,calc(100vw_-_40px))] aspect-square flex items-center")
-    pdf-view(
-      v-if="fileType.pdf.includes(file.extension)"
-      :key="file.originalUrl"
-      :src="file.originalUrl"
+div(
+  class="flex-grow flex-shrink min-h-0 relative px-5 pt-11.5 pb-15 flex flex-col items-center justify-center"
+)
+  div(
+    ref="refContainer"
+    class="flex-grow flex-shrink min-h-0 overflow-hidden w-full pb-5 flex items-center justify-center"
+  )
+    div(
+      ref="refMainContent"
+      class="w-full h-full flex flex-col items-stretch justify-center"
     )
-    image-view(
-      v-else-if="fileType.image.includes(file.extension)"
-      :src="file.originalUrl"
-    )
-    video-view(
-      v-else-if="fileType.video.includes(file.extension)"
-      :src="file.originalUrl"
-      controls
-    )
-    others-file-view(
-      v-else-if="fileType.others.includes(file.extension)"
-      :extension="file.extension"
-    )
+      div(class="w-full h-full flex items-center justify-center")
+        pdf-view(
+          v-if="fileType.pdf.includes(file.extension)"
+          :key="file.originalUrl"
+          :src="file.originalUrl"
+        )
+        image-view(
+          v-else-if="fileType.image.includes(file.extension)"
+          :src="file.originalUrl"
+        )
+        video-view(
+          v-else-if="fileType.video.includes(file.extension)"
+          :src="file.originalUrl"
+          controls
+        )
+        others-file-view(
+          v-else-if="fileType.others.includes(file.extension)"
+          :extension="file.extension"
+        )
   div(class="w-full flex gap-x-4 items-center justify-center")
     p(class="text-grey-100 text-h4") {{ file.displayName }}
     div(v-if="getMenuTree == null && file.originalUrl")
@@ -51,6 +61,8 @@ div(class="flex-grow relative flex flex-col items-center pt-11.5 gap-y-5")
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import { downloadDataURLFile } from '@frontier/lib'
 import { THEME } from '@frontier/constants'
 import PdfView from '@/components/common/material/file/viewMode/PdfView.vue'
@@ -75,6 +87,22 @@ const fileType = {
   pdf: [PDF],
   others: [YDT, SCCH, ZIP],
 }
+
+const refContainer = ref<HTMLElement>()
+const refMainContent = ref<HTMLElement>()
+
+useResizeObserver(refContainer, (entries) => {
+  if (!refMainContent.value) {
+    return
+  }
+
+  const entry = entries[0]
+  const { width, height } = entry.contentRect
+  const length = Math.min(width, height)
+
+  refMainContent.value.style.width = `${length}px`
+  refMainContent.value.style.height = `${length}px`
+})
 </script>
 
 <style scoped></style>

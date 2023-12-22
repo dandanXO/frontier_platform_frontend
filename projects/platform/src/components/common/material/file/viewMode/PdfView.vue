@@ -1,9 +1,10 @@
 <template lang="pug">
-div(
-  ref="containerRef"
-  class="absolute left-1/2 -translate-x-1/2 w-160 h-160 overflow-scroll"
-)
-  div(class="absolute left-0 top-0")
+div(class="w-full h-full relative rounded overflow-hidden")
+  div(
+    ref="containerRef"
+    class="absolute left-1/2 -translate-x-1/2 w-full h-full overflow-scroll"
+  )
+    div(class="absolute left-0 top-0")
 </template>
 
 <script setup lang="ts">

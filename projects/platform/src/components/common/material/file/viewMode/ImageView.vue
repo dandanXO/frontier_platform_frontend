@@ -1,7 +1,7 @@
 <template lang="pug">
 template(v-if="src")
   div(
-    class="w-full h-full"
+    class="h-full"
     @mouseleave.prevent="isOpenMagnifier = false"
     @touchend.prevent="isOpenMagnifier = false"
     @mousemove.stop.prevent="moveMagnifier($event)"
@@ -16,7 +16,7 @@ template(v-if="src")
     )
     div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
 template(v-else)
-  div(class="w-full h-full flex items-center justify-center bg-grey-100")
+  div(class="w-full h-full rounded-2xl flex items-center justify-center bg-grey-100")
     p(class="text-h4 font-bold text-grey-250") {{ $t('RR0103') }}
 </template>
 
@@ -61,6 +61,7 @@ const openMagnifier = (e) => {
   refMagnifierGlass.value.style.backgroundImage = `url(${props.src})`
   const imgWidth = refMagnifierSourceImage.value.width
   const imgHeight = refMagnifierSourceImage.value.height
+
   refMagnifierGlass.value.style.backgroundSize =
     imgWidth * 3.5 + 'px ' + imgHeight * 3.5 + 'px'
   moveMagnifier(e)
