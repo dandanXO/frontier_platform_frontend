@@ -32,210 +32,216 @@ div(class="flex flex-col gap-y-10")
       :placeholder="$t('DD0022')"
     )
     f-input-container(:label="`${$t('RR0031')}`")
-      div(class="flex flex-col gap-y-3")
+      div(class="flex flex-col gap-y-4")
         div(
           v-for="(field, index) in sampleCardsRemainingFields"
-          class="flex items-center gap-x-3"
+          :key="field.key"
+          class="flex flex-row gap-x-3"
         )
-          f-input-text(
-            v-model:textValue="field.value.source"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].source`])"
-            :label="index === 0 ? 'source' : ''"
-            placeholder="Info"
-            class="w-18"
+          div(
+            class="flex-1 rounded-xl p-7.5 bg-grey-100 flex flex-col items-start gap-y-7.5"
           )
-          f-input-text(
-            v-model:textValue="field.value.qtyInPcs"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].qtyInPcs`])"
-            inputType="number"
-            :label="index === 0 ? 'quantity' : ''"
-            placeholder="1-999"
-            class="w-37"
-            addOnRight="pcs"
-          )
-          div(class="flex flex-row gap-x-1")
             f-input-text(
-              v-model:textValue="field.value.shelf1"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].shelf1`])"
-              :label="index === 0 ? $t('RR0036') : ''"
-              placeholder="Info"
-              class="w-14"
+              class="w-full"
+              v-model:textValue="field.value.source"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].source`]"
+              :label="$t('MI0061')"
+              :placeholder="$t('MI0092')"
             )
             f-input-text(
-              v-model:textValue="field.value.shelf2"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].shelf2`])"
-              :label="index === 0 ? 'Shelf2' : ''"
-              placeholder="Info"
-              class="w-14"
+              class="w-58"
+              v-model:textValue="field.value.qtyInPcs"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].qtyInPcs`]"
+              inputType="number"
+              :label="$t('RR0037')"
+              :placeholder="$t('MI0056')"
+              :addOnRight="$t('RR0307')"
             )
-          f-input-text(
-            v-model:textValue="field.value.location"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].location`])"
-            :label="index === 0 ? $t('RR0032') : ''"
-            placeholder="Enter info"
-            class="w-30"
-          )
-          f-svg-icon(
-            size="20"
-            iconName="delete"
-            class="text-grey-600 cursor-pointer"
-            @click="() => removeSampleCardsRemainingField(index)"
-          )
-        f-svg-icon(
-          size="24"
-          iconName="add"
-          @click="() => pushSampleCardsRemainingField({ qtyInPcs: null, location: null, source: null, shelf1: null, shelf2: null })"
-        )
-      f-infobar(
-        v-if="sampleCardsRemainingAllErrors.length"
-        :notifyType="NOTIFY_TYPE.CRITICAL"
-      )
-        p(v-for="errors in sampleCardsRemainingAllErrors") {{ errors }}
+            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+              div(class="flex flex-row gap-x-3 w-full")
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf1"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].shelf1`]"
+                  :placeholder="$t('MI0093')"
+                )
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf2"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].shelf2`]"
+                  :placeholder="$t('MI0093')"
+                )
+            f-input-text(
+              class="w-full"
+              v-model:textValue="field.value.location"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.sampleCardsRemainingList[${index}].location`]"
+              :label="$t('RR0032')"
+              :placeholder="$t('MI0094')"
+            )
+          div(class="flex justify-center items-center")
+            f-svg-icon(
+              v-if="index === 0"
+              class="text-grey-600 cursor-pointer"
+              size="24"
+              iconName="add_box"
+              @click="pushSampleCardsRemainingField({ qtyInPcs: null, location: null, source: null, shelf1: null, shelf2: null })"
+            )
+            f-svg-icon(
+              v-else
+              class="text-grey-600 cursor-pointer"
+              size="20"
+              iconName="delete"
+              @click="removeSampleCardsRemainingField(index)"
+            )
     f-input-container(:label="`${$t('RR0033')}`")
-      div(class="flex flex-col gap-y-3")
+      div(class="flex flex-col gap-y-4")
         div(
           v-for="(field, index) in hangersRemainingFields"
+          :key="field.key"
           class="flex items-center gap-x-3"
         )
-          f-input-text(
-            v-model:textValue="field.value.source"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].source`])"
-            :label="index === 0 ? 'source' : ''"
-            placeholder="Info"
-            class="w-18"
+          div(
+            class="flex-1 rounded-xl p-7.5 bg-grey-100 flex flex-col items-start gap-y-7.5"
           )
-          f-input-text(
-            v-model:textValue="field.value.qtyInPcs"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].qtyInPcs`])"
-            inputType="number"
-            :label="index === 0 ? 'quantity' : ''"
-            placeholder="1-999"
-            class="w-37"
-            addOnRight="pcs"
-          )
-          div(class="flex flex-row gap-x-1")
             f-input-text(
-              v-model:textValue="field.value.shelf1"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].shelf1`])"
-              :label="index === 0 ? $t('RR0036') : ''"
-              placeholder="Info"
-              class="w-14"
+              class="w-full"
+              v-model:textValue="field.value.source"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].source`]"
+              :label="$t('MI0061')"
+              :placeholder="$t('MI0097')"
             )
             f-input-text(
-              v-model:textValue="field.value.shelf2"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].shelf2`])"
-              :label="index === 0 ? 'Shelf2' : ''"
-              placeholder="Info"
-              class="w-14"
+              class="w-58"
+              v-model:textValue="field.value.qtyInPcs"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].qtyInPcs`]"
+              inputType="number"
+              :label="$t('RR0037')"
+              :placeholder="$t('MI0056')"
+              :addOnRight="$t('RR0307')"
             )
-          f-input-text(
-            v-model:textValue="field.value.location"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].location`])"
-            :label="index === 0 ? $t('RR0032') : ''"
-            placeholder="Enter info"
-            class="w-30"
-          )
-          f-svg-icon(
-            size="20"
-            iconName="delete"
-            class="text-grey-600 cursor-pointer"
-            @click="() => removeHangersRemainingField(index)"
-          )
-        f-svg-icon(
-          size="24"
-          iconName="add"
-          @click="() => pushHangersRemainingField({ qtyInPcs: null, location: null, source: null, shelf1: null, shelf2: null })"
-        )
-      f-infobar(
-        v-if="hangersRemainingAllErrors.length"
-        :notifyType="NOTIFY_TYPE.CRITICAL"
-      )
-        p(v-for="errors in hangersRemainingAllErrors") {{ errors }}
-    f-input-container(:label="$t('DD0023')")
-      div(class="grid gap-y-3")
+            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+              div(class="flex flex-row gap-x-3 w-full")
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf1"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].shelf1`]"
+                  :placeholder="$t('MI0093')"
+                )
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf2"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].shelf2`]"
+                  :placeholder="$t('MI0093')"
+                )
+            f-input-text(
+              class="w-full"
+              v-model:textValue="field.value.location"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.hangersRemainingList[${index}].location`]"
+              :label="$t('RR0032')"
+              :placeholder="$t('MI0094')"
+            )
+          div(class="flex justify-center items-center")
+            f-svg-icon(
+              v-if="index === 0"
+              class="text-grey-600 cursor-pointer"
+              size="24"
+              iconName="add_box"
+              @click="() => pushHangersRemainingField({ qtyInPcs: null, location: null, source: null, shelf1: null, shelf2: null })"
+            )
+            f-svg-icon(
+              v-else
+              class="text-grey-600 cursor-pointer"
+              size="20"
+              iconName="delete"
+              @click="() => removeHangersRemainingField(index)"
+            )
+    f-input-container(:label="$t('RR0296')")
+      div(class="flex flex-col gap-y-4")
         div(
           v-for="(field, index) in yardageRemainingInfoFields"
+          :key="field.key"
           class="flex items-center gap-x-3"
-          :style="{ zIndex: yardageRemainingInfoFields.length - index }"
         )
-          f-input-text(
-            v-model:textValue="field.value.productionNo"
-            :label="index === 0 ? 'production#' : ''"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].productionNo`])"
-            placeholder="Enter info"
-            class="w-40"
+          div(
+            class="flex-1 rounded-xl p-7.5 bg-grey-100 flex flex-col items-start gap-y-7.5"
           )
-          f-input-text(
-            v-model:textValue="field.value.source"
-            :label="index === 0 ? 'source' : ''"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].source`])"
-            placeholder="Info"
-            class="w-18"
-          )
-          f-input-text(
-            v-model:textValue="field.value.roll"
-            :label="index === 0 ? 'Roll#' : ''"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].roll`])"
-            placeholder="Info"
-            class="w-18"
-          )
-          f-input-text(
-            v-model:textValue="field.value.lot"
-            :label="index === 0 ? 'Lot#' : ''"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].lot`])"
-            placeholder="Info"
-            class="w-18"
-          )
-          f-input-text(
-            v-model:textValue="field.value.qty"
-            :label="index === 0 ? 'Quantity' : ''"
-            class="w-40"
-            inputType="number"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].qty`])"
-            placeholder="1-999,999"
-            :rightSelectValue="yardageRemainingInfoUnit.value"
-            @update:rightSelectValue="yardageRemainingInfoUnit.onInput"
-            :rightDropdownOption="inventoryUnitList"
-          )
-            template(#slot:right-dropdown-trigger="{ selectedMenu }")
-              p {{ selectedMenu?.title }}
-          div(class="flex flex-row gap-x-1")
             f-input-text(
-              v-model:textValue="field.value.shelf1"
-              :label="index === 0 ? $t('RR0036') : ''"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].shelf1`])"
-              placeholder="Info"
-              class="w-14"
+              class="w-full"
+              v-model:textValue="field.value.productionNo"
+              :label="$t('MI0062')"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].productionNo`]"
+              :placeholder="$t('MI0095')"
             )
             f-input-text(
-              v-model:textValue="field.value.shelf2"
-              :label="index === 0 ? $t('RR0036') : ''"
-              :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].shelf2`])"
-              placeholder="Info"
-              class="w-14"
+              class="w-full"
+              v-model:textValue="field.value.source"
+              :label="$t('MI0061')"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].source`]"
+              :placeholder="$t('MI0096')"
             )
-          f-input-text(
-            v-model:textValue="field.value.location"
-            :label="index === 0 ? $t('RR0032') : ''"
-            :hintError="Boolean(displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].location`])"
-            placeholder="Enter info"
-            class="w-30"
-          )
-          f-svg-icon(
-            size="24"
-            iconName="delete"
-            @click="() => removeYardageRemainingInfoField(index)"
-          )
-        f-svg-icon(
-          size="24"
-          iconName="add"
-          @click="pushYardageRemainingInfoField({ productionNo: null, location: null, source: null, shelf1: null, shelf2: null, roll: null, lot: null, qty: null })"
-        )
-        f-infobar(
-          v-if="yardageRemainingInfoAllErrors.length"
-          :notifyType="NOTIFY_TYPE.CRITICAL"
-        )
-          p(v-for="errors in yardageRemainingInfoAllErrors") {{ errors }}
+            f-input-text(
+              class="w-58"
+              v-model:textValue="field.value.roll"
+              :label="$t('MI0063')"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].roll`]"
+              :placeholder="$t('MI0098')"
+            )
+            f-input-text(
+              class="w-58"
+              v-model:textValue="field.value.lot"
+              :label="$t('MI0098')"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].lot`]"
+              :placeholder="$t('MI0099')"
+            )
+            f-input-text(
+              v-model:textValue="field.value.qty"
+              :label="$t('RR0037')"
+              class="w-66"
+              inputType="number"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].qty`]"
+              :placeholder="$t('MI0056')"
+              :rightSelectValue="yardageRemainingInfoUnit.value"
+              @update:rightSelectValue="yardageRemainingInfoUnit.onInput"
+              :rightDropdownOption="inventoryUnitList"
+            )
+              template(#slot:right-dropdown-trigger="{ selectedMenu }")
+                p {{ selectedMenu?.title }}
+            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+              div(class="flex flex-row gap-x-3 w-full")
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf1"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].shelf1`]"
+                  :placeholder="$t('MI0093')"
+                )
+                f-input-text(
+                  class="flex-grow"
+                  v-model:textValue="field.value.shelf2"
+                  :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].shelf2`]"
+                  :placeholder="$t('MI0093')"
+                )
+            f-input-text(
+              class="w-full"
+              v-model:textValue="field.value.location"
+              :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].location`]"
+              :label="$t('RR0032')"
+              :placeholder="$t('MI0094')"
+            )
+          div(class="flex justify-center items-center")
+            f-svg-icon(
+              v-if="index === 0"
+              class="text-grey-600 cursor-pointer"
+              size="24"
+              iconName="add_box"
+              @click="pushYardageRemainingInfoField({ productionNo: null, location: null, source: null, shelf1: null, shelf2: null, roll: null, lot: null, qty: null })"
+            )
+            f-svg-icon(
+              v-else
+              class="text-grey-600 cursor-pointer"
+              size="20"
+              iconName="delete"
+              @click="() => removeYardageRemainingInfoField(index)"
+            )
 </template>
 
 <script setup lang="ts">
@@ -275,60 +281,6 @@ const {
   'internalInfo.inventoryInfo.sampleCardsRemainingList'
 )
 
-const sampleCardsRemainingAllErrors = computed(() => {
-  let sourceError: string | null = null
-  let qtyInPcsError: string | null = null
-  let shelf1Error: string | null = null
-  let shelf2Error: string | null = null
-  let locationError: string | null = null
-
-  for (let i = 0; i < sampleCardsRemainingFields.value.length; i++) {
-    const rowSourceError = displayErrors.value[
-      `internalInfo.inventoryInfo.sampleCardsRemainingList[${i}].source`
-    ] as string
-    const rowQtyValueError = displayErrors.value[
-      `internalInfo.inventoryInfo.sampleCardsRemainingList[${i}].qtyInPcs`
-    ] as string
-    const rowShelf1Error = displayErrors.value[
-      `internalInfo.inventoryInfo.sampleCardsRemainingList[${i}].shelf1`
-    ] as string
-    const rowShelf2Error = displayErrors.value[
-      `internalInfo.inventoryInfo.sampleCardsRemainingList[${i}].shelf2`
-    ] as string
-    const rowLocationError = displayErrors.value[
-      `internalInfo.inventoryInfo.sampleCardsRemainingList[${i}].location`
-    ] as string
-
-    if (rowSourceError && !sourceError) {
-      sourceError = rowSourceError
-    }
-    if (rowShelf1Error && !shelf1Error) {
-      shelf1Error = rowShelf1Error
-    }
-    if (rowShelf2Error && !shelf2Error) {
-      shelf2Error = rowShelf2Error
-    }
-    if (rowLocationError && !locationError) {
-      locationError = `Location : ${rowLocationError}`
-    }
-    if (rowQtyValueError && !qtyInPcsError) {
-      qtyInPcsError = `Quantity : ${rowQtyValueError}`
-    }
-  }
-
-  const errorKeys = [
-    sourceError && 'Source',
-    shelf1Error && 'Shelf1',
-    shelf2Error && 'Shelf2',
-  ].filter((e) => !!e)
-
-  const sourceAndShelfError = errorKeys.length
-    ? `${errorKeys.join('/')} : ${sourceError || shelf1Error || shelf2Error}`
-    : null
-
-  return [sourceAndShelfError, locationError, qtyInPcsError].filter((e) => !!e)
-})
-
 const {
   fields: hangersRemainingFields,
   push: pushHangersRemainingField,
@@ -337,60 +289,6 @@ const {
   'internalInfo.inventoryInfo.hangersRemainingList'
 )
 
-const hangersRemainingAllErrors = computed(() => {
-  let sourceError: string | null = null
-  let qtyInPcsError: string | null = null
-  let shelf1Error: string | null = null
-  let shelf2Error: string | null = null
-  let locationError: string | null = null
-
-  for (let i = 0; i < sampleCardsRemainingFields.value.length; i++) {
-    const rowSourceError = displayErrors.value[
-      `internalInfo.inventoryInfo.hangersRemainingList[${i}].source`
-    ] as string
-    const rowQtyValueError = displayErrors.value[
-      `internalInfo.inventoryInfo.hangersRemainingList[${i}].qtyInPcs`
-    ] as string
-    const rowShelf1Error = displayErrors.value[
-      `internalInfo.inventoryInfo.hangersRemainingList[${i}].shelf1`
-    ] as string
-    const rowShelf2Error = displayErrors.value[
-      `internalInfo.inventoryInfo.hangersRemainingList[${i}].shelf2`
-    ] as string
-    const rowLocationError = displayErrors.value[
-      `internalInfo.inventoryInfo.hangersRemainingList[${i}].location`
-    ] as string
-
-    if (rowSourceError && !sourceError) {
-      sourceError = rowSourceError
-    }
-    if (rowShelf1Error && !shelf1Error) {
-      shelf1Error = rowShelf1Error
-    }
-    if (rowShelf2Error && !shelf2Error) {
-      shelf2Error = rowShelf2Error
-    }
-    if (rowLocationError && !locationError) {
-      locationError = `Location : ${rowLocationError}`
-    }
-    if (rowQtyValueError && !qtyInPcsError) {
-      qtyInPcsError = `Quantity : ${rowQtyValueError}`
-    }
-  }
-
-  const errorKeys = [
-    sourceError && 'Source',
-    shelf1Error && 'Shelf1',
-    shelf2Error && 'Shelf2',
-  ].filter((e) => !!e)
-
-  const sourceAndShelfError = errorKeys.length
-    ? `${errorKeys.join('/')} : ${sourceError || shelf1Error || shelf2Error}`
-    : null
-
-  return [sourceAndShelfError, locationError, qtyInPcsError].filter((e) => !!e)
-})
-
 const {
   fields: yardageRemainingInfoFields,
   push: pushYardageRemainingInfoField,
@@ -398,88 +296,4 @@ const {
 } = useFieldArray<MaterialInternalInventoryInfoYardageRemainingInfo['list'][0]>(
   'internalInfo.inventoryInfo.yardageRemainingInfo.list'
 )
-
-const yardageRemainingInfoAllErrors = computed(() => {
-  let productionNoError: string | null = null
-  let sourceError: string | null = null
-  let rollError: string | null = null
-  let lotError: string | null = null
-  let qtyValueError: string | null = null
-  let shelf1Error: string | null = null
-  let shelf2Error: string | null = null
-  let locationError: string | null = null
-
-  for (let i = 0; i < sampleCardsRemainingFields.value.length; i++) {
-    const rowProductionNoError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].productionNo`
-    ] as string
-    const rowSourceError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].source`
-    ] as string
-    const rowRollError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].roll`
-    ] as string
-    const rowLotError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].lot`
-    ] as string
-    const rowQtyValueError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].qty`
-    ] as string
-    const rowShelf1Error = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].shelf1`
-    ] as string
-    const rowShelf2Error = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].shelf2`
-    ] as string
-    const rowLocationError = displayErrors.value[
-      `internalInfo.inventoryInfo.yardageRemainingInfo.list[${i}].location`
-    ] as string
-
-    if (rowProductionNoError && !productionNoError) {
-      productionNoError = `Production#: ${rowProductionNoError}`
-    }
-    if (rowSourceError && !sourceError) {
-      sourceError = rowSourceError
-    }
-    if (rowRollError && !rollError) {
-      rollError = rowRollError
-    }
-    if (rowLotError && !lotError) {
-      lotError = rowLotError
-    }
-    if (rowShelf1Error && !shelf1Error) {
-      shelf1Error = rowShelf1Error
-    }
-    if (rowShelf2Error && !shelf2Error) {
-      shelf2Error = rowShelf2Error
-    }
-    if (rowLocationError && !locationError) {
-      locationError = `Location : ${rowLocationError}`
-    }
-    if (rowQtyValueError && !qtyValueError) {
-      qtyValueError = `Quantity : ${rowQtyValueError}`
-    }
-  }
-
-  const errorKeys = [
-    sourceError && 'Source',
-    rollError && 'Roll#',
-    lotError && 'Lot#',
-    shelf1Error && 'Shelf1',
-    shelf2Error && 'Shelf2',
-  ].filter((e) => !!e)
-
-  const sourceRollLotShelfError = errorKeys.length
-    ? `${errorKeys.join('/')} : ${
-        sourceError || rollError || lotError || shelf1Error || shelf2Error
-      }`
-    : null
-
-  return [
-    sourceRollLotShelfError,
-    productionNoError,
-    locationError,
-    qtyValueError,
-  ].filter((e) => !!e)
-})
 </script>
