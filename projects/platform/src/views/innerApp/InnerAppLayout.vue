@@ -17,7 +17,7 @@ div(class="h-full flex overflow-x-hidden")
   main(class="flex-grow relative flex flex-col")
     router-view(
       v-if="isReloadInnerApp"
-      :key="$route.name + $route.params.ogKey"
+      :key="$route.name + $route.path"
       v-slot="{ Component }"
       class="overflow-y-auto flex-grow"
     )

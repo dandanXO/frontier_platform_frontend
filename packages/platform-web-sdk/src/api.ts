@@ -8124,11 +8124,189 @@ export interface GetOnlineSpreadSheetProgressList200ResponseAllOfResult {
     'progressList': Array<ProgressOnlineSpreadSheetItem>;
     /**
      * 
-     * @type {GetExcelProgressList200ResponseAllOfResultPagination}
+     * @type {GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination}
      * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResult
      */
-    'pagination': GetExcelProgressList200ResponseAllOfResultPagination;
+    'pagination': GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination;
 }
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+ */
+export interface GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+     */
+    'currentPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+     */
+    'totalCount': number;
+    /**
+     * 1: newest first 2: oldest first 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPagination
+     */
+    'sort': GetOnlineSpreadSheetProgressList200ResponseAllOfResultPaginationSortEnum;
+}
+
+export const GetOnlineSpreadSheetProgressList200ResponseAllOfResultPaginationSortEnum = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4
+} as const;
+
+export type GetOnlineSpreadSheetProgressList200ResponseAllOfResultPaginationSortEnum = typeof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPaginationSortEnum[keyof typeof GetOnlineSpreadSheetProgressList200ResponseAllOfResultPaginationSortEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressListRequest
+ */
+export interface GetOnlineSpreadSheetProgressListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'status': ProgressStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
+     * @memberof GetOnlineSpreadSheetProgressListRequest
+     */
+    'pagination': GetOnlineSpreadSheetProgressListRequestAllOfPagination;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressListRequestAllOf
+ */
+export interface GetOnlineSpreadSheetProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
+     */
+    'status': ProgressStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
+     */
+    'pagination': GetOnlineSpreadSheetProgressListRequestAllOfPagination;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetOnlineSpreadSheetProgressListRequestAllOfPagination
+ */
+export interface GetOnlineSpreadSheetProgressListRequestAllOfPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOfPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOfPagination
+     */
+    'targetPage': number;
+    /**
+     * 1: newest first 2: oldest first 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 
+     * @type {number}
+     * @memberof GetOnlineSpreadSheetProgressListRequestAllOfPagination
+     */
+    'sort': GetOnlineSpreadSheetProgressListRequestAllOfPaginationSortEnum;
+}
+
+export const GetOnlineSpreadSheetProgressListRequestAllOfPaginationSortEnum = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4
+} as const;
+
+export type GetOnlineSpreadSheetProgressListRequestAllOfPaginationSortEnum = typeof GetOnlineSpreadSheetProgressListRequestAllOfPaginationSortEnum[keyof typeof GetOnlineSpreadSheetProgressListRequestAllOfPaginationSortEnum];
+
 /**
  * 
  * @export
@@ -16124,6 +16302,25 @@ export type OgType = typeof OgType[keyof typeof OgType];
 
 
 /**
+ * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Partially Failed 5: Complete 6: Canceled 
+ * @export
+ * @enum {string}
+ */
+
+export const OnlineSpreadSheetProgressStatus = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    PARTIALLYFAILED: 4,
+    COMPLETE: 5,
+    CANCELED: 6
+} as const;
+
+export type OnlineSpreadSheetProgressStatus = typeof OnlineSpreadSheetProgressStatus[keyof typeof OnlineSpreadSheetProgressStatus];
+
+
+/**
  * 組織型態書籤
  * @export
  * @interface OrgBookmark
@@ -19842,23 +20039,11 @@ export interface ProgressOnlineSpreadSheetItem {
      */
     'progressId': number;
     /**
-     * 1: Upload 2: Export 
-     * @type {number}
-     * @memberof ProgressOnlineSpreadSheetItem
-     */
-    'type': ProgressOnlineSpreadSheetItemTypeEnum;
-    /**
      * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 
      * @type {string}
      * @memberof ProgressOnlineSpreadSheetItem
      */
     'fileUrl': string;
-    /**
-     * 產品編號清單，只有category是2 Export時才有值 
-     * @type {Array<string>}
-     * @memberof ProgressOnlineSpreadSheetItem
-     */
-    'itemNoList': Array<string> | null;
     /**
      * 
      * @type {number}
@@ -19879,10 +20064,10 @@ export interface ProgressOnlineSpreadSheetItem {
     'createAvatar': string;
     /**
      * 
-     * @type {ProgressStatus}
+     * @type {OnlineSpreadSheetProgressStatus}
      * @memberof ProgressOnlineSpreadSheetItem
      */
-    'status': ProgressStatus;
+    'status': OnlineSpreadSheetProgressStatus;
     /**
      * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 該組織停用中 - 2 該組織方案中的空間不足 - 3 系統錯誤 
      * @type {number}
@@ -19890,19 +20075,13 @@ export interface ProgressOnlineSpreadSheetItem {
      */
     'unsuccessfulMsgCode': ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum;
     /**
-     * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 去掉成功的只留下失敗的資料的檔案的url。 status 為 3 Unsuccessful 時 failedUrl 才有值 
+     * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 去掉成功的只留下失敗的資料的檔案的url。 status 為 3:Unsuccessful 或 4:Partially Failed 時才有值 
      * @type {string}
      * @memberof ProgressOnlineSpreadSheetItem
      */
-    'failedFileUrl': string;
+    'failedFileUrl': string | null;
 }
 
-export const ProgressOnlineSpreadSheetItemTypeEnum = {
-    UPLOAD: 1,
-    EXPORT: 2
-} as const;
-
-export type ProgressOnlineSpreadSheetItemTypeEnum = typeof ProgressOnlineSpreadSheetItemTypeEnum[keyof typeof ProgressOnlineSpreadSheetItemTypeEnum];
 export const ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = {
     ORG_DEACTIVATED: 1,
     ORG_STORAGE_NOT_ENOUGH: 2,
@@ -36344,13 +36523,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Progress - OnlineSpreadSheet - 取得Progress清單
-         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {GetOnlineSpreadSheetProgressListRequest} getOnlineSpreadSheetProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOnlineSpreadSheetProgressList: async (getExcelProgressListRequest: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getExcelProgressListRequest' is not null or undefined
-            assertParamExists('getOnlineSpreadSheetProgressList', 'getExcelProgressListRequest', getExcelProgressListRequest)
+        getOnlineSpreadSheetProgressList: async (getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getOnlineSpreadSheetProgressListRequest' is not null or undefined
+            assertParamExists('getOnlineSpreadSheetProgressList', 'getOnlineSpreadSheetProgressListRequest', getOnlineSpreadSheetProgressListRequest)
             const localVarPath = `/progress/online-spread-sheet/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36374,7 +36553,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getExcelProgressListRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getOnlineSpreadSheetProgressListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -36551,12 +36730,12 @@ export const ProgressApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Progress - OnlineSpreadSheet - 取得Progress清單
-         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {GetOnlineSpreadSheetProgressListRequest} getOnlineSpreadSheetProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options);
+        async getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -36664,12 +36843,12 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Progress - OnlineSpreadSheet - 取得Progress清單
-         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+         * @param {GetOnlineSpreadSheetProgressListRequest} getOnlineSpreadSheetProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: any): AxiosPromise<GetOnlineSpreadSheetProgressList200Response> {
-            return localVarFp.getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options).then((request) => request(axios, basePath));
+        getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: any): AxiosPromise<GetOnlineSpreadSheetProgressList200Response> {
+            return localVarFp.getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 透過progressId取得Material清單 只會取得新增或修改的Material 
@@ -36788,13 +36967,13 @@ export class ProgressApi extends BaseAPI {
     /**
      * 
      * @summary Progress - OnlineSpreadSheet - 取得Progress清單
-     * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
+     * @param {GetOnlineSpreadSheetProgressListRequest} getOnlineSpreadSheetProgressListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getOnlineSpreadSheetProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
-        return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressList(getExcelProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    public getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
