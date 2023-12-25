@@ -289,6 +289,11 @@ export default {
         '@/components/common/material/scannedImage/ModalScannedImageUpdate.vue'
       )
     ),
+    ModalMaterialSpecification: defineAsyncComponent(() =>
+      import(
+        '@/components/common/material/detail/external/ModalMaterialSpecification.vue'
+      )
+    ),
   },
   setup() {
     const store = useStore()
