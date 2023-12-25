@@ -7,8 +7,12 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   )
-    div(class="w-full h-full rounded-md overflow-hidden bg-cover")
-      img(v-defaultImg :src="currentCoverImage" class="w-full h-full")
+    file-display(
+      :displayUrl="currentCoverImage"
+      :originalUrl="currentCoverImage"
+      :extension="Extension.JPG"
+      class="w-full h-full"
+    )
     div(
       v-if="isHover"
       class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
@@ -134,7 +138,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import type { Material } from '@frontier/platform-web-sdk'
+import { Extension, type Material } from '@frontier/platform-web-sdk'
 import useMaterial from '@/composables/material/useMaterial'
 import useNavigation from '@/composables/useNavigation'
 import {
@@ -148,6 +152,7 @@ import BlockSpecification from '@/components/common/material/detail/internal/Blo
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 
 const props = defineProps<{
   canEdit: boolean
@@ -191,7 +196,7 @@ const pricing = computed(() => {
 
 const SIDE_COVER = 0
 const isShowOriginalCoverImage = ref(true)
-const currentCoverImage = ref(props.material.coverImage?.thumbnailUrl)
+const currentCoverImage = ref(props.material.coverImage?.displayUrl)
 type SideType = MATERIAL_SIDE_TYPE | typeof SIDE_COVER
 const innerSideOptionList = computed(() => {
   return [

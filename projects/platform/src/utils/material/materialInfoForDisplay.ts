@@ -61,13 +61,15 @@ const materialInfoForDisplay = {
     materialType: { face?: MaterialType; back?: MaterialType }
   ) => {
     const stringList = []
+    let hasAddedFace = false
     if (isComposite) {
       stringList.push('Composite')
     }
     if (materialType.face) {
       stringList.push(MaterialTypeText[materialType.face])
+      hasAddedFace = true
     }
-    if (materialType.back) {
+    if (materialType.back && (isComposite || (!isComposite && !hasAddedFace))) {
       stringList.push(MaterialTypeText[materialType.back])
     }
     return {
