@@ -114,7 +114,6 @@ const materialInfo = computed(() => {
     materialInfoForDisplay.materialType(isComposite, {
       face: materialType,
     }).value + descriptionList.map(({ name }) => name).join(', '),
-    materialInfoForDisplay.contentList(contentList).value,
   ]
 
   if (contentList.length > 0) {

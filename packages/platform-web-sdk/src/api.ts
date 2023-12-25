@@ -10960,19 +10960,19 @@ export interface MainMaterialMainSideContentListInner {
      * @type {number}
      * @memberof MainMaterialMainSideContentListInner
      */
-    'contentId'?: number;
+    'contentId': number;
     /**
      * 
      * @type {string}
      * @memberof MainMaterialMainSideContentListInner
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {number}
      * @memberof MainMaterialMainSideContentListInner
      */
-    'percentage'?: number;
+    'percentage': number;
 }
 /**
  * 
