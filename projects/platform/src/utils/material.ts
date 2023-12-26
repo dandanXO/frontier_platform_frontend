@@ -83,7 +83,7 @@ export const convertInventoryFormToReq = (
       }
       return false
     })
-    return haveValues ? inventoryInfo.hangersRemainingList : null
+    return haveValues ? list : null
   }
 
   const processYardageRemainingInfo = (
