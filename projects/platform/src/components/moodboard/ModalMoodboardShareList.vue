@@ -39,24 +39,28 @@ import { NOTIFY_TYPE } from '@/utils/constants'
 import type { MoodboardPropertiesDemander } from '@frontier/platform-web-sdk'
 import { useMoodboardStore } from '@/stores/moodboard'
 import type { PropsModalMoodboardShare } from './ModalMoodboardShare.vue'
-
-export interface PropsModalMoodboardShareList {
-  moodboardId: number
-  shareList: MoodboardPropertiesDemander['shareList']
-}
-
-const props = defineProps<PropsModalMoodboardShareList>()
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
 const store = useStore()
 const notify = useNotifyStore()
 const { t } = useI18n()
-const { ogBaseMoodboardApi } = useMoodboardStore()
+const moodboardStore = useMoodboardStore()
+const { moodboard } = storeToRefs(moodboardStore)
+
+if (!moodboard.value) {
+  throw new Error('moodboard is not defined')
+}
+
+const shareList = computed(
+  () => (moodboard.value!.properties as MoodboardPropertiesDemander).shareList
+)
 
 const openModalMoodboardShare = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-moodboard-share',
     properties: {
-      moodboardId: props.moodboardId,
+      moodboardId: moodboard.value!.moodboardId,
     } as PropsModalMoodboardShare,
   })
 }
@@ -71,9 +75,7 @@ const removeMoodboardShare = (
     primaryBtnText: t('UU0097'),
     primaryBtnHandler: async () => {
       store.dispatch('helper/pushModalLoading')
-      await ogBaseMoodboardApi('removeMoodboardShare', {
-        shareId: shareTarget.shareId,
-      })
+      await moodboardStore.removeMoodboardShare(shareTarget.shareId)
       store.dispatch('helper/closeModalLoading')
       notify.showNotifySnackbar({
         messageText: t('QQ0027', { orgName: shareTarget.name }),

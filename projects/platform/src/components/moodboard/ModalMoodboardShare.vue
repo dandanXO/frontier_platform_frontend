@@ -38,7 +38,7 @@ const props = defineProps<PropsModalMoodboardShare>()
 
 const { t } = useI18n()
 const store = useStore()
-const { ogBaseMoodboardApi } = useMoodboardStore()
+const { ogBaseMoodboardApi, addMoodboardShare } = useMoodboardStore()
 const notify = useNotifyStore()
 const message = ref('')
 const targetList = ref<ShareTarget[]>([])
@@ -54,11 +54,7 @@ const getTarget = async (targetNumber: string) => {
 
 const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
-  await ogBaseMoodboardApi('addMoodboardShare', {
-    moodboardId: props.moodboardId,
-    targetList: targetList.value,
-    message: message.value,
-  })
+  await addMoodboardShare(props.moodboardId, targetList.value, message.value)
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModalBehavior')
   notify.showNotifySnackbar({ messageText: t('RR0157') })

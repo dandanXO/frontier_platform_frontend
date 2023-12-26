@@ -143,7 +143,6 @@ import type {
   MoodboardNodeChild,
 } from '@frontier/platform-web-sdk'
 import { NodeType } from '@frontier/platform-web-sdk'
-import type { PropsModalMoodboardShareList } from './ModalMoodboardShareList.vue'
 
 const props = defineProps<{
   moodboard: Moodboard
@@ -238,10 +237,6 @@ const handleNodeClick = (node: MoodboardNodeChild) => {
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-moodboard-share-list',
-    properties: {
-      moodboardId: props.moodboard.moodboardId,
-      shareList: moodboardProperties.value.shareList,
-    } as PropsModalMoodboardShareList,
   })
 }
 </script>

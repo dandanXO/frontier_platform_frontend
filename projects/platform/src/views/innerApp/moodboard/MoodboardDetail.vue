@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="h-full")
+div(v-if="moodboard" class="h-full")
   div(class="ml-8 mt-12 mb-16")
     global-breadcrumb-list(
       :breadcrumbList="locationList"
@@ -13,7 +13,7 @@ div(class="h-full")
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MOODBOARD_TYPE } from '@/utils/constants'
 import MoodboardDetailLowerBlockDemander from '@/components/moodboard/MoodboardDetailLowerBlockDemander.vue'
@@ -21,19 +21,19 @@ import MoodboardDetailLowerBlockProvider from '@/components/moodboard/MoodboardD
 import MoodboardDetailUpperBlock from '@/components/moodboard/MoodboardDetailUpperBlock.vue'
 import useNavigation from '@/composables/useNavigation'
 import { useMoodboardStore } from '@/stores/moodboard'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   moodboardId: string
 }>()
 
 const { t } = useI18n()
-const { ogBaseMoodboardApi } = useMoodboardStore()
+const moodboardStore = useMoodboardStore()
+const { moodboard } = storeToRefs(moodboardStore)
+const { getMoodboard } = moodboardStore
 const { goToMoodboard, goToMoodboardDetail } = useNavigation()
 
-const { data } = await ogBaseMoodboardApi('getMoodboard', {
-  moodboardId: Number(props.moodboardId),
-})
-const moodboard = ref(data.result.moodboard)
+await getMoodboard(Number(props.moodboardId))
 
 const locationList = computed(() => {
   return [
@@ -42,7 +42,7 @@ const locationList = computed(() => {
       goTo: () => goToMoodboard(),
     },
     {
-      name: moodboard.value.moodboardName,
+      name: moodboard.value!.moodboardName,
       goTo: () => goToMoodboardDetail({}, Number(props.moodboardId)),
     },
   ]
