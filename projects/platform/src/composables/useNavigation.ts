@@ -99,6 +99,16 @@ export default function useNavigation() {
     router.push(parsePath('/:orgNo/billings/plan', navReq))
   }
 
+  const goToValueAddedService = (service?: string) => {
+    if (service) {
+      router.push(
+        parsePath(`/:orgNo/billings/value-added-service?service=${service}`)
+      )
+    } else {
+      router.push(parsePath('/:orgNo/billings/value-added-service'))
+    }
+  }
+
   const goToProgress = async (
     navReq: NavigationReq = {},
     tabName: PROGRESS_TAB = PROGRESS_TAB.MATERIAL
@@ -320,6 +330,7 @@ export default function useNavigation() {
     goToMoodboardDetail,
     goToMoodboardPickedList,
     goToThreadBoard,
+    goToValueAddedService,
     prefixPath,
     isInInnerApp,
   }

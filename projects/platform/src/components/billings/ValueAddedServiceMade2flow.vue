@@ -2,7 +2,7 @@
 div(class="w-full pt-3")
   global-breadcrumb-list(
     :breadcrumbList="breadcrumbList"
-    @click:item="$router.push($event.path)"
+    @click:item="$event.goTo()"
   )
   div(class="w-212.5 mx-auto pt-16.5")
     div(class="mb-16")
@@ -28,6 +28,7 @@ div(class="w-full pt-3")
       div(class="flex gap-2")
         f-label(
           v-for="(tag, index) in tagList"
+          :key="tag"
           :active="indexOfActiveTag === index"
           @click="indexOfActiveTag = index"
         ) {{ tag }}
@@ -55,6 +56,7 @@ div(class="w-full pt-3")
         div(class="grid gap-x-3 grid-cols-3 w-fit mx-auto mt-4")
           div(
             v-for="(item, index) in 3"
+            :key="index"
             class="w-3 h-3 rounded-full"
             :class="[currentSlide === index ? 'bg-grey-900' : 'bg-grey-150']"
           )
@@ -87,7 +89,7 @@ div(class="w-full pt-3")
       v-else-if="tagList[indexOfActiveTag] === MADE2FLOW_TAG_LIST.FAQ.text"
       class="pb-19"
     )
-      div(v-for="faq in faqList")
+      div(v-for="faq in faqList" :key="faq.title")
         div(class="rounded border border-grey-250 mb-2") 
           div(
             class="h-12 pl-7 pr-4 flex items-center justify-between text-grey-900 hover:bg-grey-100 cursor-pointer"
@@ -135,7 +137,7 @@ const ValueAddedServiceMade2flowAppointment = defineAsyncComponent(() =>
 
 const { t } = useI18n()
 const route = useRoute()
-const { prefixPath, parsePath } = useNavigation()
+const { goToValueAddedService } = useNavigation()
 const { MADE2FLOW_TAG_LIST } = useConstants()
 const serviceList = valueAddedServiceList()
 
@@ -160,15 +162,13 @@ const breadcrumbList = computed(() => {
   return [
     {
       name: t('VV0001'),
-      path: parsePath(`${prefixPath.value}/billings/value-added-service`),
+      goTo: () => goToValueAddedService(),
     },
     {
       name: made2flow.value.projectName,
-      path: parsePath(
-        `${prefixPath.value}/billings/value-added-service?service=${Number(
-          route.query.service
-        )}`
-      ),
+      goTo: () => {
+        goToValueAddedService(route.query.service)
+      },
     },
   ]
 })
