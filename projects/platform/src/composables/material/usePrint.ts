@@ -4,12 +4,7 @@ import domtoimage from 'dom-to-image'
 import { jsPDF as JsPDF } from 'jspdf'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import type {
-  Organization,
-  Material,
-  MaterialFaceSide,
-  MaterialBackSide,
-} from '@frontier/platform-web-sdk'
+import type { Organization, Material } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
@@ -158,7 +153,7 @@ const usePrint = () => {
             <div class="flex flex-col items-center gap-y-2.5">
               <p class="text-caption2 text-grey-0 p-2 flex items-center rounded font-bold bg-grey-900 whitespace-nowrap">${
                 sideType === MaterialSideType.FACE_SIDE
-                  ? t('Scan Face Side')
+                  ? t('RR0312')
                   : t('DD0051')
               }</p>
               <div id="qr-code-container"></div>
@@ -173,19 +168,19 @@ const usePrint = () => {
                   ? t('DD0046')
                   : t('DD0047')
               }</p>
-              <p>${t('DD0050')}</p>
+              <p>${t('MI0127')}</p>
             </div>
           </div>
-          <div class="w-full h-13 bg-grey-50 px-10 pt-4 flex items-center justify-between">
-            <div class="flex items-center text-grey-900 text-caption whitespace-nowrap ">
+          <div class="w-full h-13 bg-grey-50 px-10 pt-4 flex items-start justify-between">
+            <div class="text-grey-900 text-caption whitespace-nowrap ">
               <p class="font-bold">${org.value.orgName}</p>
-              <p>${
-                org.value.address ? '&nbsp|&nbsp' + org.value.address : ''
-              }</p>
+              <p>${org.value.address}</p>
             </div>
             <div class="flex items-center gap-x-2">
               <img src="${frontierLogo}" class="w-15 h-3" />
-              <p class="text-caption2 text-grey-900"> by ${t('GG0004')}</p>
+              <p class="text-caption2 whitespace-nowrap text-grey-900"> ${t(
+                'MI0126'
+              )}</p>
             </div>
           </div>
         </div>
