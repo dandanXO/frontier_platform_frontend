@@ -25,7 +25,7 @@ grid-item-wrapper(
         v-for="(info, index) in materialInfo"
         :key="index"
         :class="{ 'font-bold': index === 0 }"
-        class="text-caption2 md:text-body2/1.6 line-clamp-1"
+        class="text-body2 line-clamp-1"
       ) {{ info }}
   template(#corner-top-right)
     digital-thread-entrance(
@@ -111,9 +111,11 @@ const materialInfo = computed(() => {
   const { materialType, descriptionList, contentList, finishList } = mainSide
 
   const list = [
-    materialInfoForDisplay.materialType(isComposite, {
-      face: materialType,
-    }).value + descriptionList.map(({ name }) => name).join(', '),
+    materialInfoForDisplay.materialType(
+      isComposite,
+      materialType,
+      descriptionList
+    ).value,
   ]
 
   if (contentList.length > 0) {

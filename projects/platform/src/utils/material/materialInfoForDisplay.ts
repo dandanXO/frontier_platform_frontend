@@ -15,6 +15,7 @@ import type {
   MaterialCarbonEmission,
   MaterialSideAllOfContentList,
   Country,
+  MaterialDescription,
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
@@ -58,20 +59,21 @@ const materialInfoForDisplay = {
   }),
   materialType: (
     isComposite: boolean,
-    materialType: { face?: MaterialType; back?: MaterialType }
+    materialType: MaterialType,
+    descriptionList: MaterialDescription[]
   ) => {
     const stringList = []
-    let hasAddedFace = false
+
     if (isComposite) {
       stringList.push('Composite')
     }
-    if (materialType.face) {
-      stringList.push(MaterialTypeText[materialType.face])
-      hasAddedFace = true
+
+    stringList.push(MaterialTypeText[materialType])
+
+    if (descriptionList.length > 0) {
+      stringList.push(...descriptionList.map((description) => description.name))
     }
-    if (materialType.back && (isComposite || (!isComposite && !hasAddedFace))) {
-      stringList.push(MaterialTypeText[materialType.back])
-    }
+
     return {
       name: t('MI0003'),
       value: stringList.join(', '),

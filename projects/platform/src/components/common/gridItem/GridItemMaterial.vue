@@ -22,7 +22,7 @@ grid-item-wrapper(
         v-for="(info, index) in materialInfo"
         :key="index"
         :class="{ 'font-bold': index === 0 }"
-        class="text-caption2 md:text-body2/1.6 line-clamp-1"
+        class="text-body2 line-clamp-1"
       ) {{ info }}
   template(#corner-top-right)
     digital-thread-entrance(
@@ -76,14 +76,15 @@ const innerSelectedValue = computed({
 
 const materialInfo = computed(() => {
   const mainSide = getMaterialMainSide(props.material)
-  const { isComposite, width, weight, faceSide, backSide } = props.material
-  const { contentList, finishList, descriptionList } = mainSide
+  const { isComposite, width, weight } = props.material
+  const { contentList, finishList, materialType, descriptionList } = mainSide
 
   const list = [
-    materialInfoForDisplay.materialType(isComposite, {
-      face: faceSide?.materialType,
-      back: backSide?.materialType,
-    }).value + descriptionList.map(({ name }) => name).join(', '),
+    materialInfoForDisplay.materialType(
+      isComposite,
+      materialType,
+      descriptionList
+    ).value,
   ]
 
   if (contentList.length > 0) {

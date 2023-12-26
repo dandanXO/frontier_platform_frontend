@@ -129,6 +129,7 @@ const usePrint = () => {
         finishList,
         construction,
         materialType,
+        descriptionList,
       } = mainSide
 
       const virtualDom = document.createElement('div')
@@ -192,10 +193,11 @@ const usePrint = () => {
         materialInfoForDisplay.construction(materialType, construction ?? {})
           .value ?? []
       const infoList = [
-        materialInfoForDisplay.materialType(isComposite, {
-          face: faceSide?.materialType,
-          back: backSide?.materialType,
-        }),
+        materialInfoForDisplay.materialType(
+          isComposite,
+          materialType,
+          descriptionList
+        ),
         ...Object.values(constructionList).map((item) => ({
           name: item.name,
           value: String(item.value),
@@ -283,10 +285,11 @@ const usePrint = () => {
         materialInfoForDisplay.construction(materialType, construction ?? {})
           .value ?? []
       const infoList = [
-        materialInfoForDisplay.materialType(isComposite, {
-          face: faceSide?.materialType,
-          back: backSide?.materialType,
-        }).value + descriptionList.map(({ name }) => name).join(', '),
+        materialInfoForDisplay.materialType(
+          isComposite,
+          materialType,
+          descriptionList
+        ).value,
         ...Object.values(constructionList).map((item) => String(item.value)),
         materialInfoForDisplay.contentList(contentList).value,
         materialInfoForDisplay.weight(weight).value,

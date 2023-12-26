@@ -28,8 +28,8 @@ div(class="grid gap-y-1.5 w-full")
           p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
           p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
     div(v-else-if="property" class="flex w-full" :class="property.textColor")
-      p(class="text-body2/1.6 break-words") {{ property.name }}：
-      p(class="text-body2/1.6 break-words") {{ property.value }}
+      p(class="text-body2/1.6 flex-shrink-0 line-clamp-1") {{ property.name }}：
+      p(class="text-body2/1.6 line-clamp-1") {{ property.value }}
 </template>
 
 <script setup lang="ts">
