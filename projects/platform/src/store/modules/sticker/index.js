@@ -9,6 +9,7 @@ import { useNotifyStore } from '@/stores/notify'
 import { OgType, FeatureType } from '@frontier/platform-web-sdk'
 import router from '@/router'
 import { useOuterStore } from '@/stores/outer'
+import { useUserStore } from '@/stores/user'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -265,6 +266,7 @@ export default {
       { material, drawerOpenFromLocationList }
     ) {
       const outerStore = useOuterStore()
+      const userStore = useUserStore()
       commit('SET_drawerOpenFromLocationType')
       const drawerOpenFromLocationType = getters.drawerOpenFromLocationType
 
@@ -288,7 +290,7 @@ export default {
       ) {
         return openStickerDrawer()
       } else {
-        if (!outerStore.hasLogin) {
+        if (!userStore.hasLogin) {
           return openStickerDrawerForLogin()
         }
 

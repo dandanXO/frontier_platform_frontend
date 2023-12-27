@@ -245,6 +245,8 @@ const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
     return
   }
 
+  await store.dispatch('user/getUser')
+
   const needCheckTokenStatus = [
     'metafabric.design', // 青望科技
     'bluehope.4pt.tw', // 青望科技 Demo 網域

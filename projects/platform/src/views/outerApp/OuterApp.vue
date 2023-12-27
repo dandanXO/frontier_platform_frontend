@@ -44,7 +44,7 @@ import { useStore } from 'vuex'
 import { computed, onMounted } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import useLogSender from '@/composables/useLogSender'
-import { useOuterStore } from '@/stores/outer'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps<{
   sharingKey: string
@@ -52,7 +52,7 @@ const props = defineProps<{
 
 const store = useStore()
 const { getExternalFilterOption } = useFilterStore()
-const outerStore = useOuterStore()
+const userStore = useUserStore()
 const logSender = useLogSender()
 logSender.createReceivePageLog(props.sharingKey)
 
@@ -64,7 +64,7 @@ const isStickerDrawerForLoginOpen = computed<boolean>(
 )
 
 onMounted(async () => {
-  await outerStore.checkHasLogin()
+  await userStore.checkHasLogin()
   getExternalFilterOption()
 
   if (isStickerDrawerForLoginOpen.value) {

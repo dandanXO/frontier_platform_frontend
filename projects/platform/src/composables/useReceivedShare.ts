@@ -14,6 +14,7 @@ import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
 import generalApi from '@/apis/general'
 import { computed } from 'vue'
 import type { PropsModalChooseSavePlace } from '@/components/common/ModalChooseSavePlace.vue'
+import { useUserStore } from '@/stores/user'
 
 enum RECEIVED_SHARE_FUNCTION {
   CLONE = 0,
@@ -34,6 +35,7 @@ export default function useReceivedShare() {
   const outerStore = useOuterStore()
   const { ogBaseReceivedShareApi } = outerStore
   const { shareInfo } = storeToRefs(outerStore)
+  const { hasLogin } = storeToRefs(useUserStore())
 
   const organizationList = computed(
     () => store.getters['user/organizationList'] as Organization[]
@@ -53,6 +55,10 @@ export default function useReceivedShare() {
   const saveReceivedShare = async () => {
     if (!shareInfo.value) {
       throw 'shareInfo is not exist'
+    }
+
+    if (!hasLogin.value) {
+      await store.dispatch('user/getUser')
     }
 
     const { isCanSave, sharingKey } = shareInfo.value
@@ -102,6 +108,10 @@ export default function useReceivedShare() {
   const receivedShareClone = async (nodeIdList: number[]) => {
     if (!shareInfo.value) {
       throw 'shareInfo is not exist'
+    }
+
+    if (!hasLogin.value) {
+      await store.dispatch('user/getUser')
     }
 
     const { isCanClone, sharingKey } = shareInfo.value

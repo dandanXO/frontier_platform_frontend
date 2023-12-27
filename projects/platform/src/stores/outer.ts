@@ -4,12 +4,9 @@ import embedApi from '@/apis/embed'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { ShareInfo, Material, NodeMeta } from '@frontier/platform-web-sdk'
 import { ref } from 'vue'
-import generalApi from '@/apis/general'
 import { useSearchStore } from '@/stores/search'
-import { useStore } from 'vuex'
 
 export const useOuterStore = defineStore('outer', () => {
-  const store = useStore()
   const ogBaseReceivedShareApi = useOgBaseApiWrapper(receivedShareApi)
   const ogBaseEmbedApi = useOgBaseApiWrapper(embedApi)
   const { getSearchLog } = useSearchStore()
@@ -47,25 +44,6 @@ export const useOuterStore = defineStore('outer', () => {
     nodeMeta.value = data.result.workspaceNodeMaterial.nodeMeta
   }
 
-  const hasLogin = ref(false)
-  const checkHasLogin = async () => {
-    const accessToken = localStorage.getItem('accessToken')
-
-    if (!accessToken) {
-      hasLogin.value = false
-      return
-    }
-
-    const { data } = await generalApi.checkTokenStatus({
-      accessToken,
-    })
-    hasLogin.value = data.result.status !== 1
-
-    if (hasLogin.value) {
-      await store.dispatch('user/getUser')
-    }
-  }
-
   const hasSelectedStickerAddFromOG = ref(false)
   const setHasSelectedStickerAddFromOG = (bool: boolean) =>
     (hasSelectedStickerAddFromOG.value = bool)
@@ -76,8 +54,6 @@ export const useOuterStore = defineStore('outer', () => {
     ogBaseEmbedApi,
     getEmbedInfo,
     shareInfo,
-    hasLogin,
-    checkHasLogin,
     hasSelectedStickerAddFromOG,
     setHasSelectedStickerAddFromOG,
     getReceivedShareMaterial,
