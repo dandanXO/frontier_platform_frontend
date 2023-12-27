@@ -18,7 +18,10 @@
 div(class="flex flex-col-reverse tablet:flex-row gap-4")
   div(:style="style" class="overflow-hidden w-16 flex-shrink-0 relative")
     div(v-if="currentTranslate < 0" class="rwd-left-cover")
-    div(v-if="remainingDistance > 0" class="rwd-right-cover")
+    div(
+      v-if="Math.abs(remainingDistance) !== Math.abs(currentTranslate)"
+      class="rwd-right-cover"
+    )
     div(
       ref="refSlider"
       class="tablet:w-16 tablet:h-auto h-16 grid gap-2 tablet:grid-flow-row grid-flow-col justify-start content-start transition-all duration-500"
@@ -55,12 +58,12 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
         f-svg-icon(iconName="search" size="24" class="text-grey-900")
       div(class="absolute bottom-5 right-5 flex items-center gap-x-2")
         button(
-          @click="backward"
+          @click="prev"
           class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
         )
           f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-900")
         button(
-          @click="forward"
+          @click="next"
           class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
         )
           f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-900")
@@ -84,8 +87,18 @@ const { isMobile } = useBreakpoints()
 const { publicFileList } = useMaterial(ref(props.material))
 const currentIndex = ref(0)
 
+const next = () => {
+  currentIndex.value = Math.min(
+    publicFileList.value.length - 1,
+    currentIndex.value + 1
+  )
+}
+
+const prev = () => {
+  currentIndex.value = Math.max(currentIndex.value - 1, 0)
+}
+
 const refSlider = ref<HTMLDivElement | null>(null)
-const remainingDistance = ref(0)
 const refImage = ref<HTMLDivElement | null>(null)
 const imageWidth = computed(
   () => refImage.value?.getBoundingClientRect().width ?? 507
@@ -102,47 +115,29 @@ const styleTranslateY = computed(() =>
     : `transform:  translateY(${currentTranslate.value}px)`
 )
 
-const ELEMENT_HEIGHT_AND_GAP = 64 + 8
-const maxElement = computed(() => {
-  return Math.floor(imageWidth.value / ELEMENT_HEIGHT_AND_GAP)
+const remainingDistance = ref(0)
+onMounted(() => {
+  if (refSlider.value) {
+    remainingDistance.value = isMobile.value
+      ? refSlider.value.scrollWidth - imageWidth.value
+      : refSlider.value.scrollHeight - imageWidth.value
+  }
 })
 
-const forward = () => {
-  if (currentIndex.value === publicFileList.value.length - 1) {
-    return
-  }
-  currentIndex.value++
-
-  if (currentIndex.value >= maxElement.value && remainingDistance.value > 0) {
-    currentTranslate.value -= ELEMENT_HEIGHT_AND_GAP
-    remainingDistance.value -= ELEMENT_HEIGHT_AND_GAP
-  }
-}
-
-const backward = () => {
-  if (currentIndex.value === 0) {
-    return
-  }
-  currentIndex.value--
-
-  if (currentIndex.value < publicFileList.value.length - maxElement.value) {
-    currentTranslate.value = Math.min(
-      0,
-      currentTranslate.value + ELEMENT_HEIGHT_AND_GAP
-    )
-    remainingDistance.value += ELEMENT_HEIGHT_AND_GAP
-  }
-}
-
 let scrollDistance = 0
+const forward = () => {
+  currentTranslate.value = Math.max(
+    currentTranslate.value - scrollDistance,
+    -remainingDistance.value
+  )
+}
+const backward = () => {
+  currentTranslate.value = Math.min(currentTranslate.value + scrollDistance, 0)
+}
 const wheelHandler = (e: WheelEvent) => {
   const delta = isMobile.value ? e.deltaX : e.deltaY
 
   scrollDistance += Math.abs(delta)
-
-  if (scrollDistance < 120) {
-    return
-  }
 
   if (delta > 0) {
     forward()
@@ -152,58 +147,34 @@ const wheelHandler = (e: WheelEvent) => {
   scrollDistance = 0
 }
 
-const startX = ref(0)
-const offsetX = ref(0)
+let startX = 0
+let offsetX = 0
 const isTouchMoving = ref(false)
 const touchstartHandler = (e: TouchEvent) => {
-  startX.value = e.touches[0].pageX
+  startX = e.touches[0].pageX
 }
 const touchmoveHandler = (e: TouchEvent) => {
   isTouchMoving.value = true
-  const maxMovingDistance =
-    (refSlider.value?.scrollWidth ?? 0) - imageWidth.value
-  offsetX.value = e.touches[0].pageX - startX.value
+  offsetX = e.touches[0].pageX - startX
 
-  scrollDistance += Math.abs(offsetX.value / 2)
+  scrollDistance += Math.abs(offsetX / 2)
 
   if (scrollDistance < 80) {
     return
   }
 
-  if (offsetX.value > 0) {
-    currentTranslate.value = Math.min(
-      0,
-      currentTranslate.value + scrollDistance
-    )
-    remainingDistance.value = Math.min(
-      maxMovingDistance,
-      remainingDistance.value + scrollDistance
-    )
+  if (offsetX > 0) {
+    backward()
   } else {
-    currentTranslate.value = Math.max(
-      currentTranslate.value - scrollDistance,
-      -maxMovingDistance
-    )
-    remainingDistance.value = Math.max(
-      remainingDistance.value - scrollDistance,
-      0
-    )
+    forward()
   }
 
   scrollDistance = 0
 }
 const touchendHandler = () => {
   isTouchMoving.value = false
-  offsetX.value = 0
+  offsetX = 0
 }
-
-onMounted(() => {
-  if (refSlider.value) {
-    remainingDistance.value = isMobile.value
-      ? refSlider.value.scrollWidth - imageWidth.value
-      : refSlider.value.scrollHeight - imageWidth.value
-  }
-})
 
 const openModalFileViewer = () => {
   store.dispatch('helper/pushModal', {
