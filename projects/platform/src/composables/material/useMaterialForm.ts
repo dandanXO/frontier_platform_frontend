@@ -267,6 +267,64 @@ const useMaterialForm = ({
     )
   })
 
+  const isSpecificationTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key === 'itemNo' ||
+        key.startsWith('season') ||
+        key.startsWith('faceSide') ||
+        key.startsWith('middleSide') ||
+        key.startsWith('backSide') ||
+        key.startsWith('weight') ||
+        key.startsWith('width')
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
+  const isTagTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key.startsWith('tagInfo') ||
+        key.startsWith('internalInfo.tagList') ||
+        key === 'internalInfo.remark'
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
+  const isPricingTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key.startsWith('priceInfo') ||
+        key.startsWith('internalInfo.priceInfo')
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
+  const isInventoryTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key === 'internalInfo.nativeCode' ||
+        key.startsWith('internalInfo.inventoryInfo')
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
   const clearMaterialDescription = (sideKey: PrimarySideKey) => {
     setFieldValue(`${sideKey}.descriptionList`, [])
   }
@@ -494,6 +552,10 @@ const useMaterialForm = ({
     values,
     displayErrors,
     errors,
+    isSpecificationTabValid,
+    isTagTabValid,
+    isPricingTabValid,
+    isInventoryTabValid,
     meta,
     pantoneList,
     defineInputBinds,

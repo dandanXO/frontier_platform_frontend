@@ -189,7 +189,15 @@ provide(materialU3mSelectServiceKey, u3mSelectService)
 provide(materialMultimediaUpdateServiceKey, multimediaUpdateService)
 provide(materialAttachmentUpdateServiceKey, attachmentUpdateService)
 
-const { meta, handleSubmit, validate } = materialFormService
+const {
+  meta,
+  handleSubmit,
+  isSpecificationTabValid,
+  isTagTabValid,
+  isPricingTabValid,
+  isInventoryTabValid,
+  validate,
+} = materialFormService
 
 const TAB = {
   SPECIFICATION: 0,
@@ -202,10 +210,26 @@ const TAB = {
 const cropRectSize = 300
 
 const tabList = computed(() => [
-  { name: 'Specification', id: TAB.SPECIFICATION },
-  { name: t('RR0133'), id: TAB.TAGS },
-  { name: t('RR0134'), id: TAB.PRICING },
-  { name: t('RR0135'), id: TAB.INVENTORY },
+  {
+    name: 'Specification',
+    id: TAB.SPECIFICATION,
+    hasNewUpdate: !isSpecificationTabValid.value,
+  },
+  {
+    name: t('RR0133'),
+    id: TAB.TAGS,
+    hasNewUpdate: !isTagTabValid.value,
+  },
+  {
+    name: t('RR0134'),
+    id: TAB.PRICING,
+    hasNewUpdate: !isPricingTabValid.value,
+  },
+  {
+    name: t('RR0135'),
+    id: TAB.INVENTORY,
+    hasNewUpdate: !isInventoryTabValid.value,
+  },
   { name: t('Attachments'), id: TAB.ATTACHMENTS },
 ])
 

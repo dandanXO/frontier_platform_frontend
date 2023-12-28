@@ -124,7 +124,15 @@ provide(materialU3mSelectServiceKey, u3mSelectService)
 provide(materialMultimediaCreateServiceKey, multimediaCreateService)
 provide(materialAttachmentCreateServiceKey, attachmentCreateService)
 
-const { submitCount, meta, handleSubmit } = materialFormService
+const {
+  submitCount,
+  meta,
+  isSpecificationTabValid,
+  isTagTabValid,
+  isPricingTabValid,
+  isInventoryTabValid,
+  handleSubmit,
+} = materialFormService
 
 const TAB = {
   SPECIFICATION: 0,
@@ -135,11 +143,30 @@ const TAB = {
 }
 
 const tabList = computed(() => [
-  { name: 'Specification', id: TAB.SPECIFICATION },
-  { name: t('RR0133'), id: TAB.TAGS },
-  { name: t('RR0134'), id: TAB.PRICING },
-  { name: t('RR0135'), id: TAB.INVENTORY },
-  { name: t('Upload Files'), id: TAB.UPLOAD_FILES },
+  {
+    name: 'Specification',
+    id: TAB.SPECIFICATION,
+    hasNewUpdate: !isSpecificationTabValid.value,
+  },
+  {
+    name: t('RR0133'),
+    id: TAB.TAGS,
+    hasNewUpdate: !isTagTabValid.value,
+  },
+  {
+    name: t('RR0134'),
+    id: TAB.PRICING,
+    hasNewUpdate: !isPricingTabValid.value,
+  },
+  {
+    name: t('RR0135'),
+    id: TAB.INVENTORY,
+    hasNewUpdate: !isInventoryTabValid.value,
+  },
+  {
+    name: t('Upload Files'),
+    id: TAB.UPLOAD_FILES,
+  },
 ])
 
 const submit = handleSubmit(async (form) =>

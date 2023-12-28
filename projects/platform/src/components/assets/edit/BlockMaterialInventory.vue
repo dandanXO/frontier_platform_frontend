@@ -28,6 +28,7 @@ div(class="flex flex-col gap-y-10")
       class="w-100"
       :textValue="nativeCode.value"
       @update:textValue="nativeCode.onInput"
+      :hintError="displayErrors[`internalInfo.nativeCode`]"
       :label="$t('RR0030')"
       :placeholder="$t('DD0022')"
     )
