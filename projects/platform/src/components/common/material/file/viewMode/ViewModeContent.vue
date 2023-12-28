@@ -39,7 +39,7 @@ div(
         @click="downloadDataURLFile(file.originalUrl, file.displayName)"
       )
     f-popper(
-      v-else-if="!['cover', 'faceSide', 'faceSideRuler', 'backSide', 'backSideRuler'].includes(file.id)"
+      v-else-if="!['cover', 'faceSide', 'faceSideRuler', 'backSide', 'backSideRuler', 'digitalDrape'].includes(file.id)"
       class="cursor-pointer"
       placement="right-start"
       @click.stop
@@ -61,7 +61,7 @@ div(
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { downloadDataURLFile } from '@frontier/lib'
 import { THEME } from '@frontier/constants'

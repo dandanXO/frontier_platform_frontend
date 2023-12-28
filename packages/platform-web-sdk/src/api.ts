@@ -2160,7 +2160,7 @@ export interface CoverImage {
 
 
 /**
- * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面)
+ * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面) 4 (Digital Drape)
  * @export
  * @enum {string}
  */
@@ -2168,7 +2168,8 @@ export interface CoverImage {
 export const CoverMode = {
     FACE: 1,
     BACK: 2,
-    MULTI_MEDIA: 3
+    MULTI_MEDIA: 3,
+    DIGITAL_DRAPE: 4
 } as const;
 
 export type CoverMode = typeof CoverMode[keyof typeof CoverMode];
@@ -8220,12 +8221,6 @@ export interface GetOnlineSpreadSheetProgressListRequest {
     'status': ProgressStatus;
     /**
      * 
-     * @type {string}
-     * @memberof GetOnlineSpreadSheetProgressListRequest
-     */
-    'keyword': string | null;
-    /**
-     * 
      * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
      * @memberof GetOnlineSpreadSheetProgressListRequest
      */
@@ -8257,12 +8252,6 @@ export interface GetOnlineSpreadSheetProgressListRequestAllOf {
      * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
      */
     'status': ProgressStatus;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
-     */
-    'keyword': string | null;
     /**
      * 
      * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
@@ -11293,6 +11282,12 @@ export interface Material {
      * @memberof Material
      */
     'internalInfo': MaterialInternalInfo | null;
+    /**
+     * 
+     * @type {MaterialDigitalDrape}
+     * @memberof Material
+     */
+    'digitalDrape': MaterialDigitalDrape | null;
 }
 
 
@@ -11933,6 +11928,12 @@ export interface MaterialCustomU3m {
      */
     'status': MaterialU3mStatus;
     /**
+     * 是否通知重新建立U3M
+     * @type {boolean}
+     * @memberof MaterialCustomU3m
+     */
+    'isNotifyReCreate': boolean;
+    /**
      * 是否有物理資料
      * @type {boolean}
      * @memberof MaterialCustomU3m
@@ -12062,6 +12063,56 @@ export interface MaterialDescription {
      * @memberof MaterialDescription
      */
     'name': string;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialDigitalDrape
+ */
+export interface MaterialDigitalDrape {
+    /**
+     * 原始圖檔路徑，同displayUrl，前端用來秀在modal檢視模式
+     * @type {string}
+     * @memberof MaterialDigitalDrape
+     */
+    'originalUrl': string;
+    /**
+     * 用來呈現的大圖URL，同originalUrl
+     * @type {string}
+     * @memberof MaterialDigitalDrape
+     */
+    'displayUrl': string;
+    /**
+     * 縮圖URL
+     * @type {string}
+     * @memberof MaterialDigitalDrape
+     */
+    'thumbnailUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialDigitalDrapeAllOf
+ */
+export interface MaterialDigitalDrapeAllOf {
+    /**
+     * 原始圖檔路徑，同displayUrl，前端用來秀在modal檢視模式
+     * @type {string}
+     * @memberof MaterialDigitalDrapeAllOf
+     */
+    'originalUrl': string;
+    /**
+     * 用來呈現的大圖URL，同originalUrl
+     * @type {string}
+     * @memberof MaterialDigitalDrapeAllOf
+     */
+    'displayUrl': string;
+    /**
+     * 縮圖URL
+     * @type {string}
+     * @memberof MaterialDigitalDrapeAllOf
+     */
+    'thumbnailUrl': string;
 }
 /**
  * DigitalThread資訊
@@ -14236,6 +14287,12 @@ export interface MaterialU3m {
      * @memberof MaterialU3m
      */
     'status': MaterialU3mStatus;
+    /**
+     * 是否通知重新建立U3M
+     * @type {boolean}
+     * @memberof MaterialU3m
+     */
+    'isNotifyReCreate': boolean;
     /**
      * 是否有物理資料
      * @type {boolean}
@@ -24066,6 +24123,12 @@ export interface UploadAssetsMaterialSideImage200ResponseResult {
      * @memberof UploadAssetsMaterialSideImage200ResponseResult
      */
     'u3mStatus': MaterialU3mStatus;
+    /**
+     * 是否通知重新建立U3M
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResult
+     */
+    'isNotifyReCreateU3m': boolean;
 }
 
 

@@ -135,7 +135,8 @@ export default function useMaterial(
    * publicFileList = A + B + C + D
    */
   const publicFileList = computed(() => {
-    const { coverImage, faceSide, backSide, multimediaList } = material.value
+    const { coverImage, faceSide, backSide, multimediaList, digitalDrape } =
+      material.value
 
     const list: Array<MaterialFile> = [
       {
@@ -194,6 +195,20 @@ export default function useMaterial(
         extension: Extension.JPG,
       },
     ]
+
+    if (digitalDrape) {
+      list.push({
+        id: 'digitalDrape',
+        fileId: null,
+        displayUrl: digitalDrape.displayUrl,
+        originalUrl: digitalDrape.originalUrl,
+        thumbnailUrl: digitalDrape.thumbnailUrl,
+        displayName: `${t('MI0136')}(${t('MI0137')})`,
+        displayNameShort: t('MI0136'),
+        caption: t('MI0137'),
+        extension: Extension.JPG,
+      })
+    }
 
     multimediaList.length > 0 &&
       list.push(

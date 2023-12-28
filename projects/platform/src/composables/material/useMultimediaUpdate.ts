@@ -42,7 +42,7 @@ const useMultimediaUpdate = (
   const multimediaList = computed(() => material.value.multimediaList)
 
   const coverAndSideImageList = computed(() => {
-    const { coverImage, faceSide, backSide } = material.value
+    const { coverImage, faceSide, backSide, digitalDrape } = material.value
     const list: Array<{
       id: MaterialFileId
       displayUrl: string | null
@@ -120,6 +120,26 @@ const useMultimediaUpdate = (
         extension: Extension.JPG,
       },
     ]
+
+    if (digitalDrape) {
+      list.push({
+        id: 'digitalDrape',
+        displayUrl: digitalDrape.displayUrl,
+        thumbnailUrl: digitalDrape.thumbnailUrl,
+        imgName: t('MI0136'),
+        caption: t('MI0137'),
+        isCoverDisplay: false,
+        isCover: (() => {
+          if (selectedCoverId.value != null) {
+            return selectedCoverId.value === 'digitalDrape'
+          }
+          return coverImage.mode === CoverMode.DIGITAL_DRAPE
+        })(),
+        canSetCover: true,
+        extension: Extension.JPG,
+      })
+    }
+
     return list
   })
 
@@ -263,6 +283,10 @@ const useMultimediaUpdate = (
 
     if (selectedCoverId.value === 'backSide') {
       coverMode = CoverMode.BACK
+    }
+
+    if (selectedCoverId.value === 'digitalDrape') {
+      coverMode = CoverMode.DIGITAL_DRAPE
     }
 
     if (!coverMode) {

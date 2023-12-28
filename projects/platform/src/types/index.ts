@@ -195,7 +195,7 @@ export interface MultimediaCreateItem {
   cropRecord: CropImageRecord | null
 }
 
-export type CoverId = 'faceSide' | 'backSide' | number
+export type CoverId = 'faceSide' | 'backSide' | 'digitalDrape' | number
 
 export type MaterialFileId =
   | 'cover'
@@ -203,6 +203,7 @@ export type MaterialFileId =
   | 'faceSideRuler'
   | 'backSide'
   | 'backSideRuler'
+  | 'digitalDrape'
   | number
 
 export interface MaterialFile {
