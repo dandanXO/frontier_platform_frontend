@@ -92,9 +92,15 @@ const materialInfoForDisplay = {
 
         switch (materialType) {
           case MaterialType.WOVEN: {
-            const { warpDensity, weftDensity, warpYarnSize, weftYarnSize } =
-              (construction as MaterialWovenConstruction) ?? {}
+            const {
+              warpDensity,
+              weftDensity,
+              warpYarnSize,
+              weftYarnSize,
+              isPublic,
+            } = (construction as MaterialWovenConstruction) ?? {}
             temp = {
+              isPublic,
               density: {
                 name: t('MI0027'),
                 value:
@@ -188,9 +194,9 @@ const materialInfoForDisplay = {
       }
       const { cuttable, full } = width
       const unit =
-        width.unit === LengthUnit.INCH ? '"' : LengthUnitText[width.unit]
+        width.unit === LengthUnit.INCH ? '"' : ` ${LengthUnitText[width.unit]}`
 
-      return `${cuttable}/${full} ${unit}`
+      return `${cuttable}/${full}${unit}`
     })(),
   }),
   weight: (weight: MaterialWeight | null) => ({

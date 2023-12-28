@@ -33,6 +33,7 @@ rm .env.$1.local
 
 echo NODE_ENV=$NODE_ENV >>.env.$1.local
 echo VITE_APP_API_ENDPOINT=$(getVar $PREFIX"_API_ENDPOINT") >>.env.$1.local
+echo VITE_APP_TEXTILE_CLOUD_ENDPOINT=$(getVar $PREFIX"_TEXTILE_CLOUD_ENDPOINT") >>.env.$1.local
 echo VITE_APP_OPEN_API_ENDPOINT=$(getVar $PREFIX"_OPEN_API_ENDPOINT") >>.env.$1.local
 echo VITE_APP_WEB_URL=$(getVar $PREFIX"_WEB_URL") >>.env.$1.local
 echo VITE_APP_STRIPE_KEY=$(getVar $STRIPE_KEY) >>.env.$1.local

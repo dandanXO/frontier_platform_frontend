@@ -4,13 +4,22 @@ import domtoimage from 'dom-to-image'
 import { jsPDF as JsPDF } from 'jspdf'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import type { Organization, Material } from '@frontier/platform-web-sdk'
+import type {
+  Organization,
+  Material,
+  MaterialWovenConstruction,
+  MaterialKnitConstruction,
+  MaterialLeatherConstruction,
+  MaterialNonWovenConstruction,
+  MaterialTrimConstruction,
+} from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import frontierLogo from '@/assets/images/frontier_logo.png'
 import imgPdfOutLine from '@/assets/images/pdf_outline.png'
 import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
+import { MaterialType } from '@frontier/platform-web-sdk'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
@@ -42,10 +51,13 @@ const makeQrCode = async (
   width: number
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
-  const qrcode = await QRCode.toCanvas(key, {
-    width,
-    margin: 0,
-  })
+  const qrcode = await QRCode.toCanvas(
+    `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`,
+    {
+      width,
+      margin: 0,
+    }
+  )
   qrCodeContainer.appendChild(qrcode)
 }
 
@@ -105,6 +117,7 @@ const usePrint = () => {
   const org = computed<Organization>(
     () => store?.getters['organization/organization']
   )
+  const orgId = computed<number>(() => store?.getters['organization/orgId'])
   const logo = computed<string>(() => store?.getters['organization/orgLogo'])
 
   const printA4Swatch = async (materialList: Material[]) => {
@@ -112,15 +125,7 @@ const usePrint = () => {
 
     const domGenerator: DomGenerator = async (item) => {
       const { sideType, material } = item
-      const {
-        itemNo,
-        seasonInfo,
-        isComposite,
-        faceSide,
-        backSide,
-        width,
-        weight,
-      } = material
+      const { itemNo, seasonInfo, isComposite, width, weight } = material
       const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
@@ -240,12 +245,14 @@ const usePrint = () => {
   const printLabel = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
+    const isCustomize = [1694, 6].includes(orgId.value)
+
     const domGenerator = async (item: {
       sideType: MaterialSideType
       material: Material
     }) => {
       const { sideType, material } = item
-      const { itemNo, isComposite, faceSide, backSide, weight } = material
+      const { itemNo, isComposite, weight, width } = material
       const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
@@ -254,67 +261,229 @@ const usePrint = () => {
         finishList,
         construction,
         materialType,
+        colorInfo,
       } = mainSide
 
-      const virtualDom = document.createElement('div')
-      virtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
-      virtualDom.innerHTML = `
-        <div class="w-56.5 h-[113px] p-1.5 bg-grey-0 flex items-start gap-x-2">
-          <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
-          <div class="pt-0.5 flex items-center">
-            <div class="pt-3">
-              <div id="qr-code-container"></div>
-              <p class="text-[7px] pt-2 text-grey-900 text-center">${
+      const normalLabel = (virtualDom: HTMLDivElement) => {
+        virtualDom.innerHTML = `
+          <div class="w-56.5 h-[113px] p-1.5 bg-grey-0 flex items-start gap-x-2">
+            <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
+            <div class="w-full pt-0.5 flex items-center">
+              <div class="pt-3">
+                <div id="qr-code-container"></div>
+                <p class="text-[7px] pt-2 text-grey-900 text-center">${
+                  sideType === MaterialSideType.FACE_SIDE
+                    ? t('DD0046')
+                    : t('DD0047')
+                }</p>
+                <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
+              </div>
+              <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
+              <div id="info-container" class="w-full text-grey-900">
+                <p class="text-[8px] font-bold pb-0.5">${itemNo}</p>
+              </div>
+            </div>
+          </div>
+        `
+      }
+      const customizeLabel = (virtualDom: HTMLDivElement) => {
+        virtualDom.innerHTML = `
+        <div class="relative flex gap-x-3 w-56.5 h-[141px] bg-grey-0 pr-2 pl-4 py-4 box-content">
+          <div class="flex flex-col items-center gap-y-2">
+            <div class="w-8 h-8 rounded-full overflow-hidden">
+              <img src="${logo.value}" class="w-full h-full" />
+            </div>
+            <div id="qr-code-container"></div>
+            <div class="flex flex-col justify-center items-center">
+              <div class="whitespace-nowrap text-grey-900 text-[7px]">${
                 sideType === MaterialSideType.FACE_SIDE
                   ? t('DD0046')
                   : t('DD0047')
-              }</p>
-              <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
+              }</div>
+              <div class="whitespace-nowrap text-grey-600 text-[7px]">${frontierNo}</div>
             </div>
-            <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
-            <div id="info-container" class="w-full text-grey-900 grid gap-y-[1px]">
-              <p class="text-[8px] font-bold pb-[3px]">${itemNo}</p>
+          </div>
+          <div class="w-px h-[105px] bg-grey-250"></div>
+          <div id="info-container" class="w-full text-grey-900">
+            <p class="text-[8px] font-bold pb-1">${itemNo}</p>
           </div>
         </div>
-      `
+        `
+      }
+
+      const virtualDom = document.createElement('div')
+      virtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
+      if (isCustomize) {
+        customizeLabel(virtualDom)
+      } else {
+        normalLabel(virtualDom)
+      }
       document.body.appendChild(virtualDom)
-      await makeQrCode(frontierNo, 'qr-code-container', 50)
+      await makeQrCode(frontierNo, 'qr-code-container', isCustomize ? 42 : 50)
 
       const infoContainer = document.getElementById('info-container')!
-      const constructionList =
-        materialInfoForDisplay.construction(materialType, construction ?? {})
-          .value ?? []
-      const infoList = [
+      const infoList: string[] = [
         materialInfoForDisplay.materialType(
           isComposite,
           materialType,
           descriptionList
         ).value,
-        ...Object.values(constructionList).map((item) => String(item.value)),
+      ]
+
+      switch (materialType) {
+        case MaterialType.WOVEN: {
+          const { warpDensity, weftDensity, warpYarnSize, weftYarnSize } =
+            (construction as MaterialWovenConstruction) ?? {}
+
+          if (warpDensity && weftDensity) {
+            infoList.push(`${warpDensity} X ${weftDensity}`)
+          } else if (warpDensity) {
+            infoList.push(warpDensity)
+          } else if (weftDensity) {
+            infoList.push(weftDensity)
+          }
+
+          if (warpYarnSize && weftYarnSize) {
+            infoList.push(`${warpYarnSize} X ${weftYarnSize}`)
+          } else if (warpYarnSize) {
+            infoList.push(warpYarnSize)
+          } else if (weftYarnSize) {
+            infoList.push(weftYarnSize)
+          }
+
+          infoList.push(materialInfoForDisplay.width(width).value)
+          break
+        }
+        case MaterialType.KNIT: {
+          const { machineType, yarnSize, walesPerInch, coursesPerInch } =
+            (construction as MaterialKnitConstruction) ?? {}
+
+          if (machineType) {
+            infoList.push(machineType)
+          }
+
+          if (yarnSize) {
+            infoList.push(yarnSize)
+          }
+
+          let str = ''
+
+          if (walesPerInch) {
+            str += `${walesPerInch}"`
+          }
+
+          if (coursesPerInch) {
+            str += ` ${coursesPerInch}"`
+          }
+
+          str += ` ${materialInfoForDisplay.width(width).value}`
+          infoList.push(str)
+          break
+        }
+        case MaterialType.LEATHER: {
+          const { grade, tannage, averageSkinPerMeterSquare, thicknessPerMm } =
+            (construction as MaterialLeatherConstruction) ?? {}
+
+          if (grade) {
+            infoList.push(grade)
+          }
+
+          if (tannage) {
+            infoList.push(tannage)
+          }
+
+          let str = ''
+
+          if (averageSkinPerMeterSquare) {
+            str += `${averageSkinPerMeterSquare} m²`
+          }
+
+          if (thicknessPerMm) {
+            str += ` ${thicknessPerMm} mm`
+          }
+
+          str += ` ${materialInfoForDisplay.width(width).value}`
+          infoList.push(str)
+
+          break
+        }
+        case MaterialType.NON_WOVEN: {
+          const { bondingMethod, thicknessPerMm } =
+            (construction as MaterialNonWovenConstruction) ?? {}
+          if (bondingMethod) {
+            infoList.push(bondingMethod)
+          }
+
+          let str = ''
+
+          if (thicknessPerMm) {
+            str += `${thicknessPerMm} mm`
+          }
+
+          str += ` ${materialInfoForDisplay.width(width).value}`
+          infoList.push(str)
+          break
+        }
+        case MaterialType.TRIM: {
+          const { outerDiameter, length, thickness, width } =
+            (construction as MaterialTrimConstruction) ?? {}
+          let str = ''
+
+          if (outerDiameter) {
+            str += `${outerDiameter} d`
+          }
+          if (length) {
+            str += `${length} mm`
+          }
+          if (thickness) {
+            str += `${thickness} mm`
+          }
+          if (width) {
+            str += `${width} m`
+          }
+
+          infoList.push(str)
+          break
+        }
+      }
+
+      infoList.push(
         materialInfoForDisplay.contentList(contentList).value,
         materialInfoForDisplay.weight(weight).value,
-        materialInfoForDisplay.finishList(finishList).value,
-      ]
+        materialInfoForDisplay.finishList(finishList).value
+      )
+
+      if (isCustomize && colorInfo.color) {
+        infoList.push(colorInfo.color)
+      }
 
       infoList.forEach((value) => {
         const row = document.createElement('p')
-        row.classList.add('line-clamp-1')
-        row.innerHTML = `
-          <p class="flex-grow text-[7px] line-clamp-1">${value}</p>
-        `
+        row.classList.add(
+          'line-clamp-1',
+          'text-[7px]',
+          'break-words',
+          'w-full',
+          '!leading-1.6'
+        )
+        row.innerHTML = value
         infoContainer.appendChild(row)
       })
 
       return virtualDom
     }
     const LABEL_WIDTH = 226
-    const LABEL_HEIGHT = 113
+    const LABEL_HEIGHT = isCustomize ? 141 : 113
     await generate(
       domGenerator,
       materialList,
       LABEL_WIDTH,
       LABEL_HEIGHT,
-      new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' })
+      new JsPDF({
+        unit: 'cm',
+        format: [isCustomize ? 5 : 4, 8],
+        orientation: 'l',
+      })
     )
 
     store.dispatch('helper/closeModalLoading')
