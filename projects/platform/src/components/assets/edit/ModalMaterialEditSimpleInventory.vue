@@ -21,12 +21,13 @@ import useMaterialForm from '@/composables/material/useMaterialForm'
 import type { MaterialFormService } from '@/types'
 import type {
   Material,
-  MaterialInternalInventoryInfo,
   MaterialOptions,
+  MaterialUpdateInventory,
 } from '@frontier/platform-web-sdk'
 import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import { convertInventoryFormToReq } from '@/utils/material'
 
 const props = defineProps<{
   material: Material
@@ -50,20 +51,14 @@ const updateMaterialSimpleInventory = async () => {
 
   const mapToReq = (
     form: typeof materialFormService['values']
-  ): Omit<MaterialInternalInventoryInfo, 'ogType' | 'ogId' | 'orgId'> => {
+  ): Omit<MaterialUpdateInventory, 'ogType' | 'ogId' | 'orgId'> => {
     return {
       materialId: props.material.materialId,
       internalInfo: {
-        inventoryInfo: {
-          isTotalPublic: form.internalInfo?.inventoryInfo?.isTotalPublic,
-          sampleCardsRemainingList:
-            form.internalInfo?.inventoryInfo?.sampleCardsRemainingList,
-          hangersRemainingList:
-            form.internalInfo?.inventoryInfo?.hangersRemainingList,
-          yardageRemainingInfo:
-            form.internalInfo?.inventoryInfo?.yardageRemainingInfo,
-        },
-        nativeCode: form.internalInfo?.nativeCode,
+        nativeCode: form.internalInfo.nativeCode,
+        inventoryInfo: convertInventoryFormToReq(
+          form.internalInfo.inventoryInfo
+        ),
       },
     }
   }

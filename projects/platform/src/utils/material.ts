@@ -131,7 +131,9 @@ export const convertPriceInfoFormToReq = (
 ): MaterialPriceInfo => {
   return {
     ...priceInfo,
-    pricing: priceInfo.pricing?.price ? priceInfo.pricing : null,
+    pricing: priceInfo.pricing?.price
+      ? { ...priceInfo.pricing, price: String(priceInfo.pricing.price) }
+      : null,
     minimumColor: priceInfo.minimumColor?.qty
       ? {
           qty: priceInfo.minimumColor.qty,

@@ -27,6 +27,7 @@ import { materialFormServiceKey } from '@/utils/constants'
 import BlockMaterialPricing from './BlockMaterialPricing.vue'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import { convertPriceInfoFormToReq } from '@/utils/material'
 
 const props = defineProps<{
   material: Material
@@ -53,7 +54,7 @@ const updateMaterialSimpleTag = async () => {
   ): Omit<MaterialUpdatePublicPrice, 'ogType' | 'ogId' | 'orgId'> => {
     return {
       materialId: props.material.materialId,
-      priceInfo: form.priceInfo,
+      priceInfo: convertPriceInfoFormToReq(form.priceInfo),
     }
   }
 

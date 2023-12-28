@@ -11,6 +11,7 @@ import {
   type Material,
   type MaterialOptions,
   type PantoneColor,
+  type MaterialPriceInfoPricing,
 } from '@frontier/platform-web-sdk'
 import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema, {
@@ -23,6 +24,21 @@ import { getInventoryQtyInY } from '@/utils/material'
 configure({ validateOnInput: true })
 
 type PrimarySideKey = 'faceSide' | 'backSide'
+
+const mapPricing = (pricing: MaterialPriceInfoPricing | null | undefined) => {
+  if (!pricing) {
+    return {
+      currencyCode: CurrencyCode.USD,
+      price: null,
+      unit: MaterialQuantityUnit.Y,
+    }
+  }
+
+  return {
+    ...pricing,
+    price: Number(pricing.price),
+  }
+}
 
 const mapMaterialToForm = (
   material: Material
@@ -59,11 +75,7 @@ const mapMaterialToForm = (
     },
     priceInfo: {
       ...material.priceInfo,
-      pricing: material.priceInfo?.pricing || {
-        currencyCode: CurrencyCode.USD,
-        price: null,
-        unit: MaterialQuantityUnit.Y,
-      },
+      pricing: mapPricing(material.priceInfo?.pricing),
       minimumOrder: material.priceInfo?.minimumOrder || {
         unit: MaterialQuantityUnit.Y,
         qty: null,
@@ -77,11 +89,7 @@ const mapMaterialToForm = (
       ...material.internalInfo,
       priceInfo: {
         ...material.internalInfo?.priceInfo,
-        pricing: material.internalInfo?.priceInfo?.pricing || {
-          currencyCode: CurrencyCode.USD,
-          price: null,
-          unit: MaterialQuantityUnit.Y,
-        },
+        pricing: mapPricing(material.internalInfo?.priceInfo?.pricing),
         minimumOrder: material.internalInfo?.priceInfo?.minimumOrder || {
           unit: MaterialQuantityUnit.Y,
           qty: null,
