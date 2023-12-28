@@ -147,13 +147,7 @@ const usePrint = () => {
             }" class="w-12.5 h-12.5 rounded flex-shrink-0" />
             <div class="flex-grow text-grey-900">
               <h6 class="w-full text-body1 font-bold line-clamp-1">${itemNo}</h6>
-              <div id="info-container" class="pt-3 grid gap-y-2 text-caption2/1.3 text-grey-900">
-                <p>${materialInfoForDisplay.seasonInfo(seasonInfo).value}
-                  <br/>
-                  <span class="line-clamp-1">${
-                    materialInfoForDisplay.featureList(featureList).value
-                  }</span>
-                </p>
+              <div id="info-container" class="pt-3 grid gap-y-1 text-caption2/1.3 text-grey-900">
               </div>
             </div>
             <div class="flex flex-col items-center gap-y-2.5">
@@ -180,7 +174,7 @@ const usePrint = () => {
           <div class="w-full h-13 bg-grey-50 px-10 pt-4 flex items-start justify-between">
             <div class="text-grey-900 text-caption whitespace-nowrap ">
               <p class="font-bold">${org.value.orgName}</p>
-              <p>${org.value.address}</p>
+              <p>${org.value.address ? org.value.address : ''}</p>
             </div>
             <div class="flex items-center gap-x-2">
               <img src="${frontierLogo}" class="w-15 h-3" />
@@ -194,6 +188,30 @@ const usePrint = () => {
       document.body.appendChild(virtualDom)
 
       const infoContainer = document.getElementById('info-container')!
+
+      if (
+        materialInfoForDisplay.seasonInfo(seasonInfo).value !== '' ||
+        materialInfoForDisplay.featureList(featureList).value !== ''
+      ) {
+        const div = document.createElement('div')
+
+        if (materialInfoForDisplay.seasonInfo(seasonInfo).value !== '') {
+          div.innerHTML += `
+            <p class="line-clamp-1">
+              ${materialInfoForDisplay.seasonInfo(seasonInfo).value}
+            </p>
+          `
+        }
+
+        if (materialInfoForDisplay.featureList(featureList).value !== '') {
+          div.innerHTML += `
+             <p class="line-clamp-1">${
+               materialInfoForDisplay.featureList(featureList).value
+             }</p>
+          `
+        }
+        infoContainer.appendChild(div)
+      }
       const constructionList =
         materialInfoForDisplay.construction(materialType, construction ?? {})
           .value ?? []
