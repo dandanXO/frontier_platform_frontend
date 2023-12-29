@@ -342,7 +342,7 @@ const getBookmarkMenuTree = (
     [BookmarkType.FOLDER]: (folderBookmark) => {
       if (!folderBookmark.isAllThread) {
         menuList.push({
-          title: t('TT0151'),
+          title: t('RR0302'),
           clickHandler: () => {
             if (isCurrentBookmark) {
               startRenameCurrentFolderBookmark()

@@ -4,16 +4,16 @@ div(class="flex flex-col gap-y-7.5")
     class="w-full"
     :notifyType="NOTIFY_TYPE.TIPS"
     :display="DISPLAY.BLOCK"
-    title="Make building your Material information faster"
-    messageText="To help you fill in the specification information quickly and with focus, the system displays only the fields that need to be filled in for this fabric. When you view the material details page, it will be presented in full. Information that is not in this field will be displayed in light gray."
+    :title="$t('MI0045')"
+    :messageText="$t('MI0046')"
   )
   f-select-input(
     :selectValue="middleSideFeatureList.value"
     @update:selectValue="middleSideFeatureList.onInput"
     :dropdownMenuTree="specOptions.featureList"
     @addNew="addFeatureOption($event)"
-    label="features"
-    :placeholder="$t('DD0016')"
+    :label="$t('MI0014')"
+    :placeholder="$t('MI0015')"
     :hintError="displayErrors['middleSide.featureList']"
     multiple
   )
@@ -22,8 +22,8 @@ div(class="flex flex-col gap-y-7.5")
     @update:selectValue="middleSideFinishList.onInput"
     :dropdownMenuTree="specOptions.finishList"
     @addNew="addFinishOption($event)"
-    label="finish"
-    :placeholder="$t('DD0016')"
+    :label="$t('RR0022')"
+    :placeholder="$t('MI0040')"
     :hintError="displayErrors['middleSide.finishList']"
     multiple
   )
@@ -35,29 +35,34 @@ div(class="flex flex-col gap-y-7.5")
     f-input-text(
       v-model:textValue="field.value.name"
       :hintError="displayErrors[`middleSide.customPropertyList[${index}].name`]"
-      label="name"
+      :placeholder="$t('MI0030')"
+      label="Custom Name"
       class="w-50"
     )
     f-input-text(
       v-model:textValue="field.value.value"
       :hintError="displayErrors[`middleSide.customPropertyList[${index}].value`]"
-      label="value"
+      :placeholder="$t('MI0044')"
+      label="Custom Value"
       class="w-50"
     )
-    f-input-checkbox(
-      binary
+    f-input-switch(
+      :disabled="!field.value.name || !field.value.value"
       v-model:inputValue="field.value.isPublic"
-      label="public"
+      :label="$t('MI0025')"
       class="w-50"
     )
     icon-button(
       iconName="delete"
       @click="() => removeMiddleSideCustomPropertyField(index)"
     )
-  icon-button(
-    iconName="add"
+  f-button(
+    :disabled="disableBackSideFields"
+    type="text"
+    size="sm"
+    prependIcon="add"
     @click="() => pushMiddleSideCustomPropertyField({ isPublic: false, name: '', value: '' })"
-  )
+  ) {{ $t('MI0034') }}
 </template>
 
 <script setup lang="ts">

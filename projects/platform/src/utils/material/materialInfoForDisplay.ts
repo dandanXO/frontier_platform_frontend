@@ -121,11 +121,11 @@ const materialInfoForDisplay = {
           case MaterialType.KNIT: {
             temp = getNameValueMap<OmitIsPublic<MaterialKnitConstruction>>(
               {
-                machineType: 'Machine Type',
-                walesPerInch: 'Wales Per Inch',
-                coursesPerInch: 'Courses Per Inch',
-                yarnSize: 'Yarn Size',
-                machineGaugeInGg: 'Machine Gauge In Gg',
+                machineType: t('MI0031'),
+                walesPerInch: t('MI0032'),
+                coursesPerInch: t('MI0033'),
+                yarnSize: t('RR0023'),
+                machineGaugeInGg: t('MI0068'),
               },
               (construction as MaterialKnitConstruction) ?? {}
             )
@@ -134,10 +134,10 @@ const materialInfoForDisplay = {
           case MaterialType.LEATHER: {
             temp = getNameValueMap<OmitIsPublic<MaterialLeatherConstruction>>(
               {
-                averageSkinPerMeterSquare: 'Average Skin Per Meter Square',
-                grade: 'Grade',
-                tannage: 'Tannage',
-                thicknessPerMm: 'Thickness Per Mm',
+                averageSkinPerMeterSquare: t('MI0071'),
+                grade: t('MI0072'),
+                tannage: t('MI0073'),
+                thicknessPerMm: t('MI0074'),
               },
               (construction as MaterialLeatherConstruction) ?? {}
             )
@@ -146,8 +146,8 @@ const materialInfoForDisplay = {
           case MaterialType.NON_WOVEN: {
             temp = getNameValueMap<OmitIsPublic<MaterialNonWovenConstruction>>(
               {
-                bondingMethod: 'Bonding Method',
-                thicknessPerMm: 'Thickness Per Mm',
+                bondingMethod: t('MI0078'),
+                thicknessPerMm: t('MI0074'),
               },
               (construction as MaterialNonWovenConstruction) ?? {}
             )
@@ -156,10 +156,10 @@ const materialInfoForDisplay = {
           case MaterialType.TRIM: {
             temp = getNameValueMap<OmitIsPublic<MaterialTrimConstruction>>(
               {
-                outerDiameter: 'Outer Diameter',
-                length: 'Length',
-                thickness: 'Thickness',
-                width: 'Width',
+                outerDiameter: t('MI0079'),
+                length: t('MI0080'),
+                thickness: t('MI0081'),
+                width: t('MI0082'),
               },
               (construction as MaterialTrimConstruction) ?? {}
             )
@@ -200,7 +200,7 @@ const materialInfoForDisplay = {
     })(),
   }),
   weight: (weight: MaterialWeight | null) => ({
-    name: 'Weight',
+    name: t('RR0015'),
     value: weight ? `${weight.value} ${WeightUnitText[weight.unit]}` : '',
   }),
   priceInfo: (priceInfo: MaterialPriceInfo | null) => {
@@ -284,14 +284,21 @@ const materialInfoForDisplay = {
       }
     }
     return {
-      co2: makeObj(co2, 'co2', t('RR0221'), t('RR0215'), t('RR0225'), 'RR0230'),
+      co2: makeObj(
+        co2,
+        'co2',
+        t('RR0221'),
+        t('RR0215'),
+        t('RR0225'),
+        t('RR0230')
+      ),
       water: makeObj(
         water,
         'water',
         t('RR0222'),
         t('RR0216'),
         t('RR0226'),
-        'RR0231'
+        t('RR0231')
       ),
       land: makeObj(
         land,
@@ -299,7 +306,7 @@ const materialInfoForDisplay = {
         t('RR0224'),
         t('RR0218'),
         t('RR0228'),
-        'RR0233'
+        t('RR0233')
       ),
     }
   },

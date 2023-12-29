@@ -13,17 +13,17 @@ div
       @update:textValue="itemNo.onInput"
       :hintError="displayErrors.itemNo"
       required
-      placeholder="Enter your item number"
-      label="Item#"
+      :placeholder="t('MI0010')"
+      :label="t('RR0013')"
       class="w-50"
     )
-    f-input-container(v-if="showItemNoAndSeasonFields" label="season")
+    f-input-container(v-if="showItemNoAndSeasonFields" :label="t('MI0011')")
       template(#slot:suffix)
         f-input-switch(
           :inputValue="isSeasonPublic.value"
           :disabled="!values.seasonInfo.season || values.seasonInfo.year == null"
           @update:inputValue="isSeasonPublic.onInput"
-          label="Publish"
+          :label="t('MI0025')"
           class="w-50"
         )
       div(class="flex flex-row gap-x-3")
@@ -32,7 +32,7 @@ div
           @update:selectValue="selectSeason"
           :dropdownMenuTree="specOptions.seasonList"
           @addNew="addSeasonOption($event)"
-          :placeholder="$t('DD0016')"
+          :placeholder="t('MI0012')"
           :hintError="displayErrors['seasonInfo.season.name']"
           class="w-80"
         )
@@ -41,7 +41,7 @@ div
           @update:textValue="seasonYear.onInput"
           inputType="number"
           :hintError="displayErrors['seasonInfo.year']"
-          placeholder="Enter your year"
+          :placeholder="t('MI0013')"
           class="w-64"
         )
     face-side-specification(

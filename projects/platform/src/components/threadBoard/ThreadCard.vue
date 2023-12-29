@@ -26,7 +26,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
           size="14"
           class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
           @click="handleMaterialClick($event, thread, true)"
-          tooltip="TT0074"
+          tooltip="RR0304"
         )
     div(class="flex flex-row")
       f-avatar-group(

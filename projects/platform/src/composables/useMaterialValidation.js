@@ -18,13 +18,13 @@ export default function useMaterialValidation(
   const maxLength = (v, max) => inputRules.maxLength(max)(v)
   const integerOnly = (v) => !!v && !Number.isInteger(v) && t('WW0007')
   const maxI6D2 = (v) =>
-    !inputValidator.maxIntegerDecimal(6, 2, v) && t('WW0009')
+    !inputValidator.maxIntegerDecimal(6, 2, v) && t('WW0151')
   const maxI3D2 = (v) =>
-    !inputValidator.maxIntegerDecimal(3, 2, v) && t('WW0010')
+    !inputValidator.maxIntegerDecimal(3, 2, v) && t('WW0151')
   const maxI9D1 = (v) =>
-    !inputValidator.maxIntegerDecimal(9, 1, v) && t('WW0011')
+    !inputValidator.maxIntegerDecimal(9, 1, v) && t('WW0151')
   const maxI18D10 = (v) =>
-    !inputValidator.maxIntegerDecimal(18, 10, v) && t('WW0012')
+    !inputValidator.maxIntegerDecimal(18, 10, v) && t('WW0151')
 
   const invalidation = reactive({
     materialNo: computed(() => {

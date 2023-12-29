@@ -20,7 +20,7 @@ modal-behavior(
       required
       :label="$t('QQ0006')"
       :placeholder="$t('QQ0006')"
-      :rules="[inputRules.required(), inputRules.maxLength(60, $t('WW0108'))]"
+      :rules="[inputRules.required(), inputRules.maxLength(60, $t('WW0142', { limitNumber: 60 }))]"
     )
     f-input-container(:label="$t('QQ0007')")
       div(class="flex items-center")
@@ -37,7 +37,7 @@ modal-behavior(
       :placeholder="$t('QQ0013')"
       required
       minHeight="min-h-44.5"
-      :rules="[inputRules.required(), inputRules.maxLength(1000, $t('WW0073'))]"
+      :rules="[inputRules.required(), inputRules.maxLength(1000, $t('WW0142', { limitNumber: 1000 }))]"
     )
     f-input-container(:label="$t('RR0298')")
       f-scrollbar-container(class="max-h-18 mb-2.5")

@@ -156,7 +156,7 @@ export default function useMaterial(
         displayUrl: faceSide?.sideImage?.displayUrl ?? null,
         originalUrl: faceSide?.sideImage?.originalUrl ?? null,
         thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
-        displayName: `${t('RR0075')}(${t('RR0081')})`,
+        displayName: `${t('RR0075')}(${t('RR0080')})`,
         displayNameShort: t('RR0075'),
         caption: null,
         extension: Extension.JPG,
@@ -189,7 +189,7 @@ export default function useMaterial(
         displayUrl: backSide?.sideImage?.rulerUrl ?? null,
         originalUrl: backSide?.sideImage?.rulerUrl ?? null,
         thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
-        displayName: `${t('RR0078')}(${t('RR0081')})`,
+        displayName: `${t('RR0078')}(${t('RR0080')})`,
         displayNameShort: t('RR0078'),
         caption: t('RR0080'),
         extension: Extension.JPG,
@@ -428,7 +428,7 @@ export default function useMaterial(
 
     const side = currentSide.value as MaterialFaceSide | MaterialBackSide
     return {
-      name: 'Color',
+      name: t('RR0026'),
       value: side.colorInfo,
     }
   })
@@ -439,7 +439,7 @@ export default function useMaterial(
 
     const side = currentSide.value as MaterialFaceSide | MaterialBackSide
     return {
-      name: 'Pattern',
+      name: t('RR0025'),
       value: side.patternInfo,
     }
   })

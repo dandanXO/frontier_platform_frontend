@@ -3,7 +3,7 @@ modal-behavior(
   :header="$t('EE0050')"
   :primaryBtnText="$t('UU0018')"
   primaryBtnIcon="done"
-  :secondaryBtnText="$t('Edit Later')"
+  :secondaryBtnText="$t('UU0138')"
   :primaryBtnDisabled="!isAllSideImgLoaded"
   @click:primary="confirm"
   @click:secondary="closeModal"

@@ -22,7 +22,7 @@ modal-behavior(
             class="w-20 h-20 rounded overflow-hidden"
             v-default-img
           )
-          p(class="text-caption/1.3 text-grey-900 text-center mt-2") Face Side
+          p(class="text-caption/1.3 text-grey-900 text-center mt-2") {{ $t('MI0007') }}
         div(
           v-if="material.backSide?.sideImage?.thumbnailUrl"
           class="box-border border-grey-250"
@@ -32,7 +32,7 @@ modal-behavior(
             class="w-20 h-20 rounded overflow-hidden"
             v-default-img
           )
-          p(class="text-caption/1.3 text-grey-900 text-center mt-2") Back Side
+          p(class="text-caption/1.3 text-grey-900 text-center mt-2") {{ $t('MI0009') }}
     div
       div(class="flex items-center gap-x-2")
         f-svg-icon(iconName="swatch_small" size="20" class="text-grey-900")
@@ -113,7 +113,7 @@ modal-behavior(
     div(v-if="currentSideType !== MATERIAL_SIDE_TYPE.MIDDLE")
       div(class="flex items-center gap-x-2")
         f-svg-icon(iconName="palette" size="20" class="text-grey-900")
-        p(class="text-body2 font-bold text-grey-900") Colors and Pattern
+        p(class="text-body2 font-bold text-grey-900") {{ $t('RR0309') }}
       div(class="grid gap-y-2 pt-4 text-body2/1.6")
         //- Pantone
         div(v-if="pantoneList" class="flex items-center gap-x-2")

@@ -1,19 +1,19 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-7.5")
   div(class="flex flex-col gap-y-4")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('Internal Information') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     div(class="flex flex-col gap-y-5")
-      p(class="text-caption text-grey-600") Add pictures, videos, test reports and other helpful information about the material for internal members only.
+      p(class="text-caption text-grey-600") {{ $t('MI0066') }}
   div
     f-button(
       type="secondary"
       size="md"
       prependIcon="add"
       @click="openModalAttachmentSelect"
-    ) {{ $t('Attach file') }}
+    ) {{ $t('UU0022') }}
     div(class="text-caption2 text-grey-600 mt-1")
-      p Supported file formats : JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
-      p Maximum file size : 20MB (per file)
+      p {{ $t('RR0243') }} JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
+      p {{ $t('RR0145') }} 20MB (per file)
     div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5 mt-10")
       draggable(
         class="flex flex-wrap gap-5"

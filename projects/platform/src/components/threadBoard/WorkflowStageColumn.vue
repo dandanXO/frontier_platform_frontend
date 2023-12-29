@@ -167,7 +167,7 @@ const menuTree = computed(() => ({
     const renameBlock = {
       menuList: [
         {
-          title: t('TT0151'),
+          title: t('RR0302'),
           icon: 'create',
           disabled: props.workflowStage.isDefault,
           clickHandler: startEdit,

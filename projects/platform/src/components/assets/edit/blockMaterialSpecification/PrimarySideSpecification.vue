@@ -5,10 +5,10 @@ div(class="flex flex-col gap-y-7.5")
       f-input-switch(
         :inputValue="isAutoSyncFaceToBackSideInfo.value"
         @update:inputValue="isAutoSyncFaceToBackSideInfo.onInput"
-        label="Auto sync face-back info"
+        :label="$t('MI0047')"
       )
       div(class="flex flex-row items-center gap-x-1")
-        f-button-label(size="lg" @click="copyFaceSideToBackSide") Copy face side info
+        f-button-label(size="lg" @click="copyFaceSideToBackSide") {{ $t('MI0048') }}
         f-tooltip-standard(
           :tooltipMessage="$t('Will cover the content of all forms')"
         )
@@ -19,31 +19,29 @@ div(class="flex flex-col gap-y-7.5")
       class="w-full"
       :notifyType="NOTIFY_TYPE.TIPS"
       :display="DISPLAY.BLOCK"
-      title="Make building your Material information faster"
+      :title="$t('MI0045')"
+      :messageText="$t('MI0046')"
     )
-      p To help you fill in the specification information quickly and with focus, the system displays only the fields that need to be filled in for this fabric. When you view the material details page, it will be presented in full. Information that is not in this field will be displayed in light gray.
-      br
-      p If the face and back information are the same, it is recommended to turn on Auto sync face-back info so that you can focus on maintaining the face side information only.
   f-select-input(
     :disabled="disableBackSideFields"
     :selectValue="featureList.value"
     @update:selectValue="featureList.onInput"
     :dropdownMenuTree="specOptions.featureList"
     @addNew="addFeatureOption($event)"
-    label="Feature"
-    :placeholder="$t('DD0016')"
+    :label="$t('MI0014')"
+    :placeholder="$t('MI0015')"
     :hintError="displayErrors[`${props.primarySideType}.featureList`]"
     multiple
   )
-  f-input-container(v-if="!hideBackSideFields" label="Material Info")
+  f-input-container(v-if="!hideBackSideFields" :label="$t('MI0016')")
     div(class="flex flex-row gap-x-4.5 pt-2")
       div(class="w-1.5 bg-grey-100")
       div(class="flex flex-col gap-y-8 pl-4")
         div(class="flex flex-col")
           div(class="flex text-body2 font-bold")
-            p(class="text-grey-900") Material Type
+            p(class="text-grey-900") {{ $t('MI0003') }}
             i(class="text-red-400 pl-0.5") *
-          span(class="mt-2 text-grey-600 text-caption") Select the main type first to get appropriate fabric information
+          span(class="mt-2 text-grey-600 text-caption") {{ $t('MI0017') }}
           f-input-radio-group(
             :disabled="disableBackSideFields"
             :inputValue="materialType.value"
@@ -60,7 +58,7 @@ div(class="flex flex-col gap-y-7.5")
             class="w-130"
             :notifyType="NOTIFY_TYPE.INFO"
             :display="DISPLAY.BLOCK"
-            messageText="You have to fill in the width and weight of the specification first, then enter the quantity of yardage remaining & location to get the correct value."
+            :messageText="$t('MI0083')"
             :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
           )
           f-infobar(
@@ -70,8 +68,7 @@ div(class="flex flex-col gap-y-7.5")
             :display="DISPLAY.BLOCK"
             :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
           )
-            p Contact us for asking further material spec fields
-            p(class="font-bold text-grey-600") support@frontier.cool
+            p {{ $t('MI0084') }}
         template(v-if="materialTypeValue != null")
           f-select-input(
             :disabled="disableBackSideFields"
@@ -79,30 +76,32 @@ div(class="flex flex-col gap-y-7.5")
             @update:selectValue="descriptionList.onInput"
             :dropdownMenuTree="specOptions.descriptionList"
             @addNew="addDescriptionOption($event)"
-            label="Material Description"
-            :placeholder="'Select or enter keywords related to this weaving / type'"
+            :label="$t('MI0023')"
+            :placeholder="$t('MI0024')"
             :hintError="displayErrors[`${primarySideType}.descriptionList`]"
             multiple
             class="w-full"
           )
-          f-input-container(label="Construction")
+          f-input-container(:label="$t('MI0026')")
             template(#slot:suffix)
               f-input-switch(
                 :disabled="disableBackSideFields"
                 :inputValue="constructionIsPublic.value"
                 @update:inputValue="constructionIsPublic.onInput"
-                label="Publish"
+                :label="$t('MI0025')"
                 class="w-50"
               )
         div(v-if="materialTypeValue === MaterialType.WOVEN" class="flex flex-col gap-y-4")
-          f-input-container(label="Density (warp ✕ weft)")
-            div(class="flex fle-row items-center gap-x-3")
+          f-input-container(
+            :label="`${$t('MI0027')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
+          )
+            div(class="flex flex-row items-center gap-x-3")
               f-input-text(
                 :disabled="disableBackSideFields"
                 :textValue="wovenConstructionWarpDensity.value"
                 @update:textValue="wovenConstructionWarpDensity.onInput"
                 :hintError="displayErrors[`${primarySideType}.construction.warpDensity`]"
-                :placeholder="'Enter your number'"
+                :placeholder="$t('MI0030')"
                 class="w-64"
               )
               span x
@@ -111,17 +110,19 @@ div(class="flex flex-col gap-y-7.5")
                 :textValue="wovenConstructionWeftDensity.value"
                 @update:textValue="wovenConstructionWeftDensity.onInput"
                 :hintError="displayErrors[`${primarySideType}.construction.weftDensity`]"
-                :placeholder="'Enter your number'"
+                :placeholder="$t('MI0030')"
                 class="w-64"
               )
-          f-input-container(label="Yarn Size (warp ✕ weft)")
+          f-input-container(
+            :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
+          )
             div(class="flex fle-row items-center gap-x-3")
               f-input-text(
                 :disabled="disableBackSideFields"
                 :textValue="wovenConstructionWarpYarnSize.value"
                 @update:textValue="wovenConstructionWarpYarnSize.onInput"
                 :hintError="displayErrors[`${primarySideType}.construction.warpYarnSize`]"
-                :placeholder="'Enter your number'"
+                :placeholder="$t('MI0030')"
                 class="w-64"
               )
               span x
@@ -130,7 +131,7 @@ div(class="flex flex-col gap-y-7.5")
                 :textValue="wovenConstructionWeftYarnSize.value"
                 @update:textValue="wovenConstructionWeftYarnSize.onInput"
                 :hintError="displayErrors[`${primarySideType}.construction.weftYarnSize`]"
-                :placeholder="'Enter your number'"
+                :placeholder="$t('MI0030')"
                 class="w-64"
               )
         div(v-if="materialTypeValue === MaterialType.KNIT" class="flex flex-col gap-y-4")
@@ -140,9 +141,9 @@ div(class="flex flex-col gap-y-7.5")
               :textValue="knitConstructionMachineType.value"
               @update:textValue="knitConstructionMachineType.onInput"
               :hintError="displayErrors[`${primarySideType}.construction.machineType`]"
-              label="Machine Type"
-              placeholder="Enter your info"
-              hintSupporting="e.g., Warp, Circular, Flat Weft."
+              :label="$t('MI0031')"
+              :placeholder="$t('MI0030')"
+              :hintSupport="$t('MI0069')"
               class="w-70"
             )
           f-input-text(
@@ -150,10 +151,10 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="knitConstructionWalesPerInch.value"
             @update:textValue="knitConstructionWalesPerInch.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.walesPerInch`]"
-            label="Wales"
-            placeholder="Enter your number"
+            :label="$t('MI0032')"
+            :placeholder="$t('MI0030')"
             inputType="number"
-            addOnRight="inch"
+            :addOnRight="$t('RR0020')"
             class="w-70"
           )
           f-input-text(
@@ -161,10 +162,10 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="knitConstructionCoursesPerInch.value"
             @update:textValue="knitConstructionCoursesPerInch.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.coursesPerInch`]"
-            label="Courses"
-            placeholder="Enter your number"
+            :label="$t('MI0033')"
+            :placeholder="$t('MI0030')"
             inputType="number"
-            addOnRight="inch"
+            :addOnRight="$t('RR0020')"
             class="w-70"
           )
           f-input-text(
@@ -172,8 +173,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="knitConstructionYarnSize.value"
             @update:textValue="knitConstructionYarnSize.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.yarnSize`]"
-            label="Yarn size"
-            placeholder="Enter your number"
+            :label="$t('RR0023')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           f-input-text(
@@ -182,9 +183,9 @@ div(class="flex flex-col gap-y-7.5")
             @update:textValue="knitConstructionMachineGaugeInGg.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.machineGaugeInGg`]"
             inputType="number"
-            label="Machine Gauge"
-            placeholder="Enter your number"
-            addOnRight="gg"
+            :label="$t('MI0068')"
+            :placeholder="$t('MI0030')"
+            :addOnRight="$t('MI0070')"
             class="w-70"
           )
         div(
@@ -196,9 +197,9 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="leatherConstructionAverageSkinPerMeterSquare.value"
             @update:textValue="leatherConstructionAverageSkinPerMeterSquare.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.averageSkinPerMeterSquare`]"
-            label="Average Skin / Hide Size"
-            placeholder="Enter your number"
-            addOnRight="m²"
+            :label="$t('MI0071')"
+            :placeholder="$t('MI0030')"
+            :addOnRight="$t('MI0075')"
             class="w-70"
           )
           f-input-text(
@@ -206,8 +207,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="leatherConstructionGrade.value"
             @update:textValue="leatherConstructionGrade.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.grade`]"
-            label="grade"
-            placeholder="Enter your info"
+            :label="$t('MI0072')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           div(class="pb-5")
@@ -216,9 +217,9 @@ div(class="flex flex-col gap-y-7.5")
               :textValue="leatherConstructionTannage.value"
               @update:textValue="leatherConstructionTannage.onInput"
               :hintError="displayErrors[`${primarySideType}.construction.tannage`]"
-              label="Tannage"
-              placeholder="Enter your info"
-              hintSupporting="e.g., Chrome, Veg, Synthetic, Combination, Wet White."
+              :label="$t('MI0073')"
+              :placeholder="$t('MI0030')"
+              :hintSupport="$t('MI0076')"
               class="w-70"
             )
           f-input-text(
@@ -226,10 +227,10 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="leatherConstructionThicknessPerMm.value"
             @update:textValue="leatherConstructionThicknessPerMm.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.thicknessPerMm`]"
-            label="Thickness"
-            placeholder="Enter your number"
+            :label="$t('MI0074')"
+            :placeholder="$t('MI0030')"
             inputType="number"
-            addOnRight="mm"
+            :addOnRight="$t('MI0077')"
             class="w-70"
           )
         div(
@@ -241,8 +242,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="nonWovenConstructionBondingMethod.value"
             @update:textValue="nonWovenConstructionBondingMethod.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.bondingMethod`]"
-            label="Bonding Method"
-            placeholder="Enter your info"
+            :label="$t('MI0078')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           f-input-text(
@@ -250,10 +251,10 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="nonWovenConstructionThicknessPerMm.value"
             @update:textValue="nonWovenConstructionThicknessPerMm.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.thicknessPerMm`]"
-            label="Thickness"
-            placeholder="Enter your number"
+            :label="$t('MI0074')"
+            :placeholder="$t('MI0030')"
             inputType="number"
-            addOnRight="mm"
+            :addOnRight="$t('MI0077')"
             class="w-70"
           )
         div(v-if="materialTypeValue === MaterialType.TRIM" class="flex flex-col gap-y-2")
@@ -262,8 +263,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="trimConstructionOuterDiameter.value"
             @update:textValue="trimConstructionOuterDiameter.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.outerDiameter`]"
-            label="Trim Diameter"
-            placeholder="Enter your UOM info and units"
+            :label="$t('MI0079')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           f-input-text(
@@ -271,8 +272,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="trimConstructionLength.value"
             @update:textValue="trimConstructionLength.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.length`]"
-            label="Trim Length"
-            placeholder="Enter your UOM info and units"
+            :label="$t('MI0080')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           f-input-text(
@@ -280,8 +281,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="trimConstructionThickness.value"
             @update:textValue="trimConstructionThickness.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.thickness`]"
-            label="Trim Thickness"
-            placeholder="Enter your UOM info and units"
+            :label="$t('MI0081')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
           f-input-text(
@@ -289,8 +290,8 @@ div(class="flex flex-col gap-y-7.5")
             :textValue="trimConstructionWidth.value"
             @update:textValue="trimConstructionWidth.onInput"
             :hintError="displayErrors[`${primarySideType}.construction.width`]"
-            label="Trim Width"
-            placeholder="Enter your UOM info and units"
+            :label="$t('MI0082')"
+            :placeholder="$t('MI0030')"
             class="w-70"
           )
         div(class="flex flex-col gap-y-2")
@@ -303,20 +304,22 @@ div(class="flex flex-col gap-y-7.5")
               :disabled="disableBackSideFields"
               v-model:textValue="field.value.name"
               :hintError="displayErrors[`${primarySideType}.constructionCustomPropertyList[${index}].name`]"
-              label="custom name"
+              :placeholder="$t('MI0030')"
+              label="Custom Name"
               class="w-50"
             )
             f-input-text(
               :disabled="disableBackSideFields"
               v-model:textValue="field.value.value"
               :hintError="displayErrors[`${primarySideType}.constructionCustomPropertyList[${index}].value`]"
-              label="custom value"
+              :placeholder="$t('MI0044')"
+              label="Custom Value"
               class="w-50"
             )
             f-input-switch(
               :disabled="disableBackSideFields || !field.value.name || !field.value.value"
               v-model:inputValue="field.value.isPublic"
-              label="Publish"
+              :label="$t('MI0025')"
               class="w-50"
             )
             icon-button(
@@ -330,7 +333,7 @@ div(class="flex flex-col gap-y-7.5")
             size="sm"
             prependIcon="add"
             @click="() => pushConstructionCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-          ) Add form
+          ) {{ $t('MI0034') }}
   f-input-container(
     v-if="!hideBackSideFields"
     :label="$t('RR0021')"
@@ -349,7 +352,7 @@ div(class="flex flex-col gap-y-7.5")
           @update:selectValue="(name) => selectContent(name, index, field.value)"
           :dropdownMenuTree="specOptions.contentList"
           @addNew="addContentOption($event)"
-          :placeholder="$t('DD0016')"
+          :placeholder="$t('MI0035')"
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].name`])"
           class="w-100"
         )
@@ -357,7 +360,7 @@ div(class="flex flex-col gap-y-7.5")
           :disabled="disableBackSideFields"
           v-model:textValue="field.value.percentage"
           inputType="number"
-          placeholder="Number"
+          :placeholder="$t('MI0043')"
           addOnRight="%"
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].percentage`])"
           class="w-40"
@@ -373,16 +376,16 @@ div(class="flex flex-col gap-y-7.5")
         prependIcon="add"
         :disabled="disableBackSideFields"
         @click="() => pushContentField({ contentId: null, name: null, percentage: null })"
-      ) Add form
-  f-input-container(v-if="showWidthAndWeight" label="Width" required)
+      ) {{ $t('MI0034') }}
+  f-input-container(v-if="showWidthAndWeight" :label="$t('RR0088')" required)
     div(class="flex flex-row gap-3")
       f-input-text(
         :textValue="cuttableWidth.value"
         @update:textValue="cuttableWidth.onInput"
         :hintError="displayErrors['width.cuttable']"
-        placeholder="Enter your number"
+        :placeholder="$t('MI0037')"
         inputType="number"
-        label="Cuttable width"
+        :label="$t('RR0019')"
         class="w-72"
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
@@ -395,9 +398,9 @@ div(class="flex flex-col gap-y-7.5")
         :textValue="fullWidth.value"
         @update:textValue="fullWidth.onInput"
         :hintError="displayErrors['width.full']"
-        placeholder="Enter your number"
+        :placeholder="$t('MI0038')"
         inputType="number"
-        label="Full width"
+        :label="$t('MI0036')"
         class="w-72"
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
@@ -410,9 +413,9 @@ div(class="flex flex-col gap-y-7.5")
       :textValue="weightValue.value"
       @update:textValue="weightValue.onInput"
       :hintError="displayErrors['weight.value']"
-      placeholder="Enter your number"
+      :placeholder="$t('MI0039')"
       inputType="number"
-      label="Weight"
+      :label="$t('RR0015')"
       class="w-72"
       required
       :rightSelectValue="weightUnit.value"
@@ -427,8 +430,8 @@ div(class="flex flex-col gap-y-7.5")
     @update:selectValue="finishList.onInput"
     :dropdownMenuTree="specOptions.finishList"
     @addNew="addFinishOption($event)"
-    label="finish"
-    :placeholder="$t('DD0016')"
+    :label="$t('RR0022')"
+    :placeholder="$t('MI0040')"
     :hintError="displayErrors[`${primarySideType}.finishList`]"
     multiple
   )
@@ -437,7 +440,7 @@ div(class="flex flex-col gap-y-7.5")
       f-input-text(
         class="w-72"
         v-model:textValue="pantoneColor"
-        placeholder="Ex.g., 11-0102TCX"
+        :placeholder="$t('MI0067')"
         :button="{ type: 'primary', icon: 'add', isFile: false }"
         @click:button="handleAddPantone"
       )
@@ -465,7 +468,7 @@ div(class="flex flex-col gap-y-7.5")
             class="text-grey-250 cursor-pointer"
             @click="removePantone(pantone.name, props.primarySideType)"
           )
-  f-input-container(label="color")
+  f-input-container(:label="$t('RR0026')")
     div(class="flex flex-row gap-x-4.5")
       div(class="w-1.5 bg-grey-100")
       div(class="flex flex-col gap-y-2")
@@ -476,7 +479,7 @@ div(class="flex flex-col gap-y-7.5")
           @change="color.onChange"
           @blur="color.onBlur"
           :hintError="displayErrors[`${primarySideType}.colorInfo.color`]"
-          :placeholder="'Enter your color'"
+          :placeholder="$t('MI0041')"
           class="w-50"
         )
         div(
@@ -488,21 +491,22 @@ div(class="flex flex-col gap-y-7.5")
             :disabled="disableBackSideFields"
             v-model:textValue="field.value.name"
             :hintError="displayErrors[`${primarySideType}.colorInfo.customPropertyList[${index}].name`]"
-            label="color name"
+            label="name"
+            :placeholder="$t('MI0030')"
             class="w-50"
           )
           f-input-text(
             :disabled="disableBackSideFields"
             v-model:textValue="field.value.value"
             :hintError="displayErrors[`${primarySideType}.colorInfo.customPropertyList[${index}].value`]"
-            label="color value"
-            :placeholder="'Enter your info'"
+            label="value"
+            :placeholder="$t('MI0044')"
             class="w-50"
           )
           f-input-switch(
             :disabled="disableBackSideFields || !field.value.name || !field.value.value"
             v-model:inputValue="field.value.isPublic"
-            label="Publish"
+            :label="$t('MI0025')"
             class="w-50"
           )
           icon-button(
@@ -516,13 +520,13 @@ div(class="flex flex-col gap-y-7.5")
           size="sm"
           prependIcon="add"
           @click="() => pushColorInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-        ) Add form
+        ) {{ $t('MI0034') }}
       span(
         v-for="(error, index) in colorInfoCustomPropertyDisplayErrors"
         :key="index"
       ) {{ error }}
 
-  f-input-container(label="pattern")
+  f-input-container(:label="$t('RR0025')")
     div(class="flex flex-row gap-x-4.5")
       div(class="w-1.5 bg-grey-100")
       div(class="flex flex-col gap-y-2")
@@ -533,7 +537,7 @@ div(class="flex flex-col gap-y-7.5")
           @change="pattern.onChange"
           @blur="pattern.onBlur"
           :hintError="displayErrors[`${primarySideType}.patternInfo.pattern`]"
-          placeholder="Enter your pattern"
+          :placeholder="$t('MI0042')"
           class="w-50"
         )
         div(
@@ -545,21 +549,22 @@ div(class="flex flex-col gap-y-7.5")
             :disabled="disableBackSideFields"
             v-model:textValue="field.value.name"
             :hintError="displayErrors[`${props.primarySideType}.patternInfo.customPropertyList[${index}].name`]"
-            label="pattern name"
+            :placeholder="$t('MI0030')"
+            label="name"
             class="w-50"
           )
           f-input-text(
             :disabled="disableBackSideFields"
             v-model:textValue="field.value.value"
             :hintError="displayErrors[`${props.primarySideType}.patternInfo.customPropertyList[${index}].value`]"
-            label="pattern value"
-            :placeholder="'Enter your info'"
+            label="value"
+            :placeholder="$t('MI0044')"
             class="w-50"
           )
           f-input-switch(
             :disabled="disableBackSideFields || !field.value.name || !field.value.value"
             v-model:inputValue="field.value.isPublic"
-            label="Publish"
+            :label="$t('MI0025')"
             class="w-50"
           )
           icon-button(
@@ -573,7 +578,7 @@ div(class="flex flex-col gap-y-7.5")
           size="sm"
           prependIcon="add"
           @click="() => pushPatternInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-        ) Add form
+        ) {{ $t('MI0034') }}
 </template>
 
 <script setup lang="ts">

@@ -111,7 +111,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               size="14"
               class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
               @click.stop="goToStickerMaterialDetail(material, digitalThread, true)"
-              tooltipMessage="TT0074"
+              tooltipMessage="RR0304"
             )
             span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('TT0112') }})
             span(
@@ -358,7 +358,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           size="14"
           class="invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
           @click.stop="goToStickerMaterialDetail(material, digitalThread, true)"
-          tooltipMessage="TT0074"
+          tooltipMessage="RR0304"
         )
       f-scrollbar-container(class="flex-grow")
         div(

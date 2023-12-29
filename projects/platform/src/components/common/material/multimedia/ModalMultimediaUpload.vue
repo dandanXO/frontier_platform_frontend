@@ -1,7 +1,8 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('Upload multimedia')"
+  :header="$t('MI0106')"
   :primaryBtnText="$t('UU0018')"
+  primaryBtnIcon="done"
   :secondaryBtnText="$t('UU0002')"
   @click:primary="handleSave"
   @click:secondary="closeModal"
@@ -9,9 +10,9 @@ modal-behavior(
   template(#note)
     div(class="flex flex-row items-center gap-x-1")
       f-svg-icon(class="text-grey-600" iconName="info_outline" size="14")
-      span {{ $t('The image set as the cover will be copied in the first one. Move the images to adjust their order.') }}
+      span {{ $t('MI0105') }}
   div(class="w-200 flex flex-col gap-y-6")
-    p(class="text-body2 text-grey-900 font-bold") {{ $t('Preview your material image') }}
+    p(class="text-body2 text-grey-900 font-bold") {{ $t('MI0103') }}
     div(class="grid grid-flow-col gap-x-2 justify-start")
       template(v-for="image in coverAndSideImageList" :key="image.id")
         div(class="w-25 flex flex-col items-center gap-y-0.5")
@@ -35,7 +36,7 @@ modal-behavior(
           span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.imgName }}
           span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
     div(class="w-full h-[1px] bg-grey-150")
-    p(class="text-body2 text-grey-900 font-bold") {{ $t('Edit your multimedia') }}
+    p(class="text-body2 text-grey-900 font-bold") {{ $t('MI0104') }}
     div(class="flex flex-col gap-y-5")
       div(class="flex flex-wrap gap-5")
         div(

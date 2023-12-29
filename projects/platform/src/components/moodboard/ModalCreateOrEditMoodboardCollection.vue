@@ -35,7 +35,7 @@ modal-behavior(
       v-model:textValue="collectionDescription"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
-      :rules="[inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
+      :rules="[inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0142', { limitNumber: COLLECTION_DESCRIPTION_MAX_LENGTH }))]"
       minHeight="min-h-30"
     )
 </template>

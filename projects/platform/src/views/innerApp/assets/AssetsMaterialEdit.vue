@@ -11,6 +11,7 @@ div(class="w-full h-full flex justify-center")
         f-button(
           type="primary"
           size="md"
+          prependIcon="done"
           :disabled="!meta.valid"
           @click="submit"
         ) {{ $t('UU0018') }}
@@ -47,6 +48,7 @@ div(class="w-full h-full flex justify-center")
                     f-button(
                       type="primary"
                       size="md"
+                      prependIcon="done"
                       :disabled="!meta.valid"
                       @click="submit"
                     ) {{ $t('UU0018') }}
@@ -335,8 +337,8 @@ const updateMaterial = async (payload: {
 const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
     type: NOTIFY_TYPE.WARNING,
-    header: t('EE0045'),
-    contentText: t('EE0046'),
+    header: t('RR0305'),
+    contentText: t('RR0306'),
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
@@ -354,8 +356,8 @@ onBeforeRouteLeave(async () => {
   const result = await new Promise((resolve) => {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
-      header: t('EE0045'),
-      contentText: t('EE0046'),
+      header: t('RR0305'),
+      contentText: t('RR0306'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),

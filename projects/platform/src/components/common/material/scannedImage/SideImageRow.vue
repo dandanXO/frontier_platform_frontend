@@ -13,7 +13,7 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
     ) {{ $t('RR0103') }}
   div(v-if="newImagePreviewUrl")
     div(class="flex flex-row gap-x-3")
-      span(class="") Replaced By
+      span {{ $t('MI0090') }}
       f-svg-icon(
         class="text-grey-600 cursor-pointer"
         iconName="delete"
@@ -29,12 +29,12 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
       size="sm"
       prependIcon="add"
       @click="emits('upload')"
-    ) {{ $t('Replace Scanned Image') }}
+    ) {{ $t('UU0136') }}
     div(class="text-caption2 text-grey-600 leading-1.3")
-      p Supported file formats: jpg, jpeg, png
-      p Maximum file size: 100 MB (per file)
-      p Minimum image size: 800 x 800 px
-      p Minimum Resolution: 600 DPI
+      p {{ $t('RR0243') }} jpg, jpeg, png
+      p {{ $t('RR0145') }} 100 MB (per file)
+      p {{ $t('RR0244') }} 800 x 800 px
+      p {{ $t('DD0075') }}
 </template>
 
 <script setup lang="ts">

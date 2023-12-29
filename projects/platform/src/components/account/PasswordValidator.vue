@@ -3,7 +3,7 @@ div(class="grid gap-y-1.5 text-caption leading-none")
   div(class="flex")
     p(
       :class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-250']"
-    ) {{ $t('AA0019') }}
+    ) {{ $t('WW0143', { minNum: 6 }) }}
     f-svg-icon(
       v-if="moreThanSix && lessThanEighteen"
       iconName="tick_bold"

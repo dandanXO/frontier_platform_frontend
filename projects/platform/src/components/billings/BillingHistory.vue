@@ -124,7 +124,7 @@ export default {
       },
       {
         prop: 'download',
-        label: t('OO0084'),
+        label: t('RR0303'),
         colSpan: 'col-span-1',
       },
       {

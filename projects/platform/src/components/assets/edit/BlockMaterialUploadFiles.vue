@@ -3,8 +3,8 @@ div(class="flex flex-col gap-y-15")
   div(class="flex flex-col gap-y-15")
     div(class="flex flex-col gap-y-5")
       div(class="flex flex-col gap-y-2")
-        p(class="text-body2 text-grey-800 font-bold") Multimedia File
-        p(class="text-caption text-grey-600") Add pictures, videos, test reports, and other information that can be helpful to the material.
+        p(class="text-body2 text-grey-800 font-bold") {{ $t('MI0065') }}
+        p(class="text-caption text-grey-600") {{ $t('DD0027') }}
       div
         f-button(
           type="secondary"
@@ -13,32 +13,39 @@ div(class="flex flex-col gap-y-15")
           @click="openModalMultimediaSelect"
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
-          p Supported file formats : JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
-          p Maximum file size : 20MB (per file)
-        div(v-if="multimediaList.length > 0" class="flex flex-wrap gap-5 mt-10")
-          draggable(
-            class="flex flex-wrap gap-5"
-            v-model="multimediaListForDraggable"
-            v-bind="fileCardDragOptions"
-            group="multimedia"
+          p {{ $t('RR0243') }} JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
+          p {{ $t('RR0145') }} 20MB (per file)
+        template(v-if="multimediaList.length > 0")
+          f-infobar(
+            class="w-full mt-4"
+            :notifyType="NOTIFY_TYPE.TIPS"
+            :display="DISPLAY.BLOCK"
+            :messageText="$t('MI0006')"
           )
-            template(#item="{ element: multimedia, index }")
-              multimedia-card(
-                :key="multimedia.id"
-                :isCover="multimedia.isCover"
-                :thumbnailUrl="multimedia.thumbnailUrl"
-                :originalUrl="multimedia.originalUrl"
-                :extension="multimedia.extension"
-                :displayFileName="multimedia.displayFileName"
-                :menuTree="getMultimediaMenuTree(multimedia.id)"
-                @setCover="setMultimediaAsCover(multimedia.id)"
-                @edit="startCropMultimedia(multimedia.id)"
-                @click="openMultimediaPreview(index)"
-              )
+          div(class="flex flex-wrap gap-5 mt-4")
+            draggable(
+              class="flex flex-wrap gap-5"
+              v-model="multimediaListForDraggable"
+              v-bind="fileCardDragOptions"
+              group="multimedia"
+            )
+              template(#item="{ element: multimedia, index }")
+                multimedia-card(
+                  :key="multimedia.id"
+                  :isCover="multimedia.isCover"
+                  :thumbnailUrl="multimedia.thumbnailUrl"
+                  :originalUrl="multimedia.originalUrl"
+                  :extension="multimedia.extension"
+                  :displayFileName="multimedia.displayFileName"
+                  :menuTree="getMultimediaMenuTree(multimedia.id)"
+                  @setCover="setMultimediaAsCover(multimedia.id)"
+                  @edit="startCropMultimedia(multimedia.id)"
+                  @click="openMultimediaPreview(index)"
+                )
     div(class="flex flex-col gap-y-5")
       div(class="flex flex-col gap-y-2")
-        p(class="text-body2 text-grey-800 font-bold") 3D Material File
-        p(class="text-caption text-grey-600") Add pictures, videos, test reports, and other information that can be helpful to the material.
+        p(class="text-body2 text-grey-800 font-bold") {{ $t('RR0299') }}
+        p(class="text-caption text-grey-600") {{ $t('DD0121') }}
       div(class="flex items-center gap-x-6.5")
         div
           div(class="flex flex-col gap-y-1 items-start")
@@ -64,8 +71,8 @@ div(class="flex flex-col gap-y-15")
               )
                 img(:src="APEXFIZ" alt="APEXFIZ" class="w-21 h-5")
             div(class="text-caption2 text-grey-600 mt-1")
-              p Supported file formats : ZIP
-              p Maximum file size : 5GB
+              p {{ $t('RR0243') }} ZIP {{ $t('RR0287') }}
+              p {{ $t('RR0145') }} 5GB
         f-infobar(
           v-if="!hasU3mQuota"
           :display="DISPLAY.FLEX"
@@ -100,11 +107,11 @@ div(class="flex flex-col gap-y-15")
           :messageText="$t('EE0173')"
         )
   div(class="flex flex-col gap-y-7.5 bg-grey-50 rounded px-15 py-12.5")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     div(class="flex flex-col gap-y-5")
       div(class="flex flex-col gap-y-2")
-        p(class="text-body2 text-grey-800 font-bold") Attachments
-        p(class="text-caption text-grey-600") Add pictures, videos, test reports and other helpful information about the material for internal members only.
+        p(class="text-body2 text-grey-800 font-bold") {{ $t('RR0298') }}
+        p(class="text-caption text-grey-600") {{ $t('MI0066') }}
       div
         f-button(
           type="secondary"
@@ -113,8 +120,8 @@ div(class="flex flex-col gap-y-15")
           @click="openModalAttachmentSelect"
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
-          p Supported file formats : JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
-          p Maximum file size : 20MB (per file)
+          p {{ $t('RR0243') }} JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
+          p {{ $t('RR0145') }} 20MB (per file)
         div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5 mt-10")
           draggable(
             class="flex flex-wrap gap-5"

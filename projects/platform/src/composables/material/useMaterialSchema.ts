@@ -56,25 +56,25 @@ const nonNullParams = {
 const toCommaSeparated = (n: number) => n.toLocaleString('en-US')
 
 const getMaxLengthParams = (qty: number) => {
-  const message = i18n.global.t('MOCK00', {
-    qty: toCommaSeparated(qty),
+  const message = i18n.global.t('WW0149', {
+    number: toCommaSeparated(qty),
   })
   return [qty, message] as const
 }
 
 const getMaxNumberParams = (qty: number) => {
-  const message = i18n.global.t('MOCK01', { qty: toCommaSeparated(qty) })
+  const message = i18n.global.t('WW0153', { maxNum: toCommaSeparated(qty) })
   return [qty, message] as const
 }
 
 const getMinNumberParams = (qty: number) => {
-  const message = i18n.global.t('MOCK02', { qty: toCommaSeparated(qty) })
+  const message = i18n.global.t('WW0143', { minNum: toCommaSeparated(qty) })
   return [qty, message] as const
 }
 
 const getMaxDecimalPlacesParams = (dp: number) => {
   const multipleOf = 10 ** -dp
-  const message = i18n.global.t('MOCK03', { dp })
+  const message = i18n.global.t('WW0152', { number: dp })
   return [multipleOf, message] as const
 }
 

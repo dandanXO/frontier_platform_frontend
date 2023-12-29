@@ -53,19 +53,19 @@ div
         template(v-if="currentTab === TAB.GENERAL")
           div(class="grid gap-y-5")
             div(class="text-body2 text-grey-900 grid grid-cols-11")
-              p(class="col-span-3") Frontier No
+              p(class="col-span-3") {{ $t('RR0084') }}
               div(class="col-span-8 grid gap-y-2") 
                 p(v-if="material.faceSide?.frontierNo") {{ material.faceSide?.frontierNo }}
                 p(v-if="material.backSide?.frontierNo") {{ material.backSide?.frontierNo }}
             div(class="text-body2 text-grey-900 grid grid-cols-11")
-              p(class="col-span-3") Last Modified
+              p(class="col-span-3") {{ $t('RR0310') }}
               p(v-if="material.metaData.updateDate" class="col-span-8") {{ toStandardFormat(material.metaData.updateDate) }}
           div(v-if="material.internalInfo" class="rounded-md bg-grey-50 p-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 grid gap-y-8")
               div(class="grid gap-y-3")
                 div(class="text-body2 text-grey-900 grid grid-cols-11")
-                  p(class="col-span-3") Created By
+                  p(class="col-span-3") {{ $t('RR0188') }}
                   div(class="col-span-8 flex items-center gap-x-3")
                     f-avatar(
                       :imageUrl="material.internalInfo.metaData.createdByInfo.avatar"
@@ -81,7 +81,7 @@ div
                   v-if="material.internalInfo.metaData.lastModifiedByInfo"
                   class="text-body2 text-grey-900 grid grid-cols-11"
                 )
-                  p(class="col-span-3") Last Modified By
+                  p(class="col-span-3") {{ $t('RR0310') }}
                   div(class="col-span-8 flex items-center gap-x-3")
                     f-avatar(
                       :imageUrl="material.internalInfo.metaData.lastModifiedByInfo.avatar"
@@ -97,7 +97,7 @@ div
                 div(class="w-full h-px bg-grey-150")
                 div(class="grid gap-y-3")
                   div(class="text-body2 text-grey-900 grid grid-cols-11")
-                    p(class="col-span-3") Copied From
+                    p(class="col-span-3") {{ $t('MI0118') }}
                     div(class="col-span-8 flex items-center gap-x-3")
                       f-avatar(
                         :imageUrl="material.internalInfo.metaData.copiedFromInfo.orgLogo"
@@ -109,14 +109,14 @@ div
                         span(class="text-body2 text-grey-900") {{ material.internalInfo.metaData.copiedFromInfo.orgName }}・
                         span(class="text-caption text-grey-600") {{ toStandardFormat(material.internalInfo.metaData.copiedFromInfo.date) }}
                   div(class="text-body2 text-grey-900 grid grid-cols-11")
-                    p(class="col-span-3") Material reference
+                    p(class="col-span-3") {{ $t('MI0119') }}
                     p(class="col-span-8") {{ material.internalInfo.metaData.copiedFromInfo.copiedFromItemNo }}
         template(v-if="currentTab === TAB.TAGS")
           //- External
           div(class="grid gap-y-7")
             div
               div(class="flex items-center gap-x-1 pb-3")
-                p(class="text-body2 font-bold text-grey-900") Keyword Tags
+                p(class="text-body2 font-bold text-grey-900") {{ $t('MI0132') }}
                 f-tooltip-standard(
                   :tooltipMessage="'AI determines the Material structure and automatically generates a light green tags.'"
                 )
@@ -197,7 +197,7 @@ div
                 )
               //-Yardage Remaining & Location
               div(class="grid gap-y-5")
-                p(class="text-body2 font-bold text-grey-900") Yardage Remaining & Location
+                p(class="text-body2 font-bold text-grey-900") {{ $t('RR0296') }}
                 material-detail-inventory-table(
                   :headerList="yardageRemaining.headerList"
                   :itemList="yardageRemaining.itemList"
@@ -324,7 +324,7 @@ const TAB = {
 }
 const tabList = computed(() => [
   {
-    name: 'General Information',
+    name: t('MI0117'),
     id: TAB.GENERAL,
   },
   {

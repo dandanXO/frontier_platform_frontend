@@ -168,19 +168,19 @@ const useMultimediaCreate = () => {
           menuList: (() => {
             const menuList = [
               {
-                title: 'Download',
+                title: t('RR0303'),
                 icon: 'download',
                 clickHandler: () => downloadMultimediaSelect(id),
               },
               {
-                title: 'Rename',
+                title: t('RR0302'),
                 icon: 'create',
                 clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
             if (target.extension === Extension.PDF) {
               menuList.unshift({
-                title: 'Open new page',
+                title: t('RR0304'),
                 icon: 'open_in_new',
                 clickHandler: () => window.open(target.originalUrl, '_blank'),
               })
@@ -191,7 +191,7 @@ const useMultimediaCreate = () => {
         {
           menuList: [
             {
-              title: 'Delete',
+              title: t('RR0063'),
               icon: 'delete',
               clickHandler: () => removeMultimediaSelect(id, theme),
             },

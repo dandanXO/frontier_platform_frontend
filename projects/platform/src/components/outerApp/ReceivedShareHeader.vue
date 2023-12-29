@@ -63,7 +63,7 @@ const props = defineProps<{
 }>()
 
 const { isMobile } = useBreakpoints()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const outerStore = useOuterStore()
@@ -99,7 +99,7 @@ const menuTree = computed<MenuTree>(() => ({
     {
       menuList: [
         {
-          title: 'Language',
+          title: t('RR0137'),
           icon: 'public',
           blockList: [
             {
@@ -134,7 +134,7 @@ const menuTree = computed<MenuTree>(() => ({
     {
       menuList: [
         {
-          title: 'Copy',
+          title: t('RR0167'),
           icon: 'content_copy',
           clickHandler: () => {
             shareInfo.value && receivedShareClone([shareInfo.value.nodeId])
@@ -145,7 +145,7 @@ const menuTree = computed<MenuTree>(() => ({
     {
       menuList: [
         {
-          title: 'Message',
+          title: t('RR0146'),
           icon: 'chat',
           clickHandler: openModalShareMessage,
         },
@@ -154,7 +154,7 @@ const menuTree = computed<MenuTree>(() => ({
     {
       menuList: [
         {
-          title: 'Digital Thread™',
+          title: t('RR0324'),
           icon: 'sticker_thread',
           clickHandler: () => {
             store.dispatch('sticker/preOpenStickerDrawer', {

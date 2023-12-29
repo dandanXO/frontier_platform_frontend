@@ -2,7 +2,7 @@
 div
   div(class="flex items-center gap-x-2")
     f-svg-icon(iconName="palette" size="20" class="text-grey-900")
-    p(class="text-body2 font-bold text-grey-900") Colors and Pattern
+    p(class="text-body2 font-bold text-grey-900") {{ $t('RR0309') }}
   div(class="grid gap-y-2 pt-4")
     //- Pantone
     div(v-if="pantoneList" class="flex items-center gap-x-2")

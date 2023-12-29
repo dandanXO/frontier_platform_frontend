@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('Scanned Display Settings')"
+  :header="$t('MI0087')"
   :primaryBtnText="$t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
   primaryBtnIcon="upload"
@@ -18,7 +18,7 @@ modal-behavior(
             size="14"
           )
         p
-          span {{ $t('You can also scan and email the material image to a preselected address') }}
+          span {{ $t('MI0089') }}
           span {{ ' ' }}
           span(class="font-bold") {{ $t('CILynn@frontier.cool') }}
           span {{ ' ' }}
@@ -32,7 +32,7 @@ modal-behavior(
     div(class="w-full h-full rounded flex items-center justify-center gap-x-2")
       side-image-row(
         v-if="isDoubleSide || sideType === MaterialSideType.FACE_SIDE"
-        :title="$t('Face Side')"
+        :title="$t('MI0007')"
         :originalThumbnailUrl="faceSideImage?.thumbnailUrl"
         :newImagePreviewUrl="faceSideChosenFilePreviewUrl"
         @upload="chooseFile(MaterialSideType.FACE_SIDE)"
@@ -40,7 +40,7 @@ modal-behavior(
       )
       side-image-row(
         v-if="isDoubleSide || sideType === MaterialSideType.BACK_SIDE"
-        :title="$t('Back Side')"
+        :title="$t('MI0008')"
         :originalThumbnailUrl="backSideImage?.thumbnailUrl"
         :newImagePreviewUrl="backSideChosenFilePreviewUrl"
         @upload="chooseFile(MaterialSideType.BACK_SIDE)"
@@ -49,7 +49,7 @@ modal-behavior(
     div(
       class="w-full h-14.5 rounded px-4 bg-grey-50 flex flex-row items-center justify-between"
     )
-      p(class="text-body2 text-grey-900") {{ $t('Crop material for better presentation in the preview and magnify mode') }}
+      p(class="text-body2 text-grey-900") {{ $t('MI0088') }}
       f-button(
         type="secondary"
         size="sm"
@@ -183,7 +183,7 @@ const closeModal = () => {
     store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
       header: t('TT0235'),
-      contentText: t('DD0034'),
+      contentText: t('RR0306'),
       primaryBtnText: t('Keep Editing'),
       secondaryBtnText: t('Leave Away'),
       secondaryBtnHandler: () => store.dispatch('helper/clearModalPipeline'),

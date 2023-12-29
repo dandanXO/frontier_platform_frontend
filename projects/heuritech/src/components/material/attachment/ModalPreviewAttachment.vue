@@ -37,7 +37,7 @@ div(class="w-200")
       target="_blank"
     )
       f-svg-icon(iconName="open_in_new" size="20" class="text-grey-900")
-      p(class="text-body2 leading-1.6 text-grey-900 pl-1.5") {{ $t('DD0070') }}
+      p(class="text-body2 leading-1.6 text-grey-900 pl-1.5") {{ $t('RR0304') }}
   div(class="h-25 bg-grey-0 flex justify-between items-center px-8")
     div(class="text-grey-900 flex items-center")
       span(class="text-h6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}

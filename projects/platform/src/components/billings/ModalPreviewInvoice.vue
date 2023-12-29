@@ -11,7 +11,7 @@ div(class="w-149 h-194")
               @click="generatePdf(innerInvoice.invoiceId)"
             )
               f-svg-icon(iconName="picture_as_pdf")
-              span(class="ml-1 text-caption font-bold") {{ $t('OO0084') }}
+              span(class="ml-1 text-caption font-bold") {{ $t('RR0303') }}
       div(class="min-w-87")
         div(class="flex justify-between items-center mb-1 h-5")
           p {{ $t('OO0090') }}:

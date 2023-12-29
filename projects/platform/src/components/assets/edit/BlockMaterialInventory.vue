@@ -2,7 +2,11 @@
 div(class="flex flex-col gap-y-10")
   div(class="flex flex-col gap-y-4")
     div(class="flex flex-col gap-y-3")
-      p(class="text-body2 text-grey-800") Total Quantity
+      div(class="flex flex-row items-center gap-x-1")
+        span(class="text-body2 text-grey-800") {{ $t('RR0034') }}
+        f-tooltip-standard(:tooltipMessage="$t('MI0058')")
+          template(#slot:tooltip-trigger)
+            f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       div(class="flex flex-row items-center gap-x-4")
         f-input-text(
           class="w-50"
@@ -14,23 +18,19 @@ div(class="flex flex-col gap-y-10")
         f-input-switch(
           :inputValue="isTotalPublic.value"
           @update:inputValue="isTotalPublic.onInput"
-          :label="$t('DD0024')"
+          :label="$t('MI0025')"
           iconSize="20"
         )
-    f-infobar(
-      class="w-130"
-      :notifyType="NOTIFY_TYPE.TIPS"
-      messageText="You have to fill in the width and weight of the specification first, then enter the quantity of yardage remaining & location to get the correct value."
-    )
+    f-infobar(class="w-130" :notifyType="NOTIFY_TYPE.TIPS" :messageText="$t('MI0059')")
   div(class="bg-grey-50 rounded px-15 py-12.5 mb-15 grid gap-y-7.5")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     f-input-text(
       class="w-100"
       :textValue="nativeCode.value"
       @update:textValue="nativeCode.onInput"
       :hintError="displayErrors[`internalInfo.nativeCode`]"
       :label="$t('RR0030')"
-      :placeholder="$t('DD0022')"
+      :placeholder="$t('MI0060')"
     )
     f-input-container(:label="`${$t('RR0031')}`")
       div(class="flex flex-col gap-y-4")

@@ -74,7 +74,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
                   ) {{ type.name }} ({{ type.unit }})
               div(class="w-px h-[15px] bg-grey-400")
               f-tooltip-standard(
-                :tooltipMessage="'Subscribe to Eco-Impactor to unlock this feature'"
+                :tooltipMessage="$t('BB0137')"
                 :disabledTooltip="hasSubscribedMade2flow"
               )
                 template(#slot:tooltip-trigger)

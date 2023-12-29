@@ -153,6 +153,7 @@ import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
   canEdit: boolean
@@ -164,6 +165,7 @@ const emit = defineEmits<{
   (e: 'update:selectedList', v: Material[]): void
 }>()
 
+const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const { goToAssetMaterialDetail } = useNavigation()
@@ -201,7 +203,7 @@ type SideType = MATERIAL_SIDE_TYPE | typeof SIDE_COVER
 const innerSideOptionList = computed(() => {
   return [
     {
-      label: 'Cover',
+      label: t('RR0081'),
       selectValue: SIDE_COVER,
     },
     ...sideOptionList.value.map((sideOption) => {

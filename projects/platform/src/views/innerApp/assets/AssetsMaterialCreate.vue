@@ -9,7 +9,7 @@ div(class="w-full h-full flex justify-center")
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
     div(v-if="materialOptions" class="flex flex-col gap-y-17.5")
       div(class="flex items-center h-16")
-        h5(class="text-h5 font-bold") Material Information
+        h5(class="text-h5 font-bold") {{ $t('MI0001') }}
       div(class="flex flex-col divide-y divide-grey-250")
         div(class="pl-15")
           block-material-type
@@ -31,9 +31,10 @@ div(class="w-full h-full flex justify-center")
         f-button(
           type="primary"
           size="md"
+          prependIcon="done"
           :disabled="submitCount > 0 && !meta.valid"
           @click="submit"
-        ) {{ $t('UU0020') }}
+        ) {{ $t('UU0018') }}
 </template>
 
 <script setup lang="ts">
@@ -340,9 +341,8 @@ const openModalMassUpload = () => {
 const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
     type: NOTIFY_TYPE.WARNING,
-    header: t('EE0045'),
-    contentText: t('EE0046'),
-    primaryBtnText: t('UU0001'),
+    header: t('RR0305'),
+    contentText: t('RR0306'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
       goToAssets()
@@ -358,8 +358,8 @@ onBeforeRouteLeave(async () => {
   const result = await new Promise((resolve) => {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
-      header: t('EE0045'),
-      contentText: t('EE0046'),
+      header: t('RR0305'),
+      contentText: t('RR0306'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),

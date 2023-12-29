@@ -66,7 +66,7 @@ const menuTree = computed(() => ({
         }
         if (threadBoardStore.haveEditWorkflowStagePermission) {
           list.push({
-            title: t('TT0151'),
+            title: t('RR0302'),
             icon: 'create',
             clickHandler: startEdit,
           })

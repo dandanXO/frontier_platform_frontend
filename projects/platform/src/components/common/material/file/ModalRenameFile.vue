@@ -1,8 +1,8 @@
 <template lang="pug">
 modal-behavior(
   :theme="theme"
-  :header="$t('rename')"
-  :primaryBtnText="$t('save')"
+  :header="$t('RR0302')"
+  :primaryBtnText="$t('UU0018')"
   :primaryBtnDisabled="!isFileNameValid"
   primaryBtnIcon="done"
   :secondaryBtnText="$t('UU0026')"
@@ -13,7 +13,7 @@ modal-behavior(
     f-input-text(
       :theme="theme"
       v-model:textValue="fileName"
-      :placeholder="$t('Enter file name')"
+      :placeholder="$t('MI0086')"
     )
 </template>
 

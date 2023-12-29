@@ -101,7 +101,7 @@ const errorMsg = computed(() => {
     }
 
     if (!inputValidator.maxIntegerDecimal(3, 2, percentage)) {
-      return t('WW0010')
+      return t('WW0151', { number: 3 })
     }
 
     total += percentage

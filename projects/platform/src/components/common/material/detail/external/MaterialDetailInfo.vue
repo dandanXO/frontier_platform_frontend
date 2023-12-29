@@ -32,9 +32,7 @@ div(class="grid gap-y-8 content-start")
   div(v-if="tagInfo.tagList.concat(tagInfo.aiTagList).length > 0")
     div(class="flex items-center gap-x-1 mb-3")
       p(class="text-body2 font-bold text-grey-900") Keyword Tags
-      f-tooltip-standard(
-        :tooltipMessage="'AI determines the Material structure and automatically generates a light green tags.'"
-      )
+      f-tooltip-standard(:tooltipMessage="$t('MI0122')")
         template(#slot:tooltip-trigger)
           f-svg-icon(iconName="info_outline" size="14")
     div(class="flex flex-wrap gap-x-2 gap-y-3")
@@ -47,7 +45,7 @@ div(class="grid gap-y-8 content-start")
   //- Eco
   div
     div(class="flex items-center gap-x-1 mb-3")
-      p(class="text-body2 font-bold text-grey-900") Eco-Impactor™ Results
+      p(class="text-body2 font-bold text-grey-900") {{ $t('BB0130') }}
       div(
         class="p-1 rounded hover:bg-grey-100 cursor-pointer"
         @click="openModalIndicatorMethodology"
@@ -83,13 +81,15 @@ div(class="grid gap-y-8 content-start")
         div(class="flex items-center gap-x-2")
           p(class="text-caption text-grey-900 font-bold") {{ option.title }}
           f-tooltip-standard(
-            :tooltipMessage="'AI determines the Material structure and automatically generates a light green tags.'"
+            :tooltipTitle="$t('MI0133')"
+            :tooltipMessage="$t('MI0134')"
           )
             template(#slot:tooltip-trigger)
               f-svg-icon(iconName="info_outline" size="14" class="text-grey-600")
         f-svg-icon(
           iconName="download"
           size="20"
+          :tooltipMessage="selectedU3m.status === MaterialU3mStatus.COMPLETED ? $t('RR0059') : $t('II0070')"
           :class="[selectedU3m.status === MaterialU3mStatus.COMPLETED ? 'text-grey-900 group-hover:text-primary-400' : 'text-grey-300']"
         )
   //- Sticker
@@ -99,7 +99,7 @@ div(class="grid gap-y-8 content-start")
     size="md"
     class="w-full -mt-2"
     @click="store.dispatch('sticker/preOpenStickerDrawer', { material, drawerOpenFromLocationList })"
-  ) Conversation
+  ) {{ $t('UU0141') }}
   //- Specifications
   div(class="text-grey-900 text-body2/1.6 grid gap-y-2")
     p(
@@ -125,12 +125,12 @@ div(class="grid gap-y-8 content-start")
     button(
       class="outline-none px-5 py-2.5 rounded border border-grey-300 text-grey-900 hover:text-primary-400 active:text-primary-400 justify-self-start mt-2 cursor-pointer"
       @click="openModalMaterialSpecification"
-    ) View Material Specification
+    ) {{ $t('UU0142') }}
   //- General Info
   f-expansion-panel(class="border-t border-grey-250 pt-6")
     template(#trigger="{ isExpand }")
       div(class="flex items-center justify-between cursor-pointer")
-        span(class="text-body2 text-grey-800 font-bold") General Information
+        span(class="text-body2 text-grey-800 font-bold") {{ $t('MI0117') }}
         f-svg-icon(
           iconName="keyboard_arrow_right"
           size="20"
@@ -140,14 +140,14 @@ div(class="grid gap-y-8 content-start")
     template(#content)
       div(class="grid gap-y-1.5 text-body2/1.6 pt-3")
         div(class="grid grid-cols-7 gap-x-6")
-          p(class="col-span-2") Frontier No
+          p(class="col-span-2") {{ $t('RR0084') }}
           p(class="col-span-5") {{ material.faceSide?.frontierNo ?? material.backSide?.frontierNo }}
         template(v-if="publishedDate")
           div(class="grid grid-cols-7 gap-x-6")
-            p(class="col-span-2") Published By
+            p(class="col-span-2") {{ $t('RR0322') }}
             p(class="col-span-5") {{ material.metaData.unitName }}
           div(class="grid grid-cols-7 gap-x-6")
-            p(class="col-span-2") Published On
+            p(class="col-span-2") {{ $t('RR0323') }}
             p(class="col-span-5") {{ toStandardFormat(publishedDate) }}
 </template>
 

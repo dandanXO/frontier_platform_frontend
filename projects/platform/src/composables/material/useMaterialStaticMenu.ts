@@ -2,14 +2,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { MenuTree } from '@frontier/ui-component'
 import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
-import {
-  MaterialTypeText,
-  MaterialQuantityText,
-  MaterialSideTypeText,
-  LengthUnitText,
-  WeightUnitText,
-  CurrencyText,
-} from '@/utils/enumText'
+import useEnumText from '@/composables/useEnumText'
 
 const getSelectValue = (str: string) =>
   canConvertToInt(str) ? Number(str) : str
@@ -38,19 +31,27 @@ const getMenuTreeFromEnumText = (
 
 const useMaterialStaticMenu = () => {
   const { t } = useI18n()
+  const {
+    materialTypeText,
+    materialQuantityText,
+    materialSideTypeText,
+    lengthUnitText,
+    weightUnitText,
+    currencyText,
+  } = useEnumText()
 
   const inventoryUnitList = computed(() => ({
     selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
-    menuTree: getMenuTreeFromEnumText('w-30', MaterialQuantityText),
+    menuTree: getMenuTreeFromEnumText('w-30', materialQuantityText.value),
   }))
 
   const currencyList = computed(() => ({
     selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
-    menuTree: getMenuTreeFromEnumText('w-30', CurrencyText),
+    menuTree: getMenuTreeFromEnumText('w-30', currencyText.value),
   }))
 
   const sideTypeMenuTree = computed<MenuTree>(() =>
-    getMenuTreeFromEnumText('w-25', MaterialSideTypeText)
+    getMenuTreeFromEnumText('w-25', materialSideTypeText.value)
   )
 
   const singleOrDoubleMenuTree = computed<MenuTree>(() => ({
@@ -66,19 +67,19 @@ const useMaterialStaticMenu = () => {
   }))
 
   const materialTypeOptionList = computed(() => {
-    return Object.entries(MaterialTypeText).map(([value, name]) => {
+    return Object.entries(materialTypeText.value).map(([value, name]) => {
       return { name, value: getSelectValue(value) }
     })
   })
 
   const weightUnitList = computed(() => ({
     selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
-    menuTree: getMenuTreeFromEnumText('w-35', WeightUnitText),
+    menuTree: getMenuTreeFromEnumText('w-35', weightUnitText.value),
   }))
 
   const widthUnitList = computed(() => ({
     selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
-    menuTree: getMenuTreeFromEnumText('w-35', LengthUnitText),
+    menuTree: getMenuTreeFromEnumText('w-35', lengthUnitText.value),
   }))
 
   return {

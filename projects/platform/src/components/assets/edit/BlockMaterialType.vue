@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-7.5 pb-10")
-  f-input-container(label="Create Material Side Information")
+  f-input-container(:label="$t('MI0002')")
     div(class="flex items-center gap-x-3")
       f-select-dropdown(
         :selectValue="isDoubleSide.value"
@@ -15,12 +15,12 @@ div(class="flex flex-col gap-y-7.5 pb-10")
         :dropdownMenuTree="sideTypeMenuTree"
         class="w-25"
       )
-  f-input-container(label="Material Type")
+  f-input-container(:label="$t('MI0003')")
     f-input-checkbox(
       binary
       :inputValue="isComposite.value"
       @update:inputValue="isComposite.onInput"
-      label="Composite"
+      :label="$t('MI0004')"
     )
 </template>
 

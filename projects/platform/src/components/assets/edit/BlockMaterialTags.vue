@@ -7,9 +7,9 @@ div(class="flex flex-col gap-y-10")
       :dropdownMenuTree="menuTreePublicTag"
       @addNew="addNewTag($event, menuTreePublicTag)"
       :label="$t('RR0027')"
-      :placeholder="$t('DD0018')"
+      :placeholder="$t('RR0288')"
       :hintError="displayErrors['tagInfo.tagList']"
-      hintSupporting="e.g., Weft stretch, Summer, Shirts, SS22."
+      :hintSupporting="$t('MI0050')"
       multiple
     )
     f-select-input(
@@ -17,21 +17,22 @@ div(class="flex flex-col gap-y-10")
       @update:selectValue="certificationTagIdList.onInput"
       :canAddNew="false"
       :dropdownMenuTree="specOptions.certificateList"
-      :label="$t('EE0129')"
-      :placeholder="$t('EE0131')"
+      :label="$t('MI0051')"
+      :placeholder="$t('MI0052')"
       :hintError="displayErrors['tagInfo.certificationTagIdList']"
       multiple
     )
   div(class="flex flex-col gap-y-7.5 bg-grey-50 rounded px-15 py-12.5")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     f-select-input(
       :selectValue="privateTagList.value"
       @update:selectValue="privateTagList.onInput"
       :dropdownMenuTree="menuTreePrivateTag"
       @addNew="addNewTag($event, menuTreePrivateTag)"
       :label="$t('RR0028')"
-      :placeholder="$t('DD0020')"
+      :placeholder="$t('RR0290')"
       :hintError="displayErrors['internalInfo.tagList']"
+      :hintSupporting="$t('MI0053')"
       multiple
     )
     f-input-textarea(
@@ -39,7 +40,7 @@ div(class="flex flex-col gap-y-10")
       @update:textValue="remark.onInput"
       :hintError="displayErrors['internalInfo.remark']"
       :label="$t('RR0029')"
-      placeholder="Add description content"
+      :placeholder="$t('MI0054')"
       class="w-full"
     )
 </template>

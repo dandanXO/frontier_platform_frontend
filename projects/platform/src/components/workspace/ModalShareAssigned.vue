@@ -27,7 +27,7 @@ modal-behavior(
           v-model:textValue="formData.messages"
           :label="$t('RR0146')"
           minHeight="min-h-43.5"
-          :rules="[(v: string) => v.length > 1000 && $t('WW0073')]"
+          :rules="[(v: string) => v.length > 1000 && $t('WW0142', { limitNumber: 1000 })]"
         )
 </template>
 

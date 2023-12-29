@@ -47,7 +47,7 @@ div(class="w-full flex flex-col border border-grey-150 rounded")
         prependIcon="open_in_new"
         @click="handleOpenInNewWindow"
         :disabled="!hasPdfFile"
-      ) {{ $t('DD0070') }}
+      ) {{ $t('RR0304') }}
 </template>
 
 <script setup lang="ts">

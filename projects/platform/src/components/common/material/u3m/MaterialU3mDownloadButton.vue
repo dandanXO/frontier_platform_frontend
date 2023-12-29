@@ -14,7 +14,7 @@ f-popper(placement="bottom-start" :disabled="disabled" :offset="[0, -4]")
       p(
         class="text-body2/1.6"
         :class="[disabled ? 'text-grey-250 cursor-not-allowed' : 'text-grey-800 hover:text-grey-900 cursor-pointer']"
-      ) {{ 'Download' }}
+      ) {{ $t('RR0303') }}
       f-svg-icon(
         iconName="arrow_down"
         :class="[isExpand ? 'text-primary-500' : 'text-grey-600', { '!text-grey-250': disabled }]"
