@@ -168,6 +168,7 @@ import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
 import useMaterial from '@/composables/material/useMaterial'
 import { useStore } from 'vuex'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{
   material: Material
@@ -179,6 +180,7 @@ const props = defineProps<{
 const { t } = useI18n()
 const store = useStore()
 const logSender = useLogSender()
+const route = useRoute()
 
 const { specificationInfo, carbonEmissionInfo, scanImageStatus } = useMaterial(
   ref(props.material)
@@ -246,7 +248,9 @@ const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
     return
   }
 
-  await store.dispatch('user/getUser')
+  if (!route.path.includes('embed')) {
+    await store.dispatch('user/getUser')
+  }
 
   const needCheckTokenStatus = [
     'metafabric.design', // 青望科技
