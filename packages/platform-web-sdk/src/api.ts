@@ -4698,6 +4698,12 @@ export interface EditAssetsMaterialSideImage200ResponseResult {
      * @memberof EditAssetsMaterialSideImage200ResponseResult
      */
     'backSide': EditAssetsMaterialSideImage200ResponseResultFaceSide | null;
+    /**
+     * 是否通知重新建立U3M
+     * @type {boolean}
+     * @memberof EditAssetsMaterialSideImage200ResponseResult
+     */
+    'isNotifyReCreateU3m': boolean;
 }
 /**
  * 

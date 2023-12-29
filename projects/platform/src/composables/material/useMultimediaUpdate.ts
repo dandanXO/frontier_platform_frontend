@@ -420,8 +420,9 @@ const useMultimediaUpdate = (
     })
 
     const result = res.data.result!
-    const { faceSide, backSide } = result
-    material.value.coverImage = result.coverImage
+    const { faceSide, backSide, coverImage, u3mStatus, isNotifyReCreateU3m } =
+      result
+    material.value.coverImage = coverImage
     if (material.value.faceSide) {
       material.value.faceSide.sideImage = faceSide?.sideImage || null
       material.value.faceSide.u3mImage = faceSide?.u3mImage || null
@@ -430,7 +431,8 @@ const useMultimediaUpdate = (
       material.value.backSide.sideImage = backSide?.sideImage || null
       material.value.backSide.u3mImage = backSide?.u3mImage || null
     }
-    material.value.u3m.status = result.u3mStatus
+    material.value.u3m.status = u3mStatus
+    material.value.u3m.isNotifyReCreate = isNotifyReCreateU3m
 
     updatePantoneList({
       faceSidePantoneNameList: faceSide?.pantoneList?.map((p) => p.name) || [],
@@ -502,8 +504,14 @@ const useMultimediaUpdate = (
           })
 
           const result = res.data.result!
-          const { faceSide: faceSideRes, backSide: backSideRes } = result
-          material.value.coverImage = result.coverImage
+          const {
+            faceSide: faceSideRes,
+            backSide: backSideRes,
+            coverImage,
+            isNotifyReCreateU3m,
+          } = result
+          material.value.coverImage = coverImage
+          material.value.u3m.isNotifyReCreate = isNotifyReCreateU3m
 
           if (faceSideRes) {
             if (!material.value.faceSide) {

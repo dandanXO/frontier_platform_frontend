@@ -45,15 +45,15 @@ div
           class="w-64"
         )
     face-side-specification(
-      v-if="mode === CREATE_EDIT.CREATE || values.faceSide"
-      v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.FACE"
+      v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.FACE_SIDE"
+      v-show="currentMaterialSide === MaterialSideType.FACE_SIDE"
     )
     middle-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.middleSide"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.MIDDLE"
     )
     back-side-specification(
-      v-if="mode === CREATE_EDIT.CREATE || values.backSide"
+      v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.BACK_SIDE"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.BACK"
     )
 </template>
