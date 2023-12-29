@@ -161,9 +161,6 @@ export default {
     ModalAssetsList: defineAsyncComponent(() =>
       import('@/components/assets/ModalAssetsList.vue')
     ),
-    ModalChangeCover: defineAsyncComponent(() =>
-      import('@/components/assets/edit/ModalChangeCover.vue')
-    ),
     ModalEditScannedImage: defineAsyncComponent(() =>
       import('@/components/assets/edit/ModalEditScannedImage.vue')
     ),

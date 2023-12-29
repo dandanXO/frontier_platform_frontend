@@ -72,9 +72,10 @@ import { useStore } from 'vuex'
 import Draggable from 'vuedraggable'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import useMaterial from '@/composables/material/useMaterial'
-import { COVER_MODE, fileCardDragOptions } from '@/utils/constants'
+import { fileCardDragOptions } from '@/utils/constants'
 import type { CoverId, MaterialMultimediaUpdateService } from '@/types'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
+import { CoverMode } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
   multimediaUpdateService: MaterialMultimediaUpdateService
@@ -134,11 +135,13 @@ onMounted(() => {
   const getSelectedCoverId = (): CoverId => {
     const coverImageMode = material.value.coverImage.mode
     switch (coverImageMode) {
-      case COVER_MODE.FACE:
+      case CoverMode.FACE:
         return 'faceSide'
-      case COVER_MODE.BACK:
+      case CoverMode.BACK:
         return 'backSide'
-      case COVER_MODE.SUP: {
+      case CoverMode.DIGITAL_DRAPE:
+        return 'digitalDrape'
+      case CoverMode.MULTI_MEDIA: {
         const multimediaId = multimediaList.value.find(
           (file) => file.isCover
         )?.fileId
