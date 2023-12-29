@@ -1082,6 +1082,103 @@ export interface CheckDeleteAssetsMaterialList200ResponseAllOfResult {
 /**
  * 
  * @export
+ * @interface CheckIsMaterialOwner200Response
+ */
+export interface CheckIsMaterialOwner200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckIsMaterialOwner200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckIsMaterialOwner200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CheckIsMaterialOwner200ResponseAllOfResult}
+     * @memberof CheckIsMaterialOwner200Response
+     */
+    'result': CheckIsMaterialOwner200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof CheckIsMaterialOwner200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckIsMaterialOwner200ResponseAllOf
+ */
+export interface CheckIsMaterialOwner200ResponseAllOf {
+    /**
+     * 
+     * @type {CheckIsMaterialOwner200ResponseAllOfResult}
+     * @memberof CheckIsMaterialOwner200ResponseAllOf
+     */
+    'result': CheckIsMaterialOwner200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface CheckIsMaterialOwner200ResponseAllOfResult
+ */
+export interface CheckIsMaterialOwner200ResponseAllOfResult {
+    /**
+     * 
+     * @type {CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo}
+     * @memberof CheckIsMaterialOwner200ResponseAllOfResult
+     */
+    'ownerInfo': CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo
+ */
+export interface CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo
+     */
+    'orgNo': string;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團s隊)ID
+     * @type {number}
+     * @memberof CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CheckIsMaterialOwnerRequest
+ */
+export interface CheckIsMaterialOwnerRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CheckIsMaterialOwnerRequest
+     */
+    'materialId': number;
+}
+/**
+ * 
+ * @export
  * @interface CheckReceivedSharePermission200Response
  */
 export interface CheckReceivedSharePermission200Response {
@@ -25507,6 +25604,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
+         * @summary 檢查此布片是否為使用者擁有
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkIsMaterialOwner: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkIsMaterialOwnerRequest' is not null or undefined
+            assertParamExists('checkIsMaterialOwner', 'checkIsMaterialOwnerRequest', checkIsMaterialOwnerRequest)
+            const localVarPath = `/assets/material/external-page/check-is-owner`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checkIsMaterialOwnerRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Clone
          * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
@@ -25813,6 +25950,42 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(getAssetMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得布片 external 資料 (不需要登入)
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsExternalMaterial: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkIsMaterialOwnerRequest' is not null or undefined
+            assertParamExists('getAssetsExternalMaterial', 'checkIsMaterialOwnerRequest', checkIsMaterialOwnerRequest)
+            const localVarPath = `/assets/material/external-page/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checkIsMaterialOwnerRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -26716,6 +26889,17 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 檢查此布片是否為使用者擁有
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckIsMaterialOwner200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkIsMaterialOwner(checkIsMaterialOwnerRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Clone
          * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
@@ -26800,6 +26984,17 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetMaterialList(getAssetMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得布片 external 資料 (不需要登入)
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -27086,6 +27281,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
+         * @summary 檢查此布片是否為使用者擁有
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: any): AxiosPromise<CheckIsMaterialOwner200Response> {
+            return localVarFp.checkIsMaterialOwner(checkIsMaterialOwnerRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Clone
          * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
@@ -27163,6 +27368,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: any): AxiosPromise<GetAssetMaterialList200Response> {
             return localVarFp.getAssetMaterialList(getAssetMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得布片 external 資料 (不需要登入)
+         * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+            return localVarFp.getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -27432,6 +27647,18 @@ export class AssetsApi extends BaseAPI {
 
     /**
      * 
+     * @summary 檢查此布片是否為使用者擁有
+     * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).checkIsMaterialOwner(checkIsMaterialOwnerRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Clone
      * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
      * @param {*} [options] Override http request option.
@@ -27524,6 +27751,18 @@ export class AssetsApi extends BaseAPI {
      */
     public getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetMaterialList(getAssetMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得布片 external 資料 (不需要登入)
+     * @param {CheckIsMaterialOwnerRequest} checkIsMaterialOwnerRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

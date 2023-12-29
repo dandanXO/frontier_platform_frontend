@@ -13,7 +13,8 @@
 
 <template lang="pug">
 main(class="flex flex-col h-full")
-  router-view(name="header" class="rwd-app-padding-x shrink-0")
+  div(class="rwd-app-padding-x shrink-0")
+    router-view(name="header")
   div(class="flex-grow overflow-y-auto rwd-app-padding-x")
     router-view(v-slot="{ Component }")
       suspense
@@ -43,18 +44,11 @@ import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vu
 import { useStore } from 'vuex'
 import { computed, onMounted } from 'vue'
 import { useFilterStore } from '@/stores/filter'
-import useLogSender from '@/composables/useLogSender'
 import { useUserStore } from '@/stores/user'
-
-const props = defineProps<{
-  sharingKey: string
-}>()
 
 const store = useStore()
 const { getExternalFilterOption } = useFilterStore()
 const userStore = useUserStore()
-const logSender = useLogSender()
-logSender.createReceivePageLog(props.sharingKey)
 
 const isStickerDrawerOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerOpen']
@@ -63,10 +57,10 @@ const isStickerDrawerForLoginOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerForLoginOpen']
 )
 
-onMounted(async () => {
-  await userStore.checkHasLogin()
-  getExternalFilterOption()
+userStore.checkHasLogin()
+getExternalFilterOption()
 
+onMounted(async () => {
   if (isStickerDrawerForLoginOpen.value) {
     /**
      * 如果 isStickerDrawerForLoginOpen 為 true，表示之前呼叫過 sticker/openStickerDrawerForLogin

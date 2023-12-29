@@ -5,7 +5,7 @@ div(class="grid gap-y-8 content-start")
     div(v-if="material.priceInfo.pricing" class="flex items-end gap-x-1 mb-5")
       p(class="text-grey-900 font-bold text-body1") $ {{ material.priceInfo.pricing.price }}
       p(class="text-grey-600 text-caption") {{ material.priceInfo.pricing.currencyCode }} / {{ material.priceInfo.pricing.unit }}
-      p(v-if="inventoryTotalQtyInYard") ({{ inventoryTotalQtyInYard }}Y available)
+      p(v-if="inventoryTotalQtyInYard" class="text-grey-600 text-caption") ({{ inventoryTotalQtyInYard }}Y available)
     div(class="grid gap-y-2")
       template(v-for="item in priceInfo" :key="item")
         div(v-if="item" class="flex text-grey-900 text-body2/1.6")
@@ -14,7 +14,7 @@ div(class="grid gap-y-8 content-start")
     //- Inventory
     div(
       v-if="inventoryTotalQtyInYard"
-      class="border-t border-grey-250 pt-2 text-grey-900 grid gap-y-2"
+      class="border-t border-grey-250 mt-2 pt-2 text-grey-900 grid gap-y-2"
     )
       p(class="font-bold text-body2") Inventory
       div(class="flex text-grey-900 text-body2/1.6")
@@ -94,6 +94,7 @@ div(class="grid gap-y-8 content-start")
         )
   //- Sticker
   f-button(
+    v-if="drawerOpenFromLocationList"
     prependIcon="sticker_thread"
     size="md"
     class="w-full -mt-2"
@@ -172,7 +173,7 @@ const props = defineProps<{
   material: Material
   publishedDate?: number
   isCanDownloadU3M: boolean
-  drawerOpenFromLocationList: string[]
+  drawerOpenFromLocationList?: string[]
 }>()
 
 const { t } = useI18n()

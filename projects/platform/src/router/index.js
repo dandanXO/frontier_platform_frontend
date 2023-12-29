@@ -67,64 +67,6 @@ const routes = [
     },
   },
   {
-    path: '/received-share/:sharingKey',
-    name: 'ReceivedShare',
-    props: true,
-    component: () => import('@/views/outerApp/OuterApp.vue'),
-    children: [
-      {
-        path: 'navigator',
-        name: 'ReceivedShareNavigator',
-        props: true,
-        component: () =>
-          import('@/views/outerApp/receivedShare/ReceivedShareNavigator.vue'),
-      },
-      {
-        path: ':nodeId',
-        name: 'ReceivedShareCollection',
-        props: true,
-        components: {
-          default: () =>
-            import(
-              '@/views/outerApp/receivedShare/ReceivedShareCollection.vue'
-            ),
-          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
-        },
-      },
-      {
-        path: 'material/:nodeId',
-        name: 'ReceivedShareMaterial',
-        props: true,
-        components: {
-          default: () =>
-            import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
-          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
-        },
-      },
-    ],
-  },
-  {
-    path: '/embed/:sharingKey',
-    name: 'Embed',
-    props: true,
-    component: () => import('@/views/outerApp/OuterApp.vue'),
-    children: [
-      {
-        path: ':nodeId',
-        name: 'EmbedCollection',
-        props: true,
-        component: () => import('@/views/outerApp/embed/Embed.vue'),
-      },
-      {
-        path: 'material/:nodeId',
-        name: 'EmbedMaterialDetail',
-        props: true,
-        component: () =>
-          import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
-      },
-    ],
-  },
-  {
     path: '/embed-3d-viewer/:materialId',
     name: 'Embed3DViewer',
     component: () => import('@/views/outerApp/embed3DViewer/Embed3DViewer.vue'),
@@ -374,6 +316,66 @@ const routes = [
         name: 'ShowroomMaterialDetail',
         props: true,
         component: () => import('@/views/innerApp/ShowroomMaterialDetail.vue'),
+      },
+    ],
+  },
+  {
+    path: '/',
+    name: 'OuterAppRoot',
+    props: true,
+    component: () => import('@/views/outerApp/OuterApp.vue'),
+    children: [
+      {
+        path: 'received-share/:sharingKey/navigator',
+        name: 'ReceivedShareNavigator',
+        props: true,
+        component: () =>
+          import('@/views/outerApp/receivedShare/ReceivedShareNavigator.vue'),
+      },
+      {
+        path: 'received-share/:sharingKey/:nodeId',
+        name: 'ReceivedShareCollection',
+        props: true,
+        components: {
+          default: () =>
+            import(
+              '@/views/outerApp/receivedShare/ReceivedShareCollection.vue'
+            ),
+          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
+        },
+      },
+      {
+        path: 'received-share/:sharingKey/material/:nodeId',
+        name: 'ReceivedShareMaterial',
+        props: true,
+        components: {
+          default: () =>
+            import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
+          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
+        },
+      },
+      {
+        path: 'embed/:sharingKey/:nodeId',
+        name: 'EmbedCollection',
+        props: true,
+        component: () => import('@/views/outerApp/embed/Embed.vue'),
+      },
+      {
+        path: 'embed/:sharingKey/material/:nodeId',
+        name: 'EmbedMaterialDetail',
+        props: true,
+        component: () =>
+          import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
+      },
+      {
+        path: 'assets/:materialId',
+        name: 'OuterAssetsMaterialDetail',
+        props: true,
+        components: {
+          default: () =>
+            import('@/views/outerApp/assets/OuterAssetsMaterialDetail.vue'),
+          header: () => import('@/components/outerApp/OuterAssetsHeader.vue'),
+        },
       },
     ],
   },
