@@ -115,6 +115,8 @@ import { useStore } from 'vuex'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import usePrint from '@/composables/material/usePrint'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
+import { MASS_UPLOAD_ENABLE_ORG_ID } from '@/utils/constants'
+import type { Organization } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const store = useStore()
@@ -128,10 +130,16 @@ const openModalSmartUpload = () => {
   })
 }
 
+const org = computed<Organization>(
+  () => store.getters['organization/organization']
+)
+
 const openModalMassUpload = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload',
-  })
+  if (org.value.orgId === MASS_UPLOAD_ENABLE_ORG_ID) {
+    store.dispatch('helper/openModalBehavior', {
+      component: 'modal-mass-upload',
+    })
+  }
 }
 const alternativeUploadOptions = [
   {

@@ -374,6 +374,15 @@ export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 
 export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
 
+/**
+ * ticket: #2883
+ *
+ * 這個 org 是 Textpert，
+ * 在 online spreadsheet (#2821) 完成前指開放給該 org 透過 send feedback 做 excel 上傳。
+ */
+
+export const MASS_UPLOAD_ENABLE_ORG_ID = 1694
+
 export const materialFormServiceKey = Symbol('MaterialFormService')
 export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')
 export const materialMultimediaCreateServiceKey = Symbol(
