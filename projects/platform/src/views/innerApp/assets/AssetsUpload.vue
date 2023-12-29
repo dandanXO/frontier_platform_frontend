@@ -141,32 +141,49 @@ const openModalMassUpload = () => {
     })
   }
 }
-const alternativeUploadOptions = [
-  {
-    id: 'smart-upload',
-    icon: 'image_file',
-    title: t('DD0088'),
-    content: t('DD0089'),
-    action: openModalSmartUpload,
-    testId: 'smart-upload',
-  },
-  {
-    id: 'manual-upload',
-    icon: 'add_box_outline',
-    title: t('DD0116'),
-    content: t('DD0117'),
-    action: goToAssetsMaterialCreate,
-    testId: 'manual-upload',
-  },
-  {
-    id: 'mass-upload',
-    icon: 'multiple_file',
-    title: t('DD0092'),
-    content: t('DD0093'),
-    action: openModalMassUpload,
-    testId: 'mass-upload',
-  },
-]
+
+const alternativeUploadOptions = computed(() => {
+  const options = [
+    {
+      id: 'smart-upload',
+      icon: 'image_file',
+      title: t('DD0088'),
+      content: t('DD0089'),
+      action: openModalSmartUpload,
+      testId: 'smart-upload',
+    },
+    {
+      id: 'manual-upload',
+      icon: 'add_box_outline',
+      title: t('DD0116'),
+      content: t('DD0117'),
+      action: goToAssetsMaterialCreate,
+      testId: 'manual-upload',
+    },
+  ]
+
+  if (org.value.orgId === MASS_UPLOAD_ENABLE_ORG_ID) {
+    options.push({
+      id: 'mass-upload',
+      icon: 'multiple_file',
+      title: t('DD0092'),
+      content: t('DD0093'),
+      action: openModalMassUpload,
+      testId: 'mass-upload',
+    })
+  } else {
+    options.push({
+      id: 'mass-upload',
+      icon: 'multiple_file',
+      title: t('MI0138'),
+      content: t('MI0139'),
+      action: () => {},
+      testId: 'mass-upload',
+    })
+  }
+
+  return options
+})
 
 const locationList = computed(() => {
   return [
