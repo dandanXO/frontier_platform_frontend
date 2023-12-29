@@ -120,6 +120,7 @@ const routes = [
       {
         path: 'moodboard/:sharingKey',
         name: 'MoodboardReceivedShare',
+        props: true,
         component: () => import('@/views/outerApp/MoodboardReceivedShare.vue'),
         beforeEnter: checkUserIsVerify,
       },

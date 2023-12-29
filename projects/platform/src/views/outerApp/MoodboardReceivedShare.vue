@@ -1,19 +1,19 @@
 <template lang="pug">
 fullscreen-header
-  template(#left)
+  template(v-if="moodboardShare" #left)
     img(:src="moodboardShare.logo" class="w-10 h-10 rounded-full")
     div(class="flex items-end pl-2")
       p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ moodboardShare.displayName }}
       p(class="text-caption text-grey-600") {{ $t('QQ0083') }}: {{ toYYYYMMDDFormat(moodboardShare.shareDate) }}
-  template(#right)
+  template(v-if="moodboardShare" #right)
     div(class="relative cursor-pointer mr-4" @click="openModalShareMessage")
       f-svg-icon(iconName="chat" size="24" class="text-grey-600")
       div(
-        v-if="hasMsg"
+        v-if="moodboardShare.message"
         class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
       )
     f-button(size="md" @click="saveReceivedShare") {{ $t('UU0018') }}
-  template(#content)
+  template(v-if="moodboard" #content)
     div(class="w-227 mx-auto mt-11")
       div(class="mb-6")
         p(class="text-caption text-grey-600 mb-2") {{ $t('QQ0001') }}
@@ -24,8 +24,8 @@ fullscreen-header
       div(class="mb-6 flex")
         collection-trend-board(
           class="mr-9"
-          :trendBoardCoverImg="moodboard.trendBoardCoverImg"
-          :trendBoardUrl="moodboard.trendBoardUrl"
+          :trendBoardCoverImg="moodboard.trendBoard?.thumbnailUrl"
+          :trendBoardUrl="moodboard.trendBoard?.originalUrl"
         )
         div(class="text-grey-900")
           p(class="text-caption font-bold mb-3") {{ $t('RR0014') }}
@@ -37,44 +37,69 @@ fullscreen-header
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
-import { MOODBOARD_TYPE, NOTIFY_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE } from '@/utils/constants'
 import CollectionTrendBoard from '@/components/common/collection/CollectionTrendBoard.vue'
 import { toYYYYMMDDFormat } from '@frontier/lib'
+import moodboardApi from '@/apis/moodboard'
+import type {
+  Organization,
+  OgType,
+  Moodboard,
+  GetMoodboardShareReceivedInfo200ResponseAllOfResultMoodboardShare,
+} from '@frontier/platform-web-sdk'
+import type { PropsModalChooseSavePlace } from '@/components/common/ModalChooseSavePlace.vue'
+
+const props = defineProps<{
+  sharingKey: string
+}>()
 
 const { t } = useI18n()
 const store = useStore()
-const route = useRoute()
 const router = useRouter()
 const { goToLobby } = useNavigation()
+const moodboard = ref<Moodboard>()
+const moodboardShare =
+  ref<GetMoodboardShareReceivedInfo200ResponseAllOfResultMoodboardShare>()
 
-const sharingKey = route.params.sharingKey
-const { moodboardShare, moodboard } = await store.dispatch(
-  'moodboard/getMoodboardReceivedShare',
-  { sharingKey }
-)
+onMounted(async () => {
+  const { data } = await moodboardApi.getMoodboardShareReceivedInfo({
+    sharingKey: props.sharingKey,
+  })
 
-const hasMsg = ref(moodboardShare.message.length > 0)
+  moodboard.value = data.result.moodboard
+  moodboardShare.value = data.result.moodboardShare
+})
 
 const openModalShareMessage = () => {
-  hasMsg.value = false
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
     properties: {
-      message: moodboardShare.message,
+      message: moodboardShare.value?.message,
     },
   })
 }
 
+const openNewTabAndGoToAssets = (
+  ogNo: string,
+  ogType: OgType,
+  ogId: number
+) => {
+  window.open(
+    `${window.location.origin}/${ogNo}/${ogType}-${ogId}/assets`,
+    '_blank'
+  )
+}
+
 const saveReceivedShare = async () => {
-  if (!moodboardShare.isCanSave) {
+  if (!moodboardShare.value?.isCanSave) {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.ALERT,
       header: t('RR0214'),
@@ -97,7 +122,9 @@ const saveReceivedShare = async () => {
 
   store.dispatch('helper/openModalLoading')
   await store.dispatch('user/getUser')
-  const organizationList = store.getters['user/organizationList']
+  const organizationList = store.getters[
+    'user/organizationList'
+  ] as Organization[]
 
   if (organizationList.length === 0) {
     store.dispatch('helper/openModalConfirm', {
@@ -113,30 +140,20 @@ const saveReceivedShare = async () => {
       component: 'modal-choose-save-place',
       properties: {
         title: t('RR0213'),
-        actionHandler: async ({ orgId, groupId }) => {
+        actionHandler: async (targetOrgId, targetOgType, targetOgId) => {
           store.dispatch('helper/pushModalLoading')
-          await store.dispatch('moodboard/saveMoodboardReceivedShare', {
-            orgId,
-            groupId,
-            sharingKey,
+          await moodboardApi.saveMoodboardShareReceived({
+            sharingKey: props.sharingKey,
+            targetOrgId,
+            targetOgType,
+            targetOgId,
           })
           store.dispatch('helper/closeModalLoading')
-
-          const orgNo = store.getters['user/organizationList'].find(
-            (org) => org.orgId === orgId
-          ).orgNo
-          let prefixUrl
-          if (groupId) {
-            prefixUrl = `${orgNo}/${groupId}`
-          } else {
-            prefixUrl = `${orgNo}`
-          }
-          window.open(
-            `${window.location.origin}/${prefixUrl}/moodboard?tab=${MOODBOARD_TYPE.PROVIDER}`,
-            '_blank'
-          )
+          const org = organizationList.find((org) => org.orgId === targetOrgId)!
+          openNewTabAndGoToAssets(org.orgNo, targetOgType, targetOgId)
+          store.dispatch('helper/clearModalPipeline')
         },
-      },
+      } as PropsModalChooseSavePlace,
     })
   }
 }
