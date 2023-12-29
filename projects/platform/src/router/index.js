@@ -35,17 +35,29 @@ const routes = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: () => import('@/views/SignUp.vue'),
-    beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('accessToken') !== null) {
-        return next('/')
-      }
-      next()
-    },
+    component: () => import('@/views/MaintainPage.vue'),
+    // component: () => import('@/views/SignUp.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (localStorage.getItem('accessToken') !== null) {
+    //     return next('/')
+    //   }
+    //   next()
+    // },
   },
   {
     path: '/sign-in',
     name: 'SignIn',
+    component: () => import('@/views/MaintainPage.vue'),
+    // beforeEnter: (to, from, next) => {
+    //   if (localStorage.getItem('accessToken') !== null) {
+    //     return next('/')
+    //   }
+    //   next()
+    // },
+  },
+  {
+    path: '/sign-in-50f9279a3882d3c0b80b432c666d757329bf2c5d',
+    name: 'SignInForTest',
     component: () => import('@/views/SignIn.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('accessToken') !== null) {
