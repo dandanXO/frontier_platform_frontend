@@ -212,7 +212,11 @@ const useMaterialForm = ({
     material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
   )
 
-  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(MATERIAL_SIDE_TYPE.FACE)
+  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
+    material?.sideType === MaterialSideType.BACK_SIDE
+      ? MATERIAL_SIDE_TYPE.BACK
+      : MATERIAL_SIDE_TYPE.FACE
+  )
 
   const inputMenu = useMaterialInputMenu(
     values,
