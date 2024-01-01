@@ -294,7 +294,7 @@ div(class="flex flex-col gap-y-7.5")
             :placeholder="$t('MI0030')"
             class="w-70"
           )
-        div(class="flex flex-col gap-y-2")
+        div(v-if="materialTypeValue != null" class="flex flex-col gap-y-2")
           div(
             class="flex items-center gap-x-3"
             v-for="(field, index) in constructionCustomPropertyFields"
