@@ -48,9 +48,6 @@ const props = withDefaults(
 
 const innerSpecificationInfo = computed(() => {
   const removeList = ['seasonInfo', 'featureList']
-  if (props.isListView) {
-    removeList.push('constructionCustomPropertyList')
-  }
 
   return Object.keys(props.specificationInfo)
     .filter((key) => !removeList.includes(key))

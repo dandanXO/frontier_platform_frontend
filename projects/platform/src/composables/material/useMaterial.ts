@@ -422,7 +422,12 @@ export default function useMaterial(
         finishList: getFinishList(),
         materialType: null,
         construction: null,
-        constructionCustomPropertyList: null,
+        constructionCustomPropertyList: {
+          ...materialInfoForDisplay.constructionCustomPropertyList(
+            (currentSide.value as MaterialMiddleSide).customPropertyList
+          ),
+          textColor: getTextColor(true, false, true),
+        },
         contentList: null,
         width: null,
         weight: null,
