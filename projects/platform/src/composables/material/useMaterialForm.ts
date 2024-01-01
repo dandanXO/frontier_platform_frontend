@@ -12,6 +12,8 @@ import {
   type MaterialOptions,
   type PantoneColor,
   type MaterialPriceInfoPricing,
+  LengthUnit,
+  WeightUnit,
 } from '@frontier/platform-web-sdk'
 import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema, {
@@ -67,6 +69,15 @@ const mapMaterialToForm = (
             material.backSide?.pantoneList.map((p) => p.name) || [],
         }
       : null,
+    width: material.width || {
+      cuttable: null,
+      full: null,
+      unit: LengthUnit.CM,
+    },
+    weight: material.weight || {
+      value: null,
+      unit: WeightUnit.GSM,
+    },
     tagInfo: {
       ...material.tagInfo,
       certificationTagIdList:

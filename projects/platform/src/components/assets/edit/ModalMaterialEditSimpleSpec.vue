@@ -12,7 +12,7 @@ modal-behavior(
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue'
+import { ref, provide, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useNotifyStore } from '@/stores/notify'
@@ -77,4 +77,8 @@ const updateMaterialSimpleSpec = async () => {
   store.dispatch('helper/reloadInnerApp')
   notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
+
+onMounted(() => {
+  materialFormService.validate()
+})
 </script>
