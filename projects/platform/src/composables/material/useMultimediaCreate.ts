@@ -116,9 +116,9 @@ const useMultimediaCreate = () => {
     multimediaList.splice(0, multimediaList.length, ...list)
   }
 
-  const setMultimediaAsCover = (targetIndex: number) => {
-    multimediaList.forEach((multimedia, index) => {
-      if (index === targetIndex) {
+  const setMultimediaAsCover = (id: string) => {
+    multimediaList.forEach((multimedia) => {
+      if (multimedia.id === id) {
         multimedia.isCover = !multimedia.isCover
       } else {
         multimedia.isCover = false

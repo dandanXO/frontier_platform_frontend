@@ -8,6 +8,7 @@ material-file-card(
 )
   div(class="flex flex-row gap-x-1 p-1")
     f-svg-icon(
+      v-if="imageFileType.includes(extension)"
       :class="[isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
       iconName="star"
       size="24"
@@ -24,7 +25,7 @@ material-file-card(
 <script setup lang="ts">
 import MaterialFileCard from '../file/MaterialFileCard.vue'
 import type { MenuTree } from '@frontier/ui-component'
-import type { Extension } from '@frontier/platform-web-sdk'
+import { Extension } from '@frontier/platform-web-sdk'
 
 defineProps<{
   isCover: boolean
@@ -39,4 +40,7 @@ const emits = defineEmits<{
   (e: 'setCover'): void
   (e: 'edit'): void
 }>()
+
+const { PNG, JPEG, JPG } = Extension
+const imageFileType = [PNG, JPEG, JPG] as Extension[]
 </script>
