@@ -4,7 +4,7 @@ modal-behavior(
   :primaryBtnText="$t('UU0018')"
   :secondaryBtnText="$t('UU0002')"
   :primaryBtnDisabled="!materialFormService.meta.value.valid"
-  @click:primary="updateMaterialSimpleSpec"
+  @click:primary="submit"
   @click:secondary="store.dispatch('helper/closeModal')"
 )
   div(class="w-200 grid gap-y-7.5")
@@ -49,12 +49,16 @@ const materialFormService: MaterialFormService = useMaterialForm({
 
 provide(materialFormServiceKey, materialFormService)
 
-const updateMaterialSimpleSpec = async () => {
+const submit = materialFormService.handleSubmit((form) =>
+  updateMaterialSimpleSpec(form)
+)
+
+const updateMaterialSimpleSpec = async (
+  form: ReturnType<typeof useMaterialForm>['values']
+) => {
   store.dispatch('helper/pushModalLoading')
 
-  const mapToReq = (
-    form: typeof materialFormService['values']
-  ): Omit<MaterialUpdateSpec, 'ogType' | 'ogId' | 'orgId'> => {
+  const getReq = (): Omit<MaterialUpdateSpec, 'ogType' | 'ogId' | 'orgId'> => {
     return {
       materialId: props.material.materialId,
       faceSide: form.faceSide,
@@ -68,10 +72,7 @@ const updateMaterialSimpleSpec = async () => {
     }
   }
 
-  await ogBaseAssetsApi(
-    'updateMaterialSimpleSpec',
-    mapToReq(materialFormService.values)
-  )
+  await ogBaseAssetsApi('updateMaterialSimpleSpec', getReq())
 
   store.dispatch('helper/clearModalPipeline')
   store.dispatch('helper/reloadInnerApp')
