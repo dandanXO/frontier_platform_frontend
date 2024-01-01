@@ -18,7 +18,7 @@ const getters = {
   routeLocation: () => {
     if (router.currentRoute.value.params.ogKey) {
       const [ogType] = router.currentRoute.value.params.ogKey.split('-')
-      return Number(ogType) === OgType.Group ? 'group' : 'org'
+      return Number(ogType) === OgType.GROUP ? 'group' : 'org'
     }
 
     return 'org'
