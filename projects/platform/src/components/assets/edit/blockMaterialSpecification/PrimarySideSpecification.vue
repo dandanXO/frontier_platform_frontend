@@ -365,18 +365,22 @@ div(class="flex flex-col gap-y-7.5")
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].percentage`])"
           class="w-40"
         )
-        icon-button(
+        f-svg-icon(
+          v-if="index === 0"
+          class="text-grey-600 cursor-pointer"
+          size="24"
+          iconName="add_box"
+          :disabled="disableBackSideFields"
+          @click="pushContentField({ contentId: null, name: null, percentage: null })"
+        )
+        f-svg-icon(
+          v-else
+          class="text-grey-600 cursor-pointer"
+          size="20"
           iconName="delete"
           :disabled="disableBackSideFields"
           @click="() => removeContentField(index)"
         )
-      f-button(
-        type="text"
-        size="sm"
-        prependIcon="add"
-        :disabled="disableBackSideFields"
-        @click="() => pushContentField({ contentId: null, name: null, percentage: null })"
-      ) {{ $t('MI0034') }}
   f-input-container(v-if="showWidthAndWeight" :label="$t('RR0088')" required)
     div(class="flex flex-row gap-3")
       f-input-text(

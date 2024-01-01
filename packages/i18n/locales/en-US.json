@@ -1988,7 +1988,7 @@
   "MI0043": "Value",
   "MI0044": "Enter a custom field value",
   "MI0045": "Accelerate Material Information Entry",
-  "MI0046": "To simplify the input of backside information, only the necessary fields are displayed here. After saving, you can view the complete backside information, and the entered fields will be presented in a deep gray background for easy identification",
+  "MI0046": "To simplify the input information, only the necessary fields are displayed here. After saving, you can view the complete information, and the entered fields will be presented in a deep gray background for easy identification",
   "MI0047": "Sync Face Side Info",
   "MI0048": "Copy Face Side Info",
   "MI0049": "Duplicate face side information for quick editing",
