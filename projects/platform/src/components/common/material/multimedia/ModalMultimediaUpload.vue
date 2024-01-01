@@ -63,7 +63,7 @@ modal-behavior(
               :menuTree="getMultimediaMenuTree(multimedia.fileId)"
               @setCover="selectCover(multimedia.fileId)"
               @edit="startCropMultimedia(multimedia.fileId)"
-              @click="openMultimediaViewMode(index)"
+              @click="openMultimediaViewMode(multimedia.fileId)"
             )
 </template>
 
@@ -119,12 +119,20 @@ const handleMultimediaListChange = (e: any) => {
 
 const { publicFileList } = useMaterial(material)
 
-const openMultimediaViewMode = (index: number) => {
+const openMultimediaViewMode = (id: number) => {
+  const startIndex = publicFileList.value.findIndex(
+    (file) => file.fileId === id
+  )
+
+  if (!startIndex) {
+    throw new Error('Invalid start index')
+  }
+
   store.dispatch('helper/pushModal', {
     component: 'modal-view-mode',
     properties: {
       viewModeService: {
-        startIndex: index,
+        startIndex,
         fileList: publicFileList,
         getMenuTree: getMultimediaMenuTree,
       },

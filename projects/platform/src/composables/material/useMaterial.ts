@@ -135,8 +135,15 @@ export default function useMaterial(
    * publicFileList = A + B + C + D
    */
   const publicFileList = computed(() => {
-    const { coverImage, faceSide, backSide, multimediaList, digitalDrape } =
-      material.value
+    const {
+      isDoubleSide,
+      sideType,
+      coverImage,
+      faceSide,
+      backSide,
+      multimediaList,
+      digitalDrape,
+    } = material.value
 
     const list: Array<MaterialFile> = [
       {
@@ -150,51 +157,61 @@ export default function useMaterial(
         caption: null,
         extension: Extension.JPG,
       },
-      {
-        id: 'faceSide',
-        fileId: null,
-        displayUrl: faceSide?.sideImage?.displayUrl ?? null,
-        originalUrl: faceSide?.sideImage?.originalUrl ?? null,
-        thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
-        displayName: `${t('RR0075')}(${t('RR0080')})`,
-        displayNameShort: t('RR0075'),
-        caption: null,
-        extension: Extension.JPG,
-      },
-      {
-        id: 'faceSideRuler',
-        fileId: null,
-        displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
-        originalUrl: faceSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
-        displayName: t('RR0075'),
-        displayNameShort: t('RR0075'),
-        caption: t('RR0080'),
-        extension: Extension.JPG,
-      },
-      {
-        id: 'backSide',
-        fileId: null,
-        displayUrl: backSide?.sideImage?.displayUrl ?? null,
-        originalUrl: backSide?.sideImage?.originalUrl ?? null,
-        thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
-        displayName: t('RR0078'),
-        displayNameShort: t('RR0078'),
-        caption: null,
-        extension: Extension.JPG,
-      },
-      {
-        id: 'backSideRuler',
-        fileId: null,
-        displayUrl: backSide?.sideImage?.rulerUrl ?? null,
-        originalUrl: backSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
-        displayName: `${t('RR0078')}(${t('RR0080')})`,
-        displayNameShort: t('RR0078'),
-        caption: t('RR0080'),
-        extension: Extension.JPG,
-      },
     ]
+
+    if (isDoubleSide || sideType === MaterialSideType.FACE_SIDE) {
+      list.push(
+        {
+          id: 'faceSide',
+          fileId: null,
+          displayUrl: faceSide?.sideImage?.displayUrl ?? null,
+          originalUrl: faceSide?.sideImage?.originalUrl ?? null,
+          thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
+          displayName: `${t('RR0075')}(${t('RR0080')})`,
+          displayNameShort: t('RR0075'),
+          caption: null,
+          extension: Extension.JPG,
+        },
+        {
+          id: 'faceSideRuler',
+          fileId: null,
+          displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
+          originalUrl: faceSide?.sideImage?.rulerUrl ?? null,
+          thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
+          displayName: t('RR0075'),
+          displayNameShort: t('RR0075'),
+          caption: t('RR0080'),
+          extension: Extension.JPG,
+        }
+      )
+    }
+
+    if (isDoubleSide || sideType === MaterialSideType.BACK_SIDE) {
+      list.push(
+        {
+          id: 'backSide',
+          fileId: null,
+          displayUrl: backSide?.sideImage?.displayUrl ?? null,
+          originalUrl: backSide?.sideImage?.originalUrl ?? null,
+          thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
+          displayName: t('RR0078'),
+          displayNameShort: t('RR0078'),
+          caption: null,
+          extension: Extension.JPG,
+        },
+        {
+          id: 'backSideRuler',
+          fileId: null,
+          displayUrl: backSide?.sideImage?.rulerUrl ?? null,
+          originalUrl: backSide?.sideImage?.rulerUrl ?? null,
+          thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
+          displayName: `${t('RR0078')}(${t('RR0080')})`,
+          displayNameShort: t('RR0078'),
+          caption: t('RR0080'),
+          extension: Extension.JPG,
+        }
+      )
+    }
 
     if (digitalDrape) {
       list.push({

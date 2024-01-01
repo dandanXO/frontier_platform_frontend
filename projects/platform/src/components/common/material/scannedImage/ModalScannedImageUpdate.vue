@@ -40,7 +40,7 @@ modal-behavior(
       )
       side-image-row(
         v-if="isDoubleSide || sideType === MaterialSideType.BACK_SIDE"
-        :title="$t('MI0008')"
+        :title="$t('MI0009')"
         :originalThumbnailUrl="backSideImage?.thumbnailUrl"
         :newImagePreviewUrl="backSideChosenFilePreviewUrl"
         @upload="chooseFile(MaterialSideType.BACK_SIDE)"

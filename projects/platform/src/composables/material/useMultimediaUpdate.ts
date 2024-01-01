@@ -16,6 +16,7 @@ import {
   type CropImageRecord,
   type Material,
   type MultimediaFile,
+  MaterialSideType,
 } from '@frontier/platform-web-sdk'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { image2Object } from '@/utils/cropper'
@@ -42,7 +43,14 @@ const useMultimediaUpdate = (
   const multimediaList = computed(() => material.value.multimediaList)
 
   const coverAndSideImageList = computed(() => {
-    const { coverImage, faceSide, backSide, digitalDrape } = material.value
+    const {
+      isDoubleSide,
+      sideType,
+      coverImage,
+      faceSide,
+      backSide,
+      digitalDrape,
+    } = material.value
     const list: Array<{
       id: MaterialFileId
       displayUrl: string | null
@@ -65,61 +73,71 @@ const useMultimediaUpdate = (
         canSetCover: false,
         extension: Extension.JPG,
       },
-      {
-        id: 'faceSide',
-        displayUrl: faceSide?.sideImage?.displayUrl ?? null,
-        thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
-        imgName: t('RR0075'),
-        caption: null,
-        isCoverDisplay: false,
-        isCover: (() => {
-          if (selectedCoverId.value != null) {
-            return selectedCoverId.value === 'faceSide'
-          }
-          return coverImage.mode === CoverMode.FACE
-        })(),
-        canSetCover: true,
-        extension: Extension.JPG,
-      },
-      {
-        id: 'faceSideRuler',
-        displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
-        imgName: t('RR0075'),
-        caption: t('RR0080'),
-        isCoverDisplay: false,
-        isCover: false,
-        canSetCover: false,
-        extension: Extension.JPG,
-      },
-      {
-        id: 'backSide',
-        displayUrl: backSide?.sideImage?.displayUrl ?? null,
-        thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
-        imgName: t('RR0078'),
-        caption: null,
-        isCoverDisplay: false,
-        isCover: (() => {
-          if (selectedCoverId.value != null) {
-            return selectedCoverId.value === 'backSide'
-          }
-          return coverImage.mode === CoverMode.BACK
-        })(),
-        canSetCover: true,
-        extension: Extension.JPG,
-      },
-      {
-        id: 'backSideRuler',
-        displayUrl: backSide?.sideImage?.rulerUrl ?? null,
-        thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
-        imgName: t('RR0078'),
-        caption: t('RR0080'),
-        isCoverDisplay: false,
-        isCover: false,
-        canSetCover: false,
-        extension: Extension.JPG,
-      },
     ]
+
+    if (isDoubleSide || sideType === MaterialSideType.FACE_SIDE) {
+      list.push(
+        {
+          id: 'faceSide',
+          displayUrl: faceSide?.sideImage?.displayUrl ?? null,
+          thumbnailUrl: faceSide?.sideImage?.thumbnailUrl ?? null,
+          imgName: t('RR0075'),
+          caption: null,
+          isCoverDisplay: false,
+          isCover: (() => {
+            if (selectedCoverId.value != null) {
+              return selectedCoverId.value === 'faceSide'
+            }
+            return coverImage.mode === CoverMode.FACE
+          })(),
+          canSetCover: true,
+          extension: Extension.JPG,
+        },
+        {
+          id: 'faceSideRuler',
+          displayUrl: faceSide?.sideImage?.rulerUrl ?? null,
+          thumbnailUrl: faceSide?.sideImage?.rulerThumbnailUrl ?? null,
+          imgName: t('RR0075'),
+          caption: t('RR0080'),
+          isCoverDisplay: false,
+          isCover: false,
+          canSetCover: false,
+          extension: Extension.JPG,
+        }
+      )
+    }
+
+    if (isDoubleSide || sideType === MaterialSideType.BACK_SIDE) {
+      list.push(
+        {
+          id: 'backSide',
+          displayUrl: backSide?.sideImage?.displayUrl ?? null,
+          thumbnailUrl: backSide?.sideImage?.thumbnailUrl ?? null,
+          imgName: t('RR0078'),
+          caption: null,
+          isCoverDisplay: false,
+          isCover: (() => {
+            if (selectedCoverId.value != null) {
+              return selectedCoverId.value === 'backSide'
+            }
+            return coverImage.mode === CoverMode.BACK
+          })(),
+          canSetCover: true,
+          extension: Extension.JPG,
+        },
+        {
+          id: 'backSideRuler',
+          displayUrl: backSide?.sideImage?.rulerUrl ?? null,
+          thumbnailUrl: backSide?.sideImage?.rulerThumbnailUrl ?? null,
+          imgName: t('RR0078'),
+          caption: t('RR0080'),
+          isCoverDisplay: false,
+          isCover: false,
+          canSetCover: false,
+          extension: Extension.JPG,
+        }
+      )
+    }
 
     if (digitalDrape) {
       list.push({
