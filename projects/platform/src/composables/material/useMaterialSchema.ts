@@ -297,7 +297,7 @@ export const materialSideSchema = z.object({
       { message: i18n.global.t('WW0005') }
     )
     .nullable()
-    .default([{ contentId: null, name: '', percentage: 100 }]),
+    .default([{ contentId: null, name: '', percentage: null }]),
   patternInfo: z.object({
     pattern: z
       .string()

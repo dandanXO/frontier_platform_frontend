@@ -51,7 +51,7 @@ const mapMaterialToForm = (
           construction: material.faceSide?.construction ?? {},
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
-            : [{ contentId: null, name: '', percentage: 100 }],
+            : [{ contentId: null, name: '', percentage: null }],
           pantoneNameList:
             material.faceSide?.pantoneList.map((p) => p.name) || [],
         }
@@ -62,7 +62,7 @@ const mapMaterialToForm = (
           construction: material.backSide?.construction ?? {},
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
-            : [{ contentId: null, name: '', percentage: 100 }],
+            : [{ contentId: null, name: '', percentage: null }],
           pantoneNameList:
             material.backSide?.pantoneList.map((p) => p.name) || [],
         }
