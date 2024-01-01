@@ -190,7 +190,7 @@ div(class="flex flex-col gap-y-10")
             f-input-text(
               class="w-58"
               v-model:textValue="field.value.lot"
-              :label="$t('MI0098')"
+              :label="$t('MI0064')"
               :hintError="displayErrors[`internalInfo.inventoryInfo.yardageRemainingInfo.list[${index}].lot`]"
               :placeholder="$t('MI0099')"
             )
