@@ -167,12 +167,9 @@ const materialInfoForDisplay = {
           }
         }
 
-        if (!temp.isPublic) {
-          return null
-        }
         delete temp.isPublic
 
-        if (Object.keys(temp).some((key) => !temp[key].value)) {
+        if (Object.keys(temp).every((key) => !temp[key].value)) {
           return null
         }
 
