@@ -408,7 +408,7 @@ const useMaterialSchema = () => {
   const qtyInPcsSchema = z
     .number()
     .int(integerOnlyMessage)
-    .min(...getMinNumberParams(1))
+    .min(...getMinNumberParams(0))
     .max(...getMaxNumberParams(999))
     .nullable()
 
@@ -476,7 +476,7 @@ const useMaterialSchema = () => {
               .nullable(),
             qty: z
               .number()
-              .min(...getMinNumberParams(1))
+              .min(...getMinNumberParams(0))
               .max(...getMaxNumberParams(999999))
               .multipleOf(...getMaxDecimalPlacesParams(2))
               .nullable(),
