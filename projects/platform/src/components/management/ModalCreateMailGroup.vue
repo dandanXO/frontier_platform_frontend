@@ -36,6 +36,7 @@ import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { OgType } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const store = useStore()
@@ -65,7 +66,9 @@ const createGroup = async () => {
     store.dispatch('helper/pushModalLoading')
     await store.dispatch('group/createGroup')
     store.dispatch('helper/clearModalPipeline')
-    router.push(`/${orgNo.value}/${groupId.value}/management/about`)
+    router.push(
+      `/${orgNo.value}/${OgType.GROUP}-${groupId.value}/management/about`
+    )
   } catch (error) {
     store.dispatch('helper/closeModalLoading')
     const { code, result } = error
