@@ -18,7 +18,7 @@ div(
         )
         image-view(
           v-else-if="fileType.image.includes(file.extension)"
-          :src="['faceSide', 'faceSideRuler', 'backSide', 'backSideRuler'].includes(file.id) ? file.displayUrl : file.originalUrl"
+          :src="sideIds.includes(file.id) ? file.displayUrl : file.originalUrl"
         )
         video-view(
           v-else-if="fileType.video.includes(file.extension)"
@@ -36,7 +36,7 @@ div(
         class="text-grey-100 cursor-pointer"
         iconName="download"
         iconSize="24"
-        @click="downloadDataURLFile(file.originalUrl, file.displayName)"
+        @click="downloadDataURLFile(sideIds.includes(file.id) ? file.displayUrl : file.originalUrl, file.displayName)"
       )
     f-popper(
       v-else-if="!['cover', 'faceSide', 'faceSideRuler', 'backSide', 'backSideRuler', 'digitalDrape'].includes(file.id)"
@@ -87,6 +87,8 @@ const fileType = {
   pdf: [PDF],
   others: [YDT, SCCH, ZIP],
 }
+
+const sideIds = ['faceSide', 'faceSideRuler', 'backSide', 'backSideRuler']
 
 const refContainer = ref<HTMLElement>()
 const refMainContent = ref<HTMLElement>()
