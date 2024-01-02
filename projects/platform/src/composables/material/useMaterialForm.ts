@@ -69,6 +69,11 @@ const mapMaterialToForm = (
             material.backSide?.pantoneList.map((p) => p.name) || [],
         }
       : null,
+    seasonInfo: material.seasonInfo || {
+      isPublic: false,
+      season: null,
+      year: null,
+    },
     width: material.width || {
       cuttable: null,
       full: null,
