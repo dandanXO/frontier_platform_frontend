@@ -175,6 +175,7 @@ export interface AttachmentCreateItem {
   id: string
   file: File
   originalUrl: string
+  displayUrl: string
   thumbnailUrl: string
   displayFileName: string
   extension: Extension
@@ -185,6 +186,7 @@ export interface MultimediaCreateItem {
   id: string
   file: File
   originalUrl: string
+  displayUrl: string
   thumbnailUrl: string
   displayFileName: string
   extension: Extension
@@ -221,6 +223,7 @@ export interface MaterialFile {
 export type MaterialViewModeFile = {
   id: MaterialFileId | string
   originalUrl: string
+  displayUrl: string
   thumbnailUrl: string | null
   displayName: string
   extension: Extension

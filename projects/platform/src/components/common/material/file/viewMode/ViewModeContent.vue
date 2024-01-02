@@ -18,7 +18,7 @@ div(
         )
         image-view(
           v-else-if="fileType.image.includes(file.extension)"
-          :src="file.originalUrl"
+          :src="['faceSide', 'faceSideRuler', 'backSide', 'backSideRuler'].includes(file.id) ? file.displayUrl : file.originalUrl"
         )
         video-view(
           v-else-if="fileType.video.includes(file.extension)"

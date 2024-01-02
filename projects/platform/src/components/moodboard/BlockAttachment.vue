@@ -51,6 +51,7 @@ const fileList = computed<MaterialViewModeFile[]>(() =>
   props.attachmentList.map((a) => ({
     id: a.attachmentId,
     originalUrl: a.url,
+    displayUrl: a.url,
     thumbnailUrl: a.url,
     displayName: a.displayFileName,
     extension: a.extension as EXTENSION,

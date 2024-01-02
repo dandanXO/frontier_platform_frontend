@@ -39,6 +39,7 @@ const useAttachmentCreate = () => {
               id: uuidv4(),
               file,
               originalUrl,
+              displayUrl: originalUrl,
               thumbnailUrl,
               extension,
               displayFileName: file.name,

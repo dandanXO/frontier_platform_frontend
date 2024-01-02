@@ -225,6 +225,7 @@ const multimediaViewModeFileList = computed<MaterialViewModeFile[]>(() =>
   multimediaList.map((m) => ({
     id: m.id,
     originalUrl: m.originalUrl,
+    displayUrl: m.originalUrl,
     thumbnailUrl: m.thumbnailUrl,
     displayName: m.displayFileName,
     extension: m.extension,
@@ -235,6 +236,7 @@ const attachmentViewModeFileList = computed<MaterialViewModeFile[]>(() =>
   attachmentList.map((a) => ({
     id: a.id,
     originalUrl: a.originalUrl,
+    displayUrl: a.originalUrl,
     thumbnailUrl: a.thumbnailUrl,
     displayName: a.displayFileName,
     extension: a.extension,

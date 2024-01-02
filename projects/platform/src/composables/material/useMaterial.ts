@@ -9,7 +9,7 @@ import {
 import type { ComputedRef, Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { EXTENSION, MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
@@ -258,7 +258,7 @@ export default function useMaterial(
       originalUrl: a.originalUrl,
       thumbnailUrl: a.thumbnailUrl,
       displayName: a.displayFileName,
-      extension: a.extension,
+      extension: a.extension as EXTENSION,
     }))
   })
 
