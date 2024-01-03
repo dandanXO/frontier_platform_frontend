@@ -82,7 +82,7 @@ div(class="grid gap-y-8 content-start")
           p(class="text-caption text-grey-900 font-bold") {{ option.title }}
           f-tooltip-standard(
             :tooltipTitle="$t('MI0133')"
-            :tooltipMessage="$t('MI0134')"
+            :tooltipMessage="option.tooltipMessage"
           )
             template(#slot:tooltip-trigger)
               f-svg-icon(iconName="info_outline" size="14" class="text-grey-600")
@@ -224,14 +224,17 @@ const u3mDownloadOptionList = computed(() => [
   {
     title: t('UU0005'),
     format: U3M_DOWNLOAD_PROP.U3M,
+    tooltipMessage: t('MI0134'),
   },
   {
     title: t('UU0058'),
     format: U3M_DOWNLOAD_PROP.U3MA,
+    tooltipMessage: t('MI0134'),
   },
   {
     title: t('UU0129'),
     format: U3M_DOWNLOAD_PROP.GLTF,
+    tooltipMessage: t('MI0135'),
   },
 ])
 const currentTab = computed<U3M_PROVIDER>(
