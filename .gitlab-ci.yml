@@ -21,6 +21,12 @@ platform-build:
     - if: $CI_COMMIT_REF_NAME == "main"
       variables:
         DEPLOY_ENV: 'development'
+    - if: $CI_COMMIT_REF_NAME == "staging"
+      variables:
+        DEPLOY_ENV: 'staging'
+    - if: $CI_COMMIT_REF_NAME == "pre-production"
+      variables:
+        DEPLOY_ENV: 'pre-production'
     - if: $CI_COMMIT_TAG
       variables:
         DEPLOY_ENV: 'production'
@@ -43,6 +49,26 @@ platform-deploy-to-dev:
   script:
     - cd ./projects/platform
     - bash ./scripts/deploy.sh development
+
+platform-deploy-to-staging:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - staging
+  script:
+    - cd ./projects/platform
+    - bash ./scripts/deploy.sh staging
+
+platform-deploy-to-pre-production:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - pre-production
+  script:
+    - cd ./projects/platform
+    - bash ./scripts/deploy.sh pre-production
 
 platform-deploy-to-prod:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
