@@ -239,6 +239,7 @@ const ogList = computed(() => {
 const selectedOg = ref<{
   ogId: number
   ogName: string
+  nodeId: number
 }>()
 const locationList = computed(() => {
   const list = [
@@ -251,7 +252,7 @@ const locationList = computed(() => {
   if (selectedOg.value) {
     list.push({
       name: selectedOg.value.ogName,
-      nodeId: selectedOg.value.ogId,
+      nodeId: selectedOg.value.nodeId,
     })
   }
   list.push(...appendedLocationList.value)
