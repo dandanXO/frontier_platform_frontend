@@ -77,7 +77,7 @@ const mapMaterialToForm = (
     width: material.width || {
       cuttable: null,
       full: null,
-      unit: LengthUnit.CM,
+      unit: LengthUnit.INCH,
     },
     weight: material.weight || {
       value: null,

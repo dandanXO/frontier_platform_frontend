@@ -546,7 +546,7 @@ const useMaterialSchema = () => {
     width: z.object({
       cuttable: widthValueSchema,
       full: widthValueSchema,
-      unit: z.nativeEnum(LengthUnit).default(LengthUnit.CM),
+      unit: z.nativeEnum(LengthUnit).default(LengthUnit.INCH),
     }),
     weight: z.object({
       value: z
