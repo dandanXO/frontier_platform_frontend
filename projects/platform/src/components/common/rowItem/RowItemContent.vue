@@ -94,7 +94,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
           @click="openModalMaterialEditSimple('tag')"
         ) {{ $t('UU0027') }}
       div(class="grid gap-3")
-        p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}： {{ publicTagList }}
+        p(class="text-body2 line-clamp-1 !break-all") {{ $t('MI0132') }}： {{ publicTagList }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}： {{ privateTagList }}
     div
       div(class="flex justify-between items-end pb-2 border-grey-250 border-b")
