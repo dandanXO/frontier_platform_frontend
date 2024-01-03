@@ -18,16 +18,19 @@ modal-behavior(
             size="14"
           )
         p
-          span {{ $t('MI0089') }}
-          span {{ ' ' }}
-          span(class="font-bold") {{ $t('CILynn@frontier.cool') }}
-          span {{ ' ' }}
-          span {{ ' ' }}
-          span {{ ' ' }}
+          i18n-t(
+            keypath="MI0089"
+            tag="span"
+            class="text-caption text-grey-600 leading-1.3 whitespace-nowrap"
+          )
+            template(#newline)
+              br
+            template(#uploadEmail)
+              span(class="font-bold") {{ ogUploadMaterialEmail }}
           span(
             class="text-body2 text-cyan-400 font-normal cursor-pointer"
             @click="openModalHowToScan"
-          ) {{ $t('UU0032') }}
+          ) {{ ' ' + $t('UU0032') }}
   div(class="min-w-196 p-5 flex flex-col gap-y-4")
     div(class="w-full h-full rounded flex items-center justify-center gap-x-2")
       side-image-row(
@@ -66,6 +69,7 @@ import { MaterialSideType, Extension } from '@frontier/platform-web-sdk'
 import { useI18n } from 'vue-i18n'
 import { FileOperator, NOTIFY_TYPE } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 import SideImageRow from './SideImageRow.vue'
 import type { MaterialMultimediaUpdateService } from '@/types'
 
@@ -76,6 +80,7 @@ const props = defineProps<{
 const store = useStore()
 const { t } = useI18n()
 const { goToMaterialUpload } = useNavigation()
+const { ogUploadMaterialEmail } = useCurrentUnit()
 
 const fileSizeMaxLimit = 100 * Math.pow(1024, 3)
 const acceptType = [Extension.PNG, Extension.JPEG, Extension.JPG]
