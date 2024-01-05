@@ -129,6 +129,9 @@ const getFileExtension = (filename: string) => {
 
 const getFileNameExcludeExtension = (filename: string) => {
   const parts = filename.split('.')
+  if (parts.length === 1) {
+    return filename
+  }
   return parts.slice(0, parts.length - 1).join('.')
 }
 

@@ -347,7 +347,7 @@ const useMultimediaUpdate = (
           store.dispatch('helper/pushModalLoading')
           const { s3UploadId, fileName } = await uploadFileToS3(
             croppedImageFile,
-            target.displayFileName
+            target.fileName
           )
           const res = await ogBaseAssetsApi('cropAssetsMaterialMultimedia', {
             materialId: material.value.materialId,
