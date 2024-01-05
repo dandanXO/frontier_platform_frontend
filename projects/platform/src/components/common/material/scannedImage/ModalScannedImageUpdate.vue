@@ -9,7 +9,7 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   template(#note)
-    div(class="pr-36.5")
+    div
       div(class="flex gap-x-2")
         div
           f-svg-icon(
