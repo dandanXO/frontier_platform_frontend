@@ -125,7 +125,14 @@ const usePrint = () => {
 
     const domGenerator: DomGenerator = async (item) => {
       const { sideType, material } = item
-      const { itemNo, seasonInfo, isComposite, width, weight } = material
+      const {
+        itemNo,
+        seasonInfo,
+        isComposite,
+        width,
+        weight,
+        weightForDisplay,
+      } = material
       const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
@@ -227,7 +234,7 @@ const usePrint = () => {
         })),
         materialInfoForDisplay.contentList(contentList),
         materialInfoForDisplay.width(width),
-        materialInfoForDisplay.weight(weight),
+        materialInfoForDisplay.weight(weight, weightForDisplay),
         materialInfoForDisplay.finishList(finishList),
       ]
 
@@ -270,7 +277,7 @@ const usePrint = () => {
       material: Material
     }) => {
       const { sideType, material } = item
-      const { itemNo, isComposite, weight, width } = material
+      const { itemNo, isComposite, width, weight, weightForDisplay } = material
       const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
@@ -467,7 +474,7 @@ const usePrint = () => {
 
       infoList.push(
         materialInfoForDisplay.contentList(contentList).value,
-        materialInfoForDisplay.weight(weight).value,
+        materialInfoForDisplay.weight(weight, weightForDisplay).value,
         materialInfoForDisplay.finishList(finishList).value
       )
 

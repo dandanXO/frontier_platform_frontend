@@ -107,7 +107,8 @@ const materialInfo = computed(() => {
   if (!mainMaterial.value) {
     return []
   }
-  const { isComposite, width, weight, mainSide } = mainMaterial.value
+  const { isComposite, width, weight, weightForDisplay, mainSide } =
+    mainMaterial.value
   const { materialType, descriptionList, contentList, finishList } = mainSide
 
   const list = [
@@ -127,7 +128,7 @@ const materialInfo = computed(() => {
   }
 
   if (weight) {
-    list.push(materialInfoForDisplay.weight(weight).value)
+    list.push(materialInfoForDisplay.weight(weight, weightForDisplay).value)
   }
 
   if (finishList.length > 0) {

@@ -10959,6 +10959,12 @@ export interface MainMaterial {
     'weight': MaterialWeight | null;
     /**
      * 
+     * @type {MaterialWeightForDisplay}
+     * @memberof MainMaterial
+     */
+    'weightForDisplay': MaterialWeightForDisplay;
+    /**
+     * 
      * @type {MainMaterialMainSide}
      * @memberof MainMaterial
      */
@@ -11277,6 +11283,12 @@ export interface Material {
      * @memberof Material
      */
     'weight': MaterialWeight | null;
+    /**
+     * 
+     * @type {MaterialWeightForDisplay}
+     * @memberof Material
+     */
+    'weightForDisplay': MaterialWeightForDisplay;
     /**
      * 
      * @type {MaterialSeasonInfo}
@@ -15075,6 +15087,37 @@ export interface MaterialWeight {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface MaterialWeightForDisplay
+ */
+export interface MaterialWeightForDisplay {
+    /**
+     * 數值，1~999，可填寫至 小數3位
+     * @type {number}
+     * @memberof MaterialWeightForDisplay
+     */
+    'weightGsm'?: number;
+    /**
+     * 數值，1~999，可填寫至 小數3位
+     * @type {number}
+     * @memberof MaterialWeightForDisplay
+     */
+    'weightOz'?: number;
+    /**
+     * 數值，1~999，可填寫至 小數3位
+     * @type {number}
+     * @memberof MaterialWeightForDisplay
+     */
+    'weightGy'?: number;
+    /**
+     * 數值，1~999，可填寫至 小數3位
+     * @type {number}
+     * @memberof MaterialWeightForDisplay
+     */
+    'weightGm'?: number;
+}
 /**
  * 
  * @export

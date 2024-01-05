@@ -1,21 +1,23 @@
 import i18n from '@frontier/i18n'
-import type {
-  MaterialSeasonInfo,
-  MaterialFinish,
-  MaterialConstruction,
-  MaterialWovenConstruction,
-  MaterialKnitConstruction,
-  MaterialLeatherConstruction,
-  MaterialNonWovenConstruction,
-  MaterialTrimConstruction,
-  MaterialSideAllOfConstructionCustomPropertyListInner,
-  MaterialWidth,
-  MaterialWeight,
-  MaterialPriceInfo,
-  MaterialCarbonEmission,
-  MaterialSideAllOfContentList,
-  Country,
-  MaterialDescription,
+import {
+  type MaterialSeasonInfo,
+  type MaterialFinish,
+  type MaterialConstruction,
+  type MaterialWovenConstruction,
+  type MaterialKnitConstruction,
+  type MaterialLeatherConstruction,
+  type MaterialNonWovenConstruction,
+  type MaterialTrimConstruction,
+  type MaterialSideAllOfConstructionCustomPropertyListInner,
+  type MaterialWidth,
+  type MaterialWeight,
+  type MaterialPriceInfo,
+  type MaterialCarbonEmission,
+  type MaterialSideAllOfContentList,
+  type Country,
+  type MaterialDescription,
+  type MaterialWeightForDisplay,
+  WeightUnit,
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
@@ -196,10 +198,38 @@ const materialInfoForDisplay = {
       return `${cuttable}/${full}${unit}`
     })(),
   }),
-  weight: (weight: MaterialWeight | null) => ({
-    name: t('RR0015'),
-    value: weight ? `${weight.value} ${WeightUnitText[weight.unit]}` : '',
-  }),
+  weight: (
+    weight: MaterialWeight | null,
+    weightForDisplay: MaterialWeightForDisplay
+  ) => {
+    const getWeightDisplay = () => {
+      if (!weight) {
+        return ''
+      }
+
+      const getItemDisplay = (weight: MaterialWeight) => {
+        return `${weight.value} ${WeightUnitText[weight.unit]}`
+      }
+      const originWeightDisplay = getItemDisplay(weight)
+      const computedWeightDisplay = [
+        { value: weightForDisplay.weightGsm!, unit: WeightUnit.GSM },
+        { value: weightForDisplay.weightOz!, unit: WeightUnit.OZ },
+        { value: weightForDisplay.weightGy!, unit: WeightUnit.GY },
+        { value: weightForDisplay.weightGm!, unit: WeightUnit.GM },
+      ]
+        .filter((w) => w.unit != weight.unit)
+        .map(getItemDisplay)
+        .map((d) => `(${d})`)
+        .join(' ')
+
+      const display = `${originWeightDisplay} ${computedWeightDisplay}`
+      return display
+    }
+    return {
+      name: t('RR0015'),
+      value: getWeightDisplay(),
+    }
+  },
   priceInfo: (priceInfo: MaterialPriceInfo | null) => {
     const countryList = store.getters['code/countryList'] as Country[]
     const { currencyCode, price, unit: priceUnit } = priceInfo?.pricing || {}
