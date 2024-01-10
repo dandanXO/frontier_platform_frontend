@@ -67,8 +67,18 @@ const getMaxNumberParams = (qty: number) => {
   return [qty, message] as const
 }
 
+const getCanNotExceedNumberParams = (qty: number) => {
+  const message = i18n.global.t('WW0155', { number: toCommaSeparated(qty) })
+  return [qty, message] as const
+}
+
 const getMinNumberParams = (qty: number) => {
   const message = i18n.global.t('WW0143', { minNum: toCommaSeparated(qty) })
+  return [qty, message] as const
+}
+
+const getMinExclusiveNumberParams = (qty: number) => {
+  const message = i18n.global.t('WW0154', { number: toCommaSeparated(qty) })
   return [qty, message] as const
 }
 
@@ -259,8 +269,8 @@ const contentSchema = z.object({
     .max(...getMaxLengthParams(100)),
   percentage: z
     .number(nonNullParams)
-    .min(...getMinNumberParams(1))
-    .max(...getMaxNumberParams(100))
+    .gt(...getMinExclusiveNumberParams(0))
+    .max(...getCanNotExceedNumberParams(100))
     .multipleOf(...getMaxDecimalPlacesParams(2)),
 })
 
