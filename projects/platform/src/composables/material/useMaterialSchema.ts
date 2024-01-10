@@ -566,6 +566,19 @@ const useMaterialSchema = () => {
         .max(...getMaxNumberParams(999)),
       unit: z.nativeEnum(WeightUnit).default(WeightUnit.GSM),
     }),
+    weightDisplaySetting: z
+      .object({
+        isShowWeightGsm: z.boolean(),
+        isShowWeightOz: z.boolean(),
+        isShowWeightGy: z.boolean(),
+        isShowWeightGm: z.boolean(),
+      })
+      .default({
+        isShowWeightGsm: true,
+        isShowWeightOz: false,
+        isShowWeightGy: false,
+        isShowWeightGm: false,
+      }),
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
     faceSide: materialSideSchema
       .nullable()

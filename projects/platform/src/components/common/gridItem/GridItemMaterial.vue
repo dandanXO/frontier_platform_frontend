@@ -76,7 +76,8 @@ const innerSelectedValue = computed({
 
 const materialInfo = computed(() => {
   const mainSide = getMaterialMainSide(props.material)
-  const { isComposite, width, weight, weightForDisplay } = props.material
+  const { isComposite, width, weight, weightForDisplay, weightDisplaySetting } =
+    props.material
   const { contentList, finishList, materialType, descriptionList } = mainSide
 
   const list = [
@@ -96,7 +97,13 @@ const materialInfo = computed(() => {
   }
 
   if (weight) {
-    list.push(materialInfoForDisplay.weight(weight, weightForDisplay).value)
+    list.push(
+      materialInfoForDisplay.weight(
+        weight,
+        weightForDisplay,
+        weightDisplaySetting
+      ).value
+    )
   }
 
   if (finishList.length > 0) {

@@ -83,6 +83,12 @@ const mapMaterialToForm = (
       value: null,
       unit: WeightUnit.GSM,
     },
+    weightDisplaySetting: material.weightDisplaySetting || {
+      isShowWeightGm: false,
+      isShowWeightOz: false,
+      isShowWeightGy: false,
+      isShowWeightGsm: false,
+    },
     tagInfo: {
       ...material.tagInfo,
       certificationTagIdList:
@@ -491,6 +497,28 @@ const useMaterialForm = ({
       setFieldValue(`backSide.pantoneNameList`, backSidePantoneNameList)
     }
   }
+
+  watch(
+    () => values.weight.unit,
+    (newValue, oldValue) => {
+      const getFieldName = (weightUnit: WeightUnit) => {
+        switch (weightUnit) {
+          case WeightUnit.GM:
+            return `weightDisplaySetting.isShowWeightGm`
+          case WeightUnit.GSM:
+            return `weightDisplaySetting.isShowWeightGsm`
+          case WeightUnit.GY:
+            return `weightDisplaySetting.isShowWeightGy`
+          case WeightUnit.OZ:
+            return `weightDisplaySetting.isShowWeightOz`
+          default:
+            throw new Error('Invalid weight unit')
+        }
+      }
+      setFieldValue(getFieldName(newValue), true)
+      setFieldValue(getFieldName(oldValue), false)
+    }
+  )
 
   watch(
     () => values.isDoubleSide,

@@ -2416,6 +2416,12 @@ export interface CreateAssetsMaterialRequest {
     'weight': MaterialWeight;
     /**
      * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof CreateAssetsMaterialRequest
      */
@@ -10965,6 +10971,12 @@ export interface MainMaterial {
     'weightForDisplay': MaterialWeightForDisplay;
     /**
      * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof MainMaterial
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
+    /**
+     * 
      * @type {MainMaterialMainSide}
      * @memberof MainMaterial
      */
@@ -11289,6 +11301,12 @@ export interface Material {
      * @memberof Material
      */
     'weightForDisplay': MaterialWeightForDisplay;
+    /**
+     * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof Material
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
     /**
      * 
      * @type {MaterialSeasonInfo}
@@ -11698,6 +11716,12 @@ export interface MaterialCreate {
      * @memberof MaterialCreate
      */
     'weight': MaterialWeight;
+    /**
+     * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof MaterialCreate
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -12564,7 +12588,7 @@ export interface MaterialInternalInventoryInfoSampleCardsRemainingListInner {
      */
     'location': string | null;
     /**
-     * 庫存數量 1~999，整數 
+     * 庫存數量 0~999，整數 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
      */
@@ -12577,7 +12601,7 @@ export interface MaterialInternalInventoryInfoSampleCardsRemainingListInner {
  */
 export interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf {
     /**
-     * 庫存數量 1~999，整數 
+     * 庫存數量 0~999，整數 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
      */
@@ -12653,7 +12677,7 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInner {
      */
     'lot': string | null;
     /**
-     * 庫存數量 1~999999，可填寫至小數2位 
+     * 庫存數量 0~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
      */
@@ -12684,7 +12708,7 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
     'lot': string | null;
     /**
-     * 庫存數量 1~999999，可填寫至小數2位 
+     * 庫存數量 0~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
@@ -14184,7 +14208,7 @@ export interface MaterialSideCreateAllOfContentList {
      */
     'name': string | null;
     /**
-     * 百分比，1~100，可填寫至小數 2 位
+     * 百分比，0（不包含）~100，可填寫至小數 2 位
      * @type {number}
      * @memberof MaterialSideCreateAllOfContentList
      */
@@ -14601,6 +14625,12 @@ export interface MaterialUpdate {
     'weight': MaterialWeight;
     /**
      * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof MaterialUpdate
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof MaterialUpdate
      */
@@ -14849,6 +14879,12 @@ export interface MaterialUpdateSpec {
     'weight': MaterialWeight;
     /**
      * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof MaterialUpdateSpec
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof MaterialUpdateSpec
      */
@@ -15090,6 +15126,37 @@ export interface MaterialWeight {
 /**
  * 
  * @export
+ * @interface MaterialWeightDisplaySetting
+ */
+export interface MaterialWeightDisplaySetting {
+    /**
+     * 是否顯示布片平方米克重
+     * @type {boolean}
+     * @memberof MaterialWeightDisplaySetting
+     */
+    'isShowWeightGsm': boolean;
+    /**
+     * 是否顯示布片碼平方盎司重
+     * @type {boolean}
+     * @memberof MaterialWeightDisplaySetting
+     */
+    'isShowWeightOz': boolean;
+    /**
+     * 是否顯示布片碼重
+     * @type {boolean}
+     * @memberof MaterialWeightDisplaySetting
+     */
+    'isShowWeightGy': boolean;
+    /**
+     * 是否顯示布片米重
+     * @type {boolean}
+     * @memberof MaterialWeightDisplaySetting
+     */
+    'isShowWeightGm': boolean;
+}
+/**
+ * 
+ * @export
  * @interface MaterialWeightForDisplay
  */
 export interface MaterialWeightForDisplay {
@@ -15098,25 +15165,25 @@ export interface MaterialWeightForDisplay {
      * @type {number}
      * @memberof MaterialWeightForDisplay
      */
-    'weightGsm'?: number;
+    'weightGsm': number | null;
     /**
      * 數值，1~999，可填寫至 小數3位
      * @type {number}
      * @memberof MaterialWeightForDisplay
      */
-    'weightOz'?: number;
+    'weightOz': number | null;
     /**
      * 數值，1~999，可填寫至 小數3位
      * @type {number}
      * @memberof MaterialWeightForDisplay
      */
-    'weightGy'?: number;
+    'weightGy': number | null;
     /**
      * 數值，1~999，可填寫至 小數3位
      * @type {number}
      * @memberof MaterialWeightForDisplay
      */
-    'weightGm'?: number;
+    'weightGm': number | null;
 }
 /**
  * 
@@ -21406,6 +21473,57 @@ export interface SearchLog {
 /**
  * 
  * @export
+ * @interface SendErrorMessageRequest
+ */
+export interface SendErrorMessageRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SendErrorMessageRequest
+     */
+    'orgId': number | null;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SendErrorMessageRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SendErrorMessageRequest
+     */
+    'ogId': number | null;
+    /**
+     * 錯誤資訊
+     * @type {string}
+     * @memberof SendErrorMessageRequest
+     */
+    'info': string;
+    /**
+     * 錯誤訊息
+     * @type {string}
+     * @memberof SendErrorMessageRequest
+     */
+    'errorMsg': string;
+    /**
+     * 錯誤詳細資訊的字串
+     * @type {string}
+     * @memberof SendErrorMessageRequest
+     */
+    'errorStack'?: string;
+    /**
+     * 發生錯誤的頁面Route Url
+     * @type {string}
+     * @memberof SendErrorMessageRequest
+     */
+    'url': string;
+}
+
+
+/**
+ * 
+ * @export
  * @interface SendShowroomEmailRequest
  */
 export interface SendShowroomEmailRequest {
@@ -23070,6 +23188,12 @@ export interface UpdateAssetsMaterialRequest {
     'weight': MaterialWeight;
     /**
      * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof UpdateAssetsMaterialRequest
      */
@@ -23341,6 +23465,12 @@ export interface UpdateMaterialSimpleSpecRequest {
      * @memberof UpdateMaterialSimpleSpecRequest
      */
     'weight': MaterialWeight;
+    /**
+     * 
+     * @type {MaterialWeightDisplaySetting}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'weightDisplaySetting': MaterialWeightDisplaySetting;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -39780,6 +39910,113 @@ export class SignUpApi extends BaseAPI {
      */
     public signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: AxiosRequestConfig) {
         return SignUpApiFp(this.configuration).signUpRequestPost(signUpRequestPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * SystemApi - axios parameter creator
+ * @export
+ */
+export const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary 向後端發送錯誤訊息，用於前端錯誤追蹤
+         * @param {SendErrorMessageRequest} sendErrorMessageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendErrorMessage: async (sendErrorMessageRequest: SendErrorMessageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sendErrorMessageRequest' is not null or undefined
+            assertParamExists('sendErrorMessage', 'sendErrorMessageRequest', sendErrorMessageRequest)
+            const localVarPath = `/system/send-error-message`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sendErrorMessageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SystemApi - functional programming interface
+ * @export
+ */
+export const SystemApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SystemApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary 向後端發送錯誤訊息，用於前端錯誤追蹤
+         * @param {SendErrorMessageRequest} sendErrorMessageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendErrorMessage(sendErrorMessageRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * SystemApi - factory interface
+ * @export
+ */
+export const SystemApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SystemApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary 向後端發送錯誤訊息，用於前端錯誤追蹤
+         * @param {SendErrorMessageRequest} sendErrorMessageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.sendErrorMessage(sendErrorMessageRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SystemApi - object-oriented interface
+ * @export
+ * @class SystemApi
+ * @extends {BaseAPI}
+ */
+export class SystemApi extends BaseAPI {
+    /**
+     * 
+     * @summary 向後端發送錯誤訊息，用於前端錯誤追蹤
+     * @param {SendErrorMessageRequest} sendErrorMessageRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemApi
+     */
+    public sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: AxiosRequestConfig) {
+        return SystemApiFp(this.configuration).sendErrorMessage(sendErrorMessageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

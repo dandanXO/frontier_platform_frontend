@@ -18,6 +18,7 @@ import {
   type MaterialDescription,
   type MaterialWeightForDisplay,
   WeightUnit,
+  type MaterialWeightDisplaySetting,
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
@@ -200,7 +201,8 @@ const materialInfoForDisplay = {
   }),
   weight: (
     weight: MaterialWeight | null,
-    weightForDisplay: MaterialWeightForDisplay
+    weightForDisplay: MaterialWeightForDisplay,
+    weightDisplaySetting: MaterialWeightDisplaySetting
   ) => {
     const getWeightDisplay = () => {
       if (!weight) {
@@ -218,12 +220,26 @@ const materialInfoForDisplay = {
         { value: weightForDisplay.weightGm!, unit: WeightUnit.GM },
       ]
         .filter((w) => w.unit != weight.unit)
+        .filter((w) => {
+          switch (w.unit) {
+            case WeightUnit.GSM:
+              return weightDisplaySetting.isShowWeightGsm
+            case WeightUnit.OZ:
+              return weightDisplaySetting.isShowWeightOz
+            case WeightUnit.GY:
+              return weightDisplaySetting.isShowWeightGy
+            case WeightUnit.GM:
+              return weightDisplaySetting.isShowWeightGm
+          }
+        })
         .map(getItemDisplay)
-        .map((d) => `(${d})`)
-        .join(' ')
+        .join(', ')
 
-      const display = `${originWeightDisplay} ${computedWeightDisplay}`
-      return display
+      if (computedWeightDisplay.length === 0) {
+        return originWeightDisplay
+      }
+
+      return `${originWeightDisplay} (${computedWeightDisplay})`
     }
     return {
       name: t('RR0015'),

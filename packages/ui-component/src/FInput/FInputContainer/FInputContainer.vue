@@ -5,7 +5,8 @@ div
       div(v-if="label !== ''" class="flex pb-3 text-body2 font-bold")
         p(class="text-grey-900") {{ label }}
         i(v-if="required" class="text-red-400 pl-0.5") *
-    slot(name="slot:suffix")
+        div(class="flex-start ml-2")
+          slot(name="slot:suffix")
   div(class="w-full flex")
     slot(name="slot:prepend-item")
     div(class="w-full relative")

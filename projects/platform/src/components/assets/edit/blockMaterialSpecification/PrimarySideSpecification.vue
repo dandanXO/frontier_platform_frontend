@@ -412,22 +412,45 @@ div(class="flex flex-col gap-y-7.5")
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
-  div(v-if="showWidthAndWeight" class="flex flex-row")
-    f-input-text(
-      :textValue="weightValue.value"
-      @update:textValue="weightValue.onInput"
-      :hintError="displayErrors['weight.value']"
-      :placeholder="$t('MI0039')"
-      inputType="number"
-      :label="$t('RR0015')"
-      class="w-72"
-      required
-      :rightSelectValue="weightUnit.value"
-      @update:rightSelectValue="weightUnit.onInput"
-      :rightDropdownOption="weightUnitList"
-    )
-      template(#slot:right-dropdown-trigger="{ selectedMenu }")
-        p {{ selectedMenu?.title }}
+  f-input-container(v-if="showWidthAndWeight" required :label="$t('RR0015')")
+    template(#slot:suffix)
+      f-tooltip-standard(class="flex-start")
+        template(#slot:tooltip-content)
+          i18n-t(keypath="MI0142")
+            template(#newline)
+              br
+        template(#slot:tooltip-trigger)
+          f-svg-icon(
+            iconName="info_outline"
+            class="cursor-pointer text-grey-600"
+            size="14"
+          )
+    div(class="flex flex-col gap-y-2.5")
+      f-input-text(
+        :textValue="weightValue.value"
+        @update:textValue="weightValue.onInput"
+        :hintError="displayErrors['weight.value']"
+        :placeholder="$t('MI0039')"
+        inputType="number"
+        class="w-72"
+        required
+        :rightSelectValue="weightUnit.value"
+        @update:rightSelectValue="weightUnit.onInput"
+        :rightDropdownOption="weightUnitList"
+      )
+        template(#slot:right-dropdown-trigger="{ selectedMenu }")
+          p {{ selectedMenu?.title }}
+      div(class="flex flex-row items-center gap-x-4")
+        f-input-checkbox(
+          v-for="weightItem in weightCheckboxItems"
+          :key="weightItem.unit"
+          :class="{ 'order-first': weightUnit.value === weightItem.unit }"
+          binary
+          :disabled="weightUnit.value === weightItem.unit"
+          :label="weightItem.label"
+          :inputValue="weightItem.field.value"
+          @update:inputValue="weightItem.field.onInput"
+        )
   f-select-input(
     :disabled="disableBackSideFields"
     :selectValue="finishList.value"
@@ -594,10 +617,12 @@ import {
   MaterialType,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE, DISPLAY } from '@frontier/constants'
+import { WeightUnit } from '@frontier/platform-web-sdk'
 import { CREATE_EDIT } from '@/utils/constants'
 import IconButton from '@/components/assets/edit/blockMaterialSpecification/IconButton.vue'
 import type { MaterialFormService } from '@/types'
 import { materialFormServiceKey } from '@/utils/constants'
+import useEnumText from '@/composables/useEnumText'
 
 const props = defineProps<{
   primarySideType: 'faceSide' | 'backSide'
@@ -654,6 +679,23 @@ const widthUnit = defineInputBinds('width.unit')
 
 const weightValue = defineInputBinds('weight.value')
 const weightUnit = defineInputBinds('weight.unit')
+const isShowWeightGsm = defineInputBinds('weightDisplaySetting.isShowWeightGsm')
+const isShowWeightOz = defineInputBinds('weightDisplaySetting.isShowWeightOz')
+const isShowWeightGy = defineInputBinds('weightDisplaySetting.isShowWeightGy')
+const isShowWeightGm = defineInputBinds('weightDisplaySetting.isShowWeightGm')
+
+const { weightUnitText } = useEnumText()
+const weightCheckboxItems = computed(() =>
+  [
+    { field: isShowWeightGsm.value, unit: WeightUnit.GSM },
+    { field: isShowWeightOz.value, unit: WeightUnit.OZ },
+    { field: isShowWeightGy.value, unit: WeightUnit.GY },
+    { field: isShowWeightGm.value, unit: WeightUnit.GM },
+  ].map((item) => ({
+    ...item,
+    label: weightUnitText.value[item.unit],
+  }))
+)
 
 // Woven construction
 const constructionIsPublic = defineInputBinds(

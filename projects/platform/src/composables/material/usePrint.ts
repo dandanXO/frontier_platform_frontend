@@ -132,6 +132,7 @@ const usePrint = () => {
         width,
         weight,
         weightForDisplay,
+        weightDisplaySetting,
       } = material
       const mainSide = getMaterialMainSide(material)
       const {
@@ -234,7 +235,11 @@ const usePrint = () => {
         })),
         materialInfoForDisplay.contentList(contentList),
         materialInfoForDisplay.width(width),
-        materialInfoForDisplay.weight(weight, weightForDisplay),
+        materialInfoForDisplay.weight(
+          weight,
+          weightForDisplay,
+          weightDisplaySetting
+        ),
         materialInfoForDisplay.finishList(finishList),
       ]
 
@@ -277,7 +282,14 @@ const usePrint = () => {
       material: Material
     }) => {
       const { sideType, material } = item
-      const { itemNo, isComposite, width, weight, weightForDisplay } = material
+      const {
+        itemNo,
+        isComposite,
+        width,
+        weight,
+        weightForDisplay,
+        weightDisplaySetting,
+      } = material
       const mainSide = getMaterialMainSide(material)
       const {
         frontierNo,
@@ -474,7 +486,11 @@ const usePrint = () => {
 
       infoList.push(
         materialInfoForDisplay.contentList(contentList).value,
-        materialInfoForDisplay.weight(weight, weightForDisplay).value,
+        materialInfoForDisplay.weight(
+          weight,
+          weightForDisplay,
+          weightDisplaySetting
+        ).value,
         materialInfoForDisplay.finishList(finishList).value
       )
 

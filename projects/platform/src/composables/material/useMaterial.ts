@@ -349,8 +349,14 @@ export default function useMaterial(
   }
 
   const specificationInfo = computed<MaterialSpecificationInfo>(() => {
-    const { isComposite, seasonInfo, width, weight, weightForDisplay } =
-      material.value
+    const {
+      isComposite,
+      seasonInfo,
+      width,
+      weight,
+      weightForDisplay,
+      weightDisplaySetting,
+    } = material.value
     const getSeasonInfo = () => ({
       ...materialInfoForDisplay.seasonInfo(seasonInfo),
       isPublic: seasonInfo?.isPublic ?? false,
@@ -411,7 +417,11 @@ export default function useMaterial(
           textColor: getTextColor(true, true, false),
         },
         weight: {
-          ...materialInfoForDisplay.weight(weight, weightForDisplay),
+          ...materialInfoForDisplay.weight(
+            weight,
+            weightForDisplay,
+            weightDisplaySetting
+          ),
           textColor: getTextColor(true, true, false),
         },
         finishList: getFinishList(),
