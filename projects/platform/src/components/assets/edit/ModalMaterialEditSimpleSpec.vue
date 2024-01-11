@@ -69,6 +69,7 @@ const updateMaterialSimpleSpec = async (
       seasonInfo: form.seasonInfo,
       width: form.width,
       weight: form.weight,
+      weightDisplaySetting: form.weightDisplaySetting,
     }
   }
 
