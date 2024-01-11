@@ -27265,7 +27265,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -27639,7 +27639,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+        removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<SetAssetsMaterialCover200Response> {
             return localVarFp.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
         },
         /**

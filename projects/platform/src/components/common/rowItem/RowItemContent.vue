@@ -65,6 +65,8 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
     block-specification(
       v-else
       :specificationInfo="specificationInfo"
+      :colorInfo="colorInfo ?? undefined"
+      :patternInfo="patternInfo ?? undefined"
       isListView
     )
   div(class="flex flex-col gap-y-6 min-w-75 max-w-115")
@@ -181,6 +183,8 @@ const {
   switchSideType,
   sideOptionList,
   specificationInfo,
+  patternInfo,
+  colorInfo,
   carbonEmissionInfo,
   scanImageStatus,
 } = useMaterial(ref(props.material))

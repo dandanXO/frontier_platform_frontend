@@ -22,18 +22,31 @@ search-table(
     f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
   template(#default)
     template(v-if="materialList.length > 0")
-      recycle-scroller(
-        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
-        :items="materialList"
-        :itemSize="currentItemSize"
-        key-field="materialId"
-        pageMode
-        v-slot="{ item, index }"
-        @resize="resize"
-        :buffer="currentItemSize * 3"
-      )
+      //- Jira: F22-3010
+      //- 因為 rowItem 加入 color, pattern 呈現後，每個 rowItem 的高度會不一致，所以無法使用 recycle-scroller
+      //- 先改回 v-for 去 render，但是會犧牲部分效能
+      //- recycle-scroller(
+      //-   v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
+      //-   :items="materialList"
+      //-   :itemSize="currentItemSize"
+      //-   key-field="materialId"
+      //-   pageMode
+      //-   v-slot="{ item, index }"
+      //-   @resize="resize"
+      //-   :buffer="currentItemSize * 3"
+      //- )
+      //-   row-item(
+      //-     :key="item.materialId"
+      //-     :material="item"
+      //-     v-model:selectedList="selectedMaterialList"
+      //-     data-cy="assets"
+      //-   )
+      //-   div(
+      //-     v-if="index !== materialList.length - 1"
+      //-     class="border-b border-grey-250 mx-7.5 my-5"
+      //-   )
+      template(v-for="(item, index) in materialList" :key="item.materialId")
         row-item(
-          :key="item.materialId"
           :material="item"
           v-model:selectedList="selectedMaterialList"
           data-cy="assets"
@@ -194,17 +207,20 @@ const displayModeOptionList = [
   },
 ]
 
-const currentItemSize = ref(379)
-const resize = () => {
-  /**
-   * @Todo figure out what happen in Safari
-   */
-  if (document.querySelector('.vue-recycle-scroller__item-view')) {
-    currentItemSize.value =
-      document?.querySelector('.vue-recycle-scroller__item-view')
-        ?.clientHeight ?? 379
-  } else {
-    currentItemSize.value = 379
-  }
-}
+// Jira: F22-3010
+// 因為 rowItem 加入 color, pattern 呈現後，每個 rowItem 的高度會不一致，所以無法使用 recycle-scroller
+// 先改回 v-for 去 render，但是會犧牲部分效能
+// const currentItemSize = ref(379)
+// const resize = () => {
+//   /**
+//    * @Todo figure out what happen in Safari
+//    */
+//   if (document.querySelector('.vue-recycle-scroller__item-view')) {
+//     currentItemSize.value =
+//       document?.querySelector('.vue-recycle-scroller__item-view')
+//         ?.clientHeight ?? 379
+//   } else {
+//     currentItemSize.value = 379
+//   }
+// }
 </script>
