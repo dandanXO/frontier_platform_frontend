@@ -223,6 +223,21 @@ const useMultimediaUpdate = (
           fileId: target.fileId,
         })
         material.value.multimediaList = res.data.result.multimediaList
+        material.value.coverImage = res.data.result.coverImage
+        if (selectedCoverId.value === id) {
+          switch (material.value.coverImage.mode) {
+            case CoverMode.FACE:
+              selectedCoverId.value = 'faceSide'
+              break
+            case CoverMode.BACK:
+              selectedCoverId.value = 'backSide'
+              break
+            default:
+              throw new Error(
+                'invalid cover mode' + material.value.coverImage.mode
+              )
+          }
+        }
         store.dispatch('helper/closeModalLoading')
       },
       secondaryBtnText: t('UU0002'),
