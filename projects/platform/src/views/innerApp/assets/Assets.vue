@@ -45,7 +45,11 @@ search-table(
       //-     v-if="index !== materialList.length - 1"
       //-     class="border-b border-grey-250 mx-7.5 my-5"
       //-   )
-      template(v-for="(item, index) in materialList" :key="item.materialId")
+      div(
+        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
+        v-for="(item, index) in materialList"
+        :key="item.materialId"
+      )
         row-item(
           :material="item"
           v-model:selectedList="selectedMaterialList"
