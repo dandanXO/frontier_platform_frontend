@@ -320,8 +320,8 @@ const usePrint = () => {
                 <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
               </div>
               <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
-              <div id="info-container" class="w-full text-grey-900">
-                <p class="text-[8px] font-bold pb-0.5">${itemNo}</p>
+              <div id="info-container" class="w-30 text-grey-900">
+                <p class="text-[8px] font-bold pb-0.5 break-words">${itemNo}</p>
               </div>
             </div>
           </div>
@@ -345,8 +345,8 @@ const usePrint = () => {
             </div>
           </div>
           <div class="w-px h-[105px] bg-grey-250"></div>
-          <div id="info-container" class="w-35 text-grey-900">
-            <p class="text-[8px] font-bold pb-1">${itemNo}</p>
+          <div id="info-container" class="w-33 text-grey-900">
+            <p class="text-[8px] font-bold pb-1 break-words">${itemNo}</p>
           </div>
         </div>
         `
