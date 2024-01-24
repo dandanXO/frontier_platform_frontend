@@ -51,13 +51,17 @@ const makeQrCode = async (
   width: number
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
+  const canvasScale = 10
   const qrcode = await QRCode.toCanvas(
     `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`,
     {
-      width,
+      width: width * canvasScale,
       margin: 0,
+      errorCorrectionLevel: 'high',
     }
   )
+  qrcode.style.width = `${width}px`
+  qrcode.style.height = `${width}px`
   qrCodeContainer.appendChild(qrcode)
 }
 
