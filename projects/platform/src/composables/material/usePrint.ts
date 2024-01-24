@@ -309,7 +309,7 @@ const usePrint = () => {
         virtualDom.innerHTML = `
           <div class="w-56.5 h-[113px] p-1.5 bg-grey-0 flex items-start gap-x-2">
             <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
-            <div class="w-full pt-0.5 flex items-center">
+            <div class="w-full pt-0.5 flex flex-start">
               <div class="pt-3">
                 <div id="qr-code-container"></div>
                 <p class="text-[7px] pt-2 text-grey-900 text-center">${
@@ -345,7 +345,7 @@ const usePrint = () => {
             </div>
           </div>
           <div class="w-px h-[105px] bg-grey-250"></div>
-          <div id="info-container" class="w-full text-grey-900">
+          <div id="info-container" class="w-35 text-grey-900">
             <p class="text-[8px] font-bold pb-1">${itemNo}</p>
           </div>
         </div>
@@ -505,7 +505,7 @@ const usePrint = () => {
       infoList.forEach((value) => {
         const row = document.createElement('p')
         row.classList.add(
-          'line-clamp-1',
+          'pl-px',
           'text-[7px]',
           'break-words',
           'w-full',
