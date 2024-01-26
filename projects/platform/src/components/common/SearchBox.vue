@@ -15,7 +15,7 @@ div(class="grid")
         :value="keyword"
         :placeholder="$t('RR0053')"
         @input="typing"
-        @keydown.enter="$emit('search')"
+        @keydown.enter="handleSearch"
         class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
       )
       f-svg-icon(
@@ -53,29 +53,29 @@ div(class="grid")
           @click="resetFilterHandler"
         ) {{ $t('UU0041') }}
       div(class="flex flex-wrap gap-x-2 gap-y-4")
-        filter-material-type(@search="$emit('search')")
-        filter-material-description(@search="$emit('search')")
-        filter-content(@search="$emit('search')")
-        filter-pattern(@search="$emit('search')")
-        filter-color(@search="$emit('search')")
-        filter-width(@search="$emit('search')")
-        filter-weight(@search="$emit('search')")
-        filter-yarn-density(@search="$emit('search')")
-        filter-finish(@search="$emit('search')")
-        filter-inventory(:searchType="searchType" @search="$emit('search')")
-        filter-price(@search="$emit('search')")
-        filter-has-u3m(@search="$emit('search')")
+        filter-material-type(@search="handleSearch")
+        filter-material-description(@search="handleSearch")
+        filter-content(@search="handleSearch")
+        filter-pattern(@search="handleSearch")
+        filter-color(@search="handleSearch")
+        filter-width(@search="handleSearch")
+        filter-weight(@search="handleSearch")
+        filter-yarn-density(@search="handleSearch")
+        filter-finish(@search="handleSearch")
+        filter-inventory(:searchType="searchType" @search="handleSearch")
+        filter-price(@search="handleSearch")
+        filter-has-u3m(@search="handleSearch")
         filter-eco(
           v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
-          @search="$emit('search')"
+          @search="handleSearch"
         )
         filter-asset-status(
           v-if="searchType === SEARCH_TYPE.ASSETS"
-          @search="$emit('search')"
+          @search="handleSearch"
         )
         filter-country(
           v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
-          @search="$emit('search')"
+          @search="handleSearch"
         )
 </template>
 
@@ -150,13 +150,14 @@ const debounceSearchAITag = debounce(searchStore.getAITags, 300)
 
 const typing = (e: Event) => {
   const target = e.target as HTMLInputElement
-  const v = target.value.trim()
+  const v = target.value
   searchStore.setKeyword(v)
-  debounceSearchAITag()
-  if (v === '') {
+  if (v.trim() === '') {
     searchStore.setTagList([])
     searchStore.setSelectedTagList([])
+    return
   }
+  debounceSearchAITag()
 }
 
 const resetFilterHandler = () => {
@@ -164,6 +165,11 @@ const resetFilterHandler = () => {
     filterStore.resetFilterState()
     emit('search')
   }
+}
+
+const handleSearch = () => {
+  searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
+  emit('search')
 }
 
 onBeforeUnmount(() => {
