@@ -14,14 +14,14 @@
 
 
 import type { Configuration } from './configuration';
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -107,31 +107,6 @@ export interface AddMoodboardShareRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface AddMoodboardShareRequestAllOf
- */
-export interface AddMoodboardShareRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof AddMoodboardShareRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {Array<ShareTarget>}
-     * @memberof AddMoodboardShareRequestAllOf
-     */
-    'targetList': Array<ShareTarget>;
-    /**
-     * 
-     * @type {string}
-     * @memberof AddMoodboardShareRequestAllOf
-     */
-    'message': string;
-}
 /**
  * 
  * @export
@@ -224,19 +199,6 @@ export interface AddWorkspaceNodeShareAssigned200Response {
 /**
  * 
  * @export
- * @interface AddWorkspaceNodeShareAssigned200ResponseAllOf
- */
-export interface AddWorkspaceNodeShareAssigned200ResponseAllOf {
-    /**
-     * 
-     * @type {AddWorkspaceNodeShareAssigned200ResponseAllOfResult}
-     * @memberof AddWorkspaceNodeShareAssigned200ResponseAllOf
-     */
-    'result': AddWorkspaceNodeShareAssigned200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult
  */
 export interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult {
@@ -304,43 +266,6 @@ export interface AddWorkspaceNodeShareAssignedRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface AddWorkspaceNodeShareAssignedRequestAllOf
- */
-export interface AddWorkspaceNodeShareAssignedRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {Array<ShareTarget>}
-     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'targetList': Array<ShareTarget>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'isCanClone': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'isCanDownloadU3M': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof AddWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'messages'?: string;
-}
 /**
  * 
  * @export
@@ -473,7 +398,7 @@ export interface AssetsFilter {
      * @type {number}
      * @memberof AssetsFilter
      */
-    'status': AssetsFilterStatusEnum;
+    'status': AssetsFilterStatusEnum | null;
 }
 
 export const AssetsFilterStatusEnum = {
@@ -485,42 +410,6 @@ export const AssetsFilterStatusEnum = {
 } as const;
 
 export type AssetsFilterStatusEnum = typeof AssetsFilterStatusEnum[keyof typeof AssetsFilterStatusEnum];
-
-/**
- * 
- * @export
- * @interface AssetsFilterAllOf
- */
-export interface AssetsFilterAllOf {
-    /**
-     * 
-     * @type {AssetsFilterAllOfInventory}
-     * @memberof AssetsFilterAllOf
-     */
-    'inventory': AssetsFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AssetsFilterAllOf
-     */
-    'withOutEcoImpactor': boolean | null;
-    /**
-     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
-     * @type {number}
-     * @memberof AssetsFilterAllOf
-     */
-    'status': AssetsFilterAllOfStatusEnum;
-}
-
-export const AssetsFilterAllOfStatusEnum = {
-    NOT_IN_WORKSPACE: 1,
-    NO_SCAN_IMAGE: 2,
-    NO_IMAGE: 3,
-    NO_REQUIRED_FIELD: 4,
-    DUPLICATE_ITEM_NO: 5
-} as const;
-
-export type AssetsFilterAllOfStatusEnum = typeof AssetsFilterAllOfStatusEnum[keyof typeof AssetsFilterAllOfStatusEnum];
 
 /**
  * 
@@ -587,19 +476,6 @@ export interface AssetsMaterialAddToWorkspace200Response {
 /**
  * 
  * @export
- * @interface AssetsMaterialAddToWorkspace200ResponseAllOf
- */
-export interface AssetsMaterialAddToWorkspace200ResponseAllOf {
-    /**
-     * 
-     * @type {AssetsMaterialAddToWorkspace200ResponseAllOfResult}
-     * @memberof AssetsMaterialAddToWorkspace200ResponseAllOf
-     */
-    'result': AssetsMaterialAddToWorkspace200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface AssetsMaterialAddToWorkspace200ResponseAllOfResult
  */
 export interface AssetsMaterialAddToWorkspace200ResponseAllOfResult {
@@ -649,25 +525,6 @@ export interface AssetsMaterialAddToWorkspaceRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface AssetsMaterialAddToWorkspaceRequestAllOf
- */
-export interface AssetsMaterialAddToWorkspaceRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
-     */
-    'materialIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
-     */
-    'targetNodeIdList': Array<number>;
-}
 /**
  * 
  * @export
@@ -841,25 +698,6 @@ export interface CancelAssetsMaterialCustomU3mUploadRequest {
 /**
  * 
  * @export
- * @interface CancelAssetsMaterialCustomU3mUploadRequestAllOf
- */
-export interface CancelAssetsMaterialCustomU3mUploadRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
-     */
-    'accessToken': string;
-}
-/**
- * 
- * @export
  * @interface CancelMaterialUploadProgressRequest
  */
 export interface CancelMaterialUploadProgressRequest {
@@ -890,19 +728,6 @@ export interface CancelMaterialUploadProgressRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface CancelMaterialUploadProgressRequestAllOf
- */
-export interface CancelMaterialUploadProgressRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CancelMaterialUploadProgressRequestAllOf
-     */
-    'progressId': number;
-}
 /**
  * 
  * @export
@@ -1044,19 +869,6 @@ export interface CheckDeleteAssetsMaterialList200Response {
 /**
  * 
  * @export
- * @interface CheckDeleteAssetsMaterialList200ResponseAllOf
- */
-export interface CheckDeleteAssetsMaterialList200ResponseAllOf {
-    /**
-     * 
-     * @type {CheckDeleteAssetsMaterialList200ResponseAllOfResult}
-     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOf
-     */
-    'result': CheckDeleteAssetsMaterialList200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface CheckDeleteAssetsMaterialList200ResponseAllOfResult
  */
 export interface CheckDeleteAssetsMaterialList200ResponseAllOfResult {
@@ -1109,19 +921,6 @@ export interface CheckIsMaterialOwner200Response {
      * @memberof CheckIsMaterialOwner200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CheckIsMaterialOwner200ResponseAllOf
- */
-export interface CheckIsMaterialOwner200ResponseAllOf {
-    /**
-     * 
-     * @type {CheckIsMaterialOwner200ResponseAllOfResult}
-     * @memberof CheckIsMaterialOwner200ResponseAllOf
-     */
-    'result': CheckIsMaterialOwner200ResponseAllOfResult;
 }
 /**
  * 
@@ -1282,19 +1081,6 @@ export interface CheckTokenStatus200Response {
 /**
  * 
  * @export
- * @interface CheckTokenStatus200ResponseAllOf
- */
-export interface CheckTokenStatus200ResponseAllOf {
-    /**
-     * 
-     * @type {CheckTokenStatus200ResponseAllOfResult}
-     * @memberof CheckTokenStatus200ResponseAllOf
-     */
-    'result': CheckTokenStatus200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface CheckTokenStatus200ResponseAllOfResult
  */
 export interface CheckTokenStatus200ResponseAllOfResult {
@@ -1375,31 +1161,6 @@ export interface CloneAssetsMaterialListRequest {
 /**
  * 
  * @export
- * @interface CloneAssetsMaterialListRequestAllOf
- */
-export interface CloneAssetsMaterialListRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof CloneAssetsMaterialListRequestAllOf
-     */
-    'materialIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<TargetOg>}
-     * @memberof CloneAssetsMaterialListRequestAllOf
-     */
-    'targetOgList': Array<TargetOg>;
-    /**
-     * 
-     * @type {CloneOption}
-     * @memberof CloneAssetsMaterialListRequestAllOf
-     */
-    'optional': CloneOption;
-}
-/**
- * 
- * @export
  * @interface CloneCheckByMaterialRequest
  */
 export interface CloneCheckByMaterialRequest {
@@ -1433,19 +1194,6 @@ export interface CloneCheckByMaterialRequest {
 /**
  * 
  * @export
- * @interface CloneCheckByMaterialRequestAllOf
- */
-export interface CloneCheckByMaterialRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof CloneCheckByMaterialRequestAllOf
-     */
-    'materialIdList': Array<number>;
-}
-/**
- * 
- * @export
  * @interface CloneCheckByNode200Response
  */
 export interface CloneCheckByNode200Response {
@@ -1473,19 +1221,6 @@ export interface CloneCheckByNode200Response {
      * @memberof CloneCheckByNode200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CloneCheckByNode200ResponseAllOf
- */
-export interface CloneCheckByNode200ResponseAllOf {
-    /**
-     * 
-     * @type {CloneCheckByNode200ResponseAllOfResult}
-     * @memberof CloneCheckByNode200ResponseAllOf
-     */
-    'result': CloneCheckByNode200ResponseAllOfResult;
 }
 /**
  * 
@@ -1583,31 +1318,6 @@ export interface CloneMoodboardNodeRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface CloneMoodboardNodeRequestAllOf
- */
-export interface CloneMoodboardNodeRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof CloneMoodboardNodeRequestAllOf
-     */
-    'nodeIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<TargetOg>}
-     * @memberof CloneMoodboardNodeRequestAllOf
-     */
-    'targetOgList': Array<TargetOg>;
-    /**
-     * 
-     * @type {CloneOption}
-     * @memberof CloneMoodboardNodeRequestAllOf
-     */
-    'optional': CloneOption;
-}
 /**
  * 
  * @export
@@ -1746,37 +1456,6 @@ export interface CloneShareToMeNodeRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface CloneShareToMeNodeRequestAllOf
- */
-export interface CloneShareToMeNodeRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CloneShareToMeNodeRequestAllOf
-     */
-    'sharingId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof CloneShareToMeNodeRequestAllOf
-     */
-    'nodeIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<TargetOg>}
-     * @memberof CloneShareToMeNodeRequestAllOf
-     */
-    'targetOgList': Array<TargetOg>;
-    /**
-     * 
-     * @type {CloneOption}
-     * @memberof CloneShareToMeNodeRequestAllOf
-     */
-    'optional': CloneOption;
-}
 /**
  * 
  * @export
@@ -2007,21 +1686,21 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
 
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum];
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum];
@@ -2109,17 +1788,17 @@ export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
     GroupManager: 'Group Manager',
     Member1: 'Member1',
     Member2: 'Member2',
-    Member2: 'Member2'
+    Member22: 'Member2'
 } as const;
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum];
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum];
@@ -2294,19 +1973,6 @@ export interface CreateAndEditAttachmentFile {
      * 顯示檔案名稱
      * @type {string}
      * @memberof CreateAndEditAttachmentFile
-     */
-    'displayFileName': string;
-}
-/**
- * 
- * @export
- * @interface CreateAndEditAttachmentFileAllOf
- */
-export interface CreateAndEditAttachmentFileAllOf {
-    /**
-     * 顯示檔案名稱
-     * @type {string}
-     * @memberof CreateAndEditAttachmentFileAllOf
      */
     'displayFileName': string;
 }
@@ -2565,31 +2231,6 @@ export interface CreateMoodboardCommentRequest {
 /**
  * 
  * @export
- * @interface CreateMoodboardCommentRequestAllOf
- */
-export interface CreateMoodboardCommentRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateMoodboardCommentRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateMoodboardCommentRequestAllOf
-     */
-    'offerId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardCommentRequestAllOf
-     */
-    'comment': string;
-}
-/**
- * 
- * @export
  * @interface CreateMoodboardOfferNodeCollectionRequest
  */
 export interface CreateMoodboardOfferNodeCollectionRequest {
@@ -2641,37 +2282,6 @@ export interface CreateMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
- * @interface CreateMoodboardOfferNodeCollectionRequestAllOf
- */
-export interface CreateMoodboardOfferNodeCollectionRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'description': string | null;
-    /**
-     * 
-     * @type {CreateMoodboardRequestAllOfTrendBoard}
-     * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
-}
-/**
- * 
- * @export
  * @interface CreateMoodboardOfferNodeMaterialRequest
  */
 export interface CreateMoodboardOfferNodeMaterialRequest {
@@ -2708,25 +2318,6 @@ export interface CreateMoodboardOfferNodeMaterialRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface CreateMoodboardOfferNodeMaterialRequestAllOf
- */
-export interface CreateMoodboardOfferNodeMaterialRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateMoodboardOfferNodeMaterialRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof CreateMoodboardOfferNodeMaterialRequestAllOf
-     */
-    'materialIdList': Array<number>;
-}
 /**
  * 
  * @export
@@ -2781,37 +2372,6 @@ export interface CreateMoodboardRequest {
 /**
  * 
  * @export
- * @interface CreateMoodboardRequestAllOf
- */
-export interface CreateMoodboardRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardRequestAllOf
-     */
-    'moodboardName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardRequestAllOf
-     */
-    'description': string;
-    /**
-     * 
-     * @type {CreateMoodboardRequestAllOfTrendBoard}
-     * @memberof CreateMoodboardRequestAllOf
-     */
-    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
-    /**
-     * 
-     * @type {Array<S3UploadedObject>}
-     * @memberof CreateMoodboardRequestAllOf
-     */
-    'attachmentList': Array<S3UploadedObject> | null;
-}
-/**
- * 
- * @export
  * @interface CreateMoodboardRequestAllOfTrendBoard
  */
 export interface CreateMoodboardRequestAllOfTrendBoard {
@@ -2860,29 +2420,35 @@ export interface CreateMultimediaFile {
     'isCover': boolean;
     /**
      * 
-     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
+     * @type {CreateMultimediaFileAllOfCroppedImage}
      * @memberof CreateMultimediaFile
      */
-    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+    'croppedImage': CreateMultimediaFileAllOfCroppedImage | null;
 }
 /**
  * 
  * @export
- * @interface CreateMultimediaFileAllOf
+ * @interface CreateMultimediaFileAllOfCroppedImage
  */
-export interface CreateMultimediaFileAllOf {
-    /**
-     * 是否為封面圖
-     * @type {boolean}
-     * @memberof CreateMultimediaFileAllOf
-     */
-    'isCover': boolean;
+export interface CreateMultimediaFileAllOfCroppedImage {
     /**
      * 
-     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
-     * @memberof CreateMultimediaFileAllOf
+     * @type {string}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
      */
-    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
+     */
+    'cropRecord': CropImageRecord;
 }
 /**
  * 
@@ -3028,43 +2594,31 @@ export interface CreateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {S3UploadedObject}
+     * @type {CreateWorkspaceCollectionRequestAllOfTrendBoard}
      * @memberof CreateWorkspaceCollectionRequest
      */
-    'trendBoard': S3UploadedObject | null;
+    'trendBoard': CreateWorkspaceCollectionRequestAllOfTrendBoard | null;
 }
 
 
 /**
  * 
  * @export
- * @interface CreateWorkspaceCollectionRequestAllOf
+ * @interface CreateWorkspaceCollectionRequestAllOfTrendBoard
  */
-export interface CreateWorkspaceCollectionRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateWorkspaceCollectionRequestAllOf
-     */
-    'nodeId': number;
+export interface CreateWorkspaceCollectionRequestAllOfTrendBoard {
     /**
      * 
      * @type {string}
-     * @memberof CreateWorkspaceCollectionRequestAllOf
+     * @memberof CreateWorkspaceCollectionRequestAllOfTrendBoard
      */
-    'collectionName': string;
+    's3UploadId': string;
     /**
      * 
      * @type {string}
-     * @memberof CreateWorkspaceCollectionRequestAllOf
+     * @memberof CreateWorkspaceCollectionRequestAllOfTrendBoard
      */
-    'description': string | null;
-    /**
-     * 
-     * @type {S3UploadedObject}
-     * @memberof CreateWorkspaceCollectionRequestAllOf
-     */
-    'trendBoard': S3UploadedObject | null;
+    'fileName': string;
 }
 /**
  * 
@@ -3114,31 +2668,6 @@ export interface CropAssetsMaterialMultimediaRequest {
 /**
  * 
  * @export
- * @interface CropAssetsMaterialMultimediaRequestAllOf
- */
-export interface CropAssetsMaterialMultimediaRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof CropAssetsMaterialMultimediaRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CropAssetsMaterialMultimediaRequestAllOf
-     */
-    'fileId': number;
-    /**
-     * 
-     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
-     * @memberof CropAssetsMaterialMultimediaRequestAllOf
-     */
-    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
-}
-/**
- * 
- * @export
  * @interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage
  */
 export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage {
@@ -3158,19 +2687,6 @@ export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage {
      * 
      * @type {CropImageRecord}
      * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImage
-     */
-    'cropRecord': CropImageRecord;
-}
-/**
- * 
- * @export
- * @interface CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf
- */
-export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf {
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImageAllOf
      */
     'cropRecord': CropImageRecord;
 }
@@ -3202,25 +2718,6 @@ export interface CropImageRecord {
      * 
      * @type {number}
      * @memberof CropImageRecord
-     */
-    'scaleRatio': number;
-}
-/**
- * 記錄正方形裁切圖片的參數
- * @export
- * @interface CropImageRecordAllOf
- */
-export interface CropImageRecordAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof CropImageRecordAllOf
-     */
-    'rotateDeg': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CropImageRecordAllOf
      */
     'scaleRatio': number;
 }
@@ -3529,19 +3026,6 @@ export interface DeleteAssetsMaterialListRequest {
 /**
  * 
  * @export
- * @interface DeleteAssetsMaterialListRequestAllOf
- */
-export interface DeleteAssetsMaterialListRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DeleteAssetsMaterialListRequestAllOf
-     */
-    'materialIdList': Array<number>;
-}
-/**
- * 
- * @export
  * @interface DeleteWorkspaceNodeRequest
  */
 export interface DeleteWorkspaceNodeRequest {
@@ -3572,19 +3056,6 @@ export interface DeleteWorkspaceNodeRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface DeleteWorkspaceNodeRequestAllOf
- */
-export interface DeleteWorkspaceNodeRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DeleteWorkspaceNodeRequestAllOf
-     */
-    'nodeIdList': Array<number>;
-}
 /**
  * 
  * @export
@@ -4121,20 +3592,20 @@ export interface DigitalThreadCreatePostRequest {
 
 export const DigitalThreadCreatePostRequestAddFromOGTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddFromOGTypeEnum = typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum[keyof typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum];
 export const DigitalThreadCreatePostRequestAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddToEnum = typeof DigitalThreadCreatePostRequestAddToEnum[keyof typeof DigitalThreadCreatePostRequestAddToEnum];
 export const DigitalThreadCreatePostRequestTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadCreatePostRequestTypeEnum = typeof DigitalThreadCreatePostRequestTypeEnum[keyof typeof DigitalThreadCreatePostRequestTypeEnum];
@@ -4178,188 +3649,11 @@ export interface DigitalThreadGetListPost200Response {
 export interface DigitalThreadGetListPost200ResponseResult {
     /**
      * 
-     * @type {Array<DigitalThreadGetListPost200ResponseResultDigitalThreadListInner>}
+     * @type {Array<DigitalThreadBase>}
      * @memberof DigitalThreadGetListPost200ResponseResult
      */
-    'digitalThreadList'?: Array<DigitalThreadGetListPost200ResponseResultDigitalThreadListInner>;
+    'digitalThreadList'?: Array<DigitalThreadBase>;
 }
-/**
- * 
- * @export
- * @interface DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
- */
-export interface DigitalThreadGetListPost200ResponseResultDigitalThreadListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'digitalThreadSideId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'digitalThreadName': string;
-    /**
-     * 檢視該DigitalThread的使用者是否為建立方組織的成員
-     * @type {boolean}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'isCreatorSide': boolean;
-    /**
-     * 檢視該DigitalThread的使用者是否為布片擁有者組織的成員
-     * @type {boolean}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'isMaterialOwnerSide': boolean;
-    /**
-     * 檢視該DigitalThread的使用者的side的ogType
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'sideOGType': number;
-    /**
-     * 檢視該DigitalThread的使用者的side的ogId
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'sideOGId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'itemNo': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'materialCoverImg': string;
-    /**
-     * 布片擁有者的單位名稱，IsMaterialOwnerSide為true時:Thread summary為布片擁有者的組織(+團隊)名稱、All Thread drawer呈現建立者的組織名稱，IsMaterialOwnerSide為false時:布片擁有者的組織名稱
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'materialOwnerUnitName'?: string;
-    /**
-     * 布片擁有者的單位Logo
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'materialOwnerUnitLogo': string;
-    /**
-     * 布片擁有者的單位標籤顏色，若IsMaterialOwnerSide為true:呈現布片擁有者單位的標籤顏色，IsMaterialOwnerSide為false:為null值
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'materialOwnerUnitLabelColor': string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'hasMaterialDeleted': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'hasMaterialNoAccess': boolean;
-    /**
-     * 
-     * @type {FeatureType}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'addFromLocationType': FeatureType;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'addFromLocationList': Array<string>;
-    /**
-     * 建立者單位，若isCreatorSide為true:Thread summary呈現建立者的組織(+團隊)名稱、All Thread drawer呈現建立者的組織名稱，isCreatorSide為false:呈現建立者的組織名稱
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'creatorUnitName': string;
-    /**
-     * 建立者的單位的Logo
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'creatorUnitLogo': string;
-    /**
-     * 建立者的單位的標籤顏色，若isCreatorSide為true:呈現建立者的單位的標籤顏色，isCreatorSide為false:為null值
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'creatorUnitLabelColor': string | null;
-    /**
-     * 建立者的使用者名稱，若isCreatorSide為false，則為null值
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'creator': string | null;
-    /**
-     * 建立者的大頭貼，若isCreatorSide為false，則為null值
-     * @type {string}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'creatorAvatar': string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'createDate': number;
-    /**
-     * 
-     * @type {DigitalThreadBaseStickerStatistics}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'stickerStatistics': DigitalThreadBaseStickerStatistics;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'tagList': Array<string>;
-    /**
-     * 
-     * @type {Array<DigitalThreadBaseParticipantListInner>}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'participantList': Array<DigitalThreadBaseParticipantListInner>;
-    /**
-     * 
-     * @type {Array<DigitalThreadBaseParticipantListInner>}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'participantAndMentionList'?: Array<DigitalThreadBaseParticipantListInner>;
-    /**
-     * 顯示Digital Thread 底下未讀sticker總數
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'unreadStickerQty': number;
-    /**
-     * 該digital thread在該所屬單位的workflowStageId
-     * @type {number}
-     * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
-     */
-    'workflowStageId': number;
-}
-
-
 /**
  * 
  * @export
@@ -4481,8 +3775,8 @@ export interface DigitalThreadGetPostRequestFilter {
 
 export const DigitalThreadGetPostRequestFilterAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadGetPostRequestFilterAddToEnum = typeof DigitalThreadGetPostRequestFilterAddToEnum[keyof typeof DigitalThreadGetPostRequestFilterAddToEnum];
@@ -4595,14 +3889,14 @@ export interface DigitalThreadStickerCreatePostRequest {
 
 export const DigitalThreadStickerCreatePostRequestAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestAddToEnum = typeof DigitalThreadStickerCreatePostRequestAddToEnum[keyof typeof DigitalThreadStickerCreatePostRequestAddToEnum];
 export const DigitalThreadStickerCreatePostRequestTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestTypeEnum = typeof DigitalThreadStickerCreatePostRequestTypeEnum[keyof typeof DigitalThreadStickerCreatePostRequestTypeEnum];
@@ -4727,25 +4021,6 @@ export interface DuplicateWorkspaceNodeRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface DuplicateWorkspaceNodeRequestAllOf
- */
-export interface DuplicateWorkspaceNodeRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof DuplicateWorkspaceNodeRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DuplicateWorkspaceNodeRequestAllOf
-     */
-    'targetNodeIdList': Array<number>;
-}
 /**
  * 
  * @export
@@ -4919,19 +4194,6 @@ export interface EditAssetsMaterialSideImageRequestFaceSideImageCropped {
 /**
  * 
  * @export
- * @interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
- */
-export interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf {
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
-     */
-    'cropImageRecord': CropImageRecord;
-}
-/**
- * 
- * @export
  * @interface ExportAssetsMaterialExcel200Response
  */
 export interface ExportAssetsMaterialExcel200Response {
@@ -4959,19 +4221,6 @@ export interface ExportAssetsMaterialExcel200Response {
      * @memberof ExportAssetsMaterialExcel200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ExportAssetsMaterialExcel200ResponseAllOf
- */
-export interface ExportAssetsMaterialExcel200ResponseAllOf {
-    /**
-     * 
-     * @type {ExportAssetsMaterialExcel200ResponseAllOfResult}
-     * @memberof ExportAssetsMaterialExcel200ResponseAllOf
-     */
-    'result'?: ExportAssetsMaterialExcel200ResponseAllOfResult;
 }
 /**
  * 
@@ -5034,19 +4283,6 @@ export interface ExportAssetsMaterialExcelRequest {
 /**
  * 
  * @export
- * @interface ExportAssetsMaterialExcelRequestAllOf
- */
-export interface ExportAssetsMaterialExcelRequestAllOf {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof ExportAssetsMaterialExcelRequestAllOf
-     */
-    'materialIdList': Array<number>;
-}
-/**
- * 
- * @export
  * @interface ExportMoodboardOfferPicked200Response
  */
 export interface ExportMoodboardOfferPicked200Response {
@@ -5074,19 +4310,6 @@ export interface ExportMoodboardOfferPicked200Response {
      * @memberof ExportMoodboardOfferPicked200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ExportMoodboardOfferPicked200ResponseAllOf
- */
-export interface ExportMoodboardOfferPicked200ResponseAllOf {
-    /**
-     * 
-     * @type {ExportMoodboardOfferPicked200ResponseAllOfResult}
-     * @memberof ExportMoodboardOfferPicked200ResponseAllOf
-     */
-    'result': ExportMoodboardOfferPicked200ResponseAllOfResult;
 }
 /**
  * 
@@ -5152,25 +4375,6 @@ export interface ExportMoodboardOfferPickedRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface ExportMoodboardOfferPickedRequestAllOf
- */
-export interface ExportMoodboardOfferPickedRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof ExportMoodboardOfferPickedRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof ExportMoodboardOfferPickedRequestAllOf
-     */
-    'nodeIdList': Array<number>;
-}
 /**
  * 節點型態：1:Collection，2:Material
  * @export
@@ -5273,19 +4477,6 @@ export interface ExternalFilter {
      * 
      * @type {ExternalFilterAllOfInventory}
      * @memberof ExternalFilter
-     */
-    'inventory': ExternalFilterAllOfInventory | null;
-}
-/**
- * 
- * @export
- * @interface ExternalFilterAllOf
- */
-export interface ExternalFilterAllOf {
-    /**
-     * 
-     * @type {ExternalFilterAllOfInventory}
-     * @memberof ExternalFilterAllOf
      */
     'inventory': ExternalFilterAllOfInventory | null;
 }
@@ -5759,31 +4950,6 @@ export interface FolderBookmark {
 /**
  * 
  * @export
- * @interface FolderBookmarkAllOf
- */
-export interface FolderBookmarkAllOf {
-    /**
-     * 資料夾型態書籤名稱
-     * @type {string}
-     * @memberof FolderBookmarkAllOf
-     */
-    'folderName': string;
-    /**
-     * 書籤內容
-     * @type {Array<FolderBookmarkAllOfOrgList>}
-     * @memberof FolderBookmarkAllOf
-     */
-    'orgList': Array<FolderBookmarkAllOfOrgList>;
-    /**
-     * 是否為所有討論串
-     * @type {boolean}
-     * @memberof FolderBookmarkAllOf
-     */
-    'isAllThread': boolean;
-}
-/**
- * 
- * @export
  * @interface FolderBookmarkAllOfOrgList
  */
 export interface FolderBookmarkAllOfOrgList {
@@ -5912,37 +5078,6 @@ export interface GenerateAssetsMaterialU3mRequest {
 /**
  * 
  * @export
- * @interface GenerateAssetsMaterialU3mRequestAllOf
- */
-export interface GenerateAssetsMaterialU3mRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof GenerateAssetsMaterialU3mRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GenerateAssetsMaterialU3mRequestAllOf
-     */
-    'isAutoRepeat': boolean;
-    /**
-     * 
-     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
-     * @memberof GenerateAssetsMaterialU3mRequestAllOf
-     */
-    'faceSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide | null;
-    /**
-     * 
-     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
-     * @memberof GenerateAssetsMaterialU3mRequestAllOf
-     */
-    'backSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide | null;
-}
-/**
- * 
- * @export
  * @interface GenerateAssetsMaterialU3mRequestAllOfFaceSide
  */
 export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
@@ -5960,10 +5095,10 @@ export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
      * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
@@ -6051,19 +5186,6 @@ export interface GenerateWorkspaceNodeShareCopyLink200Response {
 /**
  * 
  * @export
- * @interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOf
- */
-export interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOf {
-    /**
-     * 
-     * @type {GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult}
-     * @memberof GenerateWorkspaceNodeShareCopyLink200ResponseAllOf
-     */
-    'result': GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult
  */
 export interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult {
@@ -6116,27 +5238,6 @@ export interface GenerateWorkspaceNodeShareSocialRequest {
 /**
  * 
  * @export
- * @interface GenerateWorkspaceNodeShareSocialRequestAllOf
- */
-export interface GenerateWorkspaceNodeShareSocialRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GenerateWorkspaceNodeShareSocialRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {SocialMedia}
-     * @memberof GenerateWorkspaceNodeShareSocialRequestAllOf
-     */
-    'type': SocialMedia;
-}
-
-
-/**
- * 
- * @export
  * @interface GetAssetMaterialList200Response
  */
 export interface GetAssetMaterialList200Response {
@@ -6164,19 +5265,6 @@ export interface GetAssetMaterialList200Response {
      * @memberof GetAssetMaterialList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetAssetMaterialList200ResponseAllOf
- */
-export interface GetAssetMaterialList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetAssetMaterialList200ResponseAllOfResult}
-     * @memberof GetAssetMaterialList200ResponseAllOf
-     */
-    'result': GetAssetMaterialList200ResponseAllOfResult;
 }
 /**
  * 
@@ -6229,43 +5317,139 @@ export interface GetAssetMaterialListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {Search}
+     * @type {GetAssetMaterialListRequestAllOfSearch}
      * @memberof GetAssetMaterialListRequest
      */
-    'search': Search | null;
+    'search': GetAssetMaterialListRequestAllOfSearch | null;
     /**
      * 
-     * @type {AssetsFilter}
+     * @type {GetAssetMaterialListRequestAllOfFilter}
      * @memberof GetAssetMaterialListRequest
      */
-    'filter': AssetsFilter | null;
+    'filter': GetAssetMaterialListRequestAllOfFilter | null;
 }
 
 
 /**
  * 
  * @export
- * @interface GetAssetMaterialListRequestAllOf
+ * @interface GetAssetMaterialListRequestAllOfFilter
  */
-export interface GetAssetMaterialListRequestAllOf {
+export interface GetAssetMaterialListRequestAllOfFilter {
+    /**
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'materialTypeList': Array<number> | null;
     /**
      * 
-     * @type {PaginationReq}
-     * @memberof GetAssetMaterialListRequestAllOf
+     * @type {Array<number>}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
      */
-    'pagination': PaginationReq;
+    'descriptionList': Array<number> | null;
     /**
      * 
-     * @type {Search}
-     * @memberof GetAssetMaterialListRequestAllOf
+     * @type {Array<FilterContentListInner>}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
      */
-    'search': Search | null;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
-     * @type {AssetsFilter}
-     * @memberof GetAssetMaterialListRequestAllOf
+     * @type {string}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
      */
-    'filter': AssetsFilter | null;
+    'pattern': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'color': string | null;
+    /**
+     * 
+     * @type {FilterWidth}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'width': FilterWidth | null;
+    /**
+     * 
+     * @type {FilterWeight}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'weight': FilterWeight | null;
+    /**
+     * 
+     * @type {FilterDensityAndYarn}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'densityAndYarn': FilterDensityAndYarn | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'hasU3M': boolean | null;
+    /**
+     * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'withOutEcoImpactor': boolean | null;
+    /**
+     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
+     * @type {number}
+     * @memberof GetAssetMaterialListRequestAllOfFilter
+     */
+    'status': GetAssetMaterialListRequestAllOfFilterStatusEnum | null;
+}
+
+export const GetAssetMaterialListRequestAllOfFilterStatusEnum = {
+    NOT_IN_WORKSPACE: 1,
+    NO_SCAN_IMAGE: 2,
+    NO_IMAGE: 3,
+    NO_REQUIRED_FIELD: 4,
+    DUPLICATE_ITEM_NO: 5
+} as const;
+
+export type GetAssetMaterialListRequestAllOfFilterStatusEnum = typeof GetAssetMaterialListRequestAllOfFilterStatusEnum[keyof typeof GetAssetMaterialListRequestAllOfFilterStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialListRequestAllOfSearch
+ */
+export interface GetAssetMaterialListRequestAllOfSearch {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetMaterialListRequestAllOfSearch
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {Array<SearchAITag>}
+     * @memberof GetAssetMaterialListRequestAllOfSearch
+     */
+    'tagList': Array<SearchAITag>;
 }
 /**
  * 
@@ -6297,19 +5481,6 @@ export interface GetAssetsMaterial200Response {
      * @memberof GetAssetsMaterial200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetAssetsMaterial200ResponseAllOf
- */
-export interface GetAssetsMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetAssetsMaterial200ResponseAllOfResult}
-     * @memberof GetAssetsMaterial200ResponseAllOf
-     */
-    'result': GetAssetsMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -6357,19 +5528,6 @@ export interface GetAssetsMaterialRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface GetAssetsMaterialRequestAllOf
- */
-export interface GetAssetsMaterialRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetAssetsMaterialRequestAllOf
-     */
-    'materialId': number;
-}
 /**
  * 
  * @export
@@ -6627,19 +5785,6 @@ export interface GetExcelProgressList200Response {
 /**
  * 
  * @export
- * @interface GetExcelProgressList200ResponseAllOf
- */
-export interface GetExcelProgressList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetExcelProgressList200ResponseAllOfResult}
-     * @memberof GetExcelProgressList200ResponseAllOf
-     */
-    'result': GetExcelProgressList200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetExcelProgressList200ResponseAllOfResult
  */
 export interface GetExcelProgressList200ResponseAllOfResult {
@@ -6778,58 +5923,6 @@ export type GetExcelProgressListRequestCategoryEnum = typeof GetExcelProgressLis
 /**
  * 
  * @export
- * @interface GetExcelProgressListRequestAllOf
- */
-export interface GetExcelProgressListRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'startDate': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'endDate': string | null;
-    /**
-     * 
-     * @type {ProgressStatus}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'status': ProgressStatus;
-    /**
-     * 0: ALL 1: Upload 2: Export 
-     * @type {number}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'category': GetExcelProgressListRequestAllOfCategoryEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'keyword': string | null;
-    /**
-     * 
-     * @type {GetExcelProgressListRequestAllOfPagination}
-     * @memberof GetExcelProgressListRequestAllOf
-     */
-    'pagination': GetExcelProgressListRequestAllOfPagination;
-}
-
-export const GetExcelProgressListRequestAllOfCategoryEnum = {
-    ALL: 0,
-    UPLOAD: 1,
-    EXPORT: 2
-} as const;
-
-export type GetExcelProgressListRequestAllOfCategoryEnum = typeof GetExcelProgressListRequestAllOfCategoryEnum[keyof typeof GetExcelProgressListRequestAllOfCategoryEnum];
-
-/**
- * 
- * @export
  * @interface GetExcelProgressListRequestAllOfPagination
  */
 export interface GetExcelProgressListRequestAllOfPagination {
@@ -6898,19 +5991,6 @@ export interface GetExcelProgressMaterialList200Response {
 /**
  * 
  * @export
- * @interface GetExcelProgressMaterialList200ResponseAllOf
- */
-export interface GetExcelProgressMaterialList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetExcelProgressMaterialList200ResponseAllOfResult}
-     * @memberof GetExcelProgressMaterialList200ResponseAllOf
-     */
-    'result': GetExcelProgressMaterialList200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetExcelProgressMaterialList200ResponseAllOfResult
  */
 export interface GetExcelProgressMaterialList200ResponseAllOfResult {
@@ -6951,19 +6031,6 @@ export interface GetExternalSearchFilterOptions200Response {
      * @memberof GetExternalSearchFilterOptions200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetExternalSearchFilterOptions200ResponseAllOf
- */
-export interface GetExternalSearchFilterOptions200ResponseAllOf {
-    /**
-     * 
-     * @type {GetExternalSearchFilterOptions200ResponseAllOfResult}
-     * @memberof GetExternalSearchFilterOptions200ResponseAllOf
-     */
-    'result': GetExternalSearchFilterOptions200ResponseAllOfResult;
 }
 /**
  * 
@@ -7057,19 +6124,6 @@ export interface GetInternalSearchFilterOptions200Response {
      * @memberof GetInternalSearchFilterOptions200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetInternalSearchFilterOptions200ResponseAllOf
- */
-export interface GetInternalSearchFilterOptions200ResponseAllOf {
-    /**
-     * 
-     * @type {GetInternalSearchFilterOptions200ResponseAllOfResult}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOf
-     */
-    'result': GetInternalSearchFilterOptions200ResponseAllOfResult;
 }
 /**
  * 
@@ -7173,33 +6227,6 @@ export interface GetInternalSearchFilterOptions200ResponseAllOfResultDescription
 /**
  * 
  * @export
- * @interface GetInternalSearchFilterOptionsRequest
- */
-export interface GetInternalSearchFilterOptionsRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof GetInternalSearchFilterOptionsRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GetInternalSearchFilterOptionsRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GetInternalSearchFilterOptionsRequest
-     */
-    'ogId': number;
-}
-
-
-/**
- * 
- * @export
  * @interface GetMaterialOptions200Response
  */
 export interface GetMaterialOptions200Response {
@@ -7231,19 +6258,6 @@ export interface GetMaterialOptions200Response {
 /**
  * 
  * @export
- * @interface GetMaterialOptions200ResponseAllOf
- */
-export interface GetMaterialOptions200ResponseAllOf {
-    /**
-     * 
-     * @type {MaterialOptions}
-     * @memberof GetMaterialOptions200ResponseAllOf
-     */
-    'result'?: MaterialOptions;
-}
-/**
- * 
- * @export
  * @interface GetMaterialUploadProgressList200Response
  */
 export interface GetMaterialUploadProgressList200Response {
@@ -7271,19 +6285,6 @@ export interface GetMaterialUploadProgressList200Response {
      * @memberof GetMaterialUploadProgressList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMaterialUploadProgressList200ResponseAllOf
- */
-export interface GetMaterialUploadProgressList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMaterialUploadProgressList200ResponseAllOfResult}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOf
-     */
-    'result': GetMaterialUploadProgressList200ResponseAllOfResult;
 }
 /**
  * 
@@ -7405,39 +6406,6 @@ export interface GetMaterialUploadProgressListRequest {
 /**
  * 
  * @export
- * @interface GetMaterialUploadProgressListRequestAllOf
- */
-export interface GetMaterialUploadProgressListRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMaterialUploadProgressListRequestAllOf
-     */
-    'startDate': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMaterialUploadProgressListRequestAllOf
-     */
-    'endDate': string | null;
-    /**
-     * 
-     * @type {ProgressStatus}
-     * @memberof GetMaterialUploadProgressListRequestAllOf
-     */
-    'status': ProgressStatus;
-    /**
-     * 
-     * @type {GetMaterialUploadProgressListRequestAllOfPagination}
-     * @memberof GetMaterialUploadProgressListRequestAllOf
-     */
-    'pagination': GetMaterialUploadProgressListRequestAllOfPagination;
-}
-
-
-/**
- * 
- * @export
  * @interface GetMaterialUploadProgressListRequestAllOfPagination
  */
 export interface GetMaterialUploadProgressListRequestAllOfPagination {
@@ -7504,19 +6472,6 @@ export interface GetMoodboard200Response {
 /**
  * 
  * @export
- * @interface GetMoodboard200ResponseAllOf
- */
-export interface GetMoodboard200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboard200ResponseAllOfResult}
-     * @memberof GetMoodboard200ResponseAllOf
-     */
-    'result': GetMoodboard200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetMoodboard200ResponseAllOfResult
  */
 export interface GetMoodboard200ResponseAllOfResult {
@@ -7557,19 +6512,6 @@ export interface GetMoodboardComment200Response {
      * @memberof GetMoodboardComment200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardComment200ResponseAllOf
- */
-export interface GetMoodboardComment200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboardComment200ResponseAllOfResult}
-     * @memberof GetMoodboardComment200ResponseAllOf
-     */
-    'result': GetMoodboardComment200ResponseAllOfResult;
 }
 /**
  * 
@@ -7626,25 +6568,6 @@ export interface GetMoodboardCommentRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardCommentRequestAllOf
- */
-export interface GetMoodboardCommentRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardCommentRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardCommentRequestAllOf
-     */
-    'offerId': number;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardList200Response
  */
 export interface GetMoodboardList200Response {
@@ -7672,19 +6595,6 @@ export interface GetMoodboardList200Response {
      * @memberof GetMoodboardList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardList200ResponseAllOf
- */
-export interface GetMoodboardList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboardList200ResponseAllOfResult}
-     * @memberof GetMoodboardList200ResponseAllOf
-     */
-    'result': GetMoodboardList200ResponseAllOfResult;
 }
 /**
  * 
@@ -7747,31 +6657,6 @@ export interface GetMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardOfferNodeCollectionRequestAllOf
- */
-export interface GetMoodboardOfferNodeCollectionRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'nodeId': number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'keyword': string | null;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardOfferNodeMaterial200Response
  */
 export interface GetMoodboardOfferNodeMaterial200Response {
@@ -7799,19 +6684,6 @@ export interface GetMoodboardOfferNodeMaterial200Response {
      * @memberof GetMoodboardOfferNodeMaterial200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardOfferNodeMaterial200ResponseAllOf
- */
-export interface GetMoodboardOfferNodeMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboardOfferNodeMaterial200ResponseAllOfResult}
-     * @memberof GetMoodboardOfferNodeMaterial200ResponseAllOf
-     */
-    'result': GetMoodboardOfferNodeMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -7856,19 +6728,6 @@ export interface GetMoodboardOfferPickedList200Response {
      * @memberof GetMoodboardOfferPickedList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardOfferPickedList200ResponseAllOf
- */
-export interface GetMoodboardOfferPickedList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboardOfferPickedList200ResponseAllOfResult}
-     * @memberof GetMoodboardOfferPickedList200ResponseAllOf
-     */
-    'result': GetMoodboardOfferPickedList200ResponseAllOfResult;
 }
 /**
  * 
@@ -7931,31 +6790,6 @@ export interface GetMoodboardOfferPickedListRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardOfferPickedListRequestAllOf
- */
-export interface GetMoodboardOfferPickedListRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardOfferPickedListRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 不傳時為撈All Items
-     * @type {number}
-     * @memberof GetMoodboardOfferPickedListRequestAllOf
-     */
-    'offerId': number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMoodboardOfferPickedListRequestAllOf
-     */
-    'keyword': string | null;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardRequest
  */
 export interface GetMoodboardRequest {
@@ -7989,19 +6823,6 @@ export interface GetMoodboardRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardRequestAllOf
- */
-export interface GetMoodboardRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMoodboardRequestAllOf
-     */
-    'moodboardId': number;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardShareReceivedInfo200Response
  */
 export interface GetMoodboardShareReceivedInfo200Response {
@@ -8029,19 +6850,6 @@ export interface GetMoodboardShareReceivedInfo200Response {
      * @memberof GetMoodboardShareReceivedInfo200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardShareReceivedInfo200ResponseAllOf
- */
-export interface GetMoodboardShareReceivedInfo200ResponseAllOf {
-    /**
-     * 
-     * @type {GetMoodboardShareReceivedInfo200ResponseAllOfResult}
-     * @memberof GetMoodboardShareReceivedInfo200ResponseAllOf
-     */
-    'result': GetMoodboardShareReceivedInfo200ResponseAllOfResult;
 }
 /**
  * 
@@ -8160,21 +6968,33 @@ export interface GetMoodboardShareTargetRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardShareTargetRequestAllOf
+ * @interface GetOnlineSpreadSheetProgress200Response
  */
-export interface GetMoodboardShareTargetRequestAllOf {
+export interface GetOnlineSpreadSheetProgress200Response {
     /**
      * 
-     * @type {number}
-     * @memberof GetMoodboardShareTargetRequestAllOf
+     * @type {boolean}
+     * @memberof GetOnlineSpreadSheetProgress200Response
      */
-    'moodboardId': number;
+    'success': boolean;
     /**
      * 
      * @type {string}
-     * @memberof GetMoodboardShareTargetRequestAllOf
+     * @memberof GetOnlineSpreadSheetProgress200Response
      */
-    'targetNumber': string;
+    'code'?: string | null;
+    /**
+     * 
+     * @type {ProgressOnlineSpreadSheetItem}
+     * @memberof GetOnlineSpreadSheetProgress200Response
+     */
+    'result': ProgressOnlineSpreadSheetItem;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetOnlineSpreadSheetProgress200Response
+     */
+    'message'?: object | null;
 }
 /**
  * 
@@ -8206,19 +7026,6 @@ export interface GetOnlineSpreadSheetProgressList200Response {
      * @memberof GetOnlineSpreadSheetProgressList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetOnlineSpreadSheetProgressList200ResponseAllOf
- */
-export interface GetOnlineSpreadSheetProgressList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetOnlineSpreadSheetProgressList200ResponseAllOfResult}
-     * @memberof GetOnlineSpreadSheetProgressList200ResponseAllOf
-     */
-    'result': GetOnlineSpreadSheetProgressList200ResponseAllOfResult;
 }
 /**
  * 
@@ -8332,39 +7139,6 @@ export interface GetOnlineSpreadSheetProgressListRequest {
      * 
      * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
      * @memberof GetOnlineSpreadSheetProgressListRequest
-     */
-    'pagination': GetOnlineSpreadSheetProgressListRequestAllOfPagination;
-}
-
-
-/**
- * 
- * @export
- * @interface GetOnlineSpreadSheetProgressListRequestAllOf
- */
-export interface GetOnlineSpreadSheetProgressListRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
-     */
-    'startDate': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
-     */
-    'endDate': string | null;
-    /**
-     * 
-     * @type {ProgressStatus}
-     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
-     */
-    'status': ProgressStatus;
-    /**
-     * 
-     * @type {GetOnlineSpreadSheetProgressListRequestAllOfPagination}
-     * @memberof GetOnlineSpreadSheetProgressListRequestAllOf
      */
     'pagination': GetOnlineSpreadSheetProgressListRequestAllOfPagination;
 }
@@ -8589,19 +7363,6 @@ export interface GetReceivedShareInfo200Response {
 /**
  * 
  * @export
- * @interface GetReceivedShareInfo200ResponseAllOf
- */
-export interface GetReceivedShareInfo200ResponseAllOf {
-    /**
-     * 
-     * @type {GetReceivedShareInfo200ResponseAllOfResult}
-     * @memberof GetReceivedShareInfo200ResponseAllOf
-     */
-    'result': GetReceivedShareInfo200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetReceivedShareInfo200ResponseAllOfResult
  */
 export interface GetReceivedShareInfo200ResponseAllOfResult {
@@ -8733,19 +7494,6 @@ export interface GetS3UploadUrl200Response {
 /**
  * 
  * @export
- * @interface GetS3UploadUrl200ResponseAllOf
- */
-export interface GetS3UploadUrl200ResponseAllOf {
-    /**
-     * 
-     * @type {GetS3UploadUrl200ResponseAllOfResult}
-     * @memberof GetS3UploadUrl200ResponseAllOf
-     */
-    'result': GetS3UploadUrl200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetS3UploadUrl200ResponseAllOfResult
  */
 export interface GetS3UploadUrl200ResponseAllOfResult {
@@ -8792,19 +7540,6 @@ export interface GetShareToMeList200Response {
      * @memberof GetShareToMeList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetShareToMeList200ResponseAllOf
- */
-export interface GetShareToMeList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetShareToMeList200ResponseAllOfResult}
-     * @memberof GetShareToMeList200ResponseAllOf
-     */
-    'result': GetShareToMeList200ResponseAllOfResult;
 }
 /**
  * 
@@ -8869,55 +7604,122 @@ export interface GetShareToMeListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {Search}
+     * @type {GetShareToMeListRequestAllOfSearch}
      * @memberof GetShareToMeListRequest
      */
-    'search': Search | null;
+    'search': GetShareToMeListRequestAllOfSearch | null;
     /**
      * 
-     * @type {InnerExternalFilter}
+     * @type {GetShareToMeListRequestAllOfFilter}
      * @memberof GetShareToMeListRequest
      */
-    'filter': InnerExternalFilter | null;
+    'filter': GetShareToMeListRequestAllOfFilter | null;
 }
 
 
 /**
  * 
  * @export
- * @interface GetShareToMeListRequestAllOf
+ * @interface GetShareToMeListRequestAllOfFilter
  */
-export interface GetShareToMeListRequestAllOf {
+export interface GetShareToMeListRequestAllOfFilter {
+    /**
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'materialTypeList': Array<number> | null;
     /**
      * 
-     * @type {number}
-     * @memberof GetShareToMeListRequestAllOf
+     * @type {Array<number>}
+     * @memberof GetShareToMeListRequestAllOfFilter
      */
-    'sharingId': number | null;
+    'descriptionList': Array<number> | null;
     /**
      * 
-     * @type {number}
-     * @memberof GetShareToMeListRequestAllOf
+     * @type {Array<FilterContentListInner>}
+     * @memberof GetShareToMeListRequestAllOfFilter
      */
-    'nodeId': number | null;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
-     * @type {PaginationReq}
-     * @memberof GetShareToMeListRequestAllOf
+     * @type {string}
+     * @memberof GetShareToMeListRequestAllOfFilter
      */
-    'pagination': PaginationReq;
+    'pattern': string | null;
     /**
      * 
-     * @type {Search}
-     * @memberof GetShareToMeListRequestAllOf
+     * @type {string}
+     * @memberof GetShareToMeListRequestAllOfFilter
      */
-    'search': Search | null;
+    'color': string | null;
     /**
      * 
-     * @type {InnerExternalFilter}
-     * @memberof GetShareToMeListRequestAllOf
+     * @type {FilterWidth}
+     * @memberof GetShareToMeListRequestAllOfFilter
      */
-    'filter': InnerExternalFilter | null;
+    'width': FilterWidth | null;
+    /**
+     * 
+     * @type {FilterWeight}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'weight': FilterWeight | null;
+    /**
+     * 
+     * @type {FilterDensityAndYarn}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'densityAndYarn': FilterDensityAndYarn | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'hasU3M': boolean | null;
+    /**
+     * 
+     * @type {ExternalFilterAllOfInventory}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'inventory': ExternalFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetShareToMeListRequestAllOfFilter
+     */
+    'countryList': Array<string> | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShareToMeListRequestAllOfSearch
+ */
+export interface GetShareToMeListRequestAllOfSearch {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetShareToMeListRequestAllOfSearch
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {Array<SearchAITag>}
+     * @memberof GetShareToMeListRequestAllOfSearch
+     */
+    'tagList': Array<SearchAITag>;
 }
 /**
  * 
@@ -8949,19 +7751,6 @@ export interface GetShareToMeMaterial200Response {
      * @memberof GetShareToMeMaterial200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetShareToMeMaterial200ResponseAllOf
- */
-export interface GetShareToMeMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetShareToMeMaterial200ResponseAllOfResult}
-     * @memberof GetShareToMeMaterial200ResponseAllOf
-     */
-    'result': GetShareToMeMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -9014,37 +7803,31 @@ export interface GetShareToMeMaterialRequest {
     'nodeId': number;
     /**
      * 
-     * @type {SearchLog}
+     * @type {GetShareToMeMaterialRequestAllOfSearchLog}
      * @memberof GetShareToMeMaterialRequest
      */
-    'searchLog': SearchLog | null;
+    'searchLog': GetShareToMeMaterialRequestAllOfSearchLog | null;
 }
 
 
 /**
  * 
  * @export
- * @interface GetShareToMeMaterialRequestAllOf
+ * @interface GetShareToMeMaterialRequestAllOfSearchLog
  */
-export interface GetShareToMeMaterialRequestAllOf {
+export interface GetShareToMeMaterialRequestAllOfSearchLog {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetShareToMeMaterialRequestAllOfSearchLog
+     */
+    'keyword': string;
     /**
      * 
      * @type {number}
-     * @memberof GetShareToMeMaterialRequestAllOf
+     * @memberof GetShareToMeMaterialRequestAllOfSearchLog
      */
-    'sharingId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetShareToMeMaterialRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {SearchLog}
-     * @memberof GetShareToMeMaterialRequestAllOf
-     */
-    'searchLog': SearchLog | null;
+    'rank': number;
 }
 /**
  * 
@@ -9076,19 +7859,6 @@ export interface GetShowroom200Response {
      * @memberof GetShowroom200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetShowroom200ResponseAllOf
- */
-export interface GetShowroom200ResponseAllOf {
-    /**
-     * 
-     * @type {GetShowroom200ResponseAllOfResult}
-     * @memberof GetShowroom200ResponseAllOf
-     */
-    'result': GetShowroom200ResponseAllOfResult;
 }
 /**
  * 
@@ -9133,19 +7903,6 @@ export interface GetShowroomAnnouncement200Response {
      * @memberof GetShowroomAnnouncement200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetShowroomAnnouncement200ResponseAllOf
- */
-export interface GetShowroomAnnouncement200ResponseAllOf {
-    /**
-     * 
-     * @type {GetShowroomAnnouncement200ResponseAllOfResult}
-     * @memberof GetShowroomAnnouncement200ResponseAllOf
-     */
-    'result': GetShowroomAnnouncement200ResponseAllOfResult;
 }
 /**
  * 
@@ -9209,19 +7966,6 @@ export interface GetShowroomBannerAndShowroomList200Response {
      * @memberof GetShowroomBannerAndShowroomList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetShowroomBannerAndShowroomList200ResponseAllOf
- */
-export interface GetShowroomBannerAndShowroomList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetShowroomBannerAndShowroomList200ResponseAllOfResult}
-     * @memberof GetShowroomBannerAndShowroomList200ResponseAllOf
-     */
-    'result': GetShowroomBannerAndShowroomList200ResponseAllOfResult;
 }
 /**
  * 
@@ -9464,33 +8208,6 @@ export interface GetThreadBoardMostParticipant200ResponseResult {
 /**
  * 
  * @export
- * @interface GetThreadBoardMostParticipantRequest
- */
-export interface GetThreadBoardMostParticipantRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof GetThreadBoardMostParticipantRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GetThreadBoardMostParticipantRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GetThreadBoardMostParticipantRequest
-     */
-    'ogId': number;
-}
-
-
-/**
- * 
- * @export
  * @interface GetThreadBoardQuery200Response
  */
 export interface GetThreadBoardQuery200Response {
@@ -9657,19 +8374,6 @@ export interface GetU3mProgressList200Response {
 /**
  * 
  * @export
- * @interface GetU3mProgressList200ResponseAllOf
- */
-export interface GetU3mProgressList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetU3mProgressList200ResponseAllOfResult}
-     * @memberof GetU3mProgressList200ResponseAllOf
-     */
-    'result': GetU3mProgressList200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetU3mProgressList200ResponseAllOfResult
  */
 export interface GetU3mProgressList200ResponseAllOfResult {
@@ -9785,45 +8489,6 @@ export interface GetU3mProgressListRequest {
 /**
  * 
  * @export
- * @interface GetU3mProgressListRequestAllOf
- */
-export interface GetU3mProgressListRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetU3mProgressListRequestAllOf
-     */
-    'startDate': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetU3mProgressListRequestAllOf
-     */
-    'endDate': string | null;
-    /**
-     * 
-     * @type {ProgressStatus}
-     * @memberof GetU3mProgressListRequestAllOf
-     */
-    'status': ProgressStatus;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetU3mProgressListRequestAllOf
-     */
-    'keyword': string | null;
-    /**
-     * 
-     * @type {GetU3mProgressListRequestAllOfPagination}
-     * @memberof GetU3mProgressListRequestAllOf
-     */
-    'pagination': GetU3mProgressListRequestAllOfPagination;
-}
-
-
-/**
- * 
- * @export
  * @interface GetU3mProgressListRequestAllOfPagination
  */
 export interface GetU3mProgressListRequestAllOfPagination {
@@ -9878,19 +8543,6 @@ export interface GetUploadUrl200Response {
      * @memberof GetUploadUrl200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetUploadUrl200ResponseAllOf
- */
-export interface GetUploadUrl200ResponseAllOf {
-    /**
-     * 
-     * @type {GetUploadUrl200ResponseAllOfResult}
-     * @memberof GetUploadUrl200ResponseAllOf
-     */
-    'result': GetUploadUrl200ResponseAllOfResult;
 }
 /**
  * 
@@ -9958,19 +8610,6 @@ export interface GetWorkspaceList200Response {
 /**
  * 
  * @export
- * @interface GetWorkspaceList200ResponseAllOf
- */
-export interface GetWorkspaceList200ResponseAllOf {
-    /**
-     * 
-     * @type {GetWorkspaceList200ResponseAllOfResult}
-     * @memberof GetWorkspaceList200ResponseAllOf
-     */
-    'result': GetWorkspaceList200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface GetWorkspaceList200ResponseAllOfResult
  */
 export interface GetWorkspaceList200ResponseAllOfResult {
@@ -10025,49 +8664,122 @@ export interface GetWorkspaceListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {Search}
+     * @type {GetWorkspaceListRequestAllOfSearch}
      * @memberof GetWorkspaceListRequest
      */
-    'search': Search | null;
+    'search': GetWorkspaceListRequestAllOfSearch | null;
     /**
      * 
-     * @type {WorkspaceFilter}
+     * @type {GetWorkspaceListRequestAllOfFilter}
      * @memberof GetWorkspaceListRequest
      */
-    'filter': WorkspaceFilter | null;
+    'filter': GetWorkspaceListRequestAllOfFilter | null;
 }
 
 
 /**
  * 
  * @export
- * @interface GetWorkspaceListRequestAllOf
+ * @interface GetWorkspaceListRequestAllOfFilter
  */
-export interface GetWorkspaceListRequestAllOf {
+export interface GetWorkspaceListRequestAllOfFilter {
+    /**
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'materialTypeList': Array<number> | null;
     /**
      * 
-     * @type {number}
-     * @memberof GetWorkspaceListRequestAllOf
+     * @type {Array<number>}
+     * @memberof GetWorkspaceListRequestAllOfFilter
      */
-    'nodeId': number;
+    'descriptionList': Array<number> | null;
     /**
      * 
-     * @type {PaginationReq}
-     * @memberof GetWorkspaceListRequestAllOf
+     * @type {Array<FilterContentListInner>}
+     * @memberof GetWorkspaceListRequestAllOfFilter
      */
-    'pagination': PaginationReq;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
-     * @type {Search}
-     * @memberof GetWorkspaceListRequestAllOf
+     * @type {string}
+     * @memberof GetWorkspaceListRequestAllOfFilter
      */
-    'search': Search | null;
+    'pattern': string | null;
     /**
      * 
-     * @type {WorkspaceFilter}
-     * @memberof GetWorkspaceListRequestAllOf
+     * @type {string}
+     * @memberof GetWorkspaceListRequestAllOfFilter
      */
-    'filter': WorkspaceFilter | null;
+    'color': string | null;
+    /**
+     * 
+     * @type {FilterWidth}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'width': FilterWidth | null;
+    /**
+     * 
+     * @type {FilterWeight}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'weight': FilterWeight | null;
+    /**
+     * 
+     * @type {FilterDensityAndYarn}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'densityAndYarn': FilterDensityAndYarn | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'hasU3M': boolean | null;
+    /**
+     * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetWorkspaceListRequestAllOfFilter
+     */
+    'withOutEcoImpactor': boolean | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetWorkspaceListRequestAllOfSearch
+ */
+export interface GetWorkspaceListRequestAllOfSearch {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetWorkspaceListRequestAllOfSearch
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {Array<SearchAITag>}
+     * @memberof GetWorkspaceListRequestAllOfSearch
+     */
+    'tagList': Array<SearchAITag>;
 }
 /**
  * 
@@ -10099,19 +8811,6 @@ export interface GetWorkspaceMaterial200Response {
      * @memberof GetWorkspaceMaterial200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceMaterial200ResponseAllOf
- */
-export interface GetWorkspaceMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetWorkspaceMaterial200ResponseAllOfResult}
-     * @memberof GetWorkspaceMaterial200ResponseAllOf
-     */
-    'result': GetWorkspaceMaterial200ResponseAllOfResult;
 }
 /**
  * 
@@ -10158,31 +8857,31 @@ export interface GetWorkspaceMaterialRequest {
     'nodeId': number;
     /**
      * 
-     * @type {SearchLog}
+     * @type {GetWorkspaceMaterialRequestAllOfSearchLog}
      * @memberof GetWorkspaceMaterialRequest
      */
-    'searchLog': SearchLog | null;
+    'searchLog': GetWorkspaceMaterialRequestAllOfSearchLog | null;
 }
 
 
 /**
  * 
  * @export
- * @interface GetWorkspaceMaterialRequestAllOf
+ * @interface GetWorkspaceMaterialRequestAllOfSearchLog
  */
-export interface GetWorkspaceMaterialRequestAllOf {
+export interface GetWorkspaceMaterialRequestAllOfSearchLog {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetWorkspaceMaterialRequestAllOfSearchLog
+     */
+    'keyword': string;
     /**
      * 
      * @type {number}
-     * @memberof GetWorkspaceMaterialRequestAllOf
+     * @memberof GetWorkspaceMaterialRequestAllOfSearchLog
      */
-    'nodeId': number;
-    /**
-     * 
-     * @type {SearchLog}
-     * @memberof GetWorkspaceMaterialRequestAllOf
-     */
-    'searchLog': SearchLog | null;
+    'rank': number;
 }
 /**
  * 
@@ -10214,19 +8913,6 @@ export interface GetWorkspaceNodeShareAssignedTarget200Response {
      * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOf
- */
-export interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOf {
-    /**
-     * 
-     * @type {GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult}
-     * @memberof GetWorkspaceNodeShareAssignedTarget200ResponseAllOf
-     */
-    'result': GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult;
 }
 /**
  * 
@@ -10283,25 +8969,6 @@ export interface GetWorkspaceNodeShareAssignedTargetRequest {
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareAssignedTargetRequestAllOf
- */
-export interface GetWorkspaceNodeShareAssignedTargetRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareAssignedTargetRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareAssignedTargetRequestAllOf
-     */
-    'targetNumber': string;
-}
-/**
- * 
- * @export
  * @interface GetWorkspaceNodeShareInfo200Response
  */
 export interface GetWorkspaceNodeShareInfo200Response {
@@ -10329,19 +8996,6 @@ export interface GetWorkspaceNodeShareInfo200Response {
      * @memberof GetWorkspaceNodeShareInfo200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareInfo200ResponseAllOf
- */
-export interface GetWorkspaceNodeShareInfo200ResponseAllOf {
-    /**
-     * 
-     * @type {GetWorkspaceNodeShareInfo200ResponseAllOfResult}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOf
-     */
-    'result': GetWorkspaceNodeShareInfo200ResponseAllOfResult;
 }
 /**
  * 
@@ -10441,31 +9095,6 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner {
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
- */
-export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf {
-    /**
-     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
-     */
-    'id': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
-     */
-    'isCanClone': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInnerAllOf
-     */
-    'isCanDownloadU3M': boolean;
-}
-/**
- * 
- * @export
  * @interface GetWorkspaceNodeShareInfoRequest
  */
 export interface GetWorkspaceNodeShareInfoRequest {
@@ -10496,19 +9125,6 @@ export interface GetWorkspaceNodeShareInfoRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareInfoRequestAllOf
- */
-export interface GetWorkspaceNodeShareInfoRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareInfoRequestAllOf
-     */
-    'nodeId': number;
-}
 /**
  * 
  * @export
@@ -10758,19 +9374,6 @@ export interface InnerExternalFilter {
      * 
      * @type {Array<string>}
      * @memberof InnerExternalFilter
-     */
-    'countryList': Array<string> | null;
-}
-/**
- * 
- * @export
- * @interface InnerExternalFilterAllOf
- */
-export interface InnerExternalFilterAllOf {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof InnerExternalFilterAllOf
      */
     'countryList': Array<string> | null;
 }
@@ -11046,10 +9649,10 @@ export interface MainMaterialMainSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {Array<MainMaterialMainSideContentListInner>}
+     * @type {Array<MaterialSideAllOfContentList>}
      * @memberof MainMaterialMainSide
      */
-    'contentList': Array<MainMaterialMainSideContentListInner>;
+    'contentList': Array<MaterialSideAllOfContentList>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -11059,31 +9662,6 @@ export interface MainMaterialMainSide {
 }
 
 
-/**
- * 
- * @export
- * @interface MainMaterialMainSideContentListInner
- */
-export interface MainMaterialMainSideContentListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MainMaterialMainSideContentListInner
-     */
-    'contentId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MainMaterialMainSideContentListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MainMaterialMainSideContentListInner
-     */
-    'percentage': number;
-}
 /**
  * 
  * @export
@@ -11141,19 +9719,6 @@ export interface MassCreateUpdateDeleteAssetsMaterialList200Response {
      * @memberof MassCreateUpdateDeleteAssetsMaterialList200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf
- */
-export interface MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf {
-    /**
-     * 
-     * @type {MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult}
-     * @memberof MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOf
-     */
-    'result': MassCreateUpdateDeleteAssetsMaterialList200ResponseAllOfResult | null;
 }
 /**
  * 
@@ -11471,7 +10036,7 @@ export interface MaterialBackSide {
      * @type {MaterialU3mImage}
      * @memberof MaterialBackSide
      */
-    'u3mImage': MaterialU3mImage | null;
+    'u3mImage': MaterialU3mImage;
     /**
      * 
      * @type {MaterialType}
@@ -11489,13 +10054,13 @@ export interface MaterialBackSide {
      * @type {MaterialConstruction}
      * @memberof MaterialBackSide
      */
-    'construction': MaterialConstruction | null;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
      * @memberof MaterialBackSide
      */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyList>;
     /**
      * 
      * @type {Array<MaterialSideAllOfContentList>}
@@ -11504,10 +10069,10 @@ export interface MaterialBackSide {
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
      * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneListInner>}
+     * @type {Array<MaterialSideAllOfPantoneList>}
      * @memberof MaterialBackSide
      */
-    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
+    'pantoneList': Array<MaterialSideAllOfPantoneList>;
     /**
      * 
      * @type {MaterialPatternInfo}
@@ -12172,19 +10737,6 @@ export interface MaterialCustomU3m {
 
 
 /**
- * 
- * @export
- * @interface MaterialCustomU3mAllOf
- */
-export interface MaterialCustomU3mAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialCustomU3mAllOf
-     */
-    'customFileName': string | null;
-}
-/**
  * 布種材料描述
  * @export
  * @interface MaterialDescription
@@ -12225,31 +10777,6 @@ export interface MaterialDigitalDrape {
      * 縮圖URL
      * @type {string}
      * @memberof MaterialDigitalDrape
-     */
-    'thumbnailUrl': string;
-}
-/**
- * 
- * @export
- * @interface MaterialDigitalDrapeAllOf
- */
-export interface MaterialDigitalDrapeAllOf {
-    /**
-     * 原始圖檔路徑，同displayUrl，前端用來秀在modal檢視模式
-     * @type {string}
-     * @memberof MaterialDigitalDrapeAllOf
-     */
-    'originalUrl': string;
-    /**
-     * 用來呈現的大圖URL，同originalUrl
-     * @type {string}
-     * @memberof MaterialDigitalDrapeAllOf
-     */
-    'displayUrl': string;
-    /**
-     * 縮圖URL
-     * @type {string}
-     * @memberof MaterialDigitalDrapeAllOf
      */
     'thumbnailUrl': string;
 }
@@ -12319,7 +10846,7 @@ export interface MaterialFaceSide {
      * @type {MaterialU3mImage}
      * @memberof MaterialFaceSide
      */
-    'u3mImage': MaterialU3mImage | null;
+    'u3mImage': MaterialU3mImage;
     /**
      * 
      * @type {MaterialType}
@@ -12337,13 +10864,13 @@ export interface MaterialFaceSide {
      * @type {MaterialConstruction}
      * @memberof MaterialFaceSide
      */
-    'construction': MaterialConstruction | null;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
      * @memberof MaterialFaceSide
      */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyList>;
     /**
      * 
      * @type {Array<MaterialSideAllOfContentList>}
@@ -12352,10 +10879,10 @@ export interface MaterialFaceSide {
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
      * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneListInner>}
+     * @type {Array<MaterialSideAllOfPantoneList>}
      * @memberof MaterialFaceSide
      */
-    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
+    'pantoneList': Array<MaterialSideAllOfPantoneList>;
     /**
      * 
      * @type {MaterialPatternInfo}
@@ -12410,33 +10937,14 @@ export interface MaterialGenerateU3mSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
      * @memberof MaterialGenerateU3mSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
      * @memberof MaterialGenerateU3mSide
-     */
-    'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
-}
-/**
- * 
- * @export
- * @interface MaterialGenerateU3mSideAllOf
- */
-export interface MaterialGenerateU3mSideAllOf {
-    /**
-     * 
-     * @type {MultimediaFileAllOfCropRecord}
-     * @memberof MaterialGenerateU3mSideAllOf
-     */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
-    /**
-     * 
-     * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
-     * @memberof MaterialGenerateU3mSideAllOf
      */
     'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
 }
@@ -12476,6 +10984,37 @@ export interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord {
      * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
      */
     'rotateDeg': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialGenerateU3mSideAllOfSquareCropRecord
+ */
+export interface MaterialGenerateU3mSideAllOfSquareCropRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
+     */
+    'scaleRatio': number;
 }
 /**
  * External Page(非Asset或WorkSpace的頁面)時，回應 null
@@ -12595,19 +11134,6 @@ export interface MaterialInternalInventoryInfoSampleCardsRemainingListInner {
     'qtyInPcs': number | null;
 }
 /**
- * 
- * @export
- * @interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
- */
-export interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf {
-    /**
-     * 庫存數量 0~999，整數 
-     * @type {number}
-     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
-     */
-    'qtyInPcs': number | null;
-}
-/**
  * 剩餘碼數資訊
  * @export
  * @interface MaterialInternalInventoryInfoYardageRemainingInfo
@@ -12680,37 +11206,6 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInner {
      * 庫存數量 0~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
-     */
-    'qty': number | null;
-}
-/**
- * 
- * @export
- * @interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
- */
-export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf {
-    /**
-     * 生產編號
-     * @type {string}
-     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
-     */
-    'productionNo': string | null;
-    /**
-     * 疋號
-     * @type {string}
-     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
-     */
-    'roll': string | null;
-    /**
-     * 缸號
-     * @type {string}
-     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
-     */
-    'lot': string | null;
-    /**
-     * 庫存數量 0~999999，可填寫至小數2位 
-     * @type {number}
-     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
     'qty': number | null;
 }
@@ -12865,19 +11360,6 @@ export interface MaterialMiddleSide {
 /**
  * 
  * @export
- * @interface MaterialMiddleSideAllOf
- */
-export interface MaterialMiddleSideAllOf {
-    /**
-     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialMiddleSideAllOfCustomPropertyList>}
-     * @memberof MaterialMiddleSideAllOf
-     */
-    'customPropertyList': Array<MaterialMiddleSideAllOfCustomPropertyList>;
-}
-/**
- * 
- * @export
  * @interface MaterialMiddleSideAllOfCustomPropertyList
  */
 export interface MaterialMiddleSideAllOfCustomPropertyList {
@@ -12928,19 +11410,6 @@ export interface MaterialMiddleSideCreate {
      * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
      * @memberof MaterialMiddleSideCreate
-     */
-    'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
-}
-/**
- * 
- * @export
- * @interface MaterialMiddleSideCreateAllOf
- */
-export interface MaterialMiddleSideCreateAllOf {
-    /**
-     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
-     * @memberof MaterialMiddleSideCreateAllOf
      */
     'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
 }
@@ -13396,10 +11865,10 @@ export interface MaterialPriceInfoPricing {
 export interface MaterialPrivateMetaData {
     /**
      * 
-     * @type {MaterialPrivateMetaDataCreatedByInfo}
+     * @type {MaterialUserInfo}
      * @memberof MaterialPrivateMetaData
      */
-    'createdByInfo': MaterialPrivateMetaDataCreatedByInfo;
+    'createdByInfo': MaterialUserInfo;
     /**
      * 
      * @type {MaterialPrivateMetaDataLastModifiedByInfo}
@@ -13443,43 +11912,6 @@ export interface MaterialPrivateMetaDataCopiedFromInfo {
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'copiedFromItemNo'?: string;
-}
-/**
- * Created By - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name - 若布料為 Copy得來，建立者顯示複製布料的 user   Org or Group name + Color label + Avatar+User name - 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示   Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示 由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。 
- * @export
- * @interface MaterialPrivateMetaDataCreatedByInfo
- */
-export interface MaterialPrivateMetaDataCreatedByInfo {
-    /**
-     * 使用者名稱
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataCreatedByInfo
-     */
-    'userName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataCreatedByInfo
-     */
-    'avatar': string;
-    /**
-     * 使用者單位標籤顏色
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataCreatedByInfo
-     */
-    'unitName': string;
-    /**
-     * 使用者單位標籤顏色
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataCreatedByInfo
-     */
-    'unitLabelColor': string | null;
-    /**
-     * 新增或修改日期
-     * @type {number}
-     * @memberof MaterialPrivateMetaDataCreatedByInfo
-     */
-    'date': number;
 }
 /**
  * Last modified by - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name 由於布料編輯者一定是同組織成員建置，因此組織資訊非必要不秀。 
@@ -13752,10 +12184,10 @@ export interface MaterialSide {
     'construction': MaterialConstruction | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
      * @memberof MaterialSide
      */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyList>;
     /**
      * 
      * @type {Array<MaterialSideAllOfContentList>}
@@ -13764,10 +12196,10 @@ export interface MaterialSide {
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
      * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneListInner>}
+     * @type {Array<MaterialSideAllOfPantoneList>}
      * @memberof MaterialSide
      */
-    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
+    'pantoneList': Array<MaterialSideAllOfPantoneList>;
     /**
      * 
      * @type {MaterialPatternInfo}
@@ -13786,119 +12218,31 @@ export interface MaterialSide {
 /**
  * 
  * @export
- * @interface MaterialSideAllOf
+ * @interface MaterialSideAllOfConstructionCustomPropertyList
  */
-export interface MaterialSideAllOf {
-    /**
-     * 是否為主要布面
-     * @type {boolean}
-     * @memberof MaterialSideAllOf
-     */
-    'isMainSide': boolean;
-    /**
-     * 
-     * @type {MaterialSideAllOfSideImage}
-     * @memberof MaterialSideAllOf
-     */
-    'sideImage': MaterialSideAllOfSideImage | null;
-    /**
-     * 
-     * @type {MaterialU3mImage}
-     * @memberof MaterialSideAllOf
-     */
-    'u3mImage': MaterialU3mImage | null;
-    /**
-     * 
-     * @type {MaterialType}
-     * @memberof MaterialSideAllOf
-     */
-    'materialType': MaterialType;
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialDescription>}
-     * @memberof MaterialSideAllOf
-     */
-    'descriptionList': Array<MaterialDescription>;
-    /**
-     * 
-     * @type {MaterialConstruction}
-     * @memberof MaterialSideAllOf
-     */
-    'construction': MaterialConstruction | null;
-    /**
-     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
-     * @memberof MaterialSideAllOf
-     */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
-    /**
-     * 
-     * @type {Array<MaterialSideAllOfContentList>}
-     * @memberof MaterialSideAllOf
-     */
-    'contentList': Array<MaterialSideAllOfContentList>;
-    /**
-     * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneListInner>}
-     * @memberof MaterialSideAllOf
-     */
-    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
-    /**
-     * 
-     * @type {MaterialPatternInfo}
-     * @memberof MaterialSideAllOf
-     */
-    'patternInfo': MaterialPatternInfo;
-    /**
-     * 
-     * @type {MaterialColorInfo}
-     * @memberof MaterialSideAllOf
-     */
-    'colorInfo': MaterialColorInfo;
-}
-
-
-/**
- * 
- * @export
- * @interface MaterialSideAllOfConstructionCustomPropertyListInner
- */
-export interface MaterialSideAllOfConstructionCustomPropertyListInner {
+export interface MaterialSideAllOfConstructionCustomPropertyList {
     /**
      * 是否公開欄位資訊
      * @type {boolean}
-     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     * @memberof MaterialSideAllOfConstructionCustomPropertyList
      */
     'isPublic': boolean;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     * @memberof MaterialSideAllOfConstructionCustomPropertyList
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     * @memberof MaterialSideAllOfConstructionCustomPropertyList
      */
     'value': string;
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
-     */
-    'customId': number;
-}
-/**
- * 
- * @export
- * @interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
- */
-export interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
+     * @memberof MaterialSideAllOfConstructionCustomPropertyList
      */
     'customId': number;
 }
@@ -13930,68 +12274,55 @@ export interface MaterialSideAllOfContentList {
 /**
  * 
  * @export
- * @interface MaterialSideAllOfPantoneListInner
+ * @interface MaterialSideAllOfPantoneList
  */
-export interface MaterialSideAllOfPantoneListInner {
+export interface MaterialSideAllOfPantoneList {
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'pantoneId': number;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'majorColorName': string;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'colorName': string;
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'r': number;
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'g': number;
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInner
+     * @memberof MaterialSideAllOfPantoneList
      */
     'b': number;
     /**
      * 
      * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInner
-     */
-    'materialPantoneId': number;
-}
-/**
- * 
- * @export
- * @interface MaterialSideAllOfPantoneListInnerAllOf
- */
-export interface MaterialSideAllOfPantoneListInnerAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialSideAllOfPantoneListInnerAllOf
+     * @memberof MaterialSideAllOfPantoneList
      */
     'materialPantoneId': number;
 }
@@ -14133,57 +12464,6 @@ export interface MaterialSideCreate {
      * 
      * @type {MaterialColorInfoCreate}
      * @memberof MaterialSideCreate
-     */
-    'colorInfo': MaterialColorInfoCreate;
-}
-
-
-/**
- * 
- * @export
- * @interface MaterialSideCreateAllOf
- */
-export interface MaterialSideCreateAllOf {
-    /**
-     * 
-     * @type {MaterialType}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'materialType': MaterialType;
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
-    /**
-     * 
-     * @type {MaterialConstruction}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'construction': MaterialConstruction;
-    /**
-     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialCustomConstructionBase>}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
-    /**
-     * 布面成分清單
-     * @type {Array<MaterialSideCreateAllOfContentList>}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'contentList': Array<MaterialSideCreateAllOfContentList>;
-    /**
-     * 
-     * @type {MaterialPatternInfoCreate}
-     * @memberof MaterialSideCreateAllOf
-     */
-    'patternInfo': MaterialPatternInfoCreate;
-    /**
-     * 
-     * @type {MaterialColorInfoCreate}
-     * @memberof MaterialSideCreateAllOf
      */
     'colorInfo': MaterialColorInfoCreate;
 }
@@ -14564,10 +12844,10 @@ export interface MaterialU3mImage {
 export interface MaterialU3mImageCropRecord {
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
@@ -15285,19 +13565,6 @@ export interface MergeAssetsMaterialListRequest {
 /**
  * 
  * @export
- * @interface MergeAssetsMaterialListRequestAllOf
- */
-export interface MergeAssetsMaterialListRequestAllOf {
-    /**
-     * 
-     * @type {Array<MergeAssetsMaterialListRequestAllOfMergedListInner>}
-     * @memberof MergeAssetsMaterialListRequestAllOf
-     */
-    'mergedList': Array<MergeAssetsMaterialListRequestAllOfMergedListInner>;
-}
-/**
- * 
- * @export
  * @interface MergeAssetsMaterialListRequestAllOfMergedListInner
  */
 export interface MergeAssetsMaterialListRequestAllOfMergedListInner {
@@ -15407,25 +13674,6 @@ export interface Moodboard {
 }
 
 
-/**
- * 
- * @export
- * @interface MoodboardAllOf
- */
-export interface MoodboardAllOf {
-    /**
-     * 
-     * @type {Array<MoodboardAllOfAttachmentList>}
-     * @memberof MoodboardAllOf
-     */
-    'attachmentList': Array<MoodboardAllOfAttachmentList>;
-    /**
-     * 
-     * @type {MoodboardAllOfProperties}
-     * @memberof MoodboardAllOf
-     */
-    'properties': MoodboardAllOfProperties;
-}
 /**
  * 
  * @export
@@ -15647,25 +13895,6 @@ export interface MoodboardNodeCollection {
 /**
  * 
  * @export
- * @interface MoodboardNodeCollectionAllOf
- */
-export interface MoodboardNodeCollectionAllOf {
-    /**
-     * 
-     * @type {Array<MoodboardNodeChild>}
-     * @memberof MoodboardNodeCollectionAllOf
-     */
-    'childNodeList': Array<MoodboardNodeChild>;
-    /**
-     * 
-     * @type {MoodboardInfo}
-     * @memberof MoodboardNodeCollectionAllOf
-     */
-    'moodboardInfo': MoodboardInfo;
-}
-/**
- * 
- * @export
  * @interface MoodboardNodeMaterial
  */
 export interface MoodboardNodeMaterial {
@@ -15685,19 +13914,6 @@ export interface MoodboardNodeMaterial {
      * 
      * @type {MoodboardInfo}
      * @memberof MoodboardNodeMaterial
-     */
-    'moodboardInfo': MoodboardInfo;
-}
-/**
- * 
- * @export
- * @interface MoodboardNodeMaterialAllOf
- */
-export interface MoodboardNodeMaterialAllOf {
-    /**
-     * 
-     * @type {MoodboardInfo}
-     * @memberof MoodboardNodeMaterialAllOf
      */
     'moodboardInfo': MoodboardInfo;
 }
@@ -15896,37 +14112,6 @@ export interface MoveAssetsMaterialAttachmentRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface MoveAssetsMaterialAttachmentRequestAllOf
- */
-export interface MoveAssetsMaterialAttachmentRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 欲移動之 fileId
-     * @type {number}
-     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'fileId': number;
-    /**
-     * 目標位置的 fileId
-     * @type {number}
-     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'targetFileId': number;
-    /**
-     * 是否移動至目標的前方(上方或左方)，後端預設為false移動至目標的後方(下方或右方)
-     * @type {boolean}
-     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'isMoveToBeforeTarget': boolean;
-}
 /**
  * 
  * @export
@@ -16206,25 +14391,6 @@ export interface MoveWorkspaceNodeRequest {
 /**
  * 
  * @export
- * @interface MoveWorkspaceNodeRequestAllOf
- */
-export interface MoveWorkspaceNodeRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MoveWorkspaceNodeRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MoveWorkspaceNodeRequestAllOf
-     */
-    'targetNodeId': number;
-}
-/**
- * 
- * @export
  * @interface MultimediaFile
  */
 export interface MultimediaFile {
@@ -16285,25 +14451,6 @@ export interface MultimediaFile {
 }
 
 
-/**
- * 
- * @export
- * @interface MultimediaFileAllOf
- */
-export interface MultimediaFileAllOf {
-    /**
-     * 是否為封面圖
-     * @type {boolean}
-     * @memberof MultimediaFileAllOf
-     */
-    'isCover': boolean;
-    /**
-     * 
-     * @type {MultimediaFileAllOfCropRecord}
-     * @memberof MultimediaFileAllOf
-     */
-    'cropRecord': MultimediaFileAllOfCropRecord | null;
-}
 /**
  * 
  * @export
@@ -16514,25 +14661,6 @@ export interface NotificationListInner {
 /**
  * 
  * @export
- * @interface NotificationListInnerAllOf
- */
-export interface NotificationListInnerAllOf {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof NotificationListInnerAllOf
-     */
-    'isRead': boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof NotificationListInnerAllOf
-     */
-    'createDate': number;
-}
-/**
- * 
- * @export
  * @interface OGBaseRequestBody
  */
 export interface OGBaseRequestBody {
@@ -16617,19 +14745,6 @@ export interface OrgBookmark {
 }
 
 
-/**
- * 
- * @export
- * @interface OrgBookmarkAllOf
- */
-export interface OrgBookmarkAllOf {
-    /**
-     * 
-     * @type {OrgBookmarkAllOfOrg}
-     * @memberof OrgBookmarkAllOf
-     */
-    'org': OrgBookmarkAllOfOrg;
-}
 /**
  * 
  * @export
@@ -16844,15 +14959,15 @@ export interface OrgCreatePostRequest {
 
 export const OrgCreatePostRequestOrgCategoryIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgCreatePostRequestOrgCategoryIdEnum = typeof OrgCreatePostRequestOrgCategoryIdEnum[keyof typeof OrgCreatePostRequestOrgCategoryIdEnum];
 export const OrgCreatePostRequestSignupSourceTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type OrgCreatePostRequestSignupSourceTypeEnum = typeof OrgCreatePostRequestSignupSourceTypeEnum[keyof typeof OrgCreatePostRequestSignupSourceTypeEnum];
@@ -17763,7 +15878,7 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum];
@@ -17808,7 +15923,7 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultPagination {
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum];
@@ -17859,8 +15974,8 @@ export interface OrgPaymentInvoiceGetListPostRequest {
 
 export const OrgPaymentInvoiceGetListPostRequestCategoryEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestCategoryEnum = typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum];
@@ -17893,7 +16008,7 @@ export interface OrgPaymentInvoiceGetListPostRequestPagination {
 
 export const OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum];
@@ -17937,98 +16052,11 @@ export interface OrgPaymentInvoiceGetPost200Response {
 export interface OrgPaymentInvoiceGetPost200ResponseResult {
     /**
      * 
-     * @type {OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo}
+     * @type {InvoiceInfo}
      * @memberof OrgPaymentInvoiceGetPost200ResponseResult
      */
-    'invoiceInfo'?: OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo;
+    'invoiceInfo'?: InvoiceInfo;
 }
-/**
- * 
- * @export
- * @interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
- */
-export interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'invoiceId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'invoiceNumber'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'invoiceDate'?: number;
-    /**
-     * 接收者名稱
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'recipient'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'email'?: string;
-    /**
-     * 國家代碼
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'countryCode'?: string;
-    /**
-     * 接收者區號
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'zipCode'?: string;
-    /**
-     * 接收者城市
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'city'?: string;
-    /**
-     * 接收者地址
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'address'?: string;
-    /**
-     * 
-     * @type {Array<InvoiceInfoServiceItemListInner>}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'serviceItemList'?: Array<InvoiceInfoServiceItemListInner>;
-    /**
-     * 
-     * @type {OrganizationPaymentDetailCardInfo}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'cardInfo'?: OrganizationPaymentDetailCardInfo;
-    /**
-     * 
-     * @type {CurrencyCode}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'currency'?: CurrencyCode;
-    /**
-     * 總費用
-     * @type {string}
-     * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
-     */
-    'totalPrice'?: string;
-}
-
-
 /**
  * 
  * @export
@@ -18501,9 +16529,9 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
 
 export const OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum[keyof typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum];
@@ -18703,9 +16731,9 @@ export interface OrgUpdatePostRequest {
 
 export const OrgUpdatePostRequestOrgCategoryIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgUpdatePostRequestOrgCategoryIdEnum = typeof OrgUpdatePostRequestOrgCategoryIdEnum[keyof typeof OrgUpdatePostRequestOrgCategoryIdEnum];
@@ -19127,9 +17155,9 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
 
 export const OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum[keyof typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum];
@@ -19295,9 +17323,9 @@ export interface Organization {
 
 export const OrganizationOrgCategoryIdEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrganizationOrgCategoryIdEnum = typeof OrganizationOrgCategoryIdEnum[keyof typeof OrganizationOrgCategoryIdEnum];
@@ -19540,19 +17568,6 @@ export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof Pa
 /**
  * 
  * @export
- * @interface PaginationReqAllOf
- */
-export interface PaginationReqAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationReqAllOf
-     */
-    'targetPage': number;
-}
-/**
- * 
- * @export
  * @interface PaginationRes
  */
 export interface PaginationRes {
@@ -19614,31 +17629,6 @@ export const PaginationResSortEnum = {
 
 export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof PaginationResSortEnum];
 
-/**
- * 
- * @export
- * @interface PaginationResAllOf
- */
-export interface PaginationResAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationResAllOf
-     */
-    'currentPage': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationResAllOf
-     */
-    'totalPage': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationResAllOf
-     */
-    'totalCount': number;
-}
 /**
  * 
  * @export
@@ -19777,16 +17767,16 @@ export interface Plan {
 
 export const PlanPlanTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type PlanPlanTypeEnum = typeof PlanPlanTypeEnum[keyof typeof PlanPlanTypeEnum];
 export const PlanStatusEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
@@ -20343,7 +18333,7 @@ export interface ProgressOnlineSpreadSheetItem {
      * @type {number}
      * @memberof ProgressOnlineSpreadSheetItem
      */
-    'unsuccessfulMsgCode': ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum;
+    'unsuccessfulMsgCode': ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum | null;
     /**
      * 當初使用者透過OnlineSpreadSheet操作前端給的json，deleteList會處理把id轉成Material.yaml回傳。 去掉成功的只留下失敗的資料的檔案的url。 status 為 3:Unsuccessful 或 4:Partially Failed 時才有值 
      * @type {string}
@@ -20455,7 +18445,7 @@ export interface ProgressU3mItem {
      * @type {number}
      * @memberof ProgressU3mItem
      */
-    'unsuccessfulMsgCode': ProgressU3mItemUnsuccessfulMsgCodeEnum;
+    'unsuccessfulMsgCode': ProgressU3mItemUnsuccessfulMsgCodeEnum | null;
     /**
      * 1: Frontier產生 2: 客製化上傳
      * @type {number}
@@ -20548,37 +18538,6 @@ export interface PublishWorkspaceNodeRequest {
 /**
  * 
  * @export
- * @interface PublishWorkspaceNodeRequestAllOf
- */
-export interface PublishWorkspaceNodeRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof PublishWorkspaceNodeRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PublishWorkspaceNodeRequestAllOf
-     */
-    'isPublic': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PublishWorkspaceNodeRequestAllOf
-     */
-    'isCanClone': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PublishWorkspaceNodeRequestAllOf
-     */
-    'isCanDownloadU3M': boolean;
-}
-/**
- * 
- * @export
  * @interface ReadAllUnreadDigitalThreadRequest
  */
 export interface ReadAllUnreadDigitalThreadRequest {
@@ -20639,19 +18598,6 @@ export interface RefreshToken200Response {
      * @memberof RefreshToken200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface RefreshToken200ResponseAllOf
- */
-export interface RefreshToken200ResponseAllOf {
-    /**
-     * 
-     * @type {RefreshToken200ResponseAllOfResult}
-     * @memberof RefreshToken200ResponseAllOf
-     */
-    'result': RefreshToken200ResponseAllOfResult;
 }
 /**
  * 
@@ -20727,25 +18673,6 @@ export interface RemoveAssetsMaterialAttachmentRequest {
 /**
  * 
  * @export
- * @interface RemoveAssetsMaterialAttachmentRequestAllOf
- */
-export interface RemoveAssetsMaterialAttachmentRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
-     */
-    'fileId': string;
-}
-/**
- * 
- * @export
  * @interface RemoveMoodboardShareRequest
  */
 export interface RemoveMoodboardShareRequest {
@@ -20779,19 +18706,6 @@ export interface RemoveMoodboardShareRequest {
 /**
  * 
  * @export
- * @interface RemoveMoodboardShareRequestAllOf
- */
-export interface RemoveMoodboardShareRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof RemoveMoodboardShareRequestAllOf
-     */
-    'shareId': number;
-}
-/**
- * 
- * @export
  * @interface RemoveWorkspaceCollectionTrendBoardRequest
  */
 export interface RemoveWorkspaceCollectionTrendBoardRequest {
@@ -20822,19 +18736,6 @@ export interface RemoveWorkspaceCollectionTrendBoardRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface RemoveWorkspaceCollectionTrendBoardRequestAllOf
- */
-export interface RemoveWorkspaceCollectionTrendBoardRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof RemoveWorkspaceCollectionTrendBoardRequestAllOf
-     */
-    'collectionId': number;
-}
 /**
  * 
  * @export
@@ -20875,33 +18776,6 @@ export interface RemoveWorkspaceNodeShareAssignedRequest {
      * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
      * @type {number}
      * @memberof RemoveWorkspaceNodeShareAssignedRequest
-     */
-    'id': number;
-}
-
-
-/**
- * 
- * @export
- * @interface RemoveWorkspaceNodeShareAssignedRequestAllOf
- */
-export interface RemoveWorkspaceNodeShareAssignedRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {ShareToType}
-     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'type': ShareToType;
-    /**
-     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
-     * @type {number}
-     * @memberof RemoveWorkspaceNodeShareAssignedRequestAllOf
      */
     'id': number;
 }
@@ -20952,31 +18826,6 @@ export interface RenameAssetsMaterialAttachmentRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface RenameAssetsMaterialAttachmentRequestAllOf
- */
-export interface RenameAssetsMaterialAttachmentRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
-     */
-    'fileId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
-     */
-    'displayFileName': string;
-}
 /**
  * 
  * @export
@@ -21415,19 +19264,6 @@ export interface SearchGetAiTagsPost200Response {
 /**
  * 
  * @export
- * @interface SearchGetAiTagsPost200ResponseAllOf
- */
-export interface SearchGetAiTagsPost200ResponseAllOf {
-    /**
-     * 
-     * @type {SearchGetAiTagsPost200ResponseAllOfResult}
-     * @memberof SearchGetAiTagsPost200ResponseAllOf
-     */
-    'result': SearchGetAiTagsPost200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface SearchGetAiTagsPost200ResponseAllOfResult
  */
 export interface SearchGetAiTagsPost200ResponseAllOfResult {
@@ -21598,19 +19434,6 @@ export interface SetAssetsMaterialCover200Response {
 /**
  * 
  * @export
- * @interface SetAssetsMaterialCover200ResponseAllOf
- */
-export interface SetAssetsMaterialCover200ResponseAllOf {
-    /**
-     * 
-     * @type {SetAssetsMaterialCover200ResponseAllOfResult}
-     * @memberof SetAssetsMaterialCover200ResponseAllOf
-     */
-    'result': SetAssetsMaterialCover200ResponseAllOfResult;
-}
-/**
- * 
- * @export
  * @interface SetAssetsMaterialCover200ResponseAllOfResult
  */
 export interface SetAssetsMaterialCover200ResponseAllOfResult {
@@ -21667,33 +19490,6 @@ export interface SetAssetsMaterialCoverRequest {
      * coverMode=3時才有值
      * @type {number}
      * @memberof SetAssetsMaterialCoverRequest
-     */
-    'multimediaFileId': number | null;
-}
-
-
-/**
- * 
- * @export
- * @interface SetAssetsMaterialCoverRequestAllOf
- */
-export interface SetAssetsMaterialCoverRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof SetAssetsMaterialCoverRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {CoverMode}
-     * @memberof SetAssetsMaterialCoverRequestAllOf
-     */
-    'coverMode': CoverMode;
-    /**
-     * coverMode=3時才有值
-     * @type {number}
-     * @memberof SetAssetsMaterialCoverRequestAllOf
      */
     'multimediaFileId': number | null;
 }
@@ -21857,25 +19653,6 @@ export interface ShareNodeCollection {
 /**
  * 
  * @export
- * @interface ShareNodeCollectionAllOf
- */
-export interface ShareNodeCollectionAllOf {
-    /**
-     * 
-     * @type {Array<ShareNodeChild>}
-     * @memberof ShareNodeCollectionAllOf
-     */
-    'childNodeList': Array<ShareNodeChild>;
-    /**
-     * 
-     * @type {ShareInfo}
-     * @memberof ShareNodeCollectionAllOf
-     */
-    'shareInfo': ShareInfo;
-}
-/**
- * 
- * @export
  * @interface ShareNodeMaterial
  */
 export interface ShareNodeMaterial {
@@ -21895,19 +19672,6 @@ export interface ShareNodeMaterial {
      * 
      * @type {ShareInfo}
      * @memberof ShareNodeMaterial
-     */
-    'shareInfo': ShareInfo;
-}
-/**
- * 
- * @export
- * @interface ShareNodeMaterialAllOf
- */
-export interface ShareNodeMaterialAllOf {
-    /**
-     * 
-     * @type {ShareInfo}
-     * @memberof ShareNodeMaterialAllOf
      */
     'shareInfo': ShareInfo;
 }
@@ -22040,25 +19804,6 @@ export const ShowroomColorEnum = {
 
 export type ShowroomColorEnum = typeof ShowroomColorEnum[keyof typeof ShowroomColorEnum];
 
-/**
- * 
- * @export
- * @interface ShowroomAllOf
- */
-export interface ShowroomAllOf {
-    /**
-     * 
-     * @type {SlotContent}
-     * @memberof ShowroomAllOf
-     */
-    'description': SlotContent;
-    /**
-     * 
-     * @type {Array<ShowroomAllOfParticipatedOrgList>}
-     * @memberof ShowroomAllOf
-     */
-    'participatedOrgList': Array<ShowroomAllOfParticipatedOrgList>;
-}
 /**
  * 
  * @export
@@ -22270,7 +20015,7 @@ export interface SignInGeneralPostRequest {
 
 export const SignInGeneralPostRequestPlatformEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type SignInGeneralPostRequestPlatformEnum = typeof SignInGeneralPostRequestPlatformEnum[keyof typeof SignInGeneralPostRequestPlatformEnum];
@@ -22353,42 +20098,11 @@ export interface SignInGooglePostRequest {
 
 export const SignInGooglePostRequestPlatformEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type SignInGooglePostRequestPlatformEnum = typeof SignInGooglePostRequestPlatformEnum[keyof typeof SignInGooglePostRequestPlatformEnum];
 
-/**
- * 
- * @export
- * @interface SignUpRequestPost200Response
- */
-export interface SignUpRequestPost200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SignUpRequestPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignUpRequestPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof SignUpRequestPost200Response
-     */
-    'result'?: object | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof SignUpRequestPost200Response
-     */
-    'message'?: object | null;
-}
 /**
  * 
  * @export
@@ -22522,19 +20236,6 @@ export interface SmartUploadAssetsMaterialListRequest {
 /**
  * 
  * @export
- * @interface SmartUploadAssetsMaterialListRequestAllOf
- */
-export interface SmartUploadAssetsMaterialListRequestAllOf {
-    /**
-     * 
-     * @type {Array<S3UploadedObject>}
-     * @memberof SmartUploadAssetsMaterialListRequestAllOf
-     */
-    'fileList': Array<S3UploadedObject>;
-}
-/**
- * 
- * @export
  * @enum {string}
  */
 
@@ -22645,22 +20346,22 @@ export interface Sticker {
     'childStickerCount': number;
     /**
      * 
-     * @type {Array<StickerAllOfChildStickerListInner>}
+     * @type {Array<StickerAllOfChildStickerList>}
      * @memberof Sticker
      */
-    'childStickerList': Array<StickerAllOfChildStickerListInner>;
+    'childStickerList': Array<StickerAllOfChildStickerList>;
 }
 
 export const StickerAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type StickerAddToEnum = typeof StickerAddToEnum[keyof typeof StickerAddToEnum];
 export const StickerTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnum];
@@ -22668,147 +20369,109 @@ export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnu
 /**
  * 
  * @export
- * @interface StickerAllOf
+ * @interface StickerAllOfChildStickerList
  */
-export interface StickerAllOf {
-    /**
-     * 檢視者是否有尚未查看的Child Sticker
-     * @type {boolean}
-     * @memberof StickerAllOf
-     */
-    'hasChildStickerUnread': boolean;
-    /**
-     * ChildSticker數量，不受filter影響數量
-     * @type {number}
-     * @memberof StickerAllOf
-     */
-    'childStickerCount': number;
-    /**
-     * 
-     * @type {Array<StickerAllOfChildStickerListInner>}
-     * @memberof StickerAllOf
-     */
-    'childStickerList': Array<StickerAllOfChildStickerListInner>;
-}
-/**
- * 
- * @export
- * @interface StickerAllOfChildStickerListInner
- */
-export interface StickerAllOfChildStickerListInner {
+export interface StickerAllOfChildStickerList {
     /**
      * 
      * @type {number}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'stickerId': number;
     /**
      * 
      * @type {number}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
-    'addTo': StickerAllOfChildStickerListInnerAddToEnum;
+    'addTo': StickerAllOfChildStickerListAddToEnum;
     /**
      * 
      * @type {number}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
-    'type': StickerAllOfChildStickerListInnerTypeEnum;
+    'type': StickerAllOfChildStickerListTypeEnum;
     /**
      * 
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'content': string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'tagList': Array<string> | null;
     /**
      * 
      * @type {boolean}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'isStarred': boolean;
     /**
      * Sticker建立者組織名稱
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creatorOrgName': string;
     /**
      * Sticker建立者單位，檢視者所屬組織和Sticker建立者單位那方所屬組織相同時為:呈現Sticker建立者的組織(+團隊)名稱，非建立者那方單位所屬組織為:呈現Sticker建立者的組織名稱
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creatorUnitName': string;
     /**
      * Sticker建立者的單位的Logo
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creatorUnitLogo': string;
     /**
      * Sticker建立者的單位的標籤顏色，檢視者所屬組織和Sticker建立者單位那方所屬組織相同時為:呈現Sticker建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creatorUnitLabelColor': string;
     /**
      * Sticker建立者的使用者名稱，檢視者所屬組織和Sticker建立者單位那方所屬組織相同時呈現Sticker建立者的使用者名稱，非建立者那方單位所屬組織為Null值
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creator': string;
     /**
      * Sticker建立者的大頭貼，檢視者所屬組織和Sticker建立者單位那方所屬組織相同時呈現Sticker建立者的大頭貼，非建立者那方單位所屬組織為Null值
      * @type {string}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'creatorAvatar': string;
     /**
      * 
      * @type {number}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'createDate': number;
     /**
      * sticker排序號碼
      * @type {number}
-     * @memberof StickerAllOfChildStickerListInner
+     * @memberof StickerAllOfChildStickerList
      */
     'order': number;
 }
 
-export const StickerAllOfChildStickerListInnerAddToEnum = {
+export const StickerAllOfChildStickerListAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
-export type StickerAllOfChildStickerListInnerAddToEnum = typeof StickerAllOfChildStickerListInnerAddToEnum[keyof typeof StickerAllOfChildStickerListInnerAddToEnum];
-export const StickerAllOfChildStickerListInnerTypeEnum = {
+export type StickerAllOfChildStickerListAddToEnum = typeof StickerAllOfChildStickerListAddToEnum[keyof typeof StickerAllOfChildStickerListAddToEnum];
+export const StickerAllOfChildStickerListTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
-export type StickerAllOfChildStickerListInnerTypeEnum = typeof StickerAllOfChildStickerListInnerTypeEnum[keyof typeof StickerAllOfChildStickerListInnerTypeEnum];
+export type StickerAllOfChildStickerListTypeEnum = typeof StickerAllOfChildStickerListTypeEnum[keyof typeof StickerAllOfChildStickerListTypeEnum];
 
-/**
- * 
- * @export
- * @interface StickerAllOfChildStickerListInnerAllOf
- */
-export interface StickerAllOfChildStickerListInnerAllOf {
-    /**
-     * sticker排序號碼
-     * @type {number}
-     * @memberof StickerAllOfChildStickerListInnerAllOf
-     */
-    'order': number;
-}
 /**
  * 
  * @export
@@ -22897,14 +20560,14 @@ export interface StickerBase {
 
 export const StickerBaseAddToEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type StickerBaseAddToEnum = typeof StickerBaseAddToEnum[keyof typeof StickerBaseAddToEnum];
 export const StickerBaseTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type StickerBaseTypeEnum = typeof StickerBaseTypeEnum[keyof typeof StickerBaseTypeEnum];
@@ -22938,10 +20601,10 @@ export interface TargetOg {
 export interface ThreadBoard {
     /**
      * workflowStage清單
-     * @type {Array<ThreadBoardWorkflowStageListInner>}
+     * @type {Array<WorkflowStage>}
      * @memberof ThreadBoard
      */
-    'workflowStageList': Array<ThreadBoardWorkflowStageListInner>;
+    'workflowStageList': Array<WorkflowStage>;
 }
 /**
  * 
@@ -23063,55 +20726,6 @@ export interface ThreadBoardQueryFilterStickerType {
      * @memberof ThreadBoardQueryFilterStickerType
      */
     'external': boolean;
-}
-/**
- * 
- * @export
- * @interface ThreadBoardWorkflowStageListInner
- */
-export interface ThreadBoardWorkflowStageListInner {
-    /**
-     * workflowStage的Id
-     * @type {number}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'workflowStageId': number;
-    /**
-     * workflowStage名稱
-     * @type {string}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'workflowStageName': string;
-    /**
-     * 是否可被刪除
-     * @type {boolean}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'canDelete': boolean;
-    /**
-     * 是否可被隱藏
-     * @type {boolean}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'canHide'?: boolean;
-    /**
-     * 是否為預設的WorkflowStage
-     * @type {boolean}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'isDefault': boolean;
-    /**
-     * 是否被隱藏
-     * @type {boolean}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'isHidden': boolean;
-    /**
-     * DigitalThread清單
-     * @type {Array<DigitalThreadBase>}
-     * @memberof ThreadBoardWorkflowStageListInner
-     */
-    'digitalThreadList': Array<DigitalThreadBase>;
 }
 /**
  * 
@@ -23564,43 +21178,6 @@ export interface UpdateMoodboardOfferNodeCollectionRequest {
 /**
  * 
  * @export
- * @interface UpdateMoodboardOfferNodeCollectionRequestAllOf
- */
-export interface UpdateMoodboardOfferNodeCollectionRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'description': string | null;
-    /**
-     * 
-     * @type {CreateMoodboardRequestAllOfTrendBoard}
-     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
-     */
-    'isDeleteTrendBoard': boolean;
-}
-/**
- * 
- * @export
  * @interface UpdateMoodboardRequest
  */
 export interface UpdateMoodboardRequest {
@@ -23670,55 +21247,6 @@ export interface UpdateMoodboardRequest {
 /**
  * 
  * @export
- * @interface UpdateMoodboardRequestAllOf
- */
-export interface UpdateMoodboardRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'moodboardId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'moodboardName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'description': string;
-    /**
-     * 
-     * @type {CreateMoodboardRequestAllOfTrendBoard}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
-    /**
-     * 
-     * @type {Array<S3UploadedObject>}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'newAttachmentList': Array<S3UploadedObject> | null;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'deleteAttachmentIdList': Array<number> | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateMoodboardRequestAllOf
-     */
-    'isDeleteTrendBoard': boolean;
-}
-/**
- * 
- * @export
  * @interface UpdateWorkspaceCollectionRequest
  */
 export interface UpdateWorkspaceCollectionRequest {
@@ -23760,43 +21288,31 @@ export interface UpdateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {S3UploadedObject}
+     * @type {UpdateWorkspaceCollectionRequestAllOfTrendBoard}
      * @memberof UpdateWorkspaceCollectionRequest
      */
-    'trendBoard': S3UploadedObject | null;
+    'trendBoard': UpdateWorkspaceCollectionRequestAllOfTrendBoard | null;
 }
 
 
 /**
  * 
  * @export
- * @interface UpdateWorkspaceCollectionRequestAllOf
+ * @interface UpdateWorkspaceCollectionRequestAllOfTrendBoard
  */
-export interface UpdateWorkspaceCollectionRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateWorkspaceCollectionRequestAllOf
-     */
-    'collectionId': number;
+export interface UpdateWorkspaceCollectionRequestAllOfTrendBoard {
     /**
      * 
      * @type {string}
-     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     * @memberof UpdateWorkspaceCollectionRequestAllOfTrendBoard
      */
-    'collectionName': string;
+    's3UploadId': string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateWorkspaceCollectionRequestAllOf
+     * @memberof UpdateWorkspaceCollectionRequestAllOfTrendBoard
      */
-    'description': string | null;
-    /**
-     * 
-     * @type {S3UploadedObject}
-     * @memberof UpdateWorkspaceCollectionRequestAllOf
-     */
-    'trendBoard': S3UploadedObject | null;
+    'fileName': string;
 }
 /**
  * 
@@ -23843,31 +21359,6 @@ export interface UpdateWorkspaceNodeShareAssignedRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface UpdateWorkspaceNodeShareAssignedRequestAllOf
- */
-export interface UpdateWorkspaceNodeShareAssignedRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>}
-     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'removeList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>;
-    /**
-     * 
-     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>}
-     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOf
-     */
-    'updateList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>;
-}
 /**
  * 
  * @export
@@ -23964,25 +21455,6 @@ export interface UpdateWorkspaceNodeShareCopyLinkRequest {
 /**
  * 
  * @export
- * @interface UpdateWorkspaceNodeShareCopyLinkRequestAllOf
- */
-export interface UpdateWorkspaceNodeShareCopyLinkRequestAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateWorkspaceNodeShareCopyLinkRequestAllOf
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateWorkspaceNodeShareCopyLinkRequestAllOf
-     */
-    'isCanShared': boolean;
-}
-/**
- * 
- * @export
  * @interface UpdateWorkspaceNodeShareEmbedRequest
  */
 export interface UpdateWorkspaceNodeShareEmbedRequest {
@@ -24022,25 +21494,6 @@ export interface UpdateWorkspaceNodeShareEmbedRequest {
 /**
  * 
  * @export
- * @interface UpdateWorkspaceNodeShareEmbedRequestAllOf
- */
-export interface UpdateWorkspaceNodeShareEmbedRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateWorkspaceNodeShareEmbedRequestAllOf
-     */
-    'embedKey': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateWorkspaceNodeShareEmbedRequestAllOf
-     */
-    'isCanDownloadU3M': boolean;
-}
-/**
- * 
- * @export
  * @interface UploadAssetsMaterialAttachment200Response
  */
 export interface UploadAssetsMaterialAttachment200Response {
@@ -24068,19 +21521,6 @@ export interface UploadAssetsMaterialAttachment200Response {
      * @memberof UploadAssetsMaterialAttachment200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface UploadAssetsMaterialAttachment200ResponseAllOf
- */
-export interface UploadAssetsMaterialAttachment200ResponseAllOf {
-    /**
-     * 
-     * @type {UploadAssetsMaterialAttachment200ResponseAllOfResult}
-     * @memberof UploadAssetsMaterialAttachment200ResponseAllOf
-     */
-    'result': UploadAssetsMaterialAttachment200ResponseAllOfResult;
 }
 /**
  * 
@@ -24137,25 +21577,6 @@ export interface UploadAssetsMaterialAttachmentRequest {
 /**
  * 
  * @export
- * @interface UploadAssetsMaterialAttachmentRequestAllOf
- */
-export interface UploadAssetsMaterialAttachmentRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {Array<CreateAndEditAttachmentFile>}
-     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
-     */
-    'attachmentList': Array<CreateAndEditAttachmentFile>;
-}
-/**
- * 
- * @export
  * @interface UploadAssetsMaterialCustomU3mRequest
  */
 export interface UploadAssetsMaterialCustomU3mRequest {
@@ -24207,25 +21628,6 @@ export interface UploadAssetsMaterialCustomU3mRequest {
 /**
  * 
  * @export
- * @interface UploadAssetsMaterialCustomU3mRequestAllOf
- */
-export interface UploadAssetsMaterialCustomU3mRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 是否需要產生物理檔案
-     * @type {boolean}
-     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
-     */
-    'needToGeneratePhysical': boolean;
-}
-/**
- * 
- * @export
  * @interface UploadAssetsMaterialMultimedia200Response
  */
 export interface UploadAssetsMaterialMultimedia200Response {
@@ -24253,19 +21655,6 @@ export interface UploadAssetsMaterialMultimedia200Response {
      * @memberof UploadAssetsMaterialMultimedia200Response
      */
     'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface UploadAssetsMaterialMultimedia200ResponseAllOf
- */
-export interface UploadAssetsMaterialMultimedia200ResponseAllOf {
-    /**
-     * 
-     * @type {UploadAssetsMaterialMultimedia200ResponseAllOfResult}
-     * @memberof UploadAssetsMaterialMultimedia200ResponseAllOf
-     */
-    'result': UploadAssetsMaterialMultimedia200ResponseAllOfResult;
 }
 /**
  * 
@@ -24319,25 +21708,6 @@ export interface UploadAssetsMaterialMultimediaRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface UploadAssetsMaterialMultimediaRequestAllOf
- */
-export interface UploadAssetsMaterialMultimediaRequestAllOf {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {Array<CreateAndEditAttachmentFile>}
-     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
-     */
-    'multimediaList': Array<CreateAndEditAttachmentFile>;
-}
 /**
  * 
  * @export
@@ -24541,29 +21911,10 @@ export interface UploadAssetsMaterialSideImageRequest {
 export interface UploadAssetsMaterialSideImageRequestFaceSideImage {
     /**
      * 
-     * @type {UploadAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {S3UploadedObject}
      * @memberof UploadAssetsMaterialSideImageRequestFaceSideImage
      */
-    'original': UploadAssetsMaterialSideImageRequestFaceSideImageOriginal;
-}
-/**
- * 
- * @export
- * @interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
- */
-export interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal {
-    /**
-     * 
-     * @type {string}
-     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
-     */
-    'fileName': string;
+    'original': S3UploadedObject;
 }
 /**
  * 
@@ -24699,10 +22050,10 @@ export interface UserFeedbackSendPostRequest {
 
 export const UserFeedbackSendPostRequestCategoryEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null
 } as const;
 
 export type UserFeedbackSendPostRequestCategoryEnum = typeof UserFeedbackSendPostRequestCategoryEnum[keyof typeof UserFeedbackSendPostRequestCategoryEnum];
@@ -24905,7 +22256,7 @@ export interface UserForgotPasswordSendEmailPostRequest {
 
 export const UserForgotPasswordSendEmailPostRequestPlatformEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type UserForgotPasswordSendEmailPostRequestPlatformEnum = typeof UserForgotPasswordSendEmailPostRequestPlatformEnum[keyof typeof UserForgotPasswordSendEmailPostRequestPlatformEnum];
@@ -25271,13 +22622,13 @@ export interface UserResendVerifyEmailPostRequest {
 
 export const UserResendVerifyEmailPostRequestPlatformEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestPlatformEnum = typeof UserResendVerifyEmailPostRequestPlatformEnum[keyof typeof UserResendVerifyEmailPostRequestPlatformEnum];
 export const UserResendVerifyEmailPostRequestSignupSourceTypeEnum = {
     NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestSignupSourceTypeEnum = typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum[keyof typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum];
@@ -25436,9 +22787,9 @@ export interface ValueAddedServiceMade2flow {
 
 export const ValueAddedServiceMade2flowStatusEnum = {
     NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type ValueAddedServiceMade2flowStatusEnum = typeof ValueAddedServiceMade2flowStatusEnum[keyof typeof ValueAddedServiceMade2flowStatusEnum];
@@ -25596,25 +22947,6 @@ export interface WorkspaceFilter {
 /**
  * 
  * @export
- * @interface WorkspaceFilterAllOf
- */
-export interface WorkspaceFilterAllOf {
-    /**
-     * 
-     * @type {AssetsFilterAllOfInventory}
-     * @memberof WorkspaceFilterAllOf
-     */
-    'inventory': AssetsFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkspaceFilterAllOf
-     */
-    'withOutEcoImpactor': boolean | null;
-}
-/**
- * 
- * @export
  * @interface WorkspaceNodeCollection
  */
 export interface WorkspaceNodeCollection {
@@ -25670,7 +23002,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'assetsMaterialAddToWorkspaceRequest' is not null or undefined
             assertParamExists('assetsMaterialAddToWorkspace', 'assetsMaterialAddToWorkspaceRequest', assetsMaterialAddToWorkspaceRequest)
             const localVarPath = `/assets/material/add-to-workspace`;
@@ -25710,7 +23042,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelAssetsMaterialCustomU3mUpload: async (cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelAssetsMaterialCustomU3mUpload: async (cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/custom-u3m/cancel-upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25744,7 +23076,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkDeleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkDeleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/delete-check`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25782,7 +23114,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkIsMaterialOwner: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkIsMaterialOwner: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'checkIsMaterialOwnerRequest' is not null or undefined
             assertParamExists('checkIsMaterialOwner', 'checkIsMaterialOwnerRequest', checkIsMaterialOwnerRequest)
             const localVarPath = `/assets/material/external-page/check-is-owner`;
@@ -25822,7 +23154,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneAssetsMaterialList: async (cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneAssetsMaterialList: async (cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cloneAssetsMaterialListRequest' is not null or undefined
             assertParamExists('cloneAssetsMaterialList', 'cloneAssetsMaterialListRequest', cloneAssetsMaterialListRequest)
             const localVarPath = `/assets/material/clone`;
@@ -25862,7 +23194,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial: async (createAssetsMaterialRequest: CreateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createAssetsMaterial: async (createAssetsMaterialRequest: CreateAssetsMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createAssetsMaterialRequest' is not null or undefined
             assertParamExists('createAssetsMaterial', 'createAssetsMaterialRequest', createAssetsMaterialRequest)
             const localVarPath = `/assets/material/create`;
@@ -25902,7 +23234,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cropAssetsMaterialMultimedia: async (cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cropAssetsMaterialMultimedia: async (cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cropAssetsMaterialMultimediaRequest' is not null or undefined
             assertParamExists('cropAssetsMaterialMultimedia', 'cropAssetsMaterialMultimediaRequest', cropAssetsMaterialMultimediaRequest)
             const localVarPath = `/assets/material/multimedia/crop`;
@@ -25942,7 +23274,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25980,7 +23312,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        editAssetsMaterialSideImage: async (editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        editAssetsMaterialSideImage: async (editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'editAssetsMaterialSideImageRequest' is not null or undefined
             assertParamExists('editAssetsMaterialSideImage', 'editAssetsMaterialSideImageRequest', editAssetsMaterialSideImageRequest)
             const localVarPath = `/assets/material/side-image/edit`;
@@ -26020,7 +23352,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exportAssetsMaterialExcel: async (exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exportAssetsMaterialExcel: async (exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/export`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26058,7 +23390,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateAssetsMaterialU3m: async (generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generateAssetsMaterialU3m: async (generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'generateAssetsMaterialU3mRequest' is not null or undefined
             assertParamExists('generateAssetsMaterialU3m', 'generateAssetsMaterialU3mRequest', generateAssetsMaterialU3mRequest)
             const localVarPath = `/assets/material/u3m/generate`;
@@ -26098,7 +23430,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetMaterialList: async (getAssetMaterialListRequest?: GetAssetMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetMaterialList: async (getAssetMaterialListRequest?: GetAssetMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26136,7 +23468,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsExternalMaterial: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetsExternalMaterial: async (checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'checkIsMaterialOwnerRequest' is not null or undefined
             assertParamExists('getAssetsExternalMaterial', 'checkIsMaterialOwnerRequest', checkIsMaterialOwnerRequest)
             const localVarPath = `/assets/material/external-page/get`;
@@ -26172,7 +23504,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
             assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
             const localVarPath = `/assets/material/get`;
@@ -26212,7 +23544,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMaterialOptions: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMaterialOptions: async (oGBaseRequestBody: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'oGBaseRequestBody' is not null or undefined
             assertParamExists('getMaterialOptions', 'oGBaseRequestBody', oGBaseRequestBody)
             const localVarPath = `/assets/material/options`;
@@ -26252,7 +23584,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massCreateUpdateDeleteAssetsMaterialList: async (massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        massCreateUpdateDeleteAssetsMaterialList: async (massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'massCreateUpdateDeleteAssetsMaterialListRequest' is not null or undefined
             assertParamExists('massCreateUpdateDeleteAssetsMaterialList', 'massCreateUpdateDeleteAssetsMaterialListRequest', massCreateUpdateDeleteAssetsMaterialListRequest)
             const localVarPath = `/assets/material/mass-create-update-delete`;
@@ -26292,7 +23624,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportAssetsMaterialExcel: async (massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        massExportAssetsMaterialExcel: async (massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/mass-export`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26330,7 +23662,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeAssetsMaterialList: async (mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        mergeAssetsMaterialList: async (mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mergeAssetsMaterialListRequest' is not null or undefined
             assertParamExists('mergeAssetsMaterialList', 'mergeAssetsMaterialListRequest', mergeAssetsMaterialListRequest)
             const localVarPath = `/assets/material/merge`;
@@ -26370,7 +23702,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveAssetsMaterialAttachment: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveAssetsMaterialAttachment: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/attachment/move`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26408,7 +23740,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveAssetsMaterialMultimedia: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveAssetsMaterialMultimedia: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/multimedia/move`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26446,7 +23778,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeAssetsMaterialAttachment: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeAssetsMaterialAttachment: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/attachment/remove`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26484,7 +23816,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeAssetsMaterialMultimedia: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeAssetsMaterialMultimedia: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/multimedia/remove`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26522,7 +23854,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        renameAssetsMaterialAttachment: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        renameAssetsMaterialAttachment: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/attachment/rename`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26560,7 +23892,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        renameAssetsMaterialMultimedia: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        renameAssetsMaterialMultimedia: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/multimedia/rename`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26598,7 +23930,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        setAssetsMaterialCover: async (setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        setAssetsMaterialCover: async (setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'setAssetsMaterialCoverRequest' is not null or undefined
             assertParamExists('setAssetsMaterialCover', 'setAssetsMaterialCoverRequest', setAssetsMaterialCoverRequest)
             const localVarPath = `/assets/material/update/set-cover`;
@@ -26638,7 +23970,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'smartUploadAssetsMaterialListRequest' is not null or undefined
             assertParamExists('smartUploadAssetsMaterialList', 'smartUploadAssetsMaterialListRequest', smartUploadAssetsMaterialListRequest)
             const localVarPath = `/assets/material/smart-upload`;
@@ -26678,7 +24010,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterial: async (updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateAssetsMaterial: async (updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateAssetsMaterialRequest' is not null or undefined
             assertParamExists('updateAssetsMaterial', 'updateAssetsMaterialRequest', updateAssetsMaterialRequest)
             const localVarPath = `/assets/material/update`;
@@ -26718,7 +24050,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleInventory: async (updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateAssetsMaterialSimpleInventory: async (updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/update/simple/inventory`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26756,7 +24088,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimplePublicPrice: async (updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateAssetsMaterialSimplePublicPrice: async (updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/update/simple/public-price`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26794,7 +24126,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleTag: async (updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateAssetsMaterialSimpleTag: async (updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/update/simple/tag`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26832,7 +24164,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMaterialSimpleSpec: async (updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateMaterialSimpleSpec: async (updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/update/simple/spec`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26870,7 +24202,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialAttachment: async (uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        uploadAssetsMaterialAttachment: async (uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/attachment/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26908,7 +24240,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialCustomU3m: async (uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        uploadAssetsMaterialCustomU3m: async (uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/custom-u3m/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26946,7 +24278,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialMultimedia: async (uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        uploadAssetsMaterialMultimedia: async (uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/multimedia/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26984,7 +24316,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialSideImage: async (uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        uploadAssetsMaterialSideImage: async (uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uploadAssetsMaterialSideImageRequest' is not null or undefined
             assertParamExists('uploadAssetsMaterialSideImage', 'uploadAssetsMaterialSideImageRequest', uploadAssetsMaterialSideImageRequest)
             const localVarPath = `/assets/material/side-image/upload`;
@@ -27034,9 +24366,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
+        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.assetsMaterialAddToWorkspace']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
@@ -27045,9 +24379,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.cancelAssetsMaterialCustomU3mUpload']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27056,9 +24392,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckDeleteAssetsMaterialList200Response>> {
+        async checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckDeleteAssetsMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.checkDeleteAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27067,9 +24405,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckIsMaterialOwner200Response>> {
+        async checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckIsMaterialOwner200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkIsMaterialOwner(checkIsMaterialOwnerRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.checkIsMaterialOwner']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27078,9 +24418,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.cloneAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27089,9 +24431,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.createAssetsMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27100,9 +24444,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.cropAssetsMaterialMultimedia']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27111,9 +24457,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.deleteAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27122,9 +24470,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EditAssetsMaterialSideImage200Response>> {
+        async editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EditAssetsMaterialSideImage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.editAssetsMaterialSideImage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27133,9 +24483,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportAssetsMaterialExcel200Response>> {
+        async exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportAssetsMaterialExcel200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.exportAssetsMaterialExcel']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27144,9 +24496,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateAssetsMaterialU3m200Response>> {
+        async generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateAssetsMaterialU3m200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.generateAssetsMaterialU3m']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27155,9 +24509,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
+        async getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetMaterialList(getAssetMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.getAssetMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27166,9 +24522,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.getAssetsExternalMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27177,9 +24535,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.getAssetsMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27188,9 +24548,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialOptions200Response>> {
+        async getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialOptions(oGBaseRequestBody, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.getMaterialOptions']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -27199,9 +24561,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MassCreateUpdateDeleteAssetsMaterialList200Response>> {
+        async massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MassCreateUpdateDeleteAssetsMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.massCreateUpdateDeleteAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27210,9 +24574,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.massExportAssetsMaterialExcel']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27221,9 +24587,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.mergeAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27232,9 +24600,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+        async moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.moveAssetsMaterialAttachment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27243,9 +24613,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.moveAssetsMaterialMultimedia']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27254,9 +24626,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+        async removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.removeAssetsMaterialAttachment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27265,9 +24639,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
+        async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.removeAssetsMaterialMultimedia']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27276,9 +24652,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+        async renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.renameAssetsMaterialAttachment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27287,9 +24665,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.renameAssetsMaterialMultimedia']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27298,9 +24678,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
+        async setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.setAssetsMaterialCover']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -27309,9 +24691,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.smartUploadAssetsMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27320,9 +24704,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterial(updateAssetsMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27331,9 +24717,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleInventory']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27342,9 +24730,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimplePublicPrice']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27353,9 +24743,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleTag']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -27364,9 +24756,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.updateMaterialSimpleSpec']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27375,9 +24769,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+        async uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialAttachment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27386,9 +24782,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialCustomU3m']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27397,9 +24795,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialMultimedia']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -27408,9 +24808,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialSideImage200Response>> {
+        async uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialSideImage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialSideImage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -27439,7 +24841,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27469,7 +24871,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27499,7 +24901,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27589,7 +24991,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27599,7 +25001,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27679,7 +25081,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27689,7 +25091,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27699,7 +25101,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27709,7 +25111,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27719,7 +25121,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27749,7 +25151,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27790,7 +25192,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
+    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27802,7 +25204,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig) {
+    public cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27814,7 +25216,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27826,7 +25228,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig) {
+    public checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).checkIsMaterialOwner(checkIsMaterialOwnerRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27838,7 +25240,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27850,7 +25252,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27862,7 +25264,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+    public cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27874,7 +25276,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27886,7 +25288,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
+    public editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27898,7 +25300,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig) {
+    public exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27910,7 +25312,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options?: AxiosRequestConfig) {
+    public generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27922,7 +25324,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig) {
+    public getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetMaterialList(getAssetMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27934,7 +25336,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: AxiosRequestConfig) {
+    public getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27946,7 +25348,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27958,7 +25360,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+    public getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getMaterialOptions(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27970,7 +25372,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27982,7 +25384,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig) {
+    public massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27994,7 +25396,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28006,7 +25408,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28018,7 +25420,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28030,7 +25432,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28042,7 +25444,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28054,7 +25456,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28066,7 +25468,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28078,7 +25480,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig) {
+    public setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).setAssetsMaterialCover(setAssetsMaterialCoverRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28090,7 +25492,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28102,7 +25504,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28114,7 +25516,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig) {
+    public updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28126,7 +25528,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig) {
+    public updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28138,7 +25540,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig) {
+    public updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28150,7 +25552,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: AxiosRequestConfig) {
+    public updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28162,7 +25564,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+    public uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28174,7 +25576,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig) {
+    public uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28186,7 +25588,7 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+    public uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28198,10 +25600,11 @@ export class AssetsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
+    public uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -28216,7 +25619,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeCountryGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        codeCountryGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/country`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28246,7 +25649,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeOrgCategoryListGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        codeOrgCategoryListGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/org-category-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28280,7 +25683,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeRoleLimitTableGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        codeRoleLimitTableGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/role-limit-table`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28314,7 +25717,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeRoleListGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        codeRoleListGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/role-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28348,7 +25751,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeRolePermissionGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        codeRolePermissionGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/role-permission`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28382,7 +25785,7 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPantoneList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPantoneList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/code/pantone`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28422,9 +25825,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeCountryGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeCountryGet200Response>> {
+        async codeCountryGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeCountryGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeCountryGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.codeCountryGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28432,9 +25837,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeOrgCategoryListGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeOrgCategoryListGet200Response>> {
+        async codeOrgCategoryListGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeOrgCategoryListGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeOrgCategoryListGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.codeOrgCategoryListGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28442,9 +25849,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeRoleLimitTableGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleLimitTableGet200Response>> {
+        async codeRoleLimitTableGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleLimitTableGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRoleLimitTableGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.codeRoleLimitTableGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28452,9 +25861,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeRoleListGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleListGet200Response>> {
+        async codeRoleListGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleListGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRoleListGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.codeRoleListGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28462,9 +25873,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async codeRolePermissionGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async codeRolePermissionGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRolePermissionGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.codeRolePermissionGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28472,9 +25885,11 @@ export const CodeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPantoneList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPantoneList200Response>> {
+        async getPantoneList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPantoneList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPantoneList(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['CodeApi.getPantoneList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -28528,7 +25943,7 @@ export const CodeApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        codeRolePermissionGet(options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        codeRolePermissionGet(options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.codeRolePermissionGet(options).then((request) => request(axios, basePath));
         },
         /**
@@ -28557,7 +25972,7 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public codeCountryGet(options?: AxiosRequestConfig) {
+    public codeCountryGet(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeCountryGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28568,7 +25983,7 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public codeOrgCategoryListGet(options?: AxiosRequestConfig) {
+    public codeOrgCategoryListGet(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeOrgCategoryListGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28579,7 +25994,7 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public codeRoleLimitTableGet(options?: AxiosRequestConfig) {
+    public codeRoleLimitTableGet(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeRoleLimitTableGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28590,7 +26005,7 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public codeRoleListGet(options?: AxiosRequestConfig) {
+    public codeRoleListGet(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeRoleListGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28601,7 +26016,7 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public codeRolePermissionGet(options?: AxiosRequestConfig) {
+    public codeRolePermissionGet(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeRolePermissionGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28612,10 +26027,11 @@ export class CodeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CodeApi
      */
-    public getPantoneList(options?: AxiosRequestConfig) {
+    public getPantoneList(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).getPantoneList(options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -28631,7 +26047,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDownloadLog: async (createDownloadLogRequest?: CreateDownloadLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createDownloadLog: async (createDownloadLogRequest?: CreateDownloadLogRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/download-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28669,7 +26085,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEmbedPageLog: async (createReceivePageLogRequest?: CreateReceivePageLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createEmbedPageLog: async (createReceivePageLogRequest?: CreateReceivePageLogRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/embed-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28707,7 +26123,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReceivePageLog: async (createReceivePageLogRequest?: CreateReceivePageLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createReceivePageLog: async (createReceivePageLogRequest?: CreateReceivePageLogRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/receive-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28745,7 +26161,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStickerTagFilterLog: async (createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createStickerTagFilterLog: async (createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/sticker-tag-filter-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28783,7 +26199,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createViewerLog: async (createViewerLogRequest?: CreateViewerLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createViewerLog: async (createViewerLogRequest?: CreateViewerLogRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/viewer-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28821,7 +26237,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDashboard: async (getDashboardRequest?: GetDashboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getDashboard: async (getDashboardRequest?: GetDashboardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28869,9 +26285,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createDownloadLog(createDownloadLogRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.createDownloadLog']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -28880,9 +26298,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(createReceivePageLogRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.createEmbedPageLog']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -28891,9 +26311,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(createReceivePageLogRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.createReceivePageLog']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28902,9 +26324,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createStickerTagFilterLog(createStickerTagFilterLogRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.createStickerTagFilterLog']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -28913,9 +26337,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createViewerLog(createViewerLogRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.createViewerLog']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -28924,9 +26350,11 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDashboard(getDashboardRequest?: GetDashboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDashboard200Response>> {
+        async getDashboard(getDashboardRequest?: GetDashboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDashboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getDashboard(getDashboardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DashboardApi.getDashboard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -28945,7 +26373,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createDownloadLog(createDownloadLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28955,7 +26383,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createEmbedPageLog(createReceivePageLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28965,7 +26393,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createReceivePageLog(createReceivePageLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28975,7 +26403,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createStickerTagFilterLog(createStickerTagFilterLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28985,7 +26413,7 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createViewerLog(createViewerLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29016,7 +26444,7 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig) {
+    public createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createDownloadLog(createDownloadLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29028,7 +26456,7 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig) {
+    public createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createEmbedPageLog(createReceivePageLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29040,7 +26468,7 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: AxiosRequestConfig) {
+    public createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createReceivePageLog(createReceivePageLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29052,7 +26480,7 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig) {
+    public createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createStickerTagFilterLog(createStickerTagFilterLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29064,7 +26492,7 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig) {
+    public createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createViewerLog(createViewerLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29076,10 +26504,11 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public getDashboard(getDashboardRequest?: GetDashboardRequest, options?: AxiosRequestConfig) {
+    public getDashboard(getDashboardRequest?: GetDashboardRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).getDashboard(getDashboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -29095,7 +26524,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        changeDigitalThreadWorkflowStage: async (changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        changeDigitalThreadWorkflowStage: async (changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'changeDigitalThreadWorkflowStageRequest' is not null or undefined
             assertParamExists('changeDigitalThreadWorkflowStage', 'changeDigitalThreadWorkflowStageRequest', changeDigitalThreadWorkflowStageRequest)
             const localVarPath = `/digital-thread/update/workflow-stage`;
@@ -29135,7 +26564,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadCreatePost: async (digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadCreatePost: async (digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29173,7 +26602,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetListPost: async (digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadGetListPost: async (digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29211,7 +26640,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost: async (digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadGetMaterialPost: async (digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29249,7 +26678,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetPost: async (digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadGetPost: async (digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29287,7 +26716,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerChildStickerCreatePost: async (digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerChildStickerCreatePost: async (digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/child-sticker/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29325,7 +26754,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerCreatePost: async (digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerCreatePost: async (digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29363,7 +26792,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerReadChildStickerPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerReadChildStickerPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/read-child-sticker`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29401,7 +26830,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerStarPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerStarPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/star`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29439,7 +26868,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUnstarPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerUnstarPost: async (digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/unstar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29477,7 +26906,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUpdateTagPost: async (digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadStickerUpdateTagPost: async (digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/sticker/update/tag`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29515,7 +26944,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadUpdateDigitalThreadNamePost: async (digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        digitalThreadUpdateDigitalThreadNamePost: async (digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/digital-thread/update/digital-thread-name`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29553,7 +26982,7 @@ export const DigitalThreadApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDigitalThreadWorkflowStageOptions: async (getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getDigitalThreadWorkflowStageOptions: async (getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getDigitalThreadWorkflowStageOptionsRequest' is not null or undefined
             assertParamExists('getDigitalThreadWorkflowStageOptions', 'getDigitalThreadWorkflowStageOptionsRequest', getDigitalThreadWorkflowStageOptionsRequest)
             const localVarPath = `/digital-thread/workflow-stage/get-options`;
@@ -29603,9 +27032,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
+        async changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.changeDigitalThreadWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29614,9 +27045,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadCreatePost(digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
+        async digitalThreadCreatePost(digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadCreatePost(digitalThreadCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29625,9 +27058,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetListPost(digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadGetListPost200Response>> {
+        async digitalThreadGetListPost(digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetListPost(digitalThreadGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetListPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29636,9 +27071,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetMaterialPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29647,9 +27084,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetPost(digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
+        async digitalThreadGetPost(digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetPost(digitalThreadGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29658,9 +27097,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerChildStickerCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29669,9 +27110,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29680,9 +27123,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerReadChildStickerPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29691,9 +27136,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerStarPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29702,9 +27149,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUnstarPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29713,9 +27162,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUpdateTagPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29724,9 +27175,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadUpdateDigitalThreadNamePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -29735,9 +27188,11 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDigitalThreadWorkflowStageOptions200Response>> {
+        async getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDigitalThreadWorkflowStageOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DigitalThreadApi.getDigitalThreadWorkflowStageOptions']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -29806,7 +27261,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29816,7 +27271,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29826,7 +27281,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29836,7 +27291,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29846,7 +27301,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29856,7 +27311,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29866,7 +27321,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29897,7 +27352,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29909,7 +27364,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadCreatePost(digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadCreatePost(digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadCreatePost(digitalThreadCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29921,7 +27376,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadGetListPost(digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadGetListPost(digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadGetListPost(digitalThreadGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29933,7 +27388,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29945,7 +27400,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadGetPost(digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadGetPost(digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadGetPost(digitalThreadGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29957,7 +27412,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29969,7 +27424,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29981,7 +27436,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -29993,7 +27448,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30005,7 +27460,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30017,7 +27472,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30029,7 +27484,7 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: AxiosRequestConfig) {
+    public digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30041,10 +27496,11 @@ export class DigitalThreadApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DigitalThreadApi
      */
-    public getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options?: AxiosRequestConfig) {
+    public getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options?: RawAxiosRequestConfig) {
         return DigitalThreadApiFp(this.configuration).getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -30060,7 +27516,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
             assertParamExists('getEmbedInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
             const localVarPath = `/embed/get-info`;
@@ -30096,7 +27552,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareListRequest' is not null or undefined
             assertParamExists('getEmbedList', 'getReceivedShareListRequest', getReceivedShareListRequest)
             const localVarPath = `/embed/get-list`;
@@ -30132,7 +27588,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareMaterialRequest' is not null or undefined
             assertParamExists('getEmbedMaterial', 'getReceivedShareMaterialRequest', getReceivedShareMaterialRequest)
             const localVarPath = `/embed/get-material`;
@@ -30178,9 +27634,11 @@ export const EmbedApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+        async getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getReceivedShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EmbedApi.getEmbedInfo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30189,9 +27647,11 @@ export const EmbedApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+        async getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getReceivedShareListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EmbedApi.getEmbedList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30200,9 +27660,11 @@ export const EmbedApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+        async getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getReceivedShareMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['EmbedApi.getEmbedMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -30262,7 +27724,7 @@ export class EmbedApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
+    public getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig) {
         return EmbedApiFp(this.configuration).getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30274,7 +27736,7 @@ export class EmbedApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig) {
+    public getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig) {
         return EmbedApiFp(this.configuration).getEmbedList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30286,10 +27748,11 @@ export class EmbedApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig) {
+    public getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig) {
         return EmbedApiFp(this.configuration).getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -30305,7 +27768,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkTokenStatus: async (checkTokenStatusRequest: CheckTokenStatusRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkTokenStatus: async (checkTokenStatusRequest: CheckTokenStatusRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'checkTokenStatusRequest' is not null or undefined
             assertParamExists('checkTokenStatus', 'checkTokenStatusRequest', checkTokenStatusRequest)
             const localVarPath = `/general/check-token-status`;
@@ -30345,7 +27808,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneCheckByMaterial: async (cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneCheckByMaterial: async (cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/general/clone-check/material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30383,7 +27846,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneCheckByNode: async (cloneCheckByNodeRequest: CloneCheckByNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneCheckByNode: async (cloneCheckByNodeRequest: CloneCheckByNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cloneCheckByNodeRequest' is not null or undefined
             assertParamExists('cloneCheckByNode', 'cloneCheckByNodeRequest', cloneCheckByNodeRequest)
             const localVarPath = `/general/clone-check/node`;
@@ -30423,7 +27886,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getS3UploadUrl: async (getUploadUrlRequest?: GetUploadUrlRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getS3UploadUrl: async (getUploadUrlRequest?: GetUploadUrlRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/general/get-s3-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30461,7 +27924,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUploadUrl: async (getUploadUrlRequest?: GetUploadUrlRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getUploadUrl: async (getUploadUrlRequest?: GetUploadUrlRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/general/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30499,7 +27962,7 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshToken: async (refreshTokenRequest?: RefreshTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refreshToken: async (refreshTokenRequest?: RefreshTokenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/general/refresh-token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30547,9 +28010,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckTokenStatus200Response>> {
+        async checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckTokenStatus200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkTokenStatus(checkTokenStatusRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.checkTokenStatus']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30558,9 +28023,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneCheckByMaterial(cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
+        async cloneCheckByMaterial(cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneCheckByMaterial(cloneCheckByMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.cloneCheckByMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30569,9 +28036,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneCheckByNode(cloneCheckByNodeRequest: CloneCheckByNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
+        async cloneCheckByNode(cloneCheckByNodeRequest: CloneCheckByNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneCheckByNode(cloneCheckByNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.cloneCheckByNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30580,9 +28049,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getS3UploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetS3UploadUrl200Response>> {
+        async getS3UploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetS3UploadUrl200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getS3UploadUrl(getUploadUrlRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.getS3UploadUrl']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30591,9 +28062,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUploadUrl200Response>> {
+        async getUploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUploadUrl200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUploadUrl(getUploadUrlRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.getUploadUrl']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -30602,9 +28075,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshToken(refreshTokenRequest?: RefreshTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshToken200Response>> {
+        async refreshToken(refreshTokenRequest?: RefreshTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshToken200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken(refreshTokenRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GeneralApi.refreshToken']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -30694,7 +28169,7 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: AxiosRequestConfig) {
+    public checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).checkTokenStatus(checkTokenStatusRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30706,7 +28181,7 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public cloneCheckByMaterial(cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options?: AxiosRequestConfig) {
+    public cloneCheckByMaterial(cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).cloneCheckByMaterial(cloneCheckByMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30718,7 +28193,7 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public cloneCheckByNode(cloneCheckByNodeRequest: CloneCheckByNodeRequest, options?: AxiosRequestConfig) {
+    public cloneCheckByNode(cloneCheckByNodeRequest: CloneCheckByNodeRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).cloneCheckByNode(cloneCheckByNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30730,7 +28205,7 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public getS3UploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: AxiosRequestConfig) {
+    public getS3UploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).getS3UploadUrl(getUploadUrlRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30742,7 +28217,7 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public getUploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: AxiosRequestConfig) {
+    public getUploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).getUploadUrl(getUploadUrlRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -30754,10 +28229,11 @@ export class GeneralApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public refreshToken(refreshTokenRequest?: RefreshTokenRequest, options?: AxiosRequestConfig) {
+    public refreshToken(refreshTokenRequest?: RefreshTokenRequest, options?: RawAxiosRequestConfig) {
         return GeneralApiFp(this.configuration).refreshToken(refreshTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -30773,7 +28249,7 @@ export const GroupApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupCreatePost: async (orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupCreatePost: async (orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30811,7 +28287,7 @@ export const GroupApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupDeletePost: async (orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupDeletePost: async (orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30849,7 +28325,7 @@ export const GroupApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupGetPost: async (orgGroupGetPostRequest?: OrgGroupGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupGetPost: async (orgGroupGetPostRequest?: OrgGroupGetPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30887,7 +28363,7 @@ export const GroupApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupUpdatePost: async (orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupUpdatePost: async (orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30935,9 +28411,11 @@ export const GroupApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupCreatePost(orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupCreatePost200Response>> {
+        async orgGroupCreatePost(orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupCreatePost(orgGroupCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupApi.orgGroupCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -30946,9 +28424,11 @@ export const GroupApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupDeletePost(orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgGroupDeletePost(orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupDeletePost(orgGroupDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupApi.orgGroupDeletePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -30957,9 +28437,11 @@ export const GroupApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupGetPost(orgGroupGetPostRequest?: OrgGroupGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupGetPost(orgGroupGetPostRequest?: OrgGroupGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupGetPost(orgGroupGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupApi.orgGroupGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -30968,9 +28450,11 @@ export const GroupApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupUpdatePost(orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUpdatePost200Response>> {
+        async orgGroupUpdatePost(orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUpdatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupUpdatePost(orgGroupUpdatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupApi.orgGroupUpdatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -31040,7 +28524,7 @@ export class GroupApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupApi
      */
-    public orgGroupCreatePost(orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options?: AxiosRequestConfig) {
+    public orgGroupCreatePost(orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options?: RawAxiosRequestConfig) {
         return GroupApiFp(this.configuration).orgGroupCreatePost(orgGroupCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31052,7 +28536,7 @@ export class GroupApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupApi
      */
-    public orgGroupDeletePost(orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options?: AxiosRequestConfig) {
+    public orgGroupDeletePost(orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options?: RawAxiosRequestConfig) {
         return GroupApiFp(this.configuration).orgGroupDeletePost(orgGroupDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31064,7 +28548,7 @@ export class GroupApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupApi
      */
-    public orgGroupGetPost(orgGroupGetPostRequest?: OrgGroupGetPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupGetPost(orgGroupGetPostRequest?: OrgGroupGetPostRequest, options?: RawAxiosRequestConfig) {
         return GroupApiFp(this.configuration).orgGroupGetPost(orgGroupGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31076,10 +28560,11 @@ export class GroupApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupApi
      */
-    public orgGroupUpdatePost(orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options?: AxiosRequestConfig) {
+    public orgGroupUpdatePost(orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options?: RawAxiosRequestConfig) {
         return GroupApiFp(this.configuration).orgGroupUpdatePost(orgGroupUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -31095,7 +28580,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberAddMembersPost: async (orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberAddMembersPost: async (orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/add-members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31133,7 +28618,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberCancelInvitationPost: async (orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberCancelInvitationPost: async (orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/cancel-invitation`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31171,7 +28656,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberChangeRolePost: async (orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberChangeRolePost: async (orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/change-role`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31209,7 +28694,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberDeleteMemberPost: async (orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberDeleteMemberPost: async (orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/delete-member`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31247,7 +28732,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberInviteViaEmailPost: async (orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberInviteViaEmailPost: async (orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/invite-via-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31285,7 +28770,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberJoinViaEmailPost: async (orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberJoinViaEmailPost: async (orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/join-via-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31333,9 +28818,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberAddMembersPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -31344,9 +28831,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberCancelInvitationPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -31355,9 +28844,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberChangeRolePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -31366,9 +28857,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberDeleteMemberPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -31377,9 +28870,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
+        async orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberInviteViaEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -31388,9 +28883,11 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberJoinViaEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -31459,7 +28956,7 @@ export const GroupMemberApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -31480,7 +28977,7 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31492,7 +28989,7 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31504,7 +29001,7 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31516,7 +29013,7 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31528,7 +29025,7 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -31540,10 +29037,11 @@ export class GroupMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig) {
         return GroupMemberApiFp(this.configuration).orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -31559,7 +29057,7 @@ export const GroupUserApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupUserGetPost: async (orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupUserGetPost: async (orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/user/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31607,9 +29105,11 @@ export const GroupUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupUserGetPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUserGetPost200Response>> {
+        async orgGroupUserGetPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUserGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupUserGetPost(orgGroupUserGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['GroupUserApi.orgGroupUserGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -31649,10 +29149,11 @@ export class GroupUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupUserApi
      */
-    public orgGroupUserGetPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: AxiosRequestConfig) {
+    public orgGroupUserGetPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: RawAxiosRequestConfig) {
         return GroupUserApiFp(this.configuration).orgGroupUserGetPost(orgGroupUserGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -31668,7 +29169,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addMoodboardShare: async (addMoodboardShareRequest: AddMoodboardShareRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addMoodboardShare: async (addMoodboardShareRequest: AddMoodboardShareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addMoodboardShareRequest' is not null or undefined
             assertParamExists('addMoodboardShare', 'addMoodboardShareRequest', addMoodboardShareRequest)
             const localVarPath = `/moodboard/share/add`;
@@ -31708,7 +29209,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkCloneMoodboardOfferNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkCloneMoodboardOfferNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'deleteWorkspaceNodeRequest' is not null or undefined
             assertParamExists('checkCloneMoodboardOfferNode', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
             const localVarPath = `/moodboard/offer/node/clone-check`;
@@ -31748,7 +29249,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneMoodboardNode: async (cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneMoodboardNode: async (cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cloneMoodboardNodeRequest' is not null or undefined
             assertParamExists('cloneMoodboardNode', 'cloneMoodboardNodeRequest', cloneMoodboardNodeRequest)
             const localVarPath = `/moodboard/offer/node/clone`;
@@ -31788,7 +29289,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboard: async (createMoodboardRequest: CreateMoodboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createMoodboard: async (createMoodboardRequest: CreateMoodboardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createMoodboardRequest' is not null or undefined
             assertParamExists('createMoodboard', 'createMoodboardRequest', createMoodboardRequest)
             const localVarPath = `/moodboard/create`;
@@ -31828,7 +29329,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboardComment: async (createMoodboardCommentRequest: CreateMoodboardCommentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createMoodboardComment: async (createMoodboardCommentRequest: CreateMoodboardCommentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createMoodboardCommentRequest' is not null or undefined
             assertParamExists('createMoodboardComment', 'createMoodboardCommentRequest', createMoodboardCommentRequest)
             const localVarPath = `/moodboard/offer/comment/create`;
@@ -31868,7 +29369,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboardOfferNodeCollection: async (createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createMoodboardOfferNodeCollection: async (createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createMoodboardOfferNodeCollectionRequest' is not null or undefined
             assertParamExists('createMoodboardOfferNodeCollection', 'createMoodboardOfferNodeCollectionRequest', createMoodboardOfferNodeCollectionRequest)
             const localVarPath = `/moodboard/offer/node/collection/create`;
@@ -31908,7 +29409,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboardOfferNodeMaterial: async (createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createMoodboardOfferNodeMaterial: async (createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createMoodboardOfferNodeMaterialRequest' is not null or undefined
             assertParamExists('createMoodboardOfferNodeMaterial', 'createMoodboardOfferNodeMaterialRequest', createMoodboardOfferNodeMaterialRequest)
             const localVarPath = `/moodboard/offer/node/material/create`;
@@ -31948,7 +29449,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMoodboard: async (getMoodboardRequest: GetMoodboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteMoodboard: async (getMoodboardRequest: GetMoodboardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardRequest' is not null or undefined
             assertParamExists('deleteMoodboard', 'getMoodboardRequest', getMoodboardRequest)
             const localVarPath = `/moodboard/delete`;
@@ -31988,7 +29489,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMoodboardOfferNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteMoodboardOfferNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'deleteWorkspaceNodeRequest' is not null or undefined
             assertParamExists('deleteMoodboardOfferNode', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
             const localVarPath = `/moodboard/offer/node/delete`;
@@ -32028,7 +29529,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exportMoodboardOfferPicked: async (exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exportMoodboardOfferPicked: async (exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'exportMoodboardOfferPickedRequest' is not null or undefined
             assertParamExists('exportMoodboardOfferPicked', 'exportMoodboardOfferPickedRequest', exportMoodboardOfferPickedRequest)
             const localVarPath = `/moodboard/offer/picked/export`;
@@ -32068,7 +29569,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboard: async (getMoodboardRequest: GetMoodboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboard: async (getMoodboardRequest: GetMoodboardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardRequest' is not null or undefined
             assertParamExists('getMoodboard', 'getMoodboardRequest', getMoodboardRequest)
             const localVarPath = `/moodboard/get`;
@@ -32108,7 +29609,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardComment: async (getMoodboardCommentRequest: GetMoodboardCommentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardComment: async (getMoodboardCommentRequest: GetMoodboardCommentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardCommentRequest' is not null or undefined
             assertParamExists('getMoodboardComment', 'getMoodboardCommentRequest', getMoodboardCommentRequest)
             const localVarPath = `/moodboard/offer/comment/get`;
@@ -32144,13 +29645,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList: async (getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getInternalSearchFilterOptionsRequest' is not null or undefined
-            assertParamExists('getMoodboardList', 'getInternalSearchFilterOptionsRequest', getInternalSearchFilterOptionsRequest)
+        getMoodboardList: async (oGBaseRequestBody: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'oGBaseRequestBody' is not null or undefined
+            assertParamExists('getMoodboardList', 'oGBaseRequestBody', oGBaseRequestBody)
             const localVarPath = `/moodboard/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32174,7 +29675,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -32188,7 +29689,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardOfferNodeCollection: async (getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardOfferNodeCollection: async (getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardOfferNodeCollectionRequest' is not null or undefined
             assertParamExists('getMoodboardOfferNodeCollection', 'getMoodboardOfferNodeCollectionRequest', getMoodboardOfferNodeCollectionRequest)
             const localVarPath = `/moodboard/offer/node/collection/get`;
@@ -32228,7 +29729,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardOfferNodeMaterial: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardOfferNodeMaterial: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
             assertParamExists('getMoodboardOfferNodeMaterial', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/material/get`;
@@ -32268,7 +29769,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardOfferPickedList: async (getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardOfferPickedList: async (getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardOfferPickedListRequest' is not null or undefined
             assertParamExists('getMoodboardOfferPickedList', 'getMoodboardOfferPickedListRequest', getMoodboardOfferPickedListRequest)
             const localVarPath = `/moodboard/offer/picked/get-list`;
@@ -32308,7 +29809,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardShareReceivedInfo: async (getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardShareReceivedInfo: async (getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardShareReceivedInfoRequest' is not null or undefined
             assertParamExists('getMoodboardShareReceivedInfo', 'getMoodboardShareReceivedInfoRequest', getMoodboardShareReceivedInfoRequest)
             const localVarPath = `/moodboard/share/received/get-info`;
@@ -32348,7 +29849,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardShareTarget: async (getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMoodboardShareTarget: async (getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMoodboardShareTargetRequest' is not null or undefined
             assertParamExists('getMoodboardShareTarget', 'getMoodboardShareTargetRequest', getMoodboardShareTargetRequest)
             const localVarPath = `/moodboard/share/get-target`;
@@ -32388,7 +29889,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportMoodboardOfferPicked: async (exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        massExportMoodboardOfferPicked: async (exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'exportMoodboardOfferPickedRequest' is not null or undefined
             assertParamExists('massExportMoodboardOfferPicked', 'exportMoodboardOfferPickedRequest', exportMoodboardOfferPickedRequest)
             const localVarPath = `/moodboard/offer/picked/mass-export`;
@@ -32428,7 +29929,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
             assertParamExists('pickMoodboardOfferNode', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/pick`;
@@ -32468,7 +29969,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeMoodboardShare: async (removeMoodboardShareRequest: RemoveMoodboardShareRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeMoodboardShare: async (removeMoodboardShareRequest: RemoveMoodboardShareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'removeMoodboardShareRequest' is not null or undefined
             assertParamExists('removeMoodboardShare', 'removeMoodboardShareRequest', removeMoodboardShareRequest)
             const localVarPath = `/moodboard/share/remove`;
@@ -32508,7 +30009,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveMoodboardShareReceived: async (saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        saveMoodboardShareReceived: async (saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'saveMoodboardShareReceivedRequest' is not null or undefined
             assertParamExists('saveMoodboardShareReceived', 'saveMoodboardShareReceivedRequest', saveMoodboardShareReceivedRequest)
             const localVarPath = `/moodboard/share/received/save`;
@@ -32548,7 +30049,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        unpickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        unpickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
             assertParamExists('unpickMoodboardOfferNode', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/unpick`;
@@ -32588,7 +30089,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMoodboard: async (updateMoodboardRequest: UpdateMoodboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateMoodboard: async (updateMoodboardRequest: UpdateMoodboardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateMoodboardRequest' is not null or undefined
             assertParamExists('updateMoodboard', 'updateMoodboardRequest', updateMoodboardRequest)
             const localVarPath = `/moodboard/update`;
@@ -32628,7 +30129,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMoodboardOfferNodeCollection: async (updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateMoodboardOfferNodeCollection: async (updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateMoodboardOfferNodeCollectionRequest' is not null or undefined
             assertParamExists('updateMoodboardOfferNodeCollection', 'updateMoodboardOfferNodeCollectionRequest', updateMoodboardOfferNodeCollectionRequest)
             const localVarPath = `/moodboard/offer/node/collection/update`;
@@ -32678,9 +30179,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addMoodboardShare(addMoodboardShareRequest: AddMoodboardShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
+        async addMoodboardShare(addMoodboardShareRequest: AddMoodboardShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addMoodboardShare(addMoodboardShareRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.addMoodboardShare']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32689,9 +30192,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
+        async checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.checkCloneMoodboardOfferNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32700,9 +30205,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneMoodboardNode(cloneMoodboardNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.cloneMoodboardNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32711,9 +30218,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
+        async createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboard(createMoodboardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.createMoodboard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32722,9 +30231,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboardComment(createMoodboardCommentRequest: CreateMoodboardCommentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
+        async createMoodboardComment(createMoodboardCommentRequest: CreateMoodboardCommentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardComment(createMoodboardCommentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardComment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32733,9 +30244,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+        async createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeCollection']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32744,9 +30257,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+        async createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32755,9 +30270,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
+        async deleteMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMoodboard(getMoodboardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.deleteMoodboard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32766,9 +30283,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.deleteMoodboardOfferNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32777,9 +30296,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportMoodboardOfferPicked200Response>> {
+        async exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportMoodboardOfferPicked200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.exportMoodboardOfferPicked']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32788,9 +30309,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
+        async getMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboard(getMoodboardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32799,20 +30322,24 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardComment(getMoodboardCommentRequest: GetMoodboardCommentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
+        async getMoodboardComment(getMoodboardCommentRequest: GetMoodboardCommentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardComment(getMoodboardCommentRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardComment']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(getInternalSearchFilterOptionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        async getMoodboardList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(oGBaseRequestBody, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32821,9 +30348,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+        async getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeCollection']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32832,9 +30361,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
+        async getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32843,9 +30374,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+        async getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferPickedList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32854,9 +30387,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardShareReceivedInfo200Response>> {
+        async getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardShareReceivedInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardShareReceivedInfo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32865,9 +30400,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
+        async getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardShareTarget(getMoodboardShareTargetRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardShareTarget']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32876,9 +30413,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.massExportMoodboardOfferPicked']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32887,9 +30426,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.pickMoodboardOfferNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32898,9 +30439,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeMoodboardShare(removeMoodboardShareRequest: RemoveMoodboardShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
+        async removeMoodboardShare(removeMoodboardShareRequest: RemoveMoodboardShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeMoodboardShare(removeMoodboardShareRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.removeMoodboardShare']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32909,9 +30452,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.saveMoodboardShareReceived']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32920,9 +30465,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.unpickMoodboardOfferNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32931,9 +30478,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMoodboard(updateMoodboardRequest: UpdateMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
+        async updateMoodboard(updateMoodboardRequest: UpdateMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMoodboard(updateMoodboardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.updateMoodboard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -32942,9 +30491,11 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+        async updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MoodboardApi.updateMoodboardOfferNodeCollection']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -32983,7 +30534,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cloneMoodboardNode(cloneMoodboardNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33043,7 +30594,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33079,12 +30630,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetMoodboardList200Response> {
-            return localVarFp.getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
+        getMoodboardList(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<GetMoodboardList200Response> {
+            return localVarFp.getMoodboardList(oGBaseRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -33143,7 +30694,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33153,7 +30704,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33173,7 +30724,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33183,7 +30734,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -33224,7 +30775,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public addMoodboardShare(addMoodboardShareRequest: AddMoodboardShareRequest, options?: AxiosRequestConfig) {
+    public addMoodboardShare(addMoodboardShareRequest: AddMoodboardShareRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).addMoodboardShare(addMoodboardShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33236,7 +30787,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33248,7 +30799,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: AxiosRequestConfig) {
+    public cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).cloneMoodboardNode(cloneMoodboardNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33260,7 +30811,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: AxiosRequestConfig) {
+    public createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).createMoodboard(createMoodboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33272,7 +30823,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public createMoodboardComment(createMoodboardCommentRequest: CreateMoodboardCommentRequest, options?: AxiosRequestConfig) {
+    public createMoodboardComment(createMoodboardCommentRequest: CreateMoodboardCommentRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).createMoodboardComment(createMoodboardCommentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33284,7 +30835,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig) {
+    public createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33296,7 +30847,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig) {
+    public createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33308,7 +30859,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public deleteMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: AxiosRequestConfig) {
+    public deleteMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).deleteMoodboard(getMoodboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33320,7 +30871,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33332,7 +30883,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig) {
+    public exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33344,7 +30895,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: AxiosRequestConfig) {
+    public getMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboard(getMoodboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33356,20 +30907,20 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardComment(getMoodboardCommentRequest: GetMoodboardCommentRequest, options?: AxiosRequestConfig) {
+    public getMoodboardComment(getMoodboardCommentRequest: GetMoodboardCommentRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardComment(getMoodboardCommentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 Moodboard 清單
-     * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
+     * @param {OGBaseRequestBody} oGBaseRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
+    public getMoodboardList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).getMoodboardList(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -33380,7 +30931,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig) {
+    public getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33392,7 +30943,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+    public getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33404,7 +30955,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options?: AxiosRequestConfig) {
+    public getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33416,7 +30967,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options?: AxiosRequestConfig) {
+    public getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33428,7 +30979,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: AxiosRequestConfig) {
+    public getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardShareTarget(getMoodboardShareTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33440,7 +30991,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: AxiosRequestConfig) {
+    public massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33452,7 +31003,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+    public pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33464,7 +31015,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public removeMoodboardShare(removeMoodboardShareRequest: RemoveMoodboardShareRequest, options?: AxiosRequestConfig) {
+    public removeMoodboardShare(removeMoodboardShareRequest: RemoveMoodboardShareRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).removeMoodboardShare(removeMoodboardShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33476,7 +31027,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: AxiosRequestConfig) {
+    public saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33488,7 +31039,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+    public unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33500,7 +31051,7 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public updateMoodboard(updateMoodboardRequest: UpdateMoodboardRequest, options?: AxiosRequestConfig) {
+    public updateMoodboard(updateMoodboardRequest: UpdateMoodboardRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).updateMoodboard(updateMoodboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -33512,10 +31063,11 @@ export class MoodboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig) {
+    public updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -33531,7 +31083,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgCheckNameExistPost: async (orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgCheckNameExistPost: async (orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/check-name-exist`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33569,7 +31121,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgCreatePost: async (orgCreatePostRequest?: OrgCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgCreatePost: async (orgCreatePostRequest?: OrgCreatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33607,7 +31159,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgCreateUploadMaterialEmailPost: async (orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgCreateUploadMaterialEmailPost: async (orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/create-upload-material-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33645,7 +31197,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgDeletePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgDeletePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33683,7 +31235,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGetPost: async (orgGetPostRequest: OrgGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGetPost: async (orgGetPostRequest: OrgGetPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'orgGetPostRequest' is not null or undefined
             assertParamExists('orgGetPost', 'orgGetPostRequest', orgGetPostRequest)
             const localVarPath = `/org/get`;
@@ -33723,7 +31275,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgRemoveLogoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgRemoveLogoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/remove-logo`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33761,7 +31313,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUpdateLogoGetUploadUrlPost: async (orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUpdateLogoGetUploadUrlPost: async (orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/update-logo/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33799,7 +31351,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUpdateLogoPost: async (orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUpdateLogoPost: async (orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/update-logo`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33837,7 +31389,7 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUpdatePost: async (orgUpdatePostRequest?: OrgUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUpdatePost: async (orgUpdatePostRequest?: OrgUpdatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33885,9 +31437,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgCheckNameExistPost(orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCheckNameExistPost200Response>> {
+        async orgCheckNameExistPost(orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCheckNameExistPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCheckNameExistPost(orgCheckNameExistPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgCheckNameExistPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -33896,9 +31450,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgCreatePost(orgCreatePostRequest?: OrgCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
+        async orgCreatePost(orgCreatePostRequest?: OrgCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCreatePost(orgCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgCreatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -33907,9 +31463,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
+        async orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgCreateUploadMaterialEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -33918,9 +31476,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgDeletePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async orgDeletePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgDeletePost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgDeletePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -33929,9 +31489,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGetPost(orgGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -33940,9 +31502,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgRemoveLogoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgRemoveLogoPost200Response>> {
+        async orgRemoveLogoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgRemoveLogoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgRemoveLogoPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgRemoveLogoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -33951,9 +31515,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUpdateLogoGetUploadUrlPost200Response>> {
+        async orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUpdateLogoGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgUpdateLogoGetUploadUrlPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -33962,9 +31528,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUpdateLogoPost(orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgUpdateLogoPost(orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdateLogoPost(orgUpdateLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgUpdateLogoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -33973,9 +31541,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUpdatePost(orgUpdatePostRequest?: OrgUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgUpdatePost(orgUpdatePostRequest?: OrgUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdatePost(orgUpdatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgApi.orgUpdatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -34095,7 +31665,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgCheckNameExistPost(orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options?: AxiosRequestConfig) {
+    public orgCheckNameExistPost(orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgCheckNameExistPost(orgCheckNameExistPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34107,7 +31677,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgCreatePost(orgCreatePostRequest?: OrgCreatePostRequest, options?: AxiosRequestConfig) {
+    public orgCreatePost(orgCreatePostRequest?: OrgCreatePostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgCreatePost(orgCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34119,7 +31689,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options?: AxiosRequestConfig) {
+    public orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34131,7 +31701,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgDeletePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgDeletePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgDeletePost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34143,7 +31713,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: AxiosRequestConfig) {
+    public orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgGetPost(orgGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34155,7 +31725,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgRemoveLogoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgRemoveLogoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgRemoveLogoPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34167,7 +31737,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
+    public orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34179,7 +31749,7 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgUpdateLogoPost(orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgUpdateLogoPost(orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgUpdateLogoPost(orgUpdateLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34191,10 +31761,11 @@ export class OrgApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgUpdatePost(orgUpdatePostRequest?: OrgUpdatePostRequest, options?: AxiosRequestConfig) {
+    public orgUpdatePost(orgUpdatePostRequest?: OrgUpdatePostRequest, options?: RawAxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgUpdatePost(orgUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -34210,7 +31781,7 @@ export const OrgMemberApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberCancelInvitationPost: async (orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgMemberCancelInvitationPost: async (orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/member/cancel-invitation`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34248,7 +31819,7 @@ export const OrgMemberApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberChangeRolePost: async (orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgMemberChangeRolePost: async (orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/member/change-role`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34286,7 +31857,7 @@ export const OrgMemberApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberDeletePost: async (orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgMemberDeletePost: async (orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/member/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34324,7 +31895,7 @@ export const OrgMemberApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberInviteViaEmailPost: async (orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgMemberInviteViaEmailPost: async (orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/member/invite-via-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34362,7 +31933,7 @@ export const OrgMemberApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberJoinViaLinkPost: async (orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgMemberJoinViaLinkPost: async (orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/member/join-via-link`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34410,9 +31981,11 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberCancelInvitationPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -34421,9 +31994,11 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberChangeRolePost(orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgMemberChangeRolePost(orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberChangeRolePost(orgMemberChangeRolePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberChangeRolePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -34432,9 +32007,11 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberDeletePost(orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgMemberDeletePost(orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberDeletePost(orgMemberDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberDeletePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -34443,9 +32020,11 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberInviteViaEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -34454,9 +32033,11 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberJoinViaLinkPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -34515,7 +32096,7 @@ export const OrgMemberApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -34536,7 +32117,7 @@ export class OrgMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgMemberApi
      */
-    public orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options?: AxiosRequestConfig) {
+    public orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig) {
         return OrgMemberApiFp(this.configuration).orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34548,7 +32129,7 @@ export class OrgMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgMemberApi
      */
-    public orgMemberChangeRolePost(orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options?: AxiosRequestConfig) {
+    public orgMemberChangeRolePost(orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options?: RawAxiosRequestConfig) {
         return OrgMemberApiFp(this.configuration).orgMemberChangeRolePost(orgMemberChangeRolePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34560,7 +32141,7 @@ export class OrgMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgMemberApi
      */
-    public orgMemberDeletePost(orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options?: AxiosRequestConfig) {
+    public orgMemberDeletePost(orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options?: RawAxiosRequestConfig) {
         return OrgMemberApiFp(this.configuration).orgMemberDeletePost(orgMemberDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34572,7 +32153,7 @@ export class OrgMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgMemberApi
      */
-    public orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options?: AxiosRequestConfig) {
+    public orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig) {
         return OrgMemberApiFp(this.configuration).orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -34584,10 +32165,11 @@ export class OrgMemberApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgMemberApi
      */
-    public orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig) {
+    public orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig) {
         return OrgMemberApiFp(this.configuration).orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -34603,7 +32185,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentBillingInfoUpdatePost: async (orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentBillingInfoUpdatePost: async (orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/billing-info/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34641,7 +32223,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentCardInfoCreateSetupPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentCardInfoCreateSetupPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/card-info/create-setup`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34679,7 +32261,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentCardInfoSetupCustomerPost: async (orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentCardInfoSetupCustomerPost: async (orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/card-info/setup-customer`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34717,7 +32299,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentGetLastMonthUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentGetLastMonthUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/get-last-month-unbilled-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34754,7 +32336,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentGetPricingPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentGetPricingPost: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/get-pricing`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34789,7 +32371,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentGetUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentGetUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/get-unbilled-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34827,7 +32409,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentInvoiceGetListPost: async (orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentInvoiceGetListPost: async (orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/invoice/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34865,7 +32447,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentInvoiceGetPost: async (orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentInvoiceGetPost: async (orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/invoice/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34903,7 +32485,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentInvoiceUpdateBillingInfoPost: async (orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentInvoiceUpdateBillingInfoPost: async (orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/invoice/update-billing-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34941,7 +32523,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentPayLastMonthUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPaymentPayLastMonthUnbilledInfoPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/payment/pay-last-month-unbilled-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34979,7 +32561,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanActivatePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanActivatePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/activate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35017,7 +32599,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanCancelMaterialPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanCancelMaterialPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/cancel/material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35055,7 +32637,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanDeactivatePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanDeactivatePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/deactivate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35093,7 +32675,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanPurchaseMaterialGetEstimateChargingPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanPurchaseMaterialGetEstimateChargingPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/purchase/material/get-estimate-charging`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35131,7 +32713,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanPurchaseMaterialPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanPurchaseMaterialPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/purchase/material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35169,7 +32751,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanPurchaseU3mPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanPurchaseU3mPost: async (orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/purchase/u3m`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35207,7 +32789,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanUpgradeGetEstimateChargingPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanUpgradeGetEstimateChargingPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/upgrade/get-estimate-charging`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35245,7 +32827,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanUpgradePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanUpgradePost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/upgrade`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35283,7 +32865,7 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanUpgradeRequestPost: async (orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgPlanUpgradeRequestPost: async (orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/plan/upgrade-request`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35331,9 +32913,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentBillingInfoUpdatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35342,9 +32926,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentCardInfoCreateSetupPost200Response>> {
+        async orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentCardInfoCreateSetupPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoCreateSetupPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35353,9 +32939,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoSetupCustomerPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35364,9 +32952,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
+        async orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetLastMonthUnbilledInfoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35374,9 +32964,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentGetPricingPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetPricingPost200Response>> {
+        async orgPaymentGetPricingPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetPricingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetPricingPost(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetPricingPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35385,9 +32977,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
+        async orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetUnbilledInfoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35396,9 +32990,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetListPost200Response>> {
+        async orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetListPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35407,9 +33003,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
+        async orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35418,9 +33016,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
+        async orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceUpdateBillingInfoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35429,9 +33029,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentPayLastMonthUnbilledInfoPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35440,9 +33042,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanActivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPlanActivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanActivatePost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanActivatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35451,9 +33055,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanCancelMaterialPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35462,9 +33068,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanDeactivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPlanDeactivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanDeactivatePost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanDeactivatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35473,9 +33081,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseMaterialGetEstimateChargingPost200Response>> {
+        async orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseMaterialGetEstimateChargingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialGetEstimateChargingPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35484,9 +33094,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35495,9 +33107,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseU3mPost200Response>> {
+        async orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseU3mPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseU3mPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35506,9 +33120,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanUpgradeGetEstimateChargingPost200Response>> {
+        async orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanUpgradeGetEstimateChargingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeGetEstimateChargingPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35517,9 +33133,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanUpgradePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgPlanUpgradePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradePost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -35528,9 +33146,11 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeRequestPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -35569,7 +33189,7 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -35728,7 +33348,7 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -35749,7 +33369,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35761,7 +33381,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35773,7 +33393,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35785,7 +33405,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35796,7 +33416,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentGetPricingPost(options?: AxiosRequestConfig) {
+    public orgPaymentGetPricingPost(options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentGetPricingPost(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35808,7 +33428,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35820,7 +33440,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35832,7 +33452,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35844,7 +33464,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35856,7 +33476,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35868,7 +33488,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanActivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanActivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanActivatePost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35880,7 +33500,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35892,7 +33512,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanDeactivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanDeactivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanDeactivatePost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35904,7 +33524,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35916,7 +33536,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35928,7 +33548,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35940,7 +33560,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35952,7 +33572,7 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanUpgradePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanUpgradePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanUpgradePost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -35964,10 +33584,11 @@ export class OrgPaymentApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgPaymentApi
      */
-    public orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: AxiosRequestConfig) {
+    public orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -35983,7 +33604,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserGetPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserGetPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36021,7 +33642,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserReadNotificationPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserReadNotificationPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/read-notification`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36059,7 +33680,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserRemoveAvatarPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserRemoveAvatarPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/remove-avatar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36097,7 +33718,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserUpdateAvatarGetUploadUrlPost: async (orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserUpdateAvatarGetUploadUrlPost: async (orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/update-avatar/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36135,7 +33756,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserUpdateAvatarPost: async (orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserUpdateAvatarPost: async (orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/update-avatar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36173,7 +33794,7 @@ export const OrgUserApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgUserUpdateDisplayNamePost: async (orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgUserUpdateDisplayNamePost: async (orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/user/update-display-name`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36221,9 +33842,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserGetPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
+        async orgUserGetPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserGetPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36232,9 +33855,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserReadNotificationPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
+        async orgUserReadNotificationPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserReadNotificationPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserReadNotificationPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36243,9 +33868,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserRemoveAvatarPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserRemoveAvatarPost200Response>> {
+        async orgUserRemoveAvatarPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserRemoveAvatarPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserRemoveAvatarPost(orgRemoveLogoPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserRemoveAvatarPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36254,9 +33881,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserUpdateAvatarGetUploadUrlPost200Response>> {
+        async orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserUpdateAvatarGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarGetUploadUrlPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36265,9 +33894,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
+        async orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36276,9 +33907,11 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
+        async orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateDisplayNamePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -36368,7 +34001,7 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserGetPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgUserGetPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserGetPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36380,7 +34013,7 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserReadNotificationPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgUserReadNotificationPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserReadNotificationPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36392,7 +34025,7 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserRemoveAvatarPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: AxiosRequestConfig) {
+    public orgUserRemoveAvatarPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserRemoveAvatarPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36404,7 +34037,7 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
+    public orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36416,7 +34049,7 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options?: AxiosRequestConfig) {
+    public orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36428,10 +34061,11 @@ export class OrgUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgUserApi
      */
-    public orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options?: AxiosRequestConfig) {
+    public orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options?: RawAxiosRequestConfig) {
         return OrgUserApiFp(this.configuration).orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -36447,7 +34081,7 @@ export const OrgValueAddedServiceApiAxiosParamCreator = function (configuration?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgValueAddedServiceMade2flowScheduleMeetingPost: async (orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgValueAddedServiceMade2flowScheduleMeetingPost: async (orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/value-added-service/made2flow/schedule-meeting`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36495,9 +34129,11 @@ export const OrgValueAddedServiceApiFp = function(configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
+        async orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['OrgValueAddedServiceApi.orgValueAddedServiceMade2flowScheduleMeetingPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -36537,10 +34173,11 @@ export class OrgValueAddedServiceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrgValueAddedServiceApi
      */
-    public orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options?: AxiosRequestConfig) {
+    public orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options?: RawAxiosRequestConfig) {
         return OrgValueAddedServiceApiFp(this.configuration).orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -36556,7 +34193,7 @@ export const PollingApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pollingDigitalThreadStickerTagListGetPost: async (oGBaseRequestBody?: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pollingDigitalThreadStickerTagListGetPost: async (oGBaseRequestBody?: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/polling/digital-thread/sticker/tag-list/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36590,7 +34227,7 @@ export const PollingApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pollingSidebarPost: async (pollingSidebarPostRequest?: PollingSidebarPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pollingSidebarPost: async (pollingSidebarPostRequest?: PollingSidebarPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/polling/sidebar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36634,9 +34271,11 @@ export const PollingApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response>> {
+        async pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PollingApi.pollingDigitalThreadStickerTagListGetPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -36645,9 +34284,11 @@ export const PollingApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pollingSidebarPost(pollingSidebarPostRequest?: PollingSidebarPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingSidebarPost200Response>> {
+        async pollingSidebarPost(pollingSidebarPostRequest?: PollingSidebarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingSidebarPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pollingSidebarPost(pollingSidebarPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PollingApi.pollingSidebarPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -36697,7 +34338,7 @@ export class PollingApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PollingApi
      */
-    public pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: AxiosRequestConfig) {
+    public pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
         return PollingApiFp(this.configuration).pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36709,10 +34350,11 @@ export class PollingApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PollingApi
      */
-    public pollingSidebarPost(pollingSidebarPostRequest?: PollingSidebarPostRequest, options?: AxiosRequestConfig) {
+    public pollingSidebarPost(pollingSidebarPostRequest?: PollingSidebarPostRequest, options?: RawAxiosRequestConfig) {
         return PollingApiFp(this.configuration).pollingSidebarPost(pollingSidebarPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -36728,7 +34370,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelExcelProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelExcelProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('cancelExcelProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/excel/cancel`;
@@ -36768,7 +34410,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelMaterialUploadProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelMaterialUploadProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('cancelMaterialUploadProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/material-upload/cancel`;
@@ -36808,7 +34450,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelOnlineSpreadSheetProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelOnlineSpreadSheetProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('cancelOnlineSpreadSheetProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/online-spread-sheet/cancel`;
@@ -36848,7 +34490,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelU3mProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelU3mProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('cancelU3mProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/u3m/cancel`;
@@ -36888,7 +34530,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressList: async (getExcelProgressListRequest: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExcelProgressList: async (getExcelProgressListRequest: GetExcelProgressListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getExcelProgressListRequest' is not null or undefined
             assertParamExists('getExcelProgressList', 'getExcelProgressListRequest', getExcelProgressListRequest)
             const localVarPath = `/progress/excel/get-list`;
@@ -36928,7 +34570,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExcelProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('getExcelProgressMaterialList', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/excel/get-material-list`;
@@ -36968,7 +34610,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMaterialUploadProgressList: async (getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMaterialUploadProgressList: async (getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getMaterialUploadProgressListRequest' is not null or undefined
             assertParamExists('getMaterialUploadProgressList', 'getMaterialUploadProgressListRequest', getMaterialUploadProgressListRequest)
             const localVarPath = `/progress/material-upload/get-list`;
@@ -37003,12 +34645,52 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress Item
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('getOnlineSpreadSheetProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
+            const localVarPath = `/progress/online-spread-sheet/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Progress - OnlineSpreadSheet - 取得Progress清單
          * @param {GetOnlineSpreadSheetProgressListRequest} getOnlineSpreadSheetProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOnlineSpreadSheetProgressList: async (getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getOnlineSpreadSheetProgressList: async (getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getOnlineSpreadSheetProgressListRequest' is not null or undefined
             assertParamExists('getOnlineSpreadSheetProgressList', 'getOnlineSpreadSheetProgressListRequest', getOnlineSpreadSheetProgressListRequest)
             const localVarPath = `/progress/online-spread-sheet/get-list`;
@@ -37048,7 +34730,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOnlineSpreadSheetProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getOnlineSpreadSheetProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
             assertParamExists('getOnlineSpreadSheetProgressMaterialList', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/online-spread-sheet/get-material-list`;
@@ -37088,7 +34770,7 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getU3mProgressList: async (getU3mProgressListRequest: GetU3mProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getU3mProgressList: async (getU3mProgressListRequest: GetU3mProgressListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getU3mProgressListRequest' is not null or undefined
             assertParamExists('getU3mProgressList', 'getU3mProgressListRequest', getU3mProgressListRequest)
             const localVarPath = `/progress/u3m/get-list`;
@@ -37138,9 +34820,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelExcelProgress(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.cancelExcelProgress']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37149,9 +34833,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.cancelMaterialUploadProgress']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37160,9 +34846,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.cancelOnlineSpreadSheetProgress']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37171,9 +34859,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelU3mProgress(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.cancelU3mProgress']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37182,9 +34872,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
+        async getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressList(getExcelProgressListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getExcelProgressList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37193,9 +34885,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
+        async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getExcelProgressMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37204,9 +34898,24 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
+        async getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getMaterialUploadProgressList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress Item
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgress200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgress']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37215,9 +34924,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
+        async getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 透過progressId取得Material清單 只會取得新增或修改的Material 
@@ -37226,9 +34937,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
+        async getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressMaterialList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37237,9 +34950,11 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
+        async getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getU3mProgressList(getU3mProgressListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ProgressApi.getU3mProgressList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -37258,7 +34973,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37268,7 +34983,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37278,7 +34993,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37288,7 +35003,7 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37320,6 +35035,16 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
          */
         getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: any): AxiosPromise<GetMaterialUploadProgressList200Response> {
             return localVarFp.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Progress - OnlineSpreadSheet - 取得Progress Item
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<GetOnlineSpreadSheetProgress200Response> {
+            return localVarFp.getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37369,7 +35094,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37381,7 +35106,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37393,7 +35118,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37405,7 +35130,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37417,7 +35142,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
+    public getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getExcelProgressList(getExcelProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37429,7 +35154,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37441,8 +35166,20 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig) {
+    public getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Progress - OnlineSpreadSheet - 取得Progress Item
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -37453,7 +35190,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: AxiosRequestConfig) {
+    public getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37465,7 +35202,7 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37477,10 +35214,11 @@ export class ProgressApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: AxiosRequestConfig) {
+    public getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: RawAxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -37496,7 +35234,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPublicLibraryNodeShareAssigned: async (addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addPublicLibraryNodeShareAssigned: async (addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addPublicLibraryNodeShareAssignedRequest' is not null or undefined
             assertParamExists('addPublicLibraryNodeShareAssigned', 'addPublicLibraryNodeShareAssignedRequest', addPublicLibraryNodeShareAssignedRequest)
             const localVarPath = `/public-library/node/share/assigned/add`;
@@ -37536,7 +35274,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        clonePublicLibraryNode: async (clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        clonePublicLibraryNode: async (clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clonePublicLibraryNodeRequest' is not null or undefined
             assertParamExists('clonePublicLibraryNode', 'clonePublicLibraryNodeRequest', clonePublicLibraryNodeRequest)
             const localVarPath = `/public-library/node/clone`;
@@ -37576,7 +35314,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generatePublicLibraryNodeShareCopyLink: async (generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generatePublicLibraryNodeShareCopyLink: async (generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'generatePublicLibraryNodeShareCopyLinkRequest' is not null or undefined
             assertParamExists('generatePublicLibraryNodeShareCopyLink', 'generatePublicLibraryNodeShareCopyLinkRequest', generatePublicLibraryNodeShareCopyLinkRequest)
             const localVarPath = `/public-library/node/share/copy-link/generate`;
@@ -37616,7 +35354,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generatePublicLibraryNodeShareSocial: async (generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generatePublicLibraryNodeShareSocial: async (generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'generatePublicLibraryNodeShareSocialRequest' is not null or undefined
             assertParamExists('generatePublicLibraryNodeShareSocial', 'generatePublicLibraryNodeShareSocialRequest', generatePublicLibraryNodeShareSocialRequest)
             const localVarPath = `/public-library/node/share/social/generate`;
@@ -37656,7 +35394,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPublicLibraryList: async (getPublicLibraryListRequest: GetPublicLibraryListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPublicLibraryList: async (getPublicLibraryListRequest: GetPublicLibraryListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getPublicLibraryListRequest' is not null or undefined
             assertParamExists('getPublicLibraryList', 'getPublicLibraryListRequest', getPublicLibraryListRequest)
             const localVarPath = `/public-library/get-list`;
@@ -37696,7 +35434,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPublicLibraryMaterial: async (getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPublicLibraryMaterial: async (getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getPublicLibraryMaterialRequest' is not null or undefined
             assertParamExists('getPublicLibraryMaterial', 'getPublicLibraryMaterialRequest', getPublicLibraryMaterialRequest)
             const localVarPath = `/public-library/get-material`;
@@ -37735,7 +35473,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPublicLibraryNodeShareAssignedTarget: async (getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPublicLibraryNodeShareAssignedTarget: async (getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getPublicLibraryNodeShareAssignedTargetRequest' is not null or undefined
             assertParamExists('getPublicLibraryNodeShareAssignedTarget', 'getPublicLibraryNodeShareAssignedTargetRequest', getPublicLibraryNodeShareAssignedTargetRequest)
             const localVarPath = `/public-library/node/share/assigned/get-target`;
@@ -37785,9 +35523,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.addPublicLibraryNodeShareAssigned']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37796,9 +35536,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.clonePublicLibraryNode(clonePublicLibraryNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.clonePublicLibraryNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37807,9 +35549,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
+        async generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareCopyLink']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37818,9 +35562,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
+        async generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareSocial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37829,9 +35575,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPublicLibraryList(getPublicLibraryListRequest: GetPublicLibraryListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+        async getPublicLibraryList(getPublicLibraryListRequest: GetPublicLibraryListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryList(getPublicLibraryListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37840,9 +35588,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPublicLibraryMaterial(getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+        async getPublicLibraryMaterial(getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryMaterial(getPublicLibraryMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -37850,9 +35600,11 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
+        async getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryNodeShareAssignedTarget']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -37871,7 +35623,7 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37881,7 +35633,7 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.clonePublicLibraryNode(clonePublicLibraryNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37951,7 +35703,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: AxiosRequestConfig) {
+    public addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37963,7 +35715,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: AxiosRequestConfig) {
+    public clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).clonePublicLibraryNode(clonePublicLibraryNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37975,7 +35727,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options?: AxiosRequestConfig) {
+    public generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37987,7 +35739,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options?: AxiosRequestConfig) {
+    public generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -37999,7 +35751,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public getPublicLibraryList(getPublicLibraryListRequest: GetPublicLibraryListRequest, options?: AxiosRequestConfig) {
+    public getPublicLibraryList(getPublicLibraryListRequest: GetPublicLibraryListRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).getPublicLibraryList(getPublicLibraryListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38011,7 +35763,7 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public getPublicLibraryMaterial(getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options?: AxiosRequestConfig) {
+    public getPublicLibraryMaterial(getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).getPublicLibraryMaterial(getPublicLibraryMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38022,10 +35774,11 @@ export class PublicLibraryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: AxiosRequestConfig) {
+    public getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig) {
         return PublicLibraryApiFp(this.configuration).getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -38041,7 +35794,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkReceivedSharePermission: async (checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkReceivedSharePermission: async (checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/received-share/check-permission`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38079,7 +35832,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneReceivedShareNode: async (cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneReceivedShareNode: async (cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cloneReceivedShareNodeRequest' is not null or undefined
             assertParamExists('cloneReceivedShareNode', 'cloneReceivedShareNodeRequest', cloneReceivedShareNodeRequest)
             const localVarPath = `/received-share/node/clone`;
@@ -38119,7 +35872,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
             assertParamExists('getReceivedShareInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
             const localVarPath = `/received-share/get-info`;
@@ -38155,7 +35908,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareListRequest' is not null or undefined
             assertParamExists('getReceivedShareList', 'getReceivedShareListRequest', getReceivedShareListRequest)
             const localVarPath = `/received-share/get-list`;
@@ -38191,7 +35944,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReceivedShareMaterialRequest' is not null or undefined
             assertParamExists('getReceivedShareMaterial', 'getReceivedShareMaterialRequest', getReceivedShareMaterialRequest)
             const localVarPath = `/received-share/get-material`;
@@ -38227,7 +35980,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveReceivedShare: async (saveReceivedShareRequest: SaveReceivedShareRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        saveReceivedShare: async (saveReceivedShareRequest: SaveReceivedShareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'saveReceivedShareRequest' is not null or undefined
             assertParamExists('saveReceivedShare', 'saveReceivedShareRequest', saveReceivedShareRequest)
             const localVarPath = `/received-share/save`;
@@ -38277,9 +36030,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkReceivedSharePermission(checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceivedSharePermission200Response>> {
+        async checkReceivedSharePermission(checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceivedSharePermission200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceivedSharePermission(checkReceivedSharePermissionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.checkReceivedSharePermission']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38288,9 +36043,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.cloneReceivedShareNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38299,9 +36056,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+        async getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareInfo(getReceivedShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareInfo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38310,9 +36069,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+        async getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareList(getReceivedShareListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38321,9 +36082,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+        async getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareMaterial(getReceivedShareMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38332,9 +36095,11 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveReceivedShare(saveReceivedShareRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ReceivedShareApi.saveReceivedShare']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -38363,7 +36128,7 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38403,7 +36168,7 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -38424,7 +36189,7 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public checkReceivedSharePermission(checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options?: AxiosRequestConfig) {
+    public checkReceivedSharePermission(checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).checkReceivedSharePermission(checkReceivedSharePermissionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38436,7 +36201,7 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig) {
+    public cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).cloneReceivedShareNode(cloneReceivedShareNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38448,7 +36213,7 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38460,7 +36225,7 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38472,7 +36237,7 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -38484,10 +36249,11 @@ export class ReceivedShareApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig) {
+    public saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -38503,7 +36269,7 @@ export const SampleApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplePost: async (samplePostRequest?: SamplePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplePost: async (samplePostRequest?: SamplePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/sample`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38547,9 +36313,11 @@ export const SampleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplePost(samplePostRequest?: SamplePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SamplePost200Response>> {
+        async samplePost(samplePostRequest?: SamplePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SamplePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.samplePost(samplePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SampleApi.samplePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -38589,10 +36357,11 @@ export class SampleApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SampleApi
      */
-    public samplePost(samplePostRequest?: SamplePostRequest, options?: AxiosRequestConfig) {
+    public samplePost(samplePostRequest?: SamplePostRequest, options?: RawAxiosRequestConfig) {
         return SampleApiFp(this.configuration).samplePost(samplePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -38607,7 +36376,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExternalSearchFilterOptions: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExternalSearchFilterOptions: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/search/filter-external-options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38634,11 +36403,11 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInternalSearchFilterOptions: async (getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getInternalSearchFilterOptions: async (oGBaseRequestBody?: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/search/filter-internal-options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38658,7 +36427,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -38672,7 +36441,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchGetAiTagsPost: async (searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchGetAiTagsPost: async (searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/search/get-ai-tags`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38719,20 +36488,24 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getExternalSearchFilterOptions(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExternalSearchFilterOptions200Response>> {
+        async getExternalSearchFilterOptions(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExternalSearchFilterOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExternalSearchFilterOptions(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SearchApi.getExternalSearchFilterOptions']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        async getInternalSearchFilterOptions(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(oGBaseRequestBody, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SearchApi.getInternalSearchFilterOptions']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -38741,9 +36514,11 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchGetAiTagsPost(searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchGetAiTagsPost200Response>> {
+        async searchGetAiTagsPost(searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchGetAiTagsPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.searchGetAiTagsPost(searchGetAiTagsPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SearchApi.searchGetAiTagsPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -38767,12 +36542,12 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得 internal search filter 選項
-         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetInternalSearchFilterOptions200Response> {
-            return localVarFp.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
+        getInternalSearchFilterOptions(oGBaseRequestBody?: OGBaseRequestBody, options?: any): AxiosPromise<GetInternalSearchFilterOptions200Response> {
+            return localVarFp.getInternalSearchFilterOptions(oGBaseRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -38801,20 +36576,20 @@ export class SearchApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public getExternalSearchFilterOptions(options?: AxiosRequestConfig) {
+    public getExternalSearchFilterOptions(options?: RawAxiosRequestConfig) {
         return SearchApiFp(this.configuration).getExternalSearchFilterOptions(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 internal search filter 選項
-     * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+     * @param {OGBaseRequestBody} [oGBaseRequestBody] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
+    public getInternalSearchFilterOptions(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
+        return SearchApiFp(this.configuration).getInternalSearchFilterOptions(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -38825,10 +36600,11 @@ export class SearchApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public searchGetAiTagsPost(searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options?: AxiosRequestConfig) {
+    public searchGetAiTagsPost(searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options?: RawAxiosRequestConfig) {
         return SearchApiFp(this.configuration).searchGetAiTagsPost(searchGetAiTagsPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -38844,7 +36620,7 @@ export const ShareToMeApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneShareToMeNode: async (cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneShareToMeNode: async (cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cloneShareToMeNodeRequest' is not null or undefined
             assertParamExists('cloneShareToMeNode', 'cloneShareToMeNodeRequest', cloneShareToMeNodeRequest)
             const localVarPath = `/share-to-me/node/clone`;
@@ -38884,7 +36660,7 @@ export const ShareToMeApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShareToMeNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteShareToMeNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'deleteWorkspaceNodeRequest' is not null or undefined
             assertParamExists('deleteShareToMeNode', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
             const localVarPath = `/share-to-me/node/delete`;
@@ -38924,7 +36700,7 @@ export const ShareToMeApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShareToMeList: async (getShareToMeListRequest: GetShareToMeListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShareToMeList: async (getShareToMeListRequest: GetShareToMeListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShareToMeListRequest' is not null or undefined
             assertParamExists('getShareToMeList', 'getShareToMeListRequest', getShareToMeListRequest)
             const localVarPath = `/share-to-me/get-list`;
@@ -38964,7 +36740,7 @@ export const ShareToMeApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShareToMeMaterial: async (getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShareToMeMaterial: async (getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShareToMeMaterialRequest' is not null or undefined
             assertParamExists('getShareToMeMaterial', 'getShareToMeMaterialRequest', getShareToMeMaterialRequest)
             const localVarPath = `/share-to-me/get-material`;
@@ -39014,9 +36790,11 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneShareToMeNode(cloneShareToMeNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShareToMeApi.cloneShareToMeNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39025,9 +36803,11 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShareToMeNode(deleteWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShareToMeApi.deleteShareToMeNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39036,9 +36816,11 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShareToMeList(getShareToMeListRequest: GetShareToMeListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeList200Response>> {
+        async getShareToMeList(getShareToMeListRequest: GetShareToMeListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShareToMeList(getShareToMeListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShareToMeApi.getShareToMeList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39047,9 +36829,11 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShareToMeMaterial(getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeMaterial200Response>> {
+        async getShareToMeMaterial(getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShareToMeMaterial(getShareToMeMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShareToMeApi.getShareToMeMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -39068,7 +36852,7 @@ export const ShareToMeApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.cloneShareToMeNode(cloneShareToMeNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39078,7 +36862,7 @@ export const ShareToMeApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.deleteShareToMeNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -39119,7 +36903,7 @@ export class ShareToMeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShareToMeApi
      */
-    public cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: AxiosRequestConfig) {
+    public cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: RawAxiosRequestConfig) {
         return ShareToMeApiFp(this.configuration).cloneShareToMeNode(cloneShareToMeNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39131,7 +36915,7 @@ export class ShareToMeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShareToMeApi
      */
-    public deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return ShareToMeApiFp(this.configuration).deleteShareToMeNode(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39143,7 +36927,7 @@ export class ShareToMeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShareToMeApi
      */
-    public getShareToMeList(getShareToMeListRequest: GetShareToMeListRequest, options?: AxiosRequestConfig) {
+    public getShareToMeList(getShareToMeListRequest: GetShareToMeListRequest, options?: RawAxiosRequestConfig) {
         return ShareToMeApiFp(this.configuration).getShareToMeList(getShareToMeListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39155,10 +36939,11 @@ export class ShareToMeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShareToMeApi
      */
-    public getShareToMeMaterial(getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options?: AxiosRequestConfig) {
+    public getShareToMeMaterial(getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options?: RawAxiosRequestConfig) {
         return ShareToMeApiFp(this.configuration).getShareToMeMaterial(getShareToMeMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -39174,7 +36959,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShowroom: async (getShowroomRequest: GetShowroomRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroom: async (getShowroomRequest: GetShowroomRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShowroomRequest' is not null or undefined
             assertParamExists('getShowroom', 'getShowroomRequest', getShowroomRequest)
             const localVarPath = `/showroom/get-info`;
@@ -39214,7 +36999,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShowroomAnnouncement: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomAnnouncement: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShowroomAnnouncementRequest' is not null or undefined
             assertParamExists('getShowroomAnnouncement', 'getShowroomAnnouncementRequest', getShowroomAnnouncementRequest)
             const localVarPath = `/showroom/get-announcement`;
@@ -39254,7 +37039,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShowroomBannerAndShowroomList: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomBannerAndShowroomList: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShowroomAnnouncementRequest' is not null or undefined
             assertParamExists('getShowroomBannerAndShowroomList', 'getShowroomAnnouncementRequest', getShowroomAnnouncementRequest)
             const localVarPath = `/showroom/get-banner-and-list`;
@@ -39294,7 +37079,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShowroomList: async (getShowroomListRequest: GetShowroomListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomList: async (getShowroomListRequest: GetShowroomListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShowroomListRequest' is not null or undefined
             assertParamExists('getShowroomList', 'getShowroomListRequest', getShowroomListRequest)
             const localVarPath = `/showroom/get-list`;
@@ -39334,7 +37119,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShowroomMaterial: async (getShowroomMaterialRequest: GetShowroomMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomMaterial: async (getShowroomMaterialRequest: GetShowroomMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getShowroomMaterialRequest' is not null or undefined
             assertParamExists('getShowroomMaterial', 'getShowroomMaterialRequest', getShowroomMaterialRequest)
             const localVarPath = `/showroom/get-material`;
@@ -39374,7 +37159,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendShowroomEmail: async (sendShowroomEmailRequest: SendShowroomEmailRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sendShowroomEmail: async (sendShowroomEmailRequest: SendShowroomEmailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sendShowroomEmailRequest' is not null or undefined
             assertParamExists('sendShowroomEmail', 'sendShowroomEmailRequest', sendShowroomEmailRequest)
             const localVarPath = `/showroom/send-mail`;
@@ -39424,9 +37209,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShowroom(getShowroomRequest: GetShowroomRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroom200Response>> {
+        async getShowroom(getShowroomRequest: GetShowroomRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroom200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroom(getShowroomRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.getShowroom']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39435,9 +37222,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomAnnouncement200Response>> {
+        async getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomAnnouncement200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomAnnouncement(getShowroomAnnouncementRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.getShowroomAnnouncement']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39446,9 +37235,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomBannerAndShowroomList200Response>> {
+        async getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomBannerAndShowroomList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.getShowroomBannerAndShowroomList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39457,9 +37248,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+        async getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomList(getShowroomListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.getShowroomList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39468,9 +37261,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+        async getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomMaterial(getShowroomMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.getShowroomMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 由noreply@frontier.cool代為發送
@@ -39479,9 +37274,11 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sendShowroomEmail(sendShowroomEmailRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ShowroomApi.sendShowroomEmail']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -39550,7 +37347,7 @@ export const ShowroomApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -39571,7 +37368,7 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public getShowroom(getShowroomRequest: GetShowroomRequest, options?: AxiosRequestConfig) {
+    public getShowroom(getShowroomRequest: GetShowroomRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).getShowroom(getShowroomRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39583,7 +37380,7 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig) {
+    public getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).getShowroomAnnouncement(getShowroomAnnouncementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39595,7 +37392,7 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig) {
+    public getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39607,7 +37404,7 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: AxiosRequestConfig) {
+    public getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).getShowroomList(getShowroomListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39619,7 +37416,7 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: AxiosRequestConfig) {
+    public getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).getShowroomMaterial(getShowroomMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39631,10 +37428,11 @@ export class ShowroomApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig) {
+    public sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: RawAxiosRequestConfig) {
         return ShowroomApiFp(this.configuration).sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -39650,7 +37448,7 @@ export const SignInApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signInGeneralPost: async (signInGeneralPostRequest?: SignInGeneralPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        signInGeneralPost: async (signInGeneralPostRequest?: SignInGeneralPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/sign-in/general`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39684,7 +37482,7 @@ export const SignInApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signInGooglePost: async (signInGooglePostRequest?: SignInGooglePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        signInGooglePost: async (signInGooglePostRequest?: SignInGooglePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/sign-in/google`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39728,9 +37526,11 @@ export const SignInApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGeneralPost200Response>> {
+        async signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGeneralPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signInGeneralPost(signInGeneralPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SignInApi.signInGeneralPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -39739,9 +37539,11 @@ export const SignInApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGooglePost200Response>> {
+        async signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGooglePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signInGooglePost(signInGooglePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SignInApi.signInGooglePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -39791,7 +37593,7 @@ export class SignInApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SignInApi
      */
-    public signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: AxiosRequestConfig) {
+    public signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig) {
         return SignInApiFp(this.configuration).signInGeneralPost(signInGeneralPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -39803,10 +37605,11 @@ export class SignInApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SignInApi
      */
-    public signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: AxiosRequestConfig) {
+    public signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: RawAxiosRequestConfig) {
         return SignInApiFp(this.configuration).signInGooglePost(signInGooglePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -39822,7 +37625,7 @@ export const SignUpApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signUpRequestPost: async (signUpRequestPostRequest?: SignUpRequestPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        signUpRequestPost: async (signUpRequestPostRequest?: SignUpRequestPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/sign-up/request`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39866,9 +37669,11 @@ export const SignUpApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signUpRequestPost(signUpRequestPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SignUpApi.signUpRequestPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -39887,7 +37692,7 @@ export const SignUpApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.signUpRequestPost(signUpRequestPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -39908,10 +37713,11 @@ export class SignUpApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SignUpApi
      */
-    public signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: AxiosRequestConfig) {
+    public signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: RawAxiosRequestConfig) {
         return SignUpApiFp(this.configuration).signUpRequestPost(signUpRequestPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -39927,7 +37733,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendErrorMessage: async (sendErrorMessageRequest: SendErrorMessageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sendErrorMessage: async (sendErrorMessageRequest: SendErrorMessageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sendErrorMessageRequest' is not null or undefined
             assertParamExists('sendErrorMessage', 'sendErrorMessageRequest', sendErrorMessageRequest)
             const localVarPath = `/system/send-error-message`;
@@ -39973,9 +37779,11 @@ export const SystemApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sendErrorMessage(sendErrorMessageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SystemApi.sendErrorMessage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -40015,10 +37823,11 @@ export class SystemApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SystemApi
      */
-    public sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: AxiosRequestConfig) {
+    public sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: RawAxiosRequestConfig) {
         return SystemApiFp(this.configuration).sendErrorMessage(sendErrorMessageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -40034,7 +37843,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addFolderBookmark: async (addFolderBookmarkRequest: AddFolderBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addFolderBookmark: async (addFolderBookmarkRequest: AddFolderBookmarkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addFolderBookmarkRequest' is not null or undefined
             assertParamExists('addFolderBookmark', 'addFolderBookmarkRequest', addFolderBookmarkRequest)
             const localVarPath = `/thread-board/bookmark/folder/add`;
@@ -40074,7 +37883,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addOrgBookmark: async (addOrgBookmarkRequest: AddOrgBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addOrgBookmark: async (addOrgBookmarkRequest: AddOrgBookmarkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addOrgBookmarkRequest' is not null or undefined
             assertParamExists('addOrgBookmark', 'addOrgBookmarkRequest', addOrgBookmarkRequest)
             const localVarPath = `/thread-board/bookmark/org/add`;
@@ -40114,7 +37923,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkCanDeleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkCanDeleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'checkCanDeleteWorkflowStageRequest' is not null or undefined
             assertParamExists('checkCanDeleteWorkflowStage', 'checkCanDeleteWorkflowStageRequest', checkCanDeleteWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/check-can-delete`;
@@ -40154,7 +37963,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkflowStage: async (createWorkflowStageRequest: CreateWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createWorkflowStage: async (createWorkflowStageRequest: CreateWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createWorkflowStageRequest' is not null or undefined
             assertParamExists('createWorkflowStage', 'createWorkflowStageRequest', createWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/create`;
@@ -40194,7 +38003,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'checkCanDeleteWorkflowStageRequest' is not null or undefined
             assertParamExists('deleteWorkflowStage', 'checkCanDeleteWorkflowStageRequest', checkCanDeleteWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/delete`;
@@ -40234,7 +38043,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getContactOrgList: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getContactOrgList: async (oGBaseRequestBody: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'oGBaseRequestBody' is not null or undefined
             assertParamExists('getContactOrgList', 'oGBaseRequestBody', oGBaseRequestBody)
             const localVarPath = `/thread-board/get-contact-org-list`;
@@ -40274,7 +38083,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoard: async (getThreadBoardRequest: GetThreadBoardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getThreadBoard: async (getThreadBoardRequest: GetThreadBoardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getThreadBoardRequest' is not null or undefined
             assertParamExists('getThreadBoard', 'getThreadBoardRequest', getThreadBoardRequest)
             const localVarPath = `/thread-board/get`;
@@ -40314,7 +38123,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardBookmarkList: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getThreadBoardBookmarkList: async (oGBaseRequestBody: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'oGBaseRequestBody' is not null or undefined
             assertParamExists('getThreadBoardBookmarkList', 'oGBaseRequestBody', oGBaseRequestBody)
             const localVarPath = `/thread-board/bookmark/get-list`;
@@ -40350,13 +38159,13 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant: async (getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getThreadBoardMostParticipantRequest' is not null or undefined
-            assertParamExists('getThreadBoardMostParticipant', 'getThreadBoardMostParticipantRequest', getThreadBoardMostParticipantRequest)
+        getThreadBoardMostParticipant: async (uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uNKNOWNBASETYPE' is not null or undefined
+            assertParamExists('getThreadBoardMostParticipant', 'uNKNOWNBASETYPE', uNKNOWNBASETYPE)
             const localVarPath = `/thread-board/get-most-participant`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -40380,7 +38189,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardMostParticipantRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(uNKNOWNBASETYPE, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -40394,7 +38203,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardQuery: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getThreadBoardQuery: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getThreadBoardQueryRequest' is not null or undefined
             assertParamExists('getThreadBoardQuery', 'getThreadBoardQueryRequest', getThreadBoardQueryRequest)
             const localVarPath = `/thread-board/query/get`;
@@ -40434,7 +38243,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hideWorkflowStage: async (hideWorkflowStageRequest: HideWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        hideWorkflowStage: async (hideWorkflowStageRequest: HideWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'hideWorkflowStageRequest' is not null or undefined
             assertParamExists('hideWorkflowStage', 'hideWorkflowStageRequest', hideWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/hide`;
@@ -40474,7 +38283,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveBookmark: async (moveBookmarkRequest: MoveBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveBookmark: async (moveBookmarkRequest: MoveBookmarkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'moveBookmarkRequest' is not null or undefined
             assertParamExists('moveBookmark', 'moveBookmarkRequest', moveBookmarkRequest)
             const localVarPath = `/thread-board/bookmark/move`;
@@ -40514,7 +38323,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStage: async (moveWorkflowStageRequest: MoveWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveWorkflowStage: async (moveWorkflowStageRequest: MoveWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'moveWorkflowStageRequest' is not null or undefined
             assertParamExists('moveWorkflowStage', 'moveWorkflowStageRequest', moveWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/move`;
@@ -40554,7 +38363,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStageAllDigitalThread: async (moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveWorkflowStageAllDigitalThread: async (moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'moveWorkflowStageAllDigitalThreadRequest' is not null or undefined
             assertParamExists('moveWorkflowStageAllDigitalThread', 'moveWorkflowStageAllDigitalThreadRequest', moveWorkflowStageAllDigitalThreadRequest)
             const localVarPath = `/thread-board/workflow-stage/digital-thread/move-all`;
@@ -40594,7 +38403,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStageDigitalThread: async (moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveWorkflowStageDigitalThread: async (moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'moveWorkflowStageDigitalThreadRequest' is not null or undefined
             assertParamExists('moveWorkflowStageDigitalThread', 'moveWorkflowStageDigitalThreadRequest', moveWorkflowStageDigitalThreadRequest)
             const localVarPath = `/thread-board/workflow-stage/digital-thread/move`;
@@ -40634,7 +38443,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readAllUnreadDigitalThread: async (readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readAllUnreadDigitalThread: async (readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'readAllUnreadDigitalThreadRequest' is not null or undefined
             assertParamExists('readAllUnreadDigitalThread', 'readAllUnreadDigitalThreadRequest', readAllUnreadDigitalThreadRequest)
             const localVarPath = `/thread-board/read-all-unread-digital-thread`;
@@ -40674,7 +38483,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeBookmark: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeBookmark: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getThreadBoardQueryRequest' is not null or undefined
             assertParamExists('removeBookmark', 'getThreadBoardQueryRequest', getThreadBoardQueryRequest)
             const localVarPath = `/thread-board/bookmark/remove`;
@@ -40714,7 +38523,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        renameWorkflowStage: async (renameWorkflowStageRequest: RenameWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        renameWorkflowStage: async (renameWorkflowStageRequest: RenameWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'renameWorkflowStageRequest' is not null or undefined
             assertParamExists('renameWorkflowStage', 'renameWorkflowStageRequest', renameWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/rename`;
@@ -40754,7 +38563,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardBookmarkList: async (saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        saveThreadBoardBookmarkList: async (saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'saveThreadBoardBookmarkListRequest' is not null or undefined
             assertParamExists('saveThreadBoardBookmarkList', 'saveThreadBoardBookmarkListRequest', saveThreadBoardBookmarkListRequest)
             const localVarPath = `/thread-board/bookmark/save-list`;
@@ -40794,7 +38603,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardQuery: async (saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        saveThreadBoardQuery: async (saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'saveThreadBoardQueryRequest' is not null or undefined
             assertParamExists('saveThreadBoardQuery', 'saveThreadBoardQueryRequest', saveThreadBoardQueryRequest)
             const localVarPath = `/thread-board/query/save`;
@@ -40834,7 +38643,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showWorkflowStage: async (hideWorkflowStageRequest: HideWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        showWorkflowStage: async (hideWorkflowStageRequest: HideWorkflowStageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'hideWorkflowStageRequest' is not null or undefined
             assertParamExists('showWorkflowStage', 'hideWorkflowStageRequest', hideWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/show`;
@@ -40874,7 +38683,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateFolderBookmark: async (updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateFolderBookmark: async (updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateFolderBookmarkRequest' is not null or undefined
             assertParamExists('updateFolderBookmark', 'updateFolderBookmarkRequest', updateFolderBookmarkRequest)
             const localVarPath = `/thread-board/bookmark/folder/update`;
@@ -40924,9 +38733,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addFolderBookmark(addFolderBookmarkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.addFolderBookmark']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -40935,9 +38746,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addOrgBookmark(addOrgBookmarkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.addOrgBookmark']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -40946,9 +38759,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
+        async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.checkCanDeleteWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -40957,9 +38772,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkflowStage(createWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.createWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -40968,9 +38785,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
+        async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.deleteWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 排序以 thread 最多 → 少 (上到下) 排序
@@ -40979,9 +38798,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetContactOrgList200Response>> {
+        async getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetContactOrgList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getContactOrgList(oGBaseRequestBody, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.getContactOrgList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -40990,9 +38811,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoard200Response>> {
+        async getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoard(getThreadBoardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41001,20 +38824,24 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardBookmarkList200Response>> {
+        async getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardBookmarkList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardBookmarkList(oGBaseRequestBody, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardBookmarkList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        async getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardMostParticipant']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -41023,9 +38850,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardQuery200Response>> {
+        async getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardQuery200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardQuery(getThreadBoardQueryRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardQuery']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41034,9 +38863,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hideWorkflowStage(hideWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.hideWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41045,9 +38876,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveBookmark(moveBookmarkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.moveBookmark']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41056,9 +38889,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStage(moveWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41067,9 +38902,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MoveWorkflowStageAllDigitalThread200Response>> {
+        async moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MoveWorkflowStageAllDigitalThread200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageAllDigitalThread']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41078,9 +38915,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageDigitalThread']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41089,9 +38928,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.readAllUnreadDigitalThread']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41100,9 +38941,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeBookmark(getThreadBoardQueryRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.removeBookmark']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41111,9 +38954,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameWorkflowStage(renameWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.renameWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * Examples為依序執行的範例
@@ -41122,9 +38967,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardBookmarkList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -41133,9 +38980,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardQuery(saveThreadBoardQueryRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardQuery']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41144,9 +38993,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.showWorkflowStage(hideWorkflowStageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.showWorkflowStage']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -41155,9 +39006,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateFolderBookmark(updateFolderBookmarkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['ThreadBoardApi.updateFolderBookmark']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -41206,7 +39059,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createWorkflowStage(createWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41252,12 +39105,12 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
-            return localVarFp.getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options).then((request) => request(axios, basePath));
+        getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
+            return localVarFp.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(axios, basePath));
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -41276,7 +39129,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.hideWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41296,7 +39149,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.moveWorkflowStage(moveWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41316,7 +39169,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41326,7 +39179,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41346,7 +39199,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.renameWorkflowStage(renameWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41366,7 +39219,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.saveThreadBoardQuery(saveThreadBoardQueryRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41376,7 +39229,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.showWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41407,7 +39260,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: AxiosRequestConfig) {
+    public addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).addFolderBookmark(addFolderBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41419,7 +39272,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: AxiosRequestConfig) {
+    public addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).addOrgBookmark(addOrgBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41431,7 +39284,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41443,7 +39296,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).createWorkflowStage(createWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41455,7 +39308,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41467,7 +39320,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+    public getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getContactOrgList(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41479,7 +39332,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig) {
+    public getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getThreadBoard(getThreadBoardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41491,20 +39344,20 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+    public getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getThreadBoardBookmarkList(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-     * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+     * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig) {
-        return ThreadBoardApiFp(this.configuration).getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options).then((request) => request(this.axios, this.basePath));
+    public getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: RawAxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -41515,7 +39368,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+    public getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getThreadBoardQuery(getThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41527,7 +39380,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).hideWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41539,7 +39392,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: AxiosRequestConfig) {
+    public moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).moveBookmark(moveBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41551,7 +39404,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).moveWorkflowStage(moveWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41563,7 +39416,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options?: AxiosRequestConfig) {
+    public moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41575,7 +39428,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: AxiosRequestConfig) {
+    public moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41587,7 +39440,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: AxiosRequestConfig) {
+    public readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41599,7 +39452,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+    public removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).removeBookmark(getThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41611,7 +39464,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).renameWorkflowStage(renameWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41623,7 +39476,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: AxiosRequestConfig) {
+    public saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41635,7 +39488,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+    public saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).saveThreadBoardQuery(saveThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41647,7 +39500,7 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig) {
+    public showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).showWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -41659,10 +39512,11 @@ export class ThreadBoardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: AxiosRequestConfig) {
+    public updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).updateFolderBookmark(updateFolderBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -41678,7 +39532,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userChangeLanguagePost: async (userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userChangeLanguagePost: async (userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/change-language`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41716,7 +39570,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userChangePasswordPost: async (userChangePasswordPostRequest?: UserChangePasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userChangePasswordPost: async (userChangePasswordPostRequest?: UserChangePasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/change-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41750,7 +39604,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackRemoveAttachmentPost: async (userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userFeedbackRemoveAttachmentPost: async (userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/feedback/remove-attachment`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41788,7 +39642,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackSendPost: async (userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userFeedbackSendPost: async (userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/feedback/send`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41822,7 +39676,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userFeedbackUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/feedback/upload-attachment/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41860,7 +39714,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackUploadAttachmentPost: async (userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userFeedbackUploadAttachmentPost: async (userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/feedback/upload-attachment`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41898,7 +39752,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userForgotPasswordResetPasswordPost: async (userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userForgotPasswordResetPasswordPost: async (userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/forgot-password/reset-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41932,7 +39786,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userForgotPasswordSendEmailPost: async (userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userForgotPasswordSendEmailPost: async (userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/forgot-password/send-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41966,7 +39820,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userForgotPasswordVerifyPost: async (userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userForgotPasswordVerifyPost: async (userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/forgot-password/verify`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41999,7 +39853,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42033,7 +39887,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userGetOrgListPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userGetOrgListPost: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/get-org-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42064,7 +39918,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userOldUserResetPasswordPost: async (userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userOldUserResetPasswordPost: async (userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/old-user/reset-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42097,7 +39951,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userReadAnnouncementPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userReadAnnouncementPost: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/read-announcement`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42132,7 +39986,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userResendVerifyEmailPost: async (userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userResendVerifyEmailPost: async (userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/resend-verify-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42170,7 +40024,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userUpdatePost: async (userUpdatePostRequest?: UserUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userUpdatePost: async (userUpdatePostRequest?: UserUpdatePostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42208,7 +40062,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userVerifyPasswordPost: async (userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userVerifyPasswordPost: async (userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/verify-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42242,7 +40096,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userVerifyPost: async (userVerifyPostRequest?: UserVerifyPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userVerifyPost: async (userVerifyPostRequest?: UserVerifyPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/verify`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42286,9 +40140,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
+        async userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangeLanguagePost(userChangeLanguagePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userChangeLanguagePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42297,9 +40153,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangePasswordPost(userChangePasswordPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userChangePasswordPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42308,9 +40166,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
+        async userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userFeedbackRemoveAttachmentPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42319,9 +40179,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackSendPost(userFeedbackSendPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userFeedbackSendPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42330,9 +40192,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
+        async userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentGetUploadUrlPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42341,9 +40205,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
+        async userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42352,9 +40218,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
+        async userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userForgotPasswordResetPasswordPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42363,9 +40231,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+        async userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userForgotPasswordSendEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42374,9 +40244,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserForgotPasswordVerifyPost200Response>> {
+        async userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserForgotPasswordVerifyPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userForgotPasswordVerifyPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42384,9 +40256,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
+        async userGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42394,9 +40268,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userGetOrgListPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetOrgListPost200Response>> {
+        async userGetOrgListPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetOrgListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGetOrgListPost(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userGetOrgListPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42405,9 +40281,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
+        async userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userOldUserResetPasswordPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42415,9 +40293,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userReadAnnouncementPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async userReadAnnouncementPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userReadAnnouncementPost(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userReadAnnouncementPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42426,9 +40306,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userResendVerifyEmailPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42437,9 +40319,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
+        async userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userUpdatePost(userUpdatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userUpdatePost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42448,9 +40332,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userVerifyPasswordPost(userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserVerifyPasswordPost200Response>> {
+        async userVerifyPasswordPost(userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserVerifyPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userVerifyPasswordPost(userVerifyPasswordPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userVerifyPasswordPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -42459,9 +40345,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userVerifyPost(userVerifyPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userVerifyPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -42490,7 +40378,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userChangePasswordPost(userChangePasswordPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -42510,7 +40398,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userFeedbackSendPost(userFeedbackSendPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -42597,7 +40485,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userReadAnnouncementPost(options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        userReadAnnouncementPost(options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userReadAnnouncementPost(options).then((request) => request(axios, basePath));
         },
         /**
@@ -42607,7 +40495,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -42637,7 +40525,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userVerifyPost(userVerifyPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -42658,7 +40546,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: AxiosRequestConfig) {
+    public userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userChangeLanguagePost(userChangeLanguagePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42670,7 +40558,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: AxiosRequestConfig) {
+    public userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userChangePasswordPost(userChangePasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42682,7 +40570,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options?: AxiosRequestConfig) {
+    public userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42694,7 +40582,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: AxiosRequestConfig) {
+    public userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userFeedbackSendPost(userFeedbackSendPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42706,7 +40594,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
+    public userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42718,7 +40606,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options?: AxiosRequestConfig) {
+    public userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42730,7 +40618,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: AxiosRequestConfig) {
+    public userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42742,7 +40630,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options?: AxiosRequestConfig) {
+    public userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42754,7 +40642,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options?: AxiosRequestConfig) {
+    public userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42765,7 +40653,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userGet(options?: AxiosRequestConfig) {
+    public userGet(options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userGet(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42776,7 +40664,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userGetOrgListPost(options?: AxiosRequestConfig) {
+    public userGetOrgListPost(options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userGetOrgListPost(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42788,7 +40676,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: AxiosRequestConfig) {
+    public userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42799,7 +40687,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userReadAnnouncementPost(options?: AxiosRequestConfig) {
+    public userReadAnnouncementPost(options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userReadAnnouncementPost(options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42811,7 +40699,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: AxiosRequestConfig) {
+    public userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42823,7 +40711,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: AxiosRequestConfig) {
+    public userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userUpdatePost(userUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42835,7 +40723,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userVerifyPasswordPost(userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options?: AxiosRequestConfig) {
+    public userVerifyPasswordPost(userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userVerifyPasswordPost(userVerifyPasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -42847,10 +40735,11 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: AxiosRequestConfig) {
+    public userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userVerifyPost(userVerifyPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
 /**
@@ -42866,7 +40755,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addWorkspaceNodeShareAssigned: async (addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addWorkspaceNodeShareAssigned: async (addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addWorkspaceNodeShareAssignedRequest' is not null or undefined
             assertParamExists('addWorkspaceNodeShareAssigned', 'addWorkspaceNodeShareAssignedRequest', addWorkspaceNodeShareAssignedRequest)
             const localVarPath = `/workspace/node/share/assigned/add`;
@@ -42906,7 +40795,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkspaceCollection: async (createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createWorkspaceCollection: async (createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createWorkspaceCollectionRequest' is not null or undefined
             assertParamExists('createWorkspaceCollection', 'createWorkspaceCollectionRequest', createWorkspaceCollectionRequest)
             const localVarPath = `/workspace/collection/create`;
@@ -42946,7 +40835,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkspaceNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteWorkspaceNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'deleteWorkspaceNodeRequest' is not null or undefined
             assertParamExists('deleteWorkspaceNode', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
             const localVarPath = `/workspace/node/delete`;
@@ -42986,7 +40875,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        duplicateWorkspaceNode: async (duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        duplicateWorkspaceNode: async (duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'duplicateWorkspaceNodeRequest' is not null or undefined
             assertParamExists('duplicateWorkspaceNode', 'duplicateWorkspaceNodeRequest', duplicateWorkspaceNodeRequest)
             const localVarPath = `/workspace/node/duplicate`;
@@ -43026,7 +40915,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateWorkspaceNodeShareCopyLink: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generateWorkspaceNodeShareCopyLink: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
             assertParamExists('generateWorkspaceNodeShareCopyLink', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/workspace/node/share/copy-link/generate`;
@@ -43066,7 +40955,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateWorkspaceNodeShareSocial: async (generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generateWorkspaceNodeShareSocial: async (generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'generateWorkspaceNodeShareSocialRequest' is not null or undefined
             assertParamExists('generateWorkspaceNodeShareSocial', 'generateWorkspaceNodeShareSocialRequest', generateWorkspaceNodeShareSocialRequest)
             const localVarPath = `/workspace/node/share/social/generate`;
@@ -43106,7 +40995,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceList: async (getWorkspaceListRequest: GetWorkspaceListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkspaceList: async (getWorkspaceListRequest: GetWorkspaceListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceListRequest' is not null or undefined
             assertParamExists('getWorkspaceList', 'getWorkspaceListRequest', getWorkspaceListRequest)
             const localVarPath = `/workspace/get-list`;
@@ -43146,7 +41035,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceMaterial: async (getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkspaceMaterial: async (getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceMaterialRequest' is not null or undefined
             assertParamExists('getWorkspaceMaterial', 'getWorkspaceMaterialRequest', getWorkspaceMaterialRequest)
             const localVarPath = `/workspace/get-material`;
@@ -43185,7 +41074,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceNodeShareAssignedTarget: async (getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkspaceNodeShareAssignedTarget: async (getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareAssignedTargetRequest' is not null or undefined
             assertParamExists('getWorkspaceNodeShareAssignedTarget', 'getWorkspaceNodeShareAssignedTargetRequest', getWorkspaceNodeShareAssignedTargetRequest)
             const localVarPath = `/workspace/node/share/assigned/get-target`;
@@ -43225,7 +41114,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceNodeShareInfo: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getWorkspaceNodeShareInfo: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
             assertParamExists('getWorkspaceNodeShareInfo', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/workspace/node/share/get-info`;
@@ -43265,7 +41154,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkspaceNode: async (moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        moveWorkspaceNode: async (moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'moveWorkspaceNodeRequest' is not null or undefined
             assertParamExists('moveWorkspaceNode', 'moveWorkspaceNodeRequest', moveWorkspaceNodeRequest)
             const localVarPath = `/workspace/node/move`;
@@ -43305,7 +41194,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publishWorkspaceNode: async (publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        publishWorkspaceNode: async (publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'publishWorkspaceNodeRequest' is not null or undefined
             assertParamExists('publishWorkspaceNode', 'publishWorkspaceNodeRequest', publishWorkspaceNodeRequest)
             const localVarPath = `/workspace/node/publish`;
@@ -43345,7 +41234,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceCollectionTrendBoard: async (removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeWorkspaceCollectionTrendBoard: async (removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'removeWorkspaceCollectionTrendBoardRequest' is not null or undefined
             assertParamExists('removeWorkspaceCollectionTrendBoard', 'removeWorkspaceCollectionTrendBoardRequest', removeWorkspaceCollectionTrendBoardRequest)
             const localVarPath = `/workspace/collection/remove-trend-board`;
@@ -43385,7 +41274,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceNodeShareAssigned: async (removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeWorkspaceNodeShareAssigned: async (removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'removeWorkspaceNodeShareAssignedRequest' is not null or undefined
             assertParamExists('removeWorkspaceNodeShareAssigned', 'removeWorkspaceNodeShareAssignedRequest', removeWorkspaceNodeShareAssignedRequest)
             const localVarPath = `/workspace/node/share/assigned/remove`;
@@ -43425,7 +41314,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceCollection: async (updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWorkspaceCollection: async (updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateWorkspaceCollectionRequest' is not null or undefined
             assertParamExists('updateWorkspaceCollection', 'updateWorkspaceCollectionRequest', updateWorkspaceCollectionRequest)
             const localVarPath = `/workspace/collection/update`;
@@ -43465,7 +41354,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareAssigned: async (updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWorkspaceNodeShareAssigned: async (updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateWorkspaceNodeShareAssignedRequest' is not null or undefined
             assertParamExists('updateWorkspaceNodeShareAssigned', 'updateWorkspaceNodeShareAssignedRequest', updateWorkspaceNodeShareAssignedRequest)
             const localVarPath = `/workspace/node/share/assigned/update`;
@@ -43505,7 +41394,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareCopyLink: async (updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWorkspaceNodeShareCopyLink: async (updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateWorkspaceNodeShareCopyLinkRequest' is not null or undefined
             assertParamExists('updateWorkspaceNodeShareCopyLink', 'updateWorkspaceNodeShareCopyLinkRequest', updateWorkspaceNodeShareCopyLinkRequest)
             const localVarPath = `/workspace/node/share/copy-link/update`;
@@ -43545,7 +41434,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareEmbed: async (updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWorkspaceNodeShareEmbed: async (updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updateWorkspaceNodeShareEmbedRequest' is not null or undefined
             assertParamExists('updateWorkspaceNodeShareEmbed', 'updateWorkspaceNodeShareEmbedRequest', updateWorkspaceNodeShareEmbedRequest)
             const localVarPath = `/workspace/node/share/embed/update`;
@@ -43595,9 +41484,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWorkspaceNodeShareAssigned200Response>> {
+        async addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWorkspaceNodeShareAssigned200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.addWorkspaceNodeShareAssigned']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43606,9 +41497,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkspaceCollection(createWorkspaceCollectionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.createWorkspaceCollection']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43617,9 +41510,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkspaceNode(deleteWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.deleteWorkspaceNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43628,9 +41523,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.duplicateWorkspaceNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43639,9 +41536,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
+        async generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareCopyLink']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43650,9 +41549,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
+        async generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareSocial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43661,9 +41562,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkspaceList(getWorkspaceListRequest: GetWorkspaceListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+        async getWorkspaceList(getWorkspaceListRequest: GetWorkspaceListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceList(getWorkspaceListRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43672,9 +41575,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkspaceMaterial(getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+        async getWorkspaceMaterial(getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceMaterial(getWorkspaceMaterialRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceMaterial']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43682,9 +41587,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
+        async getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAssignedTarget']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43693,9 +41600,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareInfo200Response>> {
+        async getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareInfo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43704,9 +41613,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkspaceNode(moveWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.moveWorkspaceNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43715,9 +41626,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.publishWorkspaceNode(publishWorkspaceNodeRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.publishWorkspaceNode']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43726,9 +41639,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.removeWorkspaceCollectionTrendBoard']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43737,9 +41652,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.removeWorkspaceNodeShareAssigned']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43748,9 +41665,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceCollection']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43759,9 +41678,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareAssigned']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43770,9 +41691,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareCopyLink']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
@@ -43781,9 +41704,11 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareEmbed']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
@@ -43812,7 +41737,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createWorkspaceCollection(createWorkspaceCollectionRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43822,7 +41747,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.deleteWorkspaceNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43832,7 +41757,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43901,7 +41826,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.moveWorkspaceNode(moveWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43911,7 +41836,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.publishWorkspaceNode(publishWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43921,7 +41846,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43931,7 +41856,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43941,7 +41866,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43951,7 +41876,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43961,7 +41886,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -43971,7 +41896,7 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -43992,7 +41917,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig) {
+    public addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44004,7 +41929,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: AxiosRequestConfig) {
+    public createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).createWorkspaceCollection(createWorkspaceCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44016,7 +41941,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).deleteWorkspaceNode(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44028,7 +41953,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44040,7 +41965,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+    public generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44052,7 +41977,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options?: AxiosRequestConfig) {
+    public generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44064,7 +41989,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public getWorkspaceList(getWorkspaceListRequest: GetWorkspaceListRequest, options?: AxiosRequestConfig) {
+    public getWorkspaceList(getWorkspaceListRequest: GetWorkspaceListRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).getWorkspaceList(getWorkspaceListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44076,7 +42001,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public getWorkspaceMaterial(getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options?: AxiosRequestConfig) {
+    public getWorkspaceMaterial(getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).getWorkspaceMaterial(getWorkspaceMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44087,7 +42012,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: AxiosRequestConfig) {
+    public getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44099,7 +42024,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+    public getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44111,7 +42036,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).moveWorkspaceNode(moveWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44123,7 +42048,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+    public publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).publishWorkspaceNode(publishWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44135,7 +42060,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: AxiosRequestConfig) {
+    public removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44147,7 +42072,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig) {
+    public removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44159,7 +42084,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: AxiosRequestConfig) {
+    public updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).updateWorkspaceCollection(updateWorkspaceCollectionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44171,7 +42096,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: AxiosRequestConfig) {
+    public updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44183,7 +42108,7 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: AxiosRequestConfig) {
+    public updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -44195,9 +42120,10 @@ export class WorkspaceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: AxiosRequestConfig) {
+    public updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 

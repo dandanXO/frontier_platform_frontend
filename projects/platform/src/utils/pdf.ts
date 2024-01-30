@@ -1,5 +1,13 @@
 import * as pdfjs from 'pdfjs-dist'
 
+/**
+ * pdfjs needs to specify workerSrc to load worker file
+ * ref: https://github.com/mozilla/pdf.js/issues/10478
+ */
+// @ts-ignore
+// const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry')
+// pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker
+
 const getPreviewUrl = async (src: string) => {
   if (!pdfjs.GlobalWorkerOptions.workerSrc) {
     /**

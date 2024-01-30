@@ -1,0 +1,62 @@
+<template lang="pug">
+div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
+  f-select-input(
+    class="w-full"
+    v-model:selectValue="inputValue"
+    :dropdownMenuTree="dropdownMenuTree"
+    :placeholder="params.placeholder"
+    :multiple="params.multiple"
+    @addNew="handleAdd"
+  )
+  f-button(type="primary" size="md" @click="handleConfirm") Confirm
+</template>
+
+<script lang="ts">
+import { ref } from 'vue'
+import type { ZodString } from 'zod'
+import type { ICellEditorParams } from 'ag-grid-community'
+import type { MenuTree } from '@frontier/ui-component'
+import type { MaterialRow } from '@/types'
+import { clone } from 'ramda'
+
+interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
+  schema: ZodString
+  dropdownMenuTree: () => MenuTree
+  placeholder: string
+  multiple: boolean
+  onAddNew?: (name: string) => void
+  onConfirm?: (name: string | null | undefined, rowId: string) => void
+}
+
+export default {
+  setup(props: { params: SelectEditorParams }) {
+    const inputValue = ref(props.params.value)
+    const dropdownMenuTree = ref(clone(props.params.dropdownMenuTree()))
+
+    const handleAdd = (name: string) => {
+      dropdownMenuTree.value.blockList[0].menuList.push({
+        selectValue: name,
+        title: name,
+      })
+      props.params.onAddNew?.(name)
+    }
+
+    const handleConfirm = () => {
+      props.params.onConfirm?.(inputValue.value, props.params.node.id)
+      props.params.api.stopEditing()
+    }
+
+    const getValue = () => inputValue.value
+
+    return {
+      inputValue,
+      dropdownMenuTree,
+      handleConfirm,
+      handleAdd,
+      getValue,
+    }
+  },
+}
+</script>
+
+<style scoped></style>

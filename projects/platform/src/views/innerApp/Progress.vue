@@ -29,6 +29,10 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         v-else-if="currentTab === PROGRESS_TAB.EXCEL"
         :currentStatus="selectedStatus"
       )
+      progress-spreadsheet(
+        v-else-if="currentTab === PROGRESS_TAB.SPREADSHEET"
+        :currentStatus="selectedStatus"
+      )
 </template>
 
 <script setup lang="ts">
@@ -47,6 +51,9 @@ const ProgressU3m = defineAsyncComponent(
 )
 const ProgressExcel = defineAsyncComponent(
   () => import('@/components/assets/progress/ProgressExcel.vue')
+)
+const ProgressSpreadsheet = defineAsyncComponent(
+  () => import('@/components/assets/progress/ProgressSpreadsheet.vue')
 )
 
 defineProps<{
@@ -68,6 +75,10 @@ const tabList = reactive([
   {
     name: t('PP0003'),
     path: PROGRESS_TAB.EXCEL,
+  },
+  {
+    name: t('MI0143'),
+    path: PROGRESS_TAB.SPREADSHEET,
   },
 ])
 

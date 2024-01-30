@@ -15,7 +15,7 @@ import type { MenuTree } from '@frontier/ui-component'
 
 type Nullable<T> = { [K in keyof T]: T[K] | null }
 
-interface DescriptionListByType {
+export interface DescriptionListByType {
   default: Nullable<MaterialDescription>[]
   custom: Nullable<MaterialDescription>[]
 }

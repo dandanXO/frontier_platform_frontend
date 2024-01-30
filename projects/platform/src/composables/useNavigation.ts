@@ -116,6 +116,15 @@ export default function useNavigation() {
     await router.push(parsePath(`${prefixPath}/progress/${tabName}`, navReq))
   }
 
+  const goToSpreadsheetProgress = async (
+    navReq: NavigationReq = {},
+    progressId: number
+  ) => {
+    await router.push(
+      parsePath(`${prefixPath}/progress/spreadsheet/${progressId}`, navReq)
+    )
+  }
+
   const goToPaymentDetail = (navReq: NavigationReq = {}) => {
     router.push(parsePath('/:orgNo/billings/payment', navReq))
   }
@@ -157,6 +166,19 @@ export default function useNavigation() {
 
   const goToWorkspace = (navReq: NavigationReq = {}, nodeId: number) => {
     router.push(parsePath(`${prefixPath}/workspace/${nodeId}`, navReq))
+  }
+
+  const goToAssetMaterialSpreadSheet = () => {
+    router.push(parsePath(`${prefixPath}/assets/edit/spreadsheet`))
+    // if (ogType === OgType.ORG) {
+    //   router.push(
+    //     parsePath(`${prefixPath}/assets/${materialId}/edit`, {
+    //       ogKey: `${OgType.ORG}-${organization.value.orgId}`,
+    //     })
+    //   )
+    // } else {
+    //   router.push(parsePath(`${prefixPath}/assets/${materialId}/edit`))
+    // }
   }
 
   const goToWorkspaceMaterialDetail = (
@@ -321,6 +343,7 @@ export default function useNavigation() {
     goToShareToMeMaterial,
     goToBillings,
     goToProgress,
+    goToSpreadsheetProgress,
     goToPaymentDetail,
     goToReceivedShare,
     goToReceivedShareMaterial,
@@ -331,6 +354,7 @@ export default function useNavigation() {
     goToMoodboardPickedList,
     goToThreadBoard,
     goToValueAddedService,
+    goToAssetMaterialSpreadSheet,
     prefixPath,
     isInInnerApp,
   }

@@ -14,14 +14,17 @@ import { useSearchStore } from '@/stores/search'
 import { useNotifyStore } from '@/stores/notify'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
+import useNavigation from '@/composables/useNavigation'
 
 export const useAssetsStore = defineStore('assets', () => {
   const { t } = useI18n()
   const store = useStore()
+  const { goToAssetMaterialSpreadSheet } = useNavigation()
   const { showNotifyBanner, closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
   const uploadingU3mMaterialIdList = ref<number[]>([])
+  const spreadsheetInitialMaterial = ref<Material[]>([])
 
   const materialList = ref<Material[]>([])
   const getAssetsMaterialList = async (payload: {
@@ -99,11 +102,23 @@ export const useAssetsStore = defineStore('assets', () => {
     return navigator.sendBeacon(path, blob)
   }
 
+  const startSpreadsheetUpdate = (materialList: Material[]) => {
+    spreadsheetInitialMaterial.value = materialList
+    goToAssetMaterialSpreadSheet()
+  }
+
+  const cleanUpSpreadSheet = () => {
+    spreadsheetInitialMaterial.value = []
+  }
+
   return {
     materialList,
+    spreadsheetInitialMaterial,
     getAssetsMaterialList,
     uploadingU3mMaterialIdList,
     uploadCustomU3m,
     ogBaseAssetsApi,
+    startSpreadsheetUpdate,
+    cleanUpSpreadSheet,
   }
 })

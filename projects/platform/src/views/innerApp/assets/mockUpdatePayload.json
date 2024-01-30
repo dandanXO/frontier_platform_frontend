@@ -1,0 +1,3416 @@
+{
+  "createList": [
+    {
+      "materialId": null,
+      "editable": true,
+      "itemNo": "Peter_Single_Face",
+      "isDoubleSide": false,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "sideType": 1,
+      "seasonInfo": {
+        "isPublic": true,
+        "season": {
+          "seasonId": null,
+          "name": "season"
+        },
+        "year": 2023
+      },
+      "width": {
+        "cuttable": 999,
+        "full": 999,
+        "unit": "1"
+      },
+      "weight": {
+        "value": 127.001,
+        "unit": "1"
+      },
+      "faceSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": "1",
+        "descriptionList": null,
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "coursesPerInch": null,
+          "yarnSize": null,
+          "machineGaugeInGg": null,
+          "averageSkinPerMeterSquare": null,
+          "grade": null,
+          "tannage": null,
+          "thicknessPerMm": null,
+          "bondingMethod": null,
+          "outerDiameter": null,
+          "length": null,
+          "thickness": null,
+          "width": null
+        },
+        "contentList": [
+          {
+            "contentId": 1,
+            "name": "Cotton",
+            "percentage": 80
+          },
+          {
+            "contentId": 2,
+            "name": "Spandex",
+            "percentage": 15
+          },
+          {
+            "contentId": 8773,
+            "name": "PeterContent",
+            "percentage": 5
+          }
+        ],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "middleSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "customPropertyList": []
+      },
+      "backSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": null,
+        "descriptionList": [],
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null
+        },
+        "contentList": [],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "tagInfo": {
+        "tagList": [
+          "Public Cooling yarn",
+          "Public Weft stretch",
+          "Public Cool max"
+        ],
+        "certificationTagList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": "TW",
+        "pricing": {
+          "currencyCode": "USD",
+          "price": 3120,
+          "unit": "M"
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "internalInfo": {
+        "tagList": [],
+        "remark": null,
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": true,
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "materialId": null,
+      "editable": true,
+      "itemNo": "B54250",
+      "isDoubleSide": false,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "sideType": 1,
+      "seasonInfo": {
+        "isPublic": false,
+        "season": {
+          "seasonId": 6,
+          "name": ""
+        },
+        "year": 0
+      },
+      "width": {
+        "cuttable": 57,
+        "full": 0,
+        "unit": "2"
+      },
+      "weight": {
+        "value": 181,
+        "unit": "1"
+      },
+      "faceSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": "1",
+        "descriptionList": null,
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "coursesPerInch": null,
+          "yarnSize": null,
+          "machineGaugeInGg": null,
+          "averageSkinPerMeterSquare": null,
+          "grade": null,
+          "tannage": null,
+          "thicknessPerMm": null,
+          "bondingMethod": null,
+          "outerDiameter": null,
+          "length": null,
+          "thickness": null,
+          "width": null
+        },
+        "contentList": [
+          {
+            "contentId": 3770,
+            "name": "NYLON",
+            "percentage": 89
+          },
+          {
+            "contentId": 3539,
+            "name": "SPANDEX",
+            "percentage": 11
+          }
+        ],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "middleSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "customPropertyList": []
+      },
+      "backSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": null,
+        "descriptionList": [],
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null
+        },
+        "contentList": [],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "tagInfo": {
+        "tagList": [""],
+        "certificationTagList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": 0,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "internalInfo": {
+        "tagList": [],
+        "remark": null,
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "materialId": null,
+      "editable": true,
+      "itemNo": "EY01617",
+      "isDoubleSide": false,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "sideType": 1,
+      "seasonInfo": {
+        "isPublic": false,
+        "season": {
+          "seasonId": 6,
+          "name": ""
+        },
+        "year": 0
+      },
+      "width": {
+        "cuttable": 55,
+        "full": 0,
+        "unit": "2"
+      },
+      "weight": {
+        "value": 275,
+        "unit": "1"
+      },
+      "faceSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": null,
+        "descriptionList": [],
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null
+        },
+        "contentList": [
+          {
+            "contentId": 1,
+            "name": "Cotton",
+            "percentage": 63
+          },
+          {
+            "contentId": 7,
+            "name": "Polyester",
+            "percentage": 32
+          },
+          {
+            "contentId": 27,
+            "name": "Rayon",
+            "percentage": 5
+          }
+        ],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "middleSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "customPropertyList": []
+      },
+      "backSide": {
+        "materialSideId": null,
+        "frontierNo": null,
+        "featureList": [],
+        "finishList": [],
+        "isMainSide": false,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": null,
+        "descriptionList": [],
+        "construction": {
+          "isPublic": false,
+          "warpDensity": null,
+          "weftDensity": null,
+          "machineType": null,
+          "walesPerInch": null
+        },
+        "contentList": [],
+        "pantoneList": [],
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        }
+      },
+      "tagInfo": {
+        "tagList": [""],
+        "certificationTagList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": 0,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "internalInfo": {
+        "tagList": [],
+        "remark": null,
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "updateList": [
+    {
+      "materialId": 131,
+      "itemNo": "20240115",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": null,
+        "displayUrl": null
+      },
+      "width": {
+        "cuttable": 60,
+        "full": 62,
+        "unit": 2
+      },
+      "weight": {
+        "value": 100,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 100,
+        "weightOz": 3,
+        "weightGy": 600,
+        "weightGm": 157
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": false,
+        "isShowWeightOz": false,
+        "isShowWeightGy": true,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": true
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": true,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": "210",
+          "weftDensity": "210",
+          "warpYarnSize": "100D",
+          "weftYarnSize": "7Nm+7Nm/Lurex",
+          "isPublic": true
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 1,
+            "name": "Cotton",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": "Camo",
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": "Green",
+          "customPropertyList": []
+        },
+        "materialSideId": 140,
+        "frontierNo": "F011528656813",
+        "featureList": ["Woven", "Printed"],
+        "finishList": [
+          {
+            "finishId": 1,
+            "name": "Before Wash"
+          },
+          {
+            "finishId": 29,
+            "name": "Vat dye"
+          }
+        ],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": "210",
+          "weftDensity": "210",
+          "warpYarnSize": "100D",
+          "weftYarnSize": "7Nm+7Nm/Lurex",
+          "isPublic": true
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 1,
+            "name": "Cotton",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": "Camo",
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": "Green",
+          "customPropertyList": []
+        },
+        "materialSideId": 140,
+        "frontierNo": "F011528656813",
+        "featureList": ["Woven", "Printed"],
+        "finishList": [
+          {
+            "finishId": 1,
+            "name": "Before Wash"
+          },
+          {
+            "finishId": 29,
+            "name": "Vat dye"
+          }
+        ],
+        "pantoneNameList": []
+      },
+      "tagInfo": {
+        "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+        "aiTagList": [],
+        "certificationTagList": [
+          {
+            "certificateId": 1,
+            "name": "bluesign®"
+          },
+          {
+            "certificateId": 2,
+            "name": "Global Organic Textile Standard(GOTS)"
+          }
+        ],
+        "certificationTagIdList": [1, 2]
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1705296416,
+        "updateDate": 1705296433,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "ChaiChai",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/202304170000056369.jpeg",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1705296416
+          },
+          "lastModifiedByInfo": null,
+          "copiedFromInfo": null
+        },
+        "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "qtyInPcs": 4,
+              "shelf1": null,
+              "shelf2": null,
+              "location": "HK"
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "qtyInPcs": 10,
+              "shelf1": null,
+              "shelf2": null,
+              "location": "Taipei"
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": "string",
+        "nativeCode": "1234"
+      },
+      "digitalDrape": null,
+      "editable": true
+    },
+    {
+      "materialId": 128,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": null,
+        "displayUrl": null
+      },
+      "width": {
+        "cuttable": 123,
+        "full": 123,
+        "unit": 2
+      },
+      "weight": {
+        "value": 123,
+        "unit": 4
+      },
+      "weightForDisplay": {
+        "weightGsm": 39,
+        "weightOz": 0,
+        "weightGy": 112,
+        "weightGm": 123
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": false,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": true
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": true
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3694,
+            "name": "20230111",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 137,
+        "frontierNo": "F011042384885",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1704879077,
+        "updateDate": 1704943554,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704879077
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704943554
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "editable": true
+    },
+    {
+      "materialId": 123,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": null,
+        "displayUrl": null
+      },
+      "width": {
+        "cuttable": 123,
+        "full": 123,
+        "unit": 2
+      },
+      "weight": {
+        "value": 123,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 123,
+        "weightOz": 4,
+        "weightGy": 352,
+        "weightGm": 384
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": true
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3760,
+            "name": "ACRYLAC",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 132,
+        "frontierNo": "F010915943194",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1704792205,
+        "updateDate": 1704792262,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704792205
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704792262
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "editable": true
+    },
+    {
+      "materialId": 111,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 3,
+        "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401051647287068.jpg",
+        "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Cut/202401051647287068.jpeg"
+      },
+      "width": {
+        "cuttable": 123,
+        "full": 123,
+        "unit": 2
+      },
+      "weight": {
+        "value": 123,
+        "unit": 4
+      },
+      "weightForDisplay": {
+        "weightGsm": 39,
+        "weightOz": 0,
+        "weightGy": 112,
+        "weightGm": 123
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": false,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": true
+      },
+      "seasonInfo": {
+        "season": {
+          "seasonId": 5,
+          "name": "summer"
+        },
+        "year": 12,
+        "isPublic": true
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3694,
+            "name": "20230111",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": "23",
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": "23",
+          "customPropertyList": []
+        },
+        "materialSideId": 117,
+        "frontierNo": "F010335438191",
+        "featureList": ["12", "32"],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": ["123", "32"],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [
+        {
+          "isCover": true,
+          "cropRecord": {
+            "x": -86,
+            "y": 45,
+            "rotateDeg": 0,
+            "scaleRatio": 1
+          },
+          "fileId": 88,
+          "fileName": "202401051647287068.jpeg",
+          "displayFileName": "file222.jpeg",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401051647287068.jpeg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Cut/202401051647287068.jpeg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401051647287068.jpg",
+          "extension": "jpeg"
+        }
+      ],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": true,
+        "createDate": 1704266812,
+        "updateDate": 1704785738,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704266812
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704785738
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": ["12", "12312"],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "editable": true
+    }
+  ],
+  "deleteList": [
+    {
+      "materialId": 92,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 3,
+        "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012150148016.jpg",
+        "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150148016.png"
+      },
+      "width": {
+        "cuttable": 12,
+        "full": 123,
+        "unit": 1
+      },
+      "weight": {
+        "value": 123,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 123,
+        "weightOz": 4,
+        "weightGy": 139,
+        "weightGm": 151
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": 0,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": true,
+      "sideType": null,
+      "isComposite": true,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3764,
+            "name": "cotton",
+            "percentage": 60
+          },
+          {
+            "contentId": 3763,
+            "name": "CVC",
+            "percentage": 40
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 94,
+        "frontierNo": "F010120215452",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "middleSide": {
+        "customPropertyList": [],
+        "materialSideId": 95,
+        "frontierNo": "F010102151774",
+        "featureList": [],
+        "finishList": []
+      },
+      "backSide": {
+        "isMainSide": false,
+        "sideImage": {
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F010102004574_202401012145147283.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010102004574_202401012145147283.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010102004574_202401012145147283.jpg",
+          "rulerUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F010102004574_202401012145147283.jpg",
+          "rulerThumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/Thumbnail/F010102004574_202401012145147283.jpg",
+          "cropRecord": null,
+          "dpi": 600
+        },
+        "u3mImage": {
+          "original": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F010102004574_202401012145147283.jpg",
+          "crop": "https://textile-dev.frontier.cool/Resource/OriginalMaterialCut/F010102004574_202401012145147283.jpg",
+          "cropRecord": {
+            "squareCropRecord": null,
+            "perspectiveCropRecord": null
+          },
+          "dpi": 600
+        },
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3760,
+            "name": "ACRYLAC",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [
+          {
+            "materialPantoneId": 116,
+            "pantoneId": 1541,
+            "name": "18-3949 TCX",
+            "majorColorName": "Blue",
+            "colorName": "Dazzling Blue",
+            "r": 56,
+            "g": 80,
+            "b": 160
+          }
+        ],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 96,
+        "frontierNo": "F010102004574",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": ["18-3949 TCX"]
+      },
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": "AL",
+        "pricing": {
+          "currencyCode": "USD",
+          "price": 123,
+          "unit": "Y"
+        },
+        "minimumOrder": {
+          "qty": 123,
+          "unit": "Y"
+        },
+        "minimumColor": {
+          "qty": 123,
+          "unit": "Y"
+        },
+        "productionLeadTimeInDays": "123",
+        "sampleLeadTimeInDays": "123"
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 51,
+          "fileName": "202401012150173287.png",
+          "displayFileName": "hello.png",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150173287.png",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150173287.png",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012150173287.jpg",
+          "extension": "png"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 52,
+          "fileName": "202401012150176832.png",
+          "displayFileName": "sdf.png",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150176832.png",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150176832.png",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012150176832.jpg",
+          "extension": "png"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 53,
+          "fileName": "202401012150183895.jpg",
+          "displayFileName": "test.jpg",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150183895.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150183895.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012150183895.jpg",
+          "extension": "jpg"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 54,
+          "fileName": "202401012150219552.scch",
+          "displayFileName": "test.scch",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150219552.scch",
+          "displayUrl": null,
+          "thumbnailUrl": null,
+          "extension": "scch"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 55,
+          "fileName": "202401020131287508.pdf",
+          "displayFileName": "8yjkh.pdf",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401020131287508.pdf",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401020131287508.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401020131287508.jpg",
+          "extension": "pdf"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 56,
+          "fileName": "202401020131304358.mov",
+          "displayFileName": "demo.mov",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401020131304358.mov",
+          "displayUrl": null,
+          "thumbnailUrl": null,
+          "extension": "mov"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 57,
+          "fileName": "202401020131307342.scch",
+          "displayFileName": "test.scch",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401020131307342.scch",
+          "displayUrl": null,
+          "thumbnailUrl": null,
+          "extension": "scch"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 58,
+          "fileName": "202401020131308502.ydt",
+          "displayFileName": "test.ydt",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401020131308502.ydt",
+          "displayUrl": null,
+          "thumbnailUrl": null,
+          "extension": "ydt"
+        },
+        {
+          "isCover": true,
+          "cropRecord": null,
+          "fileId": 50,
+          "fileName": "202401012150148016.png",
+          "displayFileName": "screencapture-1233x1250.png",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150148016.png",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012150148016.png",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012150148016.jpg",
+          "extension": "png"
+        }
+      ],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": true,
+        "createDate": 1704116623,
+        "updateDate": 1704130291,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704116623
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704130291
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": "AI",
+          "pricing": {
+            "currencyCode": "USD",
+            "price": 456,
+            "unit": "Y"
+          },
+          "minimumOrder": {
+            "qty": 564,
+            "unit": "Y"
+          },
+          "minimumColor": {
+            "qty": 456,
+            "unit": "Y"
+          },
+          "productionLeadTimeInDays": "456",
+          "sampleLeadTimeInDays": "456"
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    },
+    {
+      "materialId": 91,
+      "itemNo": "12",
+      "coverImage": {
+        "mode": 3,
+        "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012136337253.jpg",
+        "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012136337253.png"
+      },
+      "width": {
+        "cuttable": 12,
+        "full": 123,
+        "unit": 1
+      },
+      "weight": {
+        "value": 123,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 123,
+        "weightOz": 4,
+        "weightGy": 139,
+        "weightGm": 151
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": 0,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 2,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": null,
+      "middleSide": null,
+      "backSide": {
+        "isMainSide": true,
+        "sideImage": {
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F010105102104_202401012139008518.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010105102104_202401012139008518.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010105102104_202401012139008518.jpg",
+          "rulerUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F010105102104_202401012139008518.jpg",
+          "rulerThumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/Thumbnail/F010105102104_202401012139008518.jpg",
+          "cropRecord": null,
+          "dpi": 600
+        },
+        "u3mImage": {
+          "original": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F010105102104_202401012139008518.jpg",
+          "crop": "https://textile-dev.frontier.cool/Resource/OriginalMaterialCut/F010105102104_202401012139008518.jpg",
+          "cropRecord": {
+            "squareCropRecord": null,
+            "perspectiveCropRecord": null
+          },
+          "dpi": 600
+        },
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3760,
+            "name": "ACRYLAC",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [
+          {
+            "materialPantoneId": 110,
+            "pantoneId": 320,
+            "name": "13-5304 TCX",
+            "majorColorName": "White",
+            "colorName": "Rainy Day",
+            "r": 207,
+            "g": 200,
+            "b": 189
+          },
+          {
+            "materialPantoneId": 111,
+            "pantoneId": 851,
+            "name": "16-1431 TCX",
+            "majorColorName": "Pink",
+            "colorName": "Canyon Clay",
+            "r": 206,
+            "g": 132,
+            "b": 119
+          },
+          {
+            "materialPantoneId": 112,
+            "pantoneId": 1162,
+            "name": "17-1740 TCX",
+            "majorColorName": "Pink",
+            "colorName": "Claret Red",
+            "r": 200,
+            "g": 76,
+            "b": 97
+          },
+          {
+            "materialPantoneId": 113,
+            "pantoneId": 1733,
+            "name": "19-1664 TCX",
+            "majorColorName": "Pink",
+            "colorName": "True Red",
+            "r": 191,
+            "g": 25,
+            "b": 50
+          }
+        ],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 93,
+        "frontierNo": "F010105102104",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": [
+          "13-5304 TCX",
+          "16-1431 TCX",
+          "17-1740 TCX",
+          "19-1664 TCX"
+        ]
+      },
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": 1.26,
+        "water": 0.69,
+        "land": 0.02,
+        "lastUpdateTime": 1704117610
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [
+        {
+          "isCover": true,
+          "cropRecord": null,
+          "fileId": 48,
+          "fileName": "202401012136337253.png",
+          "displayFileName": "screencapture-1233x1250.png",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012136337253.png",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012136337253.png",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012136337253.jpg",
+          "extension": "png"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 49,
+          "fileName": "202401012136343577.png",
+          "displayFileName": "screencapture-1587x1169.png",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012136343577.png",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012136343577.png",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012136343577.jpg",
+          "extension": "png"
+        }
+      ],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": true,
+        "createDate": 1704116163,
+        "updateDate": 1704117610,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704116163
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704117610
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    },
+    {
+      "materialId": 90,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010136311625_202401012131513261.jpg",
+        "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010136311625_202401012131513261.jpg"
+      },
+      "width": {
+        "cuttable": 123,
+        "full": 123,
+        "unit": 1
+      },
+      "weight": {
+        "value": 123,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 123,
+        "weightOz": 4,
+        "weightGy": 139,
+        "weightGm": 151
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": 0,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": {
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F010136311625_202401012131513261.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010136311625_202401012131513261.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010136311625_202401012131513261.jpg",
+          "rulerUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F010136311625_202401012131513261.jpg",
+          "rulerThumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/Thumbnail/F010136311625_202401012131513261.jpg",
+          "cropRecord": null,
+          "dpi": 600
+        },
+        "u3mImage": {
+          "original": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F010136311625_202401012131513261.jpg",
+          "crop": "https://textile-dev.frontier.cool/Resource/OriginalMaterialCut/F010136311625_202401012131513261.jpg",
+          "cropRecord": {
+            "squareCropRecord": null,
+            "perspectiveCropRecord": null
+          },
+          "dpi": 600
+        },
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 8776,
+            "name": "23",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [
+          {
+            "materialPantoneId": 109,
+            "pantoneId": 1541,
+            "name": "18-3949 TCX",
+            "majorColorName": "Blue",
+            "colorName": "Dazzling Blue",
+            "r": 56,
+            "g": 80,
+            "b": 160
+          }
+        ],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 92,
+        "frontierNo": "F010136311625",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": ["18-3949 TCX"]
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": 1.14,
+        "water": 0.19,
+        "land": 0.01,
+        "lastUpdateTime": 1704117609
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 45,
+          "fileName": "202401012132278686.jpg",
+          "displayFileName": "display_media_1.jpg",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132278686.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132278686.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012132278686.jpg",
+          "extension": "jpg"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 46,
+          "fileName": "202401012132345343.jpg",
+          "displayFileName": "F112056604922_202312011201162335.jpg",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132345343.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132345343.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012132345343.jpg",
+          "extension": "jpg"
+        },
+        {
+          "isCover": false,
+          "cropRecord": null,
+          "fileId": 47,
+          "fileName": "202401012132349095.jpg",
+          "displayFileName": "hahaha.jpg",
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132349095.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Original/202401012132349095.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialMultimediaAttachment/Thumbnail/202401012132349095.jpg",
+          "extension": "jpg"
+        }
+      ],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": true,
+        "createDate": 1704114254,
+        "updateDate": 1704117609,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704114254
+          },
+          "lastModifiedByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704117609
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    },
+    {
+      "materialId": 87,
+      "itemNo": "ED20099",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010160481699_202401011404025408.jpg",
+        "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010160481699_202401011404025408.jpg"
+      },
+      "width": {
+        "cuttable": 52,
+        "full": 0,
+        "unit": 2
+      },
+      "weight": {
+        "value": 118,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 118,
+        "weightOz": 3,
+        "weightGy": null,
+        "weightGm": null
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": {
+          "originalUrl": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F010160481699_202401011404025408.jpg",
+          "displayUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/F010160481699_202401011404025408.jpg",
+          "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F010160481699_202401011404025408.jpg",
+          "rulerUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F010160481699_202401011404025408.jpg",
+          "rulerThumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialRuler/Thumbnail/F010160481699_202401011404025408.jpg",
+          "cropRecord": null,
+          "dpi": 600
+        },
+        "u3mImage": {
+          "original": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F010160481699_202401011404025408.jpg",
+          "crop": "https://textile-dev.frontier.cool/Resource/OriginalMaterialCut/F010160481699_202401011404025408.jpg",
+          "cropRecord": {
+            "squareCropRecord": null,
+            "perspectiveCropRecord": null
+          },
+          "dpi": 600
+        },
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 8775,
+            "name": "P14%SPX",
+            "percentage": 86
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": "FVF4659QD /WXMQ12784",
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 89,
+        "frontierNo": "F010160481699",
+        "featureList": ["Woven-P/D Ripstop"],
+        "finishList": [
+          {
+            "finishId": 40,
+            "name": "Soft and Pre-shrinking"
+          }
+        ],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        }
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1704089032,
+        "updateDate": 1704089048,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "Peter Pan",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/202304121553204199.jpeg",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704089032
+          },
+          "lastModifiedByInfo": {
+            "userName": "Peter Pan",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/202304121553204199.jpeg",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704089048
+          },
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          }
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    },
+    {
+      "materialId": 86,
+      "itemNo": "test",
+      "coverImage": {
+        "mode": 1,
+        "thumbnailUrl": null,
+        "displayUrl": null
+      },
+      "width": {
+        "cuttable": 1,
+        "full": 2,
+        "unit": 1
+      },
+      "weight": {
+        "value": 3,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 3,
+        "weightOz": 0,
+        "weightGy": 0,
+        "weightGm": 0
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": null,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 1,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3764,
+            "name": "cotton",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 88,
+        "frontierNo": "F010142784480",
+        "featureList": [],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "middleSide": null,
+      "backSide": null,
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1704088342,
+        "updateDate": 1704088351,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "Peter Pan",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/202304121553204199.jpeg",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1704088342
+          },
+          "lastModifiedByInfo": null,
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    },
+    {
+      "materialId": 85,
+      "itemNo": "123",
+      "coverImage": {
+        "mode": 2,
+        "thumbnailUrl": null,
+        "displayUrl": null
+      },
+      "width": {
+        "cuttable": 123,
+        "full": 123,
+        "unit": 1
+      },
+      "weight": {
+        "value": 123,
+        "unit": 1
+      },
+      "weightForDisplay": {
+        "weightGsm": 123,
+        "weightOz": 4,
+        "weightGy": 139,
+        "weightGm": 151
+      },
+      "weightDisplaySetting": {
+        "isShowWeightGsm": true,
+        "isShowWeightOz": false,
+        "isShowWeightGy": false,
+        "isShowWeightGm": false
+      },
+      "seasonInfo": {
+        "season": null,
+        "year": 22,
+        "isPublic": false
+      },
+      "u3m": {
+        "status": -1,
+        "isNotifyReCreate": false,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "customU3m": {
+        "status": -1,
+        "customFileName": null,
+        "hasPhysicalData": null,
+        "zipUrl": null,
+        "u3maUrl": null,
+        "gltfUrl": null,
+        "baseImgUrl": null,
+        "normalImgUrl": null,
+        "dispImgUrl": null,
+        "roughImgUrl": null,
+        "dpi": null,
+        "u3mSpecUrl": null,
+        "u3mPhysicSpecUrl": null,
+        "creatorUnitLabelColor": null,
+        "creator": null,
+        "creatorAvatar": null,
+        "createDate": 0
+      },
+      "isDoubleSide": false,
+      "sideType": 2,
+      "isComposite": false,
+      "isAutoSyncFaceToBackSideInfo": false,
+      "faceSide": null,
+      "middleSide": null,
+      "backSide": {
+        "isMainSide": true,
+        "sideImage": null,
+        "u3mImage": null,
+        "materialType": 1,
+        "descriptionList": [],
+        "construction": {
+          "warpDensity": null,
+          "weftDensity": null,
+          "warpYarnSize": null,
+          "weftYarnSize": null,
+          "isPublic": false
+        },
+        "constructionCustomPropertyList": [],
+        "contentList": [
+          {
+            "contentId": 3760,
+            "name": "ACRYLAC",
+            "percentage": 100
+          }
+        ],
+        "pantoneList": [],
+        "patternInfo": {
+          "pattern": null,
+          "customPropertyList": []
+        },
+        "colorInfo": {
+          "color": null,
+          "customPropertyList": []
+        },
+        "materialSideId": 87,
+        "frontierNo": "F122922810534",
+        "featureList": ["2"],
+        "finishList": [],
+        "pantoneNameList": []
+      },
+      "tagInfo": {
+        "tagList": [],
+        "aiTagList": [],
+        "certificationTagList": [],
+        "certificationTagIdList": []
+      },
+      "priceInfo": {
+        "countryOfOriginal": null,
+        "pricing": {
+          "currencyCode": null,
+          "price": null,
+          "unit": null
+        },
+        "minimumOrder": {
+          "unit": null,
+          "qty": null
+        },
+        "minimumColor": {
+          "unit": null,
+          "qty": null
+        },
+        "productionLeadTimeInDays": null,
+        "sampleLeadTimeInDays": null
+      },
+      "inventoryTotalQtyInYard": 0,
+      "carbonEmission": {
+        "co2": null,
+        "water": null,
+        "land": null,
+        "lastUpdateTime": null
+      },
+      "digitalThreadInfo": {
+        "threadQty": 0,
+        "hasUnreadThread": false
+      },
+      "multimediaList": [],
+      "metaData": {
+        "isDelete": false,
+        "isComplete": false,
+        "createDate": 1703844558,
+        "updateDate": 1703844566,
+        "unitName": "Fabric Pro",
+        "unitLogo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202309251809572692.jpeg",
+        "isMaterialOwnerSide": true,
+        "materialOwnerOGType": 1,
+        "materialOwnerOGId": 6
+      },
+      "internalInfo": {
+        "metaData": {
+          "createdByInfo": {
+            "userName": "昱嘉 潘",
+            "avatar": "https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png",
+            "unitName": "Fabric Pro",
+            "unitLabelColor": "#F2C94C",
+            "date": 1703844558
+          },
+          "lastModifiedByInfo": null,
+          "copiedFromInfo": null
+        },
+        "tagList": [],
+        "priceInfo": {
+          "countryOfOriginal": null,
+          "pricing": {
+            "currencyCode": null,
+            "price": null,
+            "unit": null
+          },
+          "minimumOrder": {
+            "unit": null,
+            "qty": null
+          },
+          "minimumColor": {
+            "unit": null,
+            "qty": null
+          },
+          "productionLeadTimeInDays": null,
+          "sampleLeadTimeInDays": null
+        },
+        "inventoryInfo": {
+          "isTotalPublic": false,
+          "sampleCardsRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "hangersRemainingList": [
+            {
+              "source": null,
+              "shelf1": null,
+              "shelf2": null,
+              "location": null,
+              "qtyInPcs": null
+            }
+          ],
+          "yardageRemainingInfo": {
+            "unit": null,
+            "list": [
+              {
+                "source": null,
+                "shelf1": null,
+                "shelf2": null,
+                "location": null,
+                "productionNo": null,
+                "roll": null,
+                "lot": null,
+                "qty": null
+              }
+            ]
+          }
+        },
+        "attachmentList": [],
+        "remark": null,
+        "nativeCode": null
+      },
+      "digitalDrape": null,
+      "isCreate": false,
+      "isDelete": false,
+      "isDirty": false,
+      "editable": true
+    }
+  ]
+}

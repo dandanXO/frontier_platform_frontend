@@ -105,6 +105,7 @@ import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
 import type { AssetsFilter, Material } from '@frontier/platform-web-sdk'
+// import AssetsMaterialSpreadsheet from './AssetsMaterialSpreadsheet.vue'
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()
@@ -167,6 +168,7 @@ const {
   printLabel,
   mergeMaterial,
   deleteMaterial,
+  startSpreadSheetUpdate,
 } = useAssets()
 
 const optionList = computed(() => [
@@ -187,6 +189,7 @@ const optionMultiSelect = computed(() => [
   // exportExcel,
   mergeMaterial,
   deleteMaterial,
+  startSpreadSheetUpdate,
 ])
 
 const getMaterialList = async (

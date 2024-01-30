@@ -1,0 +1,167 @@
+import { computed, type ComputedRef } from 'vue'
+import { useI18n } from 'vue-i18n'
+import SelectCellEditor from '../cell/SelectCellEditor.vue'
+import { getStringCellProps, rowEditable } from '../cell/cellUtils'
+import type { MaterialRow } from '@/types'
+import type {
+  ColDef,
+  ColGroupDef,
+  ValueFormatterParams,
+} from 'ag-grid-enterprise'
+import useMaterialSchema from '@/composables/material/useMaterialSchema'
+import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+
+const useTagInfoCol = (
+  spreadsheetService: SpreadsheetService
+): ComputedRef<ColDef<MaterialRow> | ColGroupDef<MaterialRow>> => {
+  const { t } = useI18n()
+  const materialSchema = useMaterialSchema()
+  const {
+    materialOptions,
+    menuTreePublicTag,
+    menuTreePrivateTag,
+    publicTagMenuList,
+    privateTagMenuList,
+  } = spreadsheetService
+
+  return computed(() => {
+    return {
+      headerName: t('RR0133'),
+      children: [
+        {
+          headerName: t('RR0027'),
+          field: 'tagInfo.tagList',
+          minWidth: 200,
+          editable: rowEditable,
+          cellEditorPopup: true,
+          cellEditor: SelectCellEditor,
+          cellEditorParams: {
+            placeholder: t('RR0288'),
+            multiple: true,
+            dropdownMenuTree: () => menuTreePublicTag.value,
+            onAddNew: (name: string) => {
+              publicTagMenuList.value.push({
+                title: name,
+                selectValue: name,
+              })
+            },
+          },
+          valueFormatter: (
+            params: ValueFormatterParams<MaterialRow, string[]>
+          ) => {
+            return params.value?.join(',') || ''
+          },
+          valueParser: (params) => {
+            const result = params.newValue.split(',').map((s) => s.trim())
+            result.forEach((tag) => {
+              if (!publicTagMenuList.value.find((t) => t.title === tag)) {
+                publicTagMenuList.value.push({
+                  title: tag,
+                  selectValue: tag,
+                })
+              }
+            })
+            return result
+          },
+        },
+        {
+          headerName: t('MI0051'),
+          field: 'tagInfo.certificationTagList',
+          minWidth: 200,
+          editable: rowEditable,
+          cellEditorPopup: true,
+          cellEditor: SelectCellEditor,
+          cellEditorParams: {
+            placeholder: t('MI0052'),
+            multiple: true,
+            dropdownMenuTree: () => ({
+              blockList: [
+                {
+                  menuList:
+                    materialOptions.certificateList.map(
+                      ({ name, certificateId }) => ({
+                        title: name,
+                        selectValue: certificateId,
+                      })
+                    ) || [],
+                },
+              ],
+            }),
+          },
+          valueFormatter: (params) => {
+            const idArray = params.value as number[]
+            return materialOptions.certificateList
+              .filter((c) => idArray.includes(c.certificateId))
+              .map((c) => c.name)
+              .join(',')
+          },
+          valueParser: (params) => {
+            const result = params.newValue.split(',').map((s) => s.trim())
+            return result
+              .map((name) => {
+                return materialOptions.certificateList.find(
+                  (c) => c.name === name
+                )
+              })
+              .filter(Boolean)
+              .map((m) => m?.certificateId)
+          },
+        },
+        {
+          headerName: t('RR0289'),
+          columnGroupShow: 'open',
+          children: [
+            {
+              field: 'internalInfo.tagList',
+              headerName: t('RR0028'),
+              minWidth: 200,
+              editable: rowEditable,
+              cellEditorPopup: true,
+              cellEditor: SelectCellEditor,
+              cellEditorParams: {
+                placeholder: t('RR0290'),
+                multiple: true,
+                dropdownMenuTree: () => menuTreePrivateTag.value,
+                onAddNew: (name: string) => {
+                  privateTagMenuList.value.push({
+                    title: name,
+                    selectValue: name,
+                  })
+                },
+              },
+              valueFormatter: (
+                params: ValueFormatterParams<MaterialRow, string[]>
+              ) => {
+                return params.value?.join(',') || ''
+              },
+              valueParser: (params) => {
+                const result = params.newValue.split(',').map((s) => s.trim())
+                result.forEach((tag) => {
+                  if (!privateTagMenuList.value.find((t) => t.title === tag)) {
+                    privateTagMenuList.value.push({
+                      title: tag,
+                      selectValue: tag,
+                    })
+                  }
+                })
+                return result
+              },
+            },
+            {
+              field: 'internalInfo.remark',
+              headerName: t('RR0029'),
+              editable: rowEditable,
+              minWidth: 200,
+              ...getStringCellProps(
+                materialSchema.shape.internalInfo.shape.remark,
+                t('MI0054')
+              ),
+            },
+          ],
+        },
+      ],
+    }
+  })
+}
+
+export default useTagInfoCol

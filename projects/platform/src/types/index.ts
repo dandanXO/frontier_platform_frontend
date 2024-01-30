@@ -4,6 +4,7 @@ import type {
   WorkflowStage,
   CropImageRecord,
   Extension,
+  Material,
 } from '@frontier/platform-web-sdk'
 import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
@@ -227,4 +228,22 @@ export type MaterialViewModeFile = {
   thumbnailUrl: string | null
   displayName: string
   extension: Extension
+}
+
+export interface MaterialRow extends Material {
+  isCreate: boolean
+  isDelete: boolean
+  isDirty: boolean
+  editable: boolean
+}
+
+export type MaterialRowForSubmit = Omit<
+  MaterialRow,
+  'isCreate' | 'isDelete' | 'isDirty' | 'editable'
+>
+
+export interface SubmitPayload {
+  createList: MaterialRowForSubmit[]
+  updateList: MaterialRowForSubmit[]
+  deleteList: number[]
 }

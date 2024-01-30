@@ -197,9 +197,18 @@ const routes = [
             props: true,
           },
           {
-            path: 'progress/:tab(material|u3m|excel)',
+            path: 'progress/:tab(material|u3m|excel|spreadsheet)',
             name: 'Progress',
             component: () => import('@/views/innerApp/Progress.vue'),
+            props: true,
+          },
+          {
+            path: 'progress/spreadsheet/:progressId',
+            name: 'SpreadsheetProgress',
+            component: () =>
+              import(
+                '@/views/innerApp/assets/AssetsMaterialSpreadsheetRecord.vue'
+              ),
             props: true,
           },
           // Assets
@@ -231,6 +240,13 @@ const routes = [
             name: 'AssetsMaterialEdit',
             component: () =>
               import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+            props: true,
+          },
+          {
+            path: 'assets/edit/spreadsheet',
+            name: 'AssetsMaterialSpreadsheetEdit',
+            component: () =>
+              import('@/views/innerApp/assets/AssetsMaterialSpreadsheet.vue'),
             props: true,
           },
           // Workspace

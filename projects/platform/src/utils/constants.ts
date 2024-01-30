@@ -239,6 +239,7 @@ export enum PROGRESS_TAB {
   MATERIAL = 'material',
   U3M = 'u3m',
   EXCEL = 'excel',
+  SPREADSHEET = 'spreadsheet',
 }
 
 export enum MOODBOARD_TAB {

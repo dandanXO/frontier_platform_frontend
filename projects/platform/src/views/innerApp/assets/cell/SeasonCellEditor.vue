@@ -1,0 +1,74 @@
+<template lang="pug">
+div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
+  f-select-input(
+    class="w-full"
+    v-model:selectValue="inputValue"
+    :dropdownMenuTree="seasonMenuTree"
+    :placeholder="t('MI0012')"
+    :multiple="params.multiple"
+    @addNew="addSeasonOption"
+  )
+  f-button(type="primary" size="md" @click="handleConfirm") Confirm
+</template>
+
+<script lang="ts">
+import { inject, ref } from 'vue'
+import type { ZodString } from 'zod'
+import type { ICellEditorParams } from 'ag-grid-community'
+import type { MenuTree } from '@frontier/ui-component'
+import type { MaterialRow } from '@/types'
+import { clone } from 'ramda'
+import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+import { useI18n } from 'vue-i18n'
+
+interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
+  schema: ZodString
+  dropdownMenuTree: () => MenuTree
+  placeholder: string
+  multiple: boolean
+  onAddNew?: (name: string) => void
+  onConfirm?: (name: string | null | undefined, rowId: string) => void
+}
+
+export default {
+  setup(props: { params: SelectEditorParams }) {
+    const spreadsheetService = inject<SpreadsheetService>('spreadsheetService')
+    const { gridApi, seasonMenuTree, addSeasonOption, allSeasonList } =
+      spreadsheetService
+
+    const inputValue = ref(props.params.value)
+    const { t } = useI18n()
+
+    const handleConfirm = () => {
+      const rowId = props.params.node.id
+      const targetSeason = allSeasonList.value.find((s) => s.name === name)
+      const node = gridApi.value?.getRowNode(rowId)
+      const data = node?.data
+      node?.setData({
+        ...data,
+        seasonInfo: {
+          ...data?.seasonInfo,
+          season: {
+            seasonId: targetSeason?.seasonId ?? null,
+            name,
+          },
+        },
+      })
+      props.params.api.stopEditing()
+    }
+
+    const getValue = () => inputValue.value
+
+    return {
+      t,
+      inputValue,
+      seasonMenuTree,
+      handleConfirm,
+      addSeasonOption,
+      getValue,
+    }
+  },
+}
+</script>
+
+<style scoped></style>

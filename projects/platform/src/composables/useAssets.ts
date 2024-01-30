@@ -26,6 +26,7 @@ export enum ASSETS_MATERIAL_FUNCTION {
   PRINT_A4_SWATCH = 7,
   MERGE = 8,
   DELETE = 9,
+  START_SPREAD_SHEET_UPDATE = 10,
 }
 
 export type AssetsFunctionOption = FunctionOption<
@@ -44,7 +45,10 @@ export default function useAssets() {
 
   const { t } = useI18n()
   const store = useStore()
-  const { ogBaseAssetsApi } = useAssetsStore()
+  const {
+    ogBaseAssetsApi,
+    startSpreadsheetUpdate: startSpreadsheetUpdateAction,
+  } = useAssetsStore()
   const notify = useNotifyStore()
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
@@ -92,6 +96,15 @@ export default function useAssets() {
         properties,
       })
     },
+  }
+  const startSpreadSheetUpdate: AssetsFunctionOption = {
+    id: ASSETS_MATERIAL_FUNCTION.START_SPREAD_SHEET_UPDATE,
+    name: () => t('MI0143'),
+    func: (n) => {
+      startSpreadsheetUpdateAction(Array.isArray(n) ? n : [n])
+    },
+    icon: () => 'add',
+    disabled: () => false,
   }
   const addToWorkspace: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.ADD_TO_WORKSPACE,
@@ -436,5 +449,6 @@ export default function useAssets() {
     printA4Swatch,
     deleteMaterial,
     mergeMaterial,
+    startSpreadSheetUpdate,
   }
 }

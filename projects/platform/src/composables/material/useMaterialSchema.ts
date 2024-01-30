@@ -88,9 +88,9 @@ const getMaxDecimalPlacesParams = (dp: number) => {
   return [multipleOf, message] as const
 }
 
-const featureListSchema = z.array(z.string()).default([])
+export const featureListSchema = z.array(z.string()).default([])
 
-const finishListSchema = z
+export const finishListSchema = z
   .array(
     z.object({
       finishId: z.number().int(integerOnlyMessage).nullable(),
@@ -101,8 +101,7 @@ const finishListSchema = z
     })
   )
   .default([])
-
-const descriptionListSchema = z
+export const descriptionListSchema = z
   .array(
     z.object({
       descriptionId: z.number().int(integerOnlyMessage).nullable(),
@@ -114,7 +113,7 @@ const descriptionListSchema = z
   )
   .default([])
 
-const materialWovenConstructionSchema = z.object({
+export const materialWovenConstructionSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
   warpDensity: z
     .string()
@@ -138,7 +137,7 @@ const materialWovenConstructionSchema = z.object({
     .default(null),
 })
 
-const materialKnitConstructionSchema = z.object({
+export const materialKnitConstructionSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
   machineType: z
     .string()
@@ -173,7 +172,7 @@ const materialKnitConstructionSchema = z.object({
     .default(null),
 })
 
-const materialLeatherConstructionSchema = z.object({
+export const materialLeatherConstructionSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
   averageSkinPerMeterSquare: z
     .string()
@@ -199,7 +198,7 @@ const materialLeatherConstructionSchema = z.object({
     .default(null),
 })
 
-const materialNonWovenConstructionSchema = z.object({
+export const materialNonWovenConstructionSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
   bondingMethod: z
     .string()
@@ -215,7 +214,7 @@ const materialNonWovenConstructionSchema = z.object({
     .default(null),
 })
 
-const materialTrimConstructionSchema = z.object({
+export const materialTrimConstructionSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
   outerDiameter: z
     .string()
@@ -239,13 +238,13 @@ const materialTrimConstructionSchema = z.object({
     .default(null),
 })
 
-const materialConstructionSchema = materialWovenConstructionSchema
+export const materialConstructionSchema = materialWovenConstructionSchema
   .merge(materialKnitConstructionSchema)
   .merge(materialLeatherConstructionSchema)
   .merge(materialNonWovenConstructionSchema)
   .merge(materialTrimConstructionSchema)
 
-const customPropertyListSchema = z.array(
+export const customPropertyListSchema = z.array(
   z.object({
     isPublic: z.boolean(nonNullParams).default(false),
     name: z
@@ -261,7 +260,7 @@ const customPropertyListSchema = z.array(
   })
 )
 
-const contentSchema = z.object({
+export const contentSchema = z.object({
   contentId: z.number().int().nullable(),
   name: z
     .string(nonNullParams)
@@ -274,56 +273,66 @@ const contentSchema = z.object({
     .multipleOf(...getMaxDecimalPlacesParams(2)),
 })
 
-const materialMiddleSideSchema = z.object({
+export const contentListSchema = z
+  .array(contentSchema)
+  .refine(
+    (val) => {
+      const contentNameList = val.map((item) => item.name)
+      return new Set(contentNameList).size === contentNameList.length
+    },
+    { message: i18n.global.t('WW0089') }
+  )
+  .refine(
+    (val) => {
+      const total = val.reduce((acc, cur) => {
+        const { percentage = 0 } = cur
+        return acc + Number(percentage)
+      }, 0)
+      return Number(total.toFixed(3)) === 100
+    },
+    { message: i18n.global.t('WW0005') }
+  )
+  .nullable()
+  .default([{ contentId: null, name: '', percentage: null }])
+
+export const materialMiddleSideSchema = z.object({
   featureList: featureListSchema,
   finishList: finishListSchema,
   customPropertyList: customPropertyListSchema.default([]),
 })
 
+export const patternInfoSchema = z.object({
+  pattern: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  customPropertyList: customPropertyListSchema.default([]),
+})
+
+export const colorInfoSchema = z.object({
+  color: z
+    .string()
+    .max(...getMaxLengthParams(100))
+    .nullable()
+    .default(null),
+  customPropertyList: customPropertyListSchema.default([]),
+})
+
+export const materialTypeSchema = z
+  .nativeEnum(MaterialType, nonNullParams)
+  .default(MaterialType.WOVEN)
+
 export const materialSideSchema = z.object({
   featureList: featureListSchema,
   finishList: finishListSchema,
-  materialType: z.nativeEnum(MaterialType).default(MaterialType.WOVEN),
+  materialType: materialTypeSchema,
   descriptionList: descriptionListSchema,
   construction: materialConstructionSchema,
   constructionCustomPropertyList: customPropertyListSchema.default([]),
-  contentList: z
-    .array(contentSchema)
-    .refine(
-      (val) => {
-        const contentNameList = val.map((item) => item.name)
-        return new Set(contentNameList).size === contentNameList.length
-      },
-      { message: i18n.global.t('WW0089') }
-    )
-    .refine(
-      (val) => {
-        const total = val.reduce((acc, cur) => {
-          const { percentage = 0 } = cur
-          return acc + Number(percentage)
-        }, 0)
-        return Number(total.toFixed(3)) === 100
-      },
-      { message: i18n.global.t('WW0005') }
-    )
-    .nullable()
-    .default([{ contentId: null, name: '', percentage: null }]),
-  patternInfo: z.object({
-    pattern: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    customPropertyList: customPropertyListSchema.default([]),
-  }),
-  colorInfo: z.object({
-    color: z
-      .string()
-      .max(...getMaxLengthParams(100))
-      .nullable()
-      .default(null),
-    customPropertyList: customPropertyListSchema.default([]),
-  }),
+  contentList: contentListSchema,
+  patternInfo: patternInfoSchema,
+  colorInfo: colorInfoSchema,
   pantoneNameList: z
     .array(
       z
@@ -334,190 +343,239 @@ export const materialSideSchema = z.object({
     .default([]),
 })
 
-const useMaterialSchema = () => {
-  const materialPriceInfoSchema = z.object({
-    countryOfOriginal: z
-      .string()
-      .max(...getMaxLengthParams(2))
-      .nullable()
-      .default(null),
-    pricing: z
-      .object({
-        currencyCode: z.nativeEnum(CurrencyCode),
-        price: z
+export const priceSchema = z
+  .number()
+  .min(...getMinNumberParams(0))
+  .max(...getMaxNumberParams(999999999999999999.99))
+  .multipleOf(...getMaxDecimalPlacesParams(2))
+  .nullable()
+
+export const currencyCodeSchema = z
+  .nativeEnum(CurrencyCode)
+  .default(CurrencyCode.USD)
+
+export const materialQuantityUnitSchema = z
+  .nativeEnum(MaterialQuantityUnit)
+  .default(MaterialQuantityUnit.Y)
+
+export const pricingSchema = z
+  .object({
+    currencyCode: currencyCodeSchema,
+    price: priceSchema,
+    unit: materialQuantityUnitSchema,
+  })
+  .nullable()
+  .default({
+    currencyCode: CurrencyCode.USD,
+    price: null,
+    unit: MaterialQuantityUnit.Y,
+  })
+
+export const minimumQtySchema = z
+  .number(nonNullParams)
+  .int(integerOnlyMessage)
+  .min(...getMinNumberParams(0))
+  .max(...getMaxNumberParams(999999))
+  .nullable()
+
+export const minimumOrderSchema = z
+  .object({
+    qty: minimumQtySchema,
+    unit: materialQuantityUnitSchema,
+  })
+  .nullable()
+  .default({
+    qty: null,
+    unit: MaterialQuantityUnit.Y,
+  })
+
+export const minimumColorSchema = z
+  .object({
+    qty: minimumQtySchema,
+    unit: materialQuantityUnitSchema,
+  })
+  .nullable()
+  .default({
+    qty: null,
+    unit: MaterialQuantityUnit.Y,
+  })
+
+const materialPriceInfoSchema = z.object({
+  countryOfOriginal: z
+    .string()
+    .max(...getMaxLengthParams(2))
+    .nullable()
+    .default(null),
+  pricing: pricingSchema,
+  minimumOrder: minimumOrderSchema,
+  minimumColor: minimumColorSchema,
+  productionLeadTimeInDays: z
+    .string()
+    .max(...getMaxLengthParams(10))
+    .nullable()
+    .default(null),
+  sampleLeadTimeInDays: z
+    .string()
+    .max(...getMaxLengthParams(10))
+    .nullable()
+    .default(null),
+})
+
+const shelfSchema = z
+  .string()
+  .max(...getMaxLengthParams(50))
+  .nullable()
+
+const locationSchema = z
+  .string()
+  .max(...getMaxLengthParams(50))
+  .nullable()
+
+const sourceSchema = z
+  .string()
+  .max(...getMaxLengthParams(50))
+  .nullable()
+
+const qtyInPcsSchema = z
+  .number()
+  .int(integerOnlyMessage)
+  .min(...getMinNumberParams(0))
+  .max(...getMaxNumberParams(999))
+  .nullable()
+
+export const sampleCardsRemainingListSchema = z
+  .array(
+    z.object({
+      source: sourceSchema,
+      shelf1: shelfSchema,
+      shelf2: shelfSchema,
+      location: locationSchema,
+      qtyInPcs: qtyInPcsSchema,
+    })
+  )
+  .nullable()
+  .default([
+    {
+      source: null,
+      shelf1: null,
+      shelf2: null,
+      location: null,
+      qtyInPcs: null,
+    },
+  ])
+
+export const yardageRemainingInfoSchema = z
+  .object({
+    list: z.array(
+      z.object({
+        source: sourceSchema,
+        shelf1: shelfSchema,
+        shelf2: shelfSchema,
+        location: locationSchema,
+        productionNo: z
+          .string()
+          .max(...getMaxLengthParams(50))
+          .nullable(),
+        roll: z
+          .string()
+          .max(...getMaxLengthParams(10))
+          .nullable(),
+        lot: z
+          .string()
+          .max(...getMaxLengthParams(10))
+          .nullable(),
+        qty: z
           .number()
           .min(...getMinNumberParams(0))
-          .max(...getMaxNumberParams(999999999999999999.99))
+          .max(...getMaxNumberParams(999999))
           .multipleOf(...getMaxDecimalPlacesParams(2))
           .nullable(),
-        unit: z.nativeEnum(MaterialQuantityUnit),
       })
-      .nullable()
-      .default({
-        currencyCode: CurrencyCode.USD,
-        price: null,
-        unit: MaterialQuantityUnit.Y,
-      }),
-    minimumOrder: z
-      .object({
-        qty: z
-          .number(nonNullParams)
-          .int(integerOnlyMessage)
-          .min(...getMinNumberParams(0))
-          .nullable(),
-        unit: z
-          .nativeEnum(MaterialQuantityUnit)
-          .default(MaterialQuantityUnit.Y),
-      })
-      .nullable()
-      .default({
+    ),
+    unit: z.nativeEnum(MaterialQuantityUnit),
+  })
+  .nullable()
+  .default({
+    list: [
+      {
+        source: null,
+        shelf1: null,
+        shelf2: null,
+        location: null,
+        productionNo: null,
+        roll: null,
+        lot: null,
         qty: null,
-        unit: MaterialQuantityUnit.Y,
-      }),
-    minimumColor: z
-      .object({
-        qty: z
-          .number(nonNullParams)
-          .int(integerOnlyMessage)
-          .min(...getMinNumberParams(0))
-          .nullable(),
-        unit: z.nativeEnum(MaterialQuantityUnit),
-      })
-      .nullable()
-      .default({
-        qty: null,
-        unit: MaterialQuantityUnit.Y,
-      }),
-    productionLeadTimeInDays: z
-      .string()
-      .max(...getMaxLengthParams(10))
-      .nullable()
-      .default(null),
-    sampleLeadTimeInDays: z
-      .string()
-      .max(...getMaxLengthParams(10))
-      .nullable()
-      .default(null),
+      },
+    ],
+    unit: MaterialQuantityUnit.Y,
   })
 
-  const shelfSchema = z
-    .string()
-    .max(...getMaxLengthParams(50))
-    .nullable()
+export const inventoryInfoSchema = z.object({
+  isTotalPublic: z.boolean().default(false),
+  sampleCardsRemainingList: sampleCardsRemainingListSchema,
+  hangersRemainingList: sampleCardsRemainingListSchema,
+  yardageRemainingInfo: yardageRemainingInfoSchema,
+})
 
-  const locationSchema = z
-    .string()
-    .max(...getMaxLengthParams(50))
+export const seasonInfoSchema = z.object({
+  season: z
+    .object({
+      seasonId: z.number().int().nullable().default(null),
+      name: z
+        .string()
+        .max(...getMaxLengthParams(10))
+        .nullable()
+        .default(null),
+    })
     .nullable()
-
-  const sourceSchema = z
-    .string()
-    .max(...getMaxLengthParams(50))
-    .nullable()
-
-  const qtyInPcsSchema = z
-    .number()
+    .default(null),
+  year: z
+    .number(nonNullParams)
     .int(integerOnlyMessage)
     .min(...getMinNumberParams(0))
-    .max(...getMaxNumberParams(999))
+    .max(...getMaxNumberParams(9999))
     .nullable()
+    .default(null),
+  isPublic: z.boolean(nonNullParams).default(false),
+})
 
-  const inventoryInfoSchema = z.object({
-    isTotalPublic: z.boolean().default(false),
-    sampleCardsRemainingList: z
-      .array(
-        z.object({
-          source: sourceSchema,
-          shelf1: shelfSchema,
-          shelf2: shelfSchema,
-          location: locationSchema,
-          qtyInPcs: qtyInPcsSchema,
-        })
-      )
-      .nullable()
-      .default([
-        {
-          source: null,
-          shelf1: null,
-          shelf2: null,
-          location: null,
-          qtyInPcs: null,
-        },
-      ]),
-    hangersRemainingList: z
-      .array(
-        z.object({
-          source: sourceSchema,
-          shelf1: shelfSchema,
-          shelf2: shelfSchema,
-          location: locationSchema,
-          qtyInPcs: qtyInPcsSchema,
-        })
-      )
-      .nullable()
-      .default([
-        {
-          source: null,
-          shelf1: null,
-          shelf2: null,
-          location: null,
-          qtyInPcs: null,
-        },
-      ]),
-    yardageRemainingInfo: z
-      .object({
-        list: z.array(
-          z.object({
-            source: sourceSchema,
-            shelf1: shelfSchema,
-            shelf2: shelfSchema,
-            location: locationSchema,
-            productionNo: z
-              .string()
-              .max(...getMaxLengthParams(50))
-              .nullable(),
-            roll: z
-              .string()
-              .max(...getMaxLengthParams(10))
-              .nullable(),
-            lot: z
-              .string()
-              .max(...getMaxLengthParams(10))
-              .nullable(),
-            qty: z
-              .number()
-              .min(...getMinNumberParams(0))
-              .max(...getMaxNumberParams(999999))
-              .multipleOf(...getMaxDecimalPlacesParams(2))
-              .nullable(),
-          })
-        ),
-        unit: z.nativeEnum(MaterialQuantityUnit),
-      })
-      .nullable()
-      .default({
-        list: [
-          {
-            source: null,
-            shelf1: null,
-            shelf2: null,
-            location: null,
-            productionNo: null,
-            roll: null,
-            lot: null,
-            qty: null,
-          },
-        ],
-        unit: MaterialQuantityUnit.Y,
-      }),
+export const widthValueSchema = z
+  .number(nonNullParams)
+  .multipleOf(...getMaxDecimalPlacesParams(2))
+  .min(...getMinNumberParams(1))
+  .max(...getMaxNumberParams(999))
+
+export const materialWidthSchema = z.object({
+  cuttable: widthValueSchema,
+  full: widthValueSchema,
+  unit: z.nativeEnum(LengthUnit, nonNullParams).default(LengthUnit.INCH),
+})
+
+export const materialWeightSchema = z.object({
+  value: z
+    .number(nonNullParams)
+    .multipleOf(...getMaxDecimalPlacesParams(3))
+    .min(...getMinNumberParams(1))
+    .max(...getMaxNumberParams(999)),
+  unit: z.nativeEnum(WeightUnit, nonNullParams).default(WeightUnit.GSM),
+})
+
+export const weightDisplaySettingSchema = z
+  .object({
+    isShowWeightGsm: z.boolean(),
+    isShowWeightOz: z.boolean(),
+    isShowWeightGy: z.boolean(),
+    isShowWeightGm: z.boolean(),
+  })
+  .default({
+    isShowWeightGsm: true,
+    isShowWeightOz: false,
+    isShowWeightGy: false,
+    isShowWeightGm: false,
   })
 
-  const widthValueSchema = z
-    .number(nonNullParams)
-    .multipleOf(...getMaxDecimalPlacesParams(2))
-    .min(...getMinNumberParams(1))
-    .max(...getMaxNumberParams(999))
-
+const useMaterialSchema = () => {
   const tagListSchema = z.array(z.string()).nullable().default([])
 
   const materialSchema = z.object({
@@ -532,53 +590,10 @@ const useMaterialSchema = () => {
       .nullable()
       .default(MaterialSideType.FACE_SIDE),
     isComposite: z.boolean(nonNullParams).default(false),
-    seasonInfo: z.object({
-      season: z
-        .object({
-          seasonId: z.number().int().nullable().default(null),
-          name: z
-            .string()
-            .max(...getMaxLengthParams(10))
-            .nullable()
-            .default(null),
-        })
-        .nullable()
-        .default(null),
-      year: z
-        .number(nonNullParams)
-        .int(integerOnlyMessage)
-        .min(...getMinNumberParams(0))
-        .max(...getMaxNumberParams(9999))
-        .nullable()
-        .default(null),
-      isPublic: z.boolean(nonNullParams).default(false),
-    }),
-    width: z.object({
-      cuttable: widthValueSchema,
-      full: widthValueSchema,
-      unit: z.nativeEnum(LengthUnit).default(LengthUnit.INCH),
-    }),
-    weight: z.object({
-      value: z
-        .number(nonNullParams)
-        .multipleOf(...getMaxDecimalPlacesParams(3))
-        .min(...getMinNumberParams(1))
-        .max(...getMaxNumberParams(999)),
-      unit: z.nativeEnum(WeightUnit).default(WeightUnit.GSM),
-    }),
-    weightDisplaySetting: z
-      .object({
-        isShowWeightGsm: z.boolean(),
-        isShowWeightOz: z.boolean(),
-        isShowWeightGy: z.boolean(),
-        isShowWeightGm: z.boolean(),
-      })
-      .default({
-        isShowWeightGsm: true,
-        isShowWeightOz: false,
-        isShowWeightGy: false,
-        isShowWeightGm: false,
-      }),
+    seasonInfo: seasonInfoSchema,
+    width: materialWidthSchema,
+    weight: materialWeightSchema,
+    weightDisplaySetting: weightDisplaySettingSchema,
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
     faceSide: materialSideSchema
       .nullable()
