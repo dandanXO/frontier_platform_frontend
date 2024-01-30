@@ -478,7 +478,7 @@ const colDefs = computed<(ColDef<MaterialRow> | ColGroupDef<MaterialRow>)[]>(
       },
       {
         field: 'isDoubleSide',
-        headerName: 'Double Side',
+        headerName: t('RR0342'),
         minWidth: 125,
         editable: (params) => rowEditable(params) && isNewMaterial(params),
         onCellValueChanged: (e) => {
@@ -498,7 +498,7 @@ const colDefs = computed<(ColDef<MaterialRow> | ColGroupDef<MaterialRow>)[]>(
       },
       {
         field: 'sideType',
-        headerName: 'Side Type',
+        headerName: t('RR0343'),
         editable: (params) => {
           if (!rowEditable(params)) {
             return false
@@ -645,6 +645,8 @@ const gridOptions: GridOptions<MaterialRow> = {
     pinRight: t('RR0335'),
     pageSizeSelectorLabel: t('RR0328'),
     noRowsToShow: t('RR0105'),
+    to: t('RR0330'),
+    of: t('RR0340')
   },
   sideBar: {
     toolPanels: [

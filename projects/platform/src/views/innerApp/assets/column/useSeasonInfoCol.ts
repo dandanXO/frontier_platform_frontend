@@ -72,7 +72,7 @@ const useSeasonInfoCol = (
         },
         {
           field: 'seasonInfo.year',
-          headerName: 'Year',
+          headerName: t('RR0341'),
           editable: rowEditable,
           ...getNumberCellProps(seasonInfoSchema.shape.year, t('MI0013')),
         },
