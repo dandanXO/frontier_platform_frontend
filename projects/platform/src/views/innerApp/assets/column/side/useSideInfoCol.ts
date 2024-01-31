@@ -84,7 +84,7 @@ const contentListValueRenderer = (
   let displayItems = params.value
     .map(getItemDisplay)
     .filter((displayItem) => !!displayItem)
-  return displayItems.join(', br/> ')
+  return displayItems.join(',<br/>')
 }
 
 const useSideInfoCol = (
@@ -105,7 +105,8 @@ const useSideInfoCol = (
     spreadsheetService
   )
 
-  const { allContentList } = spreadsheetService
+  const { allContentList, descriptionList, addDescriptionOption } =
+    spreadsheetService
 
   return computed(() => {
     return {
@@ -255,17 +256,22 @@ const useSideInfoCol = (
           field: `${side}.descriptionList`,
           columnGroupShow: 'open',
           headerName: t('MI0023'),
-          editable: (params) =>
-            rowEditable(params) && sideEditable(side)(params),
+          editable: (params: EditableCallbackParams<MaterialRow>) => {
+            if (params.data?.[side]?.materialType == null) {
+              return false
+            }
+            return rowEditable(params) && sideEditable(side)(params)
+          },
           cellEditor: DescriptionListCellEditorVue,
           cellEditorPopup: true,
           cellEditorPopupPosition: 'under',
+          cellEditorParams: { side },
           wrapText: true,
           autoHeight: true,
           cellRenderer: (
             params: ValueFormatterParams<MaterialRow, MaterialDescription[]>
           ) => {
-            return params.value?.map((d) => d.name)?.join(', <br/> ') || null
+            return params.value?.map((d) => d.name)?.join(', ') || null
           },
           valueFormatter: (
             params: ValueFormatterParams<MaterialRow, MaterialDescription[]>
@@ -274,7 +280,7 @@ const useSideInfoCol = (
               return ''
             }
 
-            return params.value.map((d) => d.name)?.join(', <br/> ') || ''
+            return params.value.map((d) => d.name)?.join(', ') || ''
           },
           valueParser: (
             params: ValueParserParams<MaterialRow, MaterialDescription[]>
@@ -283,7 +289,59 @@ const useSideInfoCol = (
               return params.oldValue
             }
 
-            return params.newValue.split(', <br/>').map((v) => v.trim())
+            const descriptionNameList = params.newValue
+              .split(',')
+              .map((str) => str.trim())
+              .filter(Boolean)
+            if (!descriptionNameList.length) {
+              return params.oldValue
+            }
+
+            const materialType = params.data[side]?.materialType
+            const getKey = () => {
+              switch (materialType) {
+                case MaterialType.WOVEN:
+                  return 'woven'
+                case MaterialType.KNIT:
+                  return 'knit'
+                case MaterialType.LEATHER:
+                  return 'leather'
+                case MaterialType.NON_WOVEN:
+                  return 'nonWoven'
+                case MaterialType.TRIM:
+                  return 'trim'
+                case MaterialType.OTHERS:
+                  return 'others'
+              }
+            }
+
+            let descriptionMenuTree = descriptionList.value[getKey()]
+
+            let menuItemList = descriptionMenuTree.blockList
+              .flatMap((block) => block.menuList)
+              .flat()
+            descriptionNameList.forEach((descriptionName) => {
+              if (
+                !menuItemList.find((item) => item.title === descriptionName)
+              ) {
+                addDescriptionOption(getKey(materialType), descriptionName)
+              }
+            })
+
+            descriptionMenuTree = descriptionList.value[getKey(materialType)]
+
+            menuItemList = descriptionMenuTree.blockList
+              .flatMap((block) => block.menuList)
+              .flat()
+
+            const result = descriptionNameList.map((descriptionName) => {
+              const target = menuItemList.find(
+                (menuItem) => menuItem.title === descriptionName
+              )
+              return target?.selectValue
+            })
+
+            return result
           },
         },
         {

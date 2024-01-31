@@ -4,9 +4,10 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     class="w-full"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="menuTree"
-    placeholder="description list"
+    :placeholder="$t('MI0024')"
     multiple
-    @addNew="addDescriptionOption"
+    canAddNew
+    @addNew="handleAdd($event)"
   )
   //- f-button(type="primary" size="md" @click="handleConfirm") Confirm
 </template>
@@ -15,68 +16,59 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 import { computed, inject, ref } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
-import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialRow } from '@/types'
-import { clone } from 'ramda'
 import { MaterialType } from '@frontier/platform-web-sdk'
+import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString
-  // dropdownMenuTree: () => MenuTree
-  // placeholder: string
-  // multiple: boolean
-  // onAddNew?: (name: string) => void
-  // onConfirm?: (name: string | null | undefined, rowId: string) => void
+  side: 'faceSide' | 'backSide'
 }
 
 export default {
   setup(props: { params: SelectEditorParams }) {
     const inputValue = ref(props.params.value)
-    const materialType = props.params.data.faceSide?.materialType
-    // const dropdownMenuTree = ref(clone(props.params.dropdownMenuTree()))
+    const side = props.params.side
+    const materialType = props.params.data[side]?.materialType
 
-    const descriptionListService = inject('descriptionList')
-    const {
-      descriptionList,
-      newDescriptionList,
-      descriptionMenuDefaultList,
-      descriptionMenuCustomList,
-      addDescriptionOption,
-    } = descriptionListService
+    const spreadsheetService = inject<SpreadsheetService>('spreadsheetService')
+    if (!spreadsheetService) {
+      throw new Error('spreadsheetService not provided')
+    }
+    const { descriptionList, addDescriptionOption } = spreadsheetService
 
     const getValue = () => inputValue.value
 
-    const handleAdd = (description) => {
-      console.log({ materialType, description })
-      addDescriptionOption(materialType, description)
+    const getKey = () => {
+      switch (materialType) {
+        case MaterialType.WOVEN:
+          return 'woven'
+        case MaterialType.KNIT:
+          return 'knit'
+        case MaterialType.LEATHER:
+          return 'leather'
+        case MaterialType.NON_WOVEN:
+          return 'nonWoven'
+        case MaterialType.TRIM:
+          return 'trim'
+        case MaterialType.OTHERS:
+          return 'others'
+      }
+    }
+
+    const handleAdd = async (description: string) => {
+      if (!materialType) {
+        return
+      }
+      addDescriptionOption(getKey(materialType), description)
     }
 
     const menuTree = computed(() => {
-      const getKey = () => {
-        switch (materialType) {
-          case MaterialType.WOVEN:
-            return 'woven'
-          case MaterialType.KNIT:
-            return 'knit'
-          case MaterialType.LEATHER:
-            return 'leather'
-          case MaterialType.NON_WOVEN:
-            return 'nonWoven'
-          case MaterialType.TRIM:
-            return 'trim'
-          case MaterialType.OTHERS:
-            return 'others'
-        }
-      }
       return descriptionList.value[getKey()]
     })
 
-    console.log(menuTree.value)
-    console.log({ materialType, descriptionList, inputValue })
-
     return {
       inputValue,
-      descriptionList,
       addDescriptionOption,
       menuTree,
       handleAdd,

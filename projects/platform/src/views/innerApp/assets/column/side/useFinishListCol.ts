@@ -1,10 +1,14 @@
-import type { ColDef } from 'ag-grid-community'
+import type {
+  ColDef,
+  EditableCallback,
+  ValueFormatterParams,
+  ValueParserParams,
+} from 'ag-grid-enterprise'
 import type { MaterialRow } from '@/types'
-import type { EditableCallback } from 'ag-grid-enterprise'
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
-import SelectCellEditor from '../../cell/SelectCellEditor.vue'
+import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
+import FinishCellEditor from '../../cell/FinishListCellEditor.vue'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
 import { rowEditable } from '../../cell/cellUtils'
 
@@ -26,59 +30,55 @@ const useFinishListCol = (
       columnGroupShow: 'open',
       editable: (params) => rowEditable(params) && sideEditable(params),
       minWidth: 200,
-      cellEditor: SelectCellEditor,
+      cellEditor: FinishCellEditor,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'under',
       wrapText: true,
       autoHeight: true,
-      cellEditorParams: {
-        placeholder: t('MI0040'),
-        multiple: true,
-        dropdownMenuTree: () => finishMenuTree.value,
-        onAddNew: (name: string) => addFinishOption(name),
-        onConfirm: (name: string, rowId: string) => {
-          // const targetFinish = [
-          //   ...featureMenuTree.value.blockList[0].menuList,
-          //   ...featureMenuTree.value.blockList[1].menuList,
-          // ].find((f) => f.selectValue.title === name)
-          // if (!targetFinish) {
-          //   throw new Error('targetFinish is null')
-          // }
-          // const node = gridApi.value?.getRowNode(rowId)
-          // const data = node?.data
-          // node?.setData({
-          //   ...data,
-          //   [side]: {
-          //     ...data[side],
-          //     featureList: {
-          //       ...data[side]?.featureList,
-          //     }
-          //     ...data?.seasonInfo,
-          //     season: {
-          //       seasonId: targetSeason?.seasonId ?? null,
-          //       name,
-          //     },
-          //   },
-          // })
-        },
-      },
-      valueFormatter: (params) => {
+      cellEditorParams: { placeholder: t('MI0040') },
+      valueFormatter: (
+        params: ValueFormatterParams<MaterialRow, MaterialFinish[]>
+      ) => {
         if (params.value == null) {
           return ''
         }
-        return (params.value as MaterialFinish[]).map((f) => f.name).join(',')
+        return params.value.map((f) => f.name).join(',')
       },
-      valueParser: (params) => {
-        const result = params.newValue.split(',').map((s) => s.trim())
-        result.forEach((tag) => {
-          if (
-            !finishMenuTree.value.blockList[0].menuList.find(
-              (t) => t.title === tag
-            )
-          ) {
-            addFinishOption(tag)
+      valueParser: (
+        params: ValueParserParams<MaterialRow, MaterialFinish[]>
+      ) => {
+        if (!params.newValue) {
+          return params.oldValue
+        }
+
+        const finishNameList = params.newValue
+          .split(',')
+          .map((str) => str.trim())
+          .filter(Boolean)
+        if (!finishNameList.length) {
+          return params.oldValue
+        }
+
+        let menuItemList = finishMenuTree.value.blockList
+          .flatMap((block) => block.menuList)
+          .flat()
+        finishNameList.forEach((finishName) => {
+          if (!menuItemList.find((item) => item.title === finishName)) {
+            addFinishOption(finishName)
           }
         })
+
+        menuItemList = finishMenuTree.value.blockList
+          .flatMap((block) => block.menuList)
+          .flat()
+
+        const result = finishNameList.map((finishName) => {
+          const target = menuItemList.find(
+            (menuItem) => menuItem.title === finishName
+          )
+          return target?.selectValue
+        })
+
         return result
       },
     }

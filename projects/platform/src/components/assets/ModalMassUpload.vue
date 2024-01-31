@@ -58,7 +58,6 @@ const fileName = ref('')
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 
 const onFinish = (file: File) => {
-  console.log({ file })
   uploadedFile.value = file
   errorCode.value = undefined
   showErrorList.value = false

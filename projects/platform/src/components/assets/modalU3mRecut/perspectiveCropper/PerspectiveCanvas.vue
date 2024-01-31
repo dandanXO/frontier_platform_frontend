@@ -432,8 +432,6 @@ const editStatus = computed<EditStatus>(() => {
 
   const isPositionsDirty = !positionsEqualTo(defaultPositions)
 
-  console.log(isPositionsDirty)
-
   return {
     isSizeValid,
     isDirectionValid,

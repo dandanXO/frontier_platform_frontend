@@ -1,6 +1,6 @@
 import type { ColDef } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
-import type { EditableCallback } from 'ag-grid-enterprise'
+import type { EditableCallback, ValueParserParams } from 'ag-grid-enterprise'
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
@@ -25,8 +25,8 @@ const useFeatureListCol = (
       columnGroupShow: 'open',
       editable: (params) => rowEditable(params) && sideEditable(params),
       minWidth: 200,
-      // wrapText: true,
-      // autoHeight: true,
+      wrapText: true,
+      autoHeight: true,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'under',
       cellEditor: SelectCellEditor,
@@ -42,7 +42,7 @@ const useFeatureListCol = (
         }
         return (params.value as string[]).join(',')
       },
-      valueParser: (params) => {
+      valueParser: (params: ValueParserParams<MaterialRow>) => {
         const result = params.newValue.split(',').map((s) => s.trim())
         result.forEach((tag) => {
           if (

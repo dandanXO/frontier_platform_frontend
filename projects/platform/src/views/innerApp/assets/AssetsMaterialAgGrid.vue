@@ -403,14 +403,6 @@ const descriptionList = computed(() => {
   )
 })
 
-provide('descriptionList', {
-  newDescriptionList,
-  descriptionList,
-  descriptionMenuDefaultList,
-  descriptionMenuCustomList,
-  addDescriptionOption,
-})
-
 const isNewMaterial = (params: EditableCallbackParams) =>
   params.data?.isCreate || false
 
@@ -432,9 +424,15 @@ const spreadsheetService = {
   addFinishOption,
   allContentList,
   addContentOption,
+  newDescriptionList,
+  descriptionList,
+  descriptionMenuDefaultList,
+  descriptionMenuCustomList,
+  addDescriptionOption,
 }
 
-provide('spreadsheetService', spreadsheetService)
+const spreadsheetServiceKey = 'spreadsheetService'
+provide(spreadsheetServiceKey, spreadsheetService)
 export type SpreadsheetService = typeof spreadsheetService
 
 const inventoryInfoCol = useInventoryInfoCol()
@@ -646,7 +644,7 @@ const gridOptions: GridOptions<MaterialRow> = {
     pageSizeSelectorLabel: t('RR0328'),
     noRowsToShow: t('RR0105'),
     to: t('RR0330'),
-    of: t('RR0340')
+    of: t('RR0340'),
   },
   sideBar: {
     toolPanels: [
