@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "generate-sdk": "bash ./scripts/generate-openapi-sdk.sh"
+    "generate-sdk": "bash ./scripts/generate-openapi-sdk.sh",
+    "windows:generate-sdk": "bash ./scripts/windows-generate-openapi-sdk.sh"
   },
   "keywords": [],
   "author": "",

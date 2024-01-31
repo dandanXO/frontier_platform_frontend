@@ -8,6 +8,7 @@
     "storybook": "cd ./packages/ui-component && npm run storybook",
     "generate-sdk": "cd ./packages/platform-web-sdk && npm run generate-sdk",
     "dev:platform": "cd ./projects/platform && npm run serve:dev",
+    "windows:dev:platform": "cd ./projects/platform && npm run windows:serve:dev",
     "dev:console": "cd ./projects/console && npm run dev",
     "test:e2e": "cd ./projects/platform && npm run test:e2e",
     "test:show-report": "cd ./projects/platform && npm run test:show-report",
