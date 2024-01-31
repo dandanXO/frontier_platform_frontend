@@ -63,6 +63,30 @@ const sideEditable =
     return false
   }
 
+const contentListValueRenderer = (
+  params: ValueFormatterParams<MaterialRow, MaterialSideAllOfContentList[]>
+) => {
+  if (params.value == null) {
+    return ''
+  }
+
+  if (!params.value.length) {
+    return ''
+  }
+
+  const getItemDisplay = (content: MaterialSideAllOfContentList) => {
+    if (!content.name && content.percentage == null) {
+      return ''
+    }
+    return `${content.name}:${content.percentage || ''}%`
+  }
+
+  let displayItems = params.value
+    .map(getItemDisplay)
+    .filter((displayItem) => !!displayItem)
+  return displayItems.join(', br/> ')
+}
+
 const useSideInfoCol = (
   headerName: string,
   side: 'faceSide' | 'backSide',
@@ -107,17 +131,17 @@ const useSideInfoCol = (
           cellEditorPopupPosition: 'under',
           wrapText: true,
           autoHeight: true,
-          valueFormatter: (params) => {
-            if (!params.value) {
-              return ''
+          valueFormatter: contentListValueRenderer,
+          valueParser: (
+            params: ValueParserParams<
+              MaterialRow,
+              MaterialSideAllOfContentList[]
+            >
+          ) => {
+            if (!params.newValue?.trim()) {
+              return
             }
 
-            const getItemDisplay = (content: MaterialSideAllOfContentList) => {
-              return `${content.name}:${content.percentage || ''}%`
-            }
-            return params.value.map(getItemDisplay).join(', <br/> ') || null
-          },
-          valueParser: (params) => {
             const lines = params.newValue.split('<br/>').map((v) => v.trim())
             if (lines.length === 0) {
               return params.oldValue
@@ -155,21 +179,7 @@ const useSideInfoCol = (
               return params.oldValue
             }
           },
-          cellRenderer: (
-            params: ValueFormatterParams<
-              MaterialRow,
-              MaterialSideAllOfContentList[]
-            >
-          ) => {
-            if (!params.value) {
-              return ''
-            }
-
-            const getItemDisplay = (content: MaterialSideAllOfContentList) => {
-              return `${content.name}:${content.percentage || ''}%`
-            }
-            return params.value.map(getItemDisplay).join(', <br/> ') || null
-          },
+          cellRenderer: contentListValueRenderer,
           cellStyle: (params: CellClassParams<MaterialRow, string>) => {
             const editable = params.column.isCellEditable(params.node)
             const isValid = () => {
