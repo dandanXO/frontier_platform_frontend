@@ -65,7 +65,6 @@ import type {
   ColGroupDef,
   CellClassParams,
   CellValueChangedEvent,
-  RowValueChangedEvent,
   EditableCallbackParams,
 } from 'ag-grid-community'
 import 'ag-grid-enterprise'
@@ -82,7 +81,7 @@ import {
   type MaterialDescription,
   MaterialSideType,
 } from '@frontier/platform-web-sdk'
-import type { MaterialRow, MaterialRowForSubmit, SubmitPayload } from '@/types'
+import type { MaterialRow, SubmitPayload } from '@/types'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
 import { useAssetsStore } from '@/stores/assets'
 import type { MenuTree } from '@frontier/ui-component'
@@ -733,7 +732,7 @@ const handleValueChange = (e: CellValueChangedEvent<MaterialRow>) => {
 
 const updateSubmitStatus = () => {
   const isSubmitPayloadValid = (submitPayload: SubmitPayload) => {
-    const isRowItemValid = (row: MaterialRowForSubmit) => {
+    const isRowItemValid = (row: Material) => {
       let reqRow = getReq(row)
       if (reqRow.priceInfo?.pricing?.price) {
         reqRow = {
@@ -835,26 +834,22 @@ const getMaterialRowList = (): MaterialRow[] => {
   return materialRowList
 }
 
-const processMaterialSideFormToReq = (
-  form: ReturnType<typeof useMaterialForm>['values']
-) => {
-  let req: Omit<CreateAssetsMaterialRequest, 'orgId' | 'ogType' | 'ogId'> = {
-    ...form,
-  }
+const processMaterialSideFormToReq = (form: Material) => {
+  let result = { ...form }
 
   if (!form.isDoubleSide) {
     if (form.sideType === MaterialSideType.FACE_SIDE) {
-      req = { ...req, backSide: null }
+      result = { ...result, backSide: null }
     } else if (form.sideType === MaterialSideType.BACK_SIDE) {
-      req = { ...req, faceSide: null }
+      result = { ...result, faceSide: null }
     }
   }
 
   if (!form.isComposite) {
-    req = { ...req, middleSide: null }
+    result = { ...result, middleSide: null }
   }
 
-  return req
+  return result
 }
 
 const getReq = (form: Material) => {
@@ -901,9 +896,13 @@ const getPayload = (materialRowList: MaterialRow[]): SubmitPayload => {
     .filter((m) => !m.isCreate && !m.isDelete && m.isDirty)
     .map(removeAdditional)
     .map(getReq)
-  const deleteList = materialRowList
+  const deleteIdList = materialRowList
     .filter((m) => m.isDelete)
     .map((m) => m.materialId)
+  const deleteList = originMaterialRowList
+    .filter((originRow) => deleteIdList.includes(originRow.materialId))
+    .map(removeAdditional)
+    .map(getReq)
 
   return { createList, updateList, deleteList }
 }

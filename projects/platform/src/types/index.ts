@@ -237,13 +237,8 @@ export interface MaterialRow extends Material {
   editable: boolean
 }
 
-export type MaterialRowForSubmit = Omit<
-  MaterialRow,
-  'isCreate' | 'isDelete' | 'isDirty' | 'editable'
->
-
 export interface SubmitPayload {
-  createList: MaterialRowForSubmit[]
-  updateList: MaterialRowForSubmit[]
-  deleteList: number[]
+  createList: Material[]
+  updateList: Material[]
+  deleteList: Material[]
 }
