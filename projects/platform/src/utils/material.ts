@@ -67,6 +67,40 @@ export const getInventoryQtyInY = (
   return totalInventoryInY
 }
 
+export const getDefaultHangersRemainingList = () => {
+  return [
+    {
+      source: null,
+      shelf1: null,
+      shelf2: null,
+      location: null,
+      qtyInPcs: null,
+    },
+  ]
+}
+
+export const getDefaultYardageRemainingInfo = () => {
+  return {
+    unit: null,
+    list: [
+      {
+        source: null,
+        shelf1: null,
+        shelf2: null,
+        location: null,
+        productionNo: null,
+        roll: null,
+        lot: null,
+        qty: null,
+      },
+    ],
+  }
+}
+
+export const getDefaultContentList = () => {
+  return [{ contentId: null, name: '', percentage: null }]
+}
+
 export const processYardageRemainingInfo = (
   info: MaterialInternalInventoryInfo['yardageRemainingInfo']
 ): MaterialInternalInventoryInfo['yardageRemainingInfo'] => {
@@ -224,7 +258,7 @@ export const generateMaterialRow = (): MaterialRow => {
         machineType: null,
         walesPerInch: null,
       },
-      contentList: [{ contentId: null, name: '', percentage: null }],
+      contentList: getDefaultContentList(),
       pantoneList: [],
       colorInfo: {
         color: null,
@@ -323,39 +357,9 @@ export const generateMaterialRow = (): MaterialRow => {
       },
       inventoryInfo: {
         isTotalPublic: false,
-        hangersRemainingList: [
-          {
-            source: null,
-            shelf1: null,
-            shelf2: null,
-            location: null,
-            qtyInPcs: null,
-          },
-        ],
-        sampleCardsRemainingList: [
-          {
-            source: null,
-            shelf1: null,
-            shelf2: null,
-            location: null,
-            qtyInPcs: null,
-          },
-        ],
-        yardageRemainingInfo: {
-          unit: null,
-          list: [
-            {
-              source: null,
-              shelf1: null,
-              shelf2: null,
-              location: null,
-              productionNo: null,
-              roll: null,
-              lot: null,
-              qty: null,
-            },
-          ],
-        },
+        hangersRemainingList: getDefaultHangersRemainingList(),
+        sampleCardsRemainingList: getDefaultHangersRemainingList(),
+        yardageRemainingInfo: getDefaultYardageRemainingInfo(),
       },
     },
   }
@@ -376,7 +380,7 @@ export const mapMaterialToMaterialRow =
             construction: material.faceSide?.construction ?? {},
             contentList: material.faceSide?.contentList?.length
               ? material.faceSide.contentList
-              : [{ contentId: null, name: '', percentage: null }],
+              : getDefaultContentList(),
             pantoneNameList:
               material.faceSide?.pantoneList.map((p) => p.name) || [],
           }
@@ -387,7 +391,7 @@ export const mapMaterialToMaterialRow =
             construction: material.backSide?.construction ?? {},
             contentList: material.backSide?.contentList?.length
               ? material.backSide.contentList
-              : [{ contentId: null, name: '', percentage: null }],
+              : getDefaultContentList(),
             pantoneNameList:
               material.backSide?.pantoneList.map((p) => p.name) || [],
           }
@@ -443,45 +447,15 @@ export const mapMaterialToMaterialRow =
           hangersRemainingList: material.internalInfo?.inventoryInfo
             .hangersRemainingList?.length
             ? material.internalInfo?.inventoryInfo.hangersRemainingList
-            : [
-                {
-                  source: null,
-                  shelf1: null,
-                  shelf2: null,
-                  location: null,
-                  qtyInPcs: null,
-                },
-              ],
+            : getDefaultHangersRemainingList(),
           sampleCardsRemainingList: material.internalInfo?.inventoryInfo
             .sampleCardsRemainingList?.length
             ? material.internalInfo?.inventoryInfo.sampleCardsRemainingList
-            : [
-                {
-                  source: null,
-                  shelf1: null,
-                  shelf2: null,
-                  location: null,
-                  qtyInPcs: null,
-                },
-              ],
+            : getDefaultHangersRemainingList(),
           yardageRemainingInfo:
             material.internalInfo?.inventoryInfo.yardageRemainingInfo != null
               ? material.internalInfo?.inventoryInfo.yardageRemainingInfo
-              : {
-                  unit: null,
-                  list: [
-                    {
-                      source: null,
-                      shelf1: null,
-                      shelf2: null,
-                      location: null,
-                      productionNo: null,
-                      roll: null,
-                      lot: null,
-                      qty: null,
-                    },
-                  ],
-                },
+              : getDefaultYardageRemainingInfo(),
         },
       },
     }

@@ -5,9 +5,10 @@ import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
 import SelectCellEditor from '../../cell/SelectCellEditor.vue'
-import { rowEditable } from '../../cell/cellUtils'
+import { handleCellValueDelete, rowEditable } from '../../cell/cellUtils'
 
 const useFeatureListCol = (
+  side: 'faceSide' | 'middleSide' | 'backSide',
   field:
     | 'faceSide.featureList'
     | 'middleSide.featureList'
@@ -55,6 +56,12 @@ const useFeatureListCol = (
         })
         return result
       },
+      onCellValueChanged: handleCellValueDelete((row) => {
+        const target = row[side]
+        if (target) {
+          target.featureList = []
+        }
+      }),
     }
   })
 }

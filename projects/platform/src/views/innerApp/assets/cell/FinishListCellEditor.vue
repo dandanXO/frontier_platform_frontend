@@ -13,7 +13,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 </template>
 
 <script lang="ts">
-import { computed, inject, ref } from 'vue'
+import { inject, ref } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'

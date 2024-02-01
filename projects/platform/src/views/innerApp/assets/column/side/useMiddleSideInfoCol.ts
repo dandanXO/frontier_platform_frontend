@@ -5,6 +5,7 @@ import type { MaterialRow } from '@/types'
 import SelectCellEditor from '../../cell/SelectCellEditor.vue'
 import {
   getCustomPropertyListCellProps,
+  handleCellValueDelete,
   rowEditable,
 } from '../../cell/cellUtils'
 import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
@@ -23,11 +24,13 @@ const useMiddleSideInfoCol = (
 ): ComputedRef<ColGroupDef<MaterialRow>> => {
   const { t } = useI18n()
   const featureListCol = useFeatureListCol(
+    'middleSide',
     'middleSide.featureList',
     sideEditable,
     spreadsheetService
   )
   const finishListCol = useFinishListCol(
+    'middleSide',
     'middleSide.finishList',
     sideEditable,
     spreadsheetService
@@ -59,6 +62,12 @@ const useMiddleSideInfoCol = (
                 namePlaceholder: t('MI0030'),
                 valueLabel: 'Construction Value',
                 valuePlaceholder: t('MI0044'),
+              }),
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row.middleSide
+                if (target) {
+                  target.customPropertyList = []
+                }
               }),
             },
           ],

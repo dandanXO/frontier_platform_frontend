@@ -8,7 +8,6 @@ import type {
   ColDefField,
   ColGroupDef,
   CellClassParams,
-  NewValueParams,
 } from 'ag-grid-enterprise'
 import {
   getCellStyle,

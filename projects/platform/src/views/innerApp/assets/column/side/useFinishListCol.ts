@@ -1,6 +1,7 @@
 import type {
   ColDef,
   EditableCallback,
+  NewValueParams,
   ValueFormatterParams,
   ValueParserParams,
 } from 'ag-grid-enterprise'
@@ -10,9 +11,10 @@ import { useI18n } from 'vue-i18n'
 import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
 import FinishCellEditor from '../../cell/FinishListCellEditor.vue'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
-import { rowEditable } from '../../cell/cellUtils'
+import { handleCellValueDelete, rowEditable } from '../../cell/cellUtils'
 
 const useFinishListCol = (
+  side: 'faceSide' | 'middleSide' | 'backSide',
   field:
     | 'faceSide.finishList'
     | 'middleSide.finishList'
@@ -81,6 +83,12 @@ const useFinishListCol = (
 
         return result
       },
+      onCellValueChanged: handleCellValueDelete((row) => {
+        const target = row[side]
+        if (target) {
+          target.finishList = []
+        }
+      }),
     }
   })
 }

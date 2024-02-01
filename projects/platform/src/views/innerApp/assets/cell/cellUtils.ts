@@ -51,10 +51,6 @@ export const rowStyle = {
   update: { background: spreadsheetBgColors.update },
 }
 
-export const cellStyle = {
-  // TODO
-}
-
 export const getCellStyle = ({
   valid,
   editable,
@@ -339,5 +335,27 @@ export const constructionEditable =
   }
 
 export const refreshCells = (params: NewValueParams<MaterialRow>) => {
+  if (!params.node) {
+    return
+  }
+
   params.api.refreshCells({ rowNodes: [params.node], force: true })
 }
+
+export const handleCellValueDelete =
+  (handleDelete: (row: MaterialRow) => void) =>
+  (params: NewValueParams<MaterialRow>) => {
+    if (params.newValue != null) {
+      return
+    }
+
+    const row = params.node?.data
+    if (!row) {
+      return
+    }
+
+    handleDelete(row)
+    params.api.applyTransaction({
+      update: [row],
+    })
+  }

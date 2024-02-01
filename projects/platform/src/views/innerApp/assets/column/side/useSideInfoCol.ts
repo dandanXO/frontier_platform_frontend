@@ -4,6 +4,7 @@ import type {
   CellClassParams,
   ColGroupDef,
   EditableCallbackParams,
+  NewValueParams,
   ValueFormatterParams,
   ValueParserParams,
 } from 'ag-grid-enterprise'
@@ -31,6 +32,7 @@ import {
   getCustomPropertyListCellProps,
   getEnumCellProps,
   getStringCellProps,
+  handleCellValueDelete,
   requiredColumnComponentParams,
   rowEditable,
 } from '../../cell/cellUtils'
@@ -40,6 +42,7 @@ import DescriptionListCellEditorVue from '../../cell/DescriptionListCellEditor.v
 import useFeatureListCol from './useFeatureListCol'
 import useFinishListCol from './useFinishListCol'
 import useEnumText from '@/composables/useEnumText'
+import { getDefaultContentList } from '@/utils/material'
 
 const sideEditable =
   (side: 'faceSide' | 'backSide') =>
@@ -95,11 +98,13 @@ const useSideInfoCol = (
   const { t } = useI18n()
   const { materialTypeText } = useEnumText()
   const featureListCol = useFeatureListCol(
+    side,
     `${side}.featureList`,
     sideEditable(side),
     spreadsheetService
   )
   const finishListCol = useFinishListCol(
+    side,
     `${side}.finishList`,
     sideEditable(side),
     spreadsheetService
@@ -193,6 +198,21 @@ const useSideInfoCol = (
               valid: isValid(),
               editable,
             })
+          },
+          onCellValueChanged: (params: NewValueParams<MaterialRow>) => {
+            if (!params.newValue) {
+              const data = params.node?.data
+              if (!data) {
+                return
+              }
+
+              if (data?.[side]) {
+                data[side].contentList = getDefaultContentList()
+                params.api.applyTransaction({
+                  update: [data],
+                })
+              }
+            }
           },
         },
         {
@@ -343,6 +363,12 @@ const useSideInfoCol = (
 
             return result
           },
+          onCellValueChanged: handleCellValueDelete((row) => {
+            const target = row[side]
+            if (target) {
+              target.descriptionList = []
+            }
+          }),
         },
         {
           headerName: t('MI0026'),
@@ -372,6 +398,12 @@ const useSideInfoCol = (
                 valueLabel: 'Construction Value',
                 valuePlaceholder: t('MI0044'),
               }),
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const targetSide = row[side]
+                if (targetSide) {
+                  targetSide.constructionCustomPropertyList = []
+                }
+              }),
             },
           ],
         },
@@ -397,6 +429,12 @@ const useSideInfoCol = (
                 namePlaceholder: t('MI0030'),
                 valueLabel: 'Color Value',
                 valuePlaceholder: t('MI0044'),
+              }),
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row[side]?.colorInfo
+                if (target) {
+                  target.customPropertyList = []
+                }
               }),
             },
           ],
@@ -426,6 +464,12 @@ const useSideInfoCol = (
                 namePlaceholder: t('MI0030'),
                 valueLabel: 'Pattern Value',
                 valuePlaceholder: t('MI0044'),
+              }),
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row[side]?.patternInfo
+                if (target) {
+                  target.customPropertyList = []
+                }
               }),
             },
           ],

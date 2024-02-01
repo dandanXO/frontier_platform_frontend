@@ -12,6 +12,7 @@ import useMaterialSchema from '@/composables/material/useMaterialSchema'
 import {
   getCellStyle,
   getStringCellProps,
+  handleCellValueDelete,
   rowEditable,
 } from '../cell/cellUtils'
 import type { MaterialRow } from '@/types'
@@ -24,6 +25,8 @@ import {
   yardageRemainingInfoSchema,
 } from '@/composables/material/useMaterialSchema'
 import {
+  getDefaultHangersRemainingList,
+  getDefaultYardageRemainingInfo,
   getInventoryQtyInY,
   processYardageRemainingInfo,
 } from '@/utils/material'
@@ -291,6 +294,13 @@ const useInventoryInfoCol = (): ComputedRef<
                   editable: params.column.isCellEditable(params.node),
                 })
               },
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row.internalInfo?.inventoryInfo
+                if (target) {
+                  target.sampleCardsRemainingList =
+                    getDefaultHangersRemainingList()
+                }
+              }),
             },
             {
               field: 'internalInfo.inventoryInfo.hangersRemainingList',
@@ -314,6 +324,14 @@ const useInventoryInfoCol = (): ComputedRef<
                   editable: params.column.isCellEditable(params.node),
                 })
               },
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row.internalInfo?.inventoryInfo
+                if (target) {
+                  target.sampleCardsRemainingList =
+                    getDefaultHangersRemainingList()
+                  target.hangersRemainingList = getDefaultHangersRemainingList()
+                }
+              }),
             },
             {
               field: 'internalInfo.inventoryInfo.yardageRemainingInfo',
@@ -337,9 +355,12 @@ const useInventoryInfoCol = (): ComputedRef<
                   editable: params.column.isCellEditable(params.node),
                 })
               },
-              // onCellValueChanged: (e) => {
-              //   e.api.refreshCells({ rowNodes: [e.node], force: true })
-              // },
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row.internalInfo?.inventoryInfo
+                if (target) {
+                  target.yardageRemainingInfo = getDefaultYardageRemainingInfo()
+                }
+              }),
             },
           ],
         },

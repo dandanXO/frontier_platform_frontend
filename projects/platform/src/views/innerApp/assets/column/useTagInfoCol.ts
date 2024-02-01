@@ -1,7 +1,11 @@
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SelectCellEditor from '../cell/SelectCellEditor.vue'
-import { getStringCellProps, rowEditable } from '../cell/cellUtils'
+import {
+  getStringCellProps,
+  handleCellValueDelete,
+  rowEditable,
+} from '../cell/cellUtils'
 import type { MaterialRow } from '@/types'
 import type {
   ColDef,
@@ -63,6 +67,12 @@ const useTagInfoCol = (
             })
             return result
           },
+          onCellValueChanged: handleCellValueDelete((row) => {
+            const target = row.tagInfo
+            if (target) {
+              target.tagList = []
+            }
+          }),
         },
         {
           headerName: t('MI0051'),
@@ -106,6 +116,12 @@ const useTagInfoCol = (
               .filter(Boolean)
               .map((m) => m?.certificateId)
           },
+          onCellValueChanged: handleCellValueDelete((row) => {
+            const target = row.tagInfo
+            if (target) {
+              target.certificationTagList = []
+            }
+          }),
         },
         {
           headerName: t('RR0289'),
@@ -146,6 +162,12 @@ const useTagInfoCol = (
                 })
                 return result
               },
+              onCellValueChanged: handleCellValueDelete((row) => {
+                const target = row.internalInfo
+                if (target) {
+                  target.tagList = []
+                }
+              }),
             },
             {
               field: 'internalInfo.remark',

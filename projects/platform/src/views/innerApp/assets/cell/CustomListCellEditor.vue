@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-100 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
+div(class="w-140 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
   f-input-container(:label="params.label")
     div(class="flex flex-col gap-y-6")
       div(
@@ -25,8 +25,10 @@ div(class="w-100 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           label="Publish"
           class="w-50"
         )
-        icon-button(
+        f-svg-icon(
+          class="text-grey-600 cursor-pointer"
           iconName="delete"
+          size="20"
           @click="() => removeCustomPropertyField(index)"
         )
       f-button(
@@ -34,9 +36,8 @@ div(class="w-100 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
         size="sm"
         prependIcon="add"
         @click="() => pushCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-      ) Add form
+      ) {{ $t('MI0034') }}
     span(v-for="(error, index) in customPropertyDisplayErrorList" :key="index") {{ error }}
-
   f-button(type="primary" size="md" :disabled="!meta.valid" @click="submit") Confirm
 </template>
 
@@ -46,6 +47,7 @@ import { z } from 'zod'
 import { useForm, useFieldArray, configure } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { customPropertyListSchema } from '@/composables/material/useMaterialSchema'
+import IconButton from '@/components/assets/edit/blockMaterialSpecification/IconButton.vue'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import type { MaterialPatternCustomPropertyBase } from '@frontier/platform-web-sdk'
@@ -67,7 +69,7 @@ export default {
     if (props.params.value == null) {
       throw new Error('value is null or undefined')
     }
-    const { values, errors, meta, validate, handleSubmit } = useForm({
+    const { values, errors, meta, handleSubmit } = useForm({
       initialValues: { customPropertyList: props.params.value },
       validationSchema: toTypedSchema(
         z.object({
@@ -102,6 +104,7 @@ export default {
     })
 
     return {
+      IconButton,
       customPropertyFields,
       customPropertyDisplayErrorList,
       pushCustomPropertyField,
