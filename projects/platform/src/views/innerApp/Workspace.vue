@@ -262,7 +262,7 @@ const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {
-      modalTitle: t('FF0016'),
+      modalTitle: t('RR0008'),
       actionText: t('UU0035'),
       actionCallback: async (materialIdList) => {
         const {

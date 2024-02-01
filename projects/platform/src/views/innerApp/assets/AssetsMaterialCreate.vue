@@ -145,7 +145,7 @@ const TAB = {
 
 const tabList = computed(() => [
   {
-    name: 'Specification',
+    name: t('MI0005'),
     id: TAB.SPECIFICATION,
     hasNewUpdate: !isSpecificationTabValid.value,
   },
@@ -165,7 +165,7 @@ const tabList = computed(() => [
     hasNewUpdate: !isInventoryTabValid.value,
   },
   {
-    name: t('Upload Files'),
+    name: t('RR0297'),
     id: TAB.UPLOAD_FILES,
   },
 ])

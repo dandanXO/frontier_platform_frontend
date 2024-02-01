@@ -213,7 +213,7 @@ const cropRectSize = 300
 
 const tabList = computed(() => [
   {
-    name: 'Specification',
+    name: t('MI0005'),
     id: TAB.SPECIFICATION,
     hasNewUpdate: !isSpecificationTabValid.value,
   },
@@ -232,7 +232,7 @@ const tabList = computed(() => [
     id: TAB.INVENTORY,
     hasNewUpdate: !isInventoryTabValid.value,
   },
-  { name: t('Attachments'), id: TAB.ATTACHMENTS },
+  { name: t('RR0298'), id: TAB.ATTACHMENTS },
 ])
 
 const { primarySideImage, publicFileList } = useMaterial(material)
