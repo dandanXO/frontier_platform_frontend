@@ -557,7 +557,7 @@ export const materialWeightSchema = z.object({
     .number(nonNullParams)
     .multipleOf(...getMaxDecimalPlacesParams(3))
     .min(...getMinNumberParams(1))
-    .max(...getMaxNumberParams(999)),
+    .max(...getMaxNumberParams(99999)),
   unit: z.nativeEnum(WeightUnit, nonNullParams).default(WeightUnit.GSM),
 })
 
