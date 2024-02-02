@@ -1,6 +1,7 @@
 <template lang="pug">
 div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
   f-select-input(
+    ref="refInput"
     class="w-full"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="menuTree"
@@ -13,7 +14,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 </template>
 
 <script lang="ts">
-import { inject, ref } from 'vue'
+import { inject, ref, onMounted, nextTick } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
@@ -27,6 +28,7 @@ interface SelectEditorParams
 
 export default {
   setup(props: { params: SelectEditorParams }) {
+    const refInput = ref<HTMLElement>()
     const inputValue = ref(props.params.value)
 
     const spreadsheetService = inject<SpreadsheetService>('spreadsheetService')
@@ -43,7 +45,15 @@ export default {
       }
     }
 
+    onMounted(async () => {
+      await nextTick()
+      refInput.value.focus()
+    })
+
+
+
     return {
+      refInput,
       inputValue,
       addFinishOption,
       menuTree: finishMenuTree,

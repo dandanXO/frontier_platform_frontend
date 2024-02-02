@@ -80,7 +80,6 @@ const handleSubmit = async (payload: SubmitPayload) => {
   }
   isConfirmedToLeave.value = true
 
-  console.log('push')
   store.dispatch('helper/pushModalLoading')
 
   const payloadStr = JSON.stringify(payload)
@@ -97,8 +96,6 @@ const handleSubmit = async (payload: SubmitPayload) => {
     await ogBaseAssetsApi('massCreateUpdateDeleteAssetsMaterialList', req)
     goToProgress({}, PROGRESS_TAB.SPREADSHEET)
   } catch (error) {
-    console.log(error)
-
     const { code, message, result } =
       error as MassCreateUpdateDeleteAssetsMaterialList200Response
     const errorList = result!.errorList

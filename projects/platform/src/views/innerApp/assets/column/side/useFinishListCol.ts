@@ -1,17 +1,22 @@
+import { computed, type ComputedRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type {
+  CellClassParams,
   ColDef,
   EditableCallback,
-  NewValueParams,
   ValueFormatterParams,
   ValueParserParams,
 } from 'ag-grid-enterprise'
 import type { MaterialRow } from '@/types'
-import { computed, type ComputedRef } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
 import FinishCellEditor from '../../cell/FinishListCellEditor.vue'
+import { finishListSchema } from '@/composables/material/useMaterialSchema'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
-import { handleCellValueDelete, rowEditable } from '../../cell/cellUtils'
+import {
+  getCellStyle,
+  handleCellValueDelete,
+  rowEditable,
+} from '../../cell/cellUtils'
 
 const useFinishListCol = (
   side: 'faceSide' | 'middleSide' | 'backSide',
@@ -37,6 +42,19 @@ const useFinishListCol = (
       cellEditorPopupPosition: 'under',
       wrapText: true,
       autoHeight: true,
+      cellStyle: (params: CellClassParams<MaterialRow, string>) => {
+        const editable = params.column.isCellEditable(params.node)
+        const isValid = () => {
+          if (params.column.isCellEditable(params.node)) {
+            return finishListSchema.safeParse(params.value).success
+          }
+          return true
+        }
+        return getCellStyle({
+          valid: isValid(),
+          editable,
+        })
+      },
       cellEditorParams: { placeholder: t('MI0040') },
       valueFormatter: (
         params: ValueFormatterParams<MaterialRow, MaterialFinish[]>

@@ -43,6 +43,7 @@ import useFeatureListCol from './useFeatureListCol'
 import useFinishListCol from './useFinishListCol'
 import useEnumText from '@/composables/useEnumText'
 import { getDefaultContentList } from '@/utils/material'
+import { descriptionListSchema } from '@/composables/material/useMaterialSchema'
 
 const sideEditable =
   (side: 'faceSide' | 'backSide') =>
@@ -288,6 +289,19 @@ const useSideInfoCol = (
           cellEditorParams: { side },
           wrapText: true,
           autoHeight: true,
+          cellStyle: (params: CellClassParams<MaterialRow, string>) => {
+            const editable = params.column.isCellEditable(params.node)
+            const isValid = () => {
+              if (params.column.isCellEditable(params.node)) {
+                return descriptionListSchema.safeParse(params.value).success
+              }
+              return true
+            }
+            return getCellStyle({
+              valid: isValid(),
+              editable,
+            })
+          },
           cellRenderer: (
             params: ValueFormatterParams<MaterialRow, MaterialDescription[]>
           ) => {

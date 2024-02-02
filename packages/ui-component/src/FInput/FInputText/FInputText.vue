@@ -380,6 +380,9 @@ const {
 
 defineExpose({
   isError,
+  focus: () => {
+    refInput.value.focus()
+  },
 })
 
 const hasLeftDropdown = computed(() => slots['slot:left-dropdown-trigger'])

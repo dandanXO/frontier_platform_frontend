@@ -1,6 +1,7 @@
 <template lang="pug">
 div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
   f-select-input(
+    ref="refInput"
     class="w-full"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="dropdownMenuTree"
@@ -12,7 +13,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 </template>
 
 <script lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MenuTree } from '@frontier/ui-component'
@@ -30,6 +31,7 @@ interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
 
 export default {
   setup(props: { params: SelectEditorParams }) {
+    const refInput = ref<HTMLElement>()
     const inputValue = ref(props.params.value)
     const dropdownMenuTree = ref(clone(props.params.dropdownMenuTree()))
 
@@ -48,7 +50,13 @@ export default {
 
     const getValue = () => inputValue.value
 
+    onMounted(async () => {
+      await nextTick()
+      refInput.value.focus()
+    })
+
     return {
+      refInput,
       inputValue,
       dropdownMenuTree,
       handleConfirm,

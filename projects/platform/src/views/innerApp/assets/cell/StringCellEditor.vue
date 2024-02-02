@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="bg-grey-100 p-2 pb-10" @keydown.enter="handleKeyDown")
+div(ref="containerRef" class="bg-grey-100 p-2 pb-10" @keydown.enter="handleKeyDown")
   f-input-text(
     ref="inputRef"
     class="w-69"
@@ -12,7 +12,8 @@ div(class="bg-grey-100 p-2 pb-10" @keydown.enter="handleKeyDown")
 </template>
 
 <script lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, nextTick } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
@@ -25,6 +26,7 @@ interface StringEditorParams extends ICellEditorParams<MaterialRow, string> {
 // https://stackoverflow.com/questions/73032489/ag-grid-framework-component-is-missing-the-method-getvalue-in-production-buil
 export default {
   setup(props: { params: StringEditorParams }) {
+    const containerRef = ref<HTMLElement>()
     const inputRef = ref()
     const inputValue = ref(props.params.value)
 
@@ -45,15 +47,22 @@ export default {
     }
 
     const getValue = () => {
-      // if (hintError.value) {
-      //   return props.params.value
-      // }
       return inputValue.value
     }
+
+    onClickOutside(containerRef, () => {
+      props.params.api.stopEditing()
+    })
+
+    onMounted(async () => {
+      await nextTick()
+      inputRef.value.focus()
+    })
 
     return {
       getValue,
       hintError,
+      containerRef,
       inputRef,
       inputValue,
       handleEnter,

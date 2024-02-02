@@ -1,11 +1,20 @@
-import type { ColDef } from 'ag-grid-community'
-import type { MaterialRow } from '@/types'
-import type { EditableCallback, ValueParserParams } from 'ag-grid-enterprise'
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type {
+  ColDef,
+  CellClassParams,
+  EditableCallback,
+  ValueParserParams,
+} from 'ag-grid-enterprise'
+import type { MaterialRow } from '@/types'
 import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
 import SelectCellEditor from '../../cell/SelectCellEditor.vue'
-import { handleCellValueDelete, rowEditable } from '../../cell/cellUtils'
+import { featureListSchema } from '@/composables/material/useMaterialSchema'
+import {
+  getCellStyle,
+  handleCellValueDelete,
+  rowEditable,
+} from '../../cell/cellUtils'
 
 const useFeatureListCol = (
   side: 'faceSide' | 'middleSide' | 'backSide',
@@ -28,6 +37,19 @@ const useFeatureListCol = (
       minWidth: 200,
       wrapText: true,
       autoHeight: true,
+      cellStyle: (params: CellClassParams<MaterialRow, string>) => {
+        const editable = params.column.isCellEditable(params.node)
+        const isValid = () => {
+          if (params.column.isCellEditable(params.node)) {
+            return featureListSchema.safeParse(params.value).success
+          }
+          return true
+        }
+        return getCellStyle({
+          valid: isValid(),
+          editable,
+        })
+      },
       cellEditorPopup: true,
       cellEditorPopupPosition: 'under',
       cellEditor: SelectCellEditor,
