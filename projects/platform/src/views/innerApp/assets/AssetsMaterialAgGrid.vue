@@ -22,7 +22,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
     div(class="flex flex-row gap-x-4 items-center")
       f-button(
         v-if="!readOnly"
-        type="primary"
+        type="secondary"
         size="md"
         :disabled="!isUpdated"
         @click="handleReset"
