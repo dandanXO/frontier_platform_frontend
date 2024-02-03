@@ -7,7 +7,7 @@ import {
   getNumberCellProps,
   getStringCellProps,
   rowEditable,
-} from '../../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import { materialKnitConstructionSchema } from '@/composables/material/useMaterialSchema'
 
 const t = i18n.global.t

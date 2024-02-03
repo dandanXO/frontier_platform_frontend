@@ -15,11 +15,10 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 
 <script lang="ts">
 import { computed, inject, ref, onMounted, nextTick } from 'vue'
-import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import { MaterialType } from '@frontier/platform-web-sdk'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   side: 'faceSide' | 'backSide'
@@ -72,7 +71,6 @@ export default {
       await nextTick()
       refInput.value.focus()
     })
-
 
     return {
       inputValue,

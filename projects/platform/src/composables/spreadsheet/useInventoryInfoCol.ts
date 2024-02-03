@@ -6,15 +6,15 @@ import type {
   ValueFormatterFunc,
   ValueParserFunc,
 } from 'ag-grid-enterprise'
-import InventoryRemainingCellEditorVue from '../cell/InventoryRemainingCellEditor.vue'
-import InventoryYardageRemainingCellEditorVue from '../cell/InventoryYardageRemainingCellEditor.vue'
+import InventoryRemainingCellEditorVue from '@/components/assets/spreadsheet/cell/InventoryRemainingCellEditor.vue'
+import InventoryYardageRemainingCellEditorVue from '@/components/assets/spreadsheet/cell/InventoryYardageRemainingCellEditor.vue'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
 import {
   getCellStyle,
   getStringCellProps,
   handleCellValueDelete,
   rowEditable,
-} from '../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import type { MaterialRow } from '@/types'
 import type {
   MaterialInternalInventoryInfoSampleCardsRemainingListInner,

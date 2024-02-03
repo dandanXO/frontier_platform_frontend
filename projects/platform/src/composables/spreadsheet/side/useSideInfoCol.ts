@@ -15,18 +15,18 @@ import {
   MaterialSideType,
 } from '@frontier/platform-web-sdk'
 import type { MaterialRow } from '@/types'
-import SelectCellEditor from '../../cell/SelectCellEditor.vue'
+import SelectCellEditor from '@/components/assets/spreadsheet/cell/SelectCellEditor.vue'
 import {
   colorInfoSchema,
   patternInfoSchema,
   contentListSchema,
   materialTypeSchema,
 } from '@/composables/material/useMaterialSchema'
-import getWovenConstruction from './wovenConstruction'
-import getKnitConstruction from './knitConstruction'
-import getLeatherConstruction from './leatherConstruction'
-import getNonWovenConstruction from './nonWovenConstruction'
-import getTrimConstruction from './trimConstruction'
+import getWovenConstruction from '../../../components/assets/spreadsheet/column/side/construction/wovenConstruction'
+import getKnitConstruction from '../../../components/assets/spreadsheet/column/side/construction/knitConstruction'
+import getLeatherConstruction from '../../../components/assets/spreadsheet/column/side/construction/leatherConstruction'
+import getNonWovenConstruction from '../../../components/assets/spreadsheet/column/side/construction/nonWovenConstruction'
+import getTrimConstruction from '../../../components/assets/spreadsheet/column/side/construction/trimConstruction'
 import {
   getCellStyle,
   getCustomPropertyListCellProps,
@@ -35,12 +35,12 @@ import {
   handleCellValueDelete,
   requiredColumnComponentParams,
   rowEditable,
-} from '../../cell/cellUtils'
-import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
-import ContentListCellEditorVue from '../../cell/ContentListCellEditor.vue'
-import DescriptionListCellEditorVue from '../../cell/DescriptionListCellEditor.vue'
-import useFeatureListCol from './useFeatureListCol'
-import useFinishListCol from './useFinishListCol'
+} from '@/utils/material/spreadsheet'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import ContentListCellEditorVue from '@/components/assets/spreadsheet/cell/ContentListCellEditor.vue'
+import DescriptionListCellEditorVue from '@/components/assets/spreadsheet/cell/DescriptionListCellEditor.vue'
+import useFeatureListCol from '@/composables/spreadsheet/side/useFeatureListCol'
+import useFinishListCol from '@/composables/spreadsheet/side/useFinishListCol'
 import useEnumText from '@/composables/useEnumText'
 import { getDefaultContentList } from '@/utils/material'
 import { descriptionListSchema } from '@/composables/material/useMaterialSchema'

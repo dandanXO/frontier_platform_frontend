@@ -17,14 +17,14 @@ import {
   refreshCells,
   rowEditable,
   useMaterialQuantityUnitCellProps,
-} from '../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import useMaterialSchema, {
   currencyCodeSchema,
   materialQuantityUnitSchema,
   minimumQtySchema,
   priceSchema,
 } from '@/composables/material/useMaterialSchema'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 const pricingPath = ['priceInfo', 'pricing']
 const minimumOrderPath = ['priceInfo', 'minimumOrder']

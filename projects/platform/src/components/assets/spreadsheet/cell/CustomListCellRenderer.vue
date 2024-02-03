@@ -19,7 +19,7 @@ import type { ICellRendererParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import { customPropertyListSchema } from '@/composables/material/useMaterialSchema'
 import { TOOLTIP_PLACEMENT } from '@frontier/constants'
-import type { MaterialPatternCustomPropertyBase } from '../../../../../../../packages/platform-web-sdk'
+import type { MaterialPatternCustomPropertyBase } from '@frontier/platform-web-sdk'
 
 interface StringRendererParams
   extends ICellRendererParams<

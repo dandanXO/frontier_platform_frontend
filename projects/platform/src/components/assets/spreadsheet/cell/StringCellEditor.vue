@@ -23,7 +23,6 @@ interface StringEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString
 }
 
-// https://stackoverflow.com/questions/73032489/ag-grid-framework-component-is-missing-the-method-getvalue-in-production-buil
 export default {
   setup(props: { params: StringEditorParams }) {
     const containerRef = ref<HTMLElement>()

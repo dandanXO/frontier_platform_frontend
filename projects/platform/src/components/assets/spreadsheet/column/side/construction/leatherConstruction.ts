@@ -1,13 +1,13 @@
 import i18n from '@frontier/i18n'
-import type { MaterialRow } from '@/types'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import type { ColGroupDef, EditableCallbackParams } from 'ag-grid-enterprise'
+import type { MaterialRow } from '@/types'
 import {
   constructionEditable,
   getNumberCellProps,
   getStringCellProps,
   rowEditable,
-} from '../../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import { materialLeatherConstructionSchema } from '@/composables/material/useMaterialSchema'
 
 const t = i18n.global.t

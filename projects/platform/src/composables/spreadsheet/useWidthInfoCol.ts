@@ -1,17 +1,17 @@
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise'
+import { LengthUnit } from '@frontier/platform-web-sdk'
+import useMaterialSchema, {
+  materialWidthSchema,
+} from '@/composables/material/useMaterialSchema'
 import {
   getEnumCellProps,
   getNumberCellProps,
   requiredColumnComponentParams,
   rowEditable,
-} from '../cell/cellUtils'
-import useMaterialSchema, {
-  materialWidthSchema,
-} from '@/composables/material/useMaterialSchema'
-import { LengthUnit } from '@frontier/platform-web-sdk'
+} from '@/utils/material/spreadsheet'
 import type { MaterialRow } from '@/types'
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise'
 import useEnumText from '@/composables/useEnumText'
 
 const useWidthInfoCol = (): ComputedRef<

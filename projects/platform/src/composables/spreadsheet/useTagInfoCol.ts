@@ -1,11 +1,11 @@
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import SelectCellEditor from '../cell/SelectCellEditor.vue'
+import SelectCellEditor from '@/components/assets/spreadsheet/cell/SelectCellEditor.vue'
 import {
   getStringCellProps,
   handleCellValueDelete,
   rowEditable,
-} from '../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import type { MaterialRow } from '@/types'
 import type {
   ColDef,
@@ -13,7 +13,7 @@ import type {
   ValueFormatterParams,
 } from 'ag-grid-enterprise'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 const useTagInfoCol = (
   spreadsheetService: SpreadsheetService

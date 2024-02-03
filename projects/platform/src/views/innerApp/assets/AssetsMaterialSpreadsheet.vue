@@ -6,10 +6,7 @@ div(class="w-full h-full flex justify-center")
         :breadcrumbList="breadcrumbList"
         @click:item="$event.goTo?.()"
       )
-    assets-material-ag-grid(
-      :materialRowList="materialRowList"
-      @submit="handleSubmit"
-    )
+    spreadsheet(:materialRowList="materialRowList" @submit="handleSubmit")
 </template>
 
 <script setup lang="ts">
@@ -18,17 +15,15 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useAssetsStore } from '@/stores/assets'
-import AssetsMaterialAgGrid from './AssetsMaterialAgGrid.vue'
+import Spreadsheet from '@/components/assets/spreadsheet/Spreadsheet.vue'
 import type {
   MassCreateUpdateDeleteAssetsMaterialList200Response,
   MassCreateUpdateDeleteAssetsMaterialListRequest,
-  Material,
 } from '@frontier/platform-web-sdk'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import type { MaterialRow, SubmitPayload } from '@/types'
 import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
-import mockMaterialList from './mockMaterialList.json'
 import { mapMaterialToMaterialRow } from '@/utils/material'
 
 const store = useStore()
@@ -37,10 +32,6 @@ const { ogBaseAssetsApi, spreadsheetInitialMaterial, cleanUpSpreadSheet } =
   useAssetsStore()
 const { goToAssets, goToProgress, goToAssetMaterialSpreadSheet } =
   useNavigation()
-
-// const materialRowList: MaterialRow[] = (
-//   mockMaterialList as unknown as Material[]
-// ).map(mapMaterialToMaterialRow(true))
 
 const materialRowList: MaterialRow[] = spreadsheetInitialMaterial.map(
   mapMaterialToMaterialRow(true)

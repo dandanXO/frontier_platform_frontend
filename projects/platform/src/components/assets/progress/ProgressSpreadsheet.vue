@@ -34,29 +34,10 @@ f-table(
           @change="getList()"
         )
     div(class="border-t border-grey-100")
-    //- div(class="pt-4 pb-6 px-5")
-    //-   div(class="flex items-center mb-2")
-    //-     p(class="text-grey-600 text-body2 mr-1.5") {{ $t('OO0118') }}
-    //-     f-button-label(@click="changeCategory(EXCEL_CATEGORY.ALL)") {{ $t('UU0040') }}
-    //-   div(class="flex")
-    //-     div(
-    //-       v-for="(category, index) in categoryOptions"
-    //-       :key="category.label"
-    //-       class="text-grey-900 text-body2 cursor-pointer flex"
-    //-       :class="{ 'text-primary-400': queryParams.category === category.value }"
-    //-       @click="changeCategory(category.value)"
-    //-     ) {{ category.label }}
-    //-       div(
-    //-         v-if="index !== categoryOptions.length - 1"
-    //-         class="border-r border-grey-150 h-full mx-4"
-    //-       )
   template(v-slot="{ item, prop, isHover }")
     template(v-if="prop === 'type'")
       p {{ $t('MI0146') }}
-      //- p(v-if="item.category === EXCEL_CATEGORY.UPLOAD") {{ $t('PP0022') }}
-      //- p(v-else-if="item.category === EXCEL_CATEGORY.EXPORT") {{ $t('RR0060') }}
     template(v-if="prop === 'itemListAndFileName'")
-      //- a(:href="item.fileUrl" download) download me!
       f-button(
         type="primary"
         size="lg"
@@ -156,9 +137,9 @@ f-table(
 </template>
 
 <script setup lang="ts">
+import { ref, reactive, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, onUnmounted } from 'vue'
 import { toStandardFormat } from '@frontier/lib'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
@@ -261,22 +242,6 @@ const clearDate = async () => {
   queryParams.endDate = null
   await getList()
 }
-const categoryOptions = [
-  {
-    label: t('RR0060'),
-    value: EXCEL_CATEGORY.EXPORT,
-  },
-  {
-    label: t('PP0022'),
-    value: EXCEL_CATEGORY.UPLOAD,
-  },
-]
-// const changeCategory = async (
-//   category: GetExcelProgressListRequestCategoryEnum
-// ) => {
-//   queryParams.category = category
-//   await getList()
-// }
 
 const progressList = ref<ProgressOnlineSpreadSheetItem[]>([])
 let timerId: ReturnType<typeof setTimeout>
@@ -286,7 +251,6 @@ const getList = async (targetPage = 1, showSpinner = true) => {
 
   const { data } = await ogBaseProgressApi('getOnlineSpreadSheetProgressList', {
     ...queryParams,
-    // keyword: keyword.value,
     status: props.currentStatus,
     pagination: {
       perPageCount: pagination.value.perPageCount,
@@ -295,16 +259,6 @@ const getList = async (targetPage = 1, showSpinner = true) => {
     },
   })
 
-  // const { data } = await ogBaseProgressApi('getExcelProgressList', {
-  //   ...queryParams,
-  //   keyword: keyword.value,
-  //   status: props.currentStatus,
-  //   pagination: {
-  //     perPageCount: pagination.value.perPageCount,
-  //     sort: pagination.value.sort,
-  //     targetPage,
-  //   },
-  // })
   pagination.value = data.result.pagination
   progressList.value = data.result.progressList.map((i) => ({
     ...i,
@@ -326,20 +280,6 @@ watch(
 onUnmounted(() => {
   clearTimeout(timerId)
 })
-
-const openModalItemNoList = (item: ProgressOnlineSpreadSheetItem) => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-item-no-list',
-    properties: {
-      header: t('PP0023'),
-      secondaryBtnText: t('UU0026'),
-      secondaryBtnHandler: () => {
-        store.dispatch('helper/closeModalBehavior')
-      },
-      itemNoList: item.itemNoList,
-    },
-  })
-}
 
 const handleAction = async (
   type: ASSETS_MATERIAL_FUNCTION,

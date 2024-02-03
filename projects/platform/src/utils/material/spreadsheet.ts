@@ -1,3 +1,4 @@
+import { computed, type ComputedRef } from 'vue'
 import type { ZodType } from 'zod'
 import type {
   ColDef,
@@ -12,23 +13,20 @@ import {
   MaterialType,
 } from '@frontier/platform-web-sdk'
 import type { MaterialRow } from '@/types'
-import StringCellEditor from './StringCellEditor.vue'
-import StringCellRenderer from './StringCellRenderer.vue'
-import NumberCellEditor from './NumberCellEditor.vue'
-
-import NumberCellRenderer from './NumberCellRenderer.vue'
-import EnumCellRenderer from './EnumCellRenderer.vue'
-import { MaterialQuantityText } from '@/utils/enumText'
+import StringCellEditor from '@/components/assets/spreadsheet/cell/StringCellEditor.vue'
+import StringCellRenderer from '@/components/assets/spreadsheet/cell/StringCellRenderer.vue'
+import NumberCellEditor from '@/components/assets/spreadsheet/cell/NumberCellEditor.vue'
+import NumberCellRenderer from '@/components/assets/spreadsheet/cell/NumberCellRenderer.vue'
+import CustomListCellRendererVue from '@/components/assets/spreadsheet/cell/CustomListCellRenderer.vue'
+import CustomListCellEditor from '@/components/assets/spreadsheet/cell/CustomListCellEditor.vue'
 import type {
   CellStyle,
   EditableCallback,
   EditableCallbackParams,
   ValueParserParams,
 } from 'ag-grid-enterprise'
-import { computed, type ComputedRef } from 'vue'
+import { MaterialQuantityText } from '@/utils/enumText'
 import useEnumText from '@/composables/useEnumText'
-import CustomListCellRendererVue from './CustomListCellRenderer.vue'
-import CustomListCellEditor from '../cell/CustomListCellEditor.vue'
 import {
   colorInfoSchema,
   materialQuantityUnitSchema,
@@ -140,9 +138,6 @@ export const getEnumCellProps = <T extends string | number>(
       allowTyping: true,
       filterList: true,
     },
-    // TODO: add enum cell renderer
-    // cellRenderer: EnumCellRenderer,
-    // cellRendererParams: { schema, enumText },
     valueFormatter: (params: ValueFormatterParams<MaterialRow, T>) => {
       if (!params.value) {
         return ''

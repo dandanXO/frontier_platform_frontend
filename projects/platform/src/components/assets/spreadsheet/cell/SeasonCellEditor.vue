@@ -13,12 +13,12 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
 
 <script lang="ts">
 import { inject, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialRow } from '@/types'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
-import { useI18n } from 'vue-i18n'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString

@@ -7,14 +7,14 @@ import type {
   ValueParserParams,
 } from 'ag-grid-enterprise'
 import type { MaterialRow } from '@/types'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
-import SelectCellEditor from '../../cell/SelectCellEditor.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import SelectCellEditor from '@/components/assets/spreadsheet/cell/SelectCellEditor.vue'
 import { featureListSchema } from '@/composables/material/useMaterialSchema'
 import {
   getCellStyle,
   handleCellValueDelete,
   rowEditable,
-} from '../../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 
 const useFeatureListCol = (
   side: 'faceSide' | 'middleSide' | 'backSide',

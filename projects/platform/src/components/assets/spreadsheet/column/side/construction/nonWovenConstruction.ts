@@ -6,7 +6,7 @@ import {
   getNumberCellProps,
   getStringCellProps,
   rowEditable,
-} from '../../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import { materialNonWovenConstructionSchema } from '@/composables/material/useMaterialSchema'
 
 const t = i18n.global.t

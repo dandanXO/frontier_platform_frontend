@@ -15,7 +15,7 @@ import {
   getNumberCellProps,
   requiredColumnComponentParams,
   rowEditable,
-} from '../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 import { materialWeightSchema } from '@/composables/material/useMaterialSchema'
 
 const useWeightInfoCol = (): ComputedRef<

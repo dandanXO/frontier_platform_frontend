@@ -19,7 +19,7 @@ import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
 import type { MaterialRow } from '@/types'
-import type { SpreadsheetService } from '../AssetsMaterialAgGrid.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialFinish> {
@@ -49,8 +49,6 @@ export default {
       await nextTick()
       refInput.value.focus()
     })
-
-
 
     return {
       refInput,

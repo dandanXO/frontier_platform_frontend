@@ -17,8 +17,8 @@ f-tooltip-standard(
 import { computed, ref } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellRendererParams } from 'ag-grid-community'
-import type { MaterialRow } from '@/types'
 import { TOOLTIP_PLACEMENT } from '@frontier/constants'
+import type { MaterialRow } from '@/types'
 
 interface StringRendererParams
   extends ICellRendererParams<MaterialRow, string> {

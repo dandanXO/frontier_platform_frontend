@@ -207,7 +207,7 @@ const routes = [
             name: 'SpreadsheetProgress',
             component: () =>
               import(
-                '@/views/innerApp/assets/AssetsMaterialSpreadsheetRecord.vue'
+                '@/views/innerApp/assets/AssetsMaterialSpreadsheetRevision.vue'
               ),
             props: true,
           },

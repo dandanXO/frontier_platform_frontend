@@ -8,15 +8,15 @@ import type {
   ValueParserParams,
 } from 'ag-grid-enterprise'
 import type { MaterialRow } from '@/types'
-import type { SpreadsheetService } from '../../AssetsMaterialAgGrid.vue'
-import FinishCellEditor from '../../cell/FinishListCellEditor.vue'
+import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import FinishCellEditor from '@/components/assets/spreadsheet/cell/FinishListCellEditor.vue'
 import { finishListSchema } from '@/composables/material/useMaterialSchema'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
 import {
   getCellStyle,
   handleCellValueDelete,
   rowEditable,
-} from '../../cell/cellUtils'
+} from '@/utils/material/spreadsheet'
 
 const useFinishListCol = (
   side: 'faceSide' | 'middleSide' | 'backSide',
