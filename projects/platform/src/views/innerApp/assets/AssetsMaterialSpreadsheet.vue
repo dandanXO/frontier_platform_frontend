@@ -6,7 +6,11 @@ div(class="w-full h-full flex justify-center")
         :breadcrumbList="breadcrumbList"
         @click:item="$event.goTo?.()"
       )
-    spreadsheet(:materialRowList="materialRowList" @submit="handleSubmit")
+    spreadsheet(
+      :materialList="spreadsheetInitialMaterial"
+      :materialRowList="materialRowList"
+      @submit="handleSubmit"
+    )
 </template>
 
 <script setup lang="ts">

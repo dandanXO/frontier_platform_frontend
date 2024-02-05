@@ -109,6 +109,7 @@ export type Nullable<T> = { [K in keyof T]: T[K] | null }
 
 const props = withDefaults(
   defineProps<{
+    materialList?: Material[]
     materialRowList: MaterialRow[]
     readOnly?: boolean
   }>(),
@@ -898,12 +899,20 @@ const getPayload = (materialRowList: MaterialRow[]): SubmitPayload => {
   const deleteIdList = materialRowList
     .filter((m) => m.isDelete)
     .map((m) => m.materialId)
-  const deleteList = originMaterialRowList
-    .filter((originRow) => deleteIdList.includes(originRow.materialId))
-    .map(removeAdditional)
-    .map(getReq)
 
-  return { createList, updateList, deleteList }
+  const getDeleteList = () => {
+    if (props.materialList) {
+      return props.materialList.filter((originMaterial) =>
+        deleteIdList.includes(originMaterial.materialId)
+      )
+    }
+    return originMaterialRowList
+      .filter((originRow) => deleteIdList.includes(originRow.materialId))
+      .map(removeAdditional)
+      .map(getReq)
+  }
+
+  return { createList, updateList, deleteList: getDeleteList() }
 }
 
 const getStatusCount = (payload: SubmitPayload) => {
