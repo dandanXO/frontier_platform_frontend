@@ -40,3 +40,4 @@ echo VITE_APP_STRIPE_KEY=$(getVar $STRIPE_KEY) >>.env.$1.local
 echo VITE_APP_GA_MEASUREMENT_ID=$(getVar $GA_MEASUREMENT_ID) >>.env.$1.local
 echo VITE_APP_GOOGLE_CLIENT_ID=$(getVar "GOOGLE_CLIENT_ID") >>.env.$1.local
 echo VITE_APP_FACEBOOK_APP_ID=$(getVar "FACEBOOK_APP_ID") >>.env.$1.local
+echo VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED=$(getVar "AG_GRID_LICENSE_KEY_BASE64_ENCODED") >>.env.$1.local
