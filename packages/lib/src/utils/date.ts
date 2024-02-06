@@ -7,3 +7,7 @@ export const toStandardFormat = (date: number) => {
 export const toYYYYMMDDFormat = (date: number) => {
   return dayjs.unix(date).format('YYYY/MM/DD')
 }
+
+export const toHHMMAFormat = (date: number) => {
+  return dayjs.unix(date).format('hh:mm A');
+}

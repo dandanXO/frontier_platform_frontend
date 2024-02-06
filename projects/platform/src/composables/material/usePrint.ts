@@ -18,13 +18,20 @@ import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import frontierLogo from '@/assets/images/frontier_logo.png'
 import imgPdfOutLine from '@/assets/images/pdf_outline.png'
+import water from '@/assets/images/water.png'
+import co2 from '@/assets/images/co2.png'
+import land from '@/assets/images/land.png'
 import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
 import { MaterialType } from '@frontier/platform-web-sdk'
+import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
   material: Material
 }) => Promise<HTMLDivElement>
+
+const emissionsIconMapper = { water, co2, land };
+const emissionsTextCodeMapper = { water: 'RR0216', co2: 'RR0215', land: 'RR0218' };
 
 const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
   for (let i = 0; i < imgDataUrlList.length; i++) {
@@ -279,7 +286,7 @@ const usePrint = () => {
   const printLabel = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
-    const isCustomize = [1694, 6].includes(orgId.value)
+    const isCustomize = [1694, 6].includes(orgId.value);
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -307,7 +314,7 @@ const usePrint = () => {
 
       const normalLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          <div class="w-56.5 h-[113px] p-1.5 bg-grey-0 flex items-start gap-x-2">
+          <div class="w-64 h-[133px] p-1.5 bg-grey-0 flex items-start gap-x-2">
             <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
             <div class="w-full pt-0.5 flex flex-start">
               <div class="pt-3">
@@ -320,7 +327,7 @@ const usePrint = () => {
                 <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
               </div>
               <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
-              <div id="info-container" class="w-30 text-grey-900">
+              <div id="info-container" class="w-40 text-grey-900">
                 <p class="text-[8px] font-bold pb-0.5 break-words">${itemNo}</p>
               </div>
             </div>
@@ -515,10 +522,44 @@ const usePrint = () => {
         infoContainer.appendChild(row)
       })
 
+      if (orgId.value === 30) {
+        const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(material.carbonEmission);
+        let info = ``;
+        Object.keys(carbonEmissionsInfo).forEach((infoKey) => {
+          const carbonInfo = carbonEmissionsInfo[infoKey];
+          if (carbonInfo && carbonInfo.value && carbonInfo.icon) {
+            info += `
+              <div class="flex flex-row justify-start w-full gap-x-1">
+                <img src="${emissionsIconMapper[carbonInfo.icon]}" class="w-2 h-2" />
+                <p class="text-[6px] w-full">${carbonInfo.value} ${t(emissionsTextCodeMapper[carbonInfo.icon])}</p>
+              </div>
+            `;
+          }
+        });
+        if (info !== ``) {
+          const row = document.createElement('div');
+          row.classList.add('flex', 'flex-row', 'justify-start', 'w-full', 'gap-x-1');
+          row.innerHTML = info;
+          infoContainer.appendChild(row);  
+        }
+
+        if (material.carbonEmission && material.carbonEmission.lastUpdateTime) {
+          const timestamp = `
+            <div class="flex flex-row w-full gap-x-1">
+              <p class="text-[6px] w-full">${t('BB0141', {date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime)})}</p>
+            </div>
+          `;
+          const rowTimestamp = document.createElement('div');
+          rowTimestamp.classList.add('flex', 'flex-row')
+          rowTimestamp.innerHTML = timestamp;
+          infoContainer.appendChild(rowTimestamp);
+        }
+      }
+
       return virtualDom
     }
-    const LABEL_WIDTH = 226
-    const LABEL_HEIGHT = isCustomize ? 141 : 113
+    const LABEL_WIDTH = 256
+    const LABEL_HEIGHT = isCustomize ? 141 : 133
     await generate(
       domGenerator,
       materialList,
