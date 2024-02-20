@@ -235,11 +235,13 @@ const usePrint = () => {
           ),
           isTwoLine: true,
         },
-        ...Object.values(constructionList).map((item) => ({
-          name: item.name,
-          value: String(item.value),
-          isTwoLine: false,
-        })),
+        ...Object.values(constructionList)
+          .filter((item) => item.value !== null)
+          .map((item) => ({
+            name: item.name,
+            value: String(item.value),
+            isTwoLine: false,
+          })),
         {
           ...materialInfoForDisplay.contentList(contentList),
           isTwoLine: true,
