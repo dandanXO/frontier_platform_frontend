@@ -30,8 +30,12 @@ type DomGenerator = (item: {
   material: Material
 }) => Promise<HTMLDivElement>
 
-const emissionsIconMapper = { water, co2, land };
-const emissionsTextCodeMapper = { water: 'RR0216', co2: 'RR0215', land: 'RR0218' };
+const emissionsIconMapper = { water, co2, land }
+const emissionsTextCodeMapper = {
+  water: 'RR0216',
+  co2: 'RR0215',
+  land: 'RR0218',
+}
 
 const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
   for (let i = 0; i < imgDataUrlList.length; i++) {
@@ -138,7 +142,6 @@ const usePrint = () => {
       const { sideType, material } = item
       const {
         itemNo,
-        seasonInfo,
         isComposite,
         width,
         weight,
@@ -166,7 +169,7 @@ const usePrint = () => {
             }" class="w-12.5 h-12.5 rounded flex-shrink-0" />
             <div class="flex-grow text-grey-900">
               <h6 class="w-full text-body1 font-bold line-clamp-1">${itemNo}</h6>
-              <div id="info-container" class="pt-3 grid gap-y-1 text-caption2/1.3 text-grey-900">
+              <div id="info-container" class="pt-2 grid gap-y-1 !text-[8px] leading-[1.6] text-grey-900">
               </div>
             </div>
             <div class="flex flex-col items-center gap-y-2.5">
@@ -179,7 +182,7 @@ const usePrint = () => {
               <p class="text-caption2 text-grey-900">${frontierNo}</p>
             </div>
           </div>
-          <div class="relative px-10 pb-5 flex items-center justify-center">
+          <div class="relative px-10 pb-2.5 flex items-center justify-center">
             <img src="${imgPdfOutLine}" class="w-128.5 h-122.5 object-contain" />
             <div class="absolute whitespace-nowrap text-center text-caption text-grey-600">
               <p class="font-bold pb-2.5">${
@@ -208,23 +211,12 @@ const usePrint = () => {
 
       const infoContainer = document.getElementById('info-container')!
 
-      if (
-        materialInfoForDisplay.seasonInfo(seasonInfo).value !== '' ||
-        materialInfoForDisplay.featureList(featureList).value !== ''
-      ) {
+      if (materialInfoForDisplay.featureList(featureList).value !== '') {
         const div = document.createElement('div')
-
-        if (materialInfoForDisplay.seasonInfo(seasonInfo).value !== '') {
-          div.innerHTML += `
-            <p class="line-clamp-1">
-              ${materialInfoForDisplay.seasonInfo(seasonInfo).value}
-            </p>
-          `
-        }
 
         if (materialInfoForDisplay.featureList(featureList).value !== '') {
           div.innerHTML += `
-             <p class="line-clamp-1">${
+             <p class="line-clamp-2">${
                materialInfoForDisplay.featureList(featureList).value
              }</p>
           `
@@ -235,32 +227,50 @@ const usePrint = () => {
         materialInfoForDisplay.construction(materialType, construction ?? {})
           .value ?? []
       const infoList = [
-        materialInfoForDisplay.materialType(
-          isComposite,
-          materialType,
-          descriptionList
-        ),
+        {
+          ...materialInfoForDisplay.materialType(
+            isComposite,
+            materialType,
+            descriptionList
+          ),
+          isTwoLine: true,
+        },
         ...Object.values(constructionList).map((item) => ({
           name: item.name,
           value: String(item.value),
+          isTwoLine: false,
         })),
-        materialInfoForDisplay.contentList(contentList),
-        materialInfoForDisplay.width(width),
-        materialInfoForDisplay.weight(
-          weight,
-          weightForDisplay,
-          weightDisplaySetting
-        ),
-        materialInfoForDisplay.finishList(finishList),
+        {
+          ...materialInfoForDisplay.contentList(contentList),
+          isTwoLine: true,
+        },
+        {
+          ...materialInfoForDisplay.width(width),
+          isTwoLine: false,
+        },
+        {
+          ...materialInfoForDisplay.weight(
+            weight,
+            weightForDisplay,
+            weightDisplaySetting
+          ),
+          isTwoLine: false,
+        },
+        {
+          ...materialInfoForDisplay.finishList(finishList),
+          isTwoLine: true,
+        },
       ]
 
       infoList.forEach((item) => {
-        const { name, value } = item
+        const { name, value, isTwoLine } = item
         const row = document.createElement('div')
-        row.classList.add('w-full', 'flex', 'items-center')
+        row.classList.add('w-full', 'flex', 'items-start')
         row.innerHTML = `
           <p class="font-bold whitespace-nowrap">${name}：</p>
-          <p class="flex-grow line-clamp-1">${value}</p>
+          <p class="flex-grow ${
+            isTwoLine ? 'line-clamp-2' : 'line-clamp-1'
+          }">${value}</p>
         `
         infoContainer.appendChild(row)
       })
@@ -286,7 +296,7 @@ const usePrint = () => {
   const printLabel = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
-    const isCustomize = [1694, 6].includes(orgId.value);
+    const isCustomize = [1694, 6].includes(orgId.value)
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -523,36 +533,51 @@ const usePrint = () => {
       })
 
       if (orgId.value === 30) {
-        const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(material.carbonEmission);
-        let info = ``;
+        const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(
+          material.carbonEmission
+        )
+        let info = ``
         Object.keys(carbonEmissionsInfo).forEach((infoKey) => {
-          const carbonInfo = carbonEmissionsInfo[infoKey];
+          const carbonInfo = carbonEmissionsInfo[infoKey]
           if (carbonInfo && carbonInfo.value && carbonInfo.icon) {
             info += `
               <div class="flex flex-row justify-start w-full gap-x-1">
-                <img src="${emissionsIconMapper[carbonInfo.icon]}" class="w-2 h-2" />
-                <p class="text-[6px] w-full">${carbonInfo.value} ${t(emissionsTextCodeMapper[carbonInfo.icon])}</p>
+                <img src="${
+                  emissionsIconMapper[carbonInfo.icon]
+                }" class="w-2 h-2" />
+                <p class="text-[6px] w-full">${carbonInfo.value} ${t(
+              emissionsTextCodeMapper[carbonInfo.icon]
+            )}</p>
               </div>
-            `;
+            `
           }
-        });
+        })
         if (info !== ``) {
-          const row = document.createElement('div');
-          row.classList.add('flex', 'flex-row', 'justify-start', 'w-full', 'gap-x-1');
-          row.innerHTML = info;
-          infoContainer.appendChild(row);  
+          const row = document.createElement('div')
+          row.classList.add(
+            'flex',
+            'flex-row',
+            'justify-start',
+            'w-full',
+            'gap-x-1'
+          )
+          row.innerHTML = info
+          infoContainer.appendChild(row)
         }
 
         if (material.carbonEmission && material.carbonEmission.lastUpdateTime) {
           const timestamp = `
             <div class="flex flex-row w-full gap-x-1">
-              <p class="text-[6px] w-full">${t('BB0141', {date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime)})}</p>
+              <p class="text-[6px] w-full">${t('BB0141', {
+                date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime),
+                time: toHHMMAFormat(material.carbonEmission.lastUpdateTime),
+              })}</p>
             </div>
-          `;
-          const rowTimestamp = document.createElement('div');
+          `
+          const rowTimestamp = document.createElement('div')
           rowTimestamp.classList.add('flex', 'flex-row')
-          rowTimestamp.innerHTML = timestamp;
-          infoContainer.appendChild(rowTimestamp);
+          rowTimestamp.innerHTML = timestamp
+          infoContainer.appendChild(rowTimestamp)
         }
       }
 
