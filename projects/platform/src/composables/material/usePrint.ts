@@ -206,7 +206,7 @@ const usePrint = () => {
           <div class="w-full h-18 bg-grey-50 px-6 pt-4 flex items-start justify-between">
             <div class="w-2/3 text-wrap text-caption mr-5">
               <p class="font-bold text-[12px] text-grey-900">${org.value.orgName}</p>
-              <p class="mt-1.5 text-[10px] break-all text-grey-600">${addressStr}</p>
+              <p class="mt-1.5 text-[10px] break-all text-grey-600">${addressStr ? addressStr : ''}</p>
             </div>
             <div class="w-1/3 flex items-center gap-x-2">
               <img src="${frontierLogo}" class="w-15 h-3" />
