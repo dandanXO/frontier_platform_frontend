@@ -12,6 +12,7 @@ import type {
   MaterialLeatherConstruction,
   MaterialNonWovenConstruction,
   MaterialTrimConstruction,
+  Group,
 } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
@@ -134,6 +135,8 @@ const usePrint = () => {
   )
   const orgId = computed<number>(() => store?.getters['organization/orgId'])
   const logo = computed<string>(() => store?.getters['organization/orgLogo'])
+  const orgType = computed<any>(() => store?.getters['helper/routeLocation'])
+  const group = computed(() => store.getters['group/group'])
 
   const printA4Swatch = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
@@ -158,6 +161,13 @@ const usePrint = () => {
         materialType,
         descriptionList,
       } = mainSide
+      let addressStr = '';
+      const isUseGroupAddress = orgType.value && orgType.value === 'group';
+      if (isUseGroupAddress) {
+        addressStr = group.value.address;
+      } else if (org.value.address) {
+        addressStr = org.value.address;
+      }
 
       const virtualDom = document.createElement('div')
       virtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
@@ -193,12 +203,12 @@ const usePrint = () => {
               <p>${t('MI0127')}</p>
             </div>
           </div>
-          <div class="w-full h-13 bg-grey-50 px-10 pt-4 flex items-start justify-between">
-            <div class="text-grey-900 text-caption whitespace-nowrap ">
-              <p class="font-bold">${org.value.orgName}</p>
-              <p>${org.value.address ? org.value.address : ''}</p>
+          <div class="w-full h-18 bg-grey-50 px-6 pt-4 flex items-start justify-between">
+            <div class="w-2/3 text-wrap text-caption mr-5">
+              <p class="font-bold text-[12px] text-grey-900">${org.value.orgName}</p>
+              <p class="mt-1.5 text-[10px] break-all text-grey-600">${addressStr}</p>
             </div>
-            <div class="flex items-center gap-x-2">
+            <div class="w-1/3 flex items-center gap-x-2">
               <img src="${frontierLogo}" class="w-15 h-3" />
               <p class="text-caption2 whitespace-nowrap text-grey-900"> ${t(
                 'MI0126'

@@ -25,12 +25,20 @@ div
         f-input-text(
           v-model:textValue="groupFormData.groupName"
           :placeholder="$t('BB0089')"
-          :hintError="isGroupNameExist ? $t('WW0001') : ''"
+          :hintError="isGroupNameExist ? $t('WW0001') : (!isGroupNameFilled ? $t('WW0002') : '')"
           required
           class="flex-grow"
           data-cy="group-about_name"
         )
         input-label-color(v-model:labelColor="groupFormData.labelColor")
+      f-input-text(
+        v-model:textValue="groupFormData.address"
+        :label="$t('BB0139')"
+        :placeholder="$t('BB0140')"
+        :hintError="isAddressMoreThan160Characters ? $t('WW0142', {limitNumber: 160}) : ''"
+        class="flex-grow mb-7.5"
+        data-cy="group-about_address"
+      )
     f-input-textarea(
       v-model:textValue="groupFormData.description"
       :label="$t('BB0087')"
@@ -66,8 +74,8 @@ export default {
     const store = useStore()
     const notify = useNotifyStore()
     const group = computed(() => store.getters['group/group'])
-    const { groupName, labelColor, description, groupId, groupNo } = group.value
-    const groupFormData = reactive({ groupName, labelColor, description })
+    const { groupName, address, labelColor, description, groupId, groupNo } = group.value
+    const groupFormData = reactive({ groupName, labelColor, description, address })
     const isGroupNameExist = computed(() =>
       store.getters['organization/groupList'].some(
         (group) =>
@@ -75,10 +83,15 @@ export default {
           group.groupName === groupFormData.groupName
       )
     )
-    const availableToCreateGroup = computed(
-      () => !!groupFormData.groupName && !isGroupNameExist.value
+    const isGroupNameFilled = computed(() =>
+      (!!groupFormData.groupName && groupFormData.groupName.length > 0) || groupFormData.groupName === ''
     )
-
+    const availableToCreateGroup = computed(
+      () => !!groupFormData.groupName && !isGroupNameExist.value && !isAddressMoreThan160Characters.value
+    )
+    const isAddressMoreThan160Characters = computed(() =>
+      !!groupFormData.address && groupFormData.address.length > 160
+    )
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
       notify.showNotifySnackbar({ messageText: t('BB0107') })
@@ -125,6 +138,8 @@ export default {
       copyText,
       groupNo,
       copyGroupId,
+      isGroupNameFilled,
+      isAddressMoreThan160Characters,
     }
   },
 }

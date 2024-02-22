@@ -14,6 +14,7 @@ export default {
    * @param {object} params
    * @param {number} params.orgId
    * @param {string} params.groupName
+   * @param {string} params.address
    * @param {string} params.description
    * @param {string} params.labelColor
    * @param {string} params.uploadMaterialEmail
@@ -24,6 +25,7 @@ export default {
   /**
    * @param {object} params
    * @param {string} params.groupName
+   * @param {string} params.address
    * @param {string} params.description
    * @param {string} params.labelColor
    */

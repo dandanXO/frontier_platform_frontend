@@ -11,12 +11,20 @@ modal-behavior(
         v-model:textValue="groupName"
         :label="$t('BB0086')"
         :placeholder="$t('BB0089')"
-        :hintError="isGroupNameExist ? $t('WW0001') : ''"
+        :hintError="isGroupNameExist ? $t('WW0001') : (!isGroupNameFilled ? $t('WW0002') : '')"
         required
         class="flex-grow"
         data-cy="group-about_name"
       )
       input-label-color(v-model:labelColor="labelColor")
+    f-input-text(
+      v-model:textValue="address"
+      :label="$t('BB0139')"
+      :placeholder="$t('BB0140')"
+      :hintError="isAddressMoreThan160Characters ? $t('WW0142', {limitNumber: 160}) : ''"
+      class="flex-grow mb-7.5"
+      data-cy="group-about_address"
+    )
     f-input-textarea(
       v-model:textValue="description"
       :label="$t('BB0087')"
@@ -38,6 +46,10 @@ const groupName = computed({
   get: () => store.getters['group/createForm'].groupName,
   set: (v) => store.commit('group/SET_createForm_groupName', v),
 })
+const address = computed({
+  get: () => store.getters['group/createForm'].address,
+  set: (v) => store.commit('group/SET_createForm_address', v),
+})
 const labelColor = computed({
   get: () => store.getters['group/createForm'].labelColor,
   set: (v) => store.commit('group/SET_createForm_labelColor', v),
@@ -51,8 +63,14 @@ const isGroupNameExist = computed(() =>
     (group) => group.groupName === groupName.value
   )
 )
+const isGroupNameFilled = computed(() =>
+  (!!groupName.value && groupName.value.length > 0) || groupName.value === ''
+)
+const isAddressMoreThan160Characters = computed(() =>
+  !!address.value && address.value.length > 160
+)
 const availableToNextStep = computed(
-  () => !!groupName.value && !isGroupNameExist.value
+  () => !!groupName.value && !isGroupNameExist.value && !isAddressMoreThan160Characters.value
 )
 
 const openModalCreateMailGroup = () => {

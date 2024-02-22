@@ -66,6 +66,7 @@ div(class="pt-16 md:pt-17.5")
         f-input-text(
           v-model:textValue="orgFormData.address"
           :label="$t('BB0078')"
+          :hintError="isAddressMoreThan160Characters ? $t('WW0142', {limitNumber: 160}) : ''"
           class="w-85"
           :placeholder="$t('BB0079')"
         )
@@ -138,9 +139,11 @@ const orgFormData = reactive({
 })
 const isOrgNameExist = ref(false)
 const availableToUpdateOrg = computed(
-  () => !!orgFormData.orgName && !isOrgNameExist.value
+  () => !!orgFormData.orgName && !isOrgNameExist.value && !isAddressMoreThan160Characters.value
 )
-
+const isAddressMoreThan160Characters = computed(() =>
+  !!orgFormData.address && orgFormData.address.length > 160
+)
 const openModalUploadLogo = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-upload-thumbnail',

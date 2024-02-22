@@ -11,6 +11,7 @@ export default {
     groupId: '',
     groupNo: '',
     groupName: '',
+    address: '',
     description: '',
     labelColor: '',
     inviteCode: '',
@@ -22,6 +23,7 @@ export default {
     /** LOCAL VAR */
     createForm: {
       groupName: '',
+      address: '',
       labelColor: COLOR.RED,
       description: '',
       uploadMaterialEmail: '',
@@ -41,6 +43,9 @@ export default {
     },
     SET_createForm_groupName(state, groupName) {
       state.createForm.groupName = groupName
+    },
+    SET_createForm_address(state, address) {
+      state.createForm.address = address
     },
     SET_createForm_labelColor(state, labelColor) {
       state.createForm.labelColor = labelColor
@@ -142,6 +147,7 @@ export default {
     },
     resetCreateForm({ commit }) {
       commit('SET_createForm_groupName', '')
+      commit('SET_createForm_address', '')
       commit('SET_createForm_labelColor', COLOR.RED)
       commit('SET_createForm_description', '')
       commit('SET_createForm_uploadMaterialEmail', '')
