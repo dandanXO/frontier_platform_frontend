@@ -89,7 +89,7 @@ const processList = computed(() => [
         name: t('M2F068'),
       },
       {
-        icon: 'water',
+        icon: 'more_water',
         name: t('M2F069'),
       },
       {
