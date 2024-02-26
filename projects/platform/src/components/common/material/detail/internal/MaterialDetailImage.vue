@@ -17,13 +17,13 @@ div(class="flex flex-col gap-y-3")
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-20 flex items-center justify-center cursor-pointer"
       @click="emits('editScannedImage')"
     )
-      f-svg-icon(iconName="image_file" size="32" class="text-grey-900")
+      f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
     button(
       v-if="canEdit"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-35 flex items-center justify-center cursor-pointer"
       @click="emits('editMultimedia')"
     )
-      f-svg-icon(iconName="create" size="32" class="text-grey-900")
+      f-svg-icon(iconName="upload_multimedia" size="32" class="text-grey-900")
   slider(heightLinerBg="h-19.5" :scrollPerItem="5")
     div(class="grid grid-flow-col gap-x-2 justify-start")
       div(
