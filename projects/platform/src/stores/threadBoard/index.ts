@@ -66,7 +66,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const ogBaseThreadBoardApi = useOgBaseApiWrapper(threadBoardApi)
   const { ogActiveMemberList } = useCurrentUnit()
   const goToStickerMaterialDetail = useGoToStickerMaterialDetail()
-  const { gotoThreadBoard } = useNavigation()
+  const { goToThreadBoard } = useNavigation()
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
   )
@@ -710,7 +710,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       })
     }
 
-    await gotoThreadBoard()
+    await goToThreadBoard()
   }
 
   const deactivateThreadCard = () => {

@@ -17,7 +17,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
             p(
               class="text-caption line-clamp-1"
               :class="[thread.hasMaterialDeleted || thread.hasMaterialNoAccess ? 'text-grey-250' : 'text-grey-600 hover:text-primary-400 hover:underline hover:cursor-pointer']"
-            ) {{ thread.materialNo }}
+            ) {{ thread.itemNo }}
               span(v-if="thread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
               span(v-else-if="thread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
         f-svg-icon(
@@ -87,7 +87,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
           v-if="thread.participantList.length"
           :menuTree="participantMenuTree"
         )
-        div(v-else class="w-35 h-10 pl-4 bg-grey-0 rounded shadow-16 flex items-center") 
+        div(v-else class="w-35 h-10 pl-4 bg-grey-0 rounded shadow-16 flex items-center")
           span(class="text-caption text-grey-600") {{ $t('TT0141') }}
 </template>
 
