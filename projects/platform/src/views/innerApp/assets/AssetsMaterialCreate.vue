@@ -6,7 +6,13 @@ div(class="w-full h-full flex justify-center")
         :breadcrumbList="breadcrumbList"
         @click:item="$event.goTo?.()"
       )
-      f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
+      f-button(
+        v-if="showMassUploadButton()"
+        size="sm"
+        type="secondary"
+        class="ml-5"
+        @click="openModalMassUpload"
+      ) {{ $t('UU0009') }}
     div(v-if="materialOptions" class="flex flex-col gap-y-17.5")
       div(class="flex items-center h-16")
         h5(class="text-h5 font-bold") {{ $t('MI0001') }}
@@ -79,6 +85,8 @@ import {
   convertInventoryFormToReq,
   convertPriceInfoFormToReq,
 } from '@/utils/material'
+import { MASS_UPLOAD_ENABLE_ORG_ID } from '@/utils/constants'
+import type { Organization } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const store = useStore()
@@ -332,10 +340,18 @@ const createMaterial = async (payload: {
   goToAssetMaterialDetail({}, material.materialId)
 }
 
+const org = computed<Organization>(
+  () => store.getters['organization/organization']
+)
+
 const openModalMassUpload = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-mass-upload',
   })
+}
+
+const showMassUploadButton = () => {
+  return org.value.orgId === MASS_UPLOAD_ENABLE_ORG_ID
 }
 
 const cancel = async () => {
