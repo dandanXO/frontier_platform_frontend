@@ -70,7 +70,7 @@ search-table(
           :selectValue="material"
           v-model:selectedValue="selectedMaterialList"
           :optionList="optionList"
-          @click.stop="goToAssetMaterialDetail({}, material.materialId)"
+          @click.stop="clickMaterialItemHandler(material.materialId)"
           :drawerOpenFromLocationList="[]"
         )
     div(v-else class="flex h-full justify-center items-center")
@@ -95,7 +95,11 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import { SEARCH_TYPE, ASSET_LIST_DISPLAY_MODE } from '@/utils/constants'
+import {
+  SEARCH_TYPE,
+  ASSET_LIST_DISPLAY_MODE,
+  NOTIFY_TYPE,
+} from '@/utils/constants'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
@@ -105,7 +109,6 @@ import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
 import type { AssetsFilter, Material } from '@frontier/platform-web-sdk'
-// import AssetsMaterialSpreadsheet from './AssetsMaterialSpreadsheet.vue'
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()
@@ -116,6 +119,23 @@ const router = useRouter()
 const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
+
+const clickMaterialItemHandler = (materialId: number) => {
+  if (selectedMaterialList.value.length === 0) {
+    goToAssetMaterialDetail({}, materialId)
+  } else {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('EE0178'),
+      contentText: t('EE0179'),
+      primaryBtnText: t('UU0001'),
+      primaryBtnHandler: () => {
+        goToAssetMaterialDetail({}, materialId)
+      },
+      secondaryBtnText: t('UU0002'),
+    })
+  }
+}
 
 const selectedMaterialList = ref<Material[]>([])
 const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.LIST)
@@ -164,7 +184,6 @@ const {
   downloadU3m,
   cloneTo,
   addToWorkspace,
-  // exportExcel,
   printLabel,
   mergeMaterial,
   deleteMaterial,
@@ -174,7 +193,6 @@ const {
 const optionList = computed(() => [
   [editMaterial],
   [cloneTo, addToWorkspace],
-  // [createU3m, downloadU3m, exportExcel],
   [createU3m, downloadU3m],
   [printLabel, printA4Swatch],
   [deleteMaterial],
@@ -186,7 +204,6 @@ const optionMultiSelect = computed(() => [
   printA4Swatch,
   printLabel,
   downloadU3m,
-  // exportExcel,
   mergeMaterial,
   deleteMaterial,
   startSpreadSheetUpdate,

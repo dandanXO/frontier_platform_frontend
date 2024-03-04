@@ -16,7 +16,7 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
     div(
       v-if="isHover"
       class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
-      @click.stop="canEdit && goToAssetMaterialDetail({}, material.materialId)"
+      @click.stop="canEdit && clickMaterialItemHandler(material.materialId)"
     )
     //- 目前在 Moodboard的 多選功能只有 export，而 export 需要等 online spreadsheet 功能上線後才能開啟
     //- 而 canEdit 屬性在在 Moodboard (RowItemNodeMoodboard) 中為 false 所以暫時加上此邏輯，讓它中不能被選取
@@ -272,5 +272,22 @@ const viewTheProgram = () => {
     params: { tab: 'value-added-service' },
     query: { service: VALUE_ADDED_SERVICE_ID.MADE2FLOW },
   })
+}
+
+const clickMaterialItemHandler = (materialId: number) => {
+  if (innerSelectedList.length === 0) {
+    goToAssetMaterialDetail({}, materialId)
+  } else {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('EE0178'),
+      contentText: t('EE0179'),
+      primaryBtnText: t('UU0001'),
+      primaryBtnHandler: () => {
+        goToAssetMaterialDetail({}, materialId)
+      },
+      secondaryBtnText: t('UU0002'),
+    })
+  }
 }
 </script>
