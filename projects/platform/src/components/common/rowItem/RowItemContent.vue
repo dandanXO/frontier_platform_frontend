@@ -275,7 +275,7 @@ const viewTheProgram = () => {
 }
 
 const clickMaterialItemHandler = (materialId: number) => {
-  if (innerSelectedList.length === 0) {
+  if (innerSelectedList.value.length === 0) {
     goToAssetMaterialDetail({}, materialId)
   } else {
     store.dispatch('helper/openModalConfirm', {
