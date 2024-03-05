@@ -60,18 +60,19 @@ const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
 const makeQrCode = async (
   key: string,
   containerHtmlId: string,
-  width: number
+  width: number,
+  withURL: boolean = true
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
   const canvasScale = 10
-  const qrcode = await QRCode.toCanvas(
-    `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`,
-    {
-      width: width * canvasScale,
-      margin: 0,
-      errorCorrectionLevel: 'high',
-    }
-  )
+  const qrCodeContent = withURL
+    ? `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`
+    : key
+  const qrcode = await QRCode.toCanvas(qrCodeContent, {
+    width: width * canvasScale,
+    margin: 0,
+    errorCorrectionLevel: 'high',
+  })
   qrcode.style.width = `${width}px`
   qrcode.style.height = `${width}px`
   qrCodeContainer.appendChild(qrcode)
@@ -161,12 +162,12 @@ const usePrint = () => {
         materialType,
         descriptionList,
       } = mainSide
-      let addressStr = '';
-      const isUseGroupAddress = orgType.value && orgType.value === 'group';
+      let addressStr = ''
+      const isUseGroupAddress = orgType.value && orgType.value === 'group'
       if (isUseGroupAddress) {
-        addressStr = group.value.address;
+        addressStr = group.value.address
       } else if (org.value.address) {
-        addressStr = org.value.address;
+        addressStr = org.value.address
       }
 
       const virtualDom = document.createElement('div')
@@ -205,8 +206,12 @@ const usePrint = () => {
           </div>
           <div class="w-full h-18 bg-grey-50 px-6 pt-4 flex items-start justify-between">
             <div class="w-2/3 text-wrap text-caption mr-5">
-              <p class="font-bold text-[12px] text-grey-900">${org.value.orgName}</p>
-              <p class="mt-1.5 text-[10px] break-all text-grey-600">${addressStr ? addressStr : ''}</p>
+              <p class="font-bold text-[12px] text-grey-900">${
+                org.value.orgName
+              }</p>
+              <p class="mt-1.5 text-[10px] break-all text-grey-600">${
+                addressStr || ''
+              }</p>
             </div>
             <div class="w-1/3 flex items-center gap-x-2">
               <img src="${frontierLogo}" class="w-15 h-3" />
@@ -308,7 +313,8 @@ const usePrint = () => {
   const printLabel = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
-    const isCustomize = [1694, 6].includes(orgId.value)
+    const customizeOrgIds = [1694, 6]
+    const isCustomize = customizeOrgIds.includes(orgId.value)
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -632,7 +638,7 @@ const usePrint = () => {
     </div>
   `
     document.body.appendChild(pdfVirtualDom)
-    await makeQrCode('Scan Back Side', 'qr-code-container', 100)
+    await makeQrCode('Scan Back Side', 'qr-code-container', 100, false)
     const imgDataUrl = await getImageDataUrl(
       pdfVirtualDom,
       LABEL_WIDTH,
