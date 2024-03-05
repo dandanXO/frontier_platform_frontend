@@ -94,11 +94,12 @@ const getters = {
     )
   },
   planName: (state, getters) => {
-    const { BASIC, PRO, ENT } = PLAN_TYPE
+    const { BASIC, PRO, ENT, DESIGNER } = PLAN_TYPE
     const obj = {
       [BASIC]: i18n.global.t('OO0174'),
       [PRO]: i18n.global.t('RR0160'),
       [ENT]: i18n.global.t('RR0161'),
+      [DESIGNER]: i18n.global.t('RR0349'),
     }
     return obj[getters.plan.planType]
   },
@@ -112,11 +113,12 @@ const getters = {
   },
   planType: (state, getters) => {
     const planType = getters.plan.planType
-    const { BASIC, PRO, ENT } = PLAN_TYPE
+    const { BASIC, PRO, ENT, DESIGNER } = PLAN_TYPE
     return {
       BASIC: BASIC === planType,
       PRO: PRO === planType,
       ENT: ENT === planType,
+      DESIGNER: DESIGNER === planType,
     }
   },
   hasU3mQuota: (state, getters) => {

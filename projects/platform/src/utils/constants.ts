@@ -159,6 +159,7 @@ export const PLAN_TYPE = {
   BASIC: 1,
   PRO: 2,
   ENT: 3,
+  DESIGNER: 4,
 }
 
 export const PLAN_STATUS = {
