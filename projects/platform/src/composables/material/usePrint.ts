@@ -364,7 +364,7 @@ const usePrint = () => {
       }
       const customizeLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-        <div class="relative flex gap-x-3 w-56.5 h-[141px] bg-grey-0 pr-2 pl-4 py-4 box-content">
+        <div class="relative flex gap-x-3 w-56.5 h-[141px] bg-grey-0 pr-2 pl-4 py-4 box-content" id="customized-outer-container">
           <div class="flex flex-col items-center gap-y-2">
             <div class="w-8 h-8 rounded-full overflow-hidden">
               <img src="${logo.value}" class="w-full h-full" />
@@ -380,7 +380,7 @@ const usePrint = () => {
             </div>
           </div>
           <div class="w-px h-[105px] bg-grey-250"></div>
-          <div id="info-container" class="w-33 text-grey-900">
+          <div id="info-container" class="w-35 text-grey-900">
             <p class="text-[8px] font-bold pb-1 break-words">${itemNo}</p>
           </div>
         </div>
@@ -395,7 +395,16 @@ const usePrint = () => {
         normalLabel(virtualDom)
       }
       document.body.appendChild(virtualDom)
-      await makeQrCode(frontierNo, 'qr-code-container', isCustomize ? 42 : 50)
+      let qrWidth = 50
+      if (isCustomize) {
+        qrWidth = 54
+        const outerContainer = document.getElementById(
+          'customized-outer-container'
+        )
+        outerContainer.classList.remove('pr-2')
+        outerContainer.classList.add('font-bold', 'pr-4')
+      }
+      await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
 
       const infoContainer = document.getElementById('info-container')!
       const infoList: string[] = [
@@ -597,6 +606,9 @@ const usePrint = () => {
           rowTimestamp.innerHTML = timestamp
           infoContainer.appendChild(rowTimestamp)
         }
+      }
+      if (isCustomize) {
+        infoContainer.classList.add('font-bold')
       }
 
       return virtualDom
