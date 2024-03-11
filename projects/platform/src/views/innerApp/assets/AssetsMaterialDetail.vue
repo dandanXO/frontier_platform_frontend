@@ -14,6 +14,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
+import { useSearchStore } from '@/stores/search'
 
 const props = defineProps<{
   materialId: string
@@ -22,9 +23,11 @@ const props = defineProps<{
 const { t } = useI18n()
 const { goToAssets, goToAssetMaterialDetail } = useNavigation()
 const { ogBaseAssetsApi } = useAssetsStore()
+const { getSearchLog } = useSearchStore()
 
 const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
   materialId: Number(props.materialId),
+  searchLog: getSearchLog(),
 })
 const material = ref(data.result.material)
 
