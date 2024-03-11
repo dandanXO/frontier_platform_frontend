@@ -384,6 +384,7 @@ export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
  */
 
 export const MASS_UPLOAD_ENABLE_ORG_ID = 1694
+export const PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST = [1694, 6]
 
 export const materialFormServiceKey = Symbol('MaterialFormService')
 export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')

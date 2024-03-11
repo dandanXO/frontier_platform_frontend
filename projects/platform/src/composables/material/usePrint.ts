@@ -22,9 +22,10 @@ import imgPdfOutLine from '@/assets/images/pdf_outline.png'
 import water from '@/assets/images/water.png'
 import co2 from '@/assets/images/co2.png'
 import land from '@/assets/images/land.png'
-import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
+import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
+import { PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST } from '@/utils/constants'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
@@ -152,7 +153,7 @@ const usePrint = () => {
         weightForDisplay,
         weightDisplaySetting,
       } = material
-      const mainSide = getMaterialMainSide(material)
+      const currentSide = getMaterialBySide(material, sideType)
       const {
         frontierNo,
         featureList,
@@ -161,7 +162,7 @@ const usePrint = () => {
         construction,
         materialType,
         descriptionList,
-      } = mainSide
+      } = currentSide
       let addressStr = ''
       const isUseGroupAddress = orgType.value && orgType.value === 'group'
       if (isUseGroupAddress) {
@@ -313,8 +314,7 @@ const usePrint = () => {
   const printLabel = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
-    const customizeOrgIds = [1694, 6]
-    const isCustomize = customizeOrgIds.includes(orgId.value)
+    const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -329,7 +329,7 @@ const usePrint = () => {
         weightForDisplay,
         weightDisplaySetting,
       } = material
-      const mainSide = getMaterialMainSide(material)
+      const currentSide = getMaterialBySide(material, sideType)
       const {
         frontierNo,
         descriptionList,
@@ -338,7 +338,7 @@ const usePrint = () => {
         construction,
         materialType,
         colorInfo,
-      } = mainSide
+      } = currentSide
 
       const normalLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
