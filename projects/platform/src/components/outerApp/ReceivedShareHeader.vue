@@ -57,6 +57,7 @@ import { useI18n } from 'vue-i18n'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import { useRoute } from 'vue-router'
 import { useBreakpoints } from '@frontier/lib'
+import useLogSender from '@/composables/useLogSender'
 
 const props = defineProps<{
   sharingKey: string
@@ -178,4 +179,8 @@ onMounted(async () => {
     isCollapsed.value = true
   }
 })
+
+const logSender = useLogSender()
+
+logSender.createReceivePageLog(props.sharingKey)
 </script>

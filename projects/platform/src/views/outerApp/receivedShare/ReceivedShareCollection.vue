@@ -60,7 +60,6 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
 import { useOuterStore } from '@/stores/outer'
-import useLogSender from '@/composables/useLogSender'
 import {
   type WorkspaceNodeCollection,
   type ExternalFilter,
@@ -167,8 +166,4 @@ const handleNodeClick = (node: NodeChild, visit: Function) => {
     )
   }
 }
-
-const logSender = useLogSender()
-
-logSender.createReceivePageLog(props.sharingKey)
 </script>
