@@ -164,7 +164,7 @@ export default function useWorkspace() {
               notify.showNotifySnackbar({
                 messageText: t('FF0042', {
                   collectionName:
-                    result.workspaceNodeCollection.collection.trendBoard,
+                    result.workspaceNodeCollection.collection.name,
                 }),
               })
             }
