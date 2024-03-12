@@ -12,7 +12,11 @@ grid-item-wrapper(
       class="w-full h-full rounded-md border-grey-250 overflow-hidden bg-cover"
       :class="{ border: hasNoCoverImage }"
     )
-      img(v-defaultImg :src="material.coverImage?.thumbnailUrl" class="w-full h-full")
+      img(
+        v-defaultImg
+        :src="material.coverImage?.thumbnailUrl"
+        class="w-full h-full object-contain"
+      )
   template(#hover-content)
     div(
       class="text-grey-0 p-2 md:px-7.5 md:py-10 w-full h-full flex flex-col items-center justify-center text-center"
