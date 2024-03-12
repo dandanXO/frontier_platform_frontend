@@ -52,6 +52,8 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const planStatus = computed(() => store.getters['polling/planStatus'])
+const planType = computed(() => store.getters['polling/planType'])
+const notDesignerPlan = computed(() => !planType.value.DESIGNER)
 const orgUserRole = computed(
   () => store.getters['organization/orgUser/orgUserRole']
 )
@@ -67,7 +69,10 @@ const tabList = reactive([
   },
 ])
 
-if (orgUserRole.value.OWNER || orgUserRole.value.ADMIN) {
+if (
+  notDesignerPlan.value &&
+  (orgUserRole.value.OWNER || orgUserRole.value.ADMIN)
+) {
   tabList.push(
     {
       name: t('OO0010'),
