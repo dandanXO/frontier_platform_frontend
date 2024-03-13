@@ -40,7 +40,7 @@ carousel(
         ) {{ showroom.categoryList.join(', ') }}
   template(#addons="{ slidesCount }")
     div(class="px-2.5")
-      div(class="h-11 w-full border-b border-grey-250")
+      div(class="h-11 w-screen border-b border-grey-250")
         template(v-if="slidesCount > 2")
           div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
             div(
