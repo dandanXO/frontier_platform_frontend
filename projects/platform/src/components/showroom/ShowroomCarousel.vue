@@ -62,7 +62,7 @@ carousel(
             )
           div(
             v-if="currentPage !== totalPage"
-            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 right-300 lg:right-100 md:right-200 sm:right-250 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="nextSlide"
           )
             f-svg-icon(
