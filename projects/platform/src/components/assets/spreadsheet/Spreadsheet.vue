@@ -106,7 +106,9 @@ import {
   generateMaterialRow,
 } from '@/utils/material'
 
-const AG_GRID_LICENSE_KEY = atob(import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED)
+const AG_GRID_LICENSE_KEY = atob(
+  import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED
+)
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY)
 
 export type Nullable<T> = { [K in keyof T]: T[K] | null }
@@ -632,7 +634,7 @@ const gridOptions: GridOptions<MaterialRow> = {
   },
   rowSelection: 'multiple',
   enableRangeSelection: true,
-  stopEditingWhenCellsLoseFocus: false,
+  stopEditingWhenCellsLoseFocus: true,
   pagination: true,
   localeText: {
     columns: t('RR0331'),
