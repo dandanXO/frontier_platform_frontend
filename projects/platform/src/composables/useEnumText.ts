@@ -40,6 +40,16 @@ const useEnumText = () => {
     }
   })
 
+  const materialPerQuantityText = computed<{
+    [key in MaterialQuantityUnit]: string
+  }>(() => {
+    return {
+      [MaterialQuantityUnit.Y]: `/${t('RR0039')}`,
+      [MaterialQuantityUnit.M]: `/${t('RR0040')}`,
+      [MaterialQuantityUnit.KG]: `/${t('RR0041')}`,
+    }
+  })
+
   const materialTypeText = computed<{ [key in MaterialType]: string }>(() => {
     return {
       [MaterialType.WOVEN]: t('RR0091'),
@@ -109,6 +119,7 @@ const useEnumText = () => {
     lengthUnitText,
     weightUnitText,
     materialQuantityText,
+    materialPerQuantityText,
     materialTypeText,
     materialSideTypeText,
     currencyText,

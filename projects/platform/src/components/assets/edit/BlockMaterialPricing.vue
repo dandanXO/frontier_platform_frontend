@@ -21,7 +21,7 @@ div(class="mb-15 grid gap-y-7.5")
     :leftDropdownOption="currencyList"
     :rightSelectValue="publicPricingUnit.value"
     @update:rightSelectValue="publicPricingUnit.onInput"
-    :rightDropdownOption="inventoryUnitList"
+    :rightDropdownOption="inventoryPerUnitList"
     class="w-78"
   )
     template(#slot:left-dropdown-trigger="{ selectedMenu }")
@@ -97,7 +97,7 @@ div(class="mb-15 grid gap-y-7.5")
       :leftDropdownOption="currencyList"
       :rightSelectValue="privatePricingUnit.value"
       @update:rightSelectValue="privatePricingUnit.onInput"
-      :rightDropdownOption="inventoryUnitList"
+      :rightDropdownOption="inventoryPerUnitList"
       class="w-78"
     )
       template(#slot:left-dropdown-trigger="{ selectedMenu }")
@@ -174,7 +174,7 @@ if (!materialFormService) {
   throw new Error('useMaterialForm is not provided')
 }
 const { defineInputBinds, displayErrors, inputMenu } = materialFormService
-const { currencyList, inventoryUnitList } = inputMenu
+const { currencyList, inventoryUnitList, inventoryPerUnitList } = inputMenu
 
 const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 

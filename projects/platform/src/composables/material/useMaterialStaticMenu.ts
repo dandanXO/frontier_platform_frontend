@@ -34,6 +34,7 @@ const useMaterialStaticMenu = () => {
   const {
     materialTypeText,
     materialQuantityText,
+    materialPerQuantityText,
     materialSideTypeText,
     lengthUnitText,
     weightUnitText,
@@ -43,6 +44,11 @@ const useMaterialStaticMenu = () => {
   const inventoryUnitList = computed(() => ({
     selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
     menuTree: getMenuTreeFromEnumText('w-30', materialQuantityText.value),
+  }))
+
+  const inventoryPerUnitList = computed(() => ({
+    selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
+    menuTree: getMenuTreeFromEnumText('w-30', materialPerQuantityText.value),
   }))
 
   const currencyList = computed(() => ({
@@ -85,6 +91,7 @@ const useMaterialStaticMenu = () => {
   return {
     materialTypeOptionList,
     inventoryUnitList,
+    inventoryPerUnitList,
     currencyList,
     weightUnitList,
     widthUnitList,

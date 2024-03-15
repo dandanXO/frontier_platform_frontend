@@ -78,7 +78,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
           @click="openModalMaterialEditSimple('inventory')"
         ) {{ $t('UU0027') }}
       div(class="grid gap-3")
-        p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0034') }}： {{ material.inventoryTotalQtyInYard }}
+        p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0034') }}： {{ material.inventoryTotalQtyInYard }}Y
     div
       div(class="flex justify-between pb-2 border-grey-250 border-b mb-2")
         p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0134') }}
