@@ -314,8 +314,8 @@ const openModalPublish = (nodeMeta: NodeMeta) => {
 }
 
 const handleNodeClick = (node: NodeChild, visit: Function) => {
-  searchStore.setKeyword('')
   if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    searchStore.setKeyword('')
     currentNodeId.value = node.nodeMeta.nodeId
     visit()
   } else {
