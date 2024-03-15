@@ -43,9 +43,9 @@ carousel(
         ) {{ showroom.categoryList.join(', ') }}
   template(#addons="{ slidesCount }")
     div(class="px-2.5")
-      div(class="h-11 w-screen border-b border-grey-250")
+      div(class="h-11 w-full border-b border-grey-250")
         template(v-if="slidesCount > 2")
-          div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
+          div(class="grid gap-x-3 grid-flow-col w-fit ml-20 sm:ml-70 md:mx-auto pt-4")
             div(
               v-for="page in totalPage"
               :key="page"
@@ -65,7 +65,7 @@ carousel(
             )
           div(
             v-if="currentPage !== totalPage"
-            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 right-300 lg:right-100 md:right-200 sm:right-250 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 right-290 sm:right-240 md:right-190 lg:right-140 xl:right-25 2xl:right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="nextSlide"
           )
             f-svg-icon(
