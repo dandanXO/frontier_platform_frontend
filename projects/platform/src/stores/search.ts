@@ -57,8 +57,9 @@ export const useSearchStore = defineStore('search', () => {
   const setPaginationRes = (res: PaginationRes) => (paginationRes.value = res)
 
   const getSearchLog = () => {
-    const rank = route.query.rank ?? null
-    if (!rank || !keyword.value) {
+    const dummyDefaultRank = -1
+    const rank = route.query.rank ?? dummyDefaultRank
+    if (!keyword.value) {
       return null
     }
 
