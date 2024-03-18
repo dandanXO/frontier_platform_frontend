@@ -1,7 +1,11 @@
 <template lang="pug">
 div(class="flex items-start gap-x-10")
   //- Left Side: Image
-  material-detail-image(:publicFileList="publicFileList" class="w-125 shrink-0")
+  material-detail-image(
+    :publicFileList="publicFileList"
+    :currentSideType="currentSideType"
+    class="w-125 shrink-0"
+  )
   //- Right Side: Item#, Spec, Color and Pattern, 3D Material
   div
     div(class="pb-6")

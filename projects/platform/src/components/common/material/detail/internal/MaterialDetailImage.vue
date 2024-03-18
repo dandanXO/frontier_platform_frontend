@@ -44,7 +44,7 @@ div(class="flex flex-col gap-y-3")
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import Slider from '@/components/common/Slider.vue'
 import type { THEME } from '@frontier/lib'
@@ -56,6 +56,7 @@ import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 const props = withDefaults(
   defineProps<{
     publicFileList: Array<MaterialFile>
+    currentSideType: number
     getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
   }>(),
@@ -85,4 +86,11 @@ const openViewMode = () => {
     },
   })
 }
+
+watch(
+  () => props.currentSideType,
+  (currentSideIndex) => {
+    currentDisplayIndex.value = currentSideIndex
+  }
+)
 </script>
