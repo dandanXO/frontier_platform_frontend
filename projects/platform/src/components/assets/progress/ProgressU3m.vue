@@ -44,7 +44,7 @@ f-table(
       div(
         class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
-        :style="{ 'background-image': `url(${item.image})` }"
+        :style="{ 'background-image': `url(${item.materialMainSideU3mCropUrl})` }"
       )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'sourceType'")
