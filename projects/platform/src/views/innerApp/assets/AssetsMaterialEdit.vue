@@ -20,9 +20,12 @@ div(class="w-full h-full flex justify-center")
         material-detail-image(
           class="w-125 shrink-0"
           canEdit
+          canStar
+          :selectedId="multimediaUpdateService.selectedCoverId.value"
           :publicFileList="publicFileList"
           :getMenuTree="multimediaUpdateService.getMultimediaMenuTree"
-          @editMultimedia="openModalMultimediaUpdate"
+          :selectCover="multimediaUpdateService.selectCover"
+          :coverId="coverId"
           @editScannedImage="openModalScannedImageUpdate"
         )
         block-material-u3m(:material="material")
@@ -235,6 +238,12 @@ const tabList = computed(() => [
   { name: t('RR0298'), id: TAB.ATTACHMENTS },
 ])
 
+const coverId = computed(() => {
+  const materialCover = multimediaUpdateService.multimediaList.value.find((item) => item.isCover === true);
+
+  return materialCover?.fileId || null;
+});
+
 const { primarySideImage, publicFileList } = useMaterial(material)
 
 const cropperConfig: CropperConfig = reactive({})
@@ -256,13 +265,6 @@ const getCropperConfig = async () => {
   }
 }
 
-const openModalMultimediaUpdate = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-multimedia-upload',
-    properties: { multimediaUpdateService },
-  })
-}
-
 const openModalScannedImageUpdate = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-scanned-image-update',
@@ -271,7 +273,7 @@ const openModalScannedImageUpdate = () => {
 }
 
 const submit = handleSubmit(async (form) => {
-  updateMaterial({
+  await updateMaterial({
     form,
     u3m: u3mSelectService.u3mFile.value
       ? {
@@ -281,6 +283,9 @@ const submit = handleSubmit(async (form) => {
         }
       : undefined,
   })
+  if (multimediaUpdateService.selectedCoverId.value) {
+    await multimediaUpdateService.saveCover();
+  }
 })
 
 const updateMaterial = async (payload: {
@@ -293,7 +298,6 @@ const updateMaterial = async (payload: {
 }) => {
   store.dispatch('helper/pushModalLoading')
   const { form, u3m } = payload
-
   const getReq = () => {
     let req: Omit<UpdateAssetsMaterialRequest, 'orgId' | 'ogType' | 'ogId'> = {
       ...form,
@@ -314,7 +318,6 @@ const updateMaterial = async (payload: {
       materialId: materialId.value,
       hasCustomU3mUploading: u3m != null,
     }
-
     return req
   }
 

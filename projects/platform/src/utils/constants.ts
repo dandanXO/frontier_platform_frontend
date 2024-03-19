@@ -73,15 +73,30 @@ export const MATERIAL_PRICING_CURRENCY = {
   TWD: 'TWD',
 }
 
-export const MATERIAL_UPLOAD_FILE_ACCEPT_TYPE = [
-  Extension.PDF,
-  Extension.JPG,
+export const IMAGE_FILE_ACCEPT_TYPE = [
   Extension.JPEG,
+  Extension.JPG,
   Extension.PNG,
-  Extension.ZIP,
-  Extension.GIF,
+]
+
+export const CROP_FILE_ACCEPT_TYPE = [
+  ...IMAGE_FILE_ACCEPT_TYPE,
   Extension.MOV,
   Extension.MP4,
+  Extension.GIF,
+]
+
+export const ATTACHMENT_FILE_ACCEPT_TYPE = [
+  ...IMAGE_FILE_ACCEPT_TYPE,
+  Extension.PDF,
+  Extension.MOV,
+  Extension.MP4,
+  Extension.GIF,
+]
+
+export const MATERIAL_FILE_ACCEPT_TYPE = [
+  ...ATTACHMENT_FILE_ACCEPT_TYPE,
+  Extension.ZIP,
   Extension.SCCH,
   Extension.YDT,
 ]

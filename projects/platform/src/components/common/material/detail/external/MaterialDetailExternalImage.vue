@@ -32,7 +32,7 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
       @touchend.prevent="touchendHandler"
     )
       file-thumbnail(
-        v-for="(image, index) in publicFileList"
+        v-for="(image, index) in availablePublicFileList"
         :key="image.displayNameShort"
         class="w-16 h-16 hover:border-2 hover:border-primary-300"
         :thumbnailUrl="image.thumbnailUrl"
@@ -46,9 +46,9 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
     file-display(
       class="w-full h-full"
       :key="currentIndex"
-      :displayUrl="publicFileList[currentIndex].displayUrl"
-      :originalUrl="publicFileList[currentIndex].originalUrl"
-      :extension="publicFileList[currentIndex].extension"
+      :displayUrl="availablePublicFileList[currentIndex].displayUrl"
+      :originalUrl="availablePublicFileList[currentIndex].originalUrl"
+      :extension="availablePublicFileList[currentIndex].extension"
     )
     template(v-if="!isMobile")
       button(
@@ -77,6 +77,7 @@ import { useBreakpoints } from '@frontier/lib'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 import { useStore } from 'vuex'
+import { ATTACHMENT_FILE_ACCEPT_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
   material: Material
@@ -86,14 +87,17 @@ const store = useStore()
 const { isMobile } = useBreakpoints()
 const { publicFileList } = useMaterial(ref(props.material))
 const currentIndex = ref(0)
-
+const availablePublicFileList = computed(() =>
+  publicFileList.value.filter((item) =>
+    ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+  )
+)
 const next = () => {
   currentIndex.value = Math.min(
-    publicFileList.value.length - 1,
+    availablePublicFileList.value.length - 1,
     currentIndex.value + 1
   )
 }
-
 const prev = () => {
   currentIndex.value = Math.max(currentIndex.value - 1, 0)
 }
@@ -182,7 +186,7 @@ const openModalFileViewer = () => {
     properties: {
       viewModeService: {
         startIndex: currentIndex,
-        fileList: publicFileList,
+        fileList: availablePublicFileList,
       },
     },
   })

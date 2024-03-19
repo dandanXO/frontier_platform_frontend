@@ -5,7 +5,7 @@ div(class="grid gap-y-8 content-start")
     div(v-if="material.priceInfo.pricing" class="flex items-end gap-x-1 mb-5")
       p(class="text-grey-900 font-bold text-body1") $ {{ material.priceInfo.pricing.price }}
       p(class="text-grey-600 text-caption") {{ material.priceInfo.pricing.currencyCode }} / {{ material.priceInfo.pricing.unit }}
-      p(v-if="inventoryTotalQtyInYard" class="text-grey-600 text-caption") ({{ inventoryTotalQtyInYard }}Y available)
+      p(v-if="material.inventoryTotalQtyInYard" class="text-grey-600 text-caption") ({{ material.inventoryTotalQtyInYard }}Y available)
     div(class="grid gap-y-2")
       template(v-for="item in priceInfo" :key="item")
         div(v-if="item" class="flex text-grey-900 text-body2/1.6")
@@ -13,32 +13,32 @@ div(class="grid gap-y-8 content-start")
           p {{ item.value }}
     //- Inventory
     div(
-      v-if="inventoryTotalQtyInYard"
+      v-if="material.inventoryTotalQtyInYard"
       class="border-t border-grey-250 mt-2 pt-2 text-grey-900 grid gap-y-2"
     )
       p(class="font-bold text-body2") Inventory
       div(class="flex text-grey-900 text-body2/1.6")
         p(class="w-[70%] pr-6") Available Stock
-        p {{ inventoryTotalQtyInYard }}y
+        p {{ material.inventoryTotalQtyInYard }}y
   //- Certification
-  div(v-if="tagInfo.certificationTagList.length > 0")
+  div(v-if="material.tagInfo.certificationTagList.length > 0")
     p(class="mb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
     div(class="flex flex-wrap gap-x-2 gap-y-3")
       f-tag(
-        v-for="tag in tagInfo.certificationTagList"
+        v-for="tag in material.tagInfo.certificationTagList"
         :key="tag.certificateId"
       ) {{ tag.name }}
   //- Keywords
-  div(v-if="tagInfo.tagList.concat(tagInfo.aiTagList).length > 0")
+  div(v-if="material.tagInfo.tagList.concat(material.tagInfo.aiTagList).length > 0")
     div(class="flex items-center gap-x-1 mb-3")
       p(class="text-body2 font-bold text-grey-900") Keyword Tags
       f-tooltip-standard(:tooltipMessage="$t('MI0122')")
         template(#slot:tooltip-trigger)
           f-svg-icon(iconName="info_outline" size="14")
     div(class="flex flex-wrap gap-x-2 gap-y-3")
-      f-tag(v-for="tag in tagInfo.tagList" lg :key="tag") {{ tag }}
+      f-tag(v-for="tag in material.tagInfo.tagList" lg :key="tag") {{ tag }}
       div(
-        v-for="tag in tagInfo.aiTagList"
+        v-for="tag in material.tagInfo.aiTagList"
         class="px-3.5 py-2.5 rounded bg-primary-50 text-body2 text-grey-900"
         :key="tag"
       ) {{ tag }}
@@ -126,6 +126,30 @@ div(class="grid gap-y-8 content-start")
       class="outline-none px-5 py-2.5 rounded border border-grey-300 text-grey-900 hover:text-primary-400 active:text-primary-400 justify-self-start mt-2 cursor-pointer"
       @click="openModalMaterialSpecification"
     ) {{ $t('UU0142') }}
+  //- Attachment
+  f-expansion-panel(class="border-t border-grey-250 pt-6")
+    template(#trigger="{ isExpand }")
+      div(class="flex items-center justify-between cursor-pointer")
+        span(class="text-body2 text-grey-800 font-bold") {{ $t('RR0298') }}
+        f-svg-icon(
+          iconName="keyboard_arrow_right"
+          size="20"
+          class="transform text-grey-900"
+          :class="[isExpand ? '-rotate-90' : 'rotate-90']"
+        )
+    template(#content)
+      div( v-if="multimediaList && multimediaList.length > 0" class="flex flex-wrap gap-5 pt-3")
+        multimedia-card(
+          v-for="(multimedia, index) in multimediaList"
+          :canStar="false"
+          :key="multimedia.fileId"
+          :thumbnailUrl="multimedia.thumbnailUrl"
+          :originalUrl="multimedia.originalUrl"
+          :extension="multimedia.extension"
+          :displayFileName="multimedia.displayFileName"
+          :menuTree="getExternalMultimediaMenuTree(multimedia.fileId)"
+          @click="openMultimediaViewMode(index)"
+        )
   //- General Info
   f-expansion-panel(class="border-t border-grey-250 pt-6")
     template(#trigger="{ isExpand }")
@@ -152,7 +176,7 @@ div(class="grid gap-y-8 content-start")
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref } from 'vue'
+import { computed, toRefs, ref, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 import materialForDisplay from '@/utils/material/materialInfoForDisplay'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP, NOTIFY_TYPE } from '@/utils/constants'
@@ -166,9 +190,11 @@ import {
 import useLogSender from '@/composables/useLogSender'
 import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
 import useMaterial from '@/composables/material/useMaterial'
+import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
 import { useStore } from 'vuex'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import { useRoute } from 'vue-router'
+import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 
 const props = defineProps<{
   material: Material
@@ -182,10 +208,10 @@ const store = useStore()
 const logSender = useLogSender()
 const route = useRoute()
 
-const { specificationInfo, carbonEmissionInfo, scanImageStatus } = useMaterial(
+const { specificationInfo, carbonEmissionInfo, scanImageStatus, publicFileList } = useMaterial(
   ref(props.material)
 )
-const { inventoryTotalQtyInYard, tagInfo } = toRefs(props.material)
+const {multimediaList, getExternalMultimediaMenuTree, material} = useMultimediaUpdate(ref(props.material), () => {});
 const priceInfo = computed(() => {
   const { priceInfo } = props.material
   const {
@@ -302,6 +328,30 @@ const openModalMaterialSpecification = () => {
 const openModalIndicatorMethodology = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-indicator-methodology',
+  })
+}
+
+const multimediaViewModeFileList = computed(() =>
+  multimediaList.value.map((m) => ({
+    id: m.fileId,
+    originalUrl: m.originalUrl,
+    displayUrl: m.originalUrl,
+    thumbnailUrl: m.thumbnailUrl,
+    displayName: m.displayFileName,
+    extension: m.extension,
+  }))
+)
+
+const openMultimediaViewMode = (index: number) => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: multimediaViewModeFileList,
+        getMenuTree: getExternalMultimediaMenuTree,
+      },
+    },
   })
 }
 </script>

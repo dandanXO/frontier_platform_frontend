@@ -74,7 +74,7 @@ modal-behavior(
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator } from '@frontier/lib'
-import { MATERIAL_UPLOAD_FILE_ACCEPT_TYPE } from '@/utils/constants'
+import { MATERIAL_FILE_ACCEPT_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
   uploadHandler: (fileList: File[]) => Promise<void>
@@ -88,7 +88,7 @@ const attachmentList = reactive<File[]>([])
 const disabledUpload = computed(() => attachmentList.length === 0)
 
 const fileSizeMaxLimit = 5 * Math.pow(1024, 3)
-const acceptType = MATERIAL_UPLOAD_FILE_ACCEPT_TYPE
+const acceptType = MATERIAL_FILE_ACCEPT_TYPE
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {

@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="flex flex-col gap-y-3")
+div(class="flex flex-col gap-y-4")
   div(class="w-125 h-125 relative")
     file-display(
       class="w-full h-full"
-      :displayUrl="publicFileList[currentDisplayIndex].displayUrl"
-      :originalUrl="publicFileList[currentDisplayIndex].originalUrl"
-      :extension="publicFileList[currentDisplayIndex].extension"
+      :displayUrl="availableFileList[currentDisplayIndex].displayUrl"
+      :originalUrl="availableFileList[currentDisplayIndex].originalUrl"
+      :extension="availableFileList[currentDisplayIndex].extension"
     )
     button(
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-5 flex items-center justify-center cursor-pointer"
@@ -13,21 +13,32 @@ div(class="flex flex-col gap-y-3")
     )
       f-svg-icon(iconName="search" size="32" class="text-grey-900")
     button(
-      v-if="canEdit"
+      v-if="props.canEdit"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-20 flex items-center justify-center cursor-pointer"
       @click="emits('editScannedImage')"
     )
       f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
     button(
-      v-if="canEdit"
+      v-if="isShowStar"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-35 flex items-center justify-center cursor-pointer"
-      @click="emits('editMultimedia')"
+      @click="() => props.selectCover(availableFileList[currentDisplayIndex].id)"
     )
-      f-svg-icon(iconName="upload_multimedia" size="32" class="text-grey-900")
+      f-svg-icon(
+        v-if="availableFileList[currentDisplayIndex].id === props.coverId || availableFileList[currentDisplayIndex].fileId === props.coverId"
+        iconName="star_solid"
+        size="32"
+        class="text-primary-400"
+      )
+      f-svg-icon(
+        v-else
+        iconName="star"
+        size="32"
+        :class="[props.selectedId && props.selectedId === availableFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
+      )
   slider(heightLinerBg="h-19.5" :scrollPerItem="5")
     div(class="grid grid-flow-col gap-x-2 justify-start")
       div(
-        v-for="(image, index) in publicFileList"
+        v-for="(image, index) in availableFileList"
         :key="image.displayNameShort"
         class="w-18 flex flex-col items-center gap-y-0.5"
       )
@@ -52,6 +63,10 @@ import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialFile } from '@/types'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
+import {
+  ATTACHMENT_FILE_ACCEPT_TYPE,
+  IMAGE_FILE_ACCEPT_TYPE,
+} from '@/utils/constants'
 
 const props = withDefaults(
   defineProps<{
@@ -59,10 +74,21 @@ const props = withDefaults(
     currentSideType: number
     getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
+    canStar?: boolean
+    selectedId?: number | null
+    selectCover?: ((index: number) => void) | null
+    coverId?: number | string | null
   }>(),
   {
     canEdit: false,
+    canStar: false,
+    selectedId: null,
+    coverId: null,
   }
+)
+
+const availableFileList = props.publicFileList.filter((item) =>
+  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
 )
 
 const emits = defineEmits<{
@@ -80,12 +106,17 @@ const openViewMode = () => {
     properties: {
       viewModeService: {
         startIndex: currentDisplayIndex.value,
-        fileList: computed(() => props.publicFileList),
+        fileList: computed(() => availableFileList),
         getMenuTree: props.getMenuTree,
       },
     },
   })
 }
+
+const isShowStar = computed(() => props.canStar 
+  && IMAGE_FILE_ACCEPT_TYPE.includes(availableFileList[currentDisplayIndex.value].extension)
+  && availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler'
+  && availableFileList[currentDisplayIndex.value].id !== 'cover')
 
 watch(
   () => props.currentSideType,

@@ -204,6 +204,17 @@ div
                   classGridCols="grid-cols-7"
                 )
         template(v-else-if="currentTab === TAB.ATTACHMENT")
+          div(class="pt-7.5 flex flex-wrap gap-5")
+            material-file-card(
+              v-for="(attachment, index) in multimediaList"
+              :key="attachment.fileId"
+              :thumbnailUrl="attachment.thumbnailUrl"
+              :originalUrl="attachment.originalUrl"
+              :extension="attachment.extension"
+              :displayFileName="attachment.displayFileName"
+              :menuTree="getMultimediaMenuTree(attachment.fileId)"
+              @click="openAttachmentExternalViewMode(index)"
+            )
           div(class="rounded-md bg-grey-50 p-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 flex flex-wrap gap-5")
@@ -214,6 +225,7 @@ div
                 :originalUrl="attachment.originalUrl"
                 :extension="attachment.extension"
                 :displayFileName="attachment.displayFileName"
+                :menuTree="getAttachmentMenuTree(attachment.fileId)"
                 @click="openAttachmentViewMode(index)"
               )
         template(v-else-if="currentTab === TAB.INDICATOR")
@@ -257,6 +269,8 @@ import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import useAttachmentUpdate from '@/composables/material/useAttachmentUpdate'
+import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
 
 const props = defineProps<{
   material: Material
@@ -281,6 +295,21 @@ const {
   deleteMaterial,
 } = useAssets()
 
+const { attachmentViewModeList, hasScannedImage } = useMaterial(
+  ref(props.material)
+)
+
+const attachmentUpdateService = useAttachmentUpdate(ref(props.material));
+const multimediaUpdateService = useMultimediaUpdate(ref(props.material), () => {});
+
+const {
+  getAttachmentMenuTree,
+} = attachmentUpdateService;
+const {
+  getMultimediaMenuTree,
+  multimediaList,
+} = multimediaUpdateService;
+
 const openAttachmentViewMode = (index: number) => {
   store.dispatch('helper/pushModal', {
     component: 'modal-view-mode',
@@ -288,6 +317,29 @@ const openAttachmentViewMode = (index: number) => {
       viewModeService: {
         startIndex: index,
         fileList: attachmentViewModeList,
+      },
+    },
+  })
+}
+
+const multimediaViewModeFileList = computed(() =>
+  multimediaList.value.map((m) => ({
+    id: m.fileId,
+    originalUrl: m.originalUrl,
+    displayUrl: m.originalUrl,
+    thumbnailUrl: m.thumbnailUrl,
+    displayName: m.displayFileName,
+    extension: m.extension,
+  }))
+)
+
+const openAttachmentExternalViewMode = (index: number) => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-view-mode',
+    properties: {
+      viewModeService: {
+        startIndex: index,
+        fileList: multimediaViewModeFileList,
       },
     },
   })
@@ -340,9 +392,8 @@ const tabList = computed(() => [
     id: TAB.INVENTORY,
   },
   {
-    name: t('RR0136'),
+    name: t('RR0298'),
     id: TAB.ATTACHMENT,
-    disabled: props.material.internalInfo?.attachmentList?.length === 0,
   },
   {
     name: t('RR0219'),
@@ -350,10 +401,6 @@ const tabList = computed(() => [
     icon: 'subscribe',
   },
 ])
-
-const { attachmentViewModeList, hasScannedImage } = useMaterial(
-  ref(props.material)
-)
 
 const sampleCardsRemaining = computed(() => {
   return {

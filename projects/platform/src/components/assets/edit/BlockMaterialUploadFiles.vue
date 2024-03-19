@@ -13,7 +13,7 @@ div(class="flex flex-col gap-y-15")
           @click="openModalMultimediaSelect"
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
-          p {{ $t('RR0243') }} JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
+          p {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
           p {{ $t('RR0145') }} 20MB (per file)
         template(v-if="multimediaList.length > 0")
           f-infobar(
@@ -120,7 +120,7 @@ div(class="flex flex-col gap-y-15")
           @click="openModalAttachmentSelect"
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
-          p {{ $t('RR0243') }} JPG, JPEG, PNG, GIF, MOV, MP4, PDF, ZIP, SCCH, YDT
+          p {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
           p {{ $t('RR0145') }} 20MB (per file)
         div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5 mt-10")
           draggable(
@@ -163,6 +163,9 @@ import type {
   MaterialViewModeFile,
 } from '@/types'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
+import { MATERIAL_FILE_ACCEPT_TYPE } from '@/utils/constants'
+
+const acceptType = MATERIAL_FILE_ACCEPT_TYPE
 
 const u3mSelectService = inject<MaterialU3mSelectService>(
   materialU3mSelectServiceKey

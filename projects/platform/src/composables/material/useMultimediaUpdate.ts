@@ -1,7 +1,7 @@
 import { computed, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { THEME } from '@/utils/constants'
+import { CROP_FILE_ACCEPT_TYPE, THEME } from '@/utils/constants'
 import {
   NOTIFY_TYPE,
   downloadDataURLFile,
@@ -399,6 +399,13 @@ const useMultimediaUpdate = (
                 clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
+            if (CROP_FILE_ACCEPT_TYPE.includes(target.extension)) {
+              menuList.push({
+                title: t('EE0150'),
+                icon: 'crop',
+                clickHandler: () => startCropMultimedia(id),
+              })
+            }
             if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: t('RR0304'),
@@ -417,6 +424,38 @@ const useMultimediaUpdate = (
               clickHandler: () => removeMultimediaSelect(id, theme),
             },
           ],
+        },
+      ],
+    }
+  }
+
+  const getExternalMultimediaMenuTree = (id: number): MenuTree => {
+    const target = getMultimediaById(id)
+    if (!target) {
+      throw new Error('Multimedia not found')
+    }
+
+    return {
+      width: 'w-44',
+      blockList: [
+        {
+          menuList: (() => {
+            const menuList = [
+              {
+                title: t('RR0303'),
+                icon: 'download',
+                clickHandler: () => downloadMultimediaSelect(id),
+              },
+            ]
+            if (target.extension === Extension.PDF) {
+              menuList.unshift({
+                title: t('RR0304'),
+                icon: 'open_in_new',
+                clickHandler: () => window.open(target.originalUrl, '_blank'),
+              })
+            }
+            return menuList
+          })(),
         },
       ],
     }
@@ -580,6 +619,7 @@ const useMultimediaUpdate = (
     selectedCoverId,
     coverAndSideImageList,
     getMultimediaMenuTree,
+    getExternalMultimediaMenuTree,
     openModalMultimediaSelect,
     downloadMultimediaSelect,
     renameMultimediaSelect,
