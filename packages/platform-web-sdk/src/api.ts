@@ -143,6 +143,132 @@ export interface AddOrgBookmarkRequest {
 /**
  * 
  * @export
+ * @interface AddPublicLibraryNodeShareAssignedRequest
+ */
+export interface AddPublicLibraryNodeShareAssignedRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof AddPublicLibraryNodeShareAssignedRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AddPublicLibraryNodeShareAssignedRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<ShareTarget>}
+     * @memberof AddPublicLibraryNodeShareAssignedRequest
+     */
+    'targetList': Array<ShareTarget>;
+}
+/**
+ * 
+ * @export
+ * @interface AddWorkspaceNodeShareAssigned200Response
+ */
+export interface AddWorkspaceNodeShareAssigned200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AddWorkspaceNodeShareAssigned200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWorkspaceNodeShareAssigned200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {AddWorkspaceNodeShareAssigned200ResponseAllOfResult}
+     * @memberof AddWorkspaceNodeShareAssigned200Response
+     */
+    'result': AddWorkspaceNodeShareAssigned200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof AddWorkspaceNodeShareAssigned200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult
+ */
+export interface AddWorkspaceNodeShareAssigned200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner>}
+     * @memberof AddWorkspaceNodeShareAssigned200ResponseAllOfResult
+     */
+    'shareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface AddWorkspaceNodeShareAssignedRequest
+ */
+export interface AddWorkspaceNodeShareAssignedRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<ShareTarget>}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'targetList': Array<ShareTarget>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'isCanClone': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'isCanDownloadU3M': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWorkspaceNodeShareAssignedRequest
+     */
+    'messages'?: string;
+}
+
+
+/**
+ * 
+ * @export
  * @interface Announcement
  */
 export interface Announcement {
@@ -852,63 +978,6 @@ export interface CheckIsMaterialOwnerRequest {
 /**
  * 
  * @export
- * @interface CheckReceiveShareIsPrivate200Response
- */
-export interface CheckReceiveShareIsPrivate200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CheckReceiveShareIsPrivate200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CheckReceiveShareIsPrivate200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {CheckReceiveShareIsPrivate200ResponseAllOfResult}
-     * @memberof CheckReceiveShareIsPrivate200Response
-     */
-    'result': CheckReceiveShareIsPrivate200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof CheckReceiveShareIsPrivate200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CheckReceiveShareIsPrivate200ResponseAllOfResult
- */
-export interface CheckReceiveShareIsPrivate200ResponseAllOfResult {
-    /**
-     * Is the received share private
-     * @type {boolean}
-     * @memberof CheckReceiveShareIsPrivate200ResponseAllOfResult
-     */
-    'isPrivate': boolean;
-}
-/**
- * 
- * @export
- * @interface CheckReceiveShareIsPrivateRequest
- */
-export interface CheckReceiveShareIsPrivateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CheckReceiveShareIsPrivateRequest
-     */
-    'sharingKey': string;
-}
-/**
- * 
- * @export
  * @interface CheckReceivedSharePermission200Response
  */
 export interface CheckReceivedSharePermission200Response {
@@ -962,12 +1031,6 @@ export interface CheckReceivedSharePermissionRequest {
      * @memberof CheckReceivedSharePermissionRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof CheckReceivedSharePermissionRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -1317,12 +1380,6 @@ export interface CloneReceivedShareNodeRequest {
      * @memberof CloneReceivedShareNodeRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof CloneReceivedShareNodeRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -1994,8 +2051,7 @@ export interface CreateAssetsMaterialRequest {
      */
     'isDoubleSide': boolean;
     /**
-     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填
-
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填 
      * @type {MaterialSideType}
      * @memberof CreateAssetsMaterialRequest
      */
@@ -5124,39 +5180,6 @@ export interface GenerateWorkspaceNodeShareCopyLink200ResponseAllOfResult {
 /**
  * 
  * @export
- * @interface GenerateWorkspaceNodeShareCopyLinkRequest
- */
-export interface GenerateWorkspaceNodeShareCopyLinkRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof GenerateWorkspaceNodeShareCopyLinkRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GenerateWorkspaceNodeShareCopyLinkRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GenerateWorkspaceNodeShareCopyLinkRequest
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GenerateWorkspaceNodeShareCopyLinkRequest
-     */
-    'nodeId': number;
-}
-
-
-/**
- * 
- * @export
  * @interface GenerateWorkspaceNodeShareSocialRequest
  */
 export interface GenerateWorkspaceNodeShareSocialRequest {
@@ -5362,12 +5385,6 @@ export interface GetAssetsMaterialRequest {
      * @memberof GetAssetsMaterialRequest
      */
     'materialId': number;
-    /**
-     * 
-     * @type {SearchLog}
-     * @memberof GetAssetsMaterialRequest
-     */
-    'searchLog': SearchLog | null;
 }
 
 
@@ -6772,50 +6789,6 @@ export interface GetMoodboardShareReceivedInfoRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardShareTarget200Response
- */
-export interface GetMoodboardShareTarget200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetMoodboardShareTarget200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMoodboardShareTarget200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {GetMoodboardShareTarget200ResponseAllOfResult}
-     * @memberof GetMoodboardShareTarget200Response
-     */
-    'result': GetMoodboardShareTarget200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetMoodboardShareTarget200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetMoodboardShareTarget200ResponseAllOfResult
- */
-export interface GetMoodboardShareTarget200ResponseAllOfResult {
-    /**
-     * 
-     * @type {ShareTarget}
-     * @memberof GetMoodboardShareTarget200ResponseAllOfResult
-     */
-    'target': ShareTarget;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardShareTargetRequest
  */
 export interface GetMoodboardShareTargetRequest {
@@ -7207,6 +7180,31 @@ export interface GetPublicLibraryMaterialRequest {
 /**
  * 
  * @export
+ * @interface GetPublicLibraryNodeShareAssignedTargetRequest
+ */
+export interface GetPublicLibraryNodeShareAssignedTargetRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPublicLibraryNodeShareAssignedTargetRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPublicLibraryNodeShareAssignedTargetRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPublicLibraryNodeShareAssignedTargetRequest
+     */
+    'targetNumber': string;
+}
+/**
+ * 
+ * @export
  * @interface GetReceivedShareInfo200Response
  */
 export interface GetReceivedShareInfo200Response {
@@ -7260,12 +7258,6 @@ export interface GetReceivedShareInfoRequest {
      * @memberof GetReceivedShareInfoRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof GetReceivedShareInfoRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
 }
 /**
  * 
@@ -7279,12 +7271,6 @@ export interface GetReceivedShareListRequest {
      * @memberof GetReceivedShareListRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof GetReceivedShareListRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -7328,12 +7314,6 @@ export interface GetReceivedShareMaterialRequest {
      * @memberof GetReceivedShareMaterialRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof GetReceivedShareMaterialRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -8533,166 +8513,83 @@ export interface GetWorkspaceMaterialRequest {
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response
+ * @interface GetWorkspaceNodeShareAssignedTarget200Response
  */
-export interface GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response {
+export interface GetWorkspaceNodeShareAssignedTarget200Response {
     /**
      * 
      * @type {boolean}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response
+     * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
     'success': boolean;
     /**
      * 
      * @type {string}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response
+     * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
     'code'?: string | null;
     /**
      * 
-     * @type {GetWorkspaceNodeShareAddPeopleEmailGetTarget200ResponseAllOfResult}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response
+     * @type {GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult}
+     * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
-    'result': GetWorkspaceNodeShareAddPeopleEmailGetTarget200ResponseAllOfResult;
+    'result': GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult;
     /**
      * 
      * @type {object}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response
+     * @memberof GetWorkspaceNodeShareAssignedTarget200Response
      */
     'message'?: object | null;
 }
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareAddPeopleEmailGetTarget200ResponseAllOfResult
+ * @interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult
  */
-export interface GetWorkspaceNodeShareAddPeopleEmailGetTarget200ResponseAllOfResult {
+export interface GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult {
     /**
      * 
-     * @type {ShareEmailTarget}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTarget200ResponseAllOfResult
+     * @type {ShareTarget}
+     * @memberof GetWorkspaceNodeShareAssignedTarget200ResponseAllOfResult
      */
-    'target': ShareEmailTarget;
+    'target': ShareTarget;
 }
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
+ * @interface GetWorkspaceNodeShareAssignedTargetRequest
  */
-export interface GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest {
+export interface GetWorkspaceNodeShareAssignedTargetRequest {
     /**
      * 組織ID
      * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequest
      */
     'orgId': number;
     /**
      * 
      * @type {OgType}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequest
      */
     'ogType': OgType;
     /**
      * 單位(組織或團隊)ID
      * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequest
      */
     'ogId': number;
     /**
-     * 節點Id
+     * 
      * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequest
      */
     'nodeId': number;
     /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest
-     */
-    'email': string;
-}
-
-
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareAddPeopleOGGetTarget200Response
- */
-export interface GetWorkspaceNodeShareAddPeopleOGGetTarget200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTarget200Response
-     */
-    'success': boolean;
-    /**
      * 
      * @type {string}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTarget200Response
+     * @memberof GetWorkspaceNodeShareAssignedTargetRequest
      */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {GetWorkspaceNodeShareAddPeopleOGGetTarget200ResponseAllOfResult}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTarget200Response
-     */
-    'result': GetWorkspaceNodeShareAddPeopleOGGetTarget200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTarget200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareAddPeopleOGGetTarget200ResponseAllOfResult
- */
-export interface GetWorkspaceNodeShareAddPeopleOGGetTarget200ResponseAllOfResult {
-    /**
-     * 
-     * @type {ShareOGTarget}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTarget200ResponseAllOfResult
-     */
-    'target': ShareOGTarget;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
- */
-export interface GetWorkspaceNodeShareAddPeopleOGGetTargetRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
-     */
-    'ogId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
-     */
-    'nodeId': number;
-    /**
-     * 組織或團隊代碼
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareAddPeopleOGGetTargetRequest
-     */
-    'ogNo': string;
+    'targetNumber': string;
 }
 
 
@@ -8735,16 +8632,10 @@ export interface GetWorkspaceNodeShareInfo200Response {
 export interface GetWorkspaceNodeShareInfo200ResponseAllOfResult {
     /**
      * 
-     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner>}
+     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner>}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResult
      */
-    'ogShareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner> | null;
-    /**
-     * 
-     * @type {GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResult
-     */
-    'emailShare': GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare;
+    'shareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner>;
     /**
      * 
      * @type {boolean}
@@ -8761,70 +8652,6 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResult {
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare
- */
-export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare {
-    /**
-     * 
-     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner>}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare
-     */
-    'openShareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner> | null;
-    /**
-     * 
-     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner>}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare
-     */
-    'privateShareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner> | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
- */
-export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner {
-    /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'email': string;
-    /**
-     * 分享對象頭像
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'avatar': string;
-    /**
-     * 是否為Frontier平台會員
-     * @type {boolean}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'isFrontierUser': boolean;
-    /**
-     * (後端的SharingId Or ShareToMeId)
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'id': number;
-    /**
-     * 
-     * @type {SharePermission}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'permission': SharePermission;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShareOpenShareListInner
-     */
-    'message': string;
-}
-
-
-/**
- * 
- * @export
  * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
  */
 export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed {
@@ -8835,72 +8662,60 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed {
      */
     'key': string;
     /**
-     * 是否可以下載 u3m
+     * 
      * @type {boolean}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
      */
     'isCanDownloadU3M': boolean;
-    /**
-     * 是否開啟私人檢視
-     * @type {boolean}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
-     */
-    'isEnablePrivateView': boolean | null;
-    /**
-     * 私人檢視存取碼
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
-     */
-    'accessCode': string | null;
 }
 /**
  * 
  * @export
- * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+ * @interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
  */
-export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner {
+export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner {
     /**
      * 
-     * @type {OgType}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @type {ShareToType}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
-    'ogType': OgType;
+    'type': ShareToType;
     /**
-     * 組織或團隊ID
-     * @type {number}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
-     */
-    'ogId': number;
-    /**
-     * 單位(組織或團隊)名稱
+     * 
      * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
+     */
+    'number': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
     'unitName': string;
     /**
-     * 單位(組織或團隊)Logo
+     * 
      * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
     'unitLogo': string;
     /**
-     * (後端的SharingId Or ShareToMeId)
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
      * @type {number}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
     'id': number;
     /**
      * 
-     * @type {SharePermission}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @type {boolean}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
-    'permission': SharePermission;
+    'isCanClone': boolean;
     /**
      * 
-     * @type {string}
-     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner
+     * @type {boolean}
+     * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultShareListInner
      */
-    'message': string;
+    'isCanDownloadU3M': boolean;
 }
 
 
@@ -8929,7 +8744,7 @@ export interface GetWorkspaceNodeShareInfoRequest {
      */
     'ogId': number;
     /**
-     * 節點Id
+     * 
      * @type {number}
      * @memberof GetWorkspaceNodeShareInfoRequest
      */
@@ -8937,56 +8752,6 @@ export interface GetWorkspaceNodeShareInfoRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest
- */
-export interface GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest {
-    /**
-     * 組織Id
-     * @type {number}
-     * @memberof GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest
-     */
-    'orgId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest
-     */
-    'nodeId': number;
-    /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest
-     */
-    'email': string;
-}
-/**
- * 
- * @export
- * @interface GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest
- */
-export interface GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest {
-    /**
-     * 組織Id
-     * @type {number}
-     * @memberof GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest
-     */
-    'orgId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest
-     */
-    'nodeId': number;
-    /**
-     * 組織或團隊代碼
-     * @type {string}
-     * @memberof GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest
-     */
-    'ogNo': string;
-}
 /**
  * 
  * @export
@@ -9765,8 +9530,7 @@ export interface Material {
      */
     'isDoubleSide': boolean;
     /**
-     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType有值提供判斷
-
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType有值提供判斷 
      * @type {MaterialSideType}
      * @memberof Material
      */
@@ -10121,8 +9885,7 @@ export interface MaterialCreate {
      */
     'isDoubleSide': boolean;
     /**
-     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填
-
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填 
      * @type {MaterialSideType}
      * @memberof MaterialCreate
      */
@@ -11703,14 +11466,7 @@ export interface MaterialPriceInfoPricing {
  */
 export interface MaterialPrivateMetaData {
     /**
-     * Created By - 對 Material owner 所屬的組織或團隊成員 顯示
-  Org or Group name + Color label + Avatar + User name
-- 若布料為 Copy得來，建立者顯示複製布料的 user
-  Org or Group name + Color label + Avatar+User name
-- 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示
-  Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示
-由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。
-
+     * Created By - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name - 若布料為 Copy得來，建立者顯示複製布料的 user   Org or Group name + Color label + Avatar+User name - 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示   Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示 由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。 
      * @type {MaterialUserInfo}
      * @memberof MaterialPrivateMetaData
      */
@@ -17972,25 +17728,6 @@ export interface PricingPro {
 /**
  * 
  * @export
- * @interface PrivateShareAccessInfo
- */
-export interface PrivateShareAccessInfo {
-    /**
-     * Email
-     * @type {string}
-     * @memberof PrivateShareAccessInfo
-     */
-    'email': string;
-    /**
-     * Access code
-     * @type {string}
-     * @memberof PrivateShareAccessInfo
-     */
-    'accessCode': string;
-}
-/**
- * 
- * @export
  * @interface ProgressExcelItem
  */
 export interface ProgressExcelItem {
@@ -18616,6 +18353,51 @@ export interface RemoveWorkspaceCollectionTrendBoardRequest {
 /**
  * 
  * @export
+ * @interface RemoveWorkspaceNodeShareAssignedRequest
+ */
+export interface RemoveWorkspaceNodeShareAssignedRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {ShareToType}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'type': ShareToType;
+    /**
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
+     * @type {number}
+     * @memberof RemoveWorkspaceNodeShareAssignedRequest
+     */
+    'id': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface RenameAssetsMaterialAttachmentRequest
  */
 export interface RenameAssetsMaterialAttachmentRequest {
@@ -18714,39 +18496,6 @@ export interface ResSuccessTrue {
      */
     'message'?: object | null;
 }
-/**
- * 
- * @export
- * @interface ResendWorkspaceNodeShareAddPeopleOGRequest
- */
-export interface ResendWorkspaceNodeShareAddPeopleOGRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof ResendWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof ResendWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof ResendWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'ogId': number;
-    /**
-     * (後端的SharingId Or ShareToMeId)
-     * @type {number}
-     * @memberof ResendWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'id': number;
-}
-
-
 /**
  * 
  * @export
@@ -18918,12 +18667,6 @@ export interface SaveReceivedShareRequest {
      * @memberof SaveReceivedShareRequest
      */
     'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof SaveReceivedShareRequest
-     */
-    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -19369,31 +19112,6 @@ export interface SetAssetsMaterialCoverRequest {
 /**
  * 
  * @export
- * @interface ShareEmailTarget
- */
-export interface ShareEmailTarget {
-    /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof ShareEmailTarget
-     */
-    'email': string;
-    /**
-     * 分享對象頭像
-     * @type {string}
-     * @memberof ShareEmailTarget
-     */
-    'avatar': string;
-    /**
-     * 是否為Frontier平台會員
-     * @type {boolean}
-     * @memberof ShareEmailTarget
-     */
-    'isFrontierUser': boolean;
-}
-/**
- * 
- * @export
  * @interface ShareInfo
  */
 export interface ShareInfo {
@@ -19493,33 +19211,6 @@ export type ShareInfoSharingFromEnum = typeof ShareInfoSharingFromEnum[keyof typ
 /**
  * 
  * @export
- * @interface ShareItemInfo
- */
-export interface ShareItemInfo {
-    /**
-     * (後端的SharingId Or ShareToMeId)
-     * @type {number}
-     * @memberof ShareItemInfo
-     */
-    'id': number;
-    /**
-     * 
-     * @type {SharePermission}
-     * @memberof ShareItemInfo
-     */
-    'permission': SharePermission;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareItemInfo
-     */
-    'message': string;
-}
-
-
-/**
- * 
- * @export
  * @interface ShareNodeChild
  */
 export interface ShareNodeChild {
@@ -19601,137 +19292,6 @@ export interface ShareNodeMaterial {
 /**
  * 
  * @export
- * @interface ShareOGTarget
- */
-export interface ShareOGTarget {
-    /**
-     * 
-     * @type {OgType}
-     * @memberof ShareOGTarget
-     */
-    'ogType': OgType;
-    /**
-     * 組織或團隊ID
-     * @type {number}
-     * @memberof ShareOGTarget
-     */
-    'ogId': number;
-    /**
-     * 單位(組織或團隊)名稱
-     * @type {string}
-     * @memberof ShareOGTarget
-     */
-    'unitName': string;
-    /**
-     * 單位(組織或團隊)Logo
-     * @type {string}
-     * @memberof ShareOGTarget
-     */
-    'unitLogo': string;
-}
-
-
-/**
- * 
- * @export
- * @enum {string}
- */
-
-export const SharePermission = {
-    VIEW_ONLY: 1,
-    IS_CAN_DOWNLOAD_U3M: 2,
-    IS_CAN_CLONE: 3,
-    ALL_ALLOW: 4
-} as const;
-
-export type SharePermission = typeof SharePermission[keyof typeof SharePermission];
-
-
-/**
- * 
- * @export
- * @interface SharePublicLibraryNodeShareAddPeopleEmailRequest
- */
-export interface SharePublicLibraryNodeShareAddPeopleEmailRequest {
-    /**
-     * 組織Id
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleEmailRequest
-     */
-    'orgId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleEmailRequest
-     */
-    'nodeId': number;
-    /**
-     * 分享對象清單
-     * @type {Array<SharePublicLibraryNodeShareAddPeopleEmailRequestTargetListInner>}
-     * @memberof SharePublicLibraryNodeShareAddPeopleEmailRequest
-     */
-    'targetList': Array<SharePublicLibraryNodeShareAddPeopleEmailRequestTargetListInner>;
-}
-/**
- * 
- * @export
- * @interface SharePublicLibraryNodeShareAddPeopleEmailRequestTargetListInner
- */
-export interface SharePublicLibraryNodeShareAddPeopleEmailRequestTargetListInner {
-    /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof SharePublicLibraryNodeShareAddPeopleEmailRequestTargetListInner
-     */
-    'email': string;
-}
-/**
- * 
- * @export
- * @interface SharePublicLibraryNodeShareAddPeopleOGRequest
- */
-export interface SharePublicLibraryNodeShareAddPeopleOGRequest {
-    /**
-     * 組織Id
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleOGRequest
-     */
-    'orgId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleOGRequest
-     */
-    'nodeId': number;
-    /**
-     * 分享對象清單
-     * @type {Array<SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner>}
-     * @memberof SharePublicLibraryNodeShareAddPeopleOGRequest
-     */
-    'targetList': Array<SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner>;
-}
-/**
- * 
- * @export
- * @interface SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner
- */
-export interface SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner {
-    /**
-     * 分享對象組織或團隊類型
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner
-     */
-    'ogType': number;
-    /**
-     * 分享對象組織或團隊Id
-     * @type {number}
-     * @memberof SharePublicLibraryNodeShareAddPeopleOGRequestTargetListInner
-     */
-    'ogId': number;
-}
-/**
- * 
- * @export
  * @interface ShareTarget
  */
 export interface ShareTarget {
@@ -19775,315 +19335,6 @@ export const ShareToType = {
 } as const;
 
 export type ShareToType = typeof ShareToType[keyof typeof ShareToType];
-
-
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleEmail200Response
- */
-export interface ShareWorkspaceNodeShareAddPeopleEmail200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmail200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmail200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {ShareWorkspaceNodeShareAddPeopleEmail200ResponseAllOfResult}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmail200Response
-     */
-    'result': ShareWorkspaceNodeShareAddPeopleEmail200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmail200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleEmail200ResponseAllOfResult
- */
-export interface ShareWorkspaceNodeShareAddPeopleEmail200ResponseAllOfResult {
-    /**
-     * 
-     * @type {GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmail200ResponseAllOfResult
-     */
-    'emailShare': GetWorkspaceNodeShareInfo200ResponseAllOfResultEmailShare;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleEmailRequest
- */
-export interface ShareWorkspaceNodeShareAddPeopleEmailRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'ogId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'openShare': ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare;
-    /**
-     * 
-     * @type {ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequest
-     */
-    'privateShare': ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare;
-}
-
-
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare
- */
-export interface ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare {
-    /**
-     * 新增分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare
-     */
-    'addList': Array<ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner> | null;
-    /**
-     * 更新分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare
-     */
-    'updateList': Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner> | null;
-    /**
-     * 移除分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShare
-     */
-    'removeList': Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner> | null;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner
- */
-export interface ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner {
-    /**
-     * 分享對象Email
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner
-     */
-    'email': string;
-    /**
-     * 
-     * @type {SharePermission}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner
-     */
-    'permission': SharePermission;
-    /**
-     * 分享訊息
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleEmailRequestAllOfOpenShareAddListInner
-     */
-    'message': string | null;
-}
-
-
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOG200Response
- */
-export interface ShareWorkspaceNodeShareAddPeopleOG200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOG200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOG200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {ShareWorkspaceNodeShareAddPeopleOG200ResponseAllOfResult}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOG200Response
-     */
-    'result': ShareWorkspaceNodeShareAddPeopleOG200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOG200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOG200ResponseAllOfResult
- */
-export interface ShareWorkspaceNodeShareAddPeopleOG200ResponseAllOfResult {
-    /**
-     * 
-     * @type {Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOG200ResponseAllOfResult
-     */
-    'ogShareList': Array<GetWorkspaceNodeShareInfo200ResponseAllOfResultOgShareListInner>;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOGRequest
- */
-export interface ShareWorkspaceNodeShareAddPeopleOGRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'ogId': number;
-    /**
-     * 節點Id
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'nodeId': number;
-    /**
-     * 新增分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'addList': Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner> | null;
-    /**
-     * 更新分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'updateList': Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner> | null;
-    /**
-     * 移除分享對象清單
-     * @type {Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner>}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequest
-     */
-    'removeList': Array<ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner> | null;
-}
-
-
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner
- */
-export interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner {
-    /**
-     * 分享對象組織或團隊類型
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner
-     */
-    'ogType': number;
-    /**
-     * 分享對象組織或團隊Id
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {SharePermission}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner
-     */
-    'permission': SharePermission;
-    /**
-     * 分享訊息
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfAddListInner
-     */
-    'message': string | null;
-}
-
-
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner
- */
-export interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner {
-    /**
-     * (後端的SharingId Or ShareToMeId)
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfRemoveListInner
-     */
-    'id': number;
-}
-/**
- * 
- * @export
- * @interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner
- */
-export interface ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner {
-    /**
-     * (後端的SharingId Or ShareToMeId)
-     * @type {number}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner
-     */
-    'id': number;
-    /**
-     * 
-     * @type {SharePermission}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner
-     */
-    'permission': SharePermission;
-    /**
-     * 分享訊息
-     * @type {string}
-     * @memberof ShareWorkspaceNodeShareAddPeopleOGRequestAllOfUpdateListInner
-     */
-    'message': string | null;
-}
 
 
 /**
@@ -21661,6 +20912,105 @@ export interface UpdateWorkspaceCollectionRequest {
 /**
  * 
  * @export
+ * @interface UpdateWorkspaceNodeShareAssignedRequest
+ */
+export interface UpdateWorkspaceNodeShareAssignedRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'removeList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner>;
+    /**
+     * 
+     * @type {Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequest
+     */
+    'updateList': Array<UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner
+ */
+export interface UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner {
+    /**
+     * 
+     * @type {ShareToType}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner
+     */
+    'type'?: ShareToType;
+    /**
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfRemoveListInner
+     */
+    'id'?: number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner
+ */
+export interface UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner {
+    /**
+     * 
+     * @type {ShareToType}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner
+     */
+    'type'?: ShareToType;
+    /**
+     * (SharingId Or OrgShareToMeId  Or GroupShareToMeId)
+     * @type {number}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner
+     */
+    'isCanClone'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateWorkspaceNodeShareAssignedRequestAllOfUpdateListInner
+     */
+    'isCanDownloadU3M'?: boolean;
+}
+
+
+/**
+ * 
+ * @export
  * @interface UpdateWorkspaceNodeShareCopyLinkRequest
  */
 export interface UpdateWorkspaceNodeShareCopyLinkRequest {
@@ -21733,12 +21083,6 @@ export interface UpdateWorkspaceNodeShareEmbedRequest {
      * @memberof UpdateWorkspaceNodeShareEmbedRequest
      */
     'isCanDownloadU3M': boolean;
-    /**
-     * 是否啟用私人檢視
-     * @type {boolean}
-     * @memberof UpdateWorkspaceNodeShareEmbedRequest
-     */
-    'isEnablePrivateView': boolean;
 }
 
 
@@ -27762,46 +27106,6 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @summary Check if the embed is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkEmbedIsPrivate: async (checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'checkReceiveShareIsPrivateRequest' is not null or undefined
-            assertParamExists('checkEmbedIsPrivate', 'checkReceiveShareIsPrivateRequest', checkReceiveShareIsPrivateRequest)
-            const localVarPath = `/embed/check-is-private`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(checkReceiveShareIsPrivateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 取得 embed page 資料
          * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
@@ -27920,19 +27224,6 @@ export const EmbedApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Check if the embed is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveShareIsPrivate200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['EmbedApi.checkEmbedIsPrivate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 取得 embed page 資料
          * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
@@ -27982,16 +27273,6 @@ export const EmbedApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary Check if the embed is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: any): AxiosPromise<CheckReceiveShareIsPrivate200Response> {
-            return localVarFp.checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 取得 embed page 資料
          * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
@@ -28030,18 +27311,6 @@ export const EmbedApiFactory = function (configuration?: Configuration, basePath
  * @extends {BaseAPI}
  */
 export class EmbedApi extends BaseAPI {
-    /**
-     * 
-     * @summary Check if the embed is private
-     * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof EmbedApi
-     */
-    public checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @summary 取得 embed page 資料
@@ -30051,13 +29320,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary 取得 node material
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardOfferNodeMaterial: async (generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'generateWorkspaceNodeShareCopyLinkRequest' is not null or undefined
-            assertParamExists('getMoodboardOfferNodeMaterial', 'generateWorkspaceNodeShareCopyLinkRequest', generateWorkspaceNodeShareCopyLinkRequest)
+        getMoodboardOfferNodeMaterial: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
+            assertParamExists('getMoodboardOfferNodeMaterial', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30081,7 +29350,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generateWorkspaceNodeShareCopyLinkRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -30251,13 +29520,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary Pick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pickMoodboardOfferNode: async (generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'generateWorkspaceNodeShareCopyLinkRequest' is not null or undefined
-            assertParamExists('pickMoodboardOfferNode', 'generateWorkspaceNodeShareCopyLinkRequest', generateWorkspaceNodeShareCopyLinkRequest)
+        pickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
+            assertParamExists('pickMoodboardOfferNode', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/pick`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30281,7 +29550,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generateWorkspaceNodeShareCopyLinkRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -30371,13 +29640,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary Unpick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        unpickMoodboardOfferNode: async (generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'generateWorkspaceNodeShareCopyLinkRequest' is not null or undefined
-            assertParamExists('unpickMoodboardOfferNode', 'generateWorkspaceNodeShareCopyLinkRequest', generateWorkspaceNodeShareCopyLinkRequest)
+        unpickMoodboardOfferNode: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
+            assertParamExists('unpickMoodboardOfferNode', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/moodboard/offer/node/unpick`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30401,7 +29670,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generateWorkspaceNodeShareCopyLinkRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -30683,12 +29952,12 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 node material
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest, options);
+        async getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeMaterial']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30726,7 +29995,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardShareTarget200Response>> {
+        async getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardShareTarget(getMoodboardShareTargetRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardShareTarget']?.[localVarOperationServerIndex]?.url;
@@ -30748,12 +30017,12 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Pick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options);
+        async pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MoodboardApi.pickMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30787,12 +30056,12 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Unpick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options);
+        async unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MoodboardApi.unpickMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30976,12 +30245,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary 取得 node material
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<GetMoodboardOfferNodeMaterial200Response> {
-            return localVarFp.getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
+        getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<GetMoodboardOfferNodeMaterial200Response> {
+            return localVarFp.getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31010,7 +30279,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: any): AxiosPromise<GetMoodboardShareTarget200Response> {
+        getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response> {
             return localVarFp.getMoodboardShareTarget(getMoodboardShareTargetRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -31026,12 +30295,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary Pick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
+        pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31056,12 +30325,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary Unpick Moodboard Offer Node
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
+        unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31264,13 +30533,13 @@ export class MoodboardApi extends BaseAPI {
     /**
      * 
      * @summary 取得 node material
-     * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    public getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -31324,13 +30593,13 @@ export class MoodboardApi extends BaseAPI {
     /**
      * 
      * @summary Pick Moodboard Offer Node
-     * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    public pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).pickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -31360,13 +30629,13 @@ export class MoodboardApi extends BaseAPI {
     /**
      * 
      * @summary Unpick Moodboard Offer Node
-     * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    public unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).unpickMoodboardOfferNode(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -35555,6 +34824,46 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
     return {
         /**
          * 
+         * @summary share Public Library node (material or collection)
+         * @param {AddPublicLibraryNodeShareAssignedRequest} addPublicLibraryNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addPublicLibraryNodeShareAssigned: async (addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addPublicLibraryNodeShareAssignedRequest' is not null or undefined
+            assertParamExists('addPublicLibraryNodeShareAssigned', 'addPublicLibraryNodeShareAssignedRequest', addPublicLibraryNodeShareAssignedRequest)
+            const localVarPath = `/public-library/node/share/assigned/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addPublicLibraryNodeShareAssignedRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary clone public library node
          * @param {ClonePublicLibraryNodeRequest} clonePublicLibraryNodeRequest 
          * @param {*} [options] Override http request option.
@@ -35755,14 +35064,14 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
-         * @param {GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest} getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetPublicLibraryNodeShareAssignedTargetRequest} getPublicLibraryNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getpublicLibraryNodeShareAddPeopleEmailGetTarget: async (getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest: GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest' is not null or undefined
-            assertParamExists('getpublicLibraryNodeShareAddPeopleEmailGetTarget', 'getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest', getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest)
-            const localVarPath = `/public-library/node/share/add-people/email/get-target`;
+        getPublicLibraryNodeShareAssignedTarget: async (getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getPublicLibraryNodeShareAssignedTargetRequest' is not null or undefined
+            assertParamExists('getPublicLibraryNodeShareAssignedTarget', 'getPublicLibraryNodeShareAssignedTargetRequest', getPublicLibraryNodeShareAssignedTargetRequest)
+            const localVarPath = `/public-library/node/share/assigned/get-target`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -35785,126 +35094,7 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest} getpublicLibraryNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getpublicLibraryNodeShareAddPeopleOGGetTarget: async (getpublicLibraryNodeShareAddPeopleOGGetTargetRequest: GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getpublicLibraryNodeShareAddPeopleOGGetTargetRequest' is not null or undefined
-            assertParamExists('getpublicLibraryNodeShareAddPeopleOGGetTarget', 'getpublicLibraryNodeShareAddPeopleOGGetTargetRequest', getpublicLibraryNodeShareAddPeopleOGGetTargetRequest)
-            const localVarPath = `/public-library/node/share/add-people/og/get-target`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Email
-         * @param {SharePublicLibraryNodeShareAddPeopleEmailRequest} sharePublicLibraryNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        sharePublicLibraryNodeShareAddPeopleEmail: async (sharePublicLibraryNodeShareAddPeopleEmailRequest: SharePublicLibraryNodeShareAddPeopleEmailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'sharePublicLibraryNodeShareAddPeopleEmailRequest' is not null or undefined
-            assertParamExists('sharePublicLibraryNodeShareAddPeopleEmail', 'sharePublicLibraryNodeShareAddPeopleEmailRequest', sharePublicLibraryNodeShareAddPeopleEmailRequest)
-            const localVarPath = `/public-library/node/share/add-people/email/share`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(sharePublicLibraryNodeShareAddPeopleEmailRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Org or Group
-         * @param {SharePublicLibraryNodeShareAddPeopleOGRequest} sharePublicLibraryNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        sharePublicLibraryNodeShareAddPeopleOG: async (sharePublicLibraryNodeShareAddPeopleOGRequest: SharePublicLibraryNodeShareAddPeopleOGRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'sharePublicLibraryNodeShareAddPeopleOGRequest' is not null or undefined
-            assertParamExists('sharePublicLibraryNodeShareAddPeopleOG', 'sharePublicLibraryNodeShareAddPeopleOGRequest', sharePublicLibraryNodeShareAddPeopleOGRequest)
-            const localVarPath = `/public-library/node/share/add-people/og/share`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(sharePublicLibraryNodeShareAddPeopleOGRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getPublicLibraryNodeShareAssignedTargetRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -35921,6 +35111,19 @@ export const PublicLibraryApiAxiosParamCreator = function (configuration?: Confi
 export const PublicLibraryApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = PublicLibraryApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @summary share Public Library node (material or collection)
+         * @param {AddPublicLibraryNodeShareAssignedRequest} addPublicLibraryNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.addPublicLibraryNodeShareAssigned']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * 
          * @summary clone public library node
@@ -35988,52 +35191,14 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest} getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetPublicLibraryNodeShareAssignedTargetRequest} getPublicLibraryNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest: GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options);
+        async getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleEmailGetTarget']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest} getpublicLibraryNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest: GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleOGGetTarget']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Email
-         * @param {SharePublicLibraryNodeShareAddPeopleEmailRequest} sharePublicLibraryNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest: SharePublicLibraryNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Org or Group
-         * @param {SharePublicLibraryNodeShareAddPeopleOGRequest} sharePublicLibraryNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest: SharePublicLibraryNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleOG']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryNodeShareAssignedTarget']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -36046,6 +35211,16 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
 export const PublicLibraryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = PublicLibraryApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary share Public Library node (material or collection)
+         * @param {AddPublicLibraryNodeShareAssignedRequest} addPublicLibraryNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary clone public library node
@@ -36098,41 +35273,12 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
         },
         /**
          * 
-         * @param {GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest} getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetPublicLibraryNodeShareAssignedTargetRequest} getPublicLibraryNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest: GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response> {
-            return localVarFp.getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest} getpublicLibraryNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest: GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response> {
-            return localVarFp.getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Email
-         * @param {SharePublicLibraryNodeShareAddPeopleEmailRequest} sharePublicLibraryNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest: SharePublicLibraryNodeShareAddPeopleEmailRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary share Public Library node (material or collection) to Org or Group
-         * @param {SharePublicLibraryNodeShareAddPeopleOGRequest} sharePublicLibraryNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest: SharePublicLibraryNodeShareAddPeopleOGRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest, options).then((request) => request(axios, basePath));
+        getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response> {
+            return localVarFp.getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -36144,6 +35290,18 @@ export const PublicLibraryApiFactory = function (configuration?: Configuration, 
  * @extends {BaseAPI}
  */
 export class PublicLibraryApi extends BaseAPI {
+    /**
+     * 
+     * @summary share Public Library node (material or collection)
+     * @param {AddPublicLibraryNodeShareAssignedRequest} addPublicLibraryNodeShareAssignedRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PublicLibraryApi
+     */
+    public addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest: AddPublicLibraryNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
+        return PublicLibraryApiFp(this.configuration).addPublicLibraryNodeShareAssigned(addPublicLibraryNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary clone public library node
@@ -36206,48 +35364,13 @@ export class PublicLibraryApi extends BaseAPI {
 
     /**
      * 
-     * @param {GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest} getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest 
+     * @param {GetPublicLibraryNodeShareAssignedTargetRequest} getPublicLibraryNodeShareAssignedTargetRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PublicLibraryApi
      */
-    public getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest: GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig) {
-        return PublicLibraryApiFp(this.configuration).getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest} getpublicLibraryNodeShareAddPeopleOGGetTargetRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PublicLibraryApi
-     */
-    public getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest: GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig) {
-        return PublicLibraryApiFp(this.configuration).getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary share Public Library node (material or collection) to Email
-     * @param {SharePublicLibraryNodeShareAddPeopleEmailRequest} sharePublicLibraryNodeShareAddPeopleEmailRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PublicLibraryApi
-     */
-    public sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest: SharePublicLibraryNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig) {
-        return PublicLibraryApiFp(this.configuration).sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary share Public Library node (material or collection) to Org or Group
-     * @param {SharePublicLibraryNodeShareAddPeopleOGRequest} sharePublicLibraryNodeShareAddPeopleOGRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PublicLibraryApi
-     */
-    public sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest: SharePublicLibraryNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig) {
-        return PublicLibraryApiFp(this.configuration).sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest, options).then((request) => request(this.axios, this.basePath));
+    public getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest: GetPublicLibraryNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig) {
+        return PublicLibraryApiFp(this.configuration).getPublicLibraryNodeShareAssignedTarget(getPublicLibraryNodeShareAssignedTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -36259,46 +35382,6 @@ export class PublicLibraryApi extends BaseAPI {
  */
 export const ReceivedShareApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
-        /**
-         * 
-         * @summary Check if the received share is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkReceiveShareIsPrivate: async (checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'checkReceiveShareIsPrivateRequest' is not null or undefined
-            assertParamExists('checkReceiveShareIsPrivate', 'checkReceiveShareIsPrivateRequest', checkReceiveShareIsPrivateRequest)
-            const localVarPath = `/received-share/check-is-private`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(checkReceiveShareIsPrivateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
         /**
          * 
          * @summary 驗證是否有 save, clone 或 download 權限
@@ -36537,19 +35620,6 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Check if the received share is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveShareIsPrivate200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.checkReceiveShareIsPrivate']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -36638,16 +35708,6 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
     return {
         /**
          * 
-         * @summary Check if the received share is private
-         * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: any): AxiosPromise<CheckReceiveShareIsPrivate200Response> {
-            return localVarFp.checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -36716,18 +35776,6 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
  * @extends {BaseAPI}
  */
 export class ReceivedShareApi extends BaseAPI {
-    /**
-     * 
-     * @summary Check if the received share is private
-     * @param {CheckReceiveShareIsPrivateRequest} checkReceiveShareIsPrivateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ReceivedShareApi
-     */
-    public checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig) {
-        return ReceivedShareApiFp(this.configuration).checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @summary 驗證是否有 save, clone 或 download 權限
@@ -41297,6 +40345,46 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
     return {
         /**
          * 
+         * @summary share workspace node (material or collection)
+         * @param {AddWorkspaceNodeShareAssignedRequest} addWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addWorkspaceNodeShareAssigned: async (addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addWorkspaceNodeShareAssignedRequest' is not null or undefined
+            assertParamExists('addWorkspaceNodeShareAssigned', 'addWorkspaceNodeShareAssignedRequest', addWorkspaceNodeShareAssignedRequest)
+            const localVarPath = `/workspace/node/share/assigned/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addWorkspaceNodeShareAssignedRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 新增 Collection
          * @param {CreateWorkspaceCollectionRequest} createWorkspaceCollectionRequest 
          * @param {*} [options] Override http request option.
@@ -41418,13 +40506,13 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary 產生 copy link
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateWorkspaceNodeShareCopyLink: async (generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'generateWorkspaceNodeShareCopyLinkRequest' is not null or undefined
-            assertParamExists('generateWorkspaceNodeShareCopyLink', 'generateWorkspaceNodeShareCopyLinkRequest', generateWorkspaceNodeShareCopyLinkRequest)
+        generateWorkspaceNodeShareCopyLink: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
+            assertParamExists('generateWorkspaceNodeShareCopyLink', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
             const localVarPath = `/workspace/node/share/copy-link/generate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41448,7 +40536,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generateWorkspaceNodeShareCopyLinkRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -41577,14 +40665,14 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest} getWorkspaceNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetWorkspaceNodeShareAssignedTargetRequest} getWorkspaceNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceNodeShareAddPeopleEmailGetTarget: async (getWorkspaceNodeShareAddPeopleEmailGetTargetRequest: GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getWorkspaceNodeShareAddPeopleEmailGetTargetRequest' is not null or undefined
-            assertParamExists('getWorkspaceNodeShareAddPeopleEmailGetTarget', 'getWorkspaceNodeShareAddPeopleEmailGetTargetRequest', getWorkspaceNodeShareAddPeopleEmailGetTargetRequest)
-            const localVarPath = `/workspace/node/share/add-people/email/get-target`;
+        getWorkspaceNodeShareAssignedTarget: async (getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareAssignedTargetRequest' is not null or undefined
+            assertParamExists('getWorkspaceNodeShareAssignedTarget', 'getWorkspaceNodeShareAssignedTargetRequest', getWorkspaceNodeShareAssignedTargetRequest)
+            const localVarPath = `/workspace/node/share/assigned/get-target`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -41607,46 +40695,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {GetWorkspaceNodeShareAddPeopleOGGetTargetRequest} getWorkspaceNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getWorkspaceNodeShareAddPeopleOGGetTarget: async (getWorkspaceNodeShareAddPeopleOGGetTargetRequest: GetWorkspaceNodeShareAddPeopleOGGetTargetRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getWorkspaceNodeShareAddPeopleOGGetTargetRequest' is not null or undefined
-            assertParamExists('getWorkspaceNodeShareAddPeopleOGGetTarget', 'getWorkspaceNodeShareAddPeopleOGGetTargetRequest', getWorkspaceNodeShareAddPeopleOGGetTargetRequest)
-            const localVarPath = `/workspace/node/share/add-people/og/get-target`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareAddPeopleOGGetTargetRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareAssignedTargetRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -41815,15 +40864,15 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @summary resend share info to Email
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
+         * @summary 移除 share 對象
+         * @param {RemoveWorkspaceNodeShareAssignedRequest} removeWorkspaceNodeShareAssignedRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        resendWorkspaceNodeShareAddPeopleEmail: async (resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'resendWorkspaceNodeShareAddPeopleOGRequest' is not null or undefined
-            assertParamExists('resendWorkspaceNodeShareAddPeopleEmail', 'resendWorkspaceNodeShareAddPeopleOGRequest', resendWorkspaceNodeShareAddPeopleOGRequest)
-            const localVarPath = `/workspace/node/share/add-people/email/resend`;
+        removeWorkspaceNodeShareAssigned: async (removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'removeWorkspaceNodeShareAssignedRequest' is not null or undefined
+            assertParamExists('removeWorkspaceNodeShareAssigned', 'removeWorkspaceNodeShareAssignedRequest', removeWorkspaceNodeShareAssignedRequest)
+            const localVarPath = `/workspace/node/share/assigned/remove`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -41846,127 +40895,7 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(resendWorkspaceNodeShareAddPeopleOGRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary resend share info to org or group
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        resendWorkspaceNodeShareAddPeopleOG: async (resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'resendWorkspaceNodeShareAddPeopleOGRequest' is not null or undefined
-            assertParamExists('resendWorkspaceNodeShareAddPeopleOG', 'resendWorkspaceNodeShareAddPeopleOGRequest', resendWorkspaceNodeShareAddPeopleOGRequest)
-            const localVarPath = `/workspace/node/share/add-people/og/resend`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(resendWorkspaceNodeShareAddPeopleOGRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to Email
-         * @param {ShareWorkspaceNodeShareAddPeopleEmailRequest} shareWorkspaceNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        shareWorkspaceNodeShareAddPeopleEmail: async (shareWorkspaceNodeShareAddPeopleEmailRequest: ShareWorkspaceNodeShareAddPeopleEmailRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'shareWorkspaceNodeShareAddPeopleEmailRequest' is not null or undefined
-            assertParamExists('shareWorkspaceNodeShareAddPeopleEmail', 'shareWorkspaceNodeShareAddPeopleEmailRequest', shareWorkspaceNodeShareAddPeopleEmailRequest)
-            const localVarPath = `/workspace/node/share/add-people/email/share`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(shareWorkspaceNodeShareAddPeopleEmailRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to org or group
-         * @param {ShareWorkspaceNodeShareAddPeopleOGRequest} shareWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        shareWorkspaceNodeShareAddPeopleOG: async (shareWorkspaceNodeShareAddPeopleOGRequest: ShareWorkspaceNodeShareAddPeopleOGRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'shareWorkspaceNodeShareAddPeopleOGRequest' is not null or undefined
-            assertParamExists('shareWorkspaceNodeShareAddPeopleOG', 'shareWorkspaceNodeShareAddPeopleOGRequest', shareWorkspaceNodeShareAddPeopleOGRequest)
-            const localVarPath = `/workspace/node/share/add-people/og/share`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(shareWorkspaceNodeShareAddPeopleOGRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(removeWorkspaceNodeShareAssignedRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -42007,6 +40936,46 @@ export const WorkspaceApiAxiosParamCreator = function (configuration?: Configura
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateWorkspaceCollectionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 變更 share 權限
+         * @param {UpdateWorkspaceNodeShareAssignedRequest} updateWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateWorkspaceNodeShareAssigned: async (updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateWorkspaceNodeShareAssignedRequest' is not null or undefined
+            assertParamExists('updateWorkspaceNodeShareAssigned', 'updateWorkspaceNodeShareAssignedRequest', updateWorkspaceNodeShareAssignedRequest)
+            const localVarPath = `/workspace/node/share/assigned/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateWorkspaceNodeShareAssignedRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -42105,6 +41074,19 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary share workspace node (material or collection)
+         * @param {AddWorkspaceNodeShareAssignedRequest} addWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWorkspaceNodeShareAssigned200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.addWorkspaceNodeShareAssigned']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 新增 Collection
          * @param {CreateWorkspaceCollectionRequest} createWorkspaceCollectionRequest 
          * @param {*} [options] Override http request option.
@@ -42145,12 +41127,12 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 產生 copy link
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest, options);
+        async generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareCopyLink']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -42196,26 +41178,14 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest} getWorkspaceNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetWorkspaceNodeShareAssignedTargetRequest} getWorkspaceNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest: GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options);
+        async getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleEmailGetTarget']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {GetWorkspaceNodeShareAddPeopleOGGetTargetRequest} getWorkspaceNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest: GetWorkspaceNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleOGGetTarget']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAssignedTarget']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -42272,54 +41242,15 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary resend share info to Email
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
+         * @summary 移除 share 對象
+         * @param {RemoveWorkspaceNodeShareAssignedRequest} removeWorkspaceNodeShareAssignedRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest, options);
+        async removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.resendWorkspaceNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary resend share info to org or group
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.resendWorkspaceNodeShareAddPeopleOG']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to Email
-         * @param {ShareWorkspaceNodeShareAddPeopleEmailRequest} shareWorkspaceNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest: ShareWorkspaceNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShareWorkspaceNodeShareAddPeopleEmail200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to org or group
-         * @param {ShareWorkspaceNodeShareAddPeopleOGRequest} shareWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest: ShareWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShareWorkspaceNodeShareAddPeopleOG200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleOG']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.removeWorkspaceNodeShareAssigned']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -42333,6 +41264,19 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.updateWorkspaceCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 變更 share 權限
+         * @param {UpdateWorkspaceNodeShareAssignedRequest} updateWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareAssigned']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -42373,6 +41317,16 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
     return {
         /**
          * 
+         * @summary share workspace node (material or collection)
+         * @param {AddWorkspaceNodeShareAssignedRequest} addWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<AddWorkspaceNodeShareAssigned200Response> {
+            return localVarFp.addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 新增 Collection
          * @param {CreateWorkspaceCollectionRequest} createWorkspaceCollectionRequest 
          * @param {*} [options] Override http request option.
@@ -42404,12 +41358,12 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary 產生 copy link
-         * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: any): AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response> {
-            return localVarFp.generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(axios, basePath));
+        generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response> {
+            return localVarFp.generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -42443,21 +41397,12 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @param {GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest} getWorkspaceNodeShareAddPeopleEmailGetTargetRequest 
+         * @param {GetWorkspaceNodeShareAssignedTargetRequest} getWorkspaceNodeShareAssignedTargetRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest: GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response> {
-            return localVarFp.getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {GetWorkspaceNodeShareAddPeopleOGGetTargetRequest} getWorkspaceNodeShareAddPeopleOGGetTargetRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest: GetWorkspaceNodeShareAddPeopleOGGetTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response> {
-            return localVarFp.getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest, options).then((request) => request(axios, basePath));
+        getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: any): AxiosPromise<GetWorkspaceNodeShareAssignedTarget200Response> {
+            return localVarFp.getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -42501,43 +41446,13 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @summary resend share info to Email
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
+         * @summary 移除 share 對象
+         * @param {RemoveWorkspaceNodeShareAssignedRequest} removeWorkspaceNodeShareAssignedRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary resend share info to org or group
-         * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: any): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to Email
-         * @param {ShareWorkspaceNodeShareAddPeopleEmailRequest} shareWorkspaceNodeShareAddPeopleEmailRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest: ShareWorkspaceNodeShareAddPeopleEmailRequest, options?: any): AxiosPromise<ShareWorkspaceNodeShareAddPeopleEmail200Response> {
-            return localVarFp.shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary share workspace node (material or collection) to org or group
-         * @param {ShareWorkspaceNodeShareAddPeopleOGRequest} shareWorkspaceNodeShareAddPeopleOGRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest: ShareWorkspaceNodeShareAddPeopleOGRequest, options?: any): AxiosPromise<ShareWorkspaceNodeShareAddPeopleOG200Response> {
-            return localVarFp.shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(axios, basePath));
+        removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -42548,6 +41463,16 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
          */
         updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 變更 share 權限
+         * @param {UpdateWorkspaceNodeShareAssignedRequest} updateWorkspaceNodeShareAssignedRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -42579,6 +41504,18 @@ export const WorkspaceApiFactory = function (configuration?: Configuration, base
  * @extends {BaseAPI}
  */
 export class WorkspaceApi extends BaseAPI {
+    /**
+     * 
+     * @summary share workspace node (material or collection)
+     * @param {AddWorkspaceNodeShareAssignedRequest} addWorkspaceNodeShareAssignedRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkspaceApi
+     */
+    public addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest: AddWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
+        return WorkspaceApiFp(this.configuration).addWorkspaceNodeShareAssigned(addWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary 新增 Collection
@@ -42618,13 +41555,13 @@ export class WorkspaceApi extends BaseAPI {
     /**
      * 
      * @summary 產生 copy link
-     * @param {GenerateWorkspaceNodeShareCopyLinkRequest} generateWorkspaceNodeShareCopyLinkRequest 
+     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    public generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return WorkspaceApiFp(this.configuration).generateWorkspaceNodeShareCopyLink(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -42665,24 +41602,13 @@ export class WorkspaceApi extends BaseAPI {
 
     /**
      * 
-     * @param {GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest} getWorkspaceNodeShareAddPeopleEmailGetTargetRequest 
+     * @param {GetWorkspaceNodeShareAssignedTargetRequest} getWorkspaceNodeShareAssignedTargetRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest: GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {GetWorkspaceNodeShareAddPeopleOGGetTargetRequest} getWorkspaceNodeShareAddPeopleOGGetTargetRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkspaceApi
-     */
-    public getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest: GetWorkspaceNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest, options).then((request) => request(this.axios, this.basePath));
+    public getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest: GetWorkspaceNodeShareAssignedTargetRequest, options?: RawAxiosRequestConfig) {
+        return WorkspaceApiFp(this.configuration).getWorkspaceNodeShareAssignedTarget(getWorkspaceNodeShareAssignedTargetRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -42735,50 +41661,14 @@ export class WorkspaceApi extends BaseAPI {
 
     /**
      * 
-     * @summary resend share info to Email
-     * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
+     * @summary 移除 share 對象
+     * @param {RemoveWorkspaceNodeShareAssignedRequest} removeWorkspaceNodeShareAssignedRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkspaceApi
      */
-    public resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary resend share info to org or group
-     * @param {ResendWorkspaceNodeShareAddPeopleOGRequest} resendWorkspaceNodeShareAddPeopleOGRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkspaceApi
-     */
-    public resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest: ResendWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).resendWorkspaceNodeShareAddPeopleOG(resendWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary share workspace node (material or collection) to Email
-     * @param {ShareWorkspaceNodeShareAddPeopleEmailRequest} shareWorkspaceNodeShareAddPeopleEmailRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkspaceApi
-     */
-    public shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest: ShareWorkspaceNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary share workspace node (material or collection) to org or group
-     * @param {ShareWorkspaceNodeShareAddPeopleOGRequest} shareWorkspaceNodeShareAddPeopleOGRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkspaceApi
-     */
-    public shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest: ShareWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig) {
-        return WorkspaceApiFp(this.configuration).shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest, options).then((request) => request(this.axios, this.basePath));
+    public removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest: RemoveWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
+        return WorkspaceApiFp(this.configuration).removeWorkspaceNodeShareAssigned(removeWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -42791,6 +41681,18 @@ export class WorkspaceApi extends BaseAPI {
      */
     public updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig) {
         return WorkspaceApiFp(this.configuration).updateWorkspaceCollection(updateWorkspaceCollectionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 變更 share 權限
+     * @param {UpdateWorkspaceNodeShareAssignedRequest} updateWorkspaceNodeShareAssignedRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkspaceApi
+     */
+    public updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest: UpdateWorkspaceNodeShareAssignedRequest, options?: RawAxiosRequestConfig) {
+        return WorkspaceApiFp(this.configuration).updateWorkspaceNodeShareAssigned(updateWorkspaceNodeShareAssignedRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
