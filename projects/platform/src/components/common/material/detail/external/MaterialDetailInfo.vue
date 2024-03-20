@@ -29,7 +29,9 @@ div(class="grid gap-y-8 content-start")
         :key="tag.certificateId"
       ) {{ tag.name }}
   //- Keywords
-  div(v-if="material.tagInfo.tagList.concat(material.tagInfo.aiTagList).length > 0")
+  div(
+    v-if="material.tagInfo.tagList.concat(material.tagInfo.aiTagList).length > 0"
+  )
     div(class="flex items-center gap-x-1 mb-3")
       p(class="text-body2 font-bold text-grey-900") Keyword Tags
       f-tooltip-standard(:tooltipMessage="$t('MI0122')")
@@ -69,7 +71,12 @@ div(class="grid gap-y-8 content-start")
       :materialId="material.materialId"
       :u3m="selectedU3m"
     )
-    f-tabs(ref="refTab" :tabList="tabList" keyField="id")
+    f-tabs(
+      ref="refTab"
+      :tabList="tabList"
+      :initValue="defaultTab(material)"
+      keyField="id"
+    )
     div(class="flex items-center gap-x-3")
       div(
         v-for="option in u3mDownloadOptionList"
@@ -138,7 +145,10 @@ div(class="grid gap-y-8 content-start")
           :class="[isExpand ? '-rotate-90' : 'rotate-90']"
         )
     template(#content)
-      div( v-if="multimediaList && multimediaList.length > 0" class="flex flex-wrap gap-5 pt-3")
+      div(
+        v-if="multimediaList && multimediaList.length > 0"
+        class="flex flex-wrap gap-5 pt-3"
+      )
         multimedia-card(
           v-for="(multimedia, index) in multimediaList"
           :canStar="false"
@@ -195,6 +205,7 @@ import { useStore } from 'vuex'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import { useRoute } from 'vue-router'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
+import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
 
 const props = defineProps<{
   material: Material
@@ -208,10 +219,14 @@ const store = useStore()
 const logSender = useLogSender()
 const route = useRoute()
 
-const { specificationInfo, carbonEmissionInfo, scanImageStatus, publicFileList } = useMaterial(
-  ref(props.material)
-)
-const {multimediaList, getExternalMultimediaMenuTree, material} = useMultimediaUpdate(ref(props.material), () => {});
+const {
+  specificationInfo,
+  carbonEmissionInfo,
+  scanImageStatus,
+  publicFileList,
+} = useMaterial(ref(props.material))
+const { multimediaList, getExternalMultimediaMenuTree, material } =
+  useMultimediaUpdate(ref(props.material), () => {})
 const priceInfo = computed(() => {
   const { priceInfo } = props.material
   const {
@@ -235,37 +250,9 @@ const priceInfo = computed(() => {
   }
 })
 
-const refTab = ref<InstanceType<typeof FTabs>>()
-const tabList = ref([
-  {
-    id: U3M_PROVIDER.FRONTIER,
-    name: t('EE0174'),
-  },
-  {
-    id: U3M_PROVIDER.CUSTOMER,
-    name: t('EE0175'),
-  },
-])
-const u3mDownloadOptionList = computed(() => [
-  {
-    title: t('UU0005'),
-    format: U3M_DOWNLOAD_PROP.U3M,
-    tooltipMessage: t('MI0134'),
-  },
-  {
-    title: t('UU0058'),
-    format: U3M_DOWNLOAD_PROP.U3MA,
-    tooltipMessage: t('MI0134'),
-  },
-  {
-    title: t('UU0129'),
-    format: U3M_DOWNLOAD_PROP.GLTF,
-    tooltipMessage: t('MI0135'),
-  },
-])
-const currentTab = computed<U3M_PROVIDER>(
-  () => refTab.value?.currentTab || tabList.value[0].id
-)
+const { refTab, tabList, currentTab, defaultTab, u3mDownloadOptionList } =
+  useU3mDownloadTabs()
+
 const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() =>
   currentTab.value === U3M_PROVIDER.FRONTIER
     ? props.material.u3m

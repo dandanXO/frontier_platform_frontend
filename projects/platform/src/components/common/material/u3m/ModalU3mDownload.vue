@@ -43,12 +43,13 @@ import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
 import { MaterialU3mStatus } from '@frontier/platform-web-sdk'
-import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import { U3M_PROVIDER, U3M_STATUS, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { downloadDataURLFile } from '@frontier/lib'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
 import { FTabs } from '@frontier/ui-component'
 import JSZip from 'jszip'
+import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
 
 interface MaterialU3mItem {
   materialId: number
@@ -71,30 +72,14 @@ const props = defineProps<PropsModalU3mDownload>()
 
 const logSender = useLogSender()
 const store = useStore()
-const refTab = ref<InstanceType<typeof FTabs>>()
-const tabList = ref([
-  {
-    id: U3M_PROVIDER.FRONTIER,
-    name: 'Created in Frontier',
-  },
-  {
-    id: U3M_PROVIDER.CUSTOMER,
-    name: 'Customized',
-  },
-])
 
+const { refTab, tabList, currentTab } = useU3mDownloadTabs()
 const defaultTab = computed(() => {
-  /**
-   * define a default tab computed, and its value is decided by the following rules:
-   * 1. if there is at least one u3m created by Frontier, the default tab is Frontier
-   * 2. if there is no u3m created by Frontier, check if there is at least one custom u3m uploaded by user
-   * 3. if there is no custom u3m, the default tab is Frontier
-   */
   const hasAtLeastOneU3m = props.materialU3mList.some(
-    (material) => material.u3m?.status === MaterialU3mStatus.COMPLETED
+    (material) => material.u3m?.status === U3M_STATUS.COMPLETED
   )
   const hasAtLeastOneCustomU3m = props.materialU3mList.some(
-    (material) => material.customU3m?.status === MaterialU3mStatus.COMPLETED
+    (material) => material.customU3m?.status === U3M_STATUS.COMPLETED
   )
 
   if (hasAtLeastOneU3m) {
@@ -107,9 +92,6 @@ const defaultTab = computed(() => {
 
   return U3M_PROVIDER.FRONTIER
 })
-const currentTab = computed<U3M_PROVIDER>(
-  () => refTab.value?.currentTab || tabList.value[0].id
-)
 
 const materialU3mDownloadItemList = computed<MaterialU3mDownloadItem[]>(() =>
   props.materialU3mList.map((material) => {

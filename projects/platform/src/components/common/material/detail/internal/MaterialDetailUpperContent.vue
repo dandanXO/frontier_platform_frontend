@@ -30,11 +30,7 @@ div(class="flex items-start gap-x-10")
         :colorInfo="colorInfo ?? undefined"
         :patternInfo="patternInfo ?? undefined"
       )
-      material-detail-u3m(
-        :materialId="material.materialId"
-        :u3m="material.u3m"
-        :customU3m="material.customU3m"
-      )
+      material-detail-u3m(:material="material")
 </template>
 
 <script setup lang="ts">
