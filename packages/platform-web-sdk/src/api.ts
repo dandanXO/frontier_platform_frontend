@@ -892,12 +892,6 @@ export interface CheckReceiveShareIsPrivate200ResponseAllOfResult {
      * @memberof CheckReceiveShareIsPrivate200ResponseAllOfResult
      */
     'isPrivate': boolean;
-    /**
-     * 分享者Email, isPrivate為true時才會有值
-     * @type {string}
-     * @memberof CheckReceiveShareIsPrivate200ResponseAllOfResult
-     */
-    'contactEmail': string | null;
 }
 /**
  * 
@@ -911,69 +905,6 @@ export interface CheckReceiveShareIsPrivateRequest {
      * @memberof CheckReceiveShareIsPrivateRequest
      */
     'sharingKey': string;
-}
-/**
- * 
- * @export
- * @interface CheckReceiveSharePrivateInfo200Response
- */
-export interface CheckReceiveSharePrivateInfo200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CheckReceiveSharePrivateInfo200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CheckReceiveSharePrivateInfo200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {CheckReceiveSharePrivateInfo200ResponseAllOfResult}
-     * @memberof CheckReceiveSharePrivateInfo200Response
-     */
-    'result': CheckReceiveSharePrivateInfo200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof CheckReceiveSharePrivateInfo200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CheckReceiveSharePrivateInfo200ResponseAllOfResult
- */
-export interface CheckReceiveSharePrivateInfo200ResponseAllOfResult {
-    /**
-     * 是否為Frontier平台會員
-     * @type {boolean}
-     * @memberof CheckReceiveSharePrivateInfo200ResponseAllOfResult
-     */
-    'isFrontierUser': boolean;
-}
-/**
- * 
- * @export
- * @interface CheckReceiveSharePrivateInfoRequest
- */
-export interface CheckReceiveSharePrivateInfoRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CheckReceiveSharePrivateInfoRequest
-     */
-    'sharingKey': string;
-    /**
-     * 
-     * @type {PrivateShareAccessInfo}
-     * @memberof CheckReceiveSharePrivateInfoRequest
-     */
-    'privateInfo': PrivateShareAccessInfo | null;
 }
 /**
  * 
@@ -1036,7 +967,7 @@ export interface CheckReceivedSharePermissionRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof CheckReceivedSharePermissionRequest
      */
-    'privateInfo': PrivateShareAccessInfo | null;
+    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -1391,7 +1322,7 @@ export interface CloneReceivedShareNodeRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof CloneReceivedShareNodeRequest
      */
-    'privateInfo': PrivateShareAccessInfo | null;
+    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -2063,7 +1994,7 @@ export interface CreateAssetsMaterialRequest {
      */
     'isDoubleSide': boolean;
     /**
-     * 
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填 
      * @type {MaterialSideType}
      * @memberof CreateAssetsMaterialRequest
      */
@@ -2606,32 +2537,13 @@ export interface CreateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {CreateWorkspaceCollectionRequestAllOfTrendBoard}
+     * @type {S3UploadedObject}
      * @memberof CreateWorkspaceCollectionRequest
      */
-    'trendBoard': CreateWorkspaceCollectionRequestAllOfTrendBoard | null;
+    'trendBoard': S3UploadedObject | null;
 }
 
 
-/**
- * 
- * @export
- * @interface CreateWorkspaceCollectionRequestAllOfTrendBoard
- */
-export interface CreateWorkspaceCollectionRequestAllOfTrendBoard {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateWorkspaceCollectionRequestAllOfTrendBoard
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateWorkspaceCollectionRequestAllOfTrendBoard
-     */
-    'fileName': string;
-}
 /**
  * 
  * @export
@@ -5107,10 +5019,10 @@ export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
     'fileName': string;
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
+     * @type {MultimediaFileAllOfCropRecord}
      * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
      */
-    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
+    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
@@ -5362,140 +5274,19 @@ export interface GetAssetMaterialListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {GetAssetMaterialListRequestAllOfSearch}
+     * @type {Search}
      * @memberof GetAssetMaterialListRequest
      */
-    'search': GetAssetMaterialListRequestAllOfSearch | null;
+    'search': Search | null;
     /**
      * 
-     * @type {GetAssetMaterialListRequestAllOfFilter}
+     * @type {AssetsFilter}
      * @memberof GetAssetMaterialListRequest
      */
-    'filter': GetAssetMaterialListRequestAllOfFilter | null;
+    'filter': AssetsFilter | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetAssetMaterialListRequestAllOfFilter
- */
-export interface GetAssetMaterialListRequestAllOfFilter {
-    /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
-     * @type {Array<number>}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'materialTypeList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'descriptionList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<FilterContentListInner>}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'contentList': Array<FilterContentListInner> | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'pattern': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'color': string | null;
-    /**
-     * 
-     * @type {FilterWidth}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'width': FilterWidth | null;
-    /**
-     * 
-     * @type {FilterWeight}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'weight': FilterWeight | null;
-    /**
-     * 
-     * @type {FilterDensityAndYarn}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'densityAndYarn': FilterDensityAndYarn | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'finishList'?: Array<string> | null;
-    /**
-     * 
-     * @type {FilterPrice}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'price': FilterPrice | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'hasU3M': boolean | null;
-    /**
-     * 
-     * @type {AssetsFilterAllOfInventory}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'inventory': AssetsFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'withOutEcoImpactor': boolean | null;
-    /**
-     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
-     * @type {number}
-     * @memberof GetAssetMaterialListRequestAllOfFilter
-     */
-    'status': GetAssetMaterialListRequestAllOfFilterStatusEnum | null;
-}
-
-export const GetAssetMaterialListRequestAllOfFilterStatusEnum = {
-    NOT_IN_WORKSPACE: 1,
-    NO_SCAN_IMAGE: 2,
-    NO_IMAGE: 3,
-    NO_REQUIRED_FIELD: 4,
-    DUPLICATE_ITEM_NO: 5
-} as const;
-
-export type GetAssetMaterialListRequestAllOfFilterStatusEnum = typeof GetAssetMaterialListRequestAllOfFilterStatusEnum[keyof typeof GetAssetMaterialListRequestAllOfFilterStatusEnum];
-
-/**
- * 
- * @export
- * @interface GetAssetMaterialListRequestAllOfSearch
- */
-export interface GetAssetMaterialListRequestAllOfSearch {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAssetMaterialListRequestAllOfSearch
-     */
-    'keyword': string | null;
-    /**
-     * 
-     * @type {Array<SearchAITag>}
-     * @memberof GetAssetMaterialListRequestAllOfSearch
-     */
-    'tagList': Array<SearchAITag>;
-}
 /**
  * 
  * @export
@@ -5572,32 +5363,13 @@ export interface GetAssetsMaterialRequest {
     'materialId': number;
     /**
      * 
-     * @type {GetAssetsMaterialRequestAllOfSearchLog}
+     * @type {SearchLog}
      * @memberof GetAssetsMaterialRequest
      */
-    'searchLog': GetAssetsMaterialRequestAllOfSearchLog | null;
+    'searchLog': SearchLog | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetAssetsMaterialRequestAllOfSearchLog
- */
-export interface GetAssetsMaterialRequestAllOfSearchLog {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAssetsMaterialRequestAllOfSearchLog
-     */
-    'keyword': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetAssetsMaterialRequestAllOfSearchLog
-     */
-    'rank': number;
-}
 /**
  * 
  * @export
@@ -5821,111 +5593,6 @@ export interface GetDigitalThreadWorkflowStageOptionsRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface GetEmbedInfoRequest
- */
-export interface GetEmbedInfoRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetEmbedInfoRequest
-     */
-    'sharingKey': string;
-    /**
-     * Access code
-     * @type {string}
-     * @memberof GetEmbedInfoRequest
-     */
-    'accessCode': string | null;
-}
-/**
- * 
- * @export
- * @interface GetEmbedListRequest
- */
-export interface GetEmbedListRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetEmbedListRequest
-     */
-    'sharingKey': string;
-    /**
-     * Access code
-     * @type {string}
-     * @memberof GetEmbedListRequest
-     */
-    'accessCode': string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetEmbedListRequest
-     */
-    'orgId': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetEmbedListRequest
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {PaginationReq}
-     * @memberof GetEmbedListRequest
-     */
-    'pagination': PaginationReq;
-    /**
-     * 
-     * @type {Search}
-     * @memberof GetEmbedListRequest
-     */
-    'search': Search | null;
-    /**
-     * 
-     * @type {ExternalFilter}
-     * @memberof GetEmbedListRequest
-     */
-    'filter': ExternalFilter | null;
-}
-/**
- * 
- * @export
- * @interface GetEmbedMaterialRequest
- */
-export interface GetEmbedMaterialRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetEmbedMaterialRequest
-     */
-    'sharingKey': string;
-    /**
-     * Access code
-     * @type {string}
-     * @memberof GetEmbedMaterialRequest
-     */
-    'accessCode': string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetEmbedMaterialRequest
-     */
-    'orgId': number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetEmbedMaterialRequest
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {SearchLog}
-     * @memberof GetEmbedMaterialRequest
-     */
-    'searchLog': SearchLog | null;
-}
 /**
  * 
  * @export
@@ -7583,6 +7250,25 @@ export interface GetReceivedShareInfo200ResponseAllOfResult {
 /**
  * 
  * @export
+ * @interface GetReceivedShareInfoRequest
+ */
+export interface GetReceivedShareInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetReceivedShareInfoRequest
+     */
+    'sharingKey': string;
+    /**
+     * 
+     * @type {PrivateShareAccessInfo}
+     * @memberof GetReceivedShareInfoRequest
+     */
+    'privateInfo': PrivateShareAccessInfo;
+}
+/**
+ * 
+ * @export
  * @interface GetReceivedShareListRequest
  */
 export interface GetReceivedShareListRequest {
@@ -7597,7 +7283,7 @@ export interface GetReceivedShareListRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof GetReceivedShareListRequest
      */
-    'privateInfo': PrivateShareAccessInfo | null;
+    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -7646,7 +7332,7 @@ export interface GetReceivedShareMaterialRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof GetReceivedShareMaterialRequest
      */
-    'privateInfo': PrivateShareAccessInfo | null;
+    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -7810,123 +7496,19 @@ export interface GetShareToMeListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {GetShareToMeListRequestAllOfSearch}
+     * @type {Search}
      * @memberof GetShareToMeListRequest
      */
-    'search': GetShareToMeListRequestAllOfSearch | null;
+    'search': Search | null;
     /**
      * 
-     * @type {GetShareToMeListRequestAllOfFilter}
+     * @type {InnerExternalFilter}
      * @memberof GetShareToMeListRequest
      */
-    'filter': GetShareToMeListRequestAllOfFilter | null;
+    'filter': InnerExternalFilter | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetShareToMeListRequestAllOfFilter
- */
-export interface GetShareToMeListRequestAllOfFilter {
-    /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
-     * @type {Array<number>}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'materialTypeList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'descriptionList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<FilterContentListInner>}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'contentList': Array<FilterContentListInner> | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'pattern': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'color': string | null;
-    /**
-     * 
-     * @type {FilterWidth}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'width': FilterWidth | null;
-    /**
-     * 
-     * @type {FilterWeight}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'weight': FilterWeight | null;
-    /**
-     * 
-     * @type {FilterDensityAndYarn}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'densityAndYarn': FilterDensityAndYarn | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'finishList'?: Array<string> | null;
-    /**
-     * 
-     * @type {FilterPrice}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'price': FilterPrice | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'hasU3M': boolean | null;
-    /**
-     * 
-     * @type {ExternalFilterAllOfInventory}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'inventory': ExternalFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetShareToMeListRequestAllOfFilter
-     */
-    'countryList': Array<string> | null;
-}
-/**
- * 
- * @export
- * @interface GetShareToMeListRequestAllOfSearch
- */
-export interface GetShareToMeListRequestAllOfSearch {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetShareToMeListRequestAllOfSearch
-     */
-    'keyword': string | null;
-    /**
-     * 
-     * @type {Array<SearchAITag>}
-     * @memberof GetShareToMeListRequestAllOfSearch
-     */
-    'tagList': Array<SearchAITag>;
-}
 /**
  * 
  * @export
@@ -8009,32 +7591,13 @@ export interface GetShareToMeMaterialRequest {
     'nodeId': number;
     /**
      * 
-     * @type {GetShareToMeMaterialRequestAllOfSearchLog}
+     * @type {SearchLog}
      * @memberof GetShareToMeMaterialRequest
      */
-    'searchLog': GetShareToMeMaterialRequestAllOfSearchLog | null;
+    'searchLog': SearchLog | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetShareToMeMaterialRequestAllOfSearchLog
- */
-export interface GetShareToMeMaterialRequestAllOfSearchLog {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetShareToMeMaterialRequestAllOfSearchLog
-     */
-    'keyword': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetShareToMeMaterialRequestAllOfSearchLog
-     */
-    'rank': number;
-}
 /**
  * 
  * @export
@@ -8870,123 +8433,19 @@ export interface GetWorkspaceListRequest {
     'pagination': PaginationReq;
     /**
      * 
-     * @type {GetWorkspaceListRequestAllOfSearch}
+     * @type {Search}
      * @memberof GetWorkspaceListRequest
      */
-    'search': GetWorkspaceListRequestAllOfSearch | null;
+    'search': Search | null;
     /**
      * 
-     * @type {GetWorkspaceListRequestAllOfFilter}
+     * @type {WorkspaceFilter}
      * @memberof GetWorkspaceListRequest
      */
-    'filter': GetWorkspaceListRequestAllOfFilter | null;
+    'filter': WorkspaceFilter | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetWorkspaceListRequestAllOfFilter
- */
-export interface GetWorkspaceListRequestAllOfFilter {
-    /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
-     * @type {Array<number>}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'materialTypeList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'descriptionList': Array<number> | null;
-    /**
-     * 
-     * @type {Array<FilterContentListInner>}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'contentList': Array<FilterContentListInner> | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'pattern': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'color': string | null;
-    /**
-     * 
-     * @type {FilterWidth}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'width': FilterWidth | null;
-    /**
-     * 
-     * @type {FilterWeight}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'weight': FilterWeight | null;
-    /**
-     * 
-     * @type {FilterDensityAndYarn}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'densityAndYarn': FilterDensityAndYarn | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'finishList'?: Array<string> | null;
-    /**
-     * 
-     * @type {FilterPrice}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'price': FilterPrice | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'hasU3M': boolean | null;
-    /**
-     * 
-     * @type {AssetsFilterAllOfInventory}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'inventory': AssetsFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetWorkspaceListRequestAllOfFilter
-     */
-    'withOutEcoImpactor': boolean | null;
-}
-/**
- * 
- * @export
- * @interface GetWorkspaceListRequestAllOfSearch
- */
-export interface GetWorkspaceListRequestAllOfSearch {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceListRequestAllOfSearch
-     */
-    'keyword': string | null;
-    /**
-     * 
-     * @type {Array<SearchAITag>}
-     * @memberof GetWorkspaceListRequestAllOfSearch
-     */
-    'tagList': Array<SearchAITag>;
-}
 /**
  * 
  * @export
@@ -9063,32 +8522,13 @@ export interface GetWorkspaceMaterialRequest {
     'nodeId': number;
     /**
      * 
-     * @type {GetWorkspaceMaterialRequestAllOfSearchLog}
+     * @type {SearchLog}
      * @memberof GetWorkspaceMaterialRequest
      */
-    'searchLog': GetWorkspaceMaterialRequestAllOfSearchLog | null;
+    'searchLog': SearchLog | null;
 }
 
 
-/**
- * 
- * @export
- * @interface GetWorkspaceMaterialRequestAllOfSearchLog
- */
-export interface GetWorkspaceMaterialRequestAllOfSearchLog {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetWorkspaceMaterialRequestAllOfSearchLog
-     */
-    'keyword': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetWorkspaceMaterialRequestAllOfSearchLog
-     */
-    'rank': number;
-}
 /**
  * 
  * @export
@@ -9410,13 +8850,13 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed {
      * @type {boolean}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
      */
-    'isEnablePrivateView': boolean;
+    'isEnablePrivateView': boolean | null;
     /**
      * 私人檢視存取碼
      * @type {string}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
      */
-    'accessCode': string;
+    'accessCode': string | null;
 }
 /**
  * 
@@ -10330,7 +9770,7 @@ export interface Material {
      */
     'isDoubleSide': boolean;
     /**
-     * 
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType有值提供判斷 
      * @type {MaterialSideType}
      * @memberof Material
      */
@@ -10685,7 +10125,7 @@ export interface MaterialCreate {
      */
     'isDoubleSide': boolean;
     /**
-     * 
+     * 單面布時，主要布面是正面布還是背面布 isDoubleSide=true為雙面布時，此sideType值為null isDoubleSide=false為單面布時，此sideType值為必填 
      * @type {MaterialSideType}
      * @memberof MaterialCreate
      */
@@ -10916,7 +10356,7 @@ export interface MaterialCreateFaceSide {
  */
 export interface MaterialCreateInternalInfo {
     /**
-     * 
+     * Private Tag清單
      * @type {Array<string>}
      * @memberof MaterialCreateInternalInfo
      */
@@ -11015,7 +10455,7 @@ export interface MaterialCreateMiddleSide {
  */
 export interface MaterialCreateTagInfo {
     /**
-     * 
+     * 公開Tag清單
      * @type {Array<string>}
      * @memberof MaterialCreateTagInfo
      */
@@ -11370,10 +10810,10 @@ export interface MaterialGenerateU3mSide {
     'fileName': string;
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
+     * @type {MultimediaFileAllOfCropRecord}
      * @memberof MaterialGenerateU3mSide
      */
-    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
+    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
@@ -11419,37 +10859,6 @@ export interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord {
     'rotateDeg': number;
 }
 /**
- * 
- * @export
- * @interface MaterialGenerateU3mSideAllOfSquareCropRecord
- */
-export interface MaterialGenerateU3mSideAllOfSquareCropRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
-     */
-    'x': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
-     */
-    'y': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
-     */
-    'rotateDeg': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialGenerateU3mSideAllOfSquareCropRecord
-     */
-    'scaleRatio': number;
-}
-/**
  * External Page(非Asset或WorkSpace的頁面)時，回應 null
  * @export
  * @interface MaterialInternalInfo
@@ -11462,7 +10871,7 @@ export interface MaterialInternalInfo {
      */
     'metaData': MaterialPrivateMetaData;
     /**
-     * 
+     * Private Tag清單
      * @type {Array<string>}
      * @memberof MaterialInternalInfo
      */
@@ -12185,7 +11594,7 @@ export interface MaterialPatternInfoCustomPropertyListInner {
  */
 export interface MaterialPriceInfo {
     /**
-     * 國家代碼
+     * 產地-布料來源國家
      * @type {string}
      * @memberof MaterialPriceInfo
      */
@@ -12297,7 +11706,7 @@ export interface MaterialPriceInfoPricing {
  */
 export interface MaterialPrivateMetaData {
     /**
-     * 
+     * Created By - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name - 若布料為 Copy得來，建立者顯示複製布料的 user   Org or Group name + Color label + Avatar+User name - 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示   Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示 由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。 
      * @type {MaterialUserInfo}
      * @memberof MaterialPrivateMetaData
      */
@@ -12432,7 +11841,7 @@ export interface MaterialPublicMetaData {
      */
     'isMaterialOwnerSide': boolean;
     /**
-     * 
+     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
      * @type {OgType}
      * @memberof MaterialPublicMetaData
      */
@@ -13277,10 +12686,10 @@ export interface MaterialU3mImage {
 export interface MaterialU3mImageCropRecord {
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfSquareCropRecord}
+     * @type {MultimediaFileAllOfCropRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'squareCropRecord': MaterialGenerateU3mSideAllOfSquareCropRecord | null;
+    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
     /**
      * 
      * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
@@ -13473,7 +12882,7 @@ export interface MaterialUpdateFaceSide {
  */
 export interface MaterialUpdateInternalInfo {
     /**
-     * 
+     * Private Tag清單
      * @type {Array<string>}
      * @memberof MaterialUpdateInternalInfo
      */
@@ -13728,7 +13137,7 @@ export interface MaterialUpdateTag {
  */
 export interface MaterialUpdateTagInfo {
     /**
-     * 
+     * 公開Tag清單
      * @type {Array<string>}
      * @memberof MaterialUpdateTagInfo
      */
@@ -13747,7 +13156,7 @@ export interface MaterialUpdateTagInfo {
  */
 export interface MaterialUpdateTagInternalInfo {
     /**
-     * 
+     * Private Tag清單
      * @type {Array<string>}
      * @memberof MaterialUpdateTagInternalInfo
      */
@@ -16698,50 +16107,6 @@ export interface OrgPlanPurchaseU3mPostRequest {
 /**
  * 
  * @export
- * @interface OrgPlanUnsubscribeDesignerPlanPost200Response
- */
-export interface OrgPlanUnsubscribeDesignerPlanPost200Response {
-    /**
-     * 
-     * @type {OrgPlanUnsubscribeDesignerPlanPost200ResponseResult}
-     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
-     */
-    'result'?: OrgPlanUnsubscribeDesignerPlanPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgPlanUnsubscribeDesignerPlanPost200ResponseResult
- */
-export interface OrgPlanUnsubscribeDesignerPlanPost200ResponseResult {
-    /**
-     * 訂閱截止日
-     * @type {string}
-     * @memberof OrgPlanUnsubscribeDesignerPlanPost200ResponseResult
-     */
-    'subscribeDateTo'?: string;
-}
-/**
- * 
- * @export
  * @interface OrgPlanUpgradeGetEstimateChargingPost200Response
  */
 export interface OrgPlanUpgradeGetEstimateChargingPost200Response {
@@ -19554,7 +18919,7 @@ export interface SaveReceivedShareRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof SaveReceivedShareRequest
      */
-    'privateInfo': PrivateShareAccessInfo | null;
+    'privateInfo': PrivateShareAccessInfo;
     /**
      * 
      * @type {number}
@@ -22283,32 +21648,13 @@ export interface UpdateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {UpdateWorkspaceCollectionRequestAllOfTrendBoard}
+     * @type {S3UploadedObject}
      * @memberof UpdateWorkspaceCollectionRequest
      */
-    'trendBoard': UpdateWorkspaceCollectionRequestAllOfTrendBoard | null;
+    'trendBoard': S3UploadedObject | null;
 }
 
 
-/**
- * 
- * @export
- * @interface UpdateWorkspaceCollectionRequestAllOfTrendBoard
- */
-export interface UpdateWorkspaceCollectionRequestAllOfTrendBoard {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateWorkspaceCollectionRequestAllOfTrendBoard
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateWorkspaceCollectionRequestAllOfTrendBoard
-     */
-    'fileName': string;
-}
 /**
  * 
  * @export
@@ -25270,9 +24616,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.assetsMaterialAddToWorkspace']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.assetsMaterialAddToWorkspace']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
@@ -25283,9 +24629,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.cancelAssetsMaterialCustomU3mUpload']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.cancelAssetsMaterialCustomU3mUpload']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25296,9 +24642,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckDeleteAssetsMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.checkDeleteAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.checkDeleteAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25309,9 +24655,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async checkIsMaterialOwner(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckIsMaterialOwner200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkIsMaterialOwner(checkIsMaterialOwnerRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.checkIsMaterialOwner']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.checkIsMaterialOwner']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25322,9 +24668,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.cloneAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.cloneAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25335,9 +24681,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.createAssetsMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.createAssetsMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25348,9 +24694,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.cropAssetsMaterialMultimedia']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.cropAssetsMaterialMultimedia']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25361,9 +24707,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.deleteAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.deleteAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25374,9 +24720,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EditAssetsMaterialSideImage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.editAssetsMaterialSideImage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.editAssetsMaterialSideImage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25387,9 +24733,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportAssetsMaterialExcel200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.exportAssetsMaterialExcel']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.exportAssetsMaterialExcel']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25400,9 +24746,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest: GenerateAssetsMaterialU3mRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateAssetsMaterialU3m200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.generateAssetsMaterialU3m']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.generateAssetsMaterialU3m']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25413,9 +24759,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetMaterialList(getAssetMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.getAssetMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getAssetMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25426,9 +24772,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getAssetsExternalMaterial(checkIsMaterialOwnerRequest: CheckIsMaterialOwnerRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsExternalMaterial(checkIsMaterialOwnerRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.getAssetsExternalMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getAssetsExternalMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25439,9 +24785,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.getAssetsMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getAssetsMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25452,9 +24798,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialOptions(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.getMaterialOptions']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getMaterialOptions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -25465,9 +24811,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest: MassCreateUpdateDeleteAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MassCreateUpdateDeleteAssetsMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massCreateUpdateDeleteAssetsMaterialList(massCreateUpdateDeleteAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.massCreateUpdateDeleteAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.massCreateUpdateDeleteAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25478,9 +24824,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.massExportAssetsMaterialExcel']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.massExportAssetsMaterialExcel']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25491,9 +24837,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async mergeAssetsMaterialList(mergeAssetsMaterialListRequest: MergeAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.mergeAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.mergeAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25504,9 +24850,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.moveAssetsMaterialAttachment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.moveAssetsMaterialAttachment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25517,9 +24863,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.moveAssetsMaterialMultimedia']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.moveAssetsMaterialMultimedia']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25530,9 +24876,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.removeAssetsMaterialAttachment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.removeAssetsMaterialAttachment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25543,9 +24889,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.removeAssetsMaterialMultimedia']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.removeAssetsMaterialMultimedia']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25556,9 +24902,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.renameAssetsMaterialAttachment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.renameAssetsMaterialAttachment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25569,9 +24915,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.renameAssetsMaterialMultimedia']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.renameAssetsMaterialMultimedia']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25582,9 +24928,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.setAssetsMaterialCover']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.setAssetsMaterialCover']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -25595,9 +24941,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.smartUploadAssetsMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.smartUploadAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25608,9 +24954,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async updateAssetsMaterial(updateAssetsMaterialRequest: UpdateAssetsMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterial(updateAssetsMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.updateAssetsMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25621,9 +24967,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleInventory']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleInventory']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25634,9 +24980,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimplePublicPrice']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimplePublicPrice']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25647,9 +24993,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleTag']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.updateAssetsMaterialSimpleTag']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -25660,9 +25006,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.updateMaterialSimpleSpec']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.updateMaterialSimpleSpec']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25673,9 +25019,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialAttachment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialAttachment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25686,9 +25032,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialCustomU3m']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialCustomU3m']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25699,9 +25045,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialMultimedia']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialMultimedia']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -25712,9 +25058,9 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialSideImage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialSideImage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.uploadAssetsMaterialSideImage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -26729,9 +26075,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeCountryGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeCountryGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeCountryGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.codeCountryGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.codeCountryGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -26741,9 +26087,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeOrgCategoryListGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeOrgCategoryListGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeOrgCategoryListGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.codeOrgCategoryListGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.codeOrgCategoryListGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -26753,9 +26099,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeRoleLimitTableGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleLimitTableGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRoleLimitTableGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.codeRoleLimitTableGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.codeRoleLimitTableGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -26765,9 +26111,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeRoleListGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRoleListGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRoleListGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.codeRoleListGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.codeRoleListGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -26777,9 +26123,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeRolePermissionGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRolePermissionGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.codeRolePermissionGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.codeRolePermissionGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -26789,9 +26135,9 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async getPantoneList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPantoneList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPantoneList(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['CodeApi.getPantoneList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CodeApi.getPantoneList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -27189,9 +26535,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createDownloadLog(createDownloadLogRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.createDownloadLog']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.createDownloadLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -27202,9 +26548,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async createEmbedPageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(createReceivePageLogRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.createEmbedPageLog']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.createEmbedPageLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -27215,9 +26561,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async createReceivePageLog(createReceivePageLogRequest?: CreateReceivePageLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(createReceivePageLogRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.createReceivePageLog']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.createReceivePageLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27228,9 +26574,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createStickerTagFilterLog(createStickerTagFilterLogRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.createStickerTagFilterLog']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.createStickerTagFilterLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -27241,9 +26587,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createViewerLog(createViewerLogRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.createViewerLog']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.createViewerLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27254,9 +26600,9 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          */
         async getDashboard(getDashboardRequest?: GetDashboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDashboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getDashboard(getDashboardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DashboardApi.getDashboard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.getDashboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -27936,9 +27282,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest: ChangeDigitalThreadWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.changeDigitalThreadWorkflowStage(changeDigitalThreadWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.changeDigitalThreadWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.changeDigitalThreadWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27949,9 +27295,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadCreatePost(digitalThreadCreatePostRequest?: DigitalThreadCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadCreatePost(digitalThreadCreatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadCreatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadCreatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27962,9 +27308,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadGetListPost(digitalThreadGetListPostRequest?: DigitalThreadGetListPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetListPost(digitalThreadGetListPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetListPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetListPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27975,9 +27321,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetMaterialPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetMaterialPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -27988,9 +27334,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadGetPost(digitalThreadGetPostRequest?: DigitalThreadGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalThreadCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetPost(digitalThreadGetPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28001,9 +27347,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest?: DigitalThreadStickerChildStickerCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerChildStickerCreatePost(digitalThreadStickerChildStickerCreatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerChildStickerCreatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerChildStickerCreatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28014,9 +27360,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest?: DigitalThreadStickerCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerCreatePost(digitalThreadStickerCreatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerCreatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerCreatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28027,9 +27373,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerReadChildStickerPost(digitalThreadStickerStarPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerReadChildStickerPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerReadChildStickerPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28040,9 +27386,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerStarPost(digitalThreadStickerStarPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerStarPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerStarPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28053,9 +27399,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest?: DigitalThreadStickerStarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUnstarPost(digitalThreadStickerStarPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUnstarPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUnstarPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28066,9 +27412,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest?: DigitalThreadStickerUpdateTagPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadStickerUpdateTagPost(digitalThreadStickerUpdateTagPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUpdateTagPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadStickerUpdateTagPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28079,9 +27425,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest?: DigitalThreadUpdateDigitalThreadNamePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadUpdateDigitalThreadNamePost(digitalThreadUpdateDigitalThreadNamePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.digitalThreadUpdateDigitalThreadNamePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.digitalThreadUpdateDigitalThreadNamePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -28092,9 +27438,9 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          */
         async getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest: GetDigitalThreadWorkflowStageOptionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDigitalThreadWorkflowStageOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getDigitalThreadWorkflowStageOptions(getDigitalThreadWorkflowStageOptionsRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DigitalThreadApi.getDigitalThreadWorkflowStageOptions']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalThreadApi.getDigitalThreadWorkflowStageOptions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -28454,13 +27800,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo: async (getEmbedInfoRequest: GetEmbedInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getEmbedInfoRequest' is not null or undefined
-            assertParamExists('getEmbedInfo', 'getEmbedInfoRequest', getEmbedInfoRequest)
+        getEmbedInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
+            assertParamExists('getEmbedInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
             const localVarPath = `/embed/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28480,7 +27826,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28490,13 +27836,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetEmbedListRequest} getEmbedListRequest 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList: async (getEmbedListRequest: GetEmbedListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getEmbedListRequest' is not null or undefined
-            assertParamExists('getEmbedList', 'getEmbedListRequest', getEmbedListRequest)
+        getEmbedList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareListRequest' is not null or undefined
+            assertParamExists('getEmbedList', 'getReceivedShareListRequest', getReceivedShareListRequest)
             const localVarPath = `/embed/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28516,7 +27862,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedListRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28526,13 +27872,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial: async (getEmbedMaterialRequest: GetEmbedMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getEmbedMaterialRequest' is not null or undefined
-            assertParamExists('getEmbedMaterial', 'getEmbedMaterialRequest', getEmbedMaterialRequest)
+        getEmbedMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareMaterialRequest' is not null or undefined
+            assertParamExists('getEmbedMaterial', 'getReceivedShareMaterialRequest', getReceivedShareMaterialRequest)
             const localVarPath = `/embed/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28552,7 +27898,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedMaterialRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareMaterialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28578,48 +27924,48 @@ export const EmbedApiFp = function(configuration?: Configuration) {
          */
         async checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveShareIsPrivate200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkEmbedIsPrivate(checkReceiveShareIsPrivateRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EmbedApi.checkEmbedIsPrivate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EmbedApi.checkEmbedIsPrivate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getEmbedInfoRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EmbedApi.getEmbedInfo']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        async getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getReceivedShareInfoRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetEmbedListRequest} getEmbedListRequest 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getEmbedListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EmbedApi.getEmbedList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        async getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getReceivedShareListRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getEmbedMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['EmbedApi.getEmbedMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        async getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getReceivedShareMaterialRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -28644,32 +27990,32 @@ export const EmbedApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
-            return localVarFp.getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(axios, basePath));
+        getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
+            return localVarFp.getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetEmbedListRequest} getEmbedListRequest 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
-            return localVarFp.getEmbedList(getEmbedListRequest, options).then((request) => request(axios, basePath));
+        getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
+            return localVarFp.getEmbedList(getReceivedShareListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
-            return localVarFp.getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(axios, basePath));
+        getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
+            return localVarFp.getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -28696,37 +28042,37 @@ export class EmbedApi extends BaseAPI {
     /**
      * 
      * @summary 取得 embed page 資料
-     * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
+     * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page 的 collection
-     * @param {GetEmbedListRequest} getEmbedListRequest 
+     * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedList(getEmbedListRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page collection 中的material明細
-     * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
+     * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -28989,9 +28335,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckTokenStatus200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkTokenStatus(checkTokenStatusRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.checkTokenStatus']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.checkTokenStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -29002,9 +28348,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async cloneCheckByMaterial(cloneCheckByMaterialRequest?: CloneCheckByMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneCheckByMaterial(cloneCheckByMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.cloneCheckByMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.cloneCheckByMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -29015,9 +28361,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async cloneCheckByNode(cloneCheckByNodeRequest: CloneCheckByNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneCheckByNode(cloneCheckByNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.cloneCheckByNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.cloneCheckByNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -29028,9 +28374,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async getS3UploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetS3UploadUrl200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getS3UploadUrl(getUploadUrlRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.getS3UploadUrl']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.getS3UploadUrl']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -29041,9 +28387,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async getUploadUrl(getUploadUrlRequest?: GetUploadUrlRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUploadUrl200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUploadUrl(getUploadUrlRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.getUploadUrl']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.getUploadUrl']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -29054,9 +28400,9 @@ export const GeneralApiFp = function(configuration?: Configuration) {
          */
         async refreshToken(refreshTokenRequest?: RefreshTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshToken200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken(refreshTokenRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GeneralApi.refreshToken']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeneralApi.refreshToken']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -29390,9 +28736,9 @@ export const GroupApiFp = function(configuration?: Configuration) {
          */
         async orgGroupCreatePost(orgGroupCreatePostRequest?: OrgGroupCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupCreatePost(orgGroupCreatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupApi.orgGroupCreatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupApi.orgGroupCreatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29403,9 +28749,9 @@ export const GroupApiFp = function(configuration?: Configuration) {
          */
         async orgGroupDeletePost(orgGroupDeletePostRequest?: OrgGroupDeletePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupDeletePost(orgGroupDeletePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupApi.orgGroupDeletePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupApi.orgGroupDeletePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29416,9 +28762,9 @@ export const GroupApiFp = function(configuration?: Configuration) {
          */
         async orgGroupGetPost(orgGroupGetPostRequest?: OrgGroupGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupGetPost(orgGroupGetPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupApi.orgGroupGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupApi.orgGroupGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29429,9 +28775,9 @@ export const GroupApiFp = function(configuration?: Configuration) {
          */
         async orgGroupUpdatePost(orgGroupUpdatePostRequest?: OrgGroupUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUpdatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupUpdatePost(orgGroupUpdatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupApi.orgGroupUpdatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupApi.orgGroupUpdatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -29797,9 +29143,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest?: OrgGroupMemberAddMembersPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberAddMembersPost(orgGroupMemberAddMembersPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberAddMembersPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberAddMembersPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29810,9 +29156,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest?: OrgGroupMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberCancelInvitationPost(orgGroupMemberCancelInvitationPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberCancelInvitationPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberCancelInvitationPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29823,9 +29169,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest?: OrgGroupMemberChangeRolePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberChangeRolePost(orgGroupMemberChangeRolePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberChangeRolePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberChangeRolePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29836,9 +29182,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest?: OrgGroupMemberDeleteMemberPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberDeleteMemberPost(orgGroupMemberDeleteMemberPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberDeleteMemberPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberDeleteMemberPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29849,9 +29195,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest?: OrgGroupMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberInviteViaEmailPost(orgGroupMemberInviteViaEmailPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberInviteViaEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberInviteViaEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -29862,9 +29208,9 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
          */
         async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupMemberApi.orgGroupMemberJoinViaEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupMemberApi.orgGroupMemberJoinViaEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -30084,9 +29430,9 @@ export const GroupUserApiFp = function(configuration?: Configuration) {
          */
         async orgGroupUserGetPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupUserGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupUserGetPost(orgGroupUserGetPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['GroupUserApi.orgGroupUserGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupUserApi.orgGroupUserGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -31158,9 +30504,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async addMoodboardShare(addMoodboardShareRequest: AddMoodboardShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addMoodboardShare(addMoodboardShareRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.addMoodboardShare']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.addMoodboardShare']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31171,9 +30517,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CloneCheckByNode200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkCloneMoodboardOfferNode(deleteWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.checkCloneMoodboardOfferNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.checkCloneMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31184,9 +30530,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async cloneMoodboardNode(cloneMoodboardNodeRequest: CloneMoodboardNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneMoodboardNode(cloneMoodboardNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.cloneMoodboardNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.cloneMoodboardNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31197,9 +30543,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboard(createMoodboardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.createMoodboard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.createMoodboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31210,9 +30556,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async createMoodboardComment(createMoodboardCommentRequest: CreateMoodboardCommentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardComment(createMoodboardCommentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardComment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.createMoodboardComment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31223,9 +30569,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest: CreateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeCollection(createMoodboardOfferNodeCollectionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeCollection']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31236,9 +30582,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.createMoodboardOfferNodeMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31249,9 +30595,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async deleteMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMoodboard(getMoodboardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.deleteMoodboard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.deleteMoodboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31262,9 +30608,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async deleteMoodboardOfferNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMoodboardOfferNode(deleteWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.deleteMoodboardOfferNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.deleteMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31275,9 +30621,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportMoodboardOfferPicked200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.exportMoodboardOfferPicked']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.exportMoodboardOfferPicked']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31288,9 +30634,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboard(getMoodboardRequest: GetMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboard(getMoodboardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31301,9 +30647,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardComment(getMoodboardCommentRequest: GetMoodboardCommentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardComment200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardComment(getMoodboardCommentRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardComment']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardComment']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31314,9 +30660,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31327,9 +30673,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeCollection']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31340,9 +30686,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeMaterial(generateWorkspaceNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardOfferNodeMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31353,9 +30699,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest: GetMoodboardOfferPickedListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferPickedList(getMoodboardOfferPickedListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardOfferPickedList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardOfferPickedList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31366,9 +30712,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest: GetMoodboardShareReceivedInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardShareReceivedInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardShareReceivedInfo(getMoodboardShareReceivedInfoRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardShareReceivedInfo']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardShareReceivedInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31379,9 +30725,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardShareTarget(getMoodboardShareTargetRequest: GetMoodboardShareTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardShareTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardShareTarget(getMoodboardShareTargetRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.getMoodboardShareTarget']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.getMoodboardShareTarget']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31392,9 +30738,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest: ExportMoodboardOfferPickedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportMoodboardOfferPicked(exportMoodboardOfferPickedRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.massExportMoodboardOfferPicked']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.massExportMoodboardOfferPicked']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31405,9 +30751,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.pickMoodboardOfferNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.pickMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31418,9 +30764,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async removeMoodboardShare(removeMoodboardShareRequest: RemoveMoodboardShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeMoodboardShare(removeMoodboardShareRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.removeMoodboardShare']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.removeMoodboardShare']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31431,9 +30777,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async saveMoodboardShareReceived(saveMoodboardShareReceivedRequest: SaveMoodboardShareReceivedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveMoodboardShareReceived(saveMoodboardShareReceivedRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.saveMoodboardShareReceived']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.saveMoodboardShareReceived']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31444,9 +30790,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.unpickMoodboardOfferNode(generateWorkspaceNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.unpickMoodboardOfferNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.unpickMoodboardOfferNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31457,9 +30803,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async updateMoodboard(updateMoodboardRequest: UpdateMoodboardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMoodboard(updateMoodboardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.updateMoodboard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.updateMoodboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -31470,9 +30816,9 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest: UpdateMoodboardOfferNodeCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMoodboardOfferNodeCollection(updateMoodboardOfferNodeCollectionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['MoodboardApi.updateMoodboardOfferNodeCollection']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MoodboardApi.updateMoodboardOfferNodeCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -32416,9 +31762,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgCheckNameExistPost(orgCheckNameExistPostRequest?: OrgCheckNameExistPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCheckNameExistPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCheckNameExistPost(orgCheckNameExistPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgCheckNameExistPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgCheckNameExistPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32429,9 +31775,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgCreatePost(orgCreatePostRequest?: OrgCreatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCreatePost(orgCreatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgCreatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgCreatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32442,9 +31788,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest?: OrgCreateUploadMaterialEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgCreatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgCreateUploadMaterialEmailPost(orgCreateUploadMaterialEmailPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgCreateUploadMaterialEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgCreateUploadMaterialEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32455,9 +31801,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgDeletePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgDeletePost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgDeletePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgDeletePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -32468,9 +31814,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGetPost(orgGetPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -32481,9 +31827,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgRemoveLogoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgRemoveLogoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgRemoveLogoPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgRemoveLogoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgRemoveLogoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -32494,9 +31840,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest?: OrgUpdateLogoGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUpdateLogoGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdateLogoGetUploadUrlPost(orgUpdateLogoGetUploadUrlPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgUpdateLogoGetUploadUrlPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgUpdateLogoGetUploadUrlPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *  **Access roles:** To be clear define
@@ -32507,9 +31853,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgUpdateLogoPost(orgUpdateLogoPostRequest?: OrgUpdateLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdateLogoPost(orgUpdateLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgUpdateLogoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgUpdateLogoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32520,9 +31866,9 @@ export const OrgApiFp = function(configuration?: Configuration) {
          */
         async orgUpdatePost(orgUpdatePostRequest?: OrgUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUpdatePost(orgUpdatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgApi.orgUpdatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgApi.orgUpdatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -32960,9 +32306,9 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          */
         async orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest?: OrgMemberCancelInvitationPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberCancelInvitationPost(orgMemberCancelInvitationPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberCancelInvitationPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgMemberApi.orgMemberCancelInvitationPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32973,9 +32319,9 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          */
         async orgMemberChangeRolePost(orgMemberChangeRolePostRequest?: OrgMemberChangeRolePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberChangeRolePost(orgMemberChangeRolePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberChangeRolePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgMemberApi.orgMemberChangeRolePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32986,9 +32332,9 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          */
         async orgMemberDeletePost(orgMemberDeletePostRequest?: OrgMemberDeletePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberDeletePost(orgMemberDeletePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberDeletePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgMemberApi.orgMemberDeletePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -32999,9 +32345,9 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          */
         async orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest?: OrgMemberInviteViaEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberInviteViaEmailPost(orgMemberInviteViaEmailPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberInviteViaEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgMemberApi.orgMemberInviteViaEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * **Access roles:** To be clear define
@@ -33012,9 +32358,9 @@ export const OrgMemberApiFp = function(configuration?: Configuration) {
          */
         async orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMemberJoinViaLinkPost(orgMemberJoinViaLinkPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgMemberApi.orgMemberJoinViaLinkPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgMemberApi.orgMemberJoinViaLinkPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -33761,44 +33107,6 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
-         * @summary 取消訂閱設計師方案
-         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgPlanUnsubscribeDesignerPlanPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/plan/unsubscribe-designer-plan`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgRemoveLogoPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 升級組織方案-取得升級方案到月底預計會多收多少錢
          * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
          * @param {*} [options] Override http request option.
@@ -33930,9 +33238,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest?: OrgPaymentBillingInfoUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentBillingInfoUpdatePost(orgPaymentBillingInfoUpdatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentBillingInfoUpdatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentBillingInfoUpdatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -33943,9 +33251,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentCardInfoCreateSetupPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentCardInfoCreateSetupPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoCreateSetupPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoCreateSetupPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -33956,9 +33264,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest?: OrgPaymentCardInfoSetupCustomerPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentCardInfoSetupCustomerPost(orgPaymentCardInfoSetupCustomerPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoSetupCustomerPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentCardInfoSetupCustomerPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -33969,9 +33277,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetLastMonthUnbilledInfoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetLastMonthUnbilledInfoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -33981,9 +33289,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentGetPricingPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetPricingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetPricingPost(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetPricingPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetPricingPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -33994,9 +33302,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentGetUnbilledInfoPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentGetUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetUnbilledInfoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentGetUnbilledInfoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34007,9 +33315,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest?: OrgPaymentInvoiceGetListPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceGetListPost(orgPaymentInvoiceGetListPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetListPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetListPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34020,9 +33328,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest?: OrgPaymentInvoiceGetPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceGetPost(orgPaymentInvoiceGetPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34033,9 +33341,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest?: OrgPaymentInvoiceUpdateBillingInfoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPaymentInvoiceGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentInvoiceUpdateBillingInfoPost(orgPaymentInvoiceUpdateBillingInfoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceUpdateBillingInfoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentInvoiceUpdateBillingInfoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34046,9 +33354,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPaymentPayLastMonthUnbilledInfoPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPaymentPayLastMonthUnbilledInfoPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPaymentPayLastMonthUnbilledInfoPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34059,9 +33367,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanActivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanActivatePost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanActivatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanActivatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34072,9 +33380,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanCancelMaterialPost(orgPlanPurchaseU3mPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanCancelMaterialPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanCancelMaterialPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34085,9 +33393,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanDeactivatePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanDeactivatePost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanDeactivatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanDeactivatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34098,9 +33406,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseMaterialGetEstimateChargingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseMaterialGetEstimateChargingPost(orgPlanPurchaseU3mPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialGetEstimateChargingPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialGetEstimateChargingPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34111,9 +33419,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseMaterialPost(orgPlanPurchaseU3mPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseMaterialPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34124,22 +33432,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanPurchaseU3mPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseU3mPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary 取消訂閱設計師方案
-         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanUnsubscribeDesignerPlanPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUnsubscribeDesignerPlanPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanPurchaseU3mPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34150,9 +33445,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanUpgradeGetEstimateChargingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradeGetEstimateChargingPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeGetEstimateChargingPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeGetEstimateChargingPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34163,9 +33458,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanUpgradePost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradePost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34176,9 +33471,9 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
          */
         async orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest?: OrgPlanUpgradeRequestPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUpgradeRequestPost(orgPlanUpgradeRequestPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeRequestPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanUpgradeRequestPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -34348,16 +33643,6 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          */
         orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: any): AxiosPromise<OrgPlanPurchaseU3mPost200Response> {
             return localVarFp.orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 取消訂閱設計師方案
-         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: any): AxiosPromise<OrgPlanUnsubscribeDesignerPlanPost200Response> {
-            return localVarFp.orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -34588,18 +33873,6 @@ export class OrgPaymentApi extends BaseAPI {
      */
     public orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取消訂閱設計師方案
-     * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgPaymentApi
-     */
-    public orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
-        return OrgPaymentApiFp(this.configuration).orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -34894,9 +34167,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserGetPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserGetPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34907,9 +34180,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserReadNotificationPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserReadNotificationPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserReadNotificationPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserReadNotificationPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34920,9 +34193,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserRemoveAvatarPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserRemoveAvatarPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserRemoveAvatarPost(orgRemoveLogoPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserRemoveAvatarPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserRemoveAvatarPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34933,9 +34206,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest?: OrgUserUpdateAvatarGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgUserUpdateAvatarGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateAvatarGetUploadUrlPost(orgUserUpdateAvatarGetUploadUrlPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarGetUploadUrlPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarGetUploadUrlPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34946,9 +34219,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest?: OrgUserUpdateAvatarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateAvatarPost(orgUserUpdateAvatarPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserUpdateAvatarPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -34959,9 +34232,9 @@ export const OrgUserApiFp = function(configuration?: Configuration) {
          */
         async orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest?: OrgUserUpdateDisplayNamePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgUserUpdateDisplayNamePost(orgUserUpdateDisplayNamePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgUserApi.orgUserUpdateDisplayNamePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgUserApi.orgUserUpdateDisplayNamePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -35181,9 +34454,9 @@ export const OrgValueAddedServiceApiFp = function(configuration?: Configuration)
          */
         async orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest?: OrgValueAddedServiceMade2flowScheduleMeetingPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgValueAddedServiceMade2flowScheduleMeetingPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgValueAddedServiceMade2flowScheduleMeetingPost(orgValueAddedServiceMade2flowScheduleMeetingPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['OrgValueAddedServiceApi.orgValueAddedServiceMade2flowScheduleMeetingPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgValueAddedServiceApi.orgValueAddedServiceMade2flowScheduleMeetingPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -35323,9 +34596,9 @@ export const PollingApiFp = function(configuration?: Configuration) {
          */
         async pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PollingApi.pollingDigitalThreadStickerTagListGetPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PollingApi.pollingDigitalThreadStickerTagListGetPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35336,9 +34609,9 @@ export const PollingApiFp = function(configuration?: Configuration) {
          */
         async pollingSidebarPost(pollingSidebarPostRequest?: PollingSidebarPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingSidebarPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pollingSidebarPost(pollingSidebarPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PollingApi.pollingSidebarPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PollingApi.pollingSidebarPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -35872,9 +35145,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelExcelProgress(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.cancelExcelProgress']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.cancelExcelProgress']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35885,9 +35158,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.cancelMaterialUploadProgress']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.cancelMaterialUploadProgress']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35898,9 +35171,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.cancelOnlineSpreadSheetProgress']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.cancelOnlineSpreadSheetProgress']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35911,9 +35184,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelU3mProgress(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.cancelU3mProgress']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.cancelU3mProgress']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35924,9 +35197,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressList(getExcelProgressListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getExcelProgressList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getExcelProgressList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35937,9 +35210,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getExcelProgressMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getExcelProgressMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35950,9 +35223,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getMaterialUploadProgressList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getMaterialUploadProgressList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35963,9 +35236,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgress(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgress']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgress']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -35976,9 +35249,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest: GetOnlineSpreadSheetProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetOnlineSpreadSheetProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressList(getOnlineSpreadSheetProgressListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 透過progressId取得Material清單 只會取得新增或修改的Material 
@@ -35989,9 +35262,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOnlineSpreadSheetProgressMaterialList(cancelMaterialUploadProgressRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressMaterialList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getOnlineSpreadSheetProgressMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36002,9 +35275,9 @@ export const ProgressApiFp = function(configuration?: Configuration) {
          */
         async getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getU3mProgressList(getU3mProgressListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ProgressApi.getU3mProgressList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProgressApi.getU3mProgressList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -36654,9 +35927,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async clonePublicLibraryNode(clonePublicLibraryNodeRequest: ClonePublicLibraryNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.clonePublicLibraryNode(clonePublicLibraryNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.clonePublicLibraryNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.clonePublicLibraryNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36667,9 +35940,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest: GeneratePublicLibraryNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generatePublicLibraryNodeShareCopyLink(generatePublicLibraryNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareCopyLink']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareCopyLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36680,9 +35953,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest: GeneratePublicLibraryNodeShareSocialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generatePublicLibraryNodeShareSocial(generatePublicLibraryNodeShareSocialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareSocial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.generatePublicLibraryNodeShareSocial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36693,9 +35966,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async getPublicLibraryList(getPublicLibraryListRequest: GetPublicLibraryListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryList(getPublicLibraryListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36706,9 +35979,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async getPublicLibraryMaterial(getPublicLibraryMaterialRequest: GetPublicLibraryMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPublicLibraryMaterial(getPublicLibraryMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getPublicLibraryMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36718,9 +35991,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest: GetpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getpublicLibraryNodeShareAddPeopleEmailGetTarget(getpublicLibraryNodeShareAddPeopleEmailGetTargetRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleEmailGetTarget']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleEmailGetTarget']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36730,9 +36003,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest: GetpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getpublicLibraryNodeShareAddPeopleOGGetTarget(getpublicLibraryNodeShareAddPeopleOGGetTargetRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleOGGetTarget']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.getpublicLibraryNodeShareAddPeopleOGGetTarget']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36743,9 +36016,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest: SharePublicLibraryNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sharePublicLibraryNodeShareAddPeopleEmail(sharePublicLibraryNodeShareAddPeopleEmailRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleEmail']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -36756,9 +36029,9 @@ export const PublicLibraryApiFp = function(configuration?: Configuration) {
          */
         async sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest: SharePublicLibraryNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sharePublicLibraryNodeShareAddPeopleOG(sharePublicLibraryNodeShareAddPeopleOGRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleOG']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PublicLibraryApi.sharePublicLibraryNodeShareAddPeopleOG']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -37025,46 +36298,6 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
-         * @summary Check if the received share private info is correct
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkReceiveSharePrivateInfo: async (checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'checkReceiveSharePrivateInfoRequest' is not null or undefined
-            assertParamExists('checkReceiveSharePrivateInfo', 'checkReceiveSharePrivateInfoRequest', checkReceiveSharePrivateInfoRequest)
-            const localVarPath = `/received-share/check-private-info`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(checkReceiveSharePrivateInfoRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -37144,13 +36377,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareInfo: async (checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'checkReceiveSharePrivateInfoRequest' is not null or undefined
-            assertParamExists('getReceivedShareInfo', 'checkReceiveSharePrivateInfoRequest', checkReceiveSharePrivateInfoRequest)
+        getReceivedShareInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
+            assertParamExists('getReceivedShareInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
             const localVarPath = `/received-share/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37170,7 +36403,7 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(checkReceiveSharePrivateInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37308,22 +36541,9 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveShareIsPrivate200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.checkReceiveShareIsPrivate']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Check if the received share private info is correct
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveSharePrivateInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.checkReceiveSharePrivateInfo']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.checkReceiveShareIsPrivate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37334,9 +36554,9 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async checkReceivedSharePermission(checkReceivedSharePermissionRequest?: CheckReceivedSharePermissionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceivedSharePermission200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceivedSharePermission(checkReceivedSharePermissionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.checkReceivedSharePermission']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.checkReceivedSharePermission']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37347,22 +36567,22 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.cloneReceivedShareNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.cloneReceivedShareNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareInfo(checkReceiveSharePrivateInfoRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareInfo']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        async getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareInfo(getReceivedShareInfoRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.getReceivedShareInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37373,9 +36593,9 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareList(getReceivedShareListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.getReceivedShareList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37386,9 +36606,9 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareMaterial(getReceivedShareMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.getReceivedShareMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.getReceivedShareMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37399,9 +36619,9 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
          */
         async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveReceivedShare(saveReceivedShareRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ReceivedShareApi.saveReceivedShare']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.saveReceivedShare']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -37422,16 +36642,6 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
          */
         checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: any): AxiosPromise<CheckReceiveShareIsPrivate200Response> {
             return localVarFp.checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Check if the received share private info is correct
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: any): AxiosPromise<CheckReceiveSharePrivateInfo200Response> {
-            return localVarFp.checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37456,12 +36666,12 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
-            return localVarFp.getReceivedShareInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(axios, basePath));
+        getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
+            return localVarFp.getReceivedShareInfo(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37517,18 +36727,6 @@ export class ReceivedShareApi extends BaseAPI {
 
     /**
      * 
-     * @summary Check if the received share private info is correct
-     * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ReceivedShareApi
-     */
-    public checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig) {
-        return ReceivedShareApiFp(this.configuration).checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 驗證是否有 save, clone 或 download 權限
      * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
      * @param {*} [options] Override http request option.
@@ -37554,13 +36752,13 @@ export class ReceivedShareApi extends BaseAPI {
     /**
      * 
      * @summary 取得 received page 資料
-     * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+     * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig) {
-        return ReceivedShareApiFp(this.configuration).getReceivedShareInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig) {
+        return ReceivedShareApiFp(this.configuration).getReceivedShareInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -37661,9 +36859,9 @@ export const SampleApiFp = function(configuration?: Configuration) {
          */
         async samplePost(samplePostRequest?: SamplePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SamplePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.samplePost(samplePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SampleApi.samplePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SampleApi.samplePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -37836,9 +37034,9 @@ export const SearchApiFp = function(configuration?: Configuration) {
          */
         async getExternalSearchFilterOptions(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExternalSearchFilterOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExternalSearchFilterOptions(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SearchApi.getExternalSearchFilterOptions']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SearchApi.getExternalSearchFilterOptions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37849,9 +37047,9 @@ export const SearchApiFp = function(configuration?: Configuration) {
          */
         async getInternalSearchFilterOptions(oGBaseRequestBody?: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SearchApi.getInternalSearchFilterOptions']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SearchApi.getInternalSearchFilterOptions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -37862,9 +37060,9 @@ export const SearchApiFp = function(configuration?: Configuration) {
          */
         async searchGetAiTagsPost(searchGetAiTagsPostRequest?: SearchGetAiTagsPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchGetAiTagsPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.searchGetAiTagsPost(searchGetAiTagsPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SearchApi.searchGetAiTagsPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SearchApi.searchGetAiTagsPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -38138,9 +37336,9 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          */
         async cloneShareToMeNode(cloneShareToMeNodeRequest: CloneShareToMeNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneShareToMeNode(cloneShareToMeNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShareToMeApi.cloneShareToMeNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShareToMeApi.cloneShareToMeNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38151,9 +37349,9 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          */
         async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShareToMeNode(deleteWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShareToMeApi.deleteShareToMeNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShareToMeApi.deleteShareToMeNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38164,9 +37362,9 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          */
         async getShareToMeList(getShareToMeListRequest: GetShareToMeListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShareToMeList(getShareToMeListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShareToMeApi.getShareToMeList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShareToMeApi.getShareToMeList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38177,9 +37375,9 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          */
         async getShareToMeMaterial(getShareToMeMaterialRequest: GetShareToMeMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShareToMeMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShareToMeMaterial(getShareToMeMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShareToMeApi.getShareToMeMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShareToMeApi.getShareToMeMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -38557,9 +37755,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async getShowroom(getShowroomRequest: GetShowroomRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroom200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroom(getShowroomRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.getShowroom']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.getShowroom']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38570,9 +37768,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomAnnouncement200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomAnnouncement(getShowroomAnnouncementRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.getShowroomAnnouncement']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.getShowroomAnnouncement']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38583,9 +37781,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomBannerAndShowroomList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.getShowroomBannerAndShowroomList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.getShowroomBannerAndShowroomList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38596,9 +37794,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomList(getShowroomListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.getShowroomList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.getShowroomList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38609,9 +37807,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomMaterial(getShowroomMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.getShowroomMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.getShowroomMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 由noreply@frontier.cool代為發送
@@ -38622,9 +37820,9 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
          */
         async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sendShowroomEmail(sendShowroomEmailRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ShowroomApi.sendShowroomEmail']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ShowroomApi.sendShowroomEmail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -38874,9 +38072,9 @@ export const SignInApiFp = function(configuration?: Configuration) {
          */
         async signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGeneralPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signInGeneralPost(signInGeneralPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SignInApi.signInGeneralPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SignInApi.signInGeneralPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -38887,9 +38085,9 @@ export const SignInApiFp = function(configuration?: Configuration) {
          */
         async signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGooglePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signInGooglePost(signInGooglePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SignInApi.signInGooglePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SignInApi.signInGooglePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -39017,9 +38215,9 @@ export const SignUpApiFp = function(configuration?: Configuration) {
          */
         async signUpRequestPost(signUpRequestPostRequest?: SignUpRequestPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.signUpRequestPost(signUpRequestPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SignUpApi.signUpRequestPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SignUpApi.signUpRequestPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -39127,9 +38325,9 @@ export const SystemApiFp = function(configuration?: Configuration) {
          */
         async sendErrorMessage(sendErrorMessageRequest: SendErrorMessageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sendErrorMessage(sendErrorMessageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SystemApi.sendErrorMessage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.sendErrorMessage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -40081,9 +39279,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addFolderBookmark(addFolderBookmarkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.addFolderBookmark']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.addFolderBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40094,9 +39292,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addOrgBookmark(addOrgBookmarkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.addOrgBookmark']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.addOrgBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40107,9 +39305,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.checkCanDeleteWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.checkCanDeleteWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40120,9 +39318,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async createWorkflowStage(createWorkflowStageRequest: CreateWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkflowStage(createWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.createWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.createWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40133,9 +39331,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.deleteWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.deleteWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 排序以 thread 最多 → 少 (上到下) 排序
@@ -40146,9 +39344,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetContactOrgList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getContactOrgList(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.getContactOrgList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getContactOrgList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40159,9 +39357,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoard(getThreadBoardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getThreadBoard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40172,9 +39370,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardBookmarkList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardBookmarkList(oGBaseRequestBody, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardBookmarkList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getThreadBoardBookmarkList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40185,9 +39383,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardMostParticipant']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getThreadBoardMostParticipant']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -40198,9 +39396,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardQuery200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardQuery(getThreadBoardQueryRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.getThreadBoardQuery']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getThreadBoardQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40211,9 +39409,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hideWorkflowStage(hideWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.hideWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.hideWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40224,9 +39422,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveBookmark(moveBookmarkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.moveBookmark']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.moveBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40237,9 +39435,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async moveWorkflowStage(moveWorkflowStageRequest: MoveWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStage(moveWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40250,9 +39448,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest: MoveWorkflowStageAllDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MoveWorkflowStageAllDigitalThread200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStageAllDigitalThread(moveWorkflowStageAllDigitalThreadRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageAllDigitalThread']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageAllDigitalThread']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40263,9 +39461,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest: MoveWorkflowStageDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkflowStageDigitalThread(moveWorkflowStageDigitalThreadRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageDigitalThread']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.moveWorkflowStageDigitalThread']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40276,9 +39474,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest: ReadAllUnreadDigitalThreadRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readAllUnreadDigitalThread(readAllUnreadDigitalThreadRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.readAllUnreadDigitalThread']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.readAllUnreadDigitalThread']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40289,9 +39487,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeBookmark(getThreadBoardQueryRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.removeBookmark']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.removeBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40302,9 +39500,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async renameWorkflowStage(renameWorkflowStageRequest: RenameWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.renameWorkflowStage(renameWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.renameWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.renameWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Examples為依序執行的範例
@@ -40315,9 +39513,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardBookmarkList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardBookmarkList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
@@ -40328,9 +39526,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardQuery(saveThreadBoardQueryRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardQuery']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.saveThreadBoardQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40341,9 +39539,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.showWorkflowStage(hideWorkflowStageRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.showWorkflowStage']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.showWorkflowStage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -40354,9 +39552,9 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateFolderBookmark(updateFolderBookmarkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['ThreadBoardApi.updateFolderBookmark']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.updateFolderBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -41488,9 +40686,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangeLanguagePost(userChangeLanguagePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userChangeLanguagePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userChangeLanguagePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41501,9 +40699,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userChangePasswordPost(userChangePasswordPostRequest?: UserChangePasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangePasswordPost(userChangePasswordPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userChangePasswordPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userChangePasswordPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41514,9 +40712,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest?: UserFeedbackRemoveAttachmentPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackRemoveAttachmentPost(userFeedbackRemoveAttachmentPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userFeedbackRemoveAttachmentPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userFeedbackRemoveAttachmentPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41527,9 +40725,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userFeedbackSendPost(userFeedbackSendPostRequest?: UserFeedbackSendPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackSendPost(userFeedbackSendPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userFeedbackSendPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userFeedbackSendPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41540,9 +40738,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentGetUploadUrlPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentGetUploadUrlPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41553,9 +40751,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest?: UserFeedbackUploadAttachmentPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userFeedbackUploadAttachmentPost(userFeedbackUploadAttachmentPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userFeedbackUploadAttachmentPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41566,9 +40764,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userForgotPasswordResetPasswordPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userForgotPasswordResetPasswordPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41579,9 +40777,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest?: UserForgotPasswordSendEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordSendEmailPost(userForgotPasswordSendEmailPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userForgotPasswordSendEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userForgotPasswordSendEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41592,9 +40790,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest?: UserForgotPasswordVerifyPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserForgotPasswordVerifyPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordVerifyPost(userForgotPasswordVerifyPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userForgotPasswordVerifyPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userForgotPasswordVerifyPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41604,9 +40802,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41616,9 +40814,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userGetOrgListPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetOrgListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGetOrgListPost(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userGetOrgListPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userGetOrgListPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41629,9 +40827,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userOldUserResetPasswordPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userOldUserResetPasswordPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41641,9 +40839,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userReadAnnouncementPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userReadAnnouncementPost(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userReadAnnouncementPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userReadAnnouncementPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41654,9 +40852,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userResendVerifyEmailPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userResendVerifyEmailPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41667,9 +40865,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userUpdatePost(userUpdatePostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userUpdatePost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userUpdatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41680,9 +40878,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userVerifyPasswordPost(userVerifyPasswordPostRequest?: UserVerifyPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserVerifyPasswordPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userVerifyPasswordPost(userVerifyPasswordPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userVerifyPasswordPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userVerifyPasswordPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -41693,9 +40891,9 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userVerifyPost(userVerifyPostRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.userVerifyPost']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userVerifyPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -42871,9 +42069,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async createWorkspaceCollection(createWorkspaceCollectionRequest: CreateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createWorkspaceCollection(createWorkspaceCollectionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.createWorkspaceCollection']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.createWorkspaceCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42884,9 +42082,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async deleteWorkspaceNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkspaceNode(deleteWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.deleteWorkspaceNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.deleteWorkspaceNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42897,9 +42095,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async duplicateWorkspaceNode(duplicateWorkspaceNodeRequest: DuplicateWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.duplicateWorkspaceNode(duplicateWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.duplicateWorkspaceNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.duplicateWorkspaceNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42910,9 +42108,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest: GenerateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareCopyLink(generateWorkspaceNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareCopyLink']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareCopyLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42923,9 +42121,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest: GenerateWorkspaceNodeShareSocialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateWorkspaceNodeShareCopyLink200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.generateWorkspaceNodeShareSocial(generateWorkspaceNodeShareSocialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareSocial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.generateWorkspaceNodeShareSocial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42936,9 +42134,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async getWorkspaceList(getWorkspaceListRequest: GetWorkspaceListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceList(getWorkspaceListRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceList']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42949,9 +42147,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async getWorkspaceMaterial(getWorkspaceMaterialRequest: GetWorkspaceMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceMaterial(getWorkspaceMaterialRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceMaterial']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceMaterial']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42961,9 +42159,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest: GetWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleEmailGetTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAddPeopleEmailGetTarget(getWorkspaceNodeShareAddPeopleEmailGetTargetRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleEmailGetTarget']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleEmailGetTarget']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42973,9 +42171,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest: GetWorkspaceNodeShareAddPeopleOGGetTargetRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareAddPeopleOGGetTarget200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareAddPeopleOGGetTarget(getWorkspaceNodeShareAddPeopleOGGetTargetRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleOGGetTarget']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareAddPeopleOGGetTarget']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42986,9 +42184,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceNodeShareInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWorkspaceNodeShareInfo(getWorkspaceNodeShareInfoRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareInfo']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.getWorkspaceNodeShareInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -42999,9 +42197,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async moveWorkspaceNode(moveWorkspaceNodeRequest: MoveWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.moveWorkspaceNode(moveWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.moveWorkspaceNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.moveWorkspaceNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43012,9 +42210,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async publishWorkspaceNode(publishWorkspaceNodeRequest: PublishWorkspaceNodeRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.publishWorkspaceNode(publishWorkspaceNodeRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.publishWorkspaceNode']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.publishWorkspaceNode']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43025,9 +42223,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest: RemoveWorkspaceCollectionTrendBoardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.removeWorkspaceCollectionTrendBoard(removeWorkspaceCollectionTrendBoardRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.removeWorkspaceCollectionTrendBoard']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.removeWorkspaceCollectionTrendBoard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43038,9 +42236,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleEmailRequest: ResendWorkspaceNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.resendWorkspaceNodeShareAddPeopleEmail(resendWorkspaceNodeShareAddPeopleEmailRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.resendWorkspaceNodeShareAddPeopleEmail']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.resendWorkspaceNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43051,9 +42249,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest: ShareWorkspaceNodeShareAddPeopleEmailRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShareWorkspaceNodeShareAddPeopleEmail200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.shareWorkspaceNodeShareAddPeopleEmail(shareWorkspaceNodeShareAddPeopleEmailRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleEmail']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleEmail']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43064,9 +42262,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest: ShareWorkspaceNodeShareAddPeopleOGRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShareWorkspaceNodeShareAddPeopleOG200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.shareWorkspaceNodeShareAddPeopleOG(shareWorkspaceNodeShareAddPeopleOGRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleOG']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.shareWorkspaceNodeShareAddPeopleOG']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43077,9 +42275,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async updateWorkspaceCollection(updateWorkspaceCollectionRequest: UpdateWorkspaceCollectionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceCollection(updateWorkspaceCollectionRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceCollection']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.updateWorkspaceCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43090,9 +42288,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest: UpdateWorkspaceNodeShareCopyLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareCopyLink(updateWorkspaceNodeShareCopyLinkRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareCopyLink']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareCopyLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -43103,9 +42301,9 @@ export const WorkspaceApiFp = function(configuration?: Configuration) {
          */
         async updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest: UpdateWorkspaceNodeShareEmbedRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkspaceNodeShareEmbed(updateWorkspaceNodeShareEmbedRequest, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareEmbed']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkspaceApi.updateWorkspaceNodeShareEmbed']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };

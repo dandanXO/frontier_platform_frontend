@@ -13,12 +13,13 @@ carousel(
   slide(
     v-for="showroom in showroomList"
     :key="showroom.title"
-    class="px-2.5 group/card cursor-pointer"
-    @click="goToShowroom({}, showroom.showroomId)"
+    class="px-2.5 group/card"
+    :class="getStatusProps(showroom).disabled ? '' : 'cursor-pointer'"
+    @click="clickShowroom(showroom)"
   )
     div(
       class="w-full h-80 relative text-left bg-center bg-cover rounded overflow-hidden"
-      :style="{ backgroundImage: `url(${showroom.coverImg})` }"
+      :style="{ backgroundImage: `${getStatusProps(showroom).bgStyle}` }"
     )
       div(
         class="invisible group-hover/card:visible absolute z-1 w-full h-full bg-grey-900/30"
@@ -27,11 +28,8 @@ carousel(
       div(
         class="absolute z-2 h-36.5 box-border bottom-0 left-0 bg-grey-900/50 w-full py-4 px-4.5"
       )
-        p(
-          class="flex text-caption font-bold"
-          :class="getStatusProps(showroom.status).color"
-        )
-          span {{ getStatusProps(showroom.status).text }} ．
+        p(class="flex text-caption font-bold" :class="getStatusProps(showroom).color")
+          span {{ getStatusProps(showroom).text }} ．
           span {{ showroom.period }}
         h5(class="pt-1 text-h5 !leading-1.5 font-bold text-grey-0 line-clamp-1") {{ showroom.subtitle }}
         p(class="pb-1 text-body1 !leading-1.6 text-grey-0 line-clamp-1") {{ showroom.location }}
@@ -88,28 +86,40 @@ const props = defineProps<{
 const { t } = useI18n()
 const { goToShowroom } = useNavigation()
 
-const getStatusProps = (status: ShowroomStatus) => {
-  let text
-  let color
-  switch (status) {
+const getStatusProps = (showroom: ShowroomBase) => {
+  let text = t('II0060')
+  let color = 'text-yellow-0'
+  let disabled = false
+  let bgStyle = `url(${showroom.coverImg})`
+  switch (showroom.status) {
     case ShowroomStatus.CLOSE:
       text = t('II0062')
       color = 'text-grey-200'
       break
     case ShowroomStatus.COMING_SOON:
       text = t('II0061')
-      color = 'text-yellow-0'
       break
-    default:
-      text = t('II0060')
-      color = 'text-yellow-0'
+    case ShowroomStatus.COMING_SOON_AND_DISABLE:
+      text = t('II0061')
+      disabled = true
+      bgStyle = `linear-gradient(rgb(86 85 85 / 48%) 0%, rgb(83 84 84 / 76%) 207.69%), ${bgStyle}`
+      break
   }
 
   return {
     text,
     color,
+    disabled,
+    bgStyle,
   }
 }
+
+const clickShowroom = (showroom: ShowroomBase) => {
+  if (!getStatusProps(showroom).disabled) {
+    goToShowroom({}, showroom.showroomId)
+  }
+}
+
 const refCarousel = ref(null)
 const totalSlide = computed(() => props.showroomList.length)
 const currentSlide = ref(0)
