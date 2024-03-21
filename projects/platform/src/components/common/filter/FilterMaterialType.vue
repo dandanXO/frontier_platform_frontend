@@ -38,7 +38,7 @@ const menuTree = computed(() => {
           t('RR0092'),
           t('MI0018'),
           t('MI0020'),
-          t('Composite'),
+          t('MI0004'),
           t('MI0021'),
           t('MI0022'),
         ].map((displayName, index) => ({

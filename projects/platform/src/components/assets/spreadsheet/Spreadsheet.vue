@@ -8,9 +8,27 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
       prependIcon="delete"
       @click="handleDelete"
     ) {{ $t('UU0013') }}
+    f-button(
+      type="secondary"
+      size="md"
+      prependIcon="upload"
+      @click="handleExcelButtonClick"
+    ) {{ $t('Import Template') }}
+    input(
+      ref="fileInput"
+      type="file"
+      class="hidden"
+      accept=".xlsx, .xls, .csv"
+      @change="handleExcelSelect"
+    )
+    f-button(
+      type="secondary"
+      size="md"
+      prependIcon="download"
+      @click="handleDownloadTemplate"
+    ) {{ $t('Download Template') }}
   ag-grid-vue(
     style="height: 100%"
-    :disabled="true"
     class="ag-theme-balham"
     :rowData="rowData"
     :columnDefs="colDefs"
@@ -53,7 +71,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, provide } from 'vue'
+import { computed, ref, reactive, provide, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -105,6 +123,7 @@ import {
   convertSpreadSheetPriceInfoFormToReq,
   generateMaterialRow,
 } from '@/utils/material'
+import { convertDataToWorkbook, populateGrid } from './utils/utils'
 
 const AG_GRID_LICENSE_KEY = atob(
   import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED
@@ -634,7 +653,7 @@ const gridOptions: GridOptions<MaterialRow> = {
   },
   rowSelection: 'multiple',
   enableRangeSelection: true,
-  stopEditingWhenCellsLoseFocus: true,
+  stopEditingWhenCellsLoseFocus: false,
   pagination: true,
   localeText: {
     columns: t('RR0331'),
@@ -824,6 +843,35 @@ const handleDelete = () => {
 
   updateSubmitStatus()
 }
+
+const fileInput = ref(null)
+
+const handleExcelButtonClick = () => {
+  if (fileInput.value) {
+    ;(fileInput.value as HTMLElement).click()
+  }
+}
+
+const handleExcelSelect = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (!target.files) return
+  const file = target.files[0]
+
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = function (e) {
+    if (!e.target) return
+    const data = e.target.result
+    const workbook = convertDataToWorkbook(data)
+    populateGrid(workbook, gridApi)
+    updateSubmitStatus()
+  }
+
+  reader.readAsArrayBuffer(file)
+}
+
+const handleDownloadTemplate = () => {}
 
 const getMaterialRowList = (): MaterialRow[] => {
   if (!gridApi.value) {

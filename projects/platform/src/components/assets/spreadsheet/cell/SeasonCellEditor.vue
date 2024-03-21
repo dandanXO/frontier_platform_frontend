@@ -32,7 +32,7 @@ interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
 export default {
   setup(props: { params: SelectEditorParams }) {
     const spreadsheetService = inject<SpreadsheetService>('spreadsheetService')
-    const { gridApi, seasonMenuTree, addSeasonOption, allSeasonList } =
+    const { seasonMenuTree, addSeasonOption, allSeasonList } =
       spreadsheetService
 
     const inputValue = ref(props.params.value)
@@ -41,7 +41,7 @@ export default {
     const handleConfirm = () => {
       const rowId = props.params.node.id
       const targetSeason = allSeasonList.value.find((s) => s.name === name)
-      const node = gridApi.value?.getRowNode(rowId)
+      const node = props.params.node
       const data = node?.data
       node?.setData({
         ...data,
