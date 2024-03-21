@@ -7,6 +7,7 @@ import {
   MaterialQuantityUnit,
   MaterialSideType,
   CurrencyCode,
+  SharePermission,
 } from '@frontier/platform-web-sdk'
 import i18n from '@frontier/i18n'
 
@@ -79,4 +80,13 @@ export const AssetsFilterStatusText: {
   [AssetsFilterStatusEnum.NO_IMAGE]: t('RR0103'),
   [AssetsFilterStatusEnum.NO_REQUIRED_FIELD]: t('RR0104'),
   [AssetsFilterStatusEnum.DUPLICATE_ITEM_NO]: 'Show duplicate product',
+}
+
+export const SharePermissionText: {
+  [key in SharePermission]: string
+} = {
+  [SharePermission.VIEW_ONLY]: t('FF0076'),
+  [SharePermission.IS_CAN_DOWNLOAD_U3M]: t('FF0033'),
+  [SharePermission.IS_CAN_CLONE]: t('FF0034'),
+  [SharePermission.ALL_ALLOW]: t('FF0080'),
 }

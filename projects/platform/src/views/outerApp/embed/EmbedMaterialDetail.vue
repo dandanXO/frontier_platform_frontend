@@ -12,6 +12,7 @@ import { useOuterStore } from '@/stores/outer'
 import { useSearchStore } from '@/stores/search'
 import useNavigation from '@/composables/useNavigation'
 import MaterialDetailOuterExternal from '@/components/common/material/detail/external/MaterialDetailOuterExternal.vue'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   sharingKey: string
@@ -19,13 +20,15 @@ const props = defineProps<{
 }>()
 
 const { goToEmbed } = useNavigation()
-const { ogBaseEmbedApi } = useOuterStore()
+const outerStore = useOuterStore()
 const { getSearchLog } = useSearchStore()
+const { isPrivate, privateInfo } = storeToRefs(outerStore)
 
-const res = await ogBaseEmbedApi('getEmbedMaterial', {
+const res = await outerStore.ogBaseEmbedApi('getEmbedMaterial', {
   sharingKey: props.sharingKey,
   nodeId: Number(props.nodeId),
   searchLog: getSearchLog(),
+  accessCode: isPrivate.value ? privateInfo.value.accessCode : null,
 })
 
 const { material, nodeMeta } = toRefs(

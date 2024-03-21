@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
-import { ROLE_ID } from '@/utils/constants'
+import { ROLE_ID, OUTER_TYPE } from '@/utils/constants'
 import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
@@ -346,6 +346,7 @@ const routes = [
         path: 'received-share/:sharingKey/navigator',
         name: 'ReceivedShareNavigator',
         props: true,
+        meta: { outerType: OUTER_TYPE.RECEIVED_SHARE },
         component: () =>
           import('@/views/outerApp/receivedShare/ReceivedShareNavigator.vue'),
       },
@@ -353,6 +354,7 @@ const routes = [
         path: 'received-share/:sharingKey/:nodeId',
         name: 'ReceivedShareCollection',
         props: true,
+        meta: { outerType: OUTER_TYPE.RECEIVED_SHARE },
         components: {
           default: () =>
             import(
@@ -365,6 +367,7 @@ const routes = [
         path: 'received-share/:sharingKey/material/:nodeId',
         name: 'ReceivedShareMaterial',
         props: true,
+        meta: { outerType: OUTER_TYPE.RECEIVED_SHARE },
         components: {
           default: () =>
             import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
@@ -375,12 +378,14 @@ const routes = [
         path: 'embed/:sharingKey/:nodeId',
         name: 'EmbedCollection',
         props: true,
+        meta: { outerType: OUTER_TYPE.EMBED },
         component: () => import('@/views/outerApp/embed/Embed.vue'),
       },
       {
         path: 'embed/:sharingKey/material/:nodeId',
         name: 'EmbedMaterialDetail',
         props: true,
+        meta: { outerType: OUTER_TYPE.EMBED },
         component: () =>
           import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
       },
@@ -388,6 +393,7 @@ const routes = [
         path: 'assets/:materialId',
         name: 'OuterAssetsMaterialDetail',
         props: true,
+        meta: { outerType: OUTER_TYPE.ASSETS },
         components: {
           default: () =>
             import('@/views/outerApp/assets/OuterAssetsMaterialDetail.vue'),

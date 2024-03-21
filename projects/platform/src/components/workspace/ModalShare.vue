@@ -1,77 +1,107 @@
 <template lang="pug">
-modal-behavior(:header="$t('RR0079')")
+modal-behavior(
+  :header="$t('RR0079')"
+  :secondaryBtnText="$t('UU0002')"
+  @click:secondary="closeModal"
+)
   f-tabs(:tabList="tabList" keyField="id")
     template(#default="{ currentTab }")
-      div(class="w-101 h-43 pt-7.5")
+      div(class="w-101 h-43 pt-5")
         template(v-if="currentTab === TAB.ASSIGNED")
-          div(class="flex items-end justify-between pb-6 gap-7")
+          div(class="flex flex-col gap-6")
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
-              p(class="font-bold pb-2") {{ $t('RR0156') }}
-              p(class="leading-normal") {{ $t('RR0150') }}
-            f-button(size="sm" class="flex-shrink-0" @click="openModalShareAssigned") {{ $t('UU0067') }}
-          div(class="text-body2 text-grey-900")
-            p(class="font-bold pb-2") {{ $t('FF0057') }}
-            div(class="flex items-center justify-between")
-              div(class="flex items-center")
-                f-avatar-group(
-                  v-if="shareList.length > 0"
-                  :itemList="shareList.map((share) => ({ imageUrl: share.unitLogo, name: share.unitName }))"
-                  class="mr-6"
-                )
-                p {{ $t('FF0058', { number: shareList.length }) }}
-              f-button(
-                size="sm"
-                type="secondary"
-                :disabled="shareList.length === 0"
-                @click="openModalShareAssignedList"
-              ) {{ $t('UU0027') }}
+              p(class="font-bold pb-2") {{ $t('RR0344') }}
+              div(class="flex items-end justify-between")
+                p(class="leading-normal") {{ $t('FF0074') }}
+                f-button(
+                  size="sm"
+                  class="flex-shrink-0"
+                  prependIcon="person_add"
+                  @click="openModalShareAssigned"
+                ) {{ $t('UU0144') }}
+            div(class="text-body2 text-grey-900 flex flex-col justify-between")
+              p(class="font-bold pb-2") {{ $t('RR0155') }}
+              div(class="flex items-end justify-between")
+                p(class="leading-normal") {{ $t('FF0075') }}
+                f-button(
+                  size="sm"
+                  class="flex-shrink-0"
+                  prependIcon="person_add"
+                  @click="openModalShareAssignedPeople"
+                ) {{ $t('UU0145') }}
         template(v-else-if="currentTab === TAB.COPY_LINK")
-          div(class="h-full flex flex-col justify-between")
+          div(class="h-full flex flex-col gap-y-2")
+            p(class="text-body2 font-bold text-primary-900") {{ $t('FF0063') }}
             div(class="flex items-center justify-between")
-              f-input-container(:label="$t('FF0063')")
-                f-input-switch(
-                  iconSize="30"
-                  :label="$t('FF0064')"
-                  v-model:inputValue="isCanShared"
-                  @update:inputValue="toggleCopyLink"
-                )
+              f-input-switch(
+                iconSize="30"
+                :label="$t('FF0064')"
+                v-model:inputValue="isCanShared"
+                @update:inputValue="toggleCopyLink"
+              )
               f-button(
                 size="sm"
                 :disabled="!isCanShared"
                 @click="generateCopyLink"
               ) {{ $t('UU0068') }}
-            f-infobar(:messageText="$t('FF0062')")
+            f-infobar(
+              :notifyType="NOTIFY_TYPE.WARNING"
+              :messageText="$t('FF0062')"
+            )
         template(v-else-if="currentTab === TAB.SOCIAL_MEDIA")
-          div(
-            class="grid gap-8.5 grid-cols-4 bg-grey-50 py-5 px-8 justify-items-center text-grey-900"
-          )
+          div(class="flex gap-8 bg-grey-50 py-5 justify-center text-grey-900")
             div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.LINKEDIN)")
-              img(src="@/assets/images/linkedin.png")
+              div(
+                class="w-16 h-16 flex justify-center items-center bg-primary-400 rounded-full"
+              )
+                f-svg-icon(iconName="linkedin" size="40" class="text-grey-0")
               p(class="text-caption text-center pt-3") {{ $t('RR0151') }}
             div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.FACEBOOK)")
-              img(src="@/assets/images/facebook.png")
+              div(
+                class="w-16 h-16 flex justify-center items-center bg-primary-400 rounded-full"
+              )
+                f-svg-icon(iconName="facebook" size="40" class="text-grey-0")
               p(class="text-caption text-center pt-3") {{ $t('RR0152') }}
             div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.TWITTER)")
-              img(src="@/assets/images/twitter.png")
+              div(
+                class="w-16 h-16 flex justify-center items-center bg-primary-400 rounded-full"
+              )
+                f-svg-icon(iconName="twitter" size="40" class="text-grey-0")
               p(class="text-caption text-center pt-3") {{ $t('RR0153') }}
         template(v-else-if="currentTab === TAB.EMBED")
-          div(class="h-full flex flex-col justify-between")
-            div(class="flex items-center justify-between")
-              f-input-container(:label="$t('FF0067')")
-                f-input-switch(
-                  v-if="embed"
-                  iconSize="30"
-                  :label="$t('FF0033')"
-                  v-model:inputValue="embed.isCanDownloadU3M"
-                  @update:inputValue="updateEmbedDownloadPermission"
-                )
-              f-button(size="sm" @click="copyEmbedIFrameCode") {{ $t('UU0068') }}
-            f-infobar(:messageText="$t('FF0071')")
+          div(class="h-full flex flex-col gap-y-6")
+            div(v-if="embed")
+              p(class="text-body2 font-bold text-primary-900 pb-2") {{ $t('FF0067') }}
+              f-input-switch(
+                iconSize="30"
+                :label="$t('FF0033')"
+                v-model:inputValue="embed.isCanDownloadU3M"
+                @update:inputValue="updateEmbedDownloadPermission"
+              )
+              div(class="flex items-center justify-between")
+                div(class="flex items-center gap-2")
+                  f-input-switch(
+                    iconSize="30"
+                    :label="$t('FF0086')"
+                    v-model:inputValue="embed.isEnablePrivateView"
+                    @update:inputValue="updateEmbedDownloadPermission"
+                  )
+                  f-tag(class="rounded-[20px]" @click="copyEmbedAccessCode") 
+                    f-svg-icon(iconName="copy_link" size="16" class="text-grey-800")
+                f-button(
+                  prependIcon="copy_link"
+                  size="sm"
+                  @click="copyEmbedIFrameCode"
+                ) {{ $t('UU0068') }}
+            f-infobar(
+              :notifyType="NOTIFY_TYPE.WARNING"
+              :messageText="$t('FF0071')"
+            )
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share'
@@ -82,7 +112,7 @@ import {
   SocialMedia,
 } from '@frontier/platform-web-sdk'
 import { useWorkspaceStore } from '@/stores/workspace'
-import { storeToRefs } from 'pinia'
+import { NOTIFY_TYPE } from '@frontier/lib'
 
 export interface PropsModalShare {
   node: NodeChild
@@ -92,8 +122,8 @@ const props = defineProps<PropsModalShare>()
 
 const { t } = useI18n()
 const workspaceStore = useWorkspaceStore()
-const { ogBaseWorkspaceApi, getWorkspaceNodeShareInfo } = workspaceStore
-const { shareList, embed, isCanShared } = storeToRefs(workspaceStore)
+const { ogBaseWorkspaceApi, getWorkspaceNodeShareInfo, nodeShareInfo } =
+  workspaceStore
 const store = useStore()
 const notify = useNotifyStore()
 
@@ -106,6 +136,7 @@ const TAB = {
 const nodeId = computed(() => props.node.nodeMeta.nodeId)
 
 await getWorkspaceNodeShareInfo(nodeId.value)
+const { embed, isCanShared } = toRefs(nodeShareInfo)
 
 const tabList = computed(() => {
   const list = [
@@ -138,10 +169,9 @@ const openModalShareAssigned = () => {
     },
   })
 }
-
-const openModalShareAssignedList = () => {
+const openModalShareAssignedPeople = () => {
   store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-share-assigned-list',
+    component: 'modal-share-assigned-people',
     properties: {
       nodeId: nodeId.value,
     },
@@ -177,7 +207,13 @@ const updateEmbedDownloadPermission = () =>
   ogBaseWorkspaceApi('updateWorkspaceNodeShareEmbed', {
     embedKey: embed.value.key,
     isCanDownloadU3M: embed.value.isCanDownloadU3M,
+    isEnablePrivateView: embed.value.isEnablePrivateView,
   })
+
+const copyEmbedAccessCode = () => {
+  embed.value && copyText(embed.value.accessCode)
+  notify.showNotifySnackbar({ messageText: t('RR0149') })
+}
 
 const copyEmbedIFrameCode = () => {
   embed.value &&
@@ -186,4 +222,6 @@ const copyEmbedIFrameCode = () => {
     )
   notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
+
+const closeModal = () => store.dispatch('helper/closeModalBehavior')
 </script>

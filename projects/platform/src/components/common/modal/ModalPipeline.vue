@@ -185,8 +185,11 @@ export default {
     ModalShareAssigned: defineAsyncComponent(() =>
       import('@/components/workspace/ModalShareAssigned.vue')
     ),
-    ModalShareAssignedList: defineAsyncComponent(() =>
-      import('@/components/workspace/ModalShareAssignedList.vue')
+    ModalShareAssignedMessage: defineAsyncComponent(() =>
+      import('@/components/workspace/ModalShareAssignedMessage.vue')
+    ),
+    ModalShareAssignedPeople: defineAsyncComponent(() =>
+      import('@/components/workspace/ModalShareAssignedPeople.vue')
     ),
     ModalManageMaterialQuota: defineAsyncComponent(() =>
       import('@/components/billings/ModalManageMaterialQuota.vue')

@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import type { ShareTarget } from '@frontier/platform-web-sdk'
-import InputShareAssignedList from '@/components/common/InputShareAssignedList.vue'
+import InputShareAssignedList from '@/components/moodboard/InputShareAssignedList.vue'
 import { useMoodboardStore } from '@/stores/moodboard'
 
 export interface PropsModalMoodboardShare {

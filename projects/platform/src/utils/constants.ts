@@ -424,3 +424,14 @@ export const fileCardDragOptions = {
   animation: 250,
   disabled: false,
 }
+
+export enum SHARE_WITH_TYPE {
+  OG = 1,
+  USER = 2,
+}
+
+export enum OUTER_TYPE {
+  RECEIVED_SHARE = 1,
+  EMBED = 2,
+  ASSETS = 3,
+}

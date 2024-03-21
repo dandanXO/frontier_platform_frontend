@@ -12,6 +12,7 @@ f-input-container(
     :offset="[0, -4]"
     @expand="isFocus = true"
     @collapse="isFocus = false"
+    class="cursor-pointer"
   )
     template(#trigger)
       div(

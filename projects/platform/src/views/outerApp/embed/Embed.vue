@@ -72,7 +72,7 @@ const router = useRouter()
 const searchStore = useSearchStore()
 const outerStore = useOuterStore()
 const { getEmbedInfo, ogBaseEmbedApi } = outerStore
-const { shareInfo } = storeToRefs(outerStore)
+const { shareInfo, privateInfo, isPrivate } = storeToRefs(outerStore)
 const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
 const { goToEmbedMaterialDetail } = useNavigation()
 
@@ -147,6 +147,7 @@ const getEmbedList = async (
     ...payload,
     sharingKey: props.sharingKey,
     nodeId: currentNodeId.value,
+    accessCode: isPrivate.value ? privateInfo.value.accessCode : null,
   })
 
   workspaceNodeCollection.value = result.workspaceNodeCollection

@@ -12,11 +12,12 @@
 </style>
 
 <template lang="pug">
-main(class="flex flex-col h-full")
+private-view-layer(v-if="isPrivate && !hasVerified")
+main(v-else class="flex flex-col h-full")
   div(class="rwd-app-padding-x shrink-0")
-    router-view(name="header")
+    router-view(v-if="isReady" name="header")
   div(class="flex-grow overflow-y-auto rwd-app-padding-x")
-    router-view(v-slot="{ Component }")
+    router-view(v-if="isReady" v-slot="{ Component }")
       suspense
         component(:is="Component")
         template(#fallback)
@@ -41,14 +42,23 @@ main(class="flex flex-col h-full")
 <script setup lang="ts">
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
+import PrivateViewLayer from '@/components/outerApp/PrivateViewLayer.vue'
 import { useStore } from 'vuex'
-import { computed, onMounted } from 'vue'
+import { ref, computed, onBeforeMount, onMounted } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { useUserStore } from '@/stores/user'
+import { useOuterStore } from '@/stores/outer'
+import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { OUTER_TYPE } from '@/utils/constants'
 
+const route = useRoute()
 const store = useStore()
 const { getExternalFilterOption } = useFilterStore()
 const userStore = useUserStore()
+const outerStore = useOuterStore()
+const { isPrivate, hasVerified, outerType } = storeToRefs(outerStore)
+const isReady = ref(false)
 
 const isStickerDrawerOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerOpen']
@@ -57,8 +67,17 @@ const isStickerDrawerForLoginOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerForLoginOpen']
 )
 
+outerStore.setOuterType(route.meta.outerType as OUTER_TYPE)
 userStore.checkHasLogin()
 getExternalFilterOption()
+
+onBeforeMount(async () => {
+  const sharingKey = route.params.sharingKey as string
+  if ([OUTER_TYPE.RECEIVED_SHARE, OUTER_TYPE.EMBED].includes(outerType.value)) {
+    await outerStore.checkIsPrivate(sharingKey)
+  }
+  isReady.value = true
+})
 
 onMounted(async () => {
   if (isStickerDrawerForLoginOpen.value) {

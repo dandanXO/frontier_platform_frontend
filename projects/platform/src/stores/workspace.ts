@@ -1,27 +1,18 @@
 import { defineStore } from 'pinia'
 import workspaceApi from '@/apis/workspace'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import type {
-  ShareTarget,
-  AddWorkspaceNodeShareAssignedRequest,
+  ShareWorkspaceNodeShareAddPeopleOGRequest,
+  ShareWorkspaceNodeShareAddPeopleEmailRequest,
+  GetWorkspaceNodeShareInfo200ResponseAllOfResult,
 } from '@frontier/platform-web-sdk'
 
 export const useWorkspaceStore = defineStore('workspace', () => {
   const ogBaseWorkspaceApi = useOgBaseApiWrapper(workspaceApi)
 
-  const shareList = ref<
-    (ShareTarget & {
-      id: number
-      isCanClone: boolean
-      isCanDownloadU3M: boolean
-    })[]
-  >([])
-  const embed = ref<{
-    isCanDownloadU3M: boolean
-    key: string
-  }>()
-  const isCanShared = ref(false)
+  const nodeShareInfo =
+    reactive<GetWorkspaceNodeShareInfo200ResponseAllOfResult>({})
 
   const getWorkspaceNodeShareInfo = async (nodeId: number) => {
     const {
@@ -30,30 +21,40 @@ export const useWorkspaceStore = defineStore('workspace', () => {
       nodeId,
     })
 
-    shareList.value = result.shareList
-    embed.value = result.embed
-    isCanShared.value = result.isCanShared
+    Object.assign(nodeShareInfo, result)
   }
 
-  const addWorkspaceNodeShareAssigned = async (
+  const shareWorkspaceNodeShareAddPeopleOG = async (
     params: Omit<
-      AddWorkspaceNodeShareAssignedRequest,
+      ShareWorkspaceNodeShareAddPeopleOGRequest,
       'orgId' | 'ogId' | 'ogType'
     >
   ) => {
     const res = await ogBaseWorkspaceApi(
-      'addWorkspaceNodeShareAssigned',
+      'shareWorkspaceNodeShareAddPeopleOG',
       params
     )
-    shareList.value = res.data.result.shareList
+    nodeShareInfo.ogShareList = res.data.result.ogShareList
+  }
+
+  const shareWorkspaceNodeShareAddPeopleEmail = async (
+    params: Omit<
+      ShareWorkspaceNodeShareAddPeopleEmailRequest,
+      'orgId' | 'ogId' | 'ogType'
+    >
+  ) => {
+    const res = await ogBaseWorkspaceApi(
+      'shareWorkspaceNodeShareAddPeopleEmail',
+      params
+    )
+    nodeShareInfo.emailShare = res.data.result.emailShare
   }
 
   return {
     ogBaseWorkspaceApi,
-    shareList,
-    embed,
-    isCanShared,
     getWorkspaceNodeShareInfo,
-    addWorkspaceNodeShareAssigned,
+    shareWorkspaceNodeShareAddPeopleOG,
+    shareWorkspaceNodeShareAddPeopleEmail,
+    nodeShareInfo,
   }
 })

@@ -148,6 +148,7 @@ const getShareReceivedList = async (
     ...payload,
     sharingKey: props.sharingKey,
     nodeId: currentNodeId.value,
+    privateInfo: outerStore.getPrivateInfo(),
   })
 
   workspaceNodeCollection.value = result.workspaceNodeCollection

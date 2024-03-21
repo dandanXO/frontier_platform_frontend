@@ -7,7 +7,7 @@ import { NOTIFY_TYPE } from '@/utils/constants'
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
 const options = {
-  baseURL: VITE_APP_API_ENDPOINT,
+  baseURL: 'https://textile-webapi-preprod.frontier.cool/v2.10.15',
   headers: {
     'Content-Type': 'application/json',
   },

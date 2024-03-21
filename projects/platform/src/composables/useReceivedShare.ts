@@ -75,6 +75,7 @@ export default function useReceivedShare() {
               targetOrgId,
               targetOgType,
               targetOgId,
+              privateInfo: outerStore.getPrivateInfo(),
             })
             store.dispatch('helper/closeModalLoading')
 
@@ -134,6 +135,7 @@ export default function useReceivedShare() {
               nodeIdList,
               targetOgList,
               optional,
+              privateInfo: outerStore.getPrivateInfo(),
             })
             const org = organizationList.value.find(
               (org) => org.orgId === orgId
