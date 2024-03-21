@@ -59,12 +59,12 @@ import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { h, computed, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
-const { checkHaveBindPayment } = usePlan()
+const { checkHaveBindPayment } = usePlanOld()
 
 const pricing = computed(() => store.getters['organization/pricing'])
 const plan = computed(() => store.getters['polling/plan'])

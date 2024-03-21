@@ -4,7 +4,7 @@ import useNavigation from '@/composables/useNavigation'
 import { useI18n, Translation } from 'vue-i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
-export default function usePlan() {
+export default function usePlanOld() {
   const store = useStore()
   const { t } = useI18n()
   const { goToPaymentDetail } = useNavigation()

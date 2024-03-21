@@ -75,12 +75,12 @@ modal-behavior(
 import { ref, computed, shallowRef, h } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
-const { openModalChoosePlan } = usePlan()
+const { openModalChoosePlan } = usePlanOld()
 const TAB = {
   ADD: 0,
   REMOVE: 1,

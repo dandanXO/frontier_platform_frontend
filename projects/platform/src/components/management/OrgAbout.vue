@@ -66,7 +66,7 @@ div(class="pt-16 md:pt-17.5")
         f-input-text(
           v-model:textValue="orgFormData.address"
           :label="$t('BB0078')"
-          :hintError="isAddressMoreThan160Characters ? $t('WW0142', {limitNumber: 160}) : ''"
+          :hintError="isAddressMoreThan160Characters ? $t('WW0142', { limitNumber: 160 }) : ''"
           class="w-85"
           :placeholder="$t('BB0079')"
         )
@@ -100,7 +100,7 @@ import { useI18n } from 'vue-i18n'
 import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { copyText } from '@frontier/lib'
 import { useRouter } from 'vue-router'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 
@@ -108,7 +108,7 @@ const store = useStore()
 const notify = useNotifyStore()
 const { t } = useI18n()
 const router = useRouter()
-const { openModalPaymentFail } = usePlan()
+const { openModalPaymentFail } = usePlanOld()
 
 const organization = computed(() => store.getters['organization/organization'])
 const planType = computed(() => store.getters['polling/planType'])
@@ -139,10 +139,13 @@ const orgFormData = reactive({
 })
 const isOrgNameExist = ref(false)
 const availableToUpdateOrg = computed(
-  () => !!orgFormData.orgName && !isOrgNameExist.value && !isAddressMoreThan160Characters.value
+  () =>
+    !!orgFormData.orgName &&
+    !isOrgNameExist.value &&
+    !isAddressMoreThan160Characters.value
 )
-const isAddressMoreThan160Characters = computed(() =>
-  !!orgFormData.address && orgFormData.address.length > 160
+const isAddressMoreThan160Characters = computed(
+  () => !!orgFormData.address && orgFormData.address.length > 160
 )
 const openModalUploadLogo = () => {
   store.dispatch('helper/openModalBehavior', {

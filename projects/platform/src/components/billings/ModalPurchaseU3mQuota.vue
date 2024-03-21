@@ -50,12 +50,12 @@ modal-behavior(
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
 const store = useStore()
 const { t } = useI18n()
-const { openModalPaymentFail } = usePlan()
+const { openModalPaymentFail } = usePlanOld()
 
 const plan = computed(() => store.getters['polling/plan'])
 const planName = computed(() => store.getters['polling/planName'])

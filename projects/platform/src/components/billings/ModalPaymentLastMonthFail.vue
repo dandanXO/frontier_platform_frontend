@@ -21,10 +21,10 @@ modal-behavior(
 <script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import usePlan from '@/composables/usePlan'
+import usePlanOld from '@/composables/usePlanOld'
 
 const store = useStore()
-const { payLastMonthUnbilledInfo } = usePlan()
+const { payLastMonthUnbilledInfo } = usePlanOld()
 
 const orgUserRole = computed(
   () => store.getters['organization/orgUser/orgUserRole']

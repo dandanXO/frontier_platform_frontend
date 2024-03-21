@@ -279,6 +279,13 @@ export default {
       dispatch('setOrganization', data.result.organization)
       return data
     },
+    async unsubscribeDesignerPlan({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'unsubscribeDesignerPlan',
+      })
+      dispatch('setOrganization', data.result.organization)
+      return data.result.subscribeDateTo
+    },
     async getChargingOfUpgradePlan({ dispatch }) {
       const { data } = await dispatch('callOrgApi', {
         func: 'getChargingOfUpgradePlan',

@@ -16107,6 +16107,50 @@ export interface OrgPlanPurchaseU3mPostRequest {
 /**
  * 
  * @export
+ * @interface OrgPlanUnsubscribeDesignerPlanPost200Response
+ */
+export interface OrgPlanUnsubscribeDesignerPlanPost200Response {
+    /**
+     * 
+     * @type {OrgPlanUnsubscribeDesignerPlanPost200ResponseResult}
+     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
+     */
+    'result'?: OrgPlanUnsubscribeDesignerPlanPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgPlanUnsubscribeDesignerPlanPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgPlanUnsubscribeDesignerPlanPost200ResponseResult
+ */
+export interface OrgPlanUnsubscribeDesignerPlanPost200ResponseResult {
+    /**
+     * 訂閱截止日
+     * @type {string}
+     * @memberof OrgPlanUnsubscribeDesignerPlanPost200ResponseResult
+     */
+    'subscribeDateTo'?: string;
+}
+/**
+ * 
+ * @export
  * @interface OrgPlanUpgradeGetEstimateChargingPost200Response
  */
 export interface OrgPlanUpgradeGetEstimateChargingPost200Response {
@@ -33107,6 +33151,44 @@ export const OrgPaymentApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
+         * @summary 取消訂閱設計師方案
+         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgPlanUnsubscribeDesignerPlanPost: async (orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/org/plan/unsubscribe-designer-plan`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orgRemoveLogoPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 升級組織方案-取得升級方案到月底預計會多收多少錢
          * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
          * @param {*} [options] Override http request option.
@@ -33438,6 +33520,19 @@ export const OrgPaymentApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 取消訂閱設計師方案
+         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgPlanUnsubscribeDesignerPlanPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrgPaymentApi.orgPlanUnsubscribeDesignerPlanPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 升級組織方案-取得升級方案到月底預計會多收多少錢
          * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
          * @param {*} [options] Override http request option.
@@ -33643,6 +33738,16 @@ export const OrgPaymentApiFactory = function (configuration?: Configuration, bas
          */
         orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: any): AxiosPromise<OrgPlanPurchaseU3mPost200Response> {
             return localVarFp.orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取消訂閱設計師方案
+         * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: any): AxiosPromise<OrgPlanUnsubscribeDesignerPlanPost200Response> {
+            return localVarFp.orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -33873,6 +33978,18 @@ export class OrgPaymentApi extends BaseAPI {
      */
     public orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest?: OrgPlanPurchaseU3mPostRequest, options?: RawAxiosRequestConfig) {
         return OrgPaymentApiFp(this.configuration).orgPlanPurchaseU3mPost(orgPlanPurchaseU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取消訂閱設計師方案
+     * @param {OrgRemoveLogoPostRequest} [orgRemoveLogoPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrgPaymentApi
+     */
+    public orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest?: OrgRemoveLogoPostRequest, options?: RawAxiosRequestConfig) {
+        return OrgPaymentApiFp(this.configuration).orgPlanUnsubscribeDesignerPlanPost(orgRemoveLogoPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

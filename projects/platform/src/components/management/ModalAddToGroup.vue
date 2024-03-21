@@ -62,10 +62,10 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { ROLE_ID } from '@/utils/constants'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 
 const store = useStore()
-const { checkCanInvitedPeople } = usePlan()
+const { checkCanInvitedPeople } = usePlanOld()
 const searchInput = ref('')
 const group = computed(() => store.getters['group/group'])
 const orgMemberList = computed(() => store.getters['organization/memberList'])

@@ -19,8 +19,9 @@ div(class="w-195")
         h5(class="font-bold text-h5 text-grey-900 mb-2") {{ planName }}
         p(class="text-caption text-grey-600") {{ $t('UU0081') }}
           span(v-if="plan.renewDate" class="text-grey-600") ・{{ $t('OO0044') }} {{ plan.renewDate }}
+          span(v-if="deactivatedDate" class="text-grey-600") ・{{ $t('OO0177') }} {{ deactivatedDate }}
       f-button(
-        v-if="!planType.ENT"
+        v-if="planType.BASIC || planType.PRO"
         size="lg"
         :disabled="!planStatus.ACTIVE"
         @click="openModalChoosePlan"
@@ -69,7 +70,7 @@ div(class="w-195")
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
         p(class="text-body1 font-bold text-primary-500 leading-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
-  template(v-if="!planType.ENT")
+  template(v-if="planType.PRO")
     p(
       v-if="planStatus.ACTIVE || planStatus.BUFFER"
       class="text-body2 text-cyan-400 text-right pt-3 cursor-pointer"
@@ -82,31 +83,29 @@ div(class="w-195")
       div
         h6(class="text-h6 text-grey-900 font-bold") {{ $t('OO0007') }}
         p(class="text-body2 text-grey-600 pt-2") {{ $t('OO0059') }}
-      //- 註解原因：
-      //- 目前後台正在設定 組織若為 free account 也可以由我們的義務團隊從後台 deactivate 組織， 讓已在平台內的 危險用戶 暫停活動。
-      //- payment流程裡面，有一功能，當使用者想要繼續使用平台，可以 reactivate account，並與我們的顧問尋求服務。為使強制褫奪使用權限的 user 不再能於平台活動，需將 reactivate button 從平台拿掉。
-      //- 考量到這是一個暫時的決策，所以仍先保留程式碼，防止以後會加回來。
-      //- f-button(size="md" @click="activateOrg") {{ $t('OO0129') }}
+  template(v-if="planType.DESIGNER && canCancelPlan")
+    p(
+      class="text-body2 text-cyan-400 text-right pt-3 cursor-pointer"
+      @click="cancelDesignerPlan"
+    ) {{ $t('RR0358') }}
   plan-value-added-service(v-if="hasNoValueAddedService")
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
+import usePlan from '@/composables/usePlan'
 import PlanValueAddedService from '@/components/billings/PlanValueAddedService.vue'
 
 const store = useStore()
-const {
-  openModalChoosePlan,
-  // openModalManageMaterialQuota,
-  // openModalPurchaseU3mQuota,
-  deactivateOrg,
-  activateOrg,
-  payLastMonthUnbilledInfo,
-} = usePlan()
+const { openModalChoosePlan, deactivateOrg, payLastMonthUnbilledInfo } =
+  usePlanOld()
+const { cancelDesignerPlan } = usePlan()
 
 const plan = computed(() => store.getters['polling/plan'])
+const deactivatedDate = computed(() => store.getters['polling/deactivatedDate'])
+const canCancelPlan = computed(() => store.getters['polling/canCancelPlan'])
 const planName = computed(() => store.getters['polling/planName'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
 const planType = computed(() => store.getters['polling/planType'])

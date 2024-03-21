@@ -138,6 +138,8 @@ export default {
   setCardHolderName: (orgId, params) =>
     orgApiWrapper('/org/payment/card-info/setup-customer', orgId, params),
   upgradePlan: (orgId) => orgApiWrapper('/org/plan/upgrade', orgId),
+  unsubscribeDesignerPlan: (orgId) =>
+    orgApiWrapper('/org/plan/unsubscribe-designer-plan', orgId),
   getChargingOfUpgradePlan: (orgId) =>
     orgApiWrapper('/org/plan/upgrade/get-estimate-charging', orgId),
   /**

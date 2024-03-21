@@ -101,12 +101,10 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation'
-// import usePlan from '@/composables/usePlan.js'
 import { FUNC_ID } from '@/utils/constants'
 
 const store = useStore()
 const { goToBillings, goToLobby } = useNavigation()
-// const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
 
 const isExpand = ref(false)
 

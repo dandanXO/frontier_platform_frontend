@@ -52,6 +52,8 @@ const state = () => ({
 const getters = {
   worker: (state) => state.worker,
   plan: (state) => state.plan,
+  deactivatedDate: (state) => state.plan.deactivatedDate,
+  canCancelPlan: (state) => state.plan.deactivatedDate === null,
   valueAddedService: (state) => {
     const formatServiceTable = {}
     const { STANDARD, PERSONALIZED, PERSONALIZED_PRO } = MADE2FLOW_PLAN_TYPE

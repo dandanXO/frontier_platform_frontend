@@ -37,7 +37,7 @@ import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
 import { FUNC_ID } from '@/utils/constants'
-import usePlan from '@/composables/usePlan.js'
+import usePlanOld from '@/composables/usePlanOld.js'
 import { OgType } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
 import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
@@ -59,7 +59,7 @@ defineProps<{
 const { t } = useI18n()
 const store = useStore()
 const { goToManagement, ogType, ogId } = useNavigation()
-const { checkCanInvitedPeople } = usePlan()
+const { checkCanInvitedPeople } = usePlanOld()
 
 const tabList = reactive([
   {
