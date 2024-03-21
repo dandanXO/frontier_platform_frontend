@@ -85,14 +85,22 @@ f-scrollbar-container(class="w-full h-full")
               :key="option.id"
             ) 
               div(
-                class="flex py-6 px-7.5 cursor-pointer border border-grey-250 rounded"
+                class="flex py-6 px-7.5 border border-grey-250 rounded"
+                :class="option.disabled ? ['bg-grey-150'] : ['cursor-pointer']"
                 :data-cy="option.testId"
                 @click="option.action"
               )
-                f-svg-icon(:iconName="option.icon" size="32" class="text-primary-400")
+                f-svg-icon(
+                  :iconName="option.icon"
+                  size="32"
+                  :class="option.disabled ? ['text-grey-400'] : ['text-primary-400']"
+                )
                 div(class="flex-grow flex justify-between")
                   div(class="grid gap-3 pl-7.5")
-                    div(class="text-body1 font-bold text-grey-900") {{ option.title }}
+                    div(
+                      class="text-body1 font-bold"
+                      :class="option.disabled ? ['text-grey-400'] : ['text-grey-900']"
+                    ) {{ option.title }}
                     div(class="text-caption text-grey-600") {{ option.content }}
                   div(
                     v-if="option.id === 'manual-upload'"
@@ -147,7 +155,15 @@ const openModalMassUpload = () => {
 }
 
 const alternativeUploadOptions = computed(() => {
-  const options = [
+  const options: {
+    id: string
+    icon: string
+    title: string
+    content: string
+    action: () => void
+    testId: string
+    disabled?: boolean
+  }[] = [
     {
       id: 'smart-upload',
       icon: 'image_file',
@@ -166,14 +182,26 @@ const alternativeUploadOptions = computed(() => {
     },
   ]
 
-  options.push({
-    id: 'mass-upload',
-    icon: 'multiple_file',
-    title: t('DD0092'),
-    content: t('DD0093'),
-    action: goToAssetMaterialSpreadSheet,
-    testId: 'mass-upload',
-  })
+  if (org.value.orgId === MASS_UPLOAD_ENABLE_ORG_ID) {
+    options.push({
+      id: 'mass-upload',
+      icon: 'multiple_file',
+      title: t('DD0092'),
+      content: t('DD0093'),
+      action: openModalMassUpload,
+      testId: 'mass-upload',
+    })
+  } else {
+    options.push({
+      disabled: true,
+      id: 'mass-upload',
+      icon: 'multiple_file',
+      title: t('MI0138'),
+      content: t('MI0139'),
+      action: () => {},
+      testId: 'mass-upload',
+    })
+  }
 
   return options
 })
