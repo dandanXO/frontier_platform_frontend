@@ -844,10 +844,10 @@ export interface CheckIsMaterialOwner200ResponseAllOfResultOwnerInfo {
 export interface CheckIsMaterialOwnerRequest {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof CheckIsMaterialOwnerRequest
      */
-    'materialId': number;
+    'frontierNo': string;
 }
 /**
  * 
@@ -892,6 +892,12 @@ export interface CheckReceiveShareIsPrivate200ResponseAllOfResult {
      * @memberof CheckReceiveShareIsPrivate200ResponseAllOfResult
      */
     'isPrivate': boolean;
+    /**
+     * 分享者Email, isPrivate為true時才會有值
+     * @type {string}
+     * @memberof CheckReceiveShareIsPrivate200ResponseAllOfResult
+     */
+    'contactEmail': string | null;
 }
 /**
  * 
@@ -905,6 +911,69 @@ export interface CheckReceiveShareIsPrivateRequest {
      * @memberof CheckReceiveShareIsPrivateRequest
      */
     'sharingKey': string;
+}
+/**
+ * 
+ * @export
+ * @interface CheckReceiveSharePrivateInfo200Response
+ */
+export interface CheckReceiveSharePrivateInfo200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckReceiveSharePrivateInfo200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckReceiveSharePrivateInfo200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CheckReceiveSharePrivateInfo200ResponseAllOfResult}
+     * @memberof CheckReceiveSharePrivateInfo200Response
+     */
+    'result': CheckReceiveSharePrivateInfo200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof CheckReceiveSharePrivateInfo200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckReceiveSharePrivateInfo200ResponseAllOfResult
+ */
+export interface CheckReceiveSharePrivateInfo200ResponseAllOfResult {
+    /**
+     * 是否為Frontier平台會員
+     * @type {boolean}
+     * @memberof CheckReceiveSharePrivateInfo200ResponseAllOfResult
+     */
+    'isFrontierUser': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface CheckReceiveSharePrivateInfoRequest
+ */
+export interface CheckReceiveSharePrivateInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckReceiveSharePrivateInfoRequest
+     */
+    'sharingKey': string;
+    /**
+     * 
+     * @type {PrivateShareAccessInfo}
+     * @memberof CheckReceiveSharePrivateInfoRequest
+     */
+    'privateInfo': PrivateShareAccessInfo;
 }
 /**
  * 
@@ -967,7 +1036,7 @@ export interface CheckReceivedSharePermissionRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof CheckReceivedSharePermissionRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
     /**
      * 
      * @type {number}
@@ -1322,7 +1391,7 @@ export interface CloneReceivedShareNodeRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof CloneReceivedShareNodeRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
     /**
      * 
      * @type {number}
@@ -5596,6 +5665,111 @@ export interface GetDigitalThreadWorkflowStageOptionsRequest {
 /**
  * 
  * @export
+ * @interface GetEmbedInfoRequest
+ */
+export interface GetEmbedInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedInfoRequest
+     */
+    'sharingKey': string;
+    /**
+     * Access code
+     * @type {string}
+     * @memberof GetEmbedInfoRequest
+     */
+    'accessCode': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedListRequest
+ */
+export interface GetEmbedListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedListRequest
+     */
+    'sharingKey': string;
+    /**
+     * Access code
+     * @type {string}
+     * @memberof GetEmbedListRequest
+     */
+    'accessCode': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedListRequest
+     */
+    'orgId': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedListRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetEmbedListRequest
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetEmbedListRequest
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {ExternalFilter}
+     * @memberof GetEmbedListRequest
+     */
+    'filter': ExternalFilter | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedMaterialRequest
+ */
+export interface GetEmbedMaterialRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'sharingKey': string;
+    /**
+     * Access code
+     * @type {string}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'accessCode': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'orgId': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SearchLog}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
  * @interface GetExcelProgressList200Response
  */
 export interface GetExcelProgressList200Response {
@@ -7264,7 +7438,7 @@ export interface GetReceivedShareInfoRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof GetReceivedShareInfoRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
 }
 /**
  * 
@@ -7283,7 +7457,7 @@ export interface GetReceivedShareListRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof GetReceivedShareListRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
     /**
      * 
      * @type {number}
@@ -7332,7 +7506,7 @@ export interface GetReceivedShareMaterialRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof GetReceivedShareMaterialRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
     /**
      * 
      * @type {number}
@@ -8850,13 +9024,13 @@ export interface GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed {
      * @type {boolean}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
      */
-    'isEnablePrivateView': boolean | null;
+    'isEnablePrivateView': boolean;
     /**
      * 私人檢視存取碼
      * @type {string}
      * @memberof GetWorkspaceNodeShareInfo200ResponseAllOfResultEmbed
      */
-    'accessCode': string | null;
+    'accessCode': string;
 }
 /**
  * 
@@ -18963,7 +19137,7 @@ export interface SaveReceivedShareRequest {
      * @type {PrivateShareAccessInfo}
      * @memberof SaveReceivedShareRequest
      */
-    'privateInfo': PrivateShareAccessInfo;
+    'privateInfo': PrivateShareAccessInfo | null;
     /**
      * 
      * @type {number}
@@ -20317,7 +20491,7 @@ export const ShowroomStatus = {
     CLOSE: 0,
     COMING_SOON: 1,
     CURRENT: 2,
-    COMING_SOON_AND_DISABLE: 3
+    NOT_STARTED: 3
 } as const;
 
 export type ShowroomStatus = typeof ShowroomStatus[keyof typeof ShowroomStatus];
@@ -27844,13 +28018,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
+         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
-            assertParamExists('getEmbedInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
+        getEmbedInfo: async (getEmbedInfoRequest: GetEmbedInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getEmbedInfoRequest' is not null or undefined
+            assertParamExists('getEmbedInfo', 'getEmbedInfoRequest', getEmbedInfoRequest)
             const localVarPath = `/embed/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27870,7 +28044,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27880,13 +28054,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
+         * @param {GetEmbedListRequest} getEmbedListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getReceivedShareListRequest' is not null or undefined
-            assertParamExists('getEmbedList', 'getReceivedShareListRequest', getReceivedShareListRequest)
+        getEmbedList: async (getEmbedListRequest: GetEmbedListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getEmbedListRequest' is not null or undefined
+            assertParamExists('getEmbedList', 'getEmbedListRequest', getEmbedListRequest)
             const localVarPath = `/embed/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27906,7 +28080,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareListRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27916,13 +28090,13 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
+         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getReceivedShareMaterialRequest' is not null or undefined
-            assertParamExists('getEmbedMaterial', 'getReceivedShareMaterialRequest', getReceivedShareMaterialRequest)
+        getEmbedMaterial: async (getEmbedMaterialRequest: GetEmbedMaterialRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getEmbedMaterialRequest' is not null or undefined
+            assertParamExists('getEmbedMaterial', 'getEmbedMaterialRequest', getEmbedMaterialRequest)
             const localVarPath = `/embed/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27942,7 +28116,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareMaterialRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedMaterialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27975,12 +28149,12 @@ export const EmbedApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
+         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getReceivedShareInfoRequest, options);
+        async getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getEmbedInfoRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedInfo']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27988,12 +28162,12 @@ export const EmbedApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
+         * @param {GetEmbedListRequest} getEmbedListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getReceivedShareListRequest, options);
+        async getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getEmbedListRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28001,12 +28175,12 @@ export const EmbedApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
+         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getReceivedShareMaterialRequest, options);
+        async getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getEmbedMaterialRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['EmbedApi.getEmbedMaterial']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28034,32 +28208,32 @@ export const EmbedApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
+         * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
-            return localVarFp.getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
+        getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
+            return localVarFp.getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
+         * @param {GetEmbedListRequest} getEmbedListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
-            return localVarFp.getEmbedList(getReceivedShareListRequest, options).then((request) => request(axios, basePath));
+        getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
+            return localVarFp.getEmbedList(getEmbedListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
+         * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
-            return localVarFp.getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(axios, basePath));
+        getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
+            return localVarFp.getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -28086,37 +28260,37 @@ export class EmbedApi extends BaseAPI {
     /**
      * 
      * @summary 取得 embed page 資料
-     * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
+     * @param {GetEmbedInfoRequest} getEmbedInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedInfo(getEmbedInfoRequest: GetEmbedInfoRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page 的 collection
-     * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
+     * @param {GetEmbedListRequest} getEmbedListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedList(getEmbedListRequest: GetEmbedListRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedList(getEmbedListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page collection 中的material明細
-     * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
+     * @param {GetEmbedMaterialRequest} getEmbedMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: RawAxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedMaterial(getEmbedMaterialRequest: GetEmbedMaterialRequest, options?: RawAxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -36415,6 +36589,46 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
+         * @summary Check if the received share private info is correct
+         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkReceiveSharePrivateInfo: async (checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkReceiveSharePrivateInfoRequest' is not null or undefined
+            assertParamExists('checkReceiveSharePrivateInfo', 'checkReceiveSharePrivateInfoRequest', checkReceiveSharePrivateInfoRequest)
+            const localVarPath = `/received-share/check-private-info`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checkReceiveSharePrivateInfoRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -36664,6 +36878,19 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Check if the received share private info is correct
+         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckReceiveSharePrivateInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReceivedShareApi.checkReceiveSharePrivateInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -36762,6 +36989,16 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
         },
         /**
          * 
+         * @summary Check if the received share private info is correct
+         * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: any): AxiosPromise<CheckReceiveSharePrivateInfo200Response> {
+            return localVarFp.checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 驗證是否有 save, clone 或 download 權限
          * @param {CheckReceivedSharePermissionRequest} [checkReceivedSharePermissionRequest] 
          * @param {*} [options] Override http request option.
@@ -36840,6 +37077,18 @@ export class ReceivedShareApi extends BaseAPI {
      */
     public checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest: CheckReceiveShareIsPrivateRequest, options?: RawAxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).checkReceiveShareIsPrivate(checkReceiveShareIsPrivateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Check if the received share private info is correct
+     * @param {CheckReceiveSharePrivateInfoRequest} checkReceiveSharePrivateInfoRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReceivedShareApi
+     */
+    public checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest: CheckReceiveSharePrivateInfoRequest, options?: RawAxiosRequestConfig) {
+        return ReceivedShareApiFp(this.configuration).checkReceiveSharePrivateInfo(checkReceiveSharePrivateInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -103,7 +103,7 @@ const getStatusProps = (showroom: ShowroomBase) => {
     case ShowroomStatus.COMING_SOON:
       text = t('II0061')
       break
-    case ShowroomStatus.COMING_SOON_AND_DISABLE:
+    case ShowroomStatus.NOT_STARTED:
       text = t('II0077')
       disabled = true
       break
