@@ -19,9 +19,14 @@ carousel(
   )
     div(
       class="w-full h-80 relative text-left bg-center bg-cover rounded overflow-hidden"
-      :style="{ backgroundImage: `${getStatusProps(showroom).bgStyle}` }"
+      :style="{ backgroundImage: `url(${showroom.coverImg})` }"
     )
       div(
+        v-if="getStatusProps(showroom).disabled"
+        class="absolute z-1 w-full h-full bg-grey-100/50"
+      )
+      div(
+        v-else
         class="invisible group-hover/card:visible absolute z-1 w-full h-full bg-grey-900/30"
       )
       h1(class="relative z-2 text-h1 font-bold text-grey-100 pt-4 pl-4.5") {{ showroom.title }}
@@ -90,7 +95,6 @@ const getStatusProps = (showroom: ShowroomBase) => {
   let text = t('II0060')
   let color = 'text-yellow-0'
   let disabled = false
-  let bgStyle = `url(${showroom.coverImg})`
   switch (showroom.status) {
     case ShowroomStatus.CLOSE:
       text = t('II0062')
@@ -100,9 +104,8 @@ const getStatusProps = (showroom: ShowroomBase) => {
       text = t('II0061')
       break
     case ShowroomStatus.COMING_SOON_AND_DISABLE:
-      text = t('II0061')
+      text = t('II0077')
       disabled = true
-      bgStyle = `linear-gradient(rgb(86 85 85 / 48%) 0%, rgb(83 84 84 / 76%) 207.69%), ${bgStyle}`
       break
   }
 
@@ -110,7 +113,6 @@ const getStatusProps = (showroom: ShowroomBase) => {
     text,
     color,
     disabled,
-    bgStyle,
   }
 }
 
