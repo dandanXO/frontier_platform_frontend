@@ -390,7 +390,7 @@ const routes = [
           import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
       },
       {
-        path: 'assets/:materialId',
+        path: 'assets/:frontierNo',
         name: 'OuterAssetsMaterialDetail',
         props: true,
         meta: { outerType: OUTER_TYPE.ASSETS },

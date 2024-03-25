@@ -45,16 +45,16 @@ div(v-if="material" class="w-full mx-auto rwd-outer-external-container")
 <script setup lang="ts">
 import MaterialDetailExternalImage from '@/components/common/material/detail/external/MaterialDetailExternalImage.vue'
 import MaterialDetailInfo from '@/components/common/material/detail/external/MaterialDetailInfo.vue'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useOuterStore } from '@/stores/outer'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useBreakpoints } from '@frontier/lib'
 
 const props = defineProps<{
-  materialId: string
+  frontierNo: string
 }>()
-const materialId = computed(() => Number(props.materialId))
+const frontierNo = computed(() => String(props.frontierNo))
 
 const { isDesktop } = useBreakpoints()
 const userStore = useUserStore()
@@ -62,11 +62,17 @@ const outerStore = useOuterStore()
 const { material } = storeToRefs(outerStore)
 
 await userStore.checkHasLogin()
-if (userStore.hasLogin) {
-  await outerStore.checkIsMaterialOwner(
-    materialId.value,
-    window.history.state.back !== null
-  )
-}
-outerStore.getAssetsExternalMaterial(materialId.value)
+watch(material, () => {
+  if (!material.value) {
+    return
+  }
+  if (userStore.hasLogin) {
+    outerStore.checkIsMaterialOwner(
+      material.value.materialId,
+      window.history.state.back !== null
+    )
+  }
+})
+
+outerStore.getAssetsExternalMaterial(frontierNo.value)
 </script>

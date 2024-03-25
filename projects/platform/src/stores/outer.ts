@@ -91,9 +91,9 @@ export const useOuterStore = defineStore('outer', () => {
   const setHasSelectedStickerAddFromOG = (bool: boolean) =>
     (hasSelectedStickerAddFromOG.value = bool)
 
-  const getAssetsExternalMaterial = async (materialId: number) => {
+  const getAssetsExternalMaterial = async (frontierNo: string) => {
     const { data } = await assetsApi.getAssetsExternalMaterial({
-      materialId,
+      frontierNo,
     })
     material.value = data.result.material
   }

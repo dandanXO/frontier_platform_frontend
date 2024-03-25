@@ -2726,7 +2726,26 @@ export const CurrencyCode = {
     CNY: 'CNY',
     TWD: 'TWD',
     JPY: 'JPY',
-    INR: 'INR'
+    INR: 'INR',
+    BDT: 'BDT',
+    BRL: 'BRL',
+    KHR: 'KHR',
+    CAD: 'CAD',
+    HKD: 'HKD',
+    IDR: 'IDR',
+    IRR: 'IRR',
+    IQD: 'IQD',
+    KRW: 'KRW',
+    MYR: 'MYR',
+    NZD: 'NZD',
+    PKR: 'PKR',
+    SAR: 'SAR',
+    SGD: 'SGD',
+    LKR: 'LKR',
+    THB: 'THB',
+    TRY: 'TRY',
+    GBP: 'GBP',
+    VND: 'VND'
 } as const;
 
 export type CurrencyCode = typeof CurrencyCode[keyof typeof CurrencyCode];
