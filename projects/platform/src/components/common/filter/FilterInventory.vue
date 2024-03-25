@@ -18,7 +18,7 @@ filter-wrapper(
         v-for="unit in unitOptionList"
         :key="unit.name"
         v-model:inputValue="unitList"
-        :label="unit.name"
+        :label="unit.label"
         :value="unit.value"
       )
 </template>
@@ -31,6 +31,7 @@ import { SEARCH_TYPE } from '@/utils/constants'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
 import { MaterialQuantityUnit } from '@frontier/platform-web-sdk'
+import useEnumText from '@/composables/useEnumText'
 
 defineProps<{
   searchType: SEARCH_TYPE
@@ -40,13 +41,15 @@ const emit = defineEmits<{
   (e: 'search'): void
 }>()
 
+const { materialQuantityText } = useEnumText()
 const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
-const unitOptionList = Object.entries(MaterialQuantityUnit).map(
-  ([key, value]) => ({
+const unitOptionList = computed(() =>
+  Object.entries(MaterialQuantityUnit).map(([key, value]) => ({
     name: key,
     value,
-  })
+    label: materialQuantityText.value[value],
+  }))
 )
 
 const inventory = filterState.value.inventory

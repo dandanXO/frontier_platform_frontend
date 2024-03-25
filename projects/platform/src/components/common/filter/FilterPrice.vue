@@ -14,23 +14,23 @@ filter-wrapper(
       :label="$t('RR0095')"
     )
     div(class="pt-5")
-      p(class="text-caption font-bold text-grey-600 pb-4") Currency
+      p(class="text-caption font-bold text-grey-600 pb-4") {{ $t('RR0319') }}
       div(class="flex items-center flex-wrap gap-4")
         f-input-checkbox(
           v-for="currency in currencyOptionList"
           :key="currency.name"
           v-model:inputValue="currencyList"
-          :label="currency.name"
+          :label="currency.label"
           :value="currency.value"
         )
     div(class="pt-8")
-      p(class="text-caption font-bold text-grey-600 pb-4") Fabric Unit
+      p(class="text-caption font-bold text-grey-600 pb-4") {{ $t('RR0320') }}
       div(class="flex items-center flex-wrap gap-4")
         f-input-checkbox(
           v-for="unit in unitOptionList"
           :key="unit.name"
           v-model:inputValue="unitList"
-          :label="unit.name"
+          :label="unit.label"
           :value="unit.value"
         )
 </template>
@@ -42,23 +42,30 @@ import { ref, computed } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
 import { MaterialQuantityUnit, CurrencyCode } from '@frontier/platform-web-sdk'
+import useEnumText from '@/composables/useEnumText'
 
 const emit = defineEmits<{
   (e: 'search'): void
 }>()
 
+const { currencyText, materialQuantityText } = useEnumText()
+
 const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
-const unitOptionList = Object.entries(MaterialQuantityUnit).map(
-  ([key, value]) => ({
+const unitOptionList = computed(() =>
+  Object.entries(MaterialQuantityUnit).map(([key, value]) => ({
     name: key,
     value,
-  })
+    label: materialQuantityText.value[value],
+  }))
 )
-const currencyOptionList = Object.entries(CurrencyCode).map(([key, value]) => ({
-  name: key,
-  value,
-}))
+const currencyOptionList = computed(() =>
+  Object.entries(CurrencyCode).map(([key, value]) => ({
+    name: key,
+    value,
+    label: currencyText.value[value],
+  }))
+)
 
 const price = filterState.value.price
 const inputRange = ref([price.min, price.max])
