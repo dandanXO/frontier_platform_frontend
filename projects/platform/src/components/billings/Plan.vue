@@ -19,7 +19,7 @@ div(class="w-195")
         h5(class="font-bold text-h5 text-grey-900 mb-2") {{ planName }}
         p(class="text-caption text-grey-600") {{ $t('UU0081') }}
           span(v-if="plan.renewDate" class="text-grey-600") ・{{ $t('OO0044') }} {{ plan.renewDate }}
-          span(v-if="deactivatedDate" class="text-grey-600") ・{{ $t('OO0177') }} {{ deactivatedDate }}
+          span(v-if="planType.DESIGNER && deactivatedDate" class="text-grey-600") ・{{ $t('OO0177') }} {{ deactivatedDate }}
       f-button(
         v-if="planType.BASIC || planType.PRO"
         size="lg"
