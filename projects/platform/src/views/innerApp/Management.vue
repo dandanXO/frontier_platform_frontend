@@ -12,6 +12,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         f-svg-icon(iconName="add_box" size="20" class="text-primary-400")
         p(class="text-body2 text-grey-900") {{ $t('UU0017') }}
       f-button(
+        v-if="!planType.DESIGNER"
         size="sm"
         prependIcon="person_add"
         @click="inviteHandler"
@@ -32,7 +33,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
 </template>
 
 <script setup lang="ts">
-import { reactive, defineAsyncComponent } from 'vue'
+import { reactive, defineAsyncComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
@@ -60,6 +61,7 @@ const { t } = useI18n()
 const store = useStore()
 const { goToManagement, ogType, ogId } = useNavigation()
 const { checkCanInvitedPeople } = usePlanOld()
+const planType = computed(() => store.getters['polling/planType'])
 
 const tabList = reactive([
   {
