@@ -72,12 +72,31 @@ const useEnumText = () => {
 
   const currencyText = computed<{ [key in CurrencyCode]: string }>(() => {
     return {
-      [CurrencyCode.USD]: t('RR0044'),
-      [CurrencyCode.EUR]: t('RR0293'),
-      [CurrencyCode.CNY]: t('RR0045'),
-      [CurrencyCode.TWD]: t('RR0046'),
-      [CurrencyCode.JPY]: t('RR0294'),
-      [CurrencyCode.INR]: t('RR0295'),
+      [CurrencyCode.USD]: 'USD',
+      [CurrencyCode.EUR]: 'EUR',
+      [CurrencyCode.CNY]: 'CNY',
+      [CurrencyCode.TWD]: 'TWD',
+      [CurrencyCode.JPY]: 'JPY',
+      [CurrencyCode.INR]: 'INR',
+      [CurrencyCode.BDT]: 'BDT',
+      [CurrencyCode.BRL]: 'BRL',
+      [CurrencyCode.KHR]: 'KHR',
+      [CurrencyCode.CAD]: 'CAD',
+      [CurrencyCode.HKD]: 'HKD',
+      [CurrencyCode.IDR]: 'IDR',
+      [CurrencyCode.IRR]: 'IRR',
+      [CurrencyCode.IQD]: 'IQD',
+      [CurrencyCode.KRW]: 'KRW',
+      [CurrencyCode.MYR]: 'MYR',
+      [CurrencyCode.NZD]: 'NZD',
+      [CurrencyCode.PKR]: 'PKR',
+      [CurrencyCode.SAR]: 'SAR',
+      [CurrencyCode.SGD]: 'SGD',
+      [CurrencyCode.LKR]: 'LKR',
+      [CurrencyCode.THB]: 'THB',
+      [CurrencyCode.TRY]: 'TRY',
+      [CurrencyCode.GBP]: 'GBP',
+      [CurrencyCode.VND]: 'VND',
     }
   })
 
