@@ -17,12 +17,6 @@ modal-behavior(
       div(class="flex gap-x-3")
         f-input-checkbox(
           binary
-          v-model:inputValue="params.isCanDownloadU3M"
-          :label="$t('FF0033')"
-          :disabled="!params.isPublic"
-        )
-        f-input-checkbox(
-          binary
           v-model:inputValue="params.isCanClone"
           :label="$t('FF0034')"
           :disabled="!params.isPublic"
@@ -58,7 +52,7 @@ const optionIsPublic = [
 
 const params = reactive({
   isPublic: props.nodeMeta.isPublic,
-  isCanDownloadU3M: props.nodeMeta.isCanDownloadU3M,
+  isCanDownloadU3M: true,
   isCanClone: props.nodeMeta.isCanClone,
 })
 

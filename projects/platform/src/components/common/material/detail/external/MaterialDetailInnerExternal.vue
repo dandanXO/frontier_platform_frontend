@@ -40,7 +40,7 @@ div
         material-detail-info(
           :material="material"
           :publishedDate="publishedDate"
-          :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
+          :isCanDownloadU3M="true"
           :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
         )
 </template>
