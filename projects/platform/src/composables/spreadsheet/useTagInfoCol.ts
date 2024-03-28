@@ -14,6 +14,7 @@ import type {
 } from 'ag-grid-enterprise'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 
 const useTagInfoCol = (
   spreadsheetService: SpreadsheetService
@@ -73,6 +74,7 @@ const useTagInfoCol = (
               target.tagList = []
             }
           }),
+          cellStyle: defaultCellStyle,
         },
         {
           headerName: t('MI0051'),
@@ -122,6 +124,7 @@ const useTagInfoCol = (
               target.certificationTagList = []
             }
           }),
+          cellStyle: defaultCellStyle,
         },
         {
           headerName: t('RR0289'),
@@ -168,6 +171,7 @@ const useTagInfoCol = (
                   target.tagList = []
                 }
               }),
+              cellStyle: defaultCellStyle,
             },
             {
               field: 'internalInfo.remark',

@@ -6,12 +6,11 @@ import {
   MaterialQuantityUnit,
   MaterialSideType,
   MaterialType,
+  WeightUnit,
 } from '@frontier/platform-web-sdk'
 import type { GridApi } from 'ag-grid-enterprise'
-import { mergeDeepRight } from 'ramda'
 import type { Ref } from 'vue'
 import { read, type WorkBook } from 'xlsx'
-import { object } from 'zod'
 
 export const convertDataToWorkbook = (dataRows: any) => {
   /* convert data to binary string */
@@ -64,8 +63,10 @@ export function populateGrid(
   while (worksheet['A' + rowIndex]) {
     let row: Record<string, string> = {}
     columnKeys.forEach((column) => {
-      // console.log('worksheet[column + 2].w', worksheet[column + 2])
-      // console.log('worksheet[column + rowIndex]', worksheet[column + rowIndex])
+      if (!worksheet[column + 2]?.w?.trim()) {
+        return
+      }
+
       row[worksheet[column + 2].w.trim()] = worksheet[column + rowIndex]
         ? worksheet[column + rowIndex].w.trim()
         : ''
@@ -75,50 +76,10 @@ export function populateGrid(
 
     rowIndex++
   }
-
-  console.log('rowData', rowData)
-
   // finally, set the imported rowData into the grid
-  // gridApi.setGridOption('rowData', rowData)
-  // gridApi.value?.setGridOption(
-  //   'rowData',
-  //   currentRowData ? currentRowData.concat(dummyRowData) : dummyRowData
-  // )
-
   let addIndex = 0
-  const dummyMaterialRowData = toMaterialRow(dummyRowData)
-  gridApi.value?.applyTransaction({ add: dummyMaterialRowData, addIndex })
-}
-
-const dummyRowData = [
-  {
-    itemNo: 'Testing Knit',
-    sideType: 1,
-    width: { cuttable: 59, full: 60, unit: 1 },
-    weight: { value: 120, unit: 1 },
-    faceSide: {
-      materialType: 1,
-      contentList: [{ contentId: 1, name: 'Cotton', percentage: 100 }],
-    },
-  },
-  {
-    itemNo: 'Testing Knit 2',
-    sideType: 2,
-    width: { cuttable: 59, full: 60, unit: 1 },
-    weight: { value: 120, unit: 1 },
-    backSide: {
-      materialType: 1,
-      contentList: [{ contentId: 1, name: 'Cotton', percentage: 100 }],
-    },
-  },
-]
-
-function toMaterialRow(rowData) {
-  const materialRow = rowData.map((row) => {
-    const newRow = generateMaterialRow()
-    return mergeDeepRight(newRow, row)
-  })
-  return materialRow
+  const newMaterialRowData = parseExcelToMaterialFormat(rowData)
+  gridApi.value?.applyTransaction({ add: newMaterialRowData, addIndex })
 }
 
 interface ExcelRow {
@@ -133,48 +94,73 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
         ? 'faceSide'
         : 'backSide'
     const newRow = generateMaterialRow()
-    Object.keys(row).forEach((key) => {
+    for (const key of Object.keys(row)) {
+      if (!row[key] || row[key].trim() === '') {
+        continue
+      }
       switch (key) {
+        // Color
         case 'COL_Color_1':
-          newRow[sideKey]!.colorInfo.color = row.COL_Color_1
+          newRow[sideKey]!.colorInfo.color = row.COL_Color_1.trim()
           break
         case 'COL_Field_1':
-          newRow[sideKey]!.colorInfo.customPropertyList[0].name =
-            row.COL_Field_1
-          break
         case 'COL_Pub_1':
-          newRow[sideKey]!.colorInfo.customPropertyList[0].isPublic =
-            checkForNo(row.COL_Pub_1)
-          break
         case 'COL_Val_1':
-          newRow[sideKey]!.colorInfo.customPropertyList[0].value = row.COL_Val_1
+          if (row.COL_Field_1.trim() || row.COL_Val_1.trim()) {
+            if (!newRow[sideKey]!.colorInfo.customPropertyList) {
+              newRow[sideKey]!.colorInfo.customPropertyList = []
+            }
+            newRow[sideKey]!.colorInfo.customPropertyList[0] = {
+              value: row.COL_Field_1.trim(),
+              name: row.COL_Val_1.trim(),
+              isPublic: parseYesNoValue(row.COL_Pub_1, true),
+            }
+          }
           break
+
+        // Content
         case 'CON_1':
-          newRow[sideKey]!.contentList[0].name = row.CON_1
-          break
         case 'CON_2':
-          newRow[sideKey]!.contentList[0].percentage = boundedNumber(
-            row.CON_2,
-            0,
-            100
+          const contentNameList = convertStringToList(
+            row.CON_1,
+            (contentName) => contentName.trim()
           )
+          const contentPercentageList = convertStringToList(
+            row.CON_2,
+            (percentage) => boundedNumber(percentage, 0, 100)
+          )
+          const combinedList = contentNameList.map((contentName, index) => {
+            return {
+              name: contentName,
+              percentage: contentPercentageList[index] || 0,
+              contentId: null,
+            }
+          })
+          newRow[sideKey]!.contentList = combinedList
           break
         case 'Column ID [DO NOT DELETE]':
           newRow.itemNo = row['Column ID [DO NOT DELETE]'].trim()
           break
+
+        // Features
         case 'FE1':
-          newRow[sideKey]!.featureList = row.FE1.split(/[/,]+/).map(
-            (feature) => {
-              return feature.trim()
+          newRow[sideKey]!.featureList = convertStringToList(
+            row.FE1,
+            (feature) => feature.trim()
+          )
+          break
+
+        // Finish
+        case 'FIN_1':
+          newRow[sideKey]!.finishList = convertStringToList(
+            row.FIN_1,
+            (name) => {
+              return { name: name.trim(), finishId: null }
             }
           )
           break
-        case 'FIN_1':
-          newRow[sideKey]!.finishList = row.FE1.split(/[/,]+/).map((name) => {
-            const finishObj = { name: name.trim(), finishId: null }
-            return finishObj
-          })
-          break
+
+        // Inventory
         case 'IN_Cards_1':
           newRow.internalInfo!.inventoryInfo.sampleCardsRemainingList![0].qtyInPcs =
             boundedNumber(row.IN_Cards_1, 1, 999)
@@ -254,30 +240,18 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
           newRow.internalInfo!.inventoryInfo!.sampleCardsRemainingList![0].source =
             row.IN_Source.trim()
           break
-        // case 'MIK_Cons_1':
-        //   newRow.backSide = row.MIK_Cons_1.trim()
-        //   break
-        // case 'MIK_Cons_2':
-        //   newRow.backSide = row.MIK_Cons_2.trim()
-        //   break
-        // case 'MIK_Cons_3':
-        //   newRow.backSide = row.MIK_Cons_3.trim()
-        //   break
-        // case 'MIK_Cons_4':
-        //   newRow.backSide = row.MIK_Cons_4.trim()
-        //   break
-        // case 'MIK_Cons_5':
-        //   newRow.backSide = row.MIK_Cons_5.trim()
-        //   break
+
+        // Material Info
         case 'MI_MatDesc':
-          const descriptionList = row.MI_MatDesc.split(/[/,]+/).map((desc) => {
-            return {
-              descriptionId: null,
-              name: desc.trim(),
-              descriptionId: null,
+          newRow[sideKey]!.descriptionList = convertStringToList(
+            row.MI_MatDesc,
+            (desc) => {
+              return {
+                descriptionId: null,
+                name: desc.trim(),
+              }
             }
-          })
-          newRow[sideKey]!.descriptionList = descriptionList
+          )
           break
         case 'MI_MatType':
           const materialTypeKey = row.MI_MatType.trim().toUpperCase()
@@ -285,36 +259,151 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             MaterialType[materialTypeKey as keyof typeof MaterialType]
           newRow[sideKey]!.materialType = materialTypeValue
           break
-        case 'MI_NewField_1':
-          newRow[sideKey]!.constructionCustomPropertyList[0].value =
-            row.MI_NewField_1.trim()
-          break
-        case 'MI_NewName_1':
-          newRow[sideKey]!.constructionCustomPropertyList[0].name =
-            row.MI_NewName_1.trim()
-          break
         case 'MI_PUB_1':
-          newRow[sideKey]!.construction.isPublic = checkForNo(row.MI_PUB_1)
+          newRow[sideKey]!.construction.isPublic = parseYesNoValue(
+            row.MI_PUB_1,
+            true
+          )
           break
+        case 'MI_NewField_1':
+        case 'MI_NewName_1':
         case 'MI_PUB_2':
-          newRow[sideKey]!.constructionCustomPropertyList[0].isPublic =
-            checkForNo(row.MI_PUB_2)
+          if (row.MI_NewField_1.trim() || row.MI_NewName_1.trim()) {
+            if (!newRow[sideKey]!.constructionCustomPropertyList) {
+              newRow[sideKey]!.constructionCustomPropertyList = []
+            }
+            newRow[sideKey]!.constructionCustomPropertyList[0] = {
+              value: row.MI_NewField_1.trim(),
+              name: row.MI_NewName_1.trim(),
+              isPublic: parseYesNoValue(row.MI_PUB_2, true),
+            }
+          }
           break
-        case 'PAT_Field_1':
-          newRow[sideKey]!.patternInfo!.customPropertyList[0].name =
-            row.PAT_Field_1.trim()
+
+        // Material Type: Woven
+        case 'MIW_Cons_1':
+          newRow[sideKey]!.construction.warpDensity = boundedNumber(
+            row.MIW_Cons_1,
+            0,
+            999
+          )
           break
+        case 'MIW_Cons_2':
+          newRow[sideKey]!.construction.weftDensity = boundedNumber(
+            row.MIW_Cons_2,
+            0,
+            999
+          )
+          break
+        case 'MIW_Cons_3':
+          newRow[sideKey]!.construction.warpYarnSize = row.MIW_Cons_3.trim()
+          break
+        case 'MIW_Cons_4':
+          newRow[sideKey]!.construction.weftYarnSize = boundedNumber(
+            row.MIW_Cons_4,
+            0,
+            999
+          )
+          break
+
+        // Material Type: Knit
+        case 'MIK_Cons_1':
+          newRow[sideKey]!.construction.machineType = row.MIK_Cons_1.trim()
+          break
+        case 'MIK_Cons_2':
+          newRow[sideKey]!.construction.walesPerInch = boundedNumber(
+            row.MIK_Cons_2,
+            0,
+            999
+          )
+          break
+        case 'MIK_Cons_3':
+          newRow[sideKey]!.construction.coursesPerInch = boundedNumber(
+            row.MIK_Cons_3,
+            0,
+            999
+          )
+          break
+        case 'MIK_Cons_4':
+          newRow[sideKey]!.construction.yarnSize = row.MIK_Cons_4.trim()
+          break
+        case 'MIK_Cons_5':
+          newRow[sideKey]!.construction.machineGaugeInGg = boundedNumber(
+            row.MIK_Cons_5,
+            0,
+            999
+          )
+          break
+
+        // Material Type: Leather
+        case 'MIL_Average':
+          newRow[sideKey]!.construction.averageSkinPerMeterSquare =
+            row.MIL_Average.trim()
+          break
+        case 'MIL_Grade':
+          newRow[sideKey]!.construction.grade = row.MIL_Grade.trim()
+          break
+        case 'MIL_Tannage':
+          newRow[sideKey]!.construction.tannage = row.MIL_Tannage.trim()
+          break
+        case 'MIL_Thickness':
+          newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
+            row.MIL_Thickness,
+            0,
+            999
+          )
+          break
+
+        // Material Type: Non-Woven
+        case 'MIN_Bond':
+          newRow[sideKey]!.construction.bondingMethod = row.MIN_Bond.trim()
+          break
+        case 'MIN_Thick':
+          newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
+            row.MIN_Thick,
+            0,
+            999
+          )
+          break
+
+        // Material Type: Trim
+        case 'MIT_Diameter':
+          newRow[sideKey]!.construction.outerDiameter = row.MIT_Diameter.trim()
+          break
+        case 'MIT_Length':
+          newRow[sideKey]!.construction.length = row.MIT_Length.trim()
+          break
+        case 'MIT_Thickness':
+          newRow[sideKey]!.construction.thickness = row.MIT_Thickness.trim()
+          break
+        case 'MIT_Width':
+          newRow[sideKey]!.construction.width = boundedNumber(
+            row.MIT_Width,
+            0,
+            999
+          )
+          break
+
+        // Pattern
         case 'PAT_Pattern_1':
           newRow[sideKey]!.patternInfo!.pattern = row.PAT_Pattern_1.trim()
           break
+        case 'PAT_Field_1':
         case 'PAT_Pub_1':
-          newRow[sideKey]!.patternInfo!.customPropertyList[0].isPublic =
-            checkForNo(row.PAT_Pub_1)
-          break
         case 'PAT_Val_1':
-          newRow[sideKey]!.patternInfo!.customPropertyList[0].value =
-            row.PAT_Val_1.trim()
+          if (row.PAT_Field_1.trim() || row.PAT_Val_1.trim()) {
+            if (!newRow[sideKey]!.patternInfo!.customPropertyList) {
+              newRow[sideKey]!.patternInfo!.customPropertyList = []
+            }
+            newRow[sideKey]!.patternInfo!.customPropertyList[0] = {
+              value: row.PAT_Field_1.trim(),
+              name: row.PAT_Val_1.trim(),
+              isPublic: parseYesNoValue(row.PAT_Pub_1, true),
+            }
+          }
           break
+
+        // Pricing
         case 'PR_Currency':
           newRow.priceInfo!.pricing!.currencyCode =
             CurrencyCode[
@@ -343,7 +432,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             row.PR_Price,
             0,
             999999999999999999.99
-          ).toString()
+          )
           break
         case 'PR_Prod_Leadtime':
           newRow.priceInfo!.productionLeadTimeInDays =
@@ -365,53 +454,82 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             row.PR_Unit_MOQ
           )
           break
+
+        // Season
         case 'SE1':
-          newRow.seasonInfo!.season!.name = row.SE1.trim()
+          if (!newRow.seasonInfo) {
+            newRow.seasonInfo = {
+              season: null,
+              year: null,
+              isPublic: true,
+            }
+          }
+
+          if (!newRow.seasonInfo.season) {
+            newRow.seasonInfo.season = {
+              seasonId: null,
+              name: row.SE1.trim(),
+            }
+          }
           break
         case 'SE2':
           newRow.seasonInfo!.year = parseInt(row.SE2.trim(), 10)
           break
         case 'SE3':
-          newRow.seasonInfo!.isPublic = checkForNo(row.SE3)
+          newRow.seasonInfo!.isPublic = parseYesNoValue(row.SE3, true)
           break
+
+        // Side Type
         case 'ST1':
+        case 'ST3':
           newRow.sideType =
             MaterialSideType[
               row.ST1.trim()
                 .toUpperCase()
                 .replace(' ', '_') as keyof typeof MaterialSideType
             ] || 1
+          newRow.isDoubleSide = parseYesNoValue(row.ST3, false)
+          if (newRow.isDoubleSide) {
+            newRow.sideType = null
+          }
           break
         case 'ST2':
-          newRow.isComposite = checkForYes(row.ST2)
-          break
-        case 'ST3':
-          newRow.isDoubleSide = checkForYes(row.ST3)
+          newRow.isComposite = parseYesNoValue(row.ST2, false)
           break
         case 'ST4':
-          newRow.isAutoSyncFaceToBackSideInfo = checkForYes(row.ST4)
+          newRow.isAutoSyncFaceToBackSideInfo = parseYesNoValue(row.ST4, false)
           break
-        case 'TAG_Crtf_1':
-          newRow.tagInfo!.certificationTagList = row.TAG_Crtf_1.split(
-            /[/,]+/
-          ).map((certificateId) => {
-            return {
-              certificateId: parseInt(certificateId.trim()),
-            }
-          })
 
+        // Tags
+        case 'TAG_Crtf_1':
+          newRow.tagInfo!.certificationTagList = convertStringToList(
+            row.TAG_Crtf_1,
+            (certificateId) => {
+              return {
+                certificateId: parseInt(certificateId.trim()),
+              }
+            }
+          )
           break
         case 'TAG_Priv_1':
-          newRow.backSide = row.TAG_Priv_1.trim()
+          newRow.internalInfo!.tagList = convertStringToList(
+            row.TAG_Priv_1,
+            (tag) => tag.trim()
+          )
           break
         case 'TAG_PubTags_1':
-          newRow.backSide = row.TAG_PubTags_1.trim()
+          newRow.tagInfo!.tagList = convertStringToList(
+            row.TAG_PubTags_1,
+            (tag) => tag.trim()
+          )
           break
         case 'TAG_Rem_1':
-          newRow.backSide = row.TAG_Rem_1.trim()
+          newRow.internalInfo!.remark = row.TAG_Rem_1.trim()
           break
+
+        // Width
         case 'WD_1':
-          newRow.width.cuttable = boundedNumber(row.WD_1, 1, 999)
+          newRow.width!.cuttable = boundedNumber(row.WD_1, 1, 999)
           break
         case 'WD_2':
           const lengthUnitKey = row.WD_2.trim().toUpperCase()
@@ -420,68 +538,52 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
           newRow.width!.unit = lengthUnitValue
           break
         case 'WD_3':
-          newRow.width.full = boundedNumber(row.WD_3, 1, 999)
+          newRow.width!.full = boundedNumber(row.WD_3, 1, 999)
           break
-        case 'WD_4':
-          newRow.backSide = row.WD_4.trim()
-          break
+
+        // Weight
         case 'WE_1':
-          newRow.weight.value = boundedNumber(row.WE_1, 1, 999)
+          newRow.weight!.value = boundedNumber(row.WE_1, 1, 999)
           break
         case 'WE_2':
-          newRow.weight.unit = row.WE_2.trim()
+          newRow.weight!.unit =
+            WeightUnit[
+              unitMapping[
+                row.WE_2.trim().toLowerCase()
+              ] as keyof typeof WeightUnit
+            ] || WeightUnit.GM
           break
         case 'WE_D_GM':
-          newRow.backSide = row.WE_D_GM.trim()
+          newRow.weightDisplaySetting!.isShowWeightGm = parseYesNoValue(
+            row.WE_D_GM.trim(),
+            true
+          )
           break
         case 'WE_D_GSM':
-          newRow.backSide = row.WE_D_GSM.trim()
+          newRow.weightDisplaySetting.isShowWeightGsm = parseYesNoValue(
+            row.WE_D_GSM.trim(),
+            true
+          )
           break
         case 'WE_D_GY':
-          newRow.backSide = row.WE_D_GY.trim()
+          newRow.weightDisplaySetting.isShowWeightGy = parseYesNoValue(
+            row.WE_D_GY.trim(),
+            true
+          )
           break
         case 'WE_D_OZ':
-          newRow.backSide = row.WE_D_OZ.trim()
+          newRow.weightDisplaySetting.isShowWeightOz = parseYesNoValue(
+            row.WE_D_OZ.trim(),
+            true
+          )
           break
+
         // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
-        //   break
-        // case 'PLACEHOLDER':
-        //   newRow.backSide = row.backSide
+        //   PLACEHOLDER = row.backSide
         //   break
       }
-    })
-    return mergeDeepRight(newRow, row)
+    }
+    return newRow
   })
   return materialData
 }
@@ -504,12 +606,37 @@ function getMaterialQuantityUnit(
   )
 }
 
-//return false as default
-function checkForYes(value: string): boolean {
-  return value.trim().toUpperCase() === 'Y'
+function parseYesNoValue(value: string, defaultValue: boolean): boolean {
+  if (!value) {
+    return defaultValue
+  }
+
+  const trimmedValue = value.trim().toUpperCase()
+
+  if (trimmedValue === 'Y') {
+    return true
+  } else if (trimmedValue === 'N') {
+    return false
+  } else {
+    return defaultValue
+  }
 }
 
-//return true as default
-function checkForNo(value: string): boolean {
-  return value.trim().toUpperCase() === 'N'
+function convertStringToList(
+  value: string,
+  callback: (val: string) => any
+): any[] {
+  return value.split(/[/,]+/).map(callback)
+}
+
+const unitMapping: { [key: string]: string } = {
+  gsm: 'GSM',
+  'oz/yd': 'OZ',
+  'g/y': 'GY',
+  'g/m': 'GM',
+}
+
+export const defaultCellStyle = {
+  'align-items': 'center',
+  display: 'flex',
 }

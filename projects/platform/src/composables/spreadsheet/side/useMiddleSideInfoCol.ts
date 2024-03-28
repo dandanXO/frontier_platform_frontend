@@ -11,6 +11,7 @@ import {
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 import useFeatureListCol from '@/composables/spreadsheet/side/useFeatureListCol'
 import useFinishListCol from '@/composables/spreadsheet/side/useFinishListCol'
+import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 
 const sideEditable: EditableCallback<MaterialRow> = (params) => {
   if (!params.data) {
@@ -45,6 +46,7 @@ const useMiddleSideInfoCol = (
           headerName: t('RR0084'),
           minWidth: 200,
           cellEditor: SelectCellEditor,
+          cellStyle: defaultCellStyle,
         },
         featureListCol.value,
         finishListCol.value,

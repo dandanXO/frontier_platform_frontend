@@ -31,6 +31,7 @@ import {
   colorInfoSchema,
   materialQuantityUnitSchema,
 } from '@/composables/material/useMaterialSchema'
+import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 
 const toTransparent = (hex: string) => hex + '88'
 
@@ -66,7 +67,7 @@ export const getCellStyle = ({
     return spreadsheetBgColors.default
   }
 
-  return { backgroundColor: getBgColor() }
+  return { backgroundColor: getBgColor(), ...defaultCellStyle }
 }
 
 export const rowEditable: EditableCallback<MaterialRow> = (params) => {
@@ -126,10 +127,13 @@ export const getEnumCellProps = <T extends string | number>(
 ): ColDef<MaterialRow, T> => {
   return {
     cellStyle: (params: CellClassParams<MaterialRow, T>) => {
-      return getCellStyle({
-        valid: schema.safeParse(params.value).success,
-        editable: params.column.isCellEditable(params.node),
-      })
+      return {
+        ...getCellStyle({
+          valid: schema.safeParse(params.value).success,
+          editable: params.column.isCellEditable(params.node),
+        }),
+        ...defaultCellStyle,
+      }
     },
     cellEditor: 'agRichSelectCellEditor',
     cellEditorParams: {
@@ -292,10 +296,13 @@ export const getCustomPropertyListCellProps = ({
       const result = colorInfoSchema.shape.customPropertyList.safeParse(
         params.value
       )
-      return getCellStyle({
-        valid: result.success,
-        editable: params.column.isCellEditable(params.node),
-      })
+      return {
+        ...getCellStyle({
+          valid: result.success,
+          editable: params.column.isCellEditable(params.node),
+        }),
+        ...defaultCellStyle,
+      }
     },
   }
 }

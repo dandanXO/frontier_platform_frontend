@@ -513,7 +513,9 @@ const checkPlacementAndReverse = (state) => {
 const refContextualMenu = ref(null)
 
 const setSearchInput = (searchInput) => {
-  refContextualMenu.value.setSearchInput(searchInput || '')
+  if (refContextualMenu.value) {
+    refContextualMenu.value.setSearchInput(searchInput || '')
+  }
 }
 
 const addNewMenu = async () => {

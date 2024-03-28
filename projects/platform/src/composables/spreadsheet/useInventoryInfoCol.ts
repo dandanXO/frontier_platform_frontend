@@ -31,6 +31,7 @@ import {
   processYardageRemainingInfo,
 } from '@/utils/material'
 import { computed, type ComputedRef } from 'vue'
+import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 
 const cellRenderer: ValueFormatterFunc<
   MaterialRow,
@@ -211,6 +212,7 @@ const useInventoryInfoCol = (): ComputedRef<
           field: 'internalInfo.inventoryInfo.isTotalPublic',
           headerName: t('MI0025'),
           editable: rowEditable,
+          cellStyle: defaultCellStyle,
         },
         {
           headerName: t('RR0034'),
@@ -259,6 +261,7 @@ const useInventoryInfoCol = (): ComputedRef<
 
             return toYUnitDisplay(calculateInY())
           },
+          cellStyle: defaultCellStyle,
         },
         {
           headerName: t('RR0289'),

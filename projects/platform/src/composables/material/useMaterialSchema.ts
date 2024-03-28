@@ -524,7 +524,7 @@ export const seasonInfoSchema = z.object({
       seasonId: z.number().int().nullable().default(null),
       name: z
         .string()
-        .max(...getMaxLengthParams(10))
+        .max(...getMaxLengthParams(50))
         .nullable()
         .default(null),
     })

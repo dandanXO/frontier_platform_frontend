@@ -25,6 +25,7 @@ import useMaterialSchema, {
   priceSchema,
 } from '@/composables/material/useMaterialSchema'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 
 const pricingPath = ['priceInfo', 'pricing']
 const minimumOrderPath = ['priceInfo', 'minimumOrder']
@@ -93,6 +94,7 @@ const usePriceInfoCol = (
           }
           return result
         },
+        cellStyle: defaultCellStyle,
       },
       {
         headerName: t('RR0134'),

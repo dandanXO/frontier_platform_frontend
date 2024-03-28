@@ -13,7 +13,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
       size="md"
       prependIcon="upload"
       @click="handleExcelButtonClick"
-    ) {{ $t('Import Template') }}
+    ) {{ $t('UU0151') }}
     input(
       ref="fileInput"
       type="file"
@@ -21,12 +21,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
       accept=".xlsx, .xls, .csv"
       @change="handleExcelSelect"
     )
-    f-button(
-      type="secondary"
-      size="md"
-      prependIcon="download"
-      @click="handleDownloadTemplate"
-    ) {{ $t('Download Template') }}
+    template-download-button
   ag-grid-vue(
     style="height: 100%"
     class="ag-theme-balham"
@@ -38,13 +33,6 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
   )
   div(class="flex flex-row justify-between items-center")
     div(class="flex flex-row gap-x-4 items-center")
-      f-button(
-        v-if="!readOnly"
-        type="secondary"
-        size="md"
-        :disabled="!isUpdated"
-        @click="handleReset"
-      ) {{ $t('UU0143') }}
       div(class="flex flex-row gap-x-3 items-center")
         div(
           class="px-4 py-3 rounded-lg h-10 text-body2 bg-primary-100 flex flex-row items-center justify-center gap-x-3"
@@ -52,15 +40,6 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
           div(class="flex flex-row items-center justify-between w-15")
             span(class="text-grey-600") {{ $t('RR0278') }}
             span(class="font-bold") {{ editStatusCount.createCount }}
-          span(class="h-full w-px bg-grey-250")
-          div(class="flex flex-row items-center justify-between w-15")
-            span(class="text-grey-600") {{ $t('RR0327') }}
-            span(class="font-bold") {{ editStatusCount.updateCount }}
-        div(
-          class="w-26 h-10 rounded-lg bg-grey-100 px-4 py-3 text-body-2 flex flex-row justify-between items-center"
-        )
-          span(class="text-grey-600") {{ $t('RR0063') }}
-          span(class="font-bold text-grey-900") {{ editStatusCount.deleteCount }}
     f-button(
       v-if="!readOnly"
       type="primary"
@@ -123,7 +102,11 @@ import {
   convertSpreadSheetPriceInfoFormToReq,
   generateMaterialRow,
 } from '@/utils/material'
-import { convertDataToWorkbook, populateGrid } from './utils/utils'
+import {
+  convertDataToWorkbook,
+  populateGrid,
+} from '@/components/assets/spreadsheet/utils/utils'
+import TemplateDownloadButton from '@/components/assets/spreadsheet/TemplateDownloadButton.vue'
 
 const AG_GRID_LICENSE_KEY = atob(
   import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED
