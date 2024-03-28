@@ -370,7 +370,9 @@ const routes = [
         meta: { outerType: OUTER_TYPE.RECEIVED_SHARE },
         components: {
           default: () =>
-            import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
+            import(
+              '@/views/outerApp/receivedShare/ReceivedShareMaterialDetail.vue'
+            ),
           header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
         },
       },

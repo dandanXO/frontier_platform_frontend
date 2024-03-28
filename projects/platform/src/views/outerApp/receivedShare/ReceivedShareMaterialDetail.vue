@@ -1,5 +1,5 @@
 <template lang="pug">
-material-detail-outer-external(
+material-detail-external-outer(
   :material="material"
   :nodeMeta="nodeMeta"
   :locationList="locationList"
@@ -10,7 +10,7 @@ material-detail-outer-external(
 import { computed } from 'vue'
 import { useOuterStore } from '@/stores/outer'
 import useNavigation from '@/composables/useNavigation'
-import MaterialDetailOuterExternal from '@/components/common/material/detail/external/MaterialDetailOuterExternal.vue'
+import MaterialDetailExternalOuter from '@/components/common/material/detail/external/MaterialDetailExternalOuter.vue'
 
 const props = defineProps<{
   sharingKey: string

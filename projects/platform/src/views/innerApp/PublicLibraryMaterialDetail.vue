@@ -1,5 +1,5 @@
 <template lang="pug">
-material-detail-inner-external(
+material-detail-external-inner(
   :material="material"
   :nodeMeta="nodeMeta"
   :locationList="locationList"
@@ -11,7 +11,7 @@ material-detail-inner-external(
 <script setup lang="ts">
 import { computed, reactive, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import MaterialDetailInnerExternal from '@/components/common/material/detail/external/MaterialDetailInnerExternal.vue'
+import MaterialDetailExternalInner from '@/components/common/material/detail/external/MaterialDetailExternalInner.vue'
 import useNavigation from '@/composables/useNavigation'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import { usePublicLibraryStore } from '@/stores/publicLibrary'
