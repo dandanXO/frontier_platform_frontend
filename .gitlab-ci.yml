@@ -18,9 +18,9 @@ platform-build:
   image: node:18.15.0
   stage: build
   rules:
-    # - if: $CI_COMMIT_REF_NAME == "main"
-    #   variables:
-    #     DEPLOY_ENV: 'development'
+    - if: $CI_COMMIT_REF_NAME == "main"
+      variables:
+        DEPLOY_ENV: 'development'
     - if: $CI_COMMIT_REF_NAME == "staging"
       variables:
         DEPLOY_ENV: 'staging'
