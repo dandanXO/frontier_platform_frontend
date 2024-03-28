@@ -29,7 +29,7 @@ div
         )
         div(class="pt-6 pb-4 text-caption text-right")
           span {{ $t('RR0347') }} &nbsp;
-          span(class="text-cyan-400 cursor-pointer" @click="copyText(contactEmail)") {{ $t('RR0348') }}
+          span(class="text-cyan-400 cursor-pointer" @click="copyContactEmail") {{ $t('RR0348') }}
         f-input-password(
           v-if="showLoginView"
           v-model:textValue="password"
@@ -59,10 +59,12 @@ import { useI18n } from 'vue-i18n'
 import { OUTER_TYPE } from '@/utils/constants'
 import SignInWithGoogle from '@/utils/signInWithGoogle.js'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 
 const route = useRoute()
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const userStore = useUserStore()
 const outerStore = useOuterStore()
 const { ogBaseEmbedApi, ogBaseReceivedShareApi } = outerStore
@@ -108,7 +110,10 @@ const verify = async () => {
     }
   }
 
-  verifyEmail()
+  if (outerType.value === OUTER_TYPE.RECEIVED_SHARE) {
+    verifyEmail()
+  }
+
   verifyAccessCode()
   if (errorMsgUnderEmail.value !== '' || errorMsgUnderAccessCode.value !== '') {
     return
@@ -212,5 +217,14 @@ const generalSignIn = async () => {
 const skip = () => {
   showLoginView.value = false
   hasVerified.value = true
+}
+
+const copyContactEmail = () => {
+  if (!contactEmail.value) {
+    return
+  }
+
+  copyText(contactEmail.value)
+  notify.showNotifySnackbar({ messageText: t('RR0359') })
 }
 </script>

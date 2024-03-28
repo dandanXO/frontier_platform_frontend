@@ -86,8 +86,14 @@ modal-behavior(
                     v-model:inputValue="embed.isEnablePrivateView"
                     @update:inputValue="updateEmbedDownloadPermission"
                   )
-                  f-tag(class="rounded-[20px]" @click="copyEmbedAccessCode") 
-                    f-svg-icon(iconName="copy_link" size="16" class="text-grey-800")
+                  f-tooltip-standard(:tooltipMessage="$t('RR0353')")
+                    template(#slot:tooltip-trigger)
+                      f-tag(class="rounded-[20px]" @click="copyEmbedAccessCode")
+                        f-svg-icon(
+                          iconName="copy_link"
+                          size="16"
+                          class="text-grey-800"
+                        )
                 f-button(
                   prependIcon="copy_link"
                   size="sm"
