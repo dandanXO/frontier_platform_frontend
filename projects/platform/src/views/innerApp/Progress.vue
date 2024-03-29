@@ -73,10 +73,6 @@ const tabList = reactive([
     path: PROGRESS_TAB.U3M,
   },
   {
-    name: t('PP0003'),
-    path: PROGRESS_TAB.EXCEL,
-  },
-  {
     name: t('MI0143'),
     path: PROGRESS_TAB.SPREADSHEET,
   },
