@@ -14,7 +14,7 @@ grid-item-wrapper(
       img(
         v-defaultImg
         :src="mainMaterial.coverImage?.thumbnailUrl"
-        class="w-full h-full"
+        class="w-full h-full object-contain"
       )
   template(#hover-content)
     div(

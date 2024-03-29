@@ -90,7 +90,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(class="flex items-center gap-x-4")
         img(
           v-defaultImg
-          class="flex-shrink-0 w-13 h-13 rounded overflow-hidden"
+          class="flex-shrink-0 w-13 h-13 rounded overflow-hidden object-contain"
           :class="{ 'cursor-pointer': !digitalThread.hasMaterialDeleted || !digitalThread.hasMaterialNoAccess }"
           :src="material.coverImage?.thumbnailUrl"
           @click="goToStickerMaterialDetail(material, digitalThread, false)"

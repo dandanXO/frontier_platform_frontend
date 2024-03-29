@@ -5,7 +5,7 @@ div(
   div(class="group/material-no pb-1 flex items-center gap-x-2.5")
     img(
       v-defaultImg
-      class="w-8 h-8 rounded cursor-pointer"
+      class="w-8 h-8 rounded cursor-pointer object-contain"
       :src="material.coverImage?.thumbnailUrl"
       @click.stop="goToStickerMaterialDetail(material, digitalThread, false)"
     )

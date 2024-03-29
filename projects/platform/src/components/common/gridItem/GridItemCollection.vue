@@ -20,13 +20,13 @@ grid-item-wrapper(
         img(
           v-if="collection.coverImgList[1]"
           :src="collection.coverImgList[1]"
-          class="w-full h-full"
+          class="w-full h-full object-contain"
         )
       div(class="bg-grey-50")
         img(
           v-if="collection.coverImgList[2]"
           :src="collection.coverImgList[2]"
-          class="w-full h-full"
+          class="w-full h-full object-contain"
         )
   template(#hover-content)
     p(class="text-caption2 md:text-body1/1.6 font-bold text-grey-0") {{ $t('RR0068', { number: collection.itemCounts }) }}

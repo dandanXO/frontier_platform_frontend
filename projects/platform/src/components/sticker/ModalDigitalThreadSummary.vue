@@ -10,6 +10,7 @@ modal-behavior(:header="$t('TT0067')")
         img(
           v-defaultImg
           :src="digitalThread.materialCoverImg"
+          class="w-full h-full object-contain"
           :class="{ 'opacity-20': digitalThread.hasMaterialDeleted || digitalThread.hasMaterialNoAccess }"
         )
         span(
@@ -23,7 +24,7 @@ modal-behavior(:header="$t('TT0067')")
       //- Material No
       div(class="pt-7 pb-6")
         p(class="text-caption text-grey-500 pb-4") {{ $t('RR0257') }}
-        p(class="text-caption text-grey-900 break-all") {{ digitalThread.materialNo }}
+        p(class="text-caption text-grey-900 break-all") {{ digitalThread.itemNo }}
           span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
           span(v-else-if="digitalThread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
       //- Material Owner

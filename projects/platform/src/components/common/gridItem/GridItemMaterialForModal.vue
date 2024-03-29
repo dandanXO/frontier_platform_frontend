@@ -12,7 +12,7 @@ grid-item-wrapper(
     img(
       v-defaultImg
       :src="material.coverImage?.thumbnailUrl"
-      class="w-full h-full rounded-md overflow-hidden"
+      class="w-full h-full rounded-md overflow-hidden object-contain"
     )
 </template>
 
