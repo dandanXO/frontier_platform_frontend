@@ -239,10 +239,12 @@ const tabList = computed(() => [
 ])
 
 const coverId = computed(() => {
-  const materialCover = multimediaUpdateService.multimediaList.value.find((item) => item.isCover === true);
+  const materialCover = multimediaUpdateService.multimediaList.value.find(
+    (item) => item.isCover === true
+  )
 
-  return materialCover?.fileId || null;
-});
+  return materialCover?.fileId || null
+})
 
 const { primarySideImage, publicFileList } = useMaterial(material)
 
@@ -284,7 +286,7 @@ const submit = handleSubmit(async (form) => {
       : undefined,
   })
   if (multimediaUpdateService.selectedCoverId.value) {
-    await multimediaUpdateService.saveCover();
+    await multimediaUpdateService.saveCover()
   }
 })
 

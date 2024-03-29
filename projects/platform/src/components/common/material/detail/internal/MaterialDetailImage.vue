@@ -21,10 +21,10 @@ div(class="flex flex-col gap-y-4")
     button(
       v-if="isShowStar"
       class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-35 flex items-center justify-center cursor-pointer"
-      @click="() => props.selectCover(availableFileList[currentDisplayIndex].id)"
+      @click="clickStarEvent(currentDisplayIndex)"
     )
       f-svg-icon(
-        v-if="availableFileList[currentDisplayIndex].id === props.coverId || availableFileList[currentDisplayIndex].fileId === props.coverId"
+        v-if="availableFileList[currentDisplayIndex].id === props.coverId"
         iconName="star_solid"
         size="32"
         class="text-primary-400"
@@ -44,11 +44,11 @@ div(class="flex flex-col gap-y-4")
       )
         file-thumbnail(
           class="w-18 h-18 hover:border-2 hover:border-primary-300"
-          :thumbnailUrl="image.thumbnailUrl"
+          :thumbnailUrl="currentCoverImageUrl(image, index)"
           :originalUrl="image.originalUrl"
           :extension="image.extension"
           :class="{ 'border-2 border-primary-300': currentDisplayIndex === index }"
-          @click="currentDisplayIndex = index"
+          @click="clickSmallImage(index)"
         )
         span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.displayNameShort }}
         span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
@@ -60,7 +60,7 @@ import { useStore } from 'vuex'
 import Slider from '@/components/common/Slider.vue'
 import type { THEME } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
-import type { MaterialFile } from '@/types'
+import type { CoverId, MaterialFile } from '@/types'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 import {
@@ -76,8 +76,8 @@ const props = withDefaults(
     canEdit?: boolean
     canStar?: boolean
     selectedId?: number | null
-    selectCover?: ((index: number) => void) | null
-    coverId?: number | string | null
+    selectCover?: ((index: CoverId) => void) | null
+    coverId?: CoverId | null
   }>(),
   {
     canEdit: false,
@@ -91,14 +91,30 @@ const availableFileList = props.publicFileList.filter((item) =>
   ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
 )
 
+const currentCoverIndex = ref(0)
+const clickStarEvent = (index: number) => {
+  currentCoverIndex.value = index
+  if (props.selectCover) {
+    props.selectCover(availableFileList[index].id as CoverId)
+  }
+}
+const currentCoverImageUrl = (image: MaterialFile, index: number) => {
+  return index !== 0
+    ? image.thumbnailUrl
+    : availableFileList[currentCoverIndex.value ?? 0].thumbnailUrl
+}
+
+const currentDisplayIndex = ref(0)
+const clickSmallImage = (index: number) => {
+  currentDisplayIndex.value = index
+}
+
 const emits = defineEmits<{
   (e: 'editMultimedia'): void
   (e: 'editScannedImage'): void
 }>()
 
 const store = useStore()
-
-const currentDisplayIndex = ref(0)
 
 const openViewMode = () => {
   store.dispatch('helper/pushModal', {
@@ -113,10 +129,16 @@ const openViewMode = () => {
   })
 }
 
-const isShowStar = computed(() => props.canStar 
-  && IMAGE_FILE_ACCEPT_TYPE.includes(availableFileList[currentDisplayIndex.value].extension)
-  && availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler'
-  && availableFileList[currentDisplayIndex.value].id !== 'cover')
+const isShowStar = computed(
+  () =>
+    props.canStar &&
+    IMAGE_FILE_ACCEPT_TYPE.includes(
+      availableFileList[currentDisplayIndex.value].extension
+    ) &&
+    availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler' &&
+    availableFileList[currentDisplayIndex.value].id !== 'backSideRuler' &&
+    availableFileList[currentDisplayIndex.value].id !== 'cover'
+)
 
 watch(
   () => props.currentSideType,
