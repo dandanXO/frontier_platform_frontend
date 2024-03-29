@@ -636,7 +636,7 @@ const gridOptions: GridOptions<MaterialRow> = {
   },
   rowSelection: 'multiple',
   enableRangeSelection: true,
-  stopEditingWhenCellsLoseFocus: false,
+  stopEditingWhenCellsLoseFocus: true,
   pagination: true,
   localeText: {
     columns: t('RR0331'),
