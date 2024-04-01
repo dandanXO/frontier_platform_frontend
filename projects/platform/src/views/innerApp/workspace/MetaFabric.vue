@@ -1,7 +1,7 @@
 <template lang="pug">
 search-table(
   :searchType="SEARCH_TYPE.INNER_EXTERNAL"
-  :searchCallback="getShareToMeList"
+  :searchCallback="getMetaFabricList"
   :optionSort="optionSort"
   :optionMultiSelect="optionMultiSelect"
   :itemList="nodeList"
@@ -99,8 +99,7 @@ import SearchTable, {
 } from '@/components/common/SearchTable.vue'
 import { SEARCH_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -112,50 +111,40 @@ import { useShareToMeStore } from '@/stores/shareToMe'
 import {
   type InnerExternalFilter,
   type ShareNodeChild,
-  type ShareNodeCollection,
   NodeType,
 } from '@frontier/platform-web-sdk'
-import useCurrentUnit from '@/composables/useCurrentUnit'
-import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
+import useWorkspaceCommon from '@/composables/workspace/useWorkspaceCommon'
+import useNode from '@/composables/useNode'
 
 const props = defineProps<{
   sharingId?: string
   nodeId?: string
 }>()
 
-const currentSharingId = ref<number | null>(
-  props.sharingId ? Number(props.sharingId) : null
-)
-
-const currentNodeId = ref<number | null>(
-  props.nodeId ? Number(props.nodeId) : null
-)
-
 const { t } = useI18n()
-const store = useStore()
+const {
+  currentSharingId,
+  currentNodeId,
+  setSharingIdAndNodeKey,
+  shareNodeCollection,
+  locationList,
+  isFirstLayer,
+  nodeList,
+  optionMultiSelect,
+  optionNode,
+  selectedNodeList,
+  haveMsgAndFirstRead,
+  openModalCollectionDetail,
+  openModalShareMessage,
+} = useNode('metaFabric', props.nodeId, props.sharingId)
+
 const router = useRouter()
 const route = useRoute()
 const searchStore = useSearchStore()
-const { ogNodeId } = useCurrentUnit()
 const { ogBaseShareToMeApi } = useShareToMeStore()
-const { shareToMeClone, shareToMeCloneByNodeList, shareToMeDeleteByNodeList } =
-  useShareToMe()
-const { goToShareToMeMaterial, goToWorkspace } = useNavigation()
-
-const shareNodeCollection = ref<ShareNodeCollection>()
-
-const tabList = ref([
-  {
-    name: t('FF0001'),
-    id: 'workspace',
-    goTo: goToWorkspace.bind(null, {}, ogNodeId.value),
-  },
-  {
-    name: t('RR0010'),
-    id: 'share-to-me',
-    goTo: () => {},
-  },
-])
+const { shareToMeClone } = useShareToMe()
+const { goToMetaFabricMaterialDetail } = useNavigation()
+const { tabList } = useWorkspaceCommon()
 
 const optionSort = computed(() => {
   const { ITEM_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = searchStore.sortOption
@@ -164,36 +153,9 @@ const optionSort = computed(() => {
     keywordSearch: [RELEVANCE_C_M],
   }
 })
-const optionMultiSelect = computed(() => {
-  return isFirstLayer.value
-    ? [shareToMeDeleteByNodeList]
-    : [shareToMeCloneByNodeList]
-})
-const locationList = computed(() => {
-  const root = {
-    name: t('RR0010'),
-    nodeId: -1,
-  }
-  return shareNodeCollection.value && shareNodeCollection.value.nodeMeta
-    ? [root, ...shareNodeCollection.value.nodeMeta.locationList]
-    : [root]
-})
-const isFirstLayer = computed(() => locationList.value.length === 1)
-const nodeList = computed(() => shareNodeCollection.value?.childNodeList ?? [])
-const optionNode = computed(() => {
-  const optionList = [[shareToMeCloneByNodeList]]
-  if (isFirstLayer.value) {
-    optionList[0].push(shareToMeDeleteByNodeList)
-  }
-  return optionList
-})
-const selectedNodeList = ref([])
-const isFirstTime = ref(true)
-const haveMsgAndFirstRead = computed(
-  () => !!shareNodeCollection.value?.shareInfo.message && isFirstTime.value
-)
 
-const getShareToMeList = async (
+// Note: MetaFabric call the same API with ShareToMe
+const getMetaFabricList = async (
   payload: SearchPayload<InnerExternalFilter>,
   query: RouteQuery
 ) => {
@@ -210,6 +172,7 @@ const getShareToMeList = async (
   } = await ogBaseShareToMeApi('getShareToMeList', {
     sharingId: currentSharingId.value,
     nodeId: currentNodeId.value,
+    isFromMetaFabric: true,
     ...payload,
   })
 
@@ -217,46 +180,13 @@ const getShareToMeList = async (
   searchStore.setPaginationRes(result.pagination)
 }
 
-const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-collection-detail',
-    properties: {
-      nodeMeta: shareNodeCollection.value?.nodeMeta,
-      collection: shareNodeCollection.value?.collection,
-      canEdit: false,
-    } as PropsModalCollectionDetail,
-  })
-}
-
-const openModalShareMessage = () => {
-  isFirstTime.value = false
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-share-message',
-    properties: {
-      message: shareNodeCollection.value?.shareInfo.message,
-    },
-  })
-}
-
-const setSharingIdAndNodeKey = (nodeId: number, targetSharingId?: number) => {
-  if (nodeId === -1 && !targetSharingId) {
-    currentSharingId.value = null
-    currentNodeId.value = null
-    return
-  }
-
-  currentNodeId.value = nodeId
-  if (targetSharingId) {
-    currentSharingId.value = targetSharingId
-  }
-}
-
 const handleNodeClick = (node: ShareNodeChild, visit: Function) => {
   if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    searchStore.setKeyword('')
     setSharingIdAndNodeKey(node.nodeMeta.nodeId, node.shareInfo.sharingId)
     visit()
   } else {
-    goToShareToMeMaterial(
+    goToMetaFabricMaterialDetail(
       {},
       node.shareInfo.sharingId,
       node.nodeMeta.nodeId,

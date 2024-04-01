@@ -14,10 +14,10 @@ div(class="flex flex-col")
         :key="index"
         class="flex items-center py-2 pl-2 pr-4 gap-x-3 hover:bg-grey-100"
       )
-        template(v-if="type === SHARE_WITH_TYPE.OG")
+        template(v-if="item.type === SHARE_WITH_TYPE.OG")
           f-avatar(type="org" :imageUrl="item.unitLogo" size="md")
           p(class="text-body2 flex-grow text-grey-900 line-clamp-1") {{ item.unitName }}
-        template(v-else-if="type === SHARE_WITH_TYPE.USER")
+        template(v-else-if="item.type === SHARE_WITH_TYPE.USER")
           f-avatar(
             v-if="item.isFrontierUser"
             type="user"

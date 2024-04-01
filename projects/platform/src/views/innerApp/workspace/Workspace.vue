@@ -84,7 +84,7 @@ import { SEARCH_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -97,14 +97,14 @@ import {
   NodeType,
   type NodeChild,
   type NodeMeta,
-  type WorkspaceNodeCollection,
   type WorkspaceFilter,
 } from '@frontier/platform-web-sdk'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
 import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
 import { useAssetsStore } from '@/stores/assets'
+import useWorkspaceCommon from '@/composables/workspace/useWorkspaceCommon'
+import useNode from '@/composables/useNode'
 
 const props = defineProps<{
   nodeId: string
@@ -115,11 +115,19 @@ const store = useStore()
 const searchStore = useSearchStore()
 const { ogBaseAssetsApi } = useAssetsStore()
 const { ogBaseWorkspaceApi } = useWorkspaceStore()
-const { ogNodeId } = useCurrentUnit()
 const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
-const { goToWorkspaceMaterialDetail, goToShareToMe } = useNavigation()
+const { goToWorkspaceMaterialDetail } = useNavigation()
+const { tabList } = useWorkspaceCommon()
+const {
+  currentNodeId,
+  selectedNodeList,
+  workspaceNodeCollection,
+  locationList,
+  nodeList,
+  isFirstLayer,
+} = useNode('workspace', props.nodeId)
 const {
   editNodeCollection,
   editNodeMaterial,
@@ -132,35 +140,6 @@ const {
   openModalCreateOrEditCollection,
 } = useWorkspace()
 
-const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
-
-const tabList = ref([
-  {
-    name: t('FF0001'),
-    id: 'workspace',
-    goTo: () => {},
-  },
-  {
-    name: t('RR0010'),
-    id: 'share-to-me',
-    goTo: goToShareToMe,
-  },
-])
-
-const locationList = computed(() => {
-  const root = {
-    nodeId: ogNodeId.value,
-    name: t('FF0001'),
-  }
-  return workspaceNodeCollection.value
-    ? [root, ...workspaceNodeCollection.value.nodeMeta.locationList]
-    : [root]
-})
-
-const isFirstLayer = computed(() => locationList.value.length === 1)
-const nodeList = computed(
-  () => workspaceNodeCollection.value?.childNodeList ?? []
-)
 const optionSort = computed(() => {
   const {
     ITEM_NO_A_Z_C_M,
@@ -213,8 +192,6 @@ const optionNode = (node: NodeChild) => {
     return [[editNodeMaterial], [moveNode, shareNode], [deleteMaterial]]
   }
 }
-const currentNodeId = ref(Number(props.nodeId))
-const selectedNodeList = ref([])
 
 const getWorkspace = async (
   payload: SearchPayload<WorkspaceFilter>,

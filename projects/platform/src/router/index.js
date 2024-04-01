@@ -254,27 +254,41 @@ const routes = [
             path: 'workspace/:nodeId',
             name: 'Workspace',
             props: true,
-            component: () => import('@/views/innerApp/Workspace.vue'),
+            component: () => import('@/views/innerApp/workspace/Workspace.vue'),
           },
           {
             path: 'workspace/material/:nodeId',
             name: 'WorkspaceMaterialDetail',
             props: true,
             component: () =>
-              import('@/views/innerApp/WorkspaceMaterialDetail.vue'),
+              import('@/views/innerApp/workspace/WorkspaceMaterialDetail.vue'),
           },
           {
             path: 'share-to-me/:sharingId?/:nodeId?',
             name: 'ShareToMe',
             props: true,
-            component: () => import('@/views/innerApp/ShareToMe.vue'),
+            component: () => import('@/views/innerApp/workspace/ShareToMe.vue'),
           },
           {
             path: 'share-to-me/:sharingId/material/:nodeId',
             name: 'ShareToMeMaterial',
             props: true,
             component: () =>
-              import('@/views/innerApp/ShareToMeMaterialDetail.vue'),
+              import('@/views/innerApp/workspace/ShareToMeMaterialDetail.vue'),
+          },
+          {
+            path: 'meta-fabric/:sharingId?/:nodeId?',
+            name: 'MetaFabric',
+            props: true,
+            component: () =>
+              import('@/views/innerApp/workspace/MetaFabric.vue'),
+          },
+          {
+            path: 'meta-fabric/:sharingId/material/:nodeId',
+            name: 'MetaFabricMaterialDetail',
+            props: true,
+            component: () =>
+              import('@/views/innerApp/workspace/MetaFabricMaterialDetail.vue'),
           },
           {
             path: 'moodboard',

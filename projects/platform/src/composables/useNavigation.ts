@@ -212,6 +212,27 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
+  const goToMetaFabric = (
+    navReq: NavigationReq = {},
+    sharingId?: number,
+    nodeId?: number
+  ) => {
+    const basePath = `${prefixPath}/meta-fabric`
+    const path = sharingId ? `${basePath}/${sharingId}/${nodeId}` : basePath
+    router.push(parsePath(path, navReq))
+  }
+
+  const goToMetaFabricMaterialDetail = (
+    navReq: NavigationReq = {},
+    sharingId: number,
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `${prefixPath}/meta-fabric/${sharingId}/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(parsePath(path, navReq))
+  }
+
   const goToPublicLibrary = async (
     navReq: NavigationReq = {},
     nodeId?: number
@@ -335,6 +356,8 @@ export default function useNavigation() {
     goToAssetMaterialEdit,
     goToWorkspace,
     goToShareToMe,
+    goToMetaFabric,
+    goToMetaFabricMaterialDetail,
     goToWorkspaceMaterialDetail,
     goToPublicLibrary,
     goToPublicLibraryMaterialDetail,

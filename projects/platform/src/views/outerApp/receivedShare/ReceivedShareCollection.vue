@@ -157,6 +157,7 @@ const getShareReceivedList = async (
 
 const handleNodeClick = (node: NodeChild, visit: Function) => {
   if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    searchStore.setKeyword('')
     currentNodeId.value = node.nodeMeta.nodeId
     visit()
   } else {
