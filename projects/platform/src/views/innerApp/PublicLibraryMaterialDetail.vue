@@ -5,6 +5,7 @@ material-detail-external-inner(
   :locationList="locationList"
   :publishedDate="nodeMeta.publicDate ?? undefined"
   @clone="publicLibraryClone([nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
+  :forceEnableDownloadU3M="true"
 )
 </template>
 

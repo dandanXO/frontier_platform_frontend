@@ -40,7 +40,7 @@ div
         material-detail-info(
           :material="material"
           :publishedDate="publishedDate"
-          :isCanDownloadU3M="true"
+          :isCanDownloadU3M="forceEnableDownloadU3M ? true : nodeMeta.isCanDownloadU3M"
           :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
         )
 </template>
@@ -56,6 +56,7 @@ defineProps<{
   nodeMeta: NodeMeta
   locationList: { name: string; goTo: () => void }[]
   publishedDate?: number
+  forceEnableDownloadU3M?: { type: boolean; default: false }
 }>()
 
 defineEmits<{ (e: 'clone'): void }>()
