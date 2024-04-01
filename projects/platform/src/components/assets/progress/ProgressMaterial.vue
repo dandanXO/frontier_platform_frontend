@@ -38,7 +38,7 @@ f-table(
       class="relative w-25 h-25 py-3 flex justify-center items-center"
     )
       div(
-        class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded"
+        class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
         :style="{ 'background-image': `url(${item.materialImageUrl})` }"
       )

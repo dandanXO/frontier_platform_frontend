@@ -4,7 +4,7 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
   div(class="mt-3 w-30 h-30")
     img(
       v-if="originalThumbnailUrl"
-      class="w-full h-full rounded"
+      class="w-full h-full rounded object-contain"
       :src="originalThumbnailUrl"
     )
     div(
@@ -21,7 +21,7 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
         @click="emits('delete')"
       )
     div(class="mt-3 w-30 h-30")
-      img(class="w-full h-full rounded" :src="newImagePreviewUrl")
+      img(class="w-full h-full rounded object-contain" :src="newImagePreviewUrl")
   div(v-if="!newImagePreviewUrl" class="flex flex-col gap-y-1")
     f-button(
       class="mt-16"
