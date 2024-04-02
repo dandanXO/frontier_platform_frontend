@@ -123,15 +123,6 @@ const sideOptionList = computed(() => {
     })
   }
 
-  if (isComposite) {
-    list.push({
-      label: t('MI0008'),
-      selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
-      icon: 'middle',
-      selectedIcon: 'middle_full',
-    })
-  }
-
   if (
     isDoubleSide ||
     (isComposite && sideType === MaterialSideType.BACK_SIDE)
@@ -141,6 +132,15 @@ const sideOptionList = computed(() => {
       selectValue: MATERIAL_SIDE_TYPE.BACK,
       icon: 'back',
       selectedIcon: 'back_full',
+    })
+  }
+
+  if (isComposite) {
+    list.push({
+      label: t('MI0008'),
+      selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
+      icon: 'middle',
+      selectedIcon: 'middle_full',
     })
   }
 
