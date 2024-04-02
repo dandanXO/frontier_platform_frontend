@@ -330,9 +330,10 @@ export default function useMaterial(
     isMaterialProperty: boolean,
     isCompositeSideProperty: boolean
   ) => {
-    const { isComposite } = material.value
+    const { isComposite, sideType } = material.value
 
     if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
+      if (sideType === MaterialSideType.BACK_SIDE) return 'text-grey-900'
       if (isMaterialProperty && !isCompositeSideProperty) {
         return 'text-grey-300'
       }
