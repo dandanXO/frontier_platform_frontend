@@ -29,21 +29,11 @@ div(class="grid gap-y-8 content-start")
         :key="tag.certificateId"
       ) {{ tag.name }}
   //- Keywords
-  div(
-    v-if="material.tagInfo.tagList.concat(material.tagInfo.aiTagList).length > 0"
-  )
+  div(v-if="material.tagInfo.tagList.length > 0")
     div(class="flex items-center gap-x-1 mb-3")
       p(class="text-body2 font-bold text-grey-900") Keyword Tags
-      f-tooltip-standard(:tooltipMessage="$t('MI0122')")
-        template(#slot:tooltip-trigger)
-          f-svg-icon(iconName="info_outline" size="14")
     div(class="flex flex-wrap gap-x-2 gap-y-3")
       f-tag(v-for="tag in material.tagInfo.tagList" lg :key="tag") {{ tag }}
-      div(
-        v-for="tag in material.tagInfo.aiTagList"
-        class="px-3.5 py-2.5 rounded bg-primary-50 text-body2 text-grey-900"
-        :key="tag"
-      ) {{ tag }}
   //- Eco
   div
     div(class="flex items-center gap-x-1 mb-3")

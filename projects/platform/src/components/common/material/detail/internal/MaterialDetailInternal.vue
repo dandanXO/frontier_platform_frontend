@@ -117,18 +117,8 @@ div
             div
               div(class="flex items-center gap-x-1 pb-3")
                 p(class="text-body2 font-bold text-grey-900") {{ $t('MI0132') }}
-                f-tooltip-standard(
-                  :tooltipMessage="'AI determines the Material structure and automatically generates a light green tags.'"
-                )
-                  template(#slot:tooltip-trigger)
-                    f-svg-icon(iconName="info_outline" size="14")
               div(class="flex flex-wrap gap-x-2 gap-y-3")
                 f-tag(v-for="tag in material.tagInfo.tagList" lg :key="tag") {{ tag }}
-                div(
-                  v-for="tag in material.tagInfo.aiTagList"
-                  class="px-3.5 py-2.5 rounded bg-primary-50 text-body2 text-grey-900"
-                  :key="tag"
-                ) {{ tag }}
             div
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
@@ -299,16 +289,14 @@ const { attachmentViewModeList, hasScannedImage } = useMaterial(
   ref(props.material)
 )
 
-const attachmentUpdateService = useAttachmentUpdate(ref(props.material));
-const multimediaUpdateService = useMultimediaUpdate(ref(props.material), () => {});
+const attachmentUpdateService = useAttachmentUpdate(ref(props.material))
+const multimediaUpdateService = useMultimediaUpdate(
+  ref(props.material),
+  () => {}
+)
 
-const {
-  getAttachmentMenuTree,
-} = attachmentUpdateService;
-const {
-  getMultimediaMenuTree,
-  multimediaList,
-} = multimediaUpdateService;
+const { getAttachmentMenuTree } = attachmentUpdateService
+const { getMultimediaMenuTree, multimediaList } = multimediaUpdateService
 
 const openAttachmentViewMode = (index: number) => {
   store.dispatch('helper/pushModal', {

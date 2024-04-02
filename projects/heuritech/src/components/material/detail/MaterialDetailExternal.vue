@@ -34,10 +34,7 @@ div
       div(class="px-3")
         h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0133') }}
         div(class="flex flex-wrap gap-x-2 gap-y-3")
-          f-tag(
-            v-for="tag in [...material.publicTagList, ...material.aiTagList]"
-            :key="tag"
-          ) {{ tag }}
+          f-tag(v-for="tag in material.publicTagList" :key="tag") {{ tag }}
     div(v-if="material.certificateList.length > 0")
       h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('EE0129') }}
       div(class="flex flex-wrap gap-x-2 gap-y-3")

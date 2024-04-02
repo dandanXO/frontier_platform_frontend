@@ -190,8 +190,8 @@ const {
 } = useMaterial(ref(props.material))
 
 const publicTagList = computed(() => {
-  const { tagList, aiTagList } = props.material.tagInfo
-  return tagList.concat(aiTagList).join(', ')
+  const { tagList } = props.material.tagInfo
+  return tagList.join(', ')
 })
 const privateTagList = computed(() => {
   return props.material.internalInfo?.tagList.join(', ') ?? ''
