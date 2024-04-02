@@ -4,7 +4,7 @@ material-detail-external-inner(
   :nodeMeta="nodeMeta"
   :locationList="locationList"
   :publishedDate="shareInfo.shareDate"
-  @clone="shareToMeClone(Number(sharingId), [nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
+  @clone="shareWithMeClone(Number(sharingId), [nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
 )
 </template>
 
@@ -13,8 +13,8 @@ import { computed, reactive, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import MaterialDetailExternalInner from '@/components/common/material/detail/external/MaterialDetailExternalInner.vue'
 import useNavigation from '@/composables/useNavigation'
-import useShareToMe from '@/composables/useShareToMe'
-import { useShareToMeStore } from '@/stores/shareToMe'
+import useShareWithMe from '@/composables/useShareWithMe'
+import { useShareWithMeStore } from '@/stores/shareWithMe'
 import { useSearchStore } from '@/stores/search'
 
 const props = defineProps<{
@@ -23,12 +23,12 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const { ogBaseShareToMeApi } = useShareToMeStore()
+const { ogBaseShareWithMeApi } = useShareWithMeStore()
 const { goToMetaFabric } = useNavigation()
-const { shareToMeClone } = useShareToMe()
+const { shareWithMeClone } = useShareWithMe()
 const { getSearchLog } = useSearchStore()
 
-const res = await ogBaseShareToMeApi('getShareToMeMaterial', {
+const res = await ogBaseShareWithMeApi('getShareToMeMaterial', {
   sharingId: Number(props.sharingId),
   nodeId: Number(props.nodeId),
   searchLog: getSearchLog(),

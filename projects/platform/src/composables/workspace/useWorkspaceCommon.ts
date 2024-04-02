@@ -9,7 +9,7 @@ export default function useWorkspaceCommon() {
   const { t } = useI18n()
   const { ogNodeId } = useCurrentUnit()
   const planType = computed(() => store.getters['polling/planType'])
-  const { goToWorkspace, goToShareToMe, goToMetaFabric } = useNavigation()
+  const { goToWorkspace, goToShareWithMe, goToMetaFabric } = useNavigation()
 
   const tabList = computed(() => {
     const list = [
@@ -28,8 +28,8 @@ export default function useWorkspaceCommon() {
     }
     list.push({
       name: t('RR0010'),
-      id: 'share-to-me',
-      goTo: goToShareToMe,
+      id: 'share-with-me',
+      goTo: goToShareWithMe,
     })
     return list
   })

@@ -191,23 +191,23 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  const goToShareToMe = (
+  const goToShareWithMe = (
     navReq: NavigationReq = {},
     sharingId?: number,
     nodeId?: number
   ) => {
-    const basePath = `${prefixPath}/share-to-me`
+    const basePath = `${prefixPath}/share-with-me`
     const path = sharingId ? `${basePath}/${sharingId}/${nodeId}` : basePath
     router.push(parsePath(path, navReq))
   }
 
-  const goToShareToMeMaterial = (
+  const goToShareWithMeMaterialDetail = (
     navReq: NavigationReq = {},
     sharingId: number,
     nodeId: number,
     rank?: number
   ) => {
-    const basePath = `${prefixPath}/share-to-me/${sharingId}/material/${nodeId}`
+    const basePath = `${prefixPath}/share-with-me/${sharingId}/material/${nodeId}`
     const path = rank ? `${basePath}?rank=${rank}` : basePath
     router.push(parsePath(path, navReq))
   }
@@ -355,7 +355,7 @@ export default function useNavigation() {
     goToAssetsMaterialCreate,
     goToAssetMaterialEdit,
     goToWorkspace,
-    goToShareToMe,
+    goToShareWithMe,
     goToMetaFabric,
     goToMetaFabricMaterialDetail,
     goToWorkspaceMaterialDetail,
@@ -363,7 +363,7 @@ export default function useNavigation() {
     goToPublicLibraryMaterialDetail,
     goToShowroom,
     goToShowroomMaterialDetail,
-    goToShareToMeMaterial,
+    goToShareWithMeMaterialDetail,
     goToBillings,
     goToProgress,
     goToSpreadsheetProgress,

@@ -1,7 +1,7 @@
 <template lang="pug">
 search-table(
   :searchType="SEARCH_TYPE.INNER_EXTERNAL"
-  :searchCallback="getShareToMeList"
+  :searchCallback="getShareWithMeList"
   :optionSort="optionSort"
   :optionMultiSelect="optionMultiSelect"
   :itemList="nodeList"
@@ -37,7 +37,7 @@ search-table(
             iconName="clone"
             class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
             size="24"
-            @click="shareToMeClone(shareNodeCollection.shareInfo.sharingId, [shareNodeCollection.nodeMeta.nodeId], shareNodeCollection.shareInfo.isCanClone, $t('II0009'))"
+            @click="shareWithMeClone(shareNodeCollection.shareInfo.sharingId, [shareNodeCollection.nodeMeta.nodeId], shareNodeCollection.shareInfo.isCanClone, $t('II0009'))"
           )
   template(#header-right)
     div(
@@ -103,11 +103,11 @@ import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
-import useShareToMe from '@/composables/useShareToMe'
+import useShareWithMe from '@/composables/useShareWithMe'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
 import { useSearchStore } from '@/stores/search'
-import { useShareToMeStore } from '@/stores/shareToMe'
+import { useShareWithMeStore } from '@/stores/shareWithMe'
 import {
   type InnerExternalFilter,
   type ShareNodeChild,
@@ -136,16 +136,16 @@ const {
   haveMsgAndFirstRead,
   openModalCollectionDetail,
   openModalShareMessage,
-} = useNode('shareToMe', props.nodeId, props.sharingId)
+} = useNode('shareWithMe', props.nodeId, props.sharingId)
 
 const router = useRouter()
 const route = useRoute()
 const searchStore = useSearchStore()
-const { ogBaseShareToMeApi } = useShareToMeStore()
-const { shareToMeClone } = useShareToMe()
-const { goToShareToMeMaterial } = useNavigation()
+const { ogBaseShareWithMeApi } = useShareWithMeStore()
+const { shareWithMeClone } = useShareWithMe()
+const { goToShareWithMeMaterialDetail } = useNavigation()
 const { tabList } = useWorkspaceCommon()
-const currentTabId = 'share-to-me'
+const currentTabId = 'share-with-me'
 
 const optionSort = computed(() => {
   const { ITEM_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = searchStore.sortOption
@@ -155,7 +155,7 @@ const optionSort = computed(() => {
   }
 })
 
-const getShareToMeList = async (
+const getShareWithMeList = async (
   payload: SearchPayload<InnerExternalFilter>,
   query: RouteQuery
 ) => {
@@ -169,7 +169,7 @@ const getShareToMeList = async (
   })
   const {
     data: { result },
-  } = await ogBaseShareToMeApi('getShareToMeList', {
+  } = await ogBaseShareWithMeApi('getShareToMeList', {
     sharingId: currentSharingId.value,
     nodeId: currentNodeId.value,
     isFromMetaFabric: false,
@@ -186,7 +186,7 @@ const handleNodeClick = (node: ShareNodeChild, visit: Function) => {
     setSharingIdAndNodeKey(node.nodeMeta.nodeId, node.shareInfo.sharingId)
     visit()
   } else {
-    goToShareToMeMaterial(
+    goToShareWithMeMaterialDetail(
       {},
       node.shareInfo.sharingId,
       node.nodeMeta.nodeId,

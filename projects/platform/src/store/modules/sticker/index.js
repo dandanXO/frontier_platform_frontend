@@ -213,7 +213,7 @@ export default {
       } else if (routePath.includes('moodboard')) {
         drawerOpenFromLocationType = MOODBOARD
       } else if (
-        routePath.includes('share-to-me') ||
+        routePath.includes('share-with-me') ||
         routePath.includes('meta-fabric')
       ) {
         drawerOpenFromLocationType = SHARED_WITH_ME

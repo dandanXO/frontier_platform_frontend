@@ -21,7 +21,7 @@ const useLogSender = () => {
     if (route.path.includes('moodboard')) {
       return FeatureType.MOODBOARD
     }
-    if (route.path.includes('share-to-me')) {
+    if (route.path.includes('share-with-me')) {
       return FeatureType.SHARED_WITH_ME
     }
     if (route.path.includes('received-share')) {

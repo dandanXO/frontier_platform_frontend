@@ -37,7 +37,7 @@ search-table(
             iconName="clone"
             class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
             size="24"
-            @click="shareToMeClone(shareNodeCollection.shareInfo.sharingId, [shareNodeCollection.nodeMeta.nodeId], shareNodeCollection.shareInfo.isCanClone, $t('II0009'))"
+            @click="shareWithMeClone(shareNodeCollection.shareInfo.sharingId, [shareNodeCollection.nodeMeta.nodeId], shareNodeCollection.shareInfo.isCanClone, $t('II0009'))"
           )
   template(#header-right)
     div(
@@ -103,11 +103,11 @@ import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
-import useShareToMe from '@/composables/useShareToMe'
+import useShareWithMe from '@/composables/useShareWithMe'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
 import { useSearchStore } from '@/stores/search'
-import { useShareToMeStore } from '@/stores/shareToMe'
+import { useShareWithMeStore } from '@/stores/shareWithMe'
 import {
   type InnerExternalFilter,
   type ShareNodeChild,
@@ -141,8 +141,8 @@ const {
 const router = useRouter()
 const route = useRoute()
 const searchStore = useSearchStore()
-const { ogBaseShareToMeApi } = useShareToMeStore()
-const { shareToMeClone } = useShareToMe()
+const { ogBaseShareWithMeApi } = useShareWithMeStore()
+const { shareWithMeClone } = useShareWithMe()
 const { goToMetaFabricMaterialDetail } = useNavigation()
 const { tabList } = useWorkspaceCommon()
 
@@ -154,7 +154,7 @@ const optionSort = computed(() => {
   }
 })
 
-// Note: MetaFabric call the same API with ShareToMe
+// Note: MetaFabric call the same API with ShareWithMe
 const getMetaFabricList = async (
   payload: SearchPayload<InnerExternalFilter>,
   query: RouteQuery
@@ -169,7 +169,7 @@ const getMetaFabricList = async (
   })
   const {
     data: { result },
-  } = await ogBaseShareToMeApi('getShareToMeList', {
+  } = await ogBaseShareWithMeApi('getShareToMeList', {
     sharingId: currentSharingId.value,
     nodeId: currentNodeId.value,
     isFromMetaFabric: true,

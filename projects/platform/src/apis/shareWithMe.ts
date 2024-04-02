@@ -3,6 +3,6 @@ import axiosInstance from '@/apis'
 
 const config = new Configuration({ basePath: '.' })
 
-export const shareToMeApi = new ShareToMeApi(config, undefined, axiosInstance)
+export const shareWithMeApi = new ShareToMeApi(config, undefined, axiosInstance)
 
-export default shareToMeApi
+export default shareWithMeApi

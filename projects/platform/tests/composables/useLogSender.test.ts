@@ -97,7 +97,7 @@ describe('useLogSender', () => {
         it: 'should record Shared With Me page view log',
         args: {
           materialId,
-          path: 'share-to-me',
+          path: 'share-with-me',
         },
         expected: {
           materialId,
@@ -306,7 +306,7 @@ describe('useLogSender', () => {
           it: 'should record Shared With Me page download log',
           args: {
             materialId,
-            path: 'share-to-me',
+            path: 'share-with-me',
             selectedFormat: 'zipUrl',
           },
           expected: {

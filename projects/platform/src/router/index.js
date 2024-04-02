@@ -264,17 +264,20 @@ const routes = [
               import('@/views/innerApp/workspace/WorkspaceMaterialDetail.vue'),
           },
           {
-            path: 'share-to-me/:sharingId?/:nodeId?',
-            name: 'ShareToMe',
-            props: true,
-            component: () => import('@/views/innerApp/workspace/ShareToMe.vue'),
-          },
-          {
-            path: 'share-to-me/:sharingId/material/:nodeId',
-            name: 'ShareToMeMaterial',
+            path: 'share-with-me/:sharingId?/:nodeId?',
+            name: 'ShareWithMe',
             props: true,
             component: () =>
-              import('@/views/innerApp/workspace/ShareToMeMaterialDetail.vue'),
+              import('@/views/innerApp/workspace/ShareWithMe.vue'),
+          },
+          {
+            path: 'share-with-me/:sharingId/material/:nodeId',
+            name: 'ShareWithMeMaterial',
+            props: true,
+            component: () =>
+              import(
+                '@/views/innerApp/workspace/ShareWithMeMaterialDetail.vue'
+              ),
           },
           {
             path: 'meta-fabric/:sharingId?/:nodeId?',

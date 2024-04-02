@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import useShareToMe from './useShareToMe'
+import useShareWithMe from './useShareWithMe'
 import type {
   ShareNodeCollection,
   WorkspaceNodeCollection,
@@ -10,11 +10,12 @@ import type { PropsModalCollectionDetail } from '@/components/common/collection/
 import useCurrentUnit from './useCurrentUnit'
 
 export default function useNode(
-  key: 'workspace' | 'shareToMe' | 'metaFabric',
+  key: 'workspace' | 'shareWithMe' | 'metaFabric',
   nodeId?: string,
   sharingId?: string
 ) {
-  const { shareToMeCloneByNodeList, shareToMeDeleteByNodeList } = useShareToMe()
+  const { shareWithMeCloneByNodeList, shareWithMeDeleteByNodeList } =
+    useShareWithMe()
   const store = useStore()
   const { t } = useI18n()
   const { ogNodeId } = useCurrentUnit()
@@ -27,7 +28,7 @@ export default function useNode(
       name: t('FF0001'),
       collection: workspaceNodeCollection,
     },
-    shareToMe: {
+    shareWithMe: {
       name: t('RR0010'),
       collection: shareNodeCollection,
     },
@@ -69,14 +70,14 @@ export default function useNode(
 
   const optionMultiSelect = computed(() => {
     return isFirstLayer.value
-      ? [shareToMeDeleteByNodeList]
-      : [shareToMeCloneByNodeList]
+      ? [shareWithMeDeleteByNodeList]
+      : [shareWithMeCloneByNodeList]
   })
 
   const optionNode = computed(() => {
-    const optionList = [[shareToMeCloneByNodeList]]
+    const optionList = [[shareWithMeCloneByNodeList]]
     if (isFirstLayer.value) {
-      optionList[0].push(shareToMeDeleteByNodeList)
+      optionList[0].push(shareWithMeDeleteByNodeList)
     }
     return optionList
   })

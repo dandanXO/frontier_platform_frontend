@@ -4,30 +4,30 @@ import { useNotifyStore } from '@/stores/notify'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import type { FunctionOption } from '@/types'
 import { type ShareNodeChild, NodeType } from '@frontier/platform-web-sdk'
-import { useShareToMeStore } from '@/stores/shareToMe'
+import { useShareWithMeStore } from '@/stores/shareWithMe'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
 import generalApi from '@/apis/general'
 
-export enum SHARE_TO_ME_FUNCTION {
+export enum SHARE_WITH_ME_FUNCTION {
   CLONE = 0,
   DELETE = 1,
 }
 
-type ShareToMeFunctionOption = FunctionOption<
+type ShareWithMeFunctionOption = FunctionOption<
   ShareNodeChild,
-  SHARE_TO_ME_FUNCTION
+  SHARE_WITH_ME_FUNCTION
 >
 
-export default function useShareToMe() {
+export default function useShareWithMe() {
   const toNodeList = (n: ShareNodeChild | ShareNodeChild[]) =>
     Array.isArray(n) ? n : [n]
 
-  const { ogBaseShareToMeApi } = useShareToMeStore()
+  const { ogBaseShareWithMeApi } = useShareWithMeStore()
   const { t } = useI18n()
   const store = useStore()
   const notify = useNotifyStore()
 
-  const shareToMeClone = (
+  const shareWithMeClone = (
     sharingId: number,
     nodeIdList: number[],
     isCanClone: boolean,
@@ -53,7 +53,7 @@ export default function useShareToMe() {
           return res.data.result.estimatedQuota
         },
         cloneHandler: async (targetOgList, optional) => {
-          await ogBaseShareToMeApi('cloneShareToMeNode', {
+          await ogBaseShareWithMeApi('cloneShareToMeNode', {
             sharingId,
             nodeIdList,
             targetOgList,
@@ -65,8 +65,8 @@ export default function useShareToMe() {
     })
   }
 
-  const shareToMeCloneByNodeList: ShareToMeFunctionOption = {
-    id: SHARE_TO_ME_FUNCTION.CLONE,
+  const shareWithMeCloneByNodeList: ShareWithMeFunctionOption = {
+    id: SHARE_WITH_ME_FUNCTION.CLONE,
     name: () => t('RR0167'),
     func: (n) => {
       const nodeList = toNodeList(n)
@@ -82,12 +82,12 @@ export default function useShareToMe() {
       )
         ? t('II0009')
         : t('II0008')
-      shareToMeClone(sharingId, nodeIdList, isCanClone, msg)
+      shareWithMeClone(sharingId, nodeIdList, isCanClone, msg)
     },
   }
 
-  const shareToMeDeleteByNodeList: ShareToMeFunctionOption = {
-    id: SHARE_TO_ME_FUNCTION.DELETE,
+  const shareWithMeDeleteByNodeList: ShareWithMeFunctionOption = {
+    id: SHARE_WITH_ME_FUNCTION.DELETE,
     name: () => t('RR0063'),
     func: (n) => {
       const nodeList = toNodeList(n)
@@ -99,7 +99,7 @@ export default function useShareToMe() {
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: async () => {
           store.dispatch('helper/openModalLoading')
-          await ogBaseShareToMeApi('deleteShareToMeNode', {
+          await ogBaseShareWithMeApi('deleteShareToMeNode', {
             nodeIdList,
           })
           store.dispatch('helper/closeModalLoading')
@@ -111,8 +111,8 @@ export default function useShareToMe() {
   }
 
   return {
-    shareToMeClone,
-    shareToMeCloneByNodeList,
-    shareToMeDeleteByNodeList,
+    shareWithMeClone,
+    shareWithMeCloneByNodeList,
+    shareWithMeDeleteByNodeList,
   }
 }
