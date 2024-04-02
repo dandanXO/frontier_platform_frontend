@@ -212,7 +212,10 @@ export default {
         drawerOpenFromLocationType = WORKSPACE
       } else if (routePath.includes('moodboard')) {
         drawerOpenFromLocationType = MOODBOARD
-      } else if (routePath.includes('share-to-me')) {
+      } else if (
+        routePath.includes('share-to-me') ||
+        routePath.includes('meta-fabric')
+      ) {
         drawerOpenFromLocationType = SHARED_WITH_ME
       } else if (routePath.includes('received-share')) {
         drawerOpenFromLocationType = RECEIVED_SHARE
