@@ -21,7 +21,7 @@ div(
       )
       template(v-else)
         p(v-if="!!tooltipTitle" class="break-all font-bold") {{ tooltipTitle }}
-        p(v-if="!!tooltipMessage" class="break-all") {{ tooltipMessage }}
+        p(v-if="!!tooltipMessage" class="break-words") {{ tooltipMessage }}
 </template>
 
 <script lang="ts">
