@@ -97,19 +97,16 @@ const usePriceInfoCol = (
         cellStyle: defaultCellStyle,
       },
       {
-        headerName: t('RR0134'),
+        headerName: `${t('RR0134')} (${t('PP0037')})`,
         children: [
           {
             headerName: t('RR0319'),
             field: getField('pricing.currencyCode'),
+            minWidth: 130,
             editable: rowEditable,
             ...getEnumCellProps(currencyCodeSchema, CurrencyCode, currencyText),
             cellStyle: (params: CellClassParams<MaterialRow, CurrencyCode>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(params, pricingPath)
-                if (parentHasValue) {
-                  return currencyCodeSchema.safeParse(params.value).success
-                }
                 return currencyCodeSchema.nullable().safeParse(params.value)
                   .success
               }
@@ -123,15 +120,12 @@ const usePriceInfoCol = (
           {
             headerName: t('RR0094'),
             field: getField('pricing.price'),
+            minWidth: 130,
             editable: rowEditable,
             ...getNumberCellProps(priceSchema, t('MI0055')),
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(params, pricingPath)
-                if (parentHasValue) {
-                  return priceSchema.unwrap().safeParse(params.value).success
-                }
-                return priceSchema.safeParse(params.value).success
+                return priceSchema.nullable().safeParse(params.value).success
               }
               return getCellStyle({
                 valid: isValid(),
@@ -143,20 +137,13 @@ const usePriceInfoCol = (
           {
             headerName: t('RR0320'),
             field: getField('pricing.unit'),
+            minWidth: 130,
             editable: rowEditable,
             ...materialQuantityUnitCellProps.value,
             cellStyle: (
               params: CellClassParams<MaterialRow, MaterialQuantityUnit>
             ) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(params, [
-                  'priceInfo',
-                  'pricing',
-                ])
-                if (parentHasValue) {
-                  return materialQuantityUnitSchema.safeParse(params.value)
-                    .success
-                }
                 return materialQuantityUnitSchema
                   .nullable()
                   .safeParse(params.value).success

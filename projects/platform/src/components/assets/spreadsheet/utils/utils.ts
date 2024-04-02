@@ -640,3 +640,44 @@ export const defaultCellStyle = {
   'align-items': 'center',
   display: 'flex',
 }
+
+type AgGridCellValueType =
+  | string
+  | number
+  | boolean
+  | Date
+  | object
+  | any[]
+  | null
+  | undefined
+
+export function hasInvalidAgGridCellValue(value: AgGridCellValueType): boolean {
+  if (value === null || value === undefined || value === 'null') return true
+
+  if (typeof value === 'string' && value.trim() === '') return true
+
+  if (Array.isArray(value) && value.length === 0) return true
+
+  if (
+    typeof value === 'object' &&
+    value.constructor === Object &&
+    Object.keys(value).length === 0
+  ) {
+    return true
+  }
+
+  return false
+}
+
+export function removeIncompletePricing(materialRowList: MaterialRow[]) {
+  materialRowList.forEach((row) => {
+    if (
+      row.priceInfo &&
+      (hasInvalidAgGridCellValue(row.priceInfo.pricing?.price) ||
+        hasInvalidAgGridCellValue(row.priceInfo.pricing?.currencyCode) ||
+        hasInvalidAgGridCellValue(row.priceInfo.pricing?.unit))
+    ) {
+      row.priceInfo.pricing = null
+    }
+  })
+}

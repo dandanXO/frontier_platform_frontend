@@ -360,9 +360,9 @@ export const materialQuantityUnitSchema = z
 
 export const pricingSchema = z
   .object({
-    currencyCode: currencyCodeSchema,
-    price: priceSchema,
-    unit: materialQuantityUnitSchema,
+    currencyCode: currencyCodeSchema.optional().nullable(),
+    price: priceSchema.optional().nullable(),
+    unit: materialQuantityUnitSchema.optional().nullable(),
   })
   .nullable()
   .default({

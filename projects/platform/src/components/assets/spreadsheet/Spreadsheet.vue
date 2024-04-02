@@ -105,6 +105,8 @@ import {
 import {
   convertDataToWorkbook,
   populateGrid,
+  removeIncompletePricing,
+  hasInvalidAgGridCellValue,
 } from '@/components/assets/spreadsheet/utils/utils'
 import TemplateDownloadButton from '@/components/assets/spreadsheet/TemplateDownloadButton.vue'
 
@@ -749,7 +751,9 @@ const updateSubmitStatus = () => {
             ...reqRow.priceInfo,
             pricing: {
               ...reqRow.priceInfo.pricing,
-              price: Number(reqRow.priceInfo.pricing.price),
+              price: hasInvalidAgGridCellValue(reqRow.priceInfo.pricing.price)
+                ? null
+                : Number(reqRow.priceInfo.pricing.price),
             },
           },
         }
@@ -968,6 +972,7 @@ const handleReset = () => {
 
 const handleSubmit = () => {
   const materialRowList = getMaterialRowList()
+  removeIncompletePricing(materialRowList)
   const submitPayload = getPayload(materialRowList)
   emit('submit', submitPayload)
 }
