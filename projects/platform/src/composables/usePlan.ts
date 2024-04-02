@@ -15,9 +15,12 @@ export default function usePlan() {
       contentText: t('RR0357'),
       primaryBtnText: t('UU0149'),
       primaryBtnHandler: async () => {
+        store.dispatch('helper/openModalLoading')
         const expireDate = await store.dispatch(
           'organization/unsubscribeDesignerPlan'
         )
+        store.dispatch('helper/closeModalLoading')
+        store.dispatch('helper/reloadInnerApp')
         notify.showNotifySnackbar({
           messageText: t('OO0175', { ExpireDate: expireDate }),
         })
