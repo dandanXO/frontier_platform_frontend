@@ -105,6 +105,7 @@ const useMultimediaCreate = () => {
       properties: {
         theme,
         fileName: target.displayFileNameExcludeExtension,
+        extension: target.extension,
         onSubmit: (newFileNameExcludeExtension: string) => {
           target.displayFileNameExcludeExtension = newFileNameExcludeExtension
           target.displayFileName = `${newFileNameExcludeExtension}.${target.extension}`

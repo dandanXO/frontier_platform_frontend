@@ -90,6 +90,7 @@ const useAttachmentCreate = () => {
       properties: {
         theme,
         fileName: target.displayFileNameExcludeExtension,
+        extension: target.extension,
         closable: false,
         onSubmit: (newFileNameExcludeExtension: string) => {
           target.displayFileNameExcludeExtension = newFileNameExcludeExtension

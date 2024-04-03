@@ -11,8 +11,9 @@ modal-behavior(
 )
   div(class="min-w-88")
     f-input-text(
-      :theme="theme"
       v-model:textValue="fileName"
+      :theme="theme"
+      :addOnRight="`.${extension}`"
       :placeholder="$t('MI0086')"
     )
 </template>
@@ -26,6 +27,7 @@ const store = useStore()
 const props = defineProps<{
   theme: THEME
   fileName: string
+  extension: string
   onSubmit: (newFileName: string) => Promise<void>
 }>()
 

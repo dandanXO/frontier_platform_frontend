@@ -96,6 +96,7 @@ const useAttachmentUpdate = (material: Ref<Material>) => {
       properties: {
         theme,
         fileName: getFileNameExcludeExtension(target.displayFileName),
+        extension: target.extension,
         onSubmit: async (newFileNameExcludeExtension: string) => {
           store.dispatch('helper/pushModalLoading', { theme })
           const res = await ogBaseAssetsApi('renameAssetsMaterialAttachment', {
