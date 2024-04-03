@@ -37,7 +37,7 @@ f-table(
   template(v-slot="{ item, prop, isHover }")
     template(v-if="prop === 'type'")
       p {{ $t('MI0146') }}
-    template(v-if="prop === 'itemListAndFileName'")
+    template(v-if="prop === 'revisionHistory'")
       f-button(
         type="primary"
         size="lg"
@@ -176,18 +176,13 @@ const { printA4Swatch, printLabel } = usePrint()
 
 const headers = [
   {
-    prop: 'type',
-    label: t('RR0087'),
-    colSpan: 'col-span-1',
+    prop: 'revisionHistory',
+    label: t('MI0144'),
+    colSpan: 'col-span-3',
     sortBy: [
       SPREADSHEET_SORT_BY.NEWEST_FIRST,
       SPREADSHEET_SORT_BY.OLDEST_FIRST,
     ],
-  },
-  {
-    prop: 'itemListAndFileName',
-    label: t('MI0145'),
-    colSpan: 'col-span-2',
   },
   {
     prop: 'statusLabel',
@@ -206,7 +201,7 @@ const headers = [
   {
     prop: 'createdTime',
     label: t('RR0189'),
-    colSpan: 'col-span-1',
+    colSpan: 'col-span-2',
     sortBy: [
       SPREADSHEET_SORT_BY.NEWEST_FIRST,
       SPREADSHEET_SORT_BY.OLDEST_FIRST,
@@ -215,11 +210,6 @@ const headers = [
   {
     prop: 'createBy',
     label: t('RR0188'),
-    colSpan: 'col-span-1',
-  },
-  {
-    prop: 'action',
-    label: '',
     colSpan: 'col-span-2',
   },
 ]
