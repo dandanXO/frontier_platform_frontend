@@ -22,7 +22,7 @@ modal-behavior(
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
               p(class="font-bold pb-2") {{ $t('RR0155') }}
               div(class="flex items-end justify-between")
-                p(class="leading-normal") {{ $t('FF0075') }}
+                p(class="leading-normal") {{ $t('FF0089') }}
                 f-button(
                   size="sm"
                   class="flex-shrink-0"
