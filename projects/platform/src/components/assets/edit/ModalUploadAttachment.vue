@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('MI0102')"
+  :header="$t('RR0297')"
   :primaryBtnText="$t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
   :primaryBtnDisabled="disabledUpload"
