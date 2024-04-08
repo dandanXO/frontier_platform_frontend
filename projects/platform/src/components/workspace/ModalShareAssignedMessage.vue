@@ -3,7 +3,7 @@ modal-behavior(
   :header="$t('RR0146')"
   :primaryBtnText="$t('UU0018')"
   :secondaryBtnText="$t('UU0002')"
-  :primaryBtnDisabled="message.length > 1000"
+  :primaryBtnDisabled="message && message.length > 1000"
   @click:primary="save"
   @click:secondary="closeModal"
 )
@@ -24,7 +24,7 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 const props = defineProps<{
-  message: string
+  message: string | null
   onUpdateMessage: (message: string) => void
 }>()
 
@@ -32,7 +32,7 @@ const store = useStore()
 
 const message = ref(props.message)
 const save = () => {
-  props.onUpdateMessage(message)
+  props.onUpdateMessage(message.value ?? '')
   closeModal()
 }
 const closeModal = () => store.dispatch('helper/closeModalBehavior')

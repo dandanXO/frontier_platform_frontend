@@ -6,6 +6,7 @@ import type {
   ShareWorkspaceNodeShareAddPeopleOGRequest,
   ShareWorkspaceNodeShareAddPeopleEmailRequest,
   GetWorkspaceNodeShareInfo200ResponseAllOfResult,
+  ShareWorkspaceNodeEmbedEmailRequest,
 } from '@frontier/platform-web-sdk'
 
 export const useWorkspaceStore = defineStore('workspace', () => {
@@ -50,11 +51,22 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     nodeShareInfo.emailShare = res.data.result.emailShare
   }
 
+  const shareWorkspaceNodeEmbedEmail = async (
+    params: Omit<
+      ShareWorkspaceNodeEmbedEmailRequest,
+      'orgId' | 'ogId' | 'ogType'
+    >
+  ) => {
+    const res = await ogBaseWorkspaceApi('shareWorkspaceNodeEmbedEmail', params)
+    nodeShareInfo.embed.privateShareList = res.data.result.privateShareList
+  }
+
   return {
     ogBaseWorkspaceApi,
     getWorkspaceNodeShareInfo,
     shareWorkspaceNodeShareAddPeopleOG,
     shareWorkspaceNodeShareAddPeopleEmail,
+    shareWorkspaceNodeEmbedEmail,
     nodeShareInfo,
   }
 })

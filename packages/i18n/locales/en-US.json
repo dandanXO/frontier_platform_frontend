@@ -661,7 +661,7 @@
   "WW0163": "Enter a access code",
   "WW0164": "This is not the designer plan. Unable to cancel subscription.",
   "WW0165": "Cancel subscription has been executed before.",
-  "WW0166": "",
+  "WW0166": "When creating a composite material, the middle side cannot be null",
   "AA0001": "LOG IN",
   "AA0002": "Email",
   "AA0003": "Password",

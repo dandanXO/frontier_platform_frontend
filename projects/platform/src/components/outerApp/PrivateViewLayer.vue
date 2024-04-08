@@ -13,7 +13,6 @@ div
       h5(class="text-grey-900 text-h5 font-bold text-center pt-3") {{ $t('RR0345') }}
       form(class="grid mt-6 mb-10" @keydown.enter.prevent="verify")
         f-input-text(
-          v-if="outerType === OUTER_TYPE.RECEIVED_SHARE"
           v-model:textValue="privateInfo.email"
           :placeholder="$t('VV0038')"
           prependIcon="mail"
@@ -110,10 +109,7 @@ const verify = async () => {
     }
   }
 
-  if (outerType.value === OUTER_TYPE.RECEIVED_SHARE) {
-    verifyEmail()
-  }
-
+  verifyEmail()
   verifyAccessCode()
   if (errorMsgUnderEmail.value !== '' || errorMsgUnderAccessCode.value !== '') {
     return
@@ -172,7 +168,7 @@ const verify = async () => {
     if (outerType.value === OUTER_TYPE.EMBED) {
       await ogBaseEmbedApi('getEmbedInfo', {
         sharingKey,
-        accessCode: privateInfo.value.accessCode,
+        privateInfo: privateInfo.value,
       })
       hasVerified.value = true
     }

@@ -73,7 +73,7 @@ import type {
 import { SharePermission } from '@frontier/platform-web-sdk'
 import { SHARE_WITH_TYPE } from '@/utils/constants'
 
-type ShareUserItem = ShareEmailTarget &
+export type ShareUserItem = ShareEmailTarget &
   ShareItemInfo & {
     isDeleted: boolean
     isUpdated: boolean

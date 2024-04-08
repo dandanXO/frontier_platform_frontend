@@ -63,7 +63,7 @@ export const useOuterStore = defineStore('outer', () => {
   const getEmbedInfo = async (sharingKey: string) => {
     const { data } = await ogBaseEmbedApi('getEmbedInfo', {
       sharingKey,
-      accessCode: isPrivate.value ? privateInfo.value.accessCode : null,
+      privateInfo: getPrivateInfo(),
     })
 
     shareInfo.value = data.result.shareInfo

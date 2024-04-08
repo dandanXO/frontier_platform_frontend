@@ -17,7 +17,7 @@ modal-behavior(
                   size="sm"
                   class="flex-shrink-0"
                   prependIcon="person_add"
-                  @click="openModalShareAssigned"
+                  @click="openModalShareOg"
                 ) {{ $t('UU0144') }}
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
               p(class="font-bold pb-2") {{ $t('RR0155') }}
@@ -27,7 +27,7 @@ modal-behavior(
                   size="sm"
                   class="flex-shrink-0"
                   prependIcon="person_add"
-                  @click="openModalShareAssignedPeople"
+                  @click="openModalShareEmail"
                 ) {{ $t('UU0145') }}
         template(v-else-if="currentTab === TAB.COPY_LINK")
           div(class="h-full flex flex-col gap-y-2")
@@ -69,15 +69,22 @@ modal-behavior(
                 f-svg-icon(iconName="twitter" size="40" class="text-grey-0")
               p(class="text-caption text-center pt-3") {{ $t('RR0153') }}
         template(v-else-if="currentTab === TAB.EMBED")
-          div(class="h-full flex flex-col gap-y-6")
+          div(class="h-full flex flex-col gap-y-4")
             div(v-if="embed")
               p(class="text-body2 font-bold text-primary-900 pb-2") {{ $t('FF0067') }}
-              f-input-switch(
-                iconSize="30"
-                :label="$t('FF0033')"
-                v-model:inputValue="embed.isCanDownloadU3M"
-                @update:inputValue="updateEmbedDownloadPermission"
-              )
+              div(class="flex items-center justify-between pb-2.5")
+                f-input-switch(
+                  iconSize="30"
+                  :disabled="embed.isEnablePrivateView"
+                  :label="$t('FF0033')"
+                  v-model:inputValue="embed.isCanDownloadU3M"
+                  @update:inputValue="updateEmbedDownloadPermission"
+                )
+                f-button(
+                  prependIcon="copy_link"
+                  size="sm"
+                  @click="copyEmbedIFrameCode"
+                ) {{ $t('UU0068') }}
               div(class="flex items-center justify-between")
                 div(class="flex items-center gap-2")
                   f-input-switch(
@@ -95,10 +102,11 @@ modal-behavior(
                           class="text-grey-800"
                         )
                 f-button(
-                  prependIcon="copy_link"
                   size="sm"
-                  @click="copyEmbedIFrameCode"
-                ) {{ $t('UU0068') }}
+                  class="flex-shrink-0"
+                  prependIcon="person_add"
+                  @click="openModalShareEmailEmbed"
+                ) {{ $t('UU0145') }}
             f-infobar(
               :notifyType="NOTIFY_TYPE.WARNING"
               :messageText="$t('FF0071')"
@@ -118,7 +126,7 @@ import {
   SocialMedia,
 } from '@frontier/platform-web-sdk'
 import { useWorkspaceStore } from '@/stores/workspace'
-import { NOTIFY_TYPE } from '@frontier/lib'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 export interface PropsModalShare {
   node: NodeChild
@@ -167,17 +175,25 @@ const tabList = computed(() => {
   }
   return list
 })
-const openModalShareAssigned = () => {
+const openModalShareOg = () => {
   store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-share-assigned',
+    component: 'modal-share-og',
     properties: {
       nodeId: nodeId.value,
     },
   })
 }
-const openModalShareAssignedPeople = () => {
+const openModalShareEmail = () => {
   store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-share-assigned-people',
+    component: 'modal-share-email',
+    properties: {
+      nodeId: nodeId.value,
+    },
+  })
+}
+const openModalShareEmailEmbed = () => {
+  store.dispatch('helper/pushModalBehavior', {
+    component: 'modal-share-email-embed',
     properties: {
       nodeId: nodeId.value,
     },

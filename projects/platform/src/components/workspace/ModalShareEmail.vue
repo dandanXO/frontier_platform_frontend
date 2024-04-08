@@ -8,21 +8,11 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   div(class="w-164")
-    f-tabs(:tabList="tabList" keyField="id")
-      template(#default="{ currentTab }")
-        div(class="pt-5")
-          share-assigned-people(
-            v-if="currentTab === TAB.OPEN"
-            :nodeId="nodeId"
-            v-model:shareList="openShareList"
-            :isPrivate="false"
-          )
-          share-assigned-people(
-            v-else-if="currentTab === TAB.PRIVATE"
-            :nodeId="nodeId"
-            v-model:shareList="privateShareList"
-            isPrivate
-          )
+    share-input-list-add-people(
+      :nodeId="nodeId"
+      v-model:shareList="openShareList"
+      :isPrivate="false"
+    )
 </template>
 
 <script setup lang="ts">
@@ -30,19 +20,10 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import type {
-  ShareEmailTarget,
-  ShareItemInfo,
-} from '@frontier/platform-web-sdk'
 import { useWorkspaceStore } from '@/stores/workspace'
-import ShareAssignedPeople from '@/components/workspace/ShareAssignedPeople.vue'
-
-type ShareUserItem = ShareEmailTarget &
-  ShareItemInfo & {
-    isDeleted: boolean
-    isUpdated: boolean
-    isNew: boolean
-  }
+import ShareInputListAddPeople, {
+  type ShareUserItem,
+} from '@/components/workspace/ShareInputListAddPeople.vue'
 
 const props = defineProps<{
   nodeId: number
@@ -53,25 +34,6 @@ const store = useStore()
 const notify = useNotifyStore()
 const { nodeShareInfo, shareWorkspaceNodeShareAddPeopleEmail } =
   useWorkspaceStore()
-
-const TAB = {
-  OPEN: 0,
-  PRIVATE: 1,
-}
-
-const tabList = computed(() => {
-  const list = [
-    {
-      id: TAB.OPEN,
-      name: t('FF0087'),
-    },
-    {
-      id: TAB.PRIVATE,
-      name: t('FF0088'),
-    },
-  ]
-  return list
-})
 
 const openShareList = ref<ShareUserItem[]>(
   (nodeShareInfo?.emailShare?.openShareList?.map((item) => ({
