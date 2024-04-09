@@ -440,7 +440,7 @@ div(class="flex flex-col gap-y-7.5")
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
-      div(class="flex flex-row items-center gap-x-4")
+      div(class="flex flex-row items-center gap-x-4 mt-4")
         f-input-checkbox(
           v-for="weightItem in weightCheckboxItems"
           :key="weightItem.unit"
@@ -548,10 +548,6 @@ div(class="flex flex-col gap-y-7.5")
           prependIcon="add"
           @click="() => pushColorInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
         ) {{ $t('MI0034') }}
-      span(
-        v-for="(error, index) in colorInfoCustomPropertyDisplayErrors"
-        :key="index"
-      ) {{ error }}
 
   f-input-container(:label="$t('RR0025')")
     div(class="flex flex-row gap-x-4.5")
@@ -641,6 +637,7 @@ const {
   inputMenu,
   pantoneList,
   defineInputBinds,
+  validate,
   displayErrors,
   copyFaceSideToBackSide,
   clearMaterialTypeConstructionFields,
@@ -676,7 +673,6 @@ const materialTypeValue = computed(
 const cuttableWidth = defineInputBinds('width.cuttable')
 const fullWidth = defineInputBinds('width.full')
 const widthUnit = defineInputBinds('width.unit')
-
 const weightValue = defineInputBinds('weight.value')
 const weightUnit = defineInputBinds('weight.unit')
 const isShowWeightGsm = defineInputBinds('weightDisplaySetting.isShowWeightGsm')
@@ -798,6 +794,8 @@ const contentDisplayError = computed(() => {
 
   return errors.length ? [...new Set(errors)].join(', ') : ''
 })
+// initail validate form function
+validate()
 
 const selectContent = (
   name: string | null,

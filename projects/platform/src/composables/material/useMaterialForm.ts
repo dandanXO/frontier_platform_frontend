@@ -51,6 +51,7 @@ const mapMaterialToForm = (
       ? {
           ...material.faceSide,
           construction: material.faceSide?.construction ?? {},
+          materialType: material.faceSide?.materialType || MaterialType.WOVEN,
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
             : [{ contentId: null, name: '', percentage: null }],
@@ -61,6 +62,7 @@ const mapMaterialToForm = (
     backSide: material.backSide
       ? {
           ...material.backSide,
+          materialType: material.backSide?.materialType || MaterialType.WOVEN,
           construction: material.backSide?.construction ?? {},
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
@@ -192,7 +194,7 @@ const useMaterialForm = ({
           backSide: {
             ...material.backSide,
             contentList: material.faceSide?.contentList,
-            materialType: material.faceSide?.materialType,
+            materialType: material.faceSide?.materialType || MaterialType.WOVEN,
             construction: material.faceSide?.construction,
             constructionCustomPropertyList:
               material.faceSide?.constructionCustomPropertyList,
