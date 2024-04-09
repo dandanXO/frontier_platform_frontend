@@ -275,10 +275,17 @@ const displayText = computed(() => {
     }
     return null
   }
-  if (props.multiple) {
-    return innerSelectValue.value.map((v) => getMenu(v)?.title)
+
+  const getDisplayText = (value) => {
+    const menu = getMenu(value)
+    return menu?.title?.trim() || value?.name || value
   }
-  return getMenu(innerSelectValue.value)?.title
+
+  if (props.multiple) {
+    return innerSelectValue.value.map(getDisplayText)
+  }
+
+  return getDisplayText(innerSelectValue.value)
 })
 
 const inputText = ref('')

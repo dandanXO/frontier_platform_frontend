@@ -9,7 +9,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     :multiple="params.multiple"
     @addNew="handleAdd"
   )
-  f-button(type="primary" size="md" @click="handleConfirm") Confirm
+  confirm-button(@click="handleConfirm")
 </template>
 
 <script lang="ts">
@@ -19,6 +19,7 @@ import type { ICellEditorParams } from 'ag-grid-community'
 import { clone } from 'ramda'
 import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialRow } from '@/types'
+import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString
@@ -30,6 +31,9 @@ interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
 }
 
 export default {
+  components: {
+    ConfirmButton,
+  },
   setup(props: { params: SelectEditorParams }) {
     const refInput = ref<HTMLElement>()
     const inputValue = ref(props.params.value)

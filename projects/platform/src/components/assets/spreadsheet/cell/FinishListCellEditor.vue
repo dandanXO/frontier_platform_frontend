@@ -10,7 +10,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     canAddNew
     @addNew="handleAdd($event)"
   )
-  //- f-button(type="primary" size="md" @click="handleConfirm") Confirm
+  confirm-button(@click="handleConfirm")
 </template>
 
 <script lang="ts">
@@ -20,6 +20,8 @@ import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialFinish } from '@frontier/platform-web-sdk'
 import type { MaterialRow } from '@/types'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import { useI18n } from 'vue-i18n'
+import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialFinish> {
@@ -27,7 +29,11 @@ interface SelectEditorParams
 }
 
 export default {
+  components: {
+    ConfirmButton,
+  },
   setup(props: { params: SelectEditorParams }) {
+    const { t } = useI18n()
     const refInput = ref<HTMLElement>()
     const inputValue = ref(props.params.value)
 
@@ -45,6 +51,10 @@ export default {
       }
     }
 
+    const handleConfirm = () => {
+      props.params.api.stopEditing()
+    }
+
     onMounted(async () => {
       await nextTick()
       refInput.value.focus()
@@ -55,6 +65,7 @@ export default {
       inputValue,
       addFinishOption,
       menuTree: finishMenuTree,
+      handleConfirm,
       handleAdd,
       getValue,
     }

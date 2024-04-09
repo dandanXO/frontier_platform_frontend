@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-200 p-4 pb-50 flex flex-col gap-y-6 bg-grey-100 rounded")
+div(class="w-200 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
   f-input-container(
     :label="$t('RR0021')"
     required
@@ -42,6 +42,7 @@ div(class="w-200 p-4 pb-50 flex flex-col gap-y-6 bg-grey-100 rounded")
           iconName="delete"
           @click="() => removeContentField(index)"
         )
+  confirm-button(@click="handleConfirm")
 </template>
 
 <script lang="ts">
@@ -53,6 +54,8 @@ import { contentListSchema } from '@/composables/material/useMaterialSchema'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import type { MaterialSideAllOfContentList } from '@frontier/platform-web-sdk'
+import { useI18n } from 'vue-i18n'
+import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialSideAllOfContentList[]> {
@@ -67,7 +70,12 @@ interface SelectEditorParams
 configure({ validateOnInput: true })
 
 export default {
+  components: {
+    ConfirmButton,
+  },
   setup(props: { params: SelectEditorParams }) {
+    const { t } = useI18n()
+
     if (props.params.value == null) {
       throw new Error('value is null or undefined')
     }
@@ -159,6 +167,10 @@ export default {
       updateContentField(index, { ...fieldValue, contentId: null, name })
     }
 
+    const handleConfirm = () => {
+      props.params.api.stopEditing()
+    }
+
     return {
       contentList,
       contentFields,
@@ -171,6 +183,7 @@ export default {
       displayErrors,
       submit,
       getValue,
+      handleConfirm,
     }
   },
 }

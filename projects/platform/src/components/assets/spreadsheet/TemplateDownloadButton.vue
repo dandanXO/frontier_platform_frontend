@@ -15,38 +15,41 @@ f-popper(placement="bottom-start")
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const env = ref(process.env.NODE_ENV)
 const urlPrefix = computed(() => {
-  return `https://textile${
-    env.value !== 'production' ? '-dev' : ''
-  }.frontier.cool/Resource/MaterialMassImportTemplate/`
+  const domainName = env.value === 'production' ? 'textile' : 'textile-dev'
+  return `https://${domainName}.frontier.cool/Resource/MaterialMassImportTemplate/`
+})
+
+const urlPostfix = computed(() => {
+  return locale.value === 'zh-TW' ? '-zh' : ''
 })
 
 const templateList = computed(() => [
   {
     title: t('RR0091'),
-    url: `${urlPrefix.value}Woven%20-%20Online%20Upload%20Format.xlsx`,
+    url: `${urlPrefix.value}Woven${urlPostfix.value}.xlsx`,
   },
   {
     title: t('RR0092'),
-    url: `${urlPrefix.value}Knit%20-%20Online%20Upload%20Format%20Knit%20Final.xlsx`,
+    url: `${urlPrefix.value}Knit${urlPostfix.value}.xlsx`,
   },
   {
     title: t('MI0018'),
-    url: `${urlPrefix.value}Leather%20-%20Online%20Upload%20Format%20Leather%20Final.xlsx`,
+    url: `${urlPrefix.value}Leather${urlPostfix.value}.xlsx`,
   },
   {
     title: t('MI0020'),
-    url: `${urlPrefix.value}Non-Woven%20-%20Online%20Upload%20Format.xlsx`,
+    url: `${urlPrefix.value}Non-Woven${urlPostfix.value}.xlsx`,
   },
   {
     title: t('MI0021'),
-    url: `${urlPrefix.value}Trims%20-%20Online%20Upload%20Format.xlsx`,
+    url: `${urlPrefix.value}Trims${urlPostfix.value}.xlsx`,
   },
   {
     title: t('MI0022'),
-    url: `${urlPrefix.value}Others%20-%20Online%20Mass%20Upload%20Format.xlsx`,
+    url: `${urlPrefix.value}Others${urlPostfix.value}.xlsx`,
   },
 ])
 
