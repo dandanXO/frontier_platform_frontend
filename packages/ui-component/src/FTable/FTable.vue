@@ -88,6 +88,7 @@ div(class="relative")
       div(v-else class="text-body1 text-grey-600 my-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
     f-paginator(
+      showQuickJumper
       v-model:currentPage="innerPagination.currentPage"
       :totalPage="innerPagination.totalPage"
       @goTo="$emit('goTo', $event)"

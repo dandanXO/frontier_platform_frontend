@@ -13,19 +13,30 @@
 </style>
 
 <template lang="pug">
-v-pagination(
-  v-model="innerCurrentPage"
-  :pages="totalPage"
-  :range-size="1"
-  @update:modelValue="updateHandler"
-)
+div(class="flex")
+  v-pagination(
+    v-model="innerCurrentPage"
+    :pages="totalPage"
+    :range-size="1"
+    @update:modelValue="updateHandler"
+  )
+  template(v-if="showQuickJumperProp") 
+    div(class="mx-4 my-auto") Go to
+    f-input-text(
+      v-if="showQuickJumperProp"
+      @keyup.enter="handleQuickJump"
+      v-model:textValue="jumpPage"
+      :placeholder="$t('OO0128')"
+      size="md"
+      class="w-18"
+    )
 </template>
 
 <script>
 // https://www.npmjs.com/package/@hennge/vue3-pagination
 import VPagination from '@hennge/vue3-pagination'
 import '@hennge/vue3-pagination/dist/vue3-pagination.css'
-import { computed } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 
 export default {
   name: 'FPaginator',
@@ -33,6 +44,10 @@ export default {
     VPagination,
   },
   props: {
+    showQuickJumper: {
+      type: Boolean,
+      required: false,
+    },
     currentPage: {
       type: Number,
       required: true,
@@ -48,12 +63,30 @@ export default {
       get: () => props.currentPage,
       set: (v) => emit('update:currentPage', v),
     })
+    const { showQuickJumper: showQuickJumperProp } = toRefs(props)
 
     const updateHandler = (page) => {
       emit('goTo', page)
     }
+    const jumpPage = ref(null)
+    const isValidPage = (page) => {
+      return page && 0 < page && page <= props.totalPage
+    }
+    const handleQuickJump = (e) => {
+      let page = Number(e.target.value)
+      if (isValidPage(page)) {
+        emit('update:currentPage', page)
+        emit('goTo', page)
+      } else {
+        // if wrong clear input
+        jumpPage.value = null
+      }
+    }
 
     return {
+      jumpPage,
+      handleQuickJump,
+      showQuickJumperProp,
       innerCurrentPage,
       updateHandler,
     }

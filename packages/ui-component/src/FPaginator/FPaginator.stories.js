@@ -19,3 +19,14 @@ export const Default = (args) => ({
     <f-paginator v-bind="args" v-model:currentPage="currentPage"></f-paginator>
   `,
 })
+
+export const QuickJumper = (args) => ({
+  components: { FPaginator },
+  setup() {
+    const currentPage = ref(1)
+    return { args, currentPage }
+  },
+  template: `
+    <f-paginator showQuickJumper v-bind="args" v-model:currentPage="currentPage"></f-paginator>
+  `,
+})

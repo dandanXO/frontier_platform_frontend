@@ -69,6 +69,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
       class="py-9.5 self-center"
     )
       f-paginator(
+        showQuickJumper
         v-model:currentPage="pagination.currentPage"
         :totalPage="pagination.totalPage"
         @goTo="search($event)"
