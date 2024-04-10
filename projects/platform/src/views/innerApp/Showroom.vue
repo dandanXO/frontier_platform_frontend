@@ -103,7 +103,7 @@ div(class="w-full h-full relative")
     template(v-if="isFirstLayer" #banner="{ inSearch, currentPage }")
       div(v-if="!inSearch && currentPage === 1" class="pb-4 px-7.5")
         showroom-banner(
-          :title="`${$t('II0039')} | ${showroom.subtitle}`"
+          :title="`${$t('II0039', { year: new Date().getFullYear() })} | ${showroom.subtitle}`"
           :coverImg="showroom.coverImg"
           :textColor="showroom.color"
           :slotContent="showroom.description"
