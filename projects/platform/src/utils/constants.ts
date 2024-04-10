@@ -351,10 +351,38 @@ export const useConstants = () => {
     )
   )
 
+  const TEMPLATE_LIST = computed(() => [
+    {
+      title: i18n.global.t('RR0091'),
+      type: 'Woven',
+    },
+    {
+      title: i18n.global.t('RR0092'),
+      type: 'Knit',
+    },
+    {
+      title: i18n.global.t('MI0018'),
+      type: 'Leather',
+    },
+    {
+      title: i18n.global.t('MI0020'),
+      type: 'Non-Woven',
+    },
+    {
+      title: i18n.global.t('MI0021'),
+      type: 'Trims',
+    },
+    {
+      title: i18n.global.t('MI0022'),
+      type: 'Others',
+    },
+  ])
+
   return {
     MADE2FLOW_TAG_LIST,
     FEEDBACK_CATEGORY,
     WEIGHT_UNIT,
+    TEMPLATE_LIST,
   }
 }
 
