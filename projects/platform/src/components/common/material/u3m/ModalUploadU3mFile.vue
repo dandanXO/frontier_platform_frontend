@@ -53,10 +53,10 @@ modal-behavior(
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, unzip } from '@frontier/lib'
-import { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
+import type { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { bytesToSize } from '@frontier/lib'
 import { Extension } from '@frontier/platform-web-sdk'
@@ -74,9 +74,11 @@ const { t } = useI18n()
 const store = useStore()
 
 const errorCode = ref<UPLOAD_ERROR_CODE | string>('')
-const fileSizeMaxLimit = 5 * Math.pow(1024, 3)
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 const acceptType = [Extension.ZIP]
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit.value)
 const customizedErrorMsg = ref('')
 const chooseFile = () => {
   fileOperator.upload()

@@ -65,7 +65,9 @@ const haveUploadedImage = computed(
   () => !props.thumbnail.includes(props.defaultImage)
 )
 
-const fileSizeMaxLimit = 5 * Math.pow(1024, 2)
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 const acceptType = ['jpeg', 'jpg', 'png']
 const imageOperator = new ImageOperator(
   acceptType,

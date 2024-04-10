@@ -23,7 +23,7 @@ modal-behavior(
         div(class="text-grey-600") {{ $t('RR0243') }}
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
         div(class="text-grey-600") {{ $t('RR0145') }}
-        div(class="text-grey-900 font-bold") {{ fileSizeMaxLimit / Math.pow(1024, 3) }} GB
+        div(class="text-grey-900 font-bold") {{ bytesToSize(fileSizeMaxLimit) }}
       div(
         class="rounded border-grey-250 bg-grey-50 border border-dashed h-57 flex justify-center items-center"
         data-cy="modal-smart-upload_dropzone"
@@ -73,7 +73,7 @@ modal-behavior(
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@frontier/lib'
+import { FileOperator, bytesToSize } from '@frontier/lib'
 import { MATERIAL_FILE_ACCEPT_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
@@ -87,9 +87,11 @@ const isUploading = ref(false)
 const attachmentList = reactive<File[]>([])
 const disabledUpload = computed(() => attachmentList.length === 0)
 
-const fileSizeMaxLimit = 5 * Math.pow(1024, 3)
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 const acceptType = MATERIAL_FILE_ACCEPT_TYPE
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit.value)
 
 const chooseFile = () => {
   fileOperator.upload(true)

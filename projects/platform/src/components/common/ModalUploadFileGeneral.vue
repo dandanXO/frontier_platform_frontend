@@ -54,8 +54,7 @@ const originalFileName = ref('')
 const errorCode = ref('')
 const disabled = computed(() => !fileName.value || !originalFileName.value)
 const fileSizeMaxLimit = computed(
-  () =>
-    store.getters['organization/organization'].materialAttachmentUploadSizeLimit
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
 )
 let binaryFile
 

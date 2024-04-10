@@ -96,6 +96,8 @@ export default {
     paymentDetail: (state) => state.paymentDetail,
     noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
     pricing: (state) => state.pricing,
+    materialAttachmentUploadSizeLimit: (state) =>
+      state.materialAttachmentUploadSizeLimit,
   },
   mutations: {
     SET_organization(state, organization) {
