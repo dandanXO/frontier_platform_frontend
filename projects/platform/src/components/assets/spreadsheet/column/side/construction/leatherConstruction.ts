@@ -1,6 +1,10 @@
 import i18n from '@frontier/i18n'
 import { MaterialType } from '@frontier/platform-web-sdk'
-import type { ColGroupDef, EditableCallbackParams } from 'ag-grid-enterprise'
+import type {
+  ColGroupDef,
+  EditableCallbackParams,
+  ValueFormatterParams,
+} from 'ag-grid-enterprise'
 import type { MaterialRow } from '@/types'
 import {
   constructionEditable,
@@ -62,6 +66,13 @@ const getLeatherConstruction = (
           materialLeatherConstructionSchema.shape.thicknessPerMm,
           t('MI0030')
         ),
+        cellRenderer: (params: ValueFormatterParams<MaterialRow>) => {
+          const { faceSide, backSide } = params.data || {}
+          const isLeather = [faceSide, backSide].some(
+            (side) => side?.materialType === MaterialType.LEATHER
+          )
+          return isLeather ? params.value : ''
+        },
       },
     ],
   }

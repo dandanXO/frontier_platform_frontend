@@ -1,7 +1,11 @@
 import i18n from '@frontier/i18n'
 import type { MaterialRow } from '@/types'
 import { MaterialType } from '@frontier/platform-web-sdk'
-import type { ColGroupDef, EditableCallbackParams } from 'ag-grid-enterprise'
+import type {
+  ColGroupDef,
+  EditableCallbackParams,
+  ValueFormatterParams,
+} from 'ag-grid-enterprise'
 import {
   getNumberCellProps,
   getStringCellProps,
@@ -45,6 +49,13 @@ const getNonWovenConstruction = (
           materialNonWovenConstructionSchema.shape.thicknessPerMm,
           t('MI0030')
         ),
+        cellRenderer: (params: ValueFormatterParams<MaterialRow>) => {
+          const { faceSide, backSide } = params.data || {}
+          const isNonWoven = [faceSide, backSide].some(
+            (side) => side?.materialType === MaterialType.NON_WOVEN
+          )
+          return isNonWoven ? params.value : ''
+        },
       },
     ],
   }
