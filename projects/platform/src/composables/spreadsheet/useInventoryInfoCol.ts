@@ -261,7 +261,13 @@ const useInventoryInfoCol = (): ComputedRef<
 
             return toYUnitDisplay(calculateInY())
           },
-          cellStyle: defaultCellStyle,
+          cellStyle: (params: CellClassParams<MaterialRow>) => {
+            const editable = params.column.isCellEditable(params.node)
+            return {
+              ...getCellStyle({ valid: true, editable }),
+              ...defaultCellStyle,
+            }
+          },
         },
         {
           headerName: t('RR0289'),
