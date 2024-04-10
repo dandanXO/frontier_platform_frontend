@@ -605,7 +605,7 @@ div(class="flex flex-col gap-y-7.5")
 </template>
 
 <script setup lang="ts">
-import { computed, inject, nextTick, ref, watch } from 'vue'
+import { computed, inject, nextTick, ref, watch, onMounted } from 'vue'
 import { useFieldArray } from 'vee-validate'
 import { useStore } from 'vuex'
 import {
@@ -794,8 +794,6 @@ const contentDisplayError = computed(() => {
 
   return errors.length ? [...new Set(errors)].join(', ') : ''
 })
-// initail validate form function
-validate()
 
 const selectContent = (
   name: string | null,
@@ -987,6 +985,9 @@ const openModalSendFeedback = () => {
     component: 'modal-send-feedback',
   })
 }
+onMounted(() => {
+  validate()
+})
 </script>
 
 <style scoped></style>

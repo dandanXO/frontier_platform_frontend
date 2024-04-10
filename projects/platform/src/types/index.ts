@@ -22,11 +22,11 @@ export interface Image {
 }
 
 export interface CropperConfig {
-  image: Image
-  dpi: number
-  rotateDeg: number
-  scaleRatio: number
-  options: {
+  image?: Image
+  dpi?: number
+  rotateDeg?: number
+  scaleRatio?: number
+  options?: {
     x: number
     y: number
     width: number

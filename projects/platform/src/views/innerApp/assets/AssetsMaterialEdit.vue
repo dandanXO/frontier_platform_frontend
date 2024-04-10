@@ -63,7 +63,7 @@ div(class="w-full h-full flex justify-center")
                     size="sm"
                     type="secondary"
                     :disabled="!hasSampleCard"
-                    @click="isOpenSampleCard = !isOpenSampleCard"
+                    @click="openSampleCard()"
                   ) {{ isOpenSampleCard ? $t('UU0026') : $t('UU0033') }}
                   div(
                     v-if="isOpenSampleCard"
@@ -249,7 +249,7 @@ const coverId = computed(() => {
 const { primarySideImage, publicFileList } = useMaterial(material)
 
 const cropperConfig: CropperConfig = reactive({})
-const isOpenSampleCard = ref(false)
+const isOpenSampleCard = ref(true)
 const isImageCropConfigReady = ref(false)
 
 const hasSampleCard = computed(() => Boolean(primarySideImage.value))
@@ -289,7 +289,9 @@ const submit = handleSubmit(async (form) => {
     await multimediaUpdateService.saveCover()
   }
 })
-
+const openSampleCard = () => {
+  isOpenSampleCard.value = !isOpenSampleCard.value
+}
 const updateMaterial = async (payload: {
   form: ReturnType<typeof useMaterialForm>['values']
   u3m?: {
@@ -377,5 +379,8 @@ watchEffect(getCropperConfig)
 
 onMounted(() => {
   validate()
+  if (!hasSampleCard.value) {
+    isOpenSampleCard.value = false
+  }
 })
 </script>
