@@ -47,6 +47,7 @@ const useMiddleSideInfoCol = (
           minWidth: 200,
           cellEditor: SelectCellEditor,
           cellStyle: defaultCellStyle,
+          hide: true,
         },
         featureListCol.value,
         finishListCol.value,

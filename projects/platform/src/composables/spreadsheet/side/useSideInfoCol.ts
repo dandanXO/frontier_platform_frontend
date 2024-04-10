@@ -123,6 +123,7 @@ const useSideInfoCol = (
           headerName: t('RR0084'),
           minWidth: 200,
           cellEditor: SelectCellEditor,
+          hide: true,
         },
         featureListCol.value,
         finishListCol.value,
