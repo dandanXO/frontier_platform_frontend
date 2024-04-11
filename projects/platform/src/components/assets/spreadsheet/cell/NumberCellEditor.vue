@@ -2,7 +2,7 @@
 div(ref="containerRef" class="bg-grey-100 p-2 pb-10" @keydown.enter="handleKeyDown")
   f-input-text(
     ref="inputRef"
-    class="w-69"
+    class="min-w-80 max-w-full"
     size="md"
     inputType="number"
     v-model:textValue="inputValue"
