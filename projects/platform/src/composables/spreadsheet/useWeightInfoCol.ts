@@ -69,33 +69,39 @@ const useWeightInfoCol = (): ComputedRef<
           onCellValueChanged: (
             params: NewValueParams<MaterialRow, WeightUnit>
           ) => {
-            params.api.refreshCells({ rowNodes: [params.node], force: true })
-            if (!params.data) {
-              return
-            }
+            params.node &&
+              params.api.refreshCells({ rowNodes: [params.node], force: true })
+
+            if (!params.data) return
 
             const row = params.data
             const weightUnit = row.weight?.unit
-            if (!weightUnit) {
-              return
+            const oldWeightUnit = params.oldValue
+
+            if (!weightUnit) return
+
+            const setWeightDisplaySetting = (
+              unit: WeightUnit,
+              value: boolean
+            ) => {
+              switch (unit) {
+                case WeightUnit.GM:
+                  row.weightDisplaySetting.isShowWeightGm = value
+                  break
+                case WeightUnit.GSM:
+                  row.weightDisplaySetting.isShowWeightGsm = value
+                  break
+                case WeightUnit.GY:
+                  row.weightDisplaySetting.isShowWeightGy = value
+                  break
+                case WeightUnit.OZ:
+                  row.weightDisplaySetting.isShowWeightOz = value
+                  break
+              }
             }
 
-            const strategy = {
-              [WeightUnit.GM]: () => {
-                row.weightDisplaySetting.isShowWeightGm = true
-              },
-              [WeightUnit.GSM]: () => {
-                row.weightDisplaySetting.isShowWeightGsm = true
-              },
-              [WeightUnit.GY]: () => {
-                row.weightDisplaySetting.isShowWeightGy = true
-              },
-              [WeightUnit.OZ]: () => {
-                row.weightDisplaySetting.isShowWeightOz = true
-              },
-            }
-
-            strategy[weightUnit]()
+            setWeightDisplaySetting(weightUnit, true)
+            oldWeightUnit && setWeightDisplaySetting(oldWeightUnit, false)
             params.api.applyTransaction({ update: [row] })
           },
         },
