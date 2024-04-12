@@ -460,6 +460,7 @@ div(class="flex flex-col gap-y-7.5")
     :selectValue="finishList.value"
     @update:selectValue="finishList.onInput"
     :dropdownMenuTree="specOptions.finishList"
+    @addNew="addFinishOption($event)"
     :label="$t('RR0022')"
     :placeholder="$t('MI0040')"
     :hintError="displayErrors[`${primarySideType}.finishList`]"
