@@ -88,7 +88,7 @@ const getMaxDecimalPlacesParams = (dp: number) => {
   return [multipleOf, message] as const
 }
 
-export const featureListSchema = z.array(z.string()).default([])
+export const featureListSchema = z.array(z.string().max(500)).default([])
 
 export const finishListSchema = z
   .array(

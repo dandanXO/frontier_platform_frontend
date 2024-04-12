@@ -2,18 +2,19 @@
 div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
   f-select-input(
     ref="refInput"
-    class="w-full"
+    class="w-full mb-2"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="dropdownMenuTree"
     :placeholder="params.placeholder"
     :multiple="params.multiple"
     @addNew="handleAdd"
+    :hintError="isTagTooLong ? $t('WW0142', { limitNumber: 500 }) : ''"
   )
   confirm-button(@click="handleConfirm")
 </template>
 
 <script lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import { clone } from 'ramda'
@@ -38,6 +39,11 @@ export default {
     const refInput = ref<HTMLElement>()
     const inputValue = ref(props.params.value)
     const dropdownMenuTree = ref(clone(props.params.dropdownMenuTree()))
+    const isTagTooLong = computed(
+      () =>
+        Array.isArray(inputValue.value) &&
+        inputValue.value.some((tag) => tag.length > 500)
+    )
 
     const handleAdd = (name: string) => {
       dropdownMenuTree.value.blockList[0].menuList.push({
@@ -66,6 +72,7 @@ export default {
       handleConfirm,
       handleAdd,
       getValue,
+      isTagTooLong,
     }
   },
 }
