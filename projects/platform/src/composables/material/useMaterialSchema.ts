@@ -90,6 +90,8 @@ const getMaxDecimalPlacesParams = (dp: number) => {
 
 export const featureListSchema = z.array(z.string().max(500)).default([])
 
+export const tagListSchema = z.array(z.string().max(500)).default([])
+
 export const finishListSchema = z
   .array(
     z.object({
@@ -576,8 +578,6 @@ export const weightDisplaySettingSchema = z
   })
 
 const useMaterialSchema = () => {
-  const tagListSchema = z.array(z.string()).nullable().default([])
-
   const materialSchema = z.object({
     itemNo: z
       .string(nonNullParams)

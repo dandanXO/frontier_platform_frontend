@@ -10,7 +10,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     @addNew="handleAdd"
     :hintError="isTagTooLong ? $t('WW0142', { limitNumber: 500 }) : ''"
   )
-  confirm-button(@click="handleConfirm")
+  confirm-button(@click="handleConfirm" :disabled="isTagTooLong")
 </template>
 
 <script lang="ts">

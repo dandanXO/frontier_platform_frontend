@@ -8,6 +8,7 @@ import {
 } from '@/utils/material/spreadsheet'
 import type { MaterialRow } from '@/types'
 import type {
+  CellClassParams,
   ColDef,
   ColGroupDef,
   ValueFormatterParams,
@@ -15,6 +16,8 @@ import type {
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
+import { getCellStyle } from '../../utils/material/spreadsheet'
+import { tagListSchema } from '../material/useMaterialSchema'
 
 const useTagInfoCol = (
   spreadsheetService: SpreadsheetService
@@ -28,6 +31,16 @@ const useTagInfoCol = (
     publicTagMenuList,
     privateTagMenuList,
   } = spreadsheetService
+
+  function getTagListValidatedCellStyle(params: CellClassParams<MaterialRow>) {
+    const editable = params.column.isCellEditable(params.node)
+    const isValid = editable
+      ? tagListSchema.safeParse(params.value).success
+      : true
+    const cellStyle = getCellStyle({ valid: isValid, editable })
+
+    return { ...cellStyle, ...defaultCellStyle }
+  }
 
   return computed(() => {
     return {
@@ -74,7 +87,7 @@ const useTagInfoCol = (
               target.tagList = []
             }
           }),
-          cellStyle: defaultCellStyle,
+          cellStyle: getTagListValidatedCellStyle,
         },
         {
           headerName: t('MI0051'),
@@ -171,7 +184,7 @@ const useTagInfoCol = (
                   target.tagList = []
                 }
               }),
-              cellStyle: defaultCellStyle,
+              cellStyle: getTagListValidatedCellStyle,
             },
             {
               field: 'internalInfo.remark',
