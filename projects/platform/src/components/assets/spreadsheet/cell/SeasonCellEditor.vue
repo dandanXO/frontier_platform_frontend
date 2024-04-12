@@ -1,15 +1,15 @@
 <template lang="pug">
 div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
   f-select-input(
-    class="w-full"
+    class="w-full mb-2"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="seasonMenuTree"
     :placeholder="t('MI0012')"
     :multiple="params.multiple"
     @addNew="addSeasonOption"
     :rules="rules"
+    :hintError="isInputValueInvalid ? $t('WW0142', { limitNumber: 50 }) : ''"
   )
-  div(v-show="isInputValueInvalid" class="text-red-500 py-1" :key="inputValue") {{ $t('WW0142', { limitNumber: 50 }) }}
   f-button(
     type="primary"
     size="md"
