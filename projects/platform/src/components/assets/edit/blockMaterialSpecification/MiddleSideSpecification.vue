@@ -16,6 +16,7 @@ div(class="flex flex-col gap-y-7.5")
     :placeholder="$t('MI0015')"
     :hintError="displayErrors['middleSide.featureList']"
     multiple
+    :multipleTagInputValidations="[inputValidate, lengthValidate]"
   )
   f-select-input(
     :selectValue="middleSideFinishList.value"
@@ -26,6 +27,7 @@ div(class="flex flex-col gap-y-7.5")
     :placeholder="$t('MI0040')"
     :hintError="displayErrors['middleSide.finishList']"
     multiple
+    :multipleTagInputValidations="[inputValidate, lengthValidate]"
   )
   div(
     class="flex items-center gap-x-3"
@@ -38,6 +40,7 @@ div(class="flex flex-col gap-y-7.5")
       :placeholder="$t('MI0030')"
       label="Custom Name"
       class="w-50"
+      :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
     )
     f-input-text(
       v-model:textValue="field.value.value"
@@ -91,6 +94,9 @@ const {
 } = useFieldArray<MaterialPatternCustomPropertyBase>(
   'middleSide.customPropertyList'
 )
+// multiple chips rules
+const inputValidate = (str: string) => str.replace(/,/g, '')
+const lengthValidate = (str: string) => str.slice(0, 500)
 </script>
 
 <style scoped></style>

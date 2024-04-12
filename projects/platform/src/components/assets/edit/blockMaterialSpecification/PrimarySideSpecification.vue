@@ -32,6 +32,7 @@ div(class="flex flex-col gap-y-7.5")
     :placeholder="$t('MI0015')"
     :hintError="displayErrors[`${props.primarySideType}.featureList`]"
     multiple
+    :multipleTagInputValidations="[inputValidate, lengthValidate]"
   )
   f-input-container(v-if="!hideBackSideFields" :label="$t('MI0016')")
     div(class="flex flex-row gap-x-4.5 pt-2")
@@ -80,6 +81,7 @@ div(class="flex flex-col gap-y-7.5")
             :placeholder="$t('MI0024')"
             :hintError="displayErrors[`${primarySideType}.descriptionList`]"
             multiple
+            :multipleTagInputValidations="[inputValidate, lengthValidate]"
             class="w-full"
           )
           f-input-container(:label="$t('MI0026')")
@@ -306,6 +308,7 @@ div(class="flex flex-col gap-y-7.5")
               :hintError="displayErrors[`${primarySideType}.constructionCustomPropertyList[${index}].name`]"
               :placeholder="$t('MI0030')"
               label="Custom Name"
+              :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
               class="w-50"
             )
             f-input-text(
@@ -355,6 +358,7 @@ div(class="flex flex-col gap-y-7.5")
           :placeholder="$t('MI0035')"
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].name`])"
           class="w-100"
+          :multipleTagInputValidations="[inputValidate, lengthValidate]"
         )
         f-input-text(
           :disabled="disableBackSideFields"
@@ -456,11 +460,11 @@ div(class="flex flex-col gap-y-7.5")
     :selectValue="finishList.value"
     @update:selectValue="finishList.onInput"
     :dropdownMenuTree="specOptions.finishList"
-    @addNew="addFinishOption($event)"
     :label="$t('RR0022')"
     :placeholder="$t('MI0040')"
     :hintError="displayErrors[`${primarySideType}.finishList`]"
     multiple
+    :multipleTagInputValidations="[inputValidate, lengthValidate]"
   )
   f-input-container(v-if="mode === CREATE_EDIT.EDIT" :label="$t('EE0040')")
     div(class="flex flex-col gap-y-4")
@@ -521,6 +525,7 @@ div(class="flex flex-col gap-y-7.5")
             label="name"
             :placeholder="$t('MI0030')"
             class="w-50"
+            :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
           )
           f-input-text(
             :disabled="disableBackSideFields"
@@ -575,6 +580,7 @@ div(class="flex flex-col gap-y-7.5")
             :placeholder="$t('MI0030')"
             label="name"
             class="w-50"
+            :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
           )
           f-input-text(
             :disabled="disableBackSideFields"
@@ -660,6 +666,10 @@ const isAutoSyncFaceToBackSideInfo = defineInputBinds(
   'isAutoSyncFaceToBackSideInfo'
 )
 
+// multiple chips rules
+const inputValidate = (str: string) => str.replace(/,/g, '')
+const lengthValidate = (str: string) => str.slice(0, 500)
+
 const featureList = defineInputBinds(`${props.primarySideType}.featureList`)
 const finishList = defineInputBinds(`${props.primarySideType}.finishList`)
 const descriptionList = defineInputBinds(
@@ -692,7 +702,6 @@ const weightCheckboxItems = computed(() =>
     label: weightUnitText.value[item.unit],
   }))
 )
-
 // Woven construction
 const constructionIsPublic = defineInputBinds(
   `${props.primarySideType}.construction.isPublic`

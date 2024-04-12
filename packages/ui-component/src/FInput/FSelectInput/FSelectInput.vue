@@ -190,6 +190,15 @@ const props = defineProps({
     default: () => [],
   },
   /**
+   *當使用 multiple input 時可用此規則來限制 每張卡片的輸入字串
+   *
+   * 直接阻擋使用者輸入 而非輸入再檢查
+   */
+  multipleTagInputValidations: {
+    type: Array,
+    default: () => [],
+  },
+  /**
    * inherit from `FInputContainer.vue`
    *
    * it could be i18n key or text and it works only when `slot:hint-error` hasn't been set and all `rules` are pass.
@@ -290,7 +299,7 @@ const displayText = computed(() => {
 
 const inputText = ref('')
 
-const { rules, hintError, disabled } = toRefs(props)
+const { rules, hintError, disabled, multiple } = toRefs(props)
 const {
   isFilled,
   isFocus,
@@ -301,6 +310,7 @@ const {
   STATE,
   classTransition,
 } = useInput({
+  isMultiple: multiple, // is Multiple chips input type
   slots,
   inputValue: inputText,
   rules,
@@ -520,6 +530,13 @@ const checkPlacementAndReverse = (state) => {
 const refContextualMenu = ref(null)
 
 const setSearchInput = (searchInput) => {
+  // 使用 select input 檢查並且直接過濾使用者的input 不是按下enter才顯示錯誤
+  if (props.multipleTagInputValidations.length) {
+    props.multipleTagInputValidations.forEach((rule) => {
+      inputText.value = rule(searchInput)
+      searchInput = rule(searchInput)
+    })
+  }
   if (refContextualMenu.value) {
     refContextualMenu.value.setSearchInput(searchInput || '')
   }

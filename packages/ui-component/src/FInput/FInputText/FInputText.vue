@@ -224,6 +224,15 @@ const props = defineProps({
     default: false,
   },
   /**
+   *input 時 規則直接限制限制 user輸入
+   *
+   * 直接阻擋使用者輸入 而非輸入再檢查
+   */
+  onInputValidations: {
+    type: Array,
+    default: () => [],
+  },
+  /**
    * Throws an error message if any rule fails, then it will be used in preference to it instead of `hintError`
    *
    * ***format: false case && error message***
@@ -451,6 +460,13 @@ const flatPickrConfig = {
 }
 
 const onInput = async () => {
+  if (props.onInputValidations.length) {
+    let text = props.textValue
+    props.onInputValidations.forEach((rule) => {
+      text = rule(text)
+      emit('update:textValue', text)
+    })
+  }
   await nextTick()
   !isFilled.value && emit('update:textValue', null)
   emit('input')

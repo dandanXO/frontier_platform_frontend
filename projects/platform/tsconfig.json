@@ -8,10 +8,9 @@
     "tests/**/*.js"
   ],
   "compilerOptions": {
+    "suppressImplicitAnyIndexErrors": true,
     "paths": {
-      "@/*": [
-        "./src/*",
-      ]
-    },
-  },
+      "@/*": ["./src/*"]
+    }
+  }
 }
