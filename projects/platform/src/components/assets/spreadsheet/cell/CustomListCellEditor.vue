@@ -66,11 +66,16 @@ configure({ validateOnInput: true })
 
 export default {
   setup(props: { params: SelectEditorParams }) {
-    if (props.params.value == null) {
-      throw new Error('value is null or undefined')
-    }
+    let customPropertyList = props.params.value
+      ? props.params.value.map((item) => ({
+          isPublic: item.isPublic,
+          name: item.name,
+          value: item.value,
+        }))
+      : []
+
     const { values, errors, meta, handleSubmit } = useForm({
-      initialValues: { customPropertyList: props.params.value },
+      initialValues: { customPropertyList },
       validationSchema: toTypedSchema(
         z.object({
           customPropertyList: customPropertyListSchema,
@@ -79,7 +84,8 @@ export default {
     })
 
     const submit = handleSubmit((values) => {
-      props.params.onConfirm?.(values.customPropertyList, props.params.node.id)
+      let nodeId = props.params.node.id ?? ''
+      props.params.onConfirm?.(values.customPropertyList, nodeId)
       props.params.api.stopEditing()
     })
 
@@ -94,7 +100,8 @@ export default {
     const customPropertyDisplayErrorList = computed(() => {
       const customPropertyListErrors = []
       for (let i = 0; i < customPropertyFields.value.length; i++) {
-        const fieldError = errors.value[`customPropertyList[${i}].value`]
+        const fieldError =
+          errors.value.customPropertyList && errors.value.customPropertyList[i]
         if (fieldError) {
           customPropertyListErrors.push(fieldError)
         }
