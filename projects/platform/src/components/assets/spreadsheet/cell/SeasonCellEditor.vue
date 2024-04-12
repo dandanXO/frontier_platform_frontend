@@ -7,12 +7,19 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     :placeholder="t('MI0012')"
     :multiple="params.multiple"
     @addNew="addSeasonOption"
+    :rules="rules"
   )
-  f-button(type="primary" size="md" @click="handleConfirm") Confirm
+  div(v-show="isInputValueInvalid" class="text-red-500 py-1" :key="inputValue") {{ $t('WW0142', { limitNumber: 50 }) }}
+  f-button(
+    type="primary"
+    size="md"
+    @click="handleConfirm"
+    :disabled="isInputValueInvalid"
+  ) Confirm
 </template>
 
 <script lang="ts">
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
@@ -35,8 +42,14 @@ export default {
     const { seasonMenuTree, addSeasonOption, allSeasonList } =
       spreadsheetService
 
-    const inputValue = ref(props.params.value)
     const { t } = useI18n()
+    const inputValue = ref(props.params.value)
+    const isInputValueInvalid = computed(
+      () => inputValue.value && inputValue.value.length > 50
+    )
+    const rules = [
+      (value: string) => value.length <= 50 || t('WW0142', { limitNumber: 50 }),
+    ]
 
     const handleConfirm = () => {
       const rowId = props.params.node.id
@@ -65,6 +78,8 @@ export default {
       handleConfirm,
       addSeasonOption,
       getValue,
+      rules,
+      isInputValueInvalid,
     }
   },
 }
