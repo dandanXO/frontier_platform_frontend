@@ -1,4 +1,4 @@
-import stickerApi from '@/apis/sticker.js'
+import stickerApi from '@/apis/sticker'
 import Material from '@/store/reuseModules/material.js'
 import { ROLE_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { isEqual } from '@frontier/lib'

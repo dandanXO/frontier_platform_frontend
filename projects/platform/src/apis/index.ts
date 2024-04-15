@@ -18,7 +18,7 @@ const instance = Axios.create(options)
 
 instance.interceptors.request.use((request) => {
   const accessToken = localStorage.getItem('accessToken')
-  request.headers.Authorization = `Bearer ${accessToken}`
+  request.headers!.Authorization = `Bearer ${accessToken}`
   return request
 })
 
@@ -86,7 +86,11 @@ instance.interceptors.response.use(
       return Promise.reject({ status, code, message, result })
     }
 
-    if (status === 200 && success && needPollingApiList.includes(config.url)) {
+    if (
+      status === 200 &&
+      success &&
+      needPollingApiList.includes(config.url || '')
+    ) {
       store.dispatch('polling/getSidebar')
     }
 
@@ -106,7 +110,9 @@ instance.interceptors.response.use(
     if (status === 401) {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
-      const query = {}
+      const query: {
+        [key: string]: any
+      } = {}
       if (window.location.pathname !== '/') {
         query.redirect = `${window.location.pathname}${window.location.search}`
       }
@@ -126,7 +132,7 @@ instance.interceptors.response.use(
   }
 )
 
-const apiWrapper = (path, type = 'org', id, params = {}) => {
+const apiWrapper = (path: string, type = 'org', id = '', params = {}) => {
   const data = { ...params }
   if (type === 'org') {
     data['orgId'] = id

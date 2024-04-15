@@ -15,18 +15,25 @@ const openApi = Axios.create(options)
 openApi.interceptors.response.use(async (response) => {
   const { data, status } = response
   const { success } = data
-  if (status === 200 && !success) return Promise.reject({ response })
+  if (status === 200 && !success) {
+    return Promise.reject({ response })
+  }
   return response
 })
 
 export default {
-  getMaterialByApiKey: ({ apiKey, frontierNo }) =>
+  getMaterialByApiKey: ({ apiKey, frontierNo }: { [key: string]: string }) =>
     openApi.post(
       '/material/get',
       { frontierNo },
       { headers: { 'X-API-KEY': apiKey } }
     ),
-  getMaterialByAccessToken: ({ accessToken, materialId }) =>
+  getMaterialByAccessToken: ({
+    accessToken,
+    materialId,
+  }: {
+    [key: string]: any
+  }) =>
     openApi.post(
       '/viewer/get-material',
       { materialId },

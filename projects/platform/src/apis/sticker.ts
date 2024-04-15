@@ -1,4 +1,32 @@
 import axios from '@/apis'
+interface IData {
+  orgId?: number
+  materialId?: number
+  ogType?: number
+  ogId?: number
+  digitalThreadSideId?: number
+  filter: {
+    addTo?: number
+    isStarred?: boolean
+    addedBy: {
+      addedByMe?: boolean
+      addedByInternalUnit?: boolean
+      addedByExternalUnit?: boolean
+    }
+    createStartDate?: string
+    createEndDate?: string
+    tagList?: string
+  }
+  addFromLocationType?: number
+  addFromLocationList?: string[]
+  digitalThreadName?: string
+  addFromOGId?: number
+  addFromOGType?: number
+  addTo?: number
+  type?: number
+  content?: string
+  tagList?: string[]
+}
 
 export default {
   /**
@@ -9,7 +37,7 @@ export default {
    * @param {number} data.ogType // ogType及ogId不給時，是帶出該user在該組織及底下所有團隊可看到的digital thread list; 有給值時，只帶出該組織或團隊可看到的
    * @param {number} data.ogId // ogType及ogId不給時，是帶出該user在該組織及底下所有團隊可看到的digital thread list; 有給值時，只帶出該組織或團隊可看到的
    */
-  getDigitalThreadList: (data) =>
+  getDigitalThreadList: (data: IData) =>
     axios('/digital-thread/get-list', {
       method: 'POST',
       data,
@@ -30,7 +58,7 @@ export default {
    * @param {string} data.filter.createEndDate
    * @param {string[]} data.filter.tagList
    */
-  getDigitalThread: (data) =>
+  getDigitalThread: (data: IData) =>
     axios('/digital-thread/get', {
       method: 'POST',
       data,
@@ -41,7 +69,7 @@ export default {
    * @param {number} data.orgId
    * @param {number} data.materialId
    */
-  getDigitalThreadMaterial: (data) =>
+  getDigitalThreadMaterial: (data: IData) =>
     axios('/digital-thread/get-material', {
       method: 'POST',
       data,
@@ -53,7 +81,7 @@ export default {
    * @param {number} data.ogId
    * @param {number} data.ogType
    */
-  getStickerTagList: (data) =>
+  getStickerTagList: (data: IData) =>
     axios('/polling/digital-thread/sticker/tag-list/get', {
       method: 'POST',
       data,
@@ -73,7 +101,7 @@ export default {
    * @param {string} data.content
    * @param {string[]} data.tagList
    */
-  createDigitalThread: (data) =>
+  createDigitalThread: (data: IData) =>
     axios('/digital-thread/create', {
       method: 'POST',
       data,
@@ -85,7 +113,7 @@ export default {
    * @param {number} data.digitalThreadSideId
    * @param {string} data.digitalThreadName
    */
-  updateDigitalThreadName: (data) =>
+  updateDigitalThreadName: (data: IData) =>
     axios('/digital-thread/update/digital-thread-name', {
       method: 'POST',
       data,
@@ -100,7 +128,7 @@ export default {
    * @param {string} data.content
    * @param {string[]} data.tagList
    */
-  createSticker: (data) =>
+  createSticker: (data: IData) =>
     axios('/digital-thread/sticker/create', {
       method: 'POST',
       data,
@@ -113,7 +141,7 @@ export default {
    * @param {number} data.stickerId
    * @param {string} data.content
    */
-  createChildSticker: (data) =>
+  createChildSticker: (data: IData) =>
     axios('/digital-thread/sticker/child-sticker/create', {
       method: 'POST',
       data,
@@ -126,7 +154,7 @@ export default {
    * @param {number} data.stickerId
    * @param {string[]} data.tagList
    */
-  updateStickerTagList: (data) =>
+  updateStickerTagList: (data: IData) =>
     axios('/digital-thread/sticker/update/tag', {
       method: 'POST',
       data,
@@ -138,7 +166,7 @@ export default {
    * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
-  starSticker: (data) =>
+  starSticker: (data: IData) =>
     axios('/digital-thread/sticker/star', {
       method: 'POST',
       data,
@@ -150,7 +178,7 @@ export default {
    * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
-  unstarSticker: (data) =>
+  unstarSticker: (data: IData) =>
     axios('/digital-thread/sticker/unstar', {
       method: 'POST',
       data,
@@ -162,7 +190,7 @@ export default {
    * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
-  readChildSticker: (data) =>
+  readChildSticker: (data: IData) =>
     axios('/digital-thread/sticker/read-child-sticker', {
       method: 'POST',
       data,

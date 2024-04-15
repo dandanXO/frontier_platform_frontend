@@ -2,7 +2,15 @@ import axios from '@/apis'
 import { putBinaryData } from '@/utils/fileUpload'
 
 export default {
-  generalSignUp: ({ email, lastName, firstName, password, signupSourceType }) =>
+  generalSignUp: ({
+    email,
+    lastName,
+    firstName,
+    password,
+    signupSourceType,
+  }: {
+    [key: string]: string
+  }) =>
     axios('/sign-up/general', {
       method: 'POST',
       data: {
@@ -21,6 +29,8 @@ export default {
     phone,
     phoneCountryCode,
     description,
+  }: {
+    [key: string]: string
   }) =>
     axios('/sign-up/request', {
       method: 'POST',
@@ -32,17 +42,17 @@ export default {
         description,
       },
     }),
-  generalSignIn: ({ email, password }) =>
+  generalSignIn: ({ email, password }: { [key: string]: string }) =>
     axios('/sign-in/general', {
       method: 'POST',
       data: { email, password, platform: 1 },
     }),
-  googleSignUp: ({ idToken, signupSourceType }) =>
+  googleSignUp: ({ idToken, signupSourceType }: { [key: string]: string }) =>
     axios('/sign-up/google', {
       method: 'POST',
       data: { idToken, locale: 'en-US', platform: 1, signupSourceType },
     }),
-  googleSignIn: ({ idToken }) =>
+  googleSignIn: ({ idToken }: { [key: string]: string }) =>
     axios('/sign-in/google', {
       method: 'POST',
       data: { idToken, platform: 1 },
@@ -51,69 +61,90 @@ export default {
     axios('/user', {
       method: 'GET',
     }),
-  updateUserProfile: ({ firstName, lastName }) =>
+  updateUserProfile: ({ firstName, lastName }: { [key: string]: string }) =>
     axios('/user/update', {
       method: 'POST',
       data: { firstName, lastName },
     }),
-  checkEmailExist: ({ email }) =>
+  checkEmailExist: ({ email }: { [key: string]: string }) =>
     axios('/user/check-email-exist', {
       method: 'POST',
       data: { email },
     }),
-  oldUserResetPassword: ({ password, oldUserVerifyToken }) =>
+  oldUserResetPassword: ({
+    password,
+    oldUserVerifyToken,
+  }: {
+    [key: string]: string
+  }) =>
     axios('/user/old-user/reset-password', {
       method: 'POST',
       data: { password, oldUserVerifyToken },
     }),
-  verifyPassword: ({ password }) =>
+  verifyPassword: ({ password }: { [key: string]: string }) =>
     axios('/user/verify-password', {
       method: 'POST',
       data: { password },
     }),
-  changePassword: ({ currentPassword, newPassword }) =>
+  changePassword: ({
+    currentPassword,
+    newPassword,
+  }: {
+    [key: string]: string
+  }) =>
     axios('/user/change-password', {
       method: 'POST',
       data: { currentPassword, newPassword },
     }),
-  verifyUser: ({ verifyCode }) =>
+  verifyUser: ({ verifyCode }: { [key: string]: string }) =>
     axios('/user/verify', {
       method: 'POST',
       data: { verifyCode },
     }),
-  resendVerifyEmail: (signupSourceType) =>
+  resendVerifyEmail: (signupSourceType: number) =>
     axios('/user/resend-verify-email', {
       method: 'POST',
       data: { platform: 1, signupSourceType },
     }),
-  sendForgotPasswordEmail: ({ email }) =>
+  sendForgotPasswordEmail: ({ email }: { [key: string]: string }) =>
     axios('/user/forgot-password/send-email', {
       method: 'POST',
       data: { email, platform: 1 },
     }),
-  verifyForgotPasswordCode: ({ verifyCode }) =>
+  verifyForgotPasswordCode: ({ verifyCode }: { [key: string]: string }) =>
     axios('/user/forgot-password/verify', {
       method: 'POST',
       data: { verifyCode },
     }),
-  resetPassword: ({ verifyToken, password }) =>
+  resetPassword: ({ verifyToken, password }: { [key: string]: string }) =>
     axios('/user/forgot-password/reset-password', {
       method: 'POST',
       data: { verifyToken, password },
     }),
-  changeLocale: ({ locale }) =>
+  changeLocale: ({ locale }: { [key: string]: string }) =>
     axios('/user/change-language', {
       method: 'POST',
       data: { locale },
     }),
-  sendFeedback: ({ tempFeedbackId, category, comment }) =>
+  sendFeedback: ({
+    tempFeedbackId,
+    category,
+    comment,
+  }: {
+    [key: string]: string
+  }) =>
     axios('/user/feedback/send', {
       method: 'POST',
       data: { tempFeedbackId, category, comment },
     }),
-  sendFeedbackAttachment: async ({ tempFeedbackId, file }) => {
+  sendFeedbackAttachment: async ({
+    tempFeedbackId,
+    file,
+  }: {
+    tempFeedbackId: string
+    file: File
+  }) => {
     const attachmentFileName = file.name
-
     const {
       data: {
         result: { tempUploadId, attachmentUploadUrl },
@@ -129,7 +160,12 @@ export default {
       data: { tempFeedbackId, tempUploadId, attachmentFileName },
     })
   },
-  removeFeedbackAttachment: ({ tempFeedbackId, tempFeedbackAttachmentId }) =>
+  removeFeedbackAttachment: ({
+    tempFeedbackId,
+    tempFeedbackAttachmentId,
+  }: {
+    [key: string]: string
+  }) =>
     axios('/user/feedback/remove-attachment', {
       method: 'POST',
       data: { tempFeedbackId, tempFeedbackAttachmentId },

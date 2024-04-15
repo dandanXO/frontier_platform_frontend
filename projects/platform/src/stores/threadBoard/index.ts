@@ -22,7 +22,7 @@ import {
   type OrgUser,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
-import stickerApi from '@/apis/sticker.js'
+import stickerApi from '@/apis/sticker'
 import { useNotifyStore } from '@/stores/notify'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGoToStickerMaterialDetail from '@/composables/useGoToStickerMaterialDetail'
