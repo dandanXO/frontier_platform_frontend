@@ -592,7 +592,7 @@ const clearAll = () => {
 }
 
 const removeChip = (index) => {
-  innerSelectValue.value.splice(index, 1)
+  innerSelectValue.value = innerSelectValue.value.filter((_, i) => i !== index)
 }
 
 const refPopper = ref(null)

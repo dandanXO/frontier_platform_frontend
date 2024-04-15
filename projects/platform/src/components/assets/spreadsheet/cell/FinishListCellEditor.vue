@@ -2,15 +2,18 @@
 div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
   f-select-input(
     ref="refInput"
-    class="w-full"
+    class="w-full mb-2"
     v-model:selectValue="inputValue"
     :dropdownMenuTree="menuTree"
     :placeholder="$t('MI0040')"
     multiple
     canAddNew
     @addNew="handleAdd($event)"
+    @update:selectValue="handleSelectValueUpdate"
+    :hintError="isTagTooLong ? $t('WW0142', { limitNumber: 500 }) : ''"
+    :rules="rules"
   )
-  confirm-button(@click="handleConfirm")
+  confirm-button(@click="handleConfirm" :disabled="isTagTooLong")
 </template>
 
 <script lang="ts">
@@ -35,7 +38,20 @@ export default {
   setup(props: { params: SelectEditorParams }) {
     const { t } = useI18n()
     const refInput = ref<HTMLElement>()
-    const inputValue = ref(props.params.value)
+    type FinishList = { finishId: number; name: string }[]
+
+    const inputValue = ref<FinishList>(
+      Array.isArray(props.params.value) ? props.params.value : []
+    )
+
+    const isTagTooLong = ref(
+      inputValue.value.some((tag) => tag.name.length > 500)
+    )
+
+    const handleSelectValueUpdate = (value: FinishList) => {
+      inputValue.value = value
+      isTagTooLong.value = value.some((tag) => tag.name.length > 500)
+    }
 
     const spreadsheetService = inject<SpreadsheetService>('spreadsheetService')
     if (!spreadsheetService) {
@@ -44,6 +60,12 @@ export default {
     const { finishMenuTree, addFinishOption } = spreadsheetService
 
     const getValue = () => inputValue.value
+
+    const rules = [
+      (value: string | null | undefined) =>
+        (typeof value === 'string' && value.length <= 500) ||
+        t('WW0142', { limitNumber: 500 }),
+    ]
 
     const handleAdd = (finishName: string) => {
       if (finishName) {
@@ -57,7 +79,7 @@ export default {
 
     onMounted(async () => {
       await nextTick()
-      refInput.value.focus()
+      refInput.value!.focus()
     })
 
     return {
@@ -68,6 +90,9 @@ export default {
       handleConfirm,
       handleAdd,
       getValue,
+      isTagTooLong,
+      rules,
+      handleSelectValueUpdate,
     }
   },
 }
