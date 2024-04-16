@@ -43,10 +43,10 @@ export default {
       spreadsheetService
 
     const { t } = useI18n()
-    const inputValue = ref(props.params.value)
-    const isInputValueInvalid = computed(
-      () => inputValue.value && inputValue.value.length > 50
-    )
+    const inputValue = ref(props.params.value ?? '')
+    const isInputValueInvalid = computed(() => {
+      return inputValue.value !== undefined && inputValue.value.length > 50
+    })
     const rules = [
       (value: string) => value.length <= 50 || t('WW0142', { limitNumber: 50 }),
     ]
