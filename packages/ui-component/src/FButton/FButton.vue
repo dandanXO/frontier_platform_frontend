@@ -23,6 +23,7 @@ const props = withDefaults(
     type?: 'primary' | 'secondary' | 'text' | 'special'
     prependIcon?: string
     disabled?: boolean
+    parentIsFlex?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
@@ -30,6 +31,7 @@ const props = withDefaults(
     type: 'primary',
     prependIcon: '',
     disabled: false,
+    parentIsFlex: false,
   }
 )
 
@@ -48,6 +50,7 @@ const btnSize = computed(() => {
         'min-w-21',
         'h-10',
         props.prependIcon === '' ? 'px-4' : 'px-3',
+        props.parentIsFlex ? 'py-4' : '',
       ]
     case 'sm':
       return [

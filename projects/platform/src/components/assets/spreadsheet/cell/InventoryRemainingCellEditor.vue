@@ -62,7 +62,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             iconName="delete"
             @click="removeSampleCardsRemainingField(index)"
           )
-  //- f-button(type="primary" size="md" :disabled="!meta.valid" @click="submit") Confirm
+  f-button(type="primary" size="md" :disabled="!meta.valid" @click="submit") Confirm
 </template>
 
 <script lang="ts">

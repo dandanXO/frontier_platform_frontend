@@ -87,6 +87,13 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             iconName="delete"
             @click="() => removeYardageRemainingInfoField(index)"
           )
+  f-button(
+    type="primary"
+    size="md"
+    :disabled="!meta.valid"
+    @click="submit"
+    parentIsFlex="true"
+  ) Confirm
 </template>
 
 <script lang="ts">
