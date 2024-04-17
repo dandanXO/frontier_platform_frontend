@@ -22,7 +22,7 @@ div
       v-if="!hasExtendedContent"
       class="text-caption text-cyan-400 justify-self-start"
       @click="hasExtendedContent = true"
-    ) Show More
+    ) {{ $t('TT0054') }}
     template(v-else)
       //- Colors
       template(v-if="colorInfo")

@@ -15,6 +15,12 @@ import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 
+export type MaterialSpecificationInfoBasicProperty = {
+  name: string
+  value: string
+  textColor: string
+}
+
 export type MaterialSpecificationInfo = {
   seasonInfo: {
     name: string
@@ -22,21 +28,9 @@ export type MaterialSpecificationInfo = {
     value: string
     textColor: string
   }
-  featureList: {
-    name: string
-    value: string
-    textColor: string
-  }
-  finishList: {
-    name: string
-    value: string
-    textColor: string
-  }
-  materialType: {
-    name: string
-    value: string
-    textColor: string
-  } | null
+  featureList: MaterialSpecificationInfoBasicProperty
+  finishList: MaterialSpecificationInfoBasicProperty
+  materialType: MaterialSpecificationInfoBasicProperty | null
   construction: {
     name: string
     isPublic: boolean
@@ -53,21 +47,9 @@ export type MaterialSpecificationInfo = {
     }[]
     textColor: string
   } | null
-  contentList: {
-    name: string
-    value: string
-    textColor: string
-  } | null
-  width: {
-    name: string
-    value: string
-    textColor: string
-  } | null
-  weight: {
-    name: string
-    value: string
-    textColor: string
-  } | null
+  contentList: MaterialSpecificationInfoBasicProperty | null
+  width: MaterialSpecificationInfoBasicProperty | null
+  weight: MaterialSpecificationInfoBasicProperty | null
 }
 export type SideOption = {
   label: string

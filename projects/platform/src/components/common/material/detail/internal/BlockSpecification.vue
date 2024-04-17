@@ -1,6 +1,9 @@
 <template lang="pug">
 div(class="grid gap-y-1.5 w-full")
-  template(v-for="(property, key) in innerSpecificationInfo" :key="key")
+  template(
+    v-for="(property, key) in innerSpecificationInfoComputed"
+    :key="key"
+  )
     template(v-if="key === 'construction'")
       div(
         v-if="specificationInfo.construction && specificationInfo.construction.value"
@@ -28,9 +31,17 @@ div(class="grid gap-y-1.5 w-full")
           p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
           p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
     div(v-else-if="property" class="flex w-full" :class="property.textColor")
-      p(class="text-body2/1.6 flex-shrink-0 line-clamp-1") {{ property.name }}：
-      p(class="text-body2/1.6 line-clamp-1") {{ property.value }}
+      p(
+        class="text-body2/1.6 flex-shrink-0"
+        :class="[{ 'line-clamp-1': !property.showMore }]"
+      ) {{ property.name }}：
+      p(
+        class="text-body2/1.6 break-word"
+        :class="[{ 'line-clamp-1': !property.showMore }]"
+      ) {{ property.value }}
       div(class="grid gap-y-2 pt-4")
+    template(v-if="hasExtendedContent(property, key) && !property.showMore")
+      button(class="text-caption text-left text-cyan-400" @click="handleShowMore(key)") {{ $t('TT0054') }}
   template(v-if="colorInfo")
     div(class="flex")
       p(class="text-body2/1.6 text-grey-900") {{ colorInfo.name }}：
@@ -59,8 +70,11 @@ div(class="grid gap-y-1.5 w-full")
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { MaterialSpecificationInfo } from '@/composables/material/useMaterial'
+import { computed, reactive } from 'vue'
+import type {
+  MaterialSpecificationInfo,
+  MaterialSpecificationInfoBasicProperty,
+} from '@/composables/material/useMaterial'
 import type {
   MaterialColorInfo,
   MaterialPatternInfo,
@@ -83,16 +97,28 @@ const props = withDefaults(
     isListView: false,
   }
 )
-
-const innerSpecificationInfo = computed(() => {
+const innerSpecificationInfo = reactive({ ...props.specificationInfo })
+const hasExtendedContent = (
+  property: MaterialSpecificationInfoBasicProperty,
+  propertyKey: string
+) => {
+  if (['materialType', 'finishList', 'contentList'].includes(propertyKey)) {
+    return property.value.length >= 50
+  }
+  return false
+}
+const handleShowMore = (key: string) => {
+  innerSpecificationInfo[key].showMore = true
+}
+const innerSpecificationInfoComputed = computed(() => {
   const removeList = ['seasonInfo', 'featureList']
-
-  return Object.keys(props.specificationInfo)
+  return Object.keys(innerSpecificationInfo)
     .filter((key) => !removeList.includes(key))
     .reduce((obj, key) => {
       return {
         ...obj,
-        [key]: props.specificationInfo[key as keyof MaterialSpecificationInfo],
+        [key]: innerSpecificationInfo[key as keyof MaterialSpecificationInfo],
+        showMore: false,
       }
     }, {}) as MaterialSpecificationInfo
 })

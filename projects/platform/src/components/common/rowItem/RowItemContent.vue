@@ -96,8 +96,29 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
           @click="openModalMaterialEditSimple('tag')"
         ) {{ $t('UU0027') }}
       div(class="grid gap-3")
-        p(class="text-body2 line-clamp-1 !break-all") {{ $t('MI0132') }}： {{ publicTagList }}
-        p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}： {{ privateTagList }}
+        p(
+          class="text-body2/1.6 !break-all"
+          :class="[{ 'line-clamp-1': showMoreButtons['publicTagList'] }]"
+        ) {{ $t('MI0132') }}： {{ publicTagList }}
+      template(
+        v-if="hasExtendedContent(publicTagList, 45) && showMoreButtons['publicTagList']"
+      )
+        button(
+          class="text-caption text-left text-cyan-400"
+          @click="handleShowMore('publicTagList')"
+        ) {{ $t('TT0054') }}
+      div(class="grid gap-3")
+        p(
+          class="text-body2/1.6 !break-all"
+          :class="[{ 'line-clamp-1': showMoreButtons['privateTagList'] }]"
+        ) {{ $t('RR0028') }}： {{ privateTagList }}
+      template(
+        v-if="hasExtendedContent(privateTagList, 30) && showMoreButtons['privateTagList']"
+      )
+        button(
+          class="text-caption text-left text-cyan-400"
+          @click="handleShowMore('privateTagList')"
+        ) {{ $t('TT0054') }}
     div
       div(class="flex justify-between items-end pb-2 border-grey-250 border-b")
         div(
@@ -137,7 +158,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { Extension, type Material } from '@frontier/platform-web-sdk'
@@ -189,13 +210,25 @@ const {
   scanImageStatus,
 } = useMaterial(ref(props.material))
 
-const publicTagList = computed(() => {
-  const { tagList } = props.material.tagInfo
-  return tagList.join(', ')
+const showMoreButtons = reactive({
+  publicTagList: true,
+  privateTagList: true,
 })
-const privateTagList = computed(() => {
-  return props.material.internalInfo?.tagList.join(', ') ?? ''
-})
+
+const tempPublicTagList = props.material.tagInfo.tagList.join(', ') ?? ''
+const publicTagList = ref(tempPublicTagList)
+
+const tempPrivateTagList = props.material.internalInfo?.tagList.join(', ') ?? ''
+const privateTagList = ref(tempPrivateTagList)
+
+const handleShowMore = (key: string) => {
+  showMoreButtons[key] = false
+}
+
+const hasExtendedContent = (str: string, limit: number = 30) => {
+  return str.length >= limit
+}
+
 const pricing = computed(() => {
   return materialInfoForDisplay.priceInfo(props.material.priceInfo).pricing
 })

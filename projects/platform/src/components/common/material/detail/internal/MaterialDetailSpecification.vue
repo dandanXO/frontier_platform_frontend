@@ -23,14 +23,14 @@ div(class="grid gap-y-4.5")
     ) {{ specificationInfo.seasonInfo.value }}
     div(v-if="specificationInfo.featureList.value.length > 0")
       p(
-        :class="[specificationInfo.featureList.textColor, { 'line-clamp-2': !hasExtendedContent }]"
-        class="text-body2/1.6"
+        :class="[specificationInfo.featureList.textColor, { 'line-clamp-1': !hasExtendedContent }]"
+        class="text-body2/1.6 break-all"
       ) {{ specificationInfo.featureList.value }}
       button(
         v-if="!hasExtendedContent"
         class="text-caption text-cyan-400 pt-2"
         @click="hasExtendedContent = true"
-      ) Show More
+      ) {{ $t('TT0054') }}
     block-specification(:specificationInfo="specificationInfo")
 </template>
 
