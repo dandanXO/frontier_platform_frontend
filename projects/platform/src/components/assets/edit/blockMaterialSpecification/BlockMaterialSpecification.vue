@@ -35,6 +35,7 @@ div
           :placeholder="t('MI0012')"
           :hintError="displayErrors['seasonInfo.season.name']"
           class="w-80"
+          :multipleTagInputValidations="[lengthValidate]"
         )
         f-input-text(
           :textValue="seasonYear.value"
@@ -91,6 +92,8 @@ const itemNo = defineInputBinds('itemNo')
 const seasonName = defineInputBinds('seasonInfo.season.name')
 const seasonYear = defineInputBinds('seasonInfo.year')
 const isSeasonPublic = defineInputBinds('seasonInfo.isPublic')
+
+const lengthValidate = (str: string) => str.slice(0, 10)
 
 const showItemNoAndSeasonFields = computed(() => {
   if (
