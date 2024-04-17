@@ -44,7 +44,7 @@ modal-behavior(
         @update:inputValue="switchSideType"
         class="pt-4 pb-3"
       )
-      div(class="grid gap-y-2 text-body2/1.6")
+      div(class="grid gap-y-2 text-body2/1.6 break-word")
         //- Season
         p(
           v-if="currentSideType !== MATERIAL_SIDE_TYPE.MIDDLE && specificationInfo.seasonInfo.value && specificationInfo.seasonInfo.isPublic"

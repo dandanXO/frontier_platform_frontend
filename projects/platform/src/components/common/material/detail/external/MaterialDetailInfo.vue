@@ -102,23 +102,23 @@ div(class="grid gap-y-8 content-start")
     p(
       v-if="specificationInfo.seasonInfo.isPublic && specificationInfo.seasonInfo.value"
     ) {{ specificationInfo.seasonInfo.value }}
-    p(v-if="specificationInfo.featureList.value.length > 0" class="mb-4") {{ specificationInfo.featureList.value }}
+    p(v-if="specificationInfo.featureList.value.length > 0" class="mb-4 break-word") {{ specificationInfo.featureList.value }}
     div(v-if="specificationInfo.materialType" class="grid grid-cols-7 gap-x-6")
       p(class="col-span-2") {{ specificationInfo.materialType.name }}
-      div(class="col-span-5 flex items-center gap-x-1.5")
+      div(class="col-span-5 flex items-start gap-x-1.5")
         f-svg-icon(
           :iconName="scanImageStatus.iconName"
           :tooltipMessage="scanImageStatus.tooltipMessage"
           size="20"
-          class="text-grey-600"
+          class="text-grey-600 break-word mt-[2px]"
         )
-        p {{ specificationInfo.materialType.value }}
+        p(class="break-word") {{ specificationInfo.materialType.value }}
     div(v-if="specificationInfo.contentList" class="grid grid-cols-7 gap-x-6")
       p(class="col-span-2") {{ specificationInfo.contentList.name }}
-      p(class="col-span-5") {{ specificationInfo.contentList.value }}
+      p(class="col-span-5 break-word") {{ specificationInfo.contentList.value }}
     div(v-if="specificationInfo.weight" class="grid grid-cols-7 gap-x-6")
       p(class="col-span-2") {{ specificationInfo.weight.name }}
-      p(class="col-span-5") {{ specificationInfo.weight.value }}
+      p(class="col-span-5 break-word") {{ specificationInfo.weight.value }}
     button(
       class="outline-none px-5 py-2.5 rounded border border-grey-300 text-grey-900 hover:text-primary-400 active:text-primary-400 justify-self-start mt-2 cursor-pointer"
       @click="openModalMaterialSpecification"
