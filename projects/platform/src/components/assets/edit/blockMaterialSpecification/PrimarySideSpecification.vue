@@ -301,7 +301,8 @@ div(class="flex flex-col gap-y-7.5")
             class="flex items-center gap-x-3"
             v-for="(field, index) in constructionCustomPropertyFields"
             :key="field.key"
-          )
+            :class="[{'mt-4': index>0}]"
+          ) 
             f-input-text(
               :disabled="disableBackSideFields"
               v-model:textValue="field.value.name"
@@ -518,6 +519,7 @@ div(class="flex flex-col gap-y-7.5")
           class="flex items-center gap-x-3"
           v-for="(field, index) in colorInfoCustomPropertyFields"
           :key="field.key"
+          :class="[{'mt-4': index > 0}]"
         )
           f-input-text(
             :disabled="disableBackSideFields"
@@ -573,6 +575,7 @@ div(class="flex flex-col gap-y-7.5")
           class="flex items-center gap-x-3"
           v-for="(field, index) in patternInfoCustomPropertyFields"
           :key="field.key"
+          :class="[{'mt-4': index > 0}]"
         )
           f-input-text(
             :disabled="disableBackSideFields"

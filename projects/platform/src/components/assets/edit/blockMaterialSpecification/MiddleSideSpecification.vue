@@ -40,6 +40,7 @@ div(class="flex flex-col gap-y-7.5")
       :placeholder="$t('MI0030')"
       label="Custom Name"
       class="w-50"
+      :class="[{'mt-4': index>0}]"
       :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
     )
     f-input-text(
