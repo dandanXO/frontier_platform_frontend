@@ -33,7 +33,7 @@ export default ({ mode }) => ({
     },
   },
   build: {
-    sourcemap: process.env.NODE_ENV === 'develop',
+    sourcemap: process.env.NODE_ENV === 'development',
     // https://vitejs.dev/guide/build.html#multi-page-app
     rollupOptions: {
       input: {
