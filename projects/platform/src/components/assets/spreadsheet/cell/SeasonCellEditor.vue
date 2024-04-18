@@ -9,6 +9,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     @addNew="addSeasonOption"
     :rules="rules"
     :hintError="isInputValueInvalid ? $t('WW0142', { limitNumber: 50 }) : ''"
+    :multipleTagInputValidations="[limitTo10Chars]"
   )
   f-button(
     type="primary"
@@ -26,6 +27,7 @@ import type { ICellEditorParams } from 'ag-grid-community'
 import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialRow } from '@/types'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
+import { limitTo10Chars } from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString
@@ -80,6 +82,7 @@ export default {
       getValue,
       rules,
       isInputValueInvalid,
+      limitTo10Chars,
     }
   },
 }
