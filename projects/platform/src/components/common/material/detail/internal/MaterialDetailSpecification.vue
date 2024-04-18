@@ -24,7 +24,7 @@ div(class="grid gap-y-4.5")
     div(v-if="specificationInfo.featureList.value.length > 0")
       p(
         :class="[specificationInfo.featureList.textColor, { 'line-clamp-1': !hasExtendedContent }]"
-        class="text-body2/1.6 break-all"
+        class="text-body2/1.6 break-word"
       ) {{ specificationInfo.featureList.value }}
       button(
         v-if="!hasExtendedContent"

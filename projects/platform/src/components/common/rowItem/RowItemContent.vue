@@ -97,7 +97,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
         ) {{ $t('UU0027') }}
       div(class="grid gap-3")
         p(
-          class="text-body2/1.6 !break-all"
+          class="text-body2/1.6 !break-word"
           :class="[{ 'line-clamp-1': showMoreButtons['publicTagList'] }]"
         ) {{ $t('MI0132') }}： {{ publicTagList }}
       template(
@@ -109,7 +109,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
         ) {{ $t('TT0054') }}
       div(class="grid gap-3")
         p(
-          class="text-body2/1.6 !break-all"
+          class="text-body2/1.6 !break-word"
           :class="[{ 'line-clamp-1': showMoreButtons['privateTagList'] }]"
         ) {{ $t('RR0028') }}： {{ privateTagList }}
       template(
