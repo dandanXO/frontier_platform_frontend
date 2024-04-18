@@ -288,7 +288,7 @@ export const generateMaterialRow = (): MaterialRow => {
     isDoubleSide: false,
     isComposite: false,
     isAutoSyncFaceToBackSideInfo: false,
-    sideType: null,
+    sideType: 1,
     seasonInfo: {
       isPublic: false,
       season: null,
