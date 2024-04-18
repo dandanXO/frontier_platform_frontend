@@ -67,7 +67,10 @@ export const getCellStyle = ({
     return spreadsheetBgColors.default
   }
 
-  return { backgroundColor: getBgColor(), ...defaultCellStyle }
+  return {
+    backgroundColor: getBgColor(),
+    ...defaultCellStyle,
+  }
 }
 
 export const rowEditable: EditableCallback<MaterialRow> = (params) => {

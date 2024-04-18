@@ -638,6 +638,7 @@ const unitMapping: { [key: string]: string } = {
 
 export const defaultCellStyle = {
   'align-items': 'center',
+  wordBreak: 'break-word',
   display: 'flex',
 }
 
