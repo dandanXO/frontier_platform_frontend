@@ -5,7 +5,7 @@ import type {
   CellClassParams,
   ValueFormatterParams,
   NewValueParams,
-} from 'ag-grid-community'
+} from 'ag-grid-enterprise'
 import colors from '@frontier/tailwindcss/colors'
 import {
   MaterialQuantityUnit,

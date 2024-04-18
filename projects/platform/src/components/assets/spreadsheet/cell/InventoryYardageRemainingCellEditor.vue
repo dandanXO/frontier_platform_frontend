@@ -16,6 +16,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :label="$t('MI0062')"
             :hintError="errors[`list[${index}].productionNo`]"
             :placeholder="$t('MI0095')"
+            @enter="handleEnter"
           )
           f-input-text(
             class="w-full"
@@ -23,6 +24,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :label="$t('MI0061')"
             :hintError="errors[`list[${index}].source`]"
             :placeholder="$t('MI0096')"
+            @enter="handleEnter"
           )
           f-input-text(
             class="w-58"
@@ -30,6 +32,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :label="$t('MI0063')"
             :hintError="errors[`list[${index}].roll`]"
             :placeholder="$t('MI0098')"
+            @enter="handleEnter"
           )
           f-input-text(
             class="w-58"
@@ -37,6 +40,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :label="$t('MI0064')"
             :hintError="errors[`list[${index}].lot`]"
             :placeholder="$t('MI0099')"
+            @enter="handleEnter"
           )
           f-input-text(
             v-model:textValue="field.value.qty"
@@ -48,6 +52,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :rightSelectValue="yardageRemainingInfoUnit.value"
             @update:rightSelectValue="yardageRemainingInfoUnit.onInput"
             :rightDropdownOption="inventoryUnitList"
+            @enter="handleEnter"
           )
             template(#slot:right-dropdown-trigger="{ selectedMenu }")
               p {{ selectedMenu?.title }}
@@ -58,12 +63,14 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
                 v-model:textValue="field.value.shelf1"
                 :hintError="errors[`list[${index}].shelf1`]"
                 :placeholder="$t('MI0093')"
+                @enter="handleEnter"
               )
               f-input-text(
                 class="flex-grow"
                 v-model:textValue="field.value.shelf2"
                 :hintError="errors[`list[${index}].shelf2`]"
                 :placeholder="$t('MI0093')"
+                @enter="handleEnter"
               )
           f-input-text(
             class="w-full"
@@ -71,6 +78,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :hintError="errors[`list[${index}].location`]"
             :label="$t('RR0032')"
             :placeholder="$t('MI0094')"
+            @enter="handleEnter"
           )
         div(class="flex justify-center items-center")
           f-svg-icon(
@@ -104,6 +112,8 @@ import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import type { MaterialInternalInventoryInfoYardageRemainingInfo } from '@frontier/platform-web-sdk'
 import useMaterialStaticMenu from '@/composables/material/useMaterialStaticMenu'
+import { useIMEComposition } from '@/components/assets/spreadsheet/utils/hooks'
+import { handleEnterKeyDuringIMEComposition } from '@/components/assets/spreadsheet/utils/handlers'
 
 interface SelectEditorParams
   extends ICellEditorParams<
@@ -137,6 +147,11 @@ export default {
       props.params.api.stopEditing()
     })
 
+    const isComposing = useIMEComposition()
+
+    const handleEnter = (event: KeyboardEvent) =>
+      handleEnterKeyDuringIMEComposition(event, isComposing, props.params)
+
     const getValue = () => values
 
     const {
@@ -160,6 +175,8 @@ export default {
       errors,
       submit,
       getValue,
+      isComposing,
+      handleEnter,
     }
   },
 }

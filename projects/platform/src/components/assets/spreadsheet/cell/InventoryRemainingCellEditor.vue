@@ -16,6 +16,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :hintError="errors[`sampleCardsRemainingList[${index}].source`]"
             :label="$t('MI0061')"
             :placeholder="$t('MI0092')"
+            @enter="handleEnter"
           )
           f-input-text(
             class="w-58"
@@ -25,6 +26,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :label="$t('RR0037')"
             :placeholder="$t('MI0056')"
             :addOnRight="$t('RR0307')"
+            @enter="handleEnter"
           )
           f-input-container(class="w-full" :label="`${$t('RR0036')}`")
             div(class="flex flex-row gap-x-3 w-full")
@@ -33,12 +35,14 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
                 v-model:textValue="field.value.shelf1"
                 :hintError="errors[`sampleCardsRemainingList[${index}].shelf1`]"
                 :placeholder="$t('MI0093')"
+                @enter="handleEnter"
               )
               f-input-text(
                 class="flex-grow"
                 v-model:textValue="field.value.shelf2"
                 :hintError="errors[`sampleCardsRemainingList[${index}].shelf2`]"
                 :placeholder="$t('MI0093')"
+                @enter="handleEnter"
               )
           f-input-text(
             class="w-full"
@@ -46,6 +50,7 @@ div(class="w-150 max-h-150 p-4 flex flex-col gap-y-6 bg-grey-100 rounded overflo
             :hintError="errors[`sampleCardsRemainingList[${index}].location`]"
             :label="$t('RR0032')"
             :placeholder="$t('MI0094')"
+            @enter="handleEnter"
           )
         div(class="flex justify-center items-center")
           f-svg-icon(
@@ -73,6 +78,8 @@ import { sampleCardsRemainingListSchema } from '@/composables/material/useMateri
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import type { MaterialInternalInventoryInfoSampleCardsRemainingListInner } from '@frontier/platform-web-sdk'
+import { useIMEComposition } from '@/components/assets/spreadsheet/utils/hooks'
+import { handleEnterKeyDuringIMEComposition } from '@/components/assets/spreadsheet/utils/handlers'
 
 interface SelectEditorParams
   extends ICellEditorParams<
@@ -99,6 +106,11 @@ export default {
         z.object({ sampleCardsRemainingList: sampleCardsRemainingListSchema })
       ),
     })
+
+    const isComposing = useIMEComposition()
+
+    const handleEnter = (event: KeyboardEvent) =>
+      handleEnterKeyDuringIMEComposition(event, isComposing, props.params)
 
     const submit = handleSubmit((values) => {
       props.params.onConfirm?.(
@@ -127,6 +139,8 @@ export default {
       errors,
       submit,
       getValue,
+      isComposing,
+      handleEnter,
     }
   },
 }

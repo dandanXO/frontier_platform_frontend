@@ -13,6 +13,7 @@ div(class="w-140 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           :label="params.nameLabel"
           class="w-50"
           :onInputValidations="[removeCommas, limitTo15Chars]"
+          @enter="handleEnter"
         )
         f-input-text(
           v-model:textValue="field.value.value"
@@ -21,6 +22,7 @@ div(class="w-140 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           :placeholder="'Enter your info'"
           class="w-50"
           :onInputValidations="[removeCommas, limitTo50Chars]"
+          @enter="handleEnter"
         )
         f-input-switch(
           v-model:inputValue="field.value.isPublic"
@@ -58,6 +60,8 @@ import {
   limitTo15Chars,
   limitTo50Chars,
 } from '@/components/assets/spreadsheet/utils/validations'
+import { useIMEComposition } from '@/components/assets/spreadsheet/utils/hooks'
+import { handleEnterKeyDuringIMEComposition } from '@/components/assets/spreadsheet/utils/handlers'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialPatternCustomPropertyBase[]> {
@@ -89,6 +93,11 @@ export default {
         })
       ),
     })
+
+    const isComposing = useIMEComposition()
+
+    const handleEnter = (event: KeyboardEvent) =>
+      handleEnterKeyDuringIMEComposition(event, isComposing, props.params)
 
     const submit = handleSubmit((values) => {
       let nodeId = props.params.node.id ?? ''
@@ -130,6 +139,8 @@ export default {
       removeCommas,
       limitTo15Chars,
       limitTo50Chars,
+      isComposing,
+      handleEnter,
     }
   },
 }

@@ -17,6 +17,8 @@ import { onClickOutside } from '@vueuse/core'
 import type { ZodString } from 'zod'
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
+import { useIMEComposition } from '@/components/assets/spreadsheet/utils/hooks'
+import { handleEnterKeyDuringIMEComposition } from '@/components/assets/spreadsheet/utils/handlers'
 
 interface StringEditorParams extends ICellEditorParams<MaterialRow, string> {
   placeholder: string
@@ -29,9 +31,10 @@ export default {
     const inputRef = ref()
     const inputValue = ref(props.params.value)
 
-    const handleEnter = () => {
-      props.params.api.stopEditing()
-    }
+    const isComposing = useIMEComposition()
+
+    const handleEnter = (event: KeyboardEvent) =>
+      handleEnterKeyDuringIMEComposition(event, isComposing, props.params)
 
     const hintError = computed(() => {
       const result = props.params.schema.safeParse(inputValue.value)
@@ -66,6 +69,7 @@ export default {
       inputValue,
       handleEnter,
       handleKeyDown,
+      isComposing,
     }
   },
 }
