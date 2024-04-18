@@ -9,6 +9,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     :multiple="params.multiple"
     @addNew="handleAdd"
     :hintError="isTagTooLong ? $t('WW0142', { limitNumber: 500 }) : ''"
+    :multipleTagInputValidations="[removeCommas, limitTo500Chars]"
   )
   confirm-button(@click="handleConfirm" :disabled="isTagTooLong")
 </template>
@@ -21,6 +22,10 @@ import { clone } from 'ramda'
 import type { MenuTree } from '@frontier/ui-component'
 import type { MaterialRow } from '@/types'
 import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
+import {
+  removeCommas,
+  limitTo500Chars,
+} from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
   schema: ZodString
@@ -73,6 +78,8 @@ export default {
       handleAdd,
       getValue,
       isTagTooLong,
+      removeCommas,
+      limitTo500Chars,
     }
   },
 }

@@ -12,6 +12,7 @@ div(class="w-140 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           :hintError="errors[`customPropertyList[${index}].name`]"
           :label="params.nameLabel"
           class="w-50"
+          :onInputValidations="[removeCommas, limitTo15Chars]"
         )
         f-input-text(
           v-model:textValue="field.value.value"
@@ -19,6 +20,7 @@ div(class="w-140 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           :label="params.valueLabel"
           :placeholder="'Enter your info'"
           class="w-50"
+          :onInputValidations="[removeCommas, limitTo50Chars]"
         )
         f-input-switch(
           v-model:inputValue="field.value.isPublic"
@@ -51,6 +53,11 @@ import IconButton from '@/components/assets/edit/blockMaterialSpecification/Icon
 import type { ICellEditorParams } from 'ag-grid-community'
 import type { MaterialRow } from '@/types'
 import type { MaterialPatternCustomPropertyBase } from '@frontier/platform-web-sdk'
+import {
+  removeCommas,
+  limitTo15Chars,
+  limitTo50Chars,
+} from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialPatternCustomPropertyBase[]> {
@@ -120,6 +127,9 @@ export default {
       errors,
       submit,
       getValue,
+      removeCommas,
+      limitTo15Chars,
+      limitTo50Chars,
     }
   },
 }

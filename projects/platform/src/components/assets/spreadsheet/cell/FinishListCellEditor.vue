@@ -12,6 +12,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     @update:selectValue="handleSelectValueUpdate"
     :hintError="isTagTooLong ? $t('WW0142', { limitNumber: 500 }) : ''"
     :rules="rules"
+    :multipleTagInputValidations="[removeCommas, limitTo500Chars]"
   )
   confirm-button(@click="handleConfirm" :disabled="isTagTooLong")
 </template>
@@ -25,6 +26,10 @@ import type { MaterialRow } from '@/types'
 import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 import { useI18n } from 'vue-i18n'
 import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
+import {
+  removeCommas,
+  limitTo500Chars,
+} from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialFinish> {
@@ -93,6 +98,8 @@ export default {
       isTagTooLong,
       rules,
       handleSelectValueUpdate,
+      removeCommas,
+      limitTo500Chars,
     }
   },
 }

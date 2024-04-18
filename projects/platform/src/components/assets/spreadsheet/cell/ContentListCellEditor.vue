@@ -19,6 +19,7 @@ div(class="w-200 p-4 flex flex-col gap-y-6 bg-grey-100 rounded")
           :placeholder="$t('MI0035')"
           :hintError="Boolean(displayErrors[`contentList[${index}].name`])"
           class="w-100"
+          :multipleTagInputValidations="[removeCommas, limitTo500Chars]"
         )
         f-input-text(
           v-model:textValue="field.value.percentage"
@@ -56,6 +57,10 @@ import type { MaterialRow } from '@/types'
 import type { MaterialSideAllOfContentList } from '@frontier/platform-web-sdk'
 import { useI18n } from 'vue-i18n'
 import ConfirmButton from '@/components/assets/spreadsheet/button/ConfirmButton.vue'
+import {
+  removeCommas,
+  limitTo500Chars,
+} from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams
   extends ICellEditorParams<MaterialRow, MaterialSideAllOfContentList[]> {
@@ -184,6 +189,8 @@ export default {
       submit,
       getValue,
       handleConfirm,
+      removeCommas,
+      limitTo500Chars,
     }
   },
 }
