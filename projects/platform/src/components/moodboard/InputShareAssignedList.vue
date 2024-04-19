@@ -14,22 +14,13 @@ div(class="flex flex-col")
         :key="index"
         class="flex items-center py-2 pl-2 pr-4 gap-x-3 hover:bg-grey-100"
       )
-        template(v-if="item.type === SHARE_WITH_TYPE.OG")
-          f-avatar(type="org" :imageUrl="item.unitLogo" size="md")
-          p(class="text-body2 flex-grow text-grey-900 line-clamp-1") {{ item.unitName }}
-        template(v-else-if="item.type === SHARE_WITH_TYPE.USER")
-          f-avatar(
-            v-if="item.isFrontierUser"
-            type="user"
-            :imageUrl="item.avatar"
-            size="md"
-          ) 
-          div(v-else class="w-8 h-8 rounded-full border-grey-900 border border-dashed")
-          p(class="text-body2 flex-grow text-grey-900 line-clamp-1") {{ item.email }}
-        f-svg-icon(
-          iconName="close"
-          size="24"
-          class="text-grey-600 cursor-pointer"
+        img(v-if="item.unitLogo" :src="item.unitLogo" class="w-9 h-9 rounded-full")
+        div(v-else class="w-9 h-9 rounded-full border-grey-250 border border-dashed")
+        div(class="text-body2 flex-grow")
+          p(class="text-grey-900 line-clamp-1") {{ item.unitName }}
+          p(v-if="item.number" class="text-grey-250") {{ item.number }}
+        p(
+          class="text-body2 text-grey-250 pr-2.5 cursor-pointer"
           @click="removeTarget(index)"
         ) {{ $t('FF0060') }}
 </template>
