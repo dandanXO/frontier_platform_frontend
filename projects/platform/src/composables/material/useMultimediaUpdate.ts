@@ -568,12 +568,14 @@ const useMultimediaUpdate = (
             getSidePayload(faceSideCropImg, faceSideCropImageRecord),
             getSidePayload(backSideCropImg, backSideCropImageRecord),
           ])
-
+          // 交換 cover img api
+          // 目前只有components/assets/edit/ModalEditScannedImage.vue 使用此功能交換圖片
+          // line-24 flex-row-reverse 排序
           const res = await ogBaseAssetsApi('editAssetsMaterialSideImage', {
             materialId,
             isExchange,
-            faceSideImage: faceSideImageReq,
-            backSideImage: backSideImageReq,
+            faceSideImage: isExchange ? backSideImageReq : faceSideImageReq,
+            backSideImage: isExchange ? faceSideImageReq : backSideImageReq,
           })
 
           const result = res.data.result!
