@@ -19,14 +19,14 @@ div
               :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
             )
     button(
-      v-if="!hasExtendedContent"
+      v-if="!hasExtendedContent && checkNeedShowMoreBtn()"
       class="text-caption text-cyan-400 justify-self-start"
       @click="hasExtendedContent = true"
     ) {{ $t('TT0054') }}
-    template(v-else)
+    template(v-else) 
       //- Colors
-      template(v-if="colorInfo")
-        div(class="flex")
+      template(v-if="colorInfo && !isEmpty(colorInfo.value)")
+        div(class="flex" v-if="!isEmpty(colorInfo.value.color)")
           p(class="text-body2/1.6 text-grey-900") {{ colorInfo.name }}：
           p(class="text-body2/1.6 text-grey-900") {{ colorInfo.value.color }}
         div(
@@ -38,8 +38,8 @@ div
           p(class="text-body2/1.6 text-grey-900") {{ color.name }}：
           p(class="text-body2/1.6 text-grey-900") {{ color.value }}
       //- Pattern
-      template(v-if="patternInfo")
-        div(class="flex")
+      template(v-if="patternInfo && !isEmpty(patternInfo.value)")
+        div(class="flex" v-if="!isEmpty(patternInfo.value.pattern)")
           p(class="text-body2/1.6 text-grey-900") {{ patternInfo.name }}：
           p(class="text-body2/1.6 text-grey-900") {{ patternInfo.value.pattern }}
         div(
@@ -60,7 +60,9 @@ import type {
   MaterialPatternInfo,
 } from '@frontier/platform-web-sdk'
 
-defineProps<{
+import isEmpty from 'lodash/isEmpty'
+
+const props = defineProps<{
   pantoneList?: Array<MaterialSideAllOfPantoneListInner>
   colorInfo?: {
     name: string
@@ -73,4 +75,10 @@ defineProps<{
 }>()
 
 const hasExtendedContent = ref(false)
+const checkNeedShowMoreBtn = () => {
+  return (
+    !isEmpty(props.colorInfo?.value.color) ||
+    !isEmpty(props.patternInfo?.value?.pattern)
+  )
+}
 </script>

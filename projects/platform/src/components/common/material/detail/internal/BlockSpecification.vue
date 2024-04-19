@@ -30,7 +30,11 @@ div(class="grid gap-y-1.5 w-full")
         )
           p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
           p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
-    div(v-else-if="property" class="flex w-full" :class="property.textColor")
+    div(
+      v-else-if="property && property.value"
+      class="flex w-full"
+      :class="property.textColor"
+    )
       p(
         class="text-body2/1.6 flex-shrink-0"
         :class="[{ 'line-clamp-1': !property.showMore }]"
@@ -42,8 +46,8 @@ div(class="grid gap-y-1.5 w-full")
       div(class="grid gap-y-2 pt-4")
     template(v-if="hasExtendedContent(property, key) && !property.showMore")
       button(class="text-caption text-left text-cyan-400" @click="handleShowMore(key)") {{ $t('TT0054') }}
-  template(v-if="colorInfo")
-    div(class="flex")
+  template(v-if="colorInfo && !isEmpty(colorInfo.value)")
+    div(class="flex" v-if="!isEmpty(colorInfo.value.color)")
       p(class="text-body2/1.6 text-grey-900") {{ colorInfo.name }}：
       p(class="text-body2/1.6 text-grey-900") {{ colorInfo.value.color }}
     div(
@@ -55,8 +59,8 @@ div(class="grid gap-y-1.5 w-full")
       p(class="text-body2/1.6 text-grey-900") {{ color.name }}：
       p(class="text-body2/1.6 text-grey-900") {{ color.value }}
   //- Pattern
-  template(v-if="patternInfo")
-    div(class="flex")
+  template(v-if="patternInfo && !isEmpty(patternInfo.value)")
+    div(class="flex" v-if="!isEmpty(patternInfo.value.pattern)")
       p(class="text-body2/1.6 text-grey-900") {{ patternInfo.name }}：
       p(class="text-body2/1.6 text-grey-900") {{ patternInfo.value.pattern }}
     div(
@@ -71,6 +75,7 @@ div(class="grid gap-y-1.5 w-full")
 
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
+import isEmpty from 'lodash/isEmpty'
 import type {
   MaterialSpecificationInfo,
   MaterialSpecificationInfoBasicProperty,

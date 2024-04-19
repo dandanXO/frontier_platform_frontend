@@ -104,7 +104,7 @@ modal-behavior(
           p(class="col-span-4") {{ specificationInfo.weight.value }}
         //- Finish
         div(
-          v-if="specificationInfo.finishList"
+          v-if="specificationInfo.finishList && !isEmpty(specificationInfo.finishList.value)"
           class="grid grid-cols-5 gap-x-2"
           :class="specificationInfo.finishList.textColor"
         )
@@ -130,7 +130,7 @@ modal-behavior(
                   :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
                 )
         //- Colors
-        template(v-if="colorInfo")
+        template(v-if="colorInfo && !isEmpty(colorInfo.value.color)")
           div(v-if="colorInfo.value.color" class="grid grid-cols-5 gap-x-2 text-grey-900")
             p(class="col-span-1 font-bold") {{ colorInfo.name }}
             p(class="col-span-4") {{ colorInfo.value.color }}
@@ -145,7 +145,7 @@ modal-behavior(
               p(class="col-span-1 font-bold") {{ color.name }}
               p(class="col-span-4") {{ color.value }}
         //- Pattern
-        template(v-if="patternInfo")
+        template(v-if="patternInfo && !isEmpty(patternInfo.value.pattern)")
           div(
             v-if="patternInfo.value.pattern"
             class="grid grid-cols-5 gap-x-2 text-grey-900"
@@ -170,6 +170,7 @@ import type { Material } from '@frontier/platform-web-sdk'
 import useMaterial from '@/composables/material/useMaterial'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { useBreakpoints } from '@frontier/lib'
+import isEmpty from 'lodash/isEmpty'
 
 export interface PropsModalMaterialSpecification {
   material: Material
