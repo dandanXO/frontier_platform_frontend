@@ -286,14 +286,14 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             row.MIW_Cons_1,
             0,
             999
-          )
+          ).toString()
           break
         case 'MIW_Cons_2':
           newRow[sideKey]!.construction.weftDensity = boundedNumber(
             row.MIW_Cons_2,
             0,
             999
-          )
+          ).toString()
           break
         case 'MIW_Cons_3':
           newRow[sideKey]!.construction.warpYarnSize = row.MIW_Cons_3.trim()
@@ -303,7 +303,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             row.MIW_Cons_4,
             0,
             999
-          )
+          ).toString()
           break
 
         // Material Type: Knit
