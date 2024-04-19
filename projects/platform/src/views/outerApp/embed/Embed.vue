@@ -105,17 +105,17 @@ const optionSort = computed(() => {
       NEW_ARRIVED,
       {
         ...GHG_LOW_TO_HIGH,
-        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
         ...WATER_LOW_TO_HIGH,
-        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
         ...LAND_LOW_TO_HIGH,
-        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
     ],
