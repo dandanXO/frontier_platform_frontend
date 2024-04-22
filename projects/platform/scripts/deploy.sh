@@ -17,5 +17,10 @@ elif [ $1 = "production" ]; then
   PREFIX="PROD"
 fi
 
+
+# 刪除 S3 上的 dist/ 目錄
+aws s3 rm s3://"$(getVar $PREFIX"_S3_BUCKET")"/dist/ --recursive
+
+# 同步本地目錄 dist/ 到 S3
 aws s3 sync dist/ s3://"$(getVar $PREFIX"_S3_BUCKET")" --delete
 aws cloudfront create-invalidation --distribution-id "$(getVar $PREFIX"_DISTRIBUTION_ID")" --paths "/*"

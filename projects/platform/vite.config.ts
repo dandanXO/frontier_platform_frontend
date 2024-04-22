@@ -16,7 +16,16 @@ const htmlPlugin = (env) => {
     },
   }
 }
-
+const htmlPluginFormatTemplate = (data) => ({
+  name: 'transform-html',
+  transformIndexHtml: {
+    enforce: 'pre',
+    transform(html) {
+      return html.replace(/<%=\s*(\w+)\s*%>/gi, (match, p1) => data[p1] || '')
+    },
+  },
+})
+const buildTime = new Date()
 // https://vitejs.dev/config/
 export default ({ mode }) => ({
   server: {
@@ -25,6 +34,7 @@ export default ({ mode }) => ({
   plugins: [
     vue(),
     htmlPlugin(loadEnv(mode, '.')),
+    htmlPluginFormatTemplate({ time: buildTime.toString() }),
     svgSpritePlugin({ symbolId: (name) => name }),
   ],
   resolve: {
