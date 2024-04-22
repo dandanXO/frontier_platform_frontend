@@ -109,6 +109,7 @@ import {
   hasInvalidAgGridCellValue,
 } from '@/components/assets/spreadsheet/utils/utils'
 import TemplateDownloadButton from '@/components/assets/spreadsheet/TemplateDownloadButton.vue'
+import { useReadOnly } from '@/components/assets/spreadsheet/utils/hooks'
 
 const AG_GRID_LICENSE_KEY = atob(
   import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED
@@ -127,6 +128,8 @@ const props = withDefaults(
     readOnly: false,
   }
 )
+const { readOnly, setReadOnly } = useReadOnly()
+setReadOnly(props.readOnly)
 
 const emit = defineEmits<{
   (e: 'submit', payload: SubmitPayload): void
@@ -671,6 +674,10 @@ const gridOptions: GridOptions<MaterialRow> = {
     ],
   },
   getRowStyle: (params) => {
+    if (readOnly.value) {
+      return rowStyle.readOnly
+    }
+
     if (!params.data) {
       return rowStyle.default
     }

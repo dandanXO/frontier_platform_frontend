@@ -30,3 +30,16 @@ export function useIMEComposition() {
 
   return isComposing
 }
+
+export function useReadOnly() {
+  const readOnly = ref(false)
+
+  const setReadOnly = (value: boolean) => {
+    readOnly.value = value
+  }
+
+  return {
+    readOnly,
+    setReadOnly,
+  }
+}

@@ -32,6 +32,7 @@ import {
   materialQuantityUnitSchema,
 } from '@/composables/material/useMaterialSchema'
 import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
+import { useReadOnly } from '@/components/assets/spreadsheet/utils/hooks'
 
 const toTransparent = (hex: string) => hex + '88'
 
@@ -48,6 +49,7 @@ export const rowStyle = {
   delete: { background: spreadsheetBgColors.default, opacity: 0.3 },
   create: { background: spreadsheetBgColors.create },
   update: { background: spreadsheetBgColors.update },
+  readOnly: { background: spreadsheetBgColors.disabled },
 }
 
 export const getCellStyle = ({
@@ -57,6 +59,7 @@ export const getCellStyle = ({
   valid: boolean
   editable: boolean
 }): CellStyle => {
+  const { readOnly } = useReadOnly()
   const getBgColor = () => {
     if (!valid) {
       return spreadsheetBgColors.invalid
@@ -68,7 +71,7 @@ export const getCellStyle = ({
   }
 
   return {
-    backgroundColor: getBgColor(),
+    ...(readOnly ? {} : { backgroundColor: getBgColor() }),
     ...defaultCellStyle,
   }
 }
