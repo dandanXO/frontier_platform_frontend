@@ -216,6 +216,7 @@ const useInventoryInfoCol = (): ComputedRef<
         },
         {
           headerName: t('RR0034'),
+          hide: true,
           minWidth: 140,
           valueFormatter: (params) => {
             const calculateInY = () => {
