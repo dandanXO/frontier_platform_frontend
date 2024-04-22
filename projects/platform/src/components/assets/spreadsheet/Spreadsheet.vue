@@ -635,6 +635,9 @@ const colDefs = computed<(ColDef<MaterialRow> | ColGroupDef<MaterialRow>)[]>(
 )
 
 const gridOptions: GridOptions<MaterialRow> = {
+  getContextMenuItems: () => {
+    return []
+  },
   autoSizeStrategy: {
     type: 'fitGridWidth',
     defaultMinWidth: 100,
