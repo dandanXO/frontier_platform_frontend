@@ -16,6 +16,8 @@ const htmlPlugin = (env) => {
     },
   }
 }
+// 詳細說明issue f22/3328 https://frontier-cool.atlassian.net/issues/F22-3328
+// 處理模板語言取代的問題
 const htmlPluginFormatTemplate = (data) => ({
   name: 'transform-html',
   transformIndexHtml: {
