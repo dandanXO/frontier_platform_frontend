@@ -37,6 +37,7 @@ const useEnumText = () => {
       [MaterialQuantityUnit.Y]: t('RR0039'),
       [MaterialQuantityUnit.M]: t('RR0040'),
       [MaterialQuantityUnit.KG]: t('RR0041'),
+      [MaterialQuantityUnit.PCS]: t('RR0362'),
     }
   })
 
@@ -47,6 +48,7 @@ const useEnumText = () => {
       [MaterialQuantityUnit.Y]: `/${t('RR0039')}`,
       [MaterialQuantityUnit.M]: `/${t('RR0040')}`,
       [MaterialQuantityUnit.KG]: `/${t('RR0041')}`,
+      [MaterialQuantityUnit.PCS]: `/${t('RR0362')}`,
     }
   })
 

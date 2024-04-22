@@ -17,6 +17,7 @@ import {
   refreshCells,
   rowEditable,
   useMaterialQuantityUnitCellProps,
+  usePerMaterialQuantityUnitCellProps,
 } from '@/utils/material/spreadsheet'
 import useMaterialSchema, {
   currencyCodeSchema,
@@ -37,6 +38,7 @@ const usePriceInfoCol = (
   const { t } = useI18n()
   const materialSchema = useMaterialSchema()
   const materialQuantityUnitCellProps = useMaterialQuantityUnitCellProps()
+  const perMaterialQuantityUnitCellProps = usePerMaterialQuantityUnitCellProps()
 
   const { countryList, currencyText } = spreadsheetService
 
@@ -139,7 +141,7 @@ const usePriceInfoCol = (
             field: getField('pricing.unit'),
             minWidth: 130,
             editable: rowEditable,
-            ...materialQuantityUnitCellProps.value,
+            ...perMaterialQuantityUnitCellProps.value,
             cellStyle: (
               params: CellClassParams<MaterialRow, MaterialQuantityUnit>
             ) => {

@@ -183,6 +183,19 @@ export const useMaterialQuantityUnitCellProps = (): ComputedRef<
     ),
   }))
 }
+export const usePerMaterialQuantityUnitCellProps = (): ComputedRef<
+  ColDef<MaterialRow, MaterialQuantityUnit>
+> => {
+  const { materialPerQuantityText } = useEnumText()
+
+  return computed(() => ({
+    ...getEnumCellProps(
+      materialQuantityUnitSchema,
+      MaterialQuantityUnit,
+      materialPerQuantityText
+    ),
+  }))
+}
 
 export const getUnitCellProps = (): ColDef<
   MaterialRow,
