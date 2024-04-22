@@ -93,73 +93,243 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
       row['ST1'].trim().toLowerCase() === 'Face Side'.trim().toLowerCase()
         ? 'faceSide'
         : 'backSide'
+    const isAutoSyncFaceToBackSideInfo = parseYesNoValue(row['ST4'], false)
+    const sideKeys = isAutoSyncFaceToBackSideInfo
+      ? ['faceSide', 'backSide']
+      : [sideKey]
     const newRow = generateMaterialRow()
     for (const key of Object.keys(row)) {
       if (!row[key] || row[key].trim() === '') {
         continue
       }
+      sideKeys.forEach((sideKey) => {
+        switch (key) {
+          // Color
+          case 'COL_Color_1':
+            newRow[sideKey]!.colorInfo.color = row.COL_Color_1.trim()
+            break
+          case 'COL_Field_1':
+          case 'COL_Pub_1':
+          case 'COL_Val_1':
+            if (row.COL_Field_1.trim() || row.COL_Val_1.trim()) {
+              if (!newRow[sideKey]!.colorInfo.customPropertyList) {
+                newRow[sideKey]!.colorInfo.customPropertyList = []
+              }
+              newRow[sideKey]!.colorInfo.customPropertyList[0] = {
+                value: row.COL_Field_1.trim(),
+                name: row.COL_Val_1.trim(),
+                isPublic: parseYesNoValue(row.COL_Pub_1, true),
+              }
+            }
+            break
+
+          // Content
+          case 'CON_1':
+          case 'CON_2':
+            const contentNameList = convertStringToList(
+              row.CON_1,
+              (contentName) => contentName.trim()
+            )
+            const contentPercentageList = convertStringToList(
+              row.CON_2,
+              (percentage) => boundedNumber(percentage, 0, 100)
+            )
+            const combinedList = contentNameList.map((contentName, index) => {
+              return {
+                name: contentName,
+                percentage: contentPercentageList[index] || 0,
+                contentId: null,
+              }
+            })
+            newRow[sideKey]!.contentList = combinedList
+            break
+          case 'Column ID [DO NOT DELETE]':
+            newRow.itemNo = row['Column ID [DO NOT DELETE]'].trim()
+            break
+
+          // Features
+          case 'FE1':
+            newRow[sideKey]!.featureList = convertStringToList(
+              row.FE1,
+              (feature) => feature.trim()
+            )
+            break
+
+          // Finish
+          case 'FIN_1':
+            newRow[sideKey]!.finishList = convertStringToList(
+              row.FIN_1,
+              (name) => {
+                return { name: name.trim(), finishId: null }
+              }
+            )
+            break
+
+          // Material Info
+          case 'MI_MatDesc':
+            newRow[sideKey]!.descriptionList = convertStringToList(
+              row.MI_MatDesc,
+              (desc) => {
+                return {
+                  descriptionId: null,
+                  name: desc.trim(),
+                }
+              }
+            )
+            break
+          case 'MI_MatType':
+            const materialTypeKey = row.MI_MatType.trim().toUpperCase()
+            const materialTypeValue =
+              MaterialType[materialTypeKey as keyof typeof MaterialType]
+            newRow[sideKey]!.materialType = materialTypeValue
+            break
+          case 'MI_PUB_1':
+            newRow[sideKey]!.construction.isPublic = parseYesNoValue(
+              row.MI_PUB_1,
+              true
+            )
+            break
+          case 'MI_NewField_1':
+          case 'MI_NewName_1':
+          case 'MI_PUB_2':
+            if (row.MI_NewField_1.trim() || row.MI_NewName_1.trim()) {
+              if (!newRow[sideKey]!.constructionCustomPropertyList) {
+                newRow[sideKey]!.constructionCustomPropertyList = []
+              }
+              newRow[sideKey]!.constructionCustomPropertyList[0] = {
+                value: row.MI_NewField_1.trim(),
+                name: row.MI_NewName_1.trim(),
+                isPublic: parseYesNoValue(row.MI_PUB_2, true),
+              }
+            }
+            break
+
+          // Material Type: Woven
+          case 'MIW_Cons_1':
+            newRow[sideKey]!.construction.warpDensity = boundedNumber(
+              row.MIW_Cons_1,
+              0,
+              999
+            )
+            break
+          case 'MIW_Cons_2':
+            newRow[sideKey]!.construction.weftDensity = boundedNumber(
+              row.MIW_Cons_2,
+              0,
+              999
+            )
+            break
+          case 'MIW_Cons_3':
+            newRow[sideKey]!.construction.warpYarnSize = row.MIW_Cons_3.trim()
+            break
+          case 'MIW_Cons_4':
+            newRow[sideKey]!.construction.weftYarnSize = boundedNumber(
+              row.MIW_Cons_4,
+              0,
+              999
+            )
+            break
+
+          // Material Type: Knit
+          case 'MIK_Cons_1':
+            newRow[sideKey]!.construction.machineType = row.MIK_Cons_1.trim()
+            break
+          case 'MIK_Cons_2':
+            newRow[sideKey]!.construction.walesPerInch = boundedNumber(
+              row.MIK_Cons_2,
+              0,
+              999
+            )
+            break
+          case 'MIK_Cons_3':
+            newRow[sideKey]!.construction.coursesPerInch = boundedNumber(
+              row.MIK_Cons_3,
+              0,
+              999
+            )
+            break
+          case 'MIK_Cons_4':
+            newRow[sideKey]!.construction.yarnSize = row.MIK_Cons_4.trim()
+            break
+          case 'MIK_Cons_5':
+            newRow[sideKey]!.construction.machineGaugeInGg = boundedNumber(
+              row.MIK_Cons_5,
+              0,
+              999
+            )
+            break
+
+          // Material Type: Leather
+          case 'MIL_Average':
+            newRow[sideKey]!.construction.averageSkinPerMeterSquare =
+              row.MIL_Average.trim()
+            break
+          case 'MIL_Grade':
+            newRow[sideKey]!.construction.grade = row.MIL_Grade.trim()
+            break
+          case 'MIL_Tannage':
+            newRow[sideKey]!.construction.tannage = row.MIL_Tannage.trim()
+            break
+          case 'MIL_Thickness':
+            newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
+              row.MIL_Thickness,
+              0,
+              999
+            )
+            break
+
+          // Material Type: Non-Woven
+          case 'MIN_Bond':
+            newRow[sideKey]!.construction.bondingMethod = row.MIN_Bond.trim()
+            break
+          case 'MIN_Thick':
+            newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
+              row.MIN_Thick,
+              0,
+              999
+            )
+            break
+
+          // Material Type: Trim
+          case 'MIT_Diameter':
+            newRow[sideKey]!.construction.outerDiameter =
+              row.MIT_Diameter.trim()
+            break
+          case 'MIT_Length':
+            newRow[sideKey]!.construction.length = row.MIT_Length.trim()
+            break
+          case 'MIT_Thickness':
+            newRow[sideKey]!.construction.thickness = row.MIT_Thickness.trim()
+            break
+          case 'MIT_Width':
+            newRow[sideKey]!.construction.width = boundedNumber(
+              row.MIT_Width,
+              0,
+              999
+            )
+            break
+
+          // Pattern
+          case 'PAT_Pattern_1':
+            newRow[sideKey]!.patternInfo!.pattern = row.PAT_Pattern_1.trim()
+            break
+          case 'PAT_Field_1':
+          case 'PAT_Pub_1':
+          case 'PAT_Val_1':
+            if (row.PAT_Field_1.trim() || row.PAT_Val_1.trim()) {
+              if (!newRow[sideKey]!.patternInfo!.customPropertyList) {
+                newRow[sideKey]!.patternInfo!.customPropertyList = []
+              }
+              newRow[sideKey]!.patternInfo!.customPropertyList[0] = {
+                value: row.PAT_Field_1.trim(),
+                name: row.PAT_Val_1.trim(),
+                isPublic: parseYesNoValue(row.PAT_Pub_1, true),
+              }
+            }
+            break
+        }
+      })
       switch (key) {
-        // Color
-        case 'COL_Color_1':
-          newRow[sideKey]!.colorInfo.color = row.COL_Color_1.trim()
-          break
-        case 'COL_Field_1':
-        case 'COL_Pub_1':
-        case 'COL_Val_1':
-          if (row.COL_Field_1.trim() || row.COL_Val_1.trim()) {
-            if (!newRow[sideKey]!.colorInfo.customPropertyList) {
-              newRow[sideKey]!.colorInfo.customPropertyList = []
-            }
-            newRow[sideKey]!.colorInfo.customPropertyList[0] = {
-              value: row.COL_Field_1.trim(),
-              name: row.COL_Val_1.trim(),
-              isPublic: parseYesNoValue(row.COL_Pub_1, true),
-            }
-          }
-          break
-
-        // Content
-        case 'CON_1':
-        case 'CON_2':
-          const contentNameList = convertStringToList(
-            row.CON_1,
-            (contentName) => contentName.trim()
-          )
-          const contentPercentageList = convertStringToList(
-            row.CON_2,
-            (percentage) => boundedNumber(percentage, 0, 100)
-          )
-          const combinedList = contentNameList.map((contentName, index) => {
-            return {
-              name: contentName,
-              percentage: contentPercentageList[index] || 0,
-              contentId: null,
-            }
-          })
-          newRow[sideKey]!.contentList = combinedList
-          break
-        case 'Column ID [DO NOT DELETE]':
-          newRow.itemNo = row['Column ID [DO NOT DELETE]'].trim()
-          break
-
-        // Features
-        case 'FE1':
-          newRow[sideKey]!.featureList = convertStringToList(
-            row.FE1,
-            (feature) => feature.trim()
-          )
-          break
-
-        // Finish
-        case 'FIN_1':
-          newRow[sideKey]!.finishList = convertStringToList(
-            row.FIN_1,
-            (name) => {
-              return { name: name.trim(), finishId: null }
-            }
-          )
-          break
-
         // Inventory
         case 'IN_Cards_1':
           newRow.internalInfo!.inventoryInfo.sampleCardsRemainingList![0].qtyInPcs =
@@ -239,168 +409,6 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
         case 'IN_Source':
           newRow.internalInfo!.inventoryInfo!.sampleCardsRemainingList![0].source =
             row.IN_Source.trim()
-          break
-
-        // Material Info
-        case 'MI_MatDesc':
-          newRow[sideKey]!.descriptionList = convertStringToList(
-            row.MI_MatDesc,
-            (desc) => {
-              return {
-                descriptionId: null,
-                name: desc.trim(),
-              }
-            }
-          )
-          break
-        case 'MI_MatType':
-          const materialTypeKey = row.MI_MatType.trim().toUpperCase()
-          const materialTypeValue =
-            MaterialType[materialTypeKey as keyof typeof MaterialType]
-          newRow[sideKey]!.materialType = materialTypeValue
-          break
-        case 'MI_PUB_1':
-          newRow[sideKey]!.construction.isPublic = parseYesNoValue(
-            row.MI_PUB_1,
-            true
-          )
-          break
-        case 'MI_NewField_1':
-        case 'MI_NewName_1':
-        case 'MI_PUB_2':
-          if (row.MI_NewField_1.trim() || row.MI_NewName_1.trim()) {
-            if (!newRow[sideKey]!.constructionCustomPropertyList) {
-              newRow[sideKey]!.constructionCustomPropertyList = []
-            }
-            newRow[sideKey]!.constructionCustomPropertyList[0] = {
-              value: row.MI_NewField_1.trim(),
-              name: row.MI_NewName_1.trim(),
-              isPublic: parseYesNoValue(row.MI_PUB_2, true),
-            }
-          }
-          break
-
-        // Material Type: Woven
-        case 'MIW_Cons_1':
-          newRow[sideKey]!.construction.warpDensity = boundedNumber(
-            row.MIW_Cons_1,
-            0,
-            999
-          ).toString()
-          break
-        case 'MIW_Cons_2':
-          newRow[sideKey]!.construction.weftDensity = boundedNumber(
-            row.MIW_Cons_2,
-            0,
-            999
-          ).toString()
-          break
-        case 'MIW_Cons_3':
-          newRow[sideKey]!.construction.warpYarnSize = row.MIW_Cons_3.trim()
-          break
-        case 'MIW_Cons_4':
-          newRow[sideKey]!.construction.weftYarnSize = boundedNumber(
-            row.MIW_Cons_4,
-            0,
-            999
-          ).toString()
-          break
-
-        // Material Type: Knit
-        case 'MIK_Cons_1':
-          newRow[sideKey]!.construction.machineType = row.MIK_Cons_1.trim()
-          break
-        case 'MIK_Cons_2':
-          newRow[sideKey]!.construction.walesPerInch = boundedNumber(
-            row.MIK_Cons_2,
-            0,
-            999
-          )
-          break
-        case 'MIK_Cons_3':
-          newRow[sideKey]!.construction.coursesPerInch = boundedNumber(
-            row.MIK_Cons_3,
-            0,
-            999
-          )
-          break
-        case 'MIK_Cons_4':
-          newRow[sideKey]!.construction.yarnSize = row.MIK_Cons_4.trim()
-          break
-        case 'MIK_Cons_5':
-          newRow[sideKey]!.construction.machineGaugeInGg = boundedNumber(
-            row.MIK_Cons_5,
-            0,
-            999
-          )
-          break
-
-        // Material Type: Leather
-        case 'MIL_Average':
-          newRow[sideKey]!.construction.averageSkinPerMeterSquare =
-            row.MIL_Average.trim()
-          break
-        case 'MIL_Grade':
-          newRow[sideKey]!.construction.grade = row.MIL_Grade.trim()
-          break
-        case 'MIL_Tannage':
-          newRow[sideKey]!.construction.tannage = row.MIL_Tannage.trim()
-          break
-        case 'MIL_Thickness':
-          newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
-            row.MIL_Thickness,
-            0,
-            999
-          )
-          break
-
-        // Material Type: Non-Woven
-        case 'MIN_Bond':
-          newRow[sideKey]!.construction.bondingMethod = row.MIN_Bond.trim()
-          break
-        case 'MIN_Thick':
-          newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
-            row.MIN_Thick,
-            0,
-            999
-          )
-          break
-
-        // Material Type: Trim
-        case 'MIT_Diameter':
-          newRow[sideKey]!.construction.outerDiameter = row.MIT_Diameter.trim()
-          break
-        case 'MIT_Length':
-          newRow[sideKey]!.construction.length = row.MIT_Length.trim()
-          break
-        case 'MIT_Thickness':
-          newRow[sideKey]!.construction.thickness = row.MIT_Thickness.trim()
-          break
-        case 'MIT_Width':
-          newRow[sideKey]!.construction.width = boundedNumber(
-            row.MIT_Width,
-            0,
-            999
-          )
-          break
-
-        // Pattern
-        case 'PAT_Pattern_1':
-          newRow[sideKey]!.patternInfo!.pattern = row.PAT_Pattern_1.trim()
-          break
-        case 'PAT_Field_1':
-        case 'PAT_Pub_1':
-        case 'PAT_Val_1':
-          if (row.PAT_Field_1.trim() || row.PAT_Val_1.trim()) {
-            if (!newRow[sideKey]!.patternInfo!.customPropertyList) {
-              newRow[sideKey]!.patternInfo!.customPropertyList = []
-            }
-            newRow[sideKey]!.patternInfo!.customPropertyList[0] = {
-              value: row.PAT_Field_1.trim(),
-              name: row.PAT_Val_1.trim(),
-              isPublic: parseYesNoValue(row.PAT_Pub_1, true),
-            }
-          }
           break
 
         // Pricing
@@ -577,10 +585,6 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             true
           )
           break
-
-        // case 'PLACEHOLDER':
-        //   PLACEHOLDER = row.backSide
-        //   break
       }
     }
     return newRow
