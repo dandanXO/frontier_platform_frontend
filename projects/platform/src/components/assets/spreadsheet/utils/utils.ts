@@ -141,7 +141,10 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
                 contentId: null,
               }
             })
-            newRow[sideKey]!.contentList = combinedList
+            newRow[sideKey]!.contentList = getUniqueItemsByField(
+              combinedList,
+              'name'
+            )
             break
           case 'Column ID [DO NOT DELETE]':
             newRow.itemNo = row['Column ID [DO NOT DELETE]'].trim()
@@ -149,32 +152,37 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
           // Features
           case 'FE1':
-            newRow[sideKey]!.featureList = convertStringToList(
-              row.FE1,
-              (feature) => feature.trim()
+            const featureList = convertStringToList(row.FE1, (feature) =>
+              feature.toString().trim()
             )
+            newRow[sideKey]!.featureList = getUniqueItemsByField(featureList)
             break
 
           // Finish
           case 'FIN_1':
-            newRow[sideKey]!.finishList = convertStringToList(
-              row.FIN_1,
-              (name) => {
-                return { name: name.trim(), finishId: null }
-              }
+            const finishList = convertStringToList(row.FIN_1, (name) => {
+              return { name: name.toString().trim(), finishId: null }
+            })
+            newRow[sideKey]!.finishList = getUniqueItemsByField(
+              finishList,
+              'name'
             )
             break
 
           // Material Info
           case 'MI_MatDesc':
-            newRow[sideKey]!.descriptionList = convertStringToList(
+            const materialDescriptionList = convertStringToList(
               row.MI_MatDesc,
-              (desc) => {
+              (description) => {
                 return {
                   descriptionId: null,
-                  name: desc.trim(),
+                  name: description.toString().trim(),
                 }
               }
+            )
+            newRow[sideKey]!.descriptionList = getUniqueItemsByField(
+              materialDescriptionList,
+              'name'
             )
             break
           case 'MI_MatType':
@@ -520,16 +528,16 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
           )
           break
         case 'TAG_Priv_1':
-          newRow.internalInfo!.tagList = convertStringToList(
-            row.TAG_Priv_1,
-            (tag) => tag.trim()
+          const privateTagList = convertStringToList(row.TAG_Priv_1, (tag) =>
+            tag.toString().trim()
           )
+          newRow.internalInfo!.tagList = getUniqueItemsByField(privateTagList)
           break
         case 'TAG_PubTags_1':
-          newRow.tagInfo!.tagList = convertStringToList(
-            row.TAG_PubTags_1,
-            (tag) => tag.trim()
+          const publicTagList = convertStringToList(row.TAG_PubTags_1, (tag) =>
+            tag.toString().trim()
           )
+          newRow.tagInfo!.tagList = getUniqueItemsByField(publicTagList)
           break
         case 'TAG_Rem_1':
           newRow.internalInfo!.remark = row.TAG_Rem_1.trim()
@@ -685,4 +693,15 @@ export function removeIncompletePricing(materialRowList: MaterialRow[]) {
       row.priceInfo.pricing = null
     }
   })
+}
+
+function getUniqueItemsByField<T extends Record<string, any>>(
+  list: T[],
+  field?: keyof T
+): T[] {
+  if (field) {
+    return Array.from(new Map(list.map((item) => [item[field], item])).values())
+  } else {
+    return Array.from(new Set(list))
+  }
 }
