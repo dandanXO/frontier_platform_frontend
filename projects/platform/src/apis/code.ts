@@ -1,11 +1,10 @@
-import { CodeApi, Configuration } from '@frontier/platform-web-sdk'
 import axios from '@/apis'
 
-const config = new Configuration({ basePath: '.' })
-const codeApi = new CodeApi(config, undefined, axios)
-
 export default {
-  getPantoneList: codeApi.getPantoneList,
+  getPantoneList: () =>
+    axios('/code/pantone', {
+      method: 'GET',
+    }),
   getCountryList: () =>
     axios('/code/country', {
       method: 'GET',
