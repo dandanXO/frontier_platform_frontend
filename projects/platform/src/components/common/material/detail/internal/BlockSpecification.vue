@@ -107,10 +107,17 @@ const hasExtendedContent = (
   property: MaterialSpecificationInfoBasicProperty,
   propertyKey: string
 ) => {
-  if (['materialType', 'finishList', 'contentList'].includes(propertyKey)) {
-    return property.value.length >= 50
-  }
-  return false
+  const seeMorePropertyList = [
+    'materialType',
+    'finishList',
+    'contentList',
+    'weight',
+  ]
+  const oneLineLengthIncludeTitle = 54
+  return (
+    seeMorePropertyList.includes(propertyKey) &&
+    (property.value + propertyKey).length >= oneLineLengthIncludeTitle
+  )
 }
 const handleShowMore = (key: string) => {
   innerSpecificationInfo[key].showMore = true
