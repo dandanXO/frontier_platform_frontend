@@ -60,7 +60,7 @@ export const getCellStyle = ({
   editable: boolean
 }): CellStyle => {
   const { readOnly } = useReadOnly()
-  const getBgColor = () => {
+  function getBgColor() {
     if (!valid) {
       return spreadsheetBgColors.invalid
     }
@@ -71,7 +71,7 @@ export const getCellStyle = ({
   }
 
   return {
-    ...(readOnly ? {} : { backgroundColor: getBgColor() }),
+    ...(readOnly.value ? {} : { backgroundColor: getBgColor() }),
     ...defaultCellStyle,
   }
 }
