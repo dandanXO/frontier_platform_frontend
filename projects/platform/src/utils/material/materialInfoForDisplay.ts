@@ -209,8 +209,20 @@ const materialInfoForDisplay = {
         return ''
       }
 
-      const getItemDisplay = (weight: MaterialWeight) => {
+      function getItemDisplay(weight: MaterialWeight) {
         return `${weight.value} ${WeightUnitText[weight.unit]}`
+      }
+      function getItemDisplayRounded(item: {
+        value: number
+        unit: WeightUnit
+      }) {
+        let displayValue = item.value
+        if (displayValue > 1) {
+          displayValue = Math.round(displayValue)
+        } else {
+          displayValue = parseFloat(displayValue.toFixed(2))
+        }
+        return `${displayValue} ${WeightUnitText[item.unit]}`
       }
       const originWeightDisplay = getItemDisplay(weight)
       const computedWeightDisplay = [
@@ -232,9 +244,8 @@ const materialInfoForDisplay = {
               return weightDisplaySetting.isShowWeightGm
           }
         })
-        .map(getItemDisplay)
+        .map(getItemDisplayRounded)
         .join(', ')
-
       if (computedWeightDisplay.length === 0) {
         return originWeightDisplay
       }
