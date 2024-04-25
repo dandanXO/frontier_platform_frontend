@@ -116,8 +116,8 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
                 newRow[sideKey]!.colorInfo.customPropertyList = []
               }
               newRow[sideKey]!.colorInfo.customPropertyList[0] = {
-                value: row.COL_Field_1.trim(),
-                name: row.COL_Val_1.trim(),
+                name: row.COL_Field_1.trim(),
+                value: row.COL_Val_1.trim(),
                 isPublic: parseYesNoValue(row.COL_Pub_1, true),
               }
             }
@@ -329,8 +329,8 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
                 newRow[sideKey]!.patternInfo!.customPropertyList = []
               }
               newRow[sideKey]!.patternInfo!.customPropertyList[0] = {
-                value: row.PAT_Field_1.trim(),
-                name: row.PAT_Val_1.trim(),
+                name: row.PAT_Field_1.trim(),
+                value: row.PAT_Val_1.trim(),
                 isPublic: parseYesNoValue(row.PAT_Pub_1, true),
               }
             }
