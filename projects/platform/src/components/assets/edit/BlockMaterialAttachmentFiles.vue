@@ -37,7 +37,7 @@ div(class="flex flex-col gap-y-7.5")
           :extension="multimedia.extension"
           :displayFileName="multimedia.displayFileName"
           :menuTree="getMultimediaMenuTree(multimedia.fileId)"
-          @setCover="selectCover(multimedia.fileId)"
+          @setCover="emits('selectCover', multimedia.fileId)"
           @edit="startCropMultimedia(multimedia.fileId)"
           @click="openMultimediaViewMode(index)"
         )
@@ -137,7 +137,6 @@ const {
   multimediaList,
   openModalMultimediaSelect,
   getMultimediaMenuTree,
-  selectCover,
   updateMultimediaList,
   moveMultimedia,
   startCropMultimedia,
@@ -151,6 +150,10 @@ const attachmentListForDraggable = computed({
   get: () => attachmentList.value,
   set: updateAttachmentList,
 })
+
+const emits = defineEmits<{
+  (e: 'selectCover', coverId: number): void
+}>()
 
 const multimediaListForDraggable = computed({
   get: () => multimediaList.value,

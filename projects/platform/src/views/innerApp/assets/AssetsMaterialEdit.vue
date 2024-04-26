@@ -22,11 +22,14 @@ div(class="w-full h-full flex justify-center")
           canEdit
           canStar
           :selectedId="multimediaUpdateService.selectedCoverId.value"
-          :publicFileList="publicFileList"
           :getMenuTree="multimediaUpdateService.getMultimediaMenuTree"
           :selectCover="multimediaUpdateService.selectCover"
           :coverId="coverId"
           @editScannedImage="openModalScannedImageUpdate"
+          :currentCoverIndex="currentCoverIndex"
+          :availableFileList="availableFileList"
+          @updateCurrentCoverIndex="handleUpdateCurrentCoverIndex"
+          hideMagnifier
         )
         block-material-u3m(:material="material")
       div(class="w-full flex flex-col divide-y divide-grey-250")
@@ -45,6 +48,7 @@ div(class="w-full h-full flex justify-center")
                   )
                   block-material-attachment-files(
                     v-show="currentTab === TAB.ATTACHMENTS"
+                    @selectCover="handleSelectCoverFromAttachmentFiles"
                   )
                   div(class="flex flex-row gap-x-2 pl-15 justify-end w-full")
                     f-button(type="secondary" size="md" @click="cancel") {{ $t('UU0002') }}
@@ -87,16 +91,25 @@ div(class="w-full h-full flex justify-center")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, provide, watchEffect, onMounted } from 'vue'
+import {
+  computed,
+  ref,
+  reactive,
+  provide,
+  watchEffect,
+  onMounted,
+  watch,
+} from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { onBeforeRouteLeave } from 'vue-router'
-import { NOTIFY_TYPE } from '@/utils/constants'
+import { ATTACHMENT_FILE_ACCEPT_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { useAssetsStore } from '@/stores/assets'
 import {
   OgType,
+  type MultimediaFile,
   type PantoneColor,
   type UpdateAssetsMaterialRequest,
 } from '@frontier/platform-web-sdk'
@@ -126,12 +139,15 @@ import type {
   MaterialAttachmentUpdateService,
   MaterialMultimediaUpdateService,
   MaterialU3mSelectService,
+  MaterialFile,
+  CoverId,
 } from '@/types'
 import { Cropper } from '@/utils/cropper'
 import {
   convertInventoryFormToReq,
   convertPriceInfoFormToReq,
 } from '@/utils/material'
+import { useCurrentCoverIndex } from '@/composables/material/useMaterialDetailImage'
 
 const props = defineProps<{
   materialId: string
@@ -247,6 +263,61 @@ const coverId = computed(() => {
 })
 
 const { primarySideImage, publicFileList } = useMaterial(material)
+const availableFileList = publicFileList.value.filter((item: MaterialFile) =>
+  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+)
+
+const { currentCoverIndex, setCurrentCoverIndex } = useCurrentCoverIndex()
+setCurrentCoverIndex(0)
+const handleUpdateCurrentCoverIndex = (index: number) => {
+  setCurrentCoverIndex(index)
+  multimediaUpdateService.selectCover(availableFileList[index].id as CoverId)
+}
+
+watch(
+  () => multimediaUpdateService.multimediaList.value,
+  (newList, oldList) => {
+    const addedItems = newList.filter(
+      (newItem: MultimediaFile) =>
+        !oldList.some(
+          (oldItem: MultimediaFile) => oldItem.fileId === newItem.fileId
+        )
+    )
+    addedItems.forEach((item: MultimediaFile) => {
+      availableFileList.push({
+        id: item.fileId,
+        fileId: item.fileId,
+        originalUrl: item.originalUrl,
+        thumbnailUrl: item.thumbnailUrl,
+        displayUrl: item.displayUrl,
+        displayName: item.displayFileName,
+        displayNameShort: item.displayFileName,
+        caption: item.displayFileName,
+        extension: item.extension,
+      })
+    })
+
+    const removedItems = oldList.filter(
+      (oldItem: MultimediaFile) =>
+        !newList.some(
+          (newItem: MultimediaFile) => newItem.fileId === oldItem.fileId
+        )
+    )
+    removedItems.forEach((item: MultimediaFile) => {
+      const index = availableFileList.findIndex(
+        (file: MaterialFile) => file.id === item.fileId
+      )
+      availableFileList.splice(index, 1)
+    })
+  }
+)
+
+const handleSelectCoverFromAttachmentFiles = (coverId: number) => {
+  setCurrentCoverIndex(
+    availableFileList.findIndex((item: MaterialFile) => item.id === coverId)
+  )
+  multimediaUpdateService.selectCover(coverId)
+}
 
 const cropperConfig: CropperConfig = reactive({})
 const isOpenSampleCard = ref(true)

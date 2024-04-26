@@ -2,7 +2,7 @@
 div(class="flex items-start gap-x-10")
   //- Left Side: Image
   material-detail-image(
-    :publicFileList="publicFileList"
+    :availableFileList="availableFileList"
     :currentSideType="currentSideType"
     class="w-125 shrink-0"
   )
@@ -41,7 +41,12 @@ import MaterialDetailColorAndPattern from '@/components/common/material/detail/i
 import MaterialDetailU3m from '@/components/common/material/detail/MaterialDetailU3m.vue'
 import useMaterial from '@/composables/material/useMaterial'
 import type { Material } from '@frontier/platform-web-sdk'
-import { PLATFORM_LOCATION_TYPE, MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import {
+  PLATFORM_LOCATION_TYPE,
+  MATERIAL_SIDE_TYPE,
+  ATTACHMENT_FILE_ACCEPT_TYPE,
+} from '@/utils/constants'
+import type { MaterialFile } from '@/types'
 
 const props = defineProps<{
   material: Material
@@ -58,4 +63,8 @@ const {
   colorInfo,
   patternInfo,
 } = useMaterial(ref(props.material))
+
+const availableFileList = publicFileList.value.filter((item: MaterialFile) =>
+  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+)
 </script>

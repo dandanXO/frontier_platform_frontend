@@ -22,6 +22,10 @@ import { uploadFileToS3 } from '@/utils/fileUpload'
 import { image2Object } from '@/utils/cropper'
 import type { CoverId, MaterialFileId, SquareCropRecord } from '@/types'
 import { useNotifyStore } from '@/stores/notify'
+import {
+  useCurrentCoverIndex,
+  useCurrentDisplayIndex,
+} from '@/composables/material/useMaterialDetailImage'
 
 const useMultimediaUpdate = (
   material: Ref<Material>,
@@ -205,7 +209,20 @@ const useMultimediaUpdate = (
     downloadDataURLFile(target.originalUrl, target.displayFileName)
   }
 
-  const removeMultimediaSelect = (id: number, theme: THEME) => {
+  const removeMultimediaSelect = async (id: number, theme: THEME) => {
+    //to prevent the error of the currentCoverIndex value being out of range
+    useCurrentCoverIndex().setCurrentCoverIndex(0)
+    useCurrentDisplayIndex().setCurrentDisplayIndex(0)
+    const currentCoverId = multimediaList.value.find((item) => item.isCover)
+    if (currentCoverId?.fileId === id) {
+      const sideType =
+        material.value.sideType === MaterialSideType.FACE_SIDE
+          ? 'faceSide'
+          : 'backSide'
+      selectCover(sideType)
+      await saveCover()
+    }
+
     store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
       theme,
@@ -233,9 +250,7 @@ const useMultimediaUpdate = (
               selectedCoverId.value = 'backSide'
               break
             default:
-              throw new Error(
-                'invalid cover mode' + material.value.coverImage.mode
-              )
+              selectedCoverId.value = null
           }
         }
         store.dispatch('helper/closeModalLoading')

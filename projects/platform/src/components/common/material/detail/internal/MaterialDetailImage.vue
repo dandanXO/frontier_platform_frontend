@@ -7,35 +7,41 @@ div(class="flex flex-col gap-y-4")
       :originalUrl="availableFileList[currentDisplayIndex].originalUrl"
       :extension="availableFileList[currentDisplayIndex].extension"
     )
-    button(
-      class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-5 flex items-center justify-center cursor-pointer"
-      @click="openViewMode"
-    )
-      f-svg-icon(iconName="search" size="32" class="text-grey-900")
-    button(
-      v-if="props.canEdit"
-      class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-20 flex items-center justify-center cursor-pointer"
-      @click="emits('editScannedImage')"
-    )
-      f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
-    button(
-      v-if="isShowStar"
-      class="absolute w-10 h-10 rounded-md bg-grey-100/40 bottom-5 left-35 flex items-center justify-center cursor-pointer"
-      @click="clickStarEvent(currentDisplayIndex)"
-    )
-      f-svg-icon(
-        v-if="availableFileList[currentDisplayIndex].id === props.coverId"
-        iconName="star_solid"
-        size="32"
-        class="text-primary-400"
+    div(class="absolute bottom-5 left-5 flex gap-x-5")
+      button(
+        v-if="!props.hideMagnifier"
+        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
+        @click="openViewMode"
       )
-      f-svg-icon(
-        v-else
-        iconName="star"
-        size="32"
-        :class="[props.selectedId && props.selectedId === availableFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
+        f-svg-icon(iconName="search" size="32" class="text-grey-900")
+      button(
+        v-if="isShowEdit"
+        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
+        @click="emits('editScannedImage')"
       )
-  slider(heightLinerBg="h-19.5" :scrollPerItem="5")
+        f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
+      button(
+        v-if="isShowStar"
+        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
+        @click="emits('updateCurrentCoverIndex', currentDisplayIndex)"
+      )
+        f-svg-icon(
+          v-if="availableFileList[currentDisplayIndex].id === props.coverId"
+          iconName="star_solid"
+          size="32"
+          class="text-primary-400"
+        )
+        f-svg-icon(
+          v-else
+          iconName="star"
+          size="32"
+          :class="[props.selectedId && props.selectedId === availableFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
+        )
+  slider(
+    :key="availableFileList.length"
+    heightLinerBg="h-19.5"
+    :scrollPerItem="5"
+  )
     div(class="grid grid-flow-col gap-x-2 justify-start")
       div(
         v-for="(image, index) in availableFileList"
@@ -67,10 +73,12 @@ import {
   ATTACHMENT_FILE_ACCEPT_TYPE,
   IMAGE_FILE_ACCEPT_TYPE,
 } from '@/utils/constants'
+import { useCurrentDisplayIndex } from '@/composables/material/useMaterialDetailImage'
 
 const props = withDefaults(
   defineProps<{
-    publicFileList: Array<MaterialFile>
+    availableFileList: Array<MaterialFile>
+    currentCoverIndex: number
     currentSideType: number
     getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
@@ -78,40 +86,37 @@ const props = withDefaults(
     selectedId?: number | null
     selectCover?: ((index: CoverId) => void) | null
     coverId?: CoverId | null
+    hideMagnifier?: boolean
   }>(),
   {
     canEdit: false,
     canStar: false,
     selectedId: null,
     coverId: null,
+    hideMagnifier: false,
   }
 )
 
-const availableFileList = props.publicFileList.filter((item) =>
-  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
-)
-
-const currentCoverIndex = ref(0)
-const clickStarEvent = (index: number) => {
-  currentCoverIndex.value = index
-  if (props.selectCover) {
-    props.selectCover(availableFileList[index].id as CoverId)
-  }
-}
 const currentCoverImageUrl = (image: MaterialFile, index: number) => {
   return index !== 0
     ? image.thumbnailUrl
-    : availableFileList[currentCoverIndex.value ?? 0].thumbnailUrl
+    : props.availableFileList[props.currentCoverIndex ?? 0].thumbnailUrl
 }
 
-const currentDisplayIndex = ref(0)
+const { currentDisplayIndex, setCurrentDisplayIndex } = useCurrentDisplayIndex()
 const clickSmallImage = (index: number) => {
-  currentDisplayIndex.value = index
+  const isValidCoverIndex =
+    index === 0 &&
+    props.currentCoverIndex != null &&
+    props.currentCoverIndex < props.availableFileList.length
+
+  setCurrentDisplayIndex(isValidCoverIndex ? props.currentCoverIndex : index)
 }
 
 const emits = defineEmits<{
   (e: 'editMultimedia'): void
   (e: 'editScannedImage'): void
+  (e: 'updateCurrentCoverIndex', index: number): void
 }>()
 
 const store = useStore()
@@ -122,7 +127,7 @@ const openViewMode = () => {
     properties: {
       viewModeService: {
         startIndex: currentDisplayIndex.value,
-        fileList: computed(() => availableFileList),
+        fileList: computed(() => props.availableFileList),
         getMenuTree: props.getMenuTree,
       },
     },
@@ -133,11 +138,21 @@ const isShowStar = computed(
   () =>
     props.canStar &&
     IMAGE_FILE_ACCEPT_TYPE.includes(
-      availableFileList[currentDisplayIndex.value].extension
+      props.availableFileList[currentDisplayIndex.value].extension
     ) &&
-    availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler' &&
-    availableFileList[currentDisplayIndex.value].id !== 'backSideRuler' &&
-    availableFileList[currentDisplayIndex.value].id !== 'cover'
+    props.availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler' &&
+    props.availableFileList[currentDisplayIndex.value].id !== 'backSideRuler' &&
+    props.availableFileList[currentDisplayIndex.value].id !== 'cover'
+)
+
+const isShowEdit = computed(
+  () =>
+    props.canEdit &&
+    IMAGE_FILE_ACCEPT_TYPE.includes(
+      props.availableFileList[currentDisplayIndex.value].extension
+    ) &&
+    (props.availableFileList[currentDisplayIndex.value].id === 'faceSide' ||
+      props.availableFileList[currentDisplayIndex.value].id === 'backSide')
 )
 
 watch(
