@@ -158,6 +158,14 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
       newRow.priceInfo.pricing = null
     }
 
+    // Determine if inventoryInfo is publicly accessible
+    if (newRow.internalInfo && newRow.internalInfo.inventoryInfo) {
+      newRow.internalInfo.inventoryInfo.isTotalPublic = parseYesNoValue(
+        row.IN_Create_1,
+        false
+      )
+    }
+
     for (const key of Object.keys(row)) {
       if (!row[key] || row[key].trim() === '') {
         continue
