@@ -40,6 +40,15 @@ export const MaterialTypeText: { [key in MaterialType]: string } = {
   [MaterialType.OTHERS]: t('MI0022'),
 }
 
+export const MaterialTypeOption: { [key in MaterialType]: string } = {
+  [MaterialType.WOVEN]: 'wovenOptions',
+  [MaterialType.KNIT]: 'knitOptions',
+  [MaterialType.LEATHER]: 'leatherOptions',
+  [MaterialType.NON_WOVEN]: 'nonwovenOptions',
+  [MaterialType.TRIM]: 'trimOptions',
+  [MaterialType.OTHERS]: 'otherOptions',
+}
+
 export const MaterialSideTypeText: { [key in MaterialSideType]: string } = {
   [MaterialSideType.FACE_SIDE]: t('DD0048'),
   [MaterialSideType.BACK_SIDE]: t('DD0049'),

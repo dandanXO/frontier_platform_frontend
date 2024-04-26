@@ -26,6 +26,7 @@ import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
 import { PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST } from '@/utils/constants'
+import { type QrCodePrintLabelSetting, DefaultPrintLabelSetting } from '@/composables/useAssets'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
@@ -37,6 +38,11 @@ const emissionsTextCodeMapper = {
   water: 'RR0216',
   co2: 'RR0215',
   land: 'RR0218',
+}
+const emissionsSettingMapper = {
+  water: 'isPrintWaterDepletion',
+  co2: 'isPrintGHG',
+  land: 'isPrintLandUse',
 }
 
 const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
@@ -311,18 +317,10 @@ const usePrint = () => {
     store.dispatch('helper/closeModalLoading')
   }
 
-  const printLabel = async (materialList: Material[]) => {
-    store.dispatch('helper/pushModalLoading')
-
+  const getPrintLabelItems = (item: {sideType: MaterialSideType, material: Material}, setting: QrCodePrintLabelSetting): string[] => {
     const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
-
-    const domGenerator = async (item: {
-      sideType: MaterialSideType
-      material: Material
-    }) => {
-      const { sideType, material } = item
+    const { sideType, material } = item
       const {
-        itemNo,
         isComposite,
         width,
         weight,
@@ -331,95 +329,31 @@ const usePrint = () => {
       } = material
       const currentSide = getMaterialBySide(material, sideType)
       const {
-        frontierNo,
         descriptionList,
         contentList,
         finishList,
         construction,
         materialType,
         colorInfo,
+        featureList,
+        patternInfo
       } = currentSide
 
-      const normalLabel = (virtualDom: HTMLDivElement) => {
-        virtualDom.innerHTML = `
-          <div class="w-64 h-[133px] p-1.5 bg-grey-0 flex items-start gap-x-2">
-            <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
-            <div class="w-full pt-0.5 flex flex-start">
-              <div class="pt-3">
-                <div id="qr-code-container"></div>
-                <p class="text-[7px] pt-2 text-grey-900 text-center">${
-                  sideType === MaterialSideType.FACE_SIDE
-                    ? t('DD0046')
-                    : t('DD0047')
-                }</p>
-                <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
-              </div>
-              <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
-              <div id="info-container" class="w-40 text-grey-900">
-                <p class="text-[8px] font-bold pb-0.5 break-words">${itemNo}</p>
-              </div>
-            </div>
-          </div>
-        `
-      }
-      const customizeLabel = (virtualDom: HTMLDivElement) => {
-        virtualDom.innerHTML = `
-        <div class="relative flex gap-x-3 w-56.5 h-[141px] bg-grey-0 pr-2 pl-4 py-4 box-content" id="customized-outer-container">
-          <div class="flex flex-col items-center gap-y-2">
-            <div class="w-8 h-8 rounded-full overflow-hidden">
-              <img src="${logo.value}" class="w-full h-full" />
-            </div>
-            <div id="qr-code-container"></div>
-            <div class="flex flex-col justify-center items-center">
-              <div class="whitespace-nowrap text-grey-900 text-[7px]">${
-                sideType === MaterialSideType.FACE_SIDE
-                  ? t('DD0046')
-                  : t('DD0047')
-              }</div>
-              <div class="whitespace-nowrap text-grey-600 text-[7px]">${frontierNo}</div>
-            </div>
-          </div>
-          <div class="w-px h-[105px] bg-grey-250"></div>
-          <div id="info-container" class="w-35 text-grey-900">
-            <p class="text-[8px] font-bold pb-1 break-words">${itemNo}</p>
-          </div>
-        </div>
-        `
-      }
+    const infoList: string[] = [
+      materialInfoForDisplay.materialTypeBySetting(
+        isComposite,
+        materialType,
+        descriptionList,
+        setting as QrCodePrintLabelSetting
+      ).value,
+    ]
 
-      const virtualDom = document.createElement('div')
-      virtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
-      if (isCustomize) {
-        customizeLabel(virtualDom)
-      } else {
-        normalLabel(virtualDom)
-      }
-      document.body.appendChild(virtualDom)
-      let qrWidth = 50
-      if (isCustomize) {
-        qrWidth = 54
-        const outerContainer = document.getElementById(
-          'customized-outer-container'
-        )
-        outerContainer.classList.remove('pr-2')
-        outerContainer.classList.add('font-bold', 'pr-4')
-      }
-      await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
+    switch (materialType) {
+      case MaterialType.WOVEN: {
+        const { warpDensity, weftDensity, warpYarnSize, weftYarnSize } =
+          (construction as MaterialWovenConstruction) ?? {}
 
-      const infoContainer = document.getElementById('info-container')!
-      const infoList: string[] = [
-        materialInfoForDisplay.materialType(
-          isComposite,
-          materialType,
-          descriptionList
-        ).value,
-      ]
-
-      switch (materialType) {
-        case MaterialType.WOVEN: {
-          const { warpDensity, weftDensity, warpYarnSize, weftYarnSize } =
-            (construction as MaterialWovenConstruction) ?? {}
-
+        if (setting.wovenOptions.isPrintDensity) {
           if (warpDensity && weftDensity) {
             infoList.push(`${warpDensity} X ${weftDensity}`)
           } else if (warpDensity) {
@@ -427,7 +361,9 @@ const usePrint = () => {
           } else if (weftDensity) {
             infoList.push(weftDensity)
           }
+        }
 
+        if (setting.wovenOptions.isPrintYarnSize) {
           if (warpYarnSize && weftYarnSize) {
             infoList.push(`${warpYarnSize} X ${weftYarnSize}`)
           } else if (warpYarnSize) {
@@ -435,194 +371,297 @@ const usePrint = () => {
           } else if (weftYarnSize) {
             infoList.push(weftYarnSize)
           }
+        }
 
+        if (width && setting.materialInfoOptions.isPrintWidth) {
           infoList.push(materialInfoForDisplay.width(width).value)
-          break
         }
-        case MaterialType.KNIT: {
-          const { machineType, yarnSize, walesPerInch, coursesPerInch } =
-            (construction as MaterialKnitConstruction) ?? {}
 
-          if (machineType) {
-            infoList.push(machineType)
-          }
+        break
+      }
+      case MaterialType.KNIT: {
+        const { machineType, yarnSize, walesPerInch, coursesPerInch } =
+          (construction as MaterialKnitConstruction) ?? {}
 
-          if (yarnSize) {
-            infoList.push(yarnSize)
-          }
-
-          let str = ''
-
-          if (walesPerInch) {
-            str += `${walesPerInch}"`
-          }
-
-          if (coursesPerInch) {
-            str += ` ${coursesPerInch}"`
-          }
-
-          str += ` ${materialInfoForDisplay.width(width).value}`
-          infoList.push(str)
-          break
+        if (machineType && setting.knitOptions.isPrintMachineType) {
+          infoList.push(machineType)
         }
-        case MaterialType.LEATHER: {
-          const { grade, tannage, averageSkinPerMeterSquare, thicknessPerMm } =
-            (construction as MaterialLeatherConstruction) ?? {}
 
-          if (grade) {
-            infoList.push(grade)
-          }
-
-          if (tannage) {
-            infoList.push(tannage)
-          }
-
-          let str = ''
-
-          if (averageSkinPerMeterSquare) {
-            str += `${averageSkinPerMeterSquare} m²`
-          }
-
-          if (thicknessPerMm) {
-            str += ` ${thicknessPerMm} mm`
-          }
-
-          str += ` ${materialInfoForDisplay.width(width).value}`
-          infoList.push(str)
-
-          break
+        if (yarnSize && setting.knitOptions.isPrintYarnSize) {
+          infoList.push(yarnSize)
         }
-        case MaterialType.NON_WOVEN: {
-          const { bondingMethod, thicknessPerMm } =
-            (construction as MaterialNonWovenConstruction) ?? {}
-          if (bondingMethod) {
-            infoList.push(bondingMethod)
-          }
 
-          let str = ''
+        const str = []
 
-          if (thicknessPerMm) {
-            str += `${thicknessPerMm} mm`
-          }
-
-          str += ` ${materialInfoForDisplay.width(width).value}`
-          infoList.push(str)
-          break
+        if (walesPerInch && setting.knitOptions.isPrintWales) {
+          str.push(`${walesPerInch}"`)
         }
-        case MaterialType.TRIM: {
-          const { outerDiameter, length, thickness, width } =
-            (construction as MaterialTrimConstruction) ?? {}
-          let str = ''
 
-          if (outerDiameter) {
-            str += `${outerDiameter} d`
-          }
-          if (length) {
-            str += `${length} mm`
-          }
-          if (thickness) {
-            str += `${thickness} mm`
-          }
-          if (width) {
-            str += `${width} m`
-          }
-
-          infoList.push(str)
-          break
+        if (coursesPerInch && setting.knitOptions.isPrintCourses) {
+          str.push(`${coursesPerInch}"`)
         }
+
+        if (width && setting.materialInfoOptions.isPrintWidth) {
+          str.push(`${materialInfoForDisplay.width(width).value}`);
+        }
+
+        infoList.push(str.join(' '));
+        break
+      }
+      case MaterialType.LEATHER: {
+        const { grade, tannage, averageSkinPerMeterSquare, thicknessPerMm } =
+          (construction as MaterialLeatherConstruction) ?? {}
+
+        if (grade && setting.leatherOptions.isPrintGrade) {
+          infoList.push(grade)
+        }
+
+        if (tannage && setting.leatherOptions.isPrintTannage) {
+          infoList.push(tannage)
+        }
+
+        const str = [];
+
+        if (averageSkinPerMeterSquare && setting.leatherOptions.isPrintAverageSkinHideSize) {
+          str.push(`${averageSkinPerMeterSquare} m²`)
+        }
+
+        if (thicknessPerMm && setting.leatherOptions.isPrintThickness) {
+          str.push(`${thicknessPerMm} mm`)
+        }
+
+        if (width && setting.materialInfoOptions.isPrintWidth) {
+          str.push(`${materialInfoForDisplay.width(width).value}`);
+        }
+        infoList.push(str.join(' '));
+        break
+      }
+      case MaterialType.NON_WOVEN: {
+        const { bondingMethod, thicknessPerMm } =
+          (construction as MaterialNonWovenConstruction) ?? {}
+        if (bondingMethod && setting.nonwovenOptions.isPrintBondingMethod) {
+          infoList.push(bondingMethod)
+        }
+
+        const str = []
+
+        if (thicknessPerMm && setting.nonwovenOptions.isPrintThickness) {
+          str.push(`${thicknessPerMm} mm`)
+        }
+
+        if (width && setting.materialInfoOptions.isPrintWidth) {
+          str.push(`${materialInfoForDisplay.width(width).value}`);
+        }
+        infoList.push(str.join(' '))
+        break
+      }
+      case MaterialType.TRIM: {
+        const { outerDiameter, length, thickness, width } =
+          (construction as MaterialTrimConstruction) ?? {}
+        const str = []
+
+        if (outerDiameter && setting.trimOptions.isPrintTrimDiameter) {
+          str.push(`${outerDiameter} d`)
+        }
+        if (length && setting.trimOptions.isPrintTrimLength) {
+          str.push(`${length} mm`)
+        }
+        if (thickness && setting.trimOptions.isPrintTrimThickness) {
+          str.push(`${thickness} mm`)
+        }
+        if (width && setting.trimOptions.isPrintTrimWidth) {
+          str.push(`${width} m`);
+        }
+
+        infoList.push(str.join(' '))
+        break
+      }
+    }
+
+    if (featureList && setting.materialInfoOptions.isPrintFeature) {
+      infoList.push(materialInfoForDisplay.featureList(featureList).value);
+    }
+    if (contentList && setting.materialInfoOptions.isPrintContent) {
+      infoList.push(materialInfoForDisplay.contentList(contentList).value);
+    }
+    if (weight && weightForDisplay && weightDisplaySetting && setting.materialInfoOptions.isPrintWeight) {
+      infoList.push(materialInfoForDisplay.weight(weight, weightForDisplay, weightDisplaySetting).value);
+    }
+    if (finishList && setting.materialInfoOptions.isPrintFinish) {
+      infoList.push(materialInfoForDisplay.finishList(finishList).value);
+    }
+    if (colorInfo && colorInfo.color && setting.materialInfoOptions.isPrintColor) {
+      infoList.push(colorInfo.color);
+    }
+    if (patternInfo && setting.materialInfoOptions.isPrintPattern) {
+      infoList.push(patternInfo.pattern);
+    }
+
+    return infoList;
+  }
+
+  const printLabel = async (materialList: Material[], setting: QrCodePrintLabelSetting = DefaultPrintLabelSetting) => {
+    store.dispatch('helper/pushModalLoading')
+
+    const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
+    const fontSizeIndex = () => {
+      const value = setting.fontSize ? setting.fontSize : 5;
+    
+      return value - 5;
+    };
+    const fontSizeOptions = [
+      'text-[8.5px]',
+      'text-[9.5px]',
+      'text-[10.5px]',
+      'text-[11.5px]',
+      'text-[12.5px]',
+      'text-[13.5px]',
+      'text-[14.5px]',
+      'text-[15.5px]',
+    ];
+    const iconSizeOptions = [
+      'w-[8.5px] h-[8.5px]',
+      'w-[9.5px] h-[9.5px]',
+      'w-[10.5px] h-[10.5px]',
+      'w-[11.5px] h-[11.5px]',
+      'w-[12.5px] h-[12.5px]',
+      'w-[13.5px] h-[13.5px]',
+      'w-[14.5px] h-[14.5px]',
+      'w-[15.5px] h-[15.5px]',
+    ]
+    const infoSize = fontSizeOptions[fontSizeIndex()];
+    const itemNoSize = fontSizeOptions[fontSizeIndex()+1];
+    const iconSize = iconSizeOptions[fontSizeIndex()];
+
+    const domGenerator = async (item: {
+      sideType: MaterialSideType
+      material: Material
+    }) => {
+      const { sideType, material } = item
+      const { itemNo } = material
+      const currentSide = getMaterialBySide(material, sideType)
+      const { frontierNo } = currentSide
+
+      const normalLabel = (virtualDom: HTMLDivElement) => {
+        virtualDom.innerHTML = `
+          <div class="w-[83px] h-full flex flex-col">
+            <div class="w-full flex justify-start ml-[-4px]">
+              <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
+            </div>
+            <div class="w-full flex flex-row justify-center mt-2 mb-4">
+              <div id="qr-code-container"></div>
+            </div>
+            <div class="w-full flex flex-col items-center">
+              <p class="text-[10px] bold">${sideType === MaterialSideType.FACE_SIDE ? t('DD0046'): t('DD0047')}</p>
+              <p class="text-[10px] text-grey-600">${frontierNo}</p>
+            </div>
+          </div>
+
+          <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
+
+          <div id="info-container" class="w-[188px] h-full max-h-full flex flex-col overflow-hidden">
+            <p class="${itemNoSize} bold mb-2">${itemNo}</p>
+          </div>
+        `
+      }
+      const customizeLabel = (virtualDom: HTMLDivElement) => {
+        virtualDom.innerHTML = `
+          <div class="w-[83px] h-full flex flex-col">
+            <div class="w-full flex justify-center">
+              <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
+            </div>
+            <div class="w-full flex flex-row justify-center mt-2 mb-4">
+              <div id="qr-code-container"></div>
+            </div>
+            <div class="w-full flex flex-col items-center">
+              <p class="text-[10px] bold">${sideType === MaterialSideType.FACE_SIDE ? t('DD0046'): t('DD0047')}</p>
+              <p class="text-[10px] text-grey-600">${frontierNo}</p>
+            </div>
+          </div>
+
+          <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
+
+          <div id="info-container" class="w-[188px] h-full max-h-full flex flex-col overflow-hidden">
+            <p class="${itemNoSize} bold mb-2">${itemNo}</p>
+          </div>
+        `
       }
 
-      infoList.push(
-        materialInfoForDisplay.contentList(contentList).value,
-        materialInfoForDisplay.weight(
-          weight,
-          weightForDisplay,
-          weightDisplaySetting
-        ).value,
-        materialInfoForDisplay.finishList(finishList).value
-      )
-
-      if (isCustomize && colorInfo.color) {
-        infoList.push(colorInfo.color)
+      const virtualDom = document.createElement('div')
+      virtualDom.classList.add('w-[302px]', 'h-[170px]', 'mr-4', 'bg-[#ffffff]', 'px-2', 'pt-2', 'pb-1', 'flex', 'flex-row', 'overflow-hidden', 'font-bold');
+      if (isCustomize) {
+        customizeLabel(virtualDom)
+      } else {
+        normalLabel(virtualDom)
       }
+      document.body.appendChild(virtualDom)
+      let qrWidth = 62
+      await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
+
+      const infoContainer = document.getElementById('info-container')!
+      const infoList: string[] = getPrintLabelItems({sideType, material}, setting);
 
       infoList.forEach((value) => {
+        const divRow = document.createElement('div')
         const row = document.createElement('p')
-        row.classList.add(
-          'pl-px',
-          'text-[7px]',
-          'break-words',
-          'w-full',
-          '!leading-1.6'
-        )
+        row.classList.add(infoSize)
         row.innerHTML = value
-        infoContainer.appendChild(row)
+        divRow.appendChild(row);
+        infoContainer.appendChild(divRow)
       })
 
-      if (orgId.value === 30) {
-        const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(
-          material.carbonEmission
-        )
-        let info = ``
-        Object.keys(carbonEmissionsInfo).forEach((infoKey) => {
-          const carbonInfo = carbonEmissionsInfo[infoKey]
-          if (carbonInfo && carbonInfo.value && carbonInfo.icon) {
-            info += `
-              <div class="flex flex-row justify-start w-full gap-x-1">
-                <img src="${
-                  emissionsIconMapper[carbonInfo.icon]
-                }" class="w-2 h-2" />
-                <p class="text-[6px] w-full">${carbonInfo.value} ${t(
-              emissionsTextCodeMapper[carbonInfo.icon]
-            )}</p>
-              </div>
-            `
-          }
-        })
-        if (info !== ``) {
-          const row = document.createElement('div')
-          row.classList.add(
-            'flex',
-            'flex-row',
-            'justify-start',
-            'w-full',
-            'gap-x-1'
-          )
-          row.innerHTML = info
-          infoContainer.appendChild(row)
-        }
-
-        if (material.carbonEmission && material.carbonEmission.lastUpdateTime) {
-          const timestamp = `
-            <div class="flex flex-row w-full gap-x-1">
-              <p class="text-[6px] w-full">${t('BB0141', {
-                date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime),
-                time: toHHMMAFormat(material.carbonEmission.lastUpdateTime),
-              })}</p>
+      const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(
+        material.carbonEmission
+      )
+      let info = ``;
+      Object.keys(carbonEmissionsInfo).forEach((infoKey) => {
+        const carbonInfo = carbonEmissionsInfo[infoKey];
+        const carbonEmissionSetting = setting?.ecoImpactorOptions[emissionsSettingMapper[infoKey]];
+        if (carbonInfo && carbonInfo.value && carbonInfo.icon && carbonEmissionSetting) {
+          info += `
+            <div class="flex flex-row items-center">
+              <img src="${emissionsIconMapper[carbonInfo.icon]}" class="${iconSize}" />
+              <p class="${infoSize}">${carbonInfo.value} ${t(emissionsTextCodeMapper[carbonInfo.icon])}</p>
             </div>
           `
-          const rowTimestamp = document.createElement('div')
-          rowTimestamp.classList.add('flex', 'flex-row')
-          rowTimestamp.innerHTML = timestamp
-          infoContainer.appendChild(rowTimestamp)
         }
+      })
+      if (info !== ``) {
+        const row = document.createElement('div')
+        row.classList.add(
+          'flex',
+          'flex-row',
+        )
+        row.innerHTML = info
+        infoContainer.appendChild(row)
       }
-      if (isCustomize) {
-        infoContainer.classList.add('font-bold')
+
+      if (material.carbonEmission && material.carbonEmission.lastUpdateTime && setting.ecoImpactorOptions.isPrintCapturedTime) {
+        const row = document.createElement('div')
+        row.classList.add(
+          'flex',
+          'flex-row',
+        )
+        const timestamp = t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime)});
+        const rowTimestamp = document.createElement('p')
+        rowTimestamp.classList.add(infoSize)
+        rowTimestamp.innerHTML = timestamp
+        row.appendChild(rowTimestamp)
+        infoContainer.appendChild(row)
       }
 
       return virtualDom
     }
-    const LABEL_WIDTH = 256
-    const LABEL_HEIGHT = isCustomize ? 141 : 133
+    const LABEL_WIDTH = 302
+    const LABEL_HEIGHT = 170
     await generate(
       domGenerator,
       materialList,
       LABEL_WIDTH,
       LABEL_HEIGHT,
       new JsPDF({
-        unit: 'cm',
-        format: [isCustomize ? 5 : 4, 8],
+        unit: 'px',
+        format: [LABEL_WIDTH, LABEL_HEIGHT],
         orientation: 'l',
       })
     )
@@ -668,6 +707,8 @@ const usePrint = () => {
     printA4Swatch,
     printLabel,
     printBackSideLabel,
+    makeQrCode,
+    getPrintLabelItems
   }
 }
 

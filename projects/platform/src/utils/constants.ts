@@ -425,7 +425,7 @@ export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
 /**
  * ticket: #2883
  *
- * 這個 org 是 Textpert，
+ * ORG_ID 1694 is Textpert
  * 在 online spreadsheet (#2821) 完成前指開放給該 org 透過 send feedback 做 excel 上傳。
  */
 
@@ -465,4 +465,92 @@ export enum OUTER_TYPE {
   RECEIVED_SHARE = 1,
   EMBED = 2,
   ASSETS = 3,
+}
+
+const PrintLabelSettingMaterialTypeCommonOptions = [
+  { label: i18n.global.t('MI0003'), value: 'isPrintMaterialType' },
+  { label: i18n.global.t('MI0023'), value: 'isPrintMaterialDescription' },
+]
+
+export const PrintLabelSettingMaterialType = [
+  {
+    key: i18n.global.t('RR0091'),
+    options: [
+      ...PrintLabelSettingMaterialTypeCommonOptions,
+      { label: i18n.global.t('MI0027'), value: 'isPrintDensity' },
+      { label: i18n.global.t('RR0023'), value: 'isPrintYarnSize' },
+    ],
+    dataKey: 'wovenOptions',
+  },
+  {
+    key: i18n.global.t('RR0092'),
+    options: [
+      ...PrintLabelSettingMaterialTypeCommonOptions,
+      { label: i18n.global.t('MI0031'), value: 'isPrintMachineType' },
+      { label: i18n.global.t('RR0023'), value: 'isPrintYarnSize' },
+      { label: i18n.global.t('MI0032'), value: 'isPrintWales' },
+      { label: i18n.global.t('MI0033'), value: 'isPrintCourses' },
+      { label: i18n.global.t('MI0068'), value: 'isPrintMachineGauge' },
+    ],
+    dataKey: 'knitOptions',
+  },
+  {
+    key: `${i18n.global.t('MI0018')}/${i18n.global.t('MI0019')}`,
+    options: [
+      ...PrintLabelSettingMaterialTypeCommonOptions,
+      { label: i18n.global.t('MI0072'), value: 'isPrintGrade' },
+      { label: i18n.global.t('MI0073'), value: 'isPrintTannage' },
+      { label: i18n.global.t('MI0071'), value: 'isPrintAverageSkinHideSize' },
+      { label: i18n.global.t('MI0074'), value: 'isPrintThickness' },
+    ],
+    dataKey: 'leatherOptions',
+  },
+  {
+    key: i18n.global.t('MI0020'),
+    options: [
+      ...PrintLabelSettingMaterialTypeCommonOptions,
+      { label: i18n.global.t('MI0078'), value: 'isPrintBondingMethod' },
+      { label: i18n.global.t('MI0074'), value: 'isPrintThickness' },
+    ],
+    dataKey: 'nonwovenOptions',
+  },
+  {
+    key: i18n.global.t('MI0021'),
+    options: [
+      ...PrintLabelSettingMaterialTypeCommonOptions,
+      { label: i18n.global.t('MI0079'), value: 'isPrintTrimDiameter' },
+      { label: i18n.global.t('MI0080'), value: 'isPrintTrimLength' },
+      { label: i18n.global.t('MI0081'), value: 'isPrintTrimThickness' },
+      { label: i18n.global.t('MI0082'), value: 'isPrintTrimWidth' },
+    ],
+    dataKey: 'trimOptions',
+  },
+  {
+    key: i18n.global.t('TT0164'),
+    options: [...PrintLabelSettingMaterialTypeCommonOptions],
+    dataKey: 'otherOptions',
+  },
+]
+
+export const PrintLabelSettingMaterialInformation = {
+  options: [
+    { label: i18n.global.t('MI0014'), value: 'isPrintFeature' },
+    { label: i18n.global.t('RR0088'), value: 'isPrintWidth' },
+    { label: i18n.global.t('RR0021'), value: 'isPrintContent' },
+    { label: i18n.global.t('RR0015'), value: 'isPrintWeight' },
+    { label: i18n.global.t('RR0022'), value: 'isPrintFinish' },
+    { label: i18n.global.t('RR0026'), value: 'isPrintColor' },
+    { label: i18n.global.t('RR0025'), value: 'isPrintPattern' },
+  ],
+  dataKey: 'materialInfoOptions',
+}
+
+export const PrintLabelSettingEcoImpactor = {
+  options: [
+    { label: i18n.global.t('MM0044'), value: 'isPrintGHG' },
+    { label: i18n.global.t('RR0222'), value: 'isPrintWaterDepletion' },
+    { label: i18n.global.t('RR0224'), value: 'isPrintLandUse' },
+    { label: i18n.global.t('BB0142'), value: 'isPrintCapturedTime' },
+  ],
+  dataKey: 'ecoImpactorOptions',
 }

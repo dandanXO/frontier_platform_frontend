@@ -292,6 +292,9 @@ export default {
         '@/components/common/material/detail/external/ModalMaterialSpecification.vue'
       )
     ),
+    ModalLabelPreview: defineAsyncComponent(() =>
+      import('@/components/assets/labelPreview/ModalLabelPreview.vue')
+    ),
   },
   setup() {
     const store = useStore()

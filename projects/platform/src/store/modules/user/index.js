@@ -10,6 +10,7 @@ const state = () => ({
   organizationList: [],
   isShowAnnouncement: true,
   isPromotingNewFeature: true,
+  printLabelSetting: null,
 })
 
 const getters = {
@@ -18,17 +19,24 @@ const getters = {
   organizationList: (state) => state.organizationList,
   isShowAnnouncement: (state) => state.isShowAnnouncement,
   isPromotingNewFeature: (state) => state.isPromotingNewFeature,
+  printLabelSetting: (state) => state.printLabelSetting,
 }
 
 const mutations = {
   SET_user(state, user) {
     Object.assign(state, user)
   },
+  SET_printLabelSetting(state, printLabelSetting) {
+    Object.assign(state, {printLabelSetting})
+  },
 }
 
 const actions = {
   setUser({ commit }, data) {
     commit('SET_user', data)
+  },
+  setPrintLabelSetting({ commit }, data) {
+    commit('SET_printLabelSetting', data)
   },
   async getUser({ dispatch }) {
     const { data } = await userApi.getUser()
@@ -115,6 +123,17 @@ const actions = {
       tempFeedbackAttachmentId,
     })
     return data.result.feedbackAttachmentList
+  },
+  async createPrintLabelSetting({dispatch}, payload) {
+    const { data } = await userApi.createPrintLabelSetting(payload);
+    if (data.success) {
+      dispatch('setPrintLabelSetting', payload);
+    }
+  },
+  async getPrintLabelSetting({dispatch}) {
+    const { data } = await userApi.getPrintLabelSetting();
+    dispatch('setPrintLabelSetting', data.result);
+    return data.result;
   },
   readAnnouncement() {
     userApi.readAnnouncement()

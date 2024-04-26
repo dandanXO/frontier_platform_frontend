@@ -22,12 +22,14 @@ import {
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
+  MaterialTypeOption,
   LengthUnitText,
   WeightUnitText,
 } from '@/utils/enumText'
 import { MaterialType, LengthUnit } from '@frontier/platform-web-sdk'
 import { getNameValueMap } from '@/utils/mapping'
 import store from '@/store'
+import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
 
 const t = i18n.global.t
 
@@ -81,6 +83,36 @@ const materialInfoForDisplay = {
       name: t('MI0003'),
       value: stringList.join(', '),
     }
+  },
+  materialTypeBySetting: (
+    isComposite: boolean,
+    materialType: MaterialType,
+    descriptionList: MaterialDescription[],
+    setting: QrCodePrintLabelSetting
+  ) => {
+    const stringList = []
+
+    if (isComposite) {
+      stringList.push('Composite')
+    }
+
+    if (setting) {
+      const materialOption = setting[MaterialTypeOption[materialType]]
+      if (materialOption.isPrintMaterialType) {
+        stringList.push(MaterialTypeText[materialType])
+      }
+
+      if (
+        descriptionList.length > 0 &&
+        materialOption.isPrintMaterialDescription
+      ) {
+        stringList.push(
+          ...descriptionList.map((description) => description.name)
+        )
+      }
+    }
+
+    return { value: stringList.join(', ') }
   },
   construction: (
     materialType: MaterialType,

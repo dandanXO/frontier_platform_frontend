@@ -175,4 +175,13 @@ export default {
       method: 'POST',
       data: {},
     }),
+  createPrintLabelSetting: (payload) =>
+    axios('/user/qrcode-label-print-setting/create', {
+      method: 'POST',
+      data: payload,
+    }),
+  getPrintLabelSetting: () =>
+    axios('/user/qrcode-label-print-setting/get', {
+      method: 'POST',
+    }),
 }

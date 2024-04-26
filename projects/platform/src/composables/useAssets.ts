@@ -7,6 +7,7 @@ import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
 import generalApi from '@/apis/general'
+import userApi from '@/apis/user'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
 import { useAssetsStore } from '@/stores/assets'
@@ -33,6 +34,126 @@ export type AssetsFunctionOption = FunctionOption<
   Material,
   ASSETS_MATERIAL_FUNCTION
 >
+
+export interface QrCodePrintLabelSetting {
+  fontSize: number
+  wovenOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+    isPrintDensity: boolean
+    isPrintYarnSize: boolean
+  }
+  knitOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+    isPrintMachineType: boolean
+    isPrintYarnSize: boolean
+    isPrintWales: boolean
+    isPrintCourses: boolean
+    isPrintMachineGauge: boolean
+  }
+  leatherOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+    isPrintGrade: boolean
+    isPrintTannage: boolean
+    isPrintAverageSkinHideSize: boolean
+    isPrintThickness: boolean
+  }
+  nonwovenOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+    isPrintBondingMethod: boolean
+    isPrintThickness: boolean
+  }
+  trimOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+    isPrintTrimDiameter: boolean
+    isPrintTrimLength: boolean
+    isPrintTrimThickness: boolean
+    isPrintTrimWidth: boolean
+  }
+  otherOptions: {
+    isPrintMaterialType: boolean
+    isPrintMaterialDescription: boolean
+  }
+  materialInfoOptions: {
+    isPrintFeature: boolean
+    isPrintContent: boolean
+    isPrintWidth: boolean
+    isPrintWeight: boolean
+    isPrintFinish: boolean
+    isPrintColor: boolean
+    isPrintPattern: boolean
+  }
+  ecoImpactorOptions: {
+    isPrintGHG: boolean
+    isPrintWaterDepletion: boolean
+    isPrintLandUse: boolean
+    isPrintCapturedTime: boolean
+  }
+}
+
+export const DefaultPrintLabelSetting: QrCodePrintLabelSetting = {
+  fontSize: 7,
+  wovenOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+    isPrintDensity: true,
+    isPrintYarnSize: true,
+  },
+  knitOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+    isPrintMachineType: true,
+    isPrintYarnSize: true,
+    isPrintWales: true,
+    isPrintCourses: true,
+    isPrintMachineGauge: true,
+  },
+  leatherOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+    isPrintGrade: true,
+    isPrintTannage: true,
+    isPrintAverageSkinHideSize: true,
+    isPrintThickness: true,
+  },
+  nonwovenOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+    isPrintBondingMethod: true,
+    isPrintThickness: true,
+  },
+  trimOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+    isPrintTrimDiameter: true,
+    isPrintTrimLength: true,
+    isPrintTrimThickness: true,
+    isPrintTrimWidth: true,
+  },
+  otherOptions: {
+    isPrintMaterialType: true,
+    isPrintMaterialDescription: true,
+  },
+  materialInfoOptions: {
+    isPrintFeature: true,
+    isPrintContent: true,
+    isPrintWidth: true,
+    isPrintWeight: true,
+    isPrintFinish: true,
+    isPrintColor: true,
+    isPrintPattern: true,
+  },
+  ecoImpactorOptions: {
+    isPrintGHG: true,
+    isPrintWaterDepletion: true,
+    isPrintLandUse: true,
+    isPrintCapturedTime: true,
+  },
+}
 
 export default function useAssets() {
   const print = usePrint()
@@ -327,8 +448,24 @@ export default function useAssets() {
   const printLabel: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.PRINT_LABEL,
     name: () => t('RR0061'),
-    func: (m) => {
-      print.printLabel(toMaterialList(m))
+    func: async (m) => {
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-label-preview',
+        properties: {
+          materialList: toMaterialList(m),
+          printLabel: (
+            materialList: Material[],
+            setting: QrCodePrintLabelSetting
+          ): void => {
+            print.printLabel(materialList, setting)
+          },
+          updateSetting: async (
+            setting: QrCodePrintLabelSetting
+          ): Promise<void> => {
+            await store.dispatch('user/createPrintLabelSetting', setting)
+          },
+        },
+      })
     },
   }
   const printA4Swatch: AssetsFunctionOption = {
