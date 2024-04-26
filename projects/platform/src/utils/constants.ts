@@ -78,6 +78,10 @@ export const IMAGE_FILE_ACCEPT_TYPE: Array<Extension> = [
   Extension.JPG,
   Extension.PNG,
 ]
+export const VIDEO_FILE_ACCEPT_TYPE: Array<Extension> = [
+  Extension.MOV,
+  Extension.MP4,
+]
 
 export const CROP_FILE_ACCEPT_TYPE: Array<Extension> = [
   ...IMAGE_FILE_ACCEPT_TYPE,
@@ -88,9 +92,8 @@ export const CROP_FILE_ACCEPT_TYPE: Array<Extension> = [
 
 export const ATTACHMENT_FILE_ACCEPT_TYPE: Array<Extension> = [
   ...IMAGE_FILE_ACCEPT_TYPE,
+  ...VIDEO_FILE_ACCEPT_TYPE,
   Extension.PDF,
-  Extension.MOV,
-  Extension.MP4,
   Extension.GIF,
 ]
 

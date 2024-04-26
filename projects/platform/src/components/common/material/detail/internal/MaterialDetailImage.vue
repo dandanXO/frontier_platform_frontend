@@ -74,7 +74,8 @@ import {
   IMAGE_FILE_ACCEPT_TYPE,
 } from '@/utils/constants'
 import { useCurrentDisplayIndex } from '@/composables/material/useMaterialDetailImage'
-const preDisplayIndex = ref(-1)
+// 預防edge case暫存上一個選擇
+const preDisplayIndex = ref(0)
 const props = withDefaults(
   defineProps<{
     availableFileList: Array<MaterialFile>
@@ -103,9 +104,9 @@ const currentCoverImageUrl = (image: MaterialFile, index: number) => {
     : props.availableFileList[props.currentCoverIndex ?? 0].thumbnailUrl
 }
 
-// 這裡的currentDisplayIndex地方 1:face, 2:middle 3:back
+// 這裡的currentDisplayIndex 1:face, 2:middle 3:back
 const { currentDisplayIndex, setCurrentDisplayIndex } = useCurrentDisplayIndex()
-// reset to 0
+// reset to 0 以防切換布料detail out of range 問題
 setCurrentDisplayIndex(0)
 
 preDisplayIndex.value = currentDisplayIndex.value
@@ -116,6 +117,7 @@ const clickSmallImage = (index: number) => {
     props.currentCoverIndex < props.availableFileList.length
 
   setCurrentDisplayIndex(isValidCoverIndex ? props.currentCoverIndex : index)
+  preDisplayIndex.value = currentDisplayIndex.value
 }
 
 const emits = defineEmits<{
