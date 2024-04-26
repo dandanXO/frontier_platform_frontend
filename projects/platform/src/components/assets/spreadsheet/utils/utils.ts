@@ -12,6 +12,7 @@ import {
 import type { GridApi } from 'ag-grid-enterprise'
 import type { Ref } from 'vue'
 import { read, type WorkBook } from 'xlsx'
+import BigNumber from 'bignumber.js'
 
 export const convertDataToWorkbook = (dataRows: any) => {
   /* convert data to binary string */
@@ -112,7 +113,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
         : priceInfo.countryOfOriginal,
       pricing: {
         price: row.PR_Price
-          ? boundedNumber(row.PR_Price, 0, 999999999999999999.99)
+          ? boundedStringValue(row.PR_Price, '0', '999999999999999999.99')
           : priceInfo.pricing.price,
         unit: row.PR_Unit
           ? getMaterialQuantityUnit(row.PR_Unit)
@@ -617,6 +618,20 @@ function boundedNumber(input: string, min: number, max: number): number {
   return isNaN(decimalNumber) || decimalNumber < min
     ? min
     : Math.min(max, decimalNumber)
+}
+
+function boundedStringValue(input: string, min: string, max: string): string {
+  const decimalNumber = new BigNumber(input.trim())
+  const minNumber = new BigNumber(min)
+  const maxNumber = new BigNumber(max)
+
+  if (decimalNumber.isNaN() || decimalNumber.isLessThan(minNumber)) {
+    return min
+  } else if (decimalNumber.isGreaterThan(maxNumber)) {
+    return max
+  } else {
+    return decimalNumber.toString()
+  }
 }
 
 function getMaterialQuantityUnit(
