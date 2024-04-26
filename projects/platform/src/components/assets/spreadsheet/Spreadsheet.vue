@@ -761,9 +761,11 @@ const updateSubmitStatus = () => {
             ...reqRow.priceInfo,
             pricing: {
               ...reqRow.priceInfo.pricing,
-              price: hasInvalidAgGridCellValue(reqRow.priceInfo.pricing.price)
-                ? null
-                : Number(reqRow.priceInfo.pricing.price),
+              price:
+                reqRow.priceInfo.pricing.price &&
+                hasInvalidAgGridCellValue(reqRow.priceInfo.pricing.price)
+                  ? ''
+                  : reqRow.priceInfo.pricing.price,
             },
           },
         }
@@ -777,7 +779,7 @@ const updateSubmitStatus = () => {
               ...reqRow.internalInfo.priceInfo,
               pricing: {
                 ...reqRow.internalInfo.priceInfo.pricing,
-                price: Number(reqRow.internalInfo.pricing.price),
+                price: reqRow.internalInfo.priceInfo.pricing.price,
               },
             },
           },

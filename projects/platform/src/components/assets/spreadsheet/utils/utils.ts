@@ -103,6 +103,61 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
       ? ['faceSide', 'backSide']
       : [sideKey]
     const newRow = generateMaterialRow()
+
+    // priceInfo
+    let priceInfo = newRow.priceInfo
+    priceInfo = {
+      countryOfOriginal: row.PR_Origin
+        ? row.PR_Origin.trim()
+        : priceInfo.countryOfOriginal,
+      pricing: {
+        price: row.PR_Price
+          ? boundedNumber(row.PR_Price, 0, 999999999999999999.99)
+          : priceInfo.pricing.price,
+        unit: row.PR_Unit
+          ? getMaterialQuantityUnit(row.PR_Unit)
+          : priceInfo.pricing.unit,
+        currencyCode: row.PR_Currency
+          ? CurrencyCode[
+              row.PR_Currency.trim().toUpperCase() as keyof typeof CurrencyCode
+            ] || 'USD'
+          : priceInfo.pricing.currencyCode,
+      },
+      minimumColor: {
+        qty: row.PR_MCQ
+          ? boundedNumber(row.PR_MCQ, 0, 999999)
+          : priceInfo.minimumColor.qty,
+        unit: row.PR_Unit_MCQ
+          ? getMaterialQuantityUnit(row.PR_Unit_MCQ)
+          : priceInfo.minimumColor.unit,
+      },
+      minimumOrder: {
+        qty: row.PR_MOQ
+          ? boundedNumber(row.PR_MOQ, 0, 999999)
+          : priceInfo.minimumOrder.qty,
+        unit: row.PR_Unit_MOQ
+          ? getMaterialQuantityUnit(row.PR_Unit_MOQ)
+          : priceInfo.minimumOrder.unit,
+      },
+      productionLeadTimeInDays: row.PR_Prod_Leadtime
+        ? row.PR_Prod_Leadtime.trim()
+        : priceInfo.productionLeadTimeInDays,
+      sampleLeadTimeInDays: row.PR_Sample_Leadtime
+        ? row.PR_Sample_Leadtime.trim()
+        : priceInfo.sampleLeadTimeInDays,
+    }
+
+    const isPricePublic =
+      row['PR_1'].trim().toLowerCase() === 'public' ? true : false
+
+    if (isPricePublic) {
+      newRow.priceInfo = priceInfo
+      newRow.internalInfo.priceInfo.pricing = null
+    } else {
+      newRow.internalInfo.priceInfo = priceInfo
+      newRow.priceInfo.pricing = null
+    }
+
     for (const key of Object.keys(row)) {
       if (!row[key] || row[key].trim() === '') {
         continue
@@ -424,58 +479,6 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             row.IN_Source.trim()
           break
 
-        // Pricing
-        case 'PR_Currency':
-          newRow.priceInfo!.pricing!.currencyCode =
-            CurrencyCode[
-              row.PR_Currency.trim().toUpperCase() as keyof typeof CurrencyCode
-            ] || 'USD'
-          break
-        case 'PR_MCQ':
-          newRow.priceInfo!.minimumColor!.qty = boundedNumber(
-            row.PR_MCQ,
-            0,
-            999999
-          )
-          break
-        case 'PR_MOQ':
-          newRow.priceInfo!.minimumOrder!.qty = boundedNumber(
-            row.PR_MOQ,
-            0,
-            999999
-          )
-          break
-        case 'PR_Origin':
-          newRow.priceInfo!.countryOfOriginal = row.PR_Origin.trim()
-          break
-        case 'PR_Price':
-          newRow.priceInfo!.pricing!.price = boundedNumber(
-            row.PR_Price,
-            0,
-            999999999999999999.99
-          )
-          break
-        case 'PR_Prod_Leadtime':
-          newRow.priceInfo!.productionLeadTimeInDays =
-            row.PR_Prod_Leadtime.trim()
-          break
-        case 'PR_Sample_Leadtime':
-          newRow.priceInfo!.sampleLeadTimeInDays = row.PR_Sample_Leadtime.trim()
-          break
-        case 'PR_Unit':
-          newRow.priceInfo!.pricing!.unit = getMaterialQuantityUnit(row.PR_Unit)
-          break
-        case 'PR_Unit_MCQ':
-          newRow.priceInfo!.minimumColor!.unit = getMaterialQuantityUnit(
-            row.PR_Unit_MCQ
-          )
-          break
-        case 'PR_Unit_MOQ':
-          newRow.priceInfo!.minimumOrder!.unit = getMaterialQuantityUnit(
-            row.PR_Unit_MOQ
-          )
-          break
-
         // Season
         case 'SE1':
           if (!newRow.seasonInfo) {
@@ -696,6 +699,17 @@ export function removeIncompletePricing(materialRowList: MaterialRow[]) {
         hasInvalidAgGridCellValue(row.priceInfo.pricing?.unit))
     ) {
       row.priceInfo.pricing = null
+    }
+    if (
+      row.internalInfo &&
+      row.internalInfo.priceInfo &&
+      (hasInvalidAgGridCellValue(row.internalInfo.priceInfo.pricing?.price) ||
+        hasInvalidAgGridCellValue(
+          row.internalInfo.priceInfo.pricing?.currencyCode
+        ) ||
+        hasInvalidAgGridCellValue(row.internalInfo.priceInfo.pricing?.unit))
+    ) {
+      row.internalInfo.priceInfo.pricing = null
     }
   })
 }

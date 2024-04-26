@@ -350,7 +350,12 @@ export const priceSchema = z
   .min(...getMinNumberParams(0))
   .max(...getMaxNumberParams(999999999999999999.99))
   .multipleOf(...getMaxDecimalPlacesParams(2))
+  .or(z.string())
   .nullable()
+  .optional()
+  .transform((value) =>
+    value !== null && value !== undefined ? String(value) : value
+  )
 
 export const currencyCodeSchema = z
   .nativeEnum(CurrencyCode)
@@ -366,12 +371,13 @@ export const pricingSchema = z
     price: priceSchema.optional().nullable(),
     unit: materialQuantityUnitSchema.optional().nullable(),
   })
-  .nullable()
   .default({
     currencyCode: CurrencyCode.USD,
     price: null,
     unit: MaterialQuantityUnit.Y,
   })
+  .nullable()
+  .optional()
 
 export const minimumQtySchema = z
   .number(nonNullParams)
