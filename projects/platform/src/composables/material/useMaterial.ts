@@ -14,6 +14,7 @@ import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
+import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
 
 export type MaterialSpecificationInfoBasicProperty = {
   name: string
@@ -52,7 +53,7 @@ export type MaterialSpecificationInfo = {
   weight: MaterialSpecificationInfoBasicProperty | null
 }
 export type SideOption = {
-  label: string
+  label: string | null
   selectValue: MATERIAL_SIDE_TYPE
   icon: string
   selectedIcon: string
@@ -257,55 +258,10 @@ export default function useMaterial(
   })
   const switchSideType = (sideType: MATERIAL_SIDE_TYPE) =>
     (currentSideType.value = sideType)
+
   const sideOptionList = computed<SideOption[]>(() => {
     const { isDoubleSide, isComposite, sideType } = material.value
-    const list: {
-      label: string | null
-      selectValue: MATERIAL_SIDE_TYPE
-      icon: string
-      selectedIcon: string
-    }[] = []
-
-    const addFace = () =>
-      list.push({
-        label: isMobile.value ? null : t('MI0007'),
-        selectValue: MATERIAL_SIDE_TYPE.FACE,
-        icon: 'front',
-        selectedIcon: 'face_full',
-      })
-    const addMiddle = () =>
-      list.push({
-        label: isMobile.value ? null : t('MI0008'),
-        selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
-        icon: 'middle',
-        selectedIcon: 'middle_full',
-      })
-    const addBack = () =>
-      list.push({
-        label: isMobile.value ? null : t('MI0009'),
-        selectValue: MATERIAL_SIDE_TYPE.BACK,
-        icon: 'back',
-        selectedIcon: 'back_full',
-      })
-
-    if (isDoubleSide) {
-      addFace()
-      if (isComposite) {
-        addMiddle()
-      }
-      addBack()
-    } else {
-      if (sideType === MaterialSideType.FACE_SIDE) {
-        addFace()
-      } else {
-        addBack()
-      }
-      if (isComposite) {
-        addMiddle()
-      }
-    }
-
-    return list
+    return getMaterialSideOptionList(isDoubleSide, isComposite, sideType)
   })
   const getTextColor = (
     isPublic = true,

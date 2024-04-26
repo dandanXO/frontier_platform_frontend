@@ -69,6 +69,7 @@ import BackSideSpecification from '@/components/assets/edit/blockMaterialSpecifi
 import { MATERIAL_SIDE_TYPE, materialFormServiceKey } from '@/utils/constants'
 import { CREATE_EDIT } from '@/utils/constants'
 import type { MaterialFormService } from '@/types'
+import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
 
 const { t } = useI18n()
 
@@ -111,43 +112,8 @@ const showItemNoAndSeasonFields = computed(() => {
 })
 
 const sideOptionList = computed(() => {
-  const { isComposite, isDoubleSide, sideType } = values
-  const list = []
-
-  if (
-    isDoubleSide ||
-    (isComposite && sideType === MaterialSideType.FACE_SIDE)
-  ) {
-    list.push({
-      label: t('MI0007'),
-      selectValue: MATERIAL_SIDE_TYPE.FACE,
-      icon: 'front',
-      selectedIcon: 'face_full',
-    })
-  }
-
-  if (
-    isDoubleSide ||
-    (isComposite && sideType === MaterialSideType.BACK_SIDE)
-  ) {
-    list.push({
-      label: t('MI0009'),
-      selectValue: MATERIAL_SIDE_TYPE.BACK,
-      icon: 'back',
-      selectedIcon: 'back_full',
-    })
-  }
-
-  if (isComposite) {
-    list.push({
-      label: t('MI0008'),
-      selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
-      icon: 'middle',
-      selectedIcon: 'middle_full',
-    })
-  }
-
-  return list
+  const { isDoubleSide, isComposite, sideType } = values
+  return getMaterialSideOptionList(isDoubleSide, isComposite, sideType)
 })
 </script>
 
