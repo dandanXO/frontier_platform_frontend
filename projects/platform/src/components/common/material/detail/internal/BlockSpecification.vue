@@ -74,7 +74,7 @@ div(class="grid gap-y-1.5 w-full")
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, ref, watch } from 'vue'
 import isEmpty from 'lodash/isEmpty'
 import type {
   MaterialSpecificationInfo,
@@ -102,7 +102,13 @@ const props = withDefaults(
     isListView: false,
   }
 )
-const innerSpecificationInfo = reactive({ ...props.specificationInfo })
+const innerSpecificationInfo = ref(props.specificationInfo)
+watch(
+  () => props.specificationInfo,
+  (val) => {
+    innerSpecificationInfo.value = val
+  }
+)
 const hasExtendedContent = (
   property: MaterialSpecificationInfoBasicProperty,
   propertyKey: string
@@ -115,21 +121,24 @@ const hasExtendedContent = (
   ]
   const oneLineLengthIncludeTitle = 54
   return (
+    property &&
     seeMorePropertyList.includes(propertyKey) &&
     (property.value + propertyKey).length >= oneLineLengthIncludeTitle
   )
 }
 const handleShowMore = (key: string) => {
-  innerSpecificationInfo[key].showMore = true
+  innerSpecificationInfo.value[key].showMore = true
+  innerSpecificationInfo.value = { ...innerSpecificationInfo.value }
 }
 const innerSpecificationInfoComputed = computed(() => {
   const removeList = ['seasonInfo', 'featureList']
-  return Object.keys(innerSpecificationInfo)
+  return Object.keys(innerSpecificationInfo.value)
     .filter((key) => !removeList.includes(key))
     .reduce((obj, key) => {
       return {
         ...obj,
-        [key]: innerSpecificationInfo[key as keyof MaterialSpecificationInfo],
+        [key]:
+          innerSpecificationInfo.value[key as keyof MaterialSpecificationInfo],
         showMore: false,
       }
     }, {}) as MaterialSpecificationInfo

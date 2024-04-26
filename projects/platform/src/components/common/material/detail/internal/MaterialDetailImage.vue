@@ -3,9 +3,9 @@ div(class="flex flex-col gap-y-4")
   div(class="w-125 h-125 relative")
     file-display(
       class="w-full h-full"
-      :displayUrl="availableFileList[currentDisplayIndex].displayUrl"
-      :originalUrl="availableFileList[currentDisplayIndex].originalUrl"
-      :extension="availableFileList[currentDisplayIndex].extension"
+      :displayUrl="availableFileList[currentDisplayIndex]?.displayUrl"
+      :originalUrl="availableFileList[currentDisplayIndex]?.originalUrl"
+      :extension="availableFileList[currentDisplayIndex]?.extension"
     )
     div(class="absolute bottom-5 left-5 flex gap-x-5")
       button(
@@ -74,7 +74,7 @@ import {
   IMAGE_FILE_ACCEPT_TYPE,
 } from '@/utils/constants'
 import { useCurrentDisplayIndex } from '@/composables/material/useMaterialDetailImage'
-
+const preDisplayIndex = ref(-1)
 const props = withDefaults(
   defineProps<{
     availableFileList: Array<MaterialFile>
@@ -103,7 +103,12 @@ const currentCoverImageUrl = (image: MaterialFile, index: number) => {
     : props.availableFileList[props.currentCoverIndex ?? 0].thumbnailUrl
 }
 
+// 這裡的currentDisplayIndex地方 1:face, 2:middle 3:back
 const { currentDisplayIndex, setCurrentDisplayIndex } = useCurrentDisplayIndex()
+// reset to 0
+setCurrentDisplayIndex(0)
+
+preDisplayIndex.value = currentDisplayIndex.value
 const clickSmallImage = (index: number) => {
   const isValidCoverIndex =
     index === 0 &&
@@ -156,8 +161,13 @@ const isShowEdit = computed(
 )
 
 watch(
+  // props.currentSideType 1:face, 2:middle 3:back
   () => props.currentSideType,
   (currentSideIndex) => {
+    // 2是mimiddle 不會有圖片因此跳過
+    if (currentSideIndex === 2) {
+      return
+    }
     currentDisplayIndex.value = currentSideIndex
   }
 )
