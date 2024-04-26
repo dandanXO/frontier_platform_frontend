@@ -865,6 +865,8 @@ const handleExcelSelect = (event: Event) => {
     const workbook = convertDataToWorkbook(data)
     populateGrid(workbook, gridApi, materialOptions)
     updateSubmitStatus()
+    // Reset the value of the input to allow the same file to be selected again
+    target.value = ''
   }
 
   reader.readAsArrayBuffer(file)
