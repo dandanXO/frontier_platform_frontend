@@ -7,6 +7,7 @@ import {
   MaterialSideType,
   MaterialType,
   WeightUnit,
+  type MaterialOptions,
 } from '@frontier/platform-web-sdk'
 import type { GridApi } from 'ag-grid-enterprise'
 import type { Ref } from 'vue'
@@ -26,10 +27,14 @@ export const convertDataToWorkbook = (dataRows: any) => {
   return read(bstr, { type: 'binary' })
 }
 
+let materialOptions: MaterialOptions
+
 export function populateGrid(
   workbook: WorkBook,
-  gridApi: Ref<GridApi<MaterialRow> | undefined>
+  gridApi: Ref<GridApi<MaterialRow> | undefined>,
+  MaterialOptions: MaterialOptions
 ) {
+  materialOptions = MaterialOptions
   // our data is in the first sheet
   let firstSheetName = workbook.SheetNames[0]
   let worksheet = workbook.Sheets[firstSheetName]
@@ -518,13 +523,9 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
         // Tags
         case 'TAG_Crtf_1':
-          newRow.tagInfo!.certificationTagList = convertStringToList(
+          newRow.tagInfo!.certificationTagIdList = convertStringToList(
             row.TAG_Crtf_1,
-            (certificateId) => {
-              return {
-                certificateId: parseInt(certificateId.trim()),
-              }
-            }
+            (certificateId) => Number(certificateId)
           )
           break
         case 'TAG_Priv_1':
@@ -638,7 +639,11 @@ function convertStringToList(
   value: string,
   callback: (val: string) => any
 ): any[] {
-  return value.split(/[/,]+/).map(callback)
+  return value
+    .split(/[/,]+/)
+    .map((item) => item.trim())
+    .filter((item) => item != null)
+    .map(callback)
 }
 
 const unitMapping: { [key: string]: string } = {

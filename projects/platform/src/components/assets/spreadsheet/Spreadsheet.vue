@@ -861,7 +861,7 @@ const handleExcelSelect = (event: Event) => {
     if (!e.target) return
     const data = e.target.result
     const workbook = convertDataToWorkbook(data)
-    populateGrid(workbook, gridApi)
+    populateGrid(workbook, gridApi, materialOptions)
     updateSubmitStatus()
   }
 

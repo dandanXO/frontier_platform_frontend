@@ -5,6 +5,7 @@ import type {
   CropImageRecord,
   Extension,
   Material,
+  MaterialCreate,
 } from '@frontier/platform-web-sdk'
 import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
@@ -230,7 +231,7 @@ export type MaterialViewModeFile = {
   extension: Extension
 }
 
-export interface MaterialRow extends Material {
+export interface MaterialRow extends MaterialCreate {
   isCreate: boolean
   isDelete: boolean
   isDirty: boolean

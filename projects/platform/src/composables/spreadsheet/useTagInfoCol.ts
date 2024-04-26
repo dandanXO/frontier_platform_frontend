@@ -1,4 +1,4 @@
-import { computed, type ComputedRef } from 'vue'
+import { computed, isProxy, toRaw, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SelectCellEditor from '@/components/assets/spreadsheet/cell/SelectCellEditor.vue'
 import {
@@ -18,6 +18,7 @@ import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreads
 import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 import { getCellStyle } from '../../utils/material/spreadsheet'
 import { tagListSchema } from '../material/useMaterialSchema'
+import CertificateTagCellEditor from '@/components/assets/spreadsheet/cell/CertificateTagCellEditor.vue'
 
 const useTagInfoCol = (
   spreadsheetService: SpreadsheetService
@@ -91,50 +92,41 @@ const useTagInfoCol = (
         },
         {
           headerName: t('MI0051'),
-          field: 'tagInfo.certificationTagList',
+          field: 'tagInfo.certificationTagIdList',
           minWidth: 200,
           editable: rowEditable,
           cellEditorPopup: true,
-          cellEditor: SelectCellEditor,
+          cellEditor: CertificateTagCellEditor,
           cellEditorParams: {
             placeholder: t('MI0052'),
             multiple: true,
-            dropdownMenuTree: () => ({
-              blockList: [
-                {
-                  menuList:
-                    materialOptions.certificateList.map(
-                      ({ name, certificateId }) => ({
-                        title: name,
-                        selectValue: certificateId,
-                      })
-                    ) || [],
-                },
-              ],
-            }),
           },
           valueFormatter: (params) => {
-            const idArray = params.value as number[]
-            return materialOptions.certificateList
-              .filter((c) => idArray.includes(c.certificateId))
-              .map((c) => c.name)
+            const certificateList = (params.value as number[]) || []
+            return certificateList
+              .map((certificateId) => {
+                const certificate = materialOptions.certificateList.find(
+                  (c) => +c.certificateId === +certificateId
+                )
+                return certificate?.name || ''
+              })
               .join(',')
           },
-          valueParser: (params) => {
-            const result = params.newValue.split(',').map((s) => s.trim())
-            return result
-              .map((name) => {
-                return materialOptions.certificateList.find(
-                  (c) => c.name === name
-                )
-              })
-              .filter(Boolean)
-              .map((m) => m?.certificateId)
+          valueSetter: function (params) {
+            let newValue = params.newValue
+            if (isProxy(newValue)) {
+              newValue = toRaw(newValue)
+            }
+            if (newValue !== params.data.tagInfo.certificationTagIdList) {
+              params.data.tagInfo.certificationTagIdList = newValue
+              return true
+            }
+            return false
           },
           onCellValueChanged: handleCellValueDelete((row) => {
             const target = row.tagInfo
             if (target) {
-              target.certificationTagList = []
+              target.certificationTagIdList = []
             }
           }),
           cellStyle: defaultCellStyle,
