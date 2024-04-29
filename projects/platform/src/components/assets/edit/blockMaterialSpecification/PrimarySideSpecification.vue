@@ -360,6 +360,7 @@ div(class="flex flex-col gap-y-7.5")
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].name`])"
           class="w-100"
           :multipleTagInputValidations="[inputValidate, lengthValidate]"
+          :data-cy="'contentText'"
         )
         f-input-text(
           :disabled="disableBackSideFields"
@@ -369,6 +370,7 @@ div(class="flex flex-col gap-y-7.5")
           addOnRight="%"
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].percentage`])"
           class="w-40"
+          data-cy="contentTextValue"
         )
         f-svg-icon(
           v-if="index === 0"
@@ -399,6 +401,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
         :rightDropdownOption="widthUnitList"
+        data-cy="cuttableWidthText"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
@@ -414,6 +417,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
         :rightDropdownOption="widthUnitList"
+        data-cy="fullWidthText"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
@@ -442,6 +446,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="weightUnit.value"
         @update:rightSelectValue="weightUnit.onInput"
         :rightDropdownOption="weightUnitList"
+        data-cy="WeightText"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}

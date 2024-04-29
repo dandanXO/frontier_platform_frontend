@@ -40,6 +40,7 @@ div(class="w-full h-full flex justify-center")
           prependIcon="done"
           :disabled="submitCount > 0 && !meta.valid"
           @click="submit"
+          data-cy="saveButton"
         ) {{ $t('UU0018') }}
 </template>
 

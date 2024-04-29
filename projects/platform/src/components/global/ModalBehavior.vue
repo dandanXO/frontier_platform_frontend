@@ -13,6 +13,7 @@ div(
     )
       p(
         class="text-body2 font-bold"
+        data-cy="modal-how-to-scan-header"
         :class="[theme === THEME.DARK ? 'text-grey-100' : 'text-grey-900']"
       ) {{ header }}
       f-svg-icon(

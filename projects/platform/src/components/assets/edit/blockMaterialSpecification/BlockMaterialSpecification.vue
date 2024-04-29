@@ -16,6 +16,7 @@ div
       :placeholder="t('MI0010')"
       :label="t('RR0013')"
       class="w-50"
+      data-cy="itemNumber"
     )
     f-input-container(v-if="showItemNoAndSeasonFields" :label="t('MI0011')")
       template(#slot:suffix)
@@ -48,6 +49,7 @@ div
     face-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.FACE_SIDE"
       v-show="currentMaterialSide === MaterialSideType.FACE_SIDE"
+      data-cy="faceSideSep"
     )
     middle-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.middleSide"
@@ -56,6 +58,7 @@ div
     back-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.BACK_SIDE"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.BACK"
+      data-cy="backSideSep"
     )
 </template>
 

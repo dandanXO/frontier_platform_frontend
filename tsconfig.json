@@ -1,6 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -11,10 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "allowJs": true,
     "types": [
@@ -25,11 +23,9 @@
       "node",
       "@types/qrcode",
       "@types/dom-to-image"
-    ],
+    ]
   },
   "vueCompilerOptions": {
-    "plugins": [
-      "@vue/language-plugin-pug"
-    ]
+    "plugins": ["@vue/language-plugin-pug"]
   }
 }
