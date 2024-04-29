@@ -26,7 +26,10 @@ import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
 import { PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST } from '@/utils/constants'
-import { type QrCodePrintLabelSetting, DefaultPrintLabelSetting } from '@/composables/useAssets'
+import {
+  type QrCodePrintLabelSetting,
+  DefaultPrintLabelSetting,
+} from '@/composables/useAssets'
 
 type DomGenerator = (item: {
   sideType: MaterialSideType
@@ -317,27 +320,30 @@ const usePrint = () => {
     store.dispatch('helper/closeModalLoading')
   }
 
-  const getPrintLabelItems = (item: {sideType: MaterialSideType, material: Material}, setting: QrCodePrintLabelSetting): string[] => {
+  const getPrintLabelItems = (
+    item: { sideType: MaterialSideType; material: Material },
+    setting: QrCodePrintLabelSetting
+  ): string[] => {
     const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
     const { sideType, material } = item
-      const {
-        isComposite,
-        width,
-        weight,
-        weightForDisplay,
-        weightDisplaySetting,
-      } = material
-      const currentSide = getMaterialBySide(material, sideType)
-      const {
-        descriptionList,
-        contentList,
-        finishList,
-        construction,
-        materialType,
-        colorInfo,
-        featureList,
-        patternInfo
-      } = currentSide
+    const {
+      isComposite,
+      width,
+      weight,
+      weightForDisplay,
+      weightDisplaySetting,
+    } = material
+    const currentSide = getMaterialBySide(material, sideType)
+    const {
+      descriptionList,
+      contentList,
+      finishList,
+      construction,
+      materialType,
+      colorInfo,
+      featureList,
+      patternInfo,
+    } = currentSide
 
     const infoList: string[] = [
       materialInfoForDisplay.materialTypeBySetting(
@@ -402,10 +408,10 @@ const usePrint = () => {
         }
 
         if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`);
+          str.push(`${materialInfoForDisplay.width(width).value}`)
         }
 
-        infoList.push(str.join(' '));
+        infoList.push(str.join(' '))
         break
       }
       case MaterialType.LEATHER: {
@@ -420,9 +426,12 @@ const usePrint = () => {
           infoList.push(tannage)
         }
 
-        const str = [];
+        const str = []
 
-        if (averageSkinPerMeterSquare && setting.leatherOptions.isPrintAverageSkinHideSize) {
+        if (
+          averageSkinPerMeterSquare &&
+          setting.leatherOptions.isPrintAverageSkinHideSize
+        ) {
           str.push(`${averageSkinPerMeterSquare} m²`)
         }
 
@@ -431,9 +440,9 @@ const usePrint = () => {
         }
 
         if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`);
+          str.push(`${materialInfoForDisplay.width(width).value}`)
         }
-        infoList.push(str.join(' '));
+        infoList.push(str.join(' '))
         break
       }
       case MaterialType.NON_WOVEN: {
@@ -450,7 +459,7 @@ const usePrint = () => {
         }
 
         if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`);
+          str.push(`${materialInfoForDisplay.width(width).value}`)
         }
         infoList.push(str.join(' '))
         break
@@ -470,7 +479,7 @@ const usePrint = () => {
           str.push(`${thickness} mm`)
         }
         if (width && setting.trimOptions.isPrintTrimWidth) {
-          str.push(`${width} m`);
+          str.push(`${width} m`)
         }
 
         infoList.push(str.join(' '))
@@ -479,36 +488,54 @@ const usePrint = () => {
     }
 
     if (featureList && setting.materialInfoOptions.isPrintFeature) {
-      infoList.push(materialInfoForDisplay.featureList(featureList).value);
+      infoList.push(materialInfoForDisplay.featureList(featureList).value)
     }
     if (contentList && setting.materialInfoOptions.isPrintContent) {
-      infoList.push(materialInfoForDisplay.contentList(contentList).value);
+      infoList.push(materialInfoForDisplay.contentList(contentList).value)
     }
-    if (weight && weightForDisplay && weightDisplaySetting && setting.materialInfoOptions.isPrintWeight) {
-      infoList.push(materialInfoForDisplay.weight(weight, weightForDisplay, weightDisplaySetting).value);
+    if (
+      weight &&
+      weightForDisplay &&
+      weightDisplaySetting &&
+      setting.materialInfoOptions.isPrintWeight
+    ) {
+      infoList.push(
+        materialInfoForDisplay.weight(
+          weight,
+          weightForDisplay,
+          weightDisplaySetting
+        ).value
+      )
     }
     if (finishList && setting.materialInfoOptions.isPrintFinish) {
-      infoList.push(materialInfoForDisplay.finishList(finishList).value);
+      infoList.push(materialInfoForDisplay.finishList(finishList).value)
     }
-    if (colorInfo && colorInfo.color && setting.materialInfoOptions.isPrintColor) {
-      infoList.push(colorInfo.color);
+    if (
+      colorInfo &&
+      colorInfo.color &&
+      setting.materialInfoOptions.isPrintColor
+    ) {
+      infoList.push(colorInfo.color)
     }
     if (patternInfo && setting.materialInfoOptions.isPrintPattern) {
-      infoList.push(patternInfo.pattern);
+      infoList.push(patternInfo.pattern)
     }
 
-    return infoList;
+    return infoList
   }
 
-  const printLabel = async (materialList: Material[], setting: QrCodePrintLabelSetting = DefaultPrintLabelSetting) => {
+  const printLabel = async (
+    materialList: Material[],
+    setting: QrCodePrintLabelSetting = DefaultPrintLabelSetting
+  ) => {
     store.dispatch('helper/pushModalLoading')
 
     const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
     const fontSizeIndex = () => {
-      const value = setting.fontSize ? setting.fontSize : 5;
-    
-      return value - 5;
-    };
+      const value = setting.fontSize ? setting.fontSize : 5
+
+      return value - 5
+    }
     const fontSizeOptions = [
       'text-[8.5px]',
       'text-[9.5px]',
@@ -518,7 +545,7 @@ const usePrint = () => {
       'text-[13.5px]',
       'text-[14.5px]',
       'text-[15.5px]',
-    ];
+    ]
     const iconSizeOptions = [
       'w-[8.5px] h-[8.5px]',
       'w-[9.5px] h-[9.5px]',
@@ -529,9 +556,9 @@ const usePrint = () => {
       'w-[14.5px] h-[14.5px]',
       'w-[15.5px] h-[15.5px]',
     ]
-    const infoSize = fontSizeOptions[fontSizeIndex()];
-    const itemNoSize = fontSizeOptions[fontSizeIndex()+1];
-    const iconSize = iconSizeOptions[fontSizeIndex()];
+    const infoSize = fontSizeOptions[fontSizeIndex()]
+    const itemNoSize = fontSizeOptions[fontSizeIndex() + 1]
+    const iconSize = iconSizeOptions[fontSizeIndex()]
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -552,7 +579,11 @@ const usePrint = () => {
               <div id="qr-code-container"></div>
             </div>
             <div class="w-full flex flex-col items-center">
-              <p class="text-[10px] bold">${sideType === MaterialSideType.FACE_SIDE ? t('DD0046'): t('DD0047')}</p>
+              <p class="text-[10px] bold whitespace-nowrap">${
+                sideType === MaterialSideType.FACE_SIDE
+                  ? t('DD0046')
+                  : t('DD0047')
+              }</p>
               <p class="text-[10px] text-grey-600">${frontierNo}</p>
             </div>
           </div>
@@ -574,7 +605,11 @@ const usePrint = () => {
               <div id="qr-code-container"></div>
             </div>
             <div class="w-full flex flex-col items-center">
-              <p class="text-[10px] bold">${sideType === MaterialSideType.FACE_SIDE ? t('DD0046'): t('DD0047')}</p>
+              <p class="text-[10px] bold whitespace-nowrap">${
+                sideType === MaterialSideType.FACE_SIDE
+                  ? t('DD0046')
+                  : t('DD0047')
+              }</p>
               <p class="text-[10px] text-grey-600">${frontierNo}</p>
             </div>
           </div>
@@ -588,7 +623,19 @@ const usePrint = () => {
       }
 
       const virtualDom = document.createElement('div')
-      virtualDom.classList.add('w-[302px]', 'h-[170px]', 'mr-4', 'bg-[#ffffff]', 'px-2', 'pt-2', 'pb-1', 'flex', 'flex-row', 'overflow-hidden', 'font-bold');
+      virtualDom.classList.add(
+        'w-[302px]',
+        'h-[170px]',
+        'mr-4',
+        'bg-[#ffffff]',
+        'px-2',
+        'pt-2',
+        'pb-1',
+        'flex',
+        'flex-row',
+        'overflow-hidden',
+        'font-bold'
+      )
       if (isCustomize) {
         customizeLabel(virtualDom)
       } else {
@@ -599,50 +646,64 @@ const usePrint = () => {
       await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
 
       const infoContainer = document.getElementById('info-container')!
-      const infoList: string[] = getPrintLabelItems({sideType, material}, setting);
+      const infoList: string[] = getPrintLabelItems(
+        { sideType, material },
+        setting
+      )
 
       infoList.forEach((value) => {
         const divRow = document.createElement('div')
         const row = document.createElement('p')
         row.classList.add(infoSize)
         row.innerHTML = value
-        divRow.appendChild(row);
+        divRow.appendChild(row)
         infoContainer.appendChild(divRow)
       })
 
       const carbonEmissionsInfo = materialInfoForDisplay.carbonEmission(
         material.carbonEmission
       )
-      let info = ``;
+      let info = ``
       Object.keys(carbonEmissionsInfo).forEach((infoKey) => {
-        const carbonInfo = carbonEmissionsInfo[infoKey];
-        const carbonEmissionSetting = setting?.ecoImpactorOptions[emissionsSettingMapper[infoKey]];
-        if (carbonInfo && carbonInfo.value && carbonInfo.icon && carbonEmissionSetting) {
+        const carbonInfo = carbonEmissionsInfo[infoKey]
+        const carbonEmissionSetting =
+          setting?.ecoImpactorOptions[emissionsSettingMapper[infoKey]]
+        if (
+          carbonInfo &&
+          carbonInfo.value &&
+          carbonInfo.icon &&
+          carbonEmissionSetting
+        ) {
           info += `
             <div class="flex flex-row items-center">
-              <img src="${emissionsIconMapper[carbonInfo.icon]}" class="${iconSize}" />
-              <p class="${infoSize}">${carbonInfo.value} ${t(emissionsTextCodeMapper[carbonInfo.icon])}</p>
+              <img src="${
+                emissionsIconMapper[carbonInfo.icon]
+              }" class="${iconSize}" />
+              <p class="${infoSize}">${carbonInfo.value} ${t(
+            emissionsTextCodeMapper[carbonInfo.icon]
+          )}</p>
             </div>
           `
         }
       })
       if (info !== ``) {
         const row = document.createElement('div')
-        row.classList.add(
-          'flex',
-          'flex-row',
-        )
+        row.classList.add('flex', 'flex-row')
         row.innerHTML = info
         infoContainer.appendChild(row)
       }
 
-      if (material.carbonEmission && material.carbonEmission.lastUpdateTime && setting.ecoImpactorOptions.isPrintCapturedTime) {
+      if (
+        material.carbonEmission &&
+        material.carbonEmission.lastUpdateTime &&
+        setting.ecoImpactorOptions.isPrintCapturedTime
+      ) {
         const row = document.createElement('div')
-        row.classList.add(
-          'flex',
-          'flex-row',
-        )
-        const timestamp = t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime)});
+        row.classList.add('flex', 'flex-row')
+        const timestamp = t('BB0141', {
+          date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime),
+          time: toHHMMAFormat(material.carbonEmission.lastUpdateTime),
+        })
         const rowTimestamp = document.createElement('p')
         rowTimestamp.classList.add(infoSize)
         rowTimestamp.innerHTML = timestamp
@@ -708,7 +769,7 @@ const usePrint = () => {
     printLabel,
     printBackSideLabel,
     makeQrCode,
-    getPrintLabelItems
+    getPrintLabelItems,
   }
 }
 
