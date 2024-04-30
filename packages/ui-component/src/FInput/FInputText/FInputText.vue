@@ -75,10 +75,11 @@ f-input-container(
       @change="$emit('change', $event)"
       @keydown.enter="$emit('enter', $event)"
     )
+    //- Numeric Input
     input(
       v-else
       ref="refInput"
-      :type="inputType"
+      :type="inputType === 'number' ? 'number' : ''"
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
@@ -86,7 +87,7 @@ f-input-container(
       :min="min"
       :max="max"
       :step="step"
-      @input="onInput"
+      @input="onNumericInput"
       @focus="onFocus"
       @blur="onBlur"
       @change="$emit('change', $event)"
@@ -199,6 +200,7 @@ import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import useInput from '../useInput'
 import { THEME } from '../../constants'
+
 const { te } = useI18n()
 const slots = useSlots()
 
@@ -471,6 +473,18 @@ const onInput = async () => {
   !isFilled.value && emit('update:textValue', null)
   emit('input')
 }
+
+const onNumericInput = async (event) => {
+  const value = event.target.value
+  if (/^[0-9]*$/.test(value)) {
+    onInput()
+    return
+  }
+  const text = props.textValue.replace(/[^0-9.]/g, '')
+  emit('update:textValue', text)
+  onInput()
+}
+
 const onFocus = () => {
   isFocus.value = true
   emit('focus')

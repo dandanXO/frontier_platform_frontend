@@ -8,6 +8,7 @@ import {
   LengthUnit,
   WeightUnit,
 } from '@frontier/platform-web-sdk'
+import BigNumber from 'bignumber.js'
 
 const integerOnlyMessage = i18n.global.t('WW0007')
 const requiredMessage = i18n.global.t('WW0002')
@@ -53,7 +54,10 @@ const nonNullParams = {
   errorMap: nonNullErrorMap,
 }
 
-const toCommaSeparated = (n: number) => n.toLocaleString('en-US')
+const toCommaSeparated = (n: number | string | BigNumber) => {
+  const bigNumberValue = new BigNumber(n)
+  return bigNumberValue.toFormat(2)
+}
 
 const getMaxLengthParams = (qty: number) => {
   const message = i18n.global.t('WW0149', {
@@ -62,9 +66,11 @@ const getMaxLengthParams = (qty: number) => {
   return [qty, message] as const
 }
 
-const getMaxNumberParams = (qty: number) => {
-  const message = i18n.global.t('WW0153', { maxNum: toCommaSeparated(qty) })
-  return [qty, message] as const
+const getMaxNumberParams = (qty: number | string | BigNumber) => {
+  const bigQty = new BigNumber(qty)
+  const message = i18n.global.t('WW0153', { maxNum: toCommaSeparated(bigQty) })
+  const numberQty = BigNumber.isBigNumber(qty) ? qty.toNumber() : Number(qty)
+  return [numberQty, message] as const
 }
 
 const getCanNotExceedNumberParams = (qty: number) => {
@@ -345,12 +351,13 @@ export const materialSideSchema = z.object({
     .default([]),
 })
 
+const PRICE_MAX_VALUE = '999999999999999999.99'
 export const priceSchema = z
-  .number()
-  .min(...getMinNumberParams(0))
-  .max(...getMaxNumberParams(999999999999999999.99))
-  .multipleOf(...getMaxDecimalPlacesParams(2))
-  .or(z.string())
+  .string()
+  .refine((value) => new BigNumber(value).lte(PRICE_MAX_VALUE), {
+    message: getMaxNumberParams(PRICE_MAX_VALUE)[1],
+    path: [],
+  })
   .nullable()
   .optional()
   .transform((value) =>
