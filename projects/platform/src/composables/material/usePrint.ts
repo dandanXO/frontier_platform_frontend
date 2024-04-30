@@ -324,7 +324,6 @@ const usePrint = () => {
     item: { sideType: MaterialSideType; material: Material },
     setting: QrCodePrintLabelSetting
   ): string[] => {
-    const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
     const { sideType, material } = item
     const {
       isComposite,
@@ -510,15 +509,19 @@ const usePrint = () => {
     if (finishList && setting.materialInfoOptions.isPrintFinish) {
       infoList.push(materialInfoForDisplay.finishList(finishList).value)
     }
+    const colorPattern: string[] = []
     if (
       colorInfo &&
       colorInfo.color &&
       setting.materialInfoOptions.isPrintColor
     ) {
-      infoList.push(colorInfo.color)
+      colorPattern.push(colorInfo.color)
     }
     if (patternInfo && setting.materialInfoOptions.isPrintPattern) {
-      infoList.push(patternInfo.pattern)
+      colorPattern.push(patternInfo.pattern)
+    }
+    if (colorPattern.length > 0) {
+      infoList.push(colorPattern.join(', '));
     }
 
     return infoList
@@ -590,7 +593,7 @@ const usePrint = () => {
 
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
-          <div id="info-container" class="w-[188px] h-full max-h-full flex flex-col overflow-hidden">
+          <div id="info-container" class="w-[198px] h-full max-h-full flex flex-col overflow-hidden">
             <p class="${itemNoSize} bold mb-2">${itemNo}</p>
           </div>
         `
@@ -616,7 +619,7 @@ const usePrint = () => {
 
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
-          <div id="info-container" class="w-[188px] h-full max-h-full flex flex-col overflow-hidden">
+          <div id="info-container" class="w-[198px] h-full max-h-full flex flex-col overflow-hidden">
             <p class="${itemNoSize} bold mb-2">${itemNo}</p>
           </div>
         `
@@ -624,9 +627,8 @@ const usePrint = () => {
 
       const virtualDom = document.createElement('div')
       virtualDom.classList.add(
-        'w-[302px]',
+        'w-[312px]',
         'h-[170px]',
-        'mr-4',
         'bg-[#ffffff]',
         'px-2',
         'pt-2',
@@ -653,6 +655,7 @@ const usePrint = () => {
 
       infoList.forEach((value) => {
         const divRow = document.createElement('div')
+        divRow.classList.add('w-full', 'flex')
         const row = document.createElement('p')
         row.classList.add(infoSize)
         row.innerHTML = value
@@ -713,7 +716,7 @@ const usePrint = () => {
 
       return virtualDom
     }
-    const LABEL_WIDTH = 302
+    const LABEL_WIDTH = 312
     const LABEL_HEIGHT = 170
     await generate(
       domGenerator,

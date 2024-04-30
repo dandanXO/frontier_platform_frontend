@@ -15,10 +15,11 @@ div(
       p(class="text-[10px] bold") {{ $t('DD0046') }}
       p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[188px] h-full max-h-full flex flex-col overflow-hidden")
+  div(class="w-[196px] h-full max-h-full flex flex-col overflow-hidden")
     p(class="bold mb-2" :class="fontSizeOptions[fontSizeIndex + 1]") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
+      class="w-full flex"
     )
       p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
     div(class="flex flex-row")
@@ -48,7 +49,7 @@ div(
     p(class="text-[12px] text-grey-250") {{ $t('MM0045') }}
 div(
   v-if="type === 'back' && backSideMaterial"
-  class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
+  class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
 )
   div(class="w-[83px] h-full flex flex-col")
     div(
@@ -62,7 +63,7 @@ div(
       p(class="text-[10px] bold") {{ $t('DD0047') }}
       p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[188px] h-full max-h-full flex flex-col overflow-hidden")
+  div(class="w-[196px] h-full max-h-full flex flex-col overflow-hidden")
     p(class="bold mb-2" :class="fontSizeOptions[fontSizeIndex + 1]") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
