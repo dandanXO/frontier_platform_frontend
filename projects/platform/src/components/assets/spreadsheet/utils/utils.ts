@@ -255,7 +255,9 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             )
             break
           case 'MI_MatType':
-            const materialTypeKey = row.MI_MatType.trim().toUpperCase()
+            const materialTypeKey = row.MI_MatType.trim()
+              .toUpperCase()
+              .replace(/-/g, '_')
             const materialTypeValue =
               MaterialType[materialTypeKey as keyof typeof MaterialType]
             newRow[sideKey]!.materialType = materialTypeValue
