@@ -255,12 +255,13 @@ const finishMenuTree = computed<MenuTree>(() => ({
   blockList: [
     {
       blockTitle: t('RR0258'),
-      menuList: newFinishList
-        .concat(materialOptions.finishList.custom || [])
-        .map((finish) => ({
-          title: finish.name || '',
-          selectValue: finish,
-        })),
+      menuList:
+        newFinishList
+          .concat(materialOptions.finishList.custom || [])
+          .map((finish) => ({
+            title: finish.name || '',
+            selectValue: finish,
+          })) || [],
     },
     {
       menuList:

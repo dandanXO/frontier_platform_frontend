@@ -59,38 +59,47 @@ const useFinishListCol = (
       valueFormatter: (
         params: ValueFormatterParams<MaterialRow, MaterialFinish[]>
       ) => {
-        if (params.value == null) {
+        if (params?.value == null) {
           return ''
         }
-        return params.value.map((f) => f.name).join(',')
+        return params.value
+          .filter((f) => f?.name)
+          .map((f) => f.name)
+          .join(',')
       },
       valueParser: (
         params: ValueParserParams<MaterialRow, MaterialFinish[]>
       ) => {
-        if (!params.newValue) {
-          return params.oldValue
+        const getMenuItemList = () => {
+          return (
+            finishMenuTree?.value?.blockList
+              ?.flatMap((block) => block?.menuList)
+              .flat() ?? []
+          )
+        }
+
+        if (!params?.newValue) {
+          return params?.oldValue ?? null
         }
 
         const finishNameList = params.newValue
           .split(',')
           .map((str) => str.trim())
           .filter(Boolean)
+
         if (!finishNameList.length) {
-          return params.oldValue
+          return params?.oldValue ?? []
         }
 
-        let menuItemList = finishMenuTree.value.blockList
-          .flatMap((block) => block.menuList)
-          .flat()
+        let menuItemList = getMenuItemList()
+
         finishNameList.forEach((finishName) => {
           if (!menuItemList.find((item) => item.title === finishName)) {
             addFinishOption(finishName)
           }
         })
 
-        menuItemList = finishMenuTree.value.blockList
-          .flatMap((block) => block.menuList)
-          .flat()
+        menuItemList = getMenuItemList()
 
         const result = finishNameList.map((finishName) => {
           const target = menuItemList.find(
