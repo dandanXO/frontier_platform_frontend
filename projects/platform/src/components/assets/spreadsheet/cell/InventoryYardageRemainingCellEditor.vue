@@ -163,6 +163,8 @@ export default {
     >('list')
 
     const yardageRemainingInfoUnit = defineInputBinds('unit')
+    yardageRemainingInfoUnit.value.value =
+      yardageRemainingInfoUnit.value.value || 'Y'
 
     return {
       title: props.params.title,
