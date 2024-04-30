@@ -276,7 +276,8 @@ const usePriceInfoCol = (
       },
       {
         field: getField('productionLeadTimeInDays'),
-        headerName: t('RR0049'),
+        headerName: t('RR0049') + ' / ' + t('RR0050'),
+        minWidth: 250,
         columnGroupShow: 'open',
         editable: rowEditable,
         ...getStringCellProps(
@@ -286,7 +287,8 @@ const usePriceInfoCol = (
       },
       {
         field: getField('sampleLeadTimeInDays'),
-        headerName: t('RR0051'),
+        headerName: t('RR0051') + ' / ' + t('RR0050'),
+        minWidth: 250,
         columnGroupShow: 'open',
         editable: rowEditable,
         ...getStringCellProps(
