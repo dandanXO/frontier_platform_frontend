@@ -13,6 +13,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
       size="md"
       prependIcon="upload"
       @click="handleExcelButtonClick"
+      v-if="showExcelButtons"
     ) {{ $t('UU0151') }}
     input(
       ref="fileInput"
@@ -20,8 +21,9 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
       class="hidden"
       accept=".xlsx, .xls, .csv"
       @change="handleExcelSelect"
+      v-if="showExcelButtons"
     )
-    template-download-button
+    template-download-button(v-if="showExcelButtons")
   ag-grid-vue(
     style="height: 100%"
     class="ag-theme-balham"
@@ -76,6 +78,7 @@ import {
   type MaterialOptionsContentListDefaultInner,
   type MaterialDescription,
   MaterialSideType,
+  type Organization,
 } from '@frontier/platform-web-sdk'
 import type { MaterialRow, SubmitPayload } from '@/types'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
@@ -140,6 +143,21 @@ const originMaterialRowList: MaterialRow[] = clone(props.materialRowList)
 const store = useStore()
 const { ogBaseAssetsApi } = useAssetsStore()
 const { materialSideTypeText, currencyText } = useEnumText()
+
+/*********************************************
+ * List of organization IDs that are allowed *
+ *********************************************/
+
+const MASS_UPLOAD_ENABLE_ORG_ID_LIST = [1694, 6]
+const org = computed<Organization>(
+  () => store.getters['organization/organization']
+)
+const showExcelButtons = computed(() =>
+  MASS_UPLOAD_ENABLE_ORG_ID_LIST.includes(org.value.orgId)
+)
+
+// End of Constants and Computed Properties Section
+//*********************************************** */
 
 const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
 const materialOptions = materialOptionsRes.data.result!
