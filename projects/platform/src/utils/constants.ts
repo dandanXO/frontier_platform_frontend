@@ -422,14 +422,7 @@ export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 
 export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
 
-/**
- * ticket: #2883
- *
- * ORG_ID 1694 is Textpert
- * 在 online spreadsheet (#2821) 完成前指開放給該 org 透過 send feedback 做 excel 上傳。
- */
-
-export const MASS_UPLOAD_ENABLE_ORG_ID = 1694
+// ORG_ID 1694 is Textpert, 6 is Fabric Pro for testing.
 export const PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST = [1694, 6]
 
 export const materialFormServiceKey = Symbol('MaterialFormService')
