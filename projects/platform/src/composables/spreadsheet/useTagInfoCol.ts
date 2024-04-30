@@ -102,13 +102,18 @@ const useTagInfoCol = (
             multiple: true,
           },
           valueFormatter: (params) => {
-            const certificateList = (params.value as number[]) || []
+            const certificateList = Array.isArray(params.value)
+              ? params.value
+              : []
             return certificateList
               .map((certificateId) => {
-                const certificate = materialOptions.certificateList.find(
-                  (c) => +c.certificateId === +certificateId
-                )
-                return certificate?.name || ''
+                if (Array.isArray(materialOptions.certificateList)) {
+                  const certificate = materialOptions.certificateList.find(
+                    (c) => +c.certificateId === +certificateId
+                  )
+                  return certificate?.name || ''
+                }
+                return ''
               })
               .join(',')
           },
@@ -117,7 +122,11 @@ const useTagInfoCol = (
             if (isProxy(newValue)) {
               newValue = toRaw(newValue)
             }
-            if (newValue !== params.data.tagInfo.certificationTagIdList) {
+            if (
+              params.data &&
+              params.data.tagInfo &&
+              newValue !== params.data.tagInfo.certificationTagIdList
+            ) {
               params.data.tagInfo.certificationTagIdList = newValue
               return true
             }
