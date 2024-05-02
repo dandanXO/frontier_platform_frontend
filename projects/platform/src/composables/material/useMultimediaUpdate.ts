@@ -625,6 +625,7 @@ const useMultimediaUpdate = (
           })
 
           notify.showNotifySnackbar({ messageText: t('EE0164') })
+          store.dispatch('helper/reloadInnerApp')
           store.dispatch('helper/closeModalLoading')
         },
       },

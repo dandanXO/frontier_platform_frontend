@@ -223,6 +223,7 @@ const openModalHowToScan = () => {
 
 const handleUpload = async () => {
   await uploadSideImage(faceSideChosenFile.value, backSideChosenFile.value)
+  store.dispatch('helper/reloadInnerApp')
   faceSideChosenFile.value = null
   backSideChosenFile.value = null
 }
