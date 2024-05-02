@@ -337,12 +337,6 @@ const org = computed<Organization>(
   () => store.getters['organization/organization']
 )
 
-const openModalMassUpload = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload',
-  })
-}
-
 const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
     type: NOTIFY_TYPE.WARNING,

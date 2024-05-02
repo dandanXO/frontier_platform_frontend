@@ -146,12 +146,6 @@ export default {
     ModalHowToScan: defineAsyncComponent(() =>
       import('@/components/assets/ModalHowToScan.vue')
     ),
-    ModalMassUpload: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMassUpload.vue')
-    ),
-    ModalMassUploadErrorList: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMassUploadErrorList.vue')
-    ),
     ModalMaterialNoList: defineAsyncComponent(() =>
       import('@/components/assets/progress/ModalMaterialNoList.vue')
     ),
