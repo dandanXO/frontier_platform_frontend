@@ -69,17 +69,14 @@ import type { MenuTree } from '@frontier/ui-component'
 import type { CoverId, MaterialFile } from '@/types'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
-import {
-  ATTACHMENT_FILE_ACCEPT_TYPE,
-  IMAGE_FILE_ACCEPT_TYPE,
-} from '@/utils/constants'
+import { IMAGE_FILE_ACCEPT_TYPE } from '@/utils/constants'
 import { useCurrentDisplayIndex } from '@/composables/material/useMaterialDetailImage'
 // 預防edge case暫存上一個選擇
 const preDisplayIndex = ref(0)
 const props = withDefaults(
   defineProps<{
     availableFileList: Array<MaterialFile>
-    currentCoverIndex: number
+    currentCoverIndex?: number
     currentSideType: number
     getMenuTree?: ((index: number | string, theme: THEME) => MenuTree) | null
     canEdit?: boolean
@@ -166,8 +163,22 @@ watch(
   // props.currentSideType 1:face, 2:middle 3:back
   () => props.currentSideType,
   (currentSideIndex) => {
+    const sideMap: { [key: number]: string } = {
+      1: 'faceSide',
+      3: 'backSide',
+    }
     // 2是mimiddle 不會有圖片因此跳過
     if (currentSideIndex === 2) {
+      return
+    }
+    // 可能會有超過問題 因此使用id找
+    if (props.availableFileList[currentDisplayIndex.value]) {
+      let findInAvailableFileListIndex = props.availableFileList.findIndex(
+        (item) => {
+          return item.id === sideMap[currentSideIndex]
+        }
+      )
+      currentDisplayIndex.value = findInAvailableFileListIndex
       return
     }
     currentDisplayIndex.value = currentSideIndex
