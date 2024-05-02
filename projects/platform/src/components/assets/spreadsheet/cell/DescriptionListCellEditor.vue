@@ -9,7 +9,7 @@ div(class="w-100 p-4 flex flex-col gap-y-4 bg-grey-100")
     multiple
     canAddNew
     @addNew="handleAdd($event)"
-    :multipleTagInputValidations="[removeCommas, limitTo500Chars]"
+    :multipleTagInputValidations="[removeCommas, limitTo50Chars]"
   )
   confirm-button(@click="handleConfirm")
 </template>
@@ -23,7 +23,7 @@ import type { SpreadsheetService } from '@/components/assets/spreadsheet/Spreads
 import ConfirmButton from '../button/ConfirmButton.vue'
 import {
   removeCommas,
-  limitTo500Chars,
+  limitTo50Chars,
 } from '@/components/assets/spreadsheet/utils/validations'
 
 interface SelectEditorParams extends ICellEditorParams<MaterialRow, string> {
@@ -94,7 +94,7 @@ export default {
       getValue,
       refInput,
       removeCommas,
-      limitTo500Chars,
+      limitTo50Chars,
     }
   },
 }

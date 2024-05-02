@@ -270,12 +270,13 @@ const props = defineProps({
   },
 })
 const innerSelectValue = computed({
-  get: () =>
-    props.multiple
-      ? Array.isArray(props.selectValue)
-        ? props.selectValue
-        : []
-      : props.selectValue,
+  get: () => {
+    if (props.multiple) {
+      return Array.isArray(props.selectValue) ? props.selectValue : []
+    } else {
+      return props.selectValue ? props.selectValue : ''
+    }
+  },
   set: (v) => emit('update:selectValue', v),
 })
 const displayText = computed(() => {
