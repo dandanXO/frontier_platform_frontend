@@ -353,7 +353,7 @@ export const materialSideSchema = z.object({
 
 const PRICE_MAX_VALUE = '999999999999999999.99'
 export const priceSchema = z
-  .string()
+  .union([z.string(), z.number()])
   .refine((value) => new BigNumber(value).lte(PRICE_MAX_VALUE), {
     message: getMaxNumberParams(PRICE_MAX_VALUE)[1],
     path: [],

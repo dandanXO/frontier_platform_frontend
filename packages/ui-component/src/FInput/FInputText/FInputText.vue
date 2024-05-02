@@ -75,11 +75,24 @@ f-input-container(
       @change="$emit('change', $event)"
       @keydown.enter="$emit('enter', $event)"
     )
-    //- Numeric Input
+    //- Big Number Input
+    input(
+      v-else-if="inputType === 'bigNumber'"
+      ref="refInput"
+      v-model.trim="innerTextValue"
+      :placeholder="placeholder"
+      :class="classInput"
+      :readonly="disabled"
+      @input="onBigNumberInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      @change="$emit('change', $event)"
+      @keydown.enter="$emit('enter', $event)"
+    )
     input(
       v-else
       ref="refInput"
-      :type="inputType === 'number' ? 'number' : ''"
+      :type="inputType"
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
@@ -87,7 +100,7 @@ f-input-container(
       :min="min"
       :max="max"
       :step="step"
-      @input="onNumericInput"
+      @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
       @change="$emit('change', $event)"
@@ -370,7 +383,6 @@ const innerTextValue = computed({
   get: () => props.textValue,
   set: (v) => emit('update:textValue', v),
 })
-
 const { rules, hintError, disabled } = toRefs(props)
 const {
   isFilled,
@@ -474,7 +486,7 @@ const onInput = async () => {
   emit('input')
 }
 
-const onNumericInput = async (event) => {
+const onBigNumberInput = async (event) => {
   const value = event.target.value
   if (/^[0-9]*$/.test(value)) {
     onInput()
