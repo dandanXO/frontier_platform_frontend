@@ -33,6 +33,9 @@ import {
 } from '@/composables/material/useMaterialSchema'
 import { defaultCellStyle } from '@/components/assets/spreadsheet/utils/utils'
 import { useReadOnly } from '@/components/assets/spreadsheet/utils/hooks'
+import BigNumber from 'bignumber.js'
+import BigNumberCellEditor from '@/components/assets/spreadsheet/cell/BigNumberCellEditor.vue'
+import BigNumberCellRenderer from '@/components/assets/spreadsheet/cell/BigNumberCellRenderer.vue'
 
 const toTransparent = (hex: string) => hex + '88'
 
@@ -118,6 +121,33 @@ export const getNumberCellProps = (
     valueParser: (params) => {
       const newValue = Number(params.newValue)
       if (Number.isNaN(newValue)) {
+        return params.oldValue
+      }
+
+      return newValue
+    },
+  }
+}
+
+export const getBigNumberCellProps = (
+  schema: ZodType,
+  placeholder?: string
+): ColDef<MaterialRow> => {
+  return {
+    cellEditorPopup: true,
+    cellStyle: (params: CellClassParams<MaterialRow, string>) => {
+      return getCellStyle({
+        valid: schema.safeParse(params.value).success,
+        editable: params.column.isCellEditable(params.node),
+      })
+    },
+    cellEditor: BigNumberCellEditor,
+    cellEditorParams: { schema, placeholder },
+    cellRenderer: BigNumberCellRenderer,
+    cellRendererParams: { schema },
+    valueParser: (params) => {
+      const newValue = new BigNumber(params.newValue)
+      if (newValue.isNaN()) {
         return params.oldValue
       }
 

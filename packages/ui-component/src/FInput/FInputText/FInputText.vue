@@ -488,11 +488,13 @@ const onInput = async () => {
 
 const onBigNumberInput = async (event) => {
   const value = event.target.value
-  if (/^[0-9]*$/.test(value)) {
+  if (/^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
     onInput()
     return
   }
-  const text = props.textValue.replace(/[^0-9.]/g, '')
+  const text = props.textValue
+    .replace(/[^0-9.]/g, '')
+    .replace(/(\.[0-9]{2}).*/g, '$1')
   emit('update:textValue', text)
   onInput()
 }

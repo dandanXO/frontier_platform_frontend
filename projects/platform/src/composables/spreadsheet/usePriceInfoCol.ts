@@ -13,6 +13,7 @@ import {
   getCellStyle,
   getEnumCellProps,
   getNumberCellProps,
+  getBigNumberCellProps,
   getStringCellProps,
   refreshCells,
   rowEditable,
@@ -124,7 +125,7 @@ const usePriceInfoCol = (
             field: getField('pricing.price'),
             minWidth: 130,
             editable: rowEditable,
-            ...getNumberCellProps(priceSchema, t('MI0055')),
+            ...getBigNumberCellProps(priceSchema, t('MI0055')),
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
                 return priceSchema.nullable().safeParse(params.value).success
