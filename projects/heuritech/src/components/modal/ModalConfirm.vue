@@ -47,7 +47,7 @@ div(
           size="sm"
           type="primary"
           @click="primaryHandler"
-          data-cy="modal-confirm_primary"
+          data-cy="modal-confirm-primary"
         ) {{ primaryBtnText }}
 </template>
 

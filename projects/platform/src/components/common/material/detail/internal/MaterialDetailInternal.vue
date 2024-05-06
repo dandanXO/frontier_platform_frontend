@@ -28,6 +28,7 @@ div
           f-tooltip-standard(
             :tooltipMessage="$t('RR0260')"
             boundaryReference="search-table-header"
+            data-cy="material-detail-internal-moreOptions"
           )
             template(#slot:tooltip-trigger)
               div(
@@ -35,7 +36,11 @@ div
               )
                 f-svg-icon(iconName="more_horiz" size="24")
         template(#content="{ collapsePopper }")
-          f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
+          f-contextual-menu(
+            :menuTree="menuTree"
+            @click:menu="collapsePopper"
+            data-cy="f-contextual-menu"
+          )
       f-button(
         prependIcon="create"
         size="md"

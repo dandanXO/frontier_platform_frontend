@@ -9,7 +9,10 @@ div(
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0']"
     @click.stop
   )
-    div(class="h-9 pb-1 md:pb-3.5 flex items-center gap-x-1 md:gap-x-3")
+    div(
+      class="h-9 pb-1 md:pb-3.5 flex items-center gap-x-1 md:gap-x-3"
+      data-cy="modal-confirm-title"
+    )
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(
         class="text-body2 md:text-body1 font-bold"
@@ -47,7 +50,7 @@ div(
           size="sm"
           type="primary"
           @click="primaryHandler"
-          data-cy="modal-confirm_primary"
+          data-cy="modal-confirm-primary"
         ) {{ primaryBtnText }}
 </template>
 

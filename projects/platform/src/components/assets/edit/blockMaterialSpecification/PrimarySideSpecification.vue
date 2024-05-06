@@ -33,6 +33,7 @@ div(class="flex flex-col gap-y-7.5")
     :hintError="displayErrors[`${props.primarySideType}.featureList`]"
     multiple
     :multipleTagInputValidations="[inputValidate, lengthValidate]"
+    data-cy="features-input"
   )
   f-input-container(v-if="!hideBackSideFields" :label="$t('MI0016')")
     div(class="flex flex-row gap-x-4.5 pt-2")
@@ -360,7 +361,7 @@ div(class="flex flex-col gap-y-7.5")
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].name`])"
           class="w-100"
           :multipleTagInputValidations="[inputValidate, lengthValidate]"
-          :data-cy="'contentText'"
+          data-cy="content-text"
         )
         f-input-text(
           :disabled="disableBackSideFields"
@@ -370,7 +371,7 @@ div(class="flex flex-col gap-y-7.5")
           addOnRight="%"
           :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].percentage`])"
           class="w-40"
-          data-cy="contentTextValue"
+          data-cy="content-text-value"
         )
         f-svg-icon(
           v-if="index === 0"
@@ -401,7 +402,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
         :rightDropdownOption="widthUnitList"
-        data-cy="cuttableWidthText"
+        data-cy="cuttable-width-text"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
@@ -417,7 +418,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="widthUnit.value"
         @update:rightSelectValue="widthUnit.onInput"
         :rightDropdownOption="widthUnitList"
-        data-cy="fullWidthText"
+        data-cy="full-width-text"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}
@@ -446,7 +447,7 @@ div(class="flex flex-col gap-y-7.5")
         :rightSelectValue="weightUnit.value"
         @update:rightSelectValue="weightUnit.onInput"
         :rightDropdownOption="weightUnitList"
-        data-cy="WeightText"
+        data-cy="weight-text"
       )
         template(#slot:right-dropdown-trigger="{ selectedMenu }")
           p {{ selectedMenu?.title }}

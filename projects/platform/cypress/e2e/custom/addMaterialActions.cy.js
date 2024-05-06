@@ -1,11 +1,13 @@
+/* eslint-disable no-undef */
 /// <reference types="cypress" />
 
-context('Actions', () => {
+context('Actions Add ONE material', () => {
   beforeEach(() => {
+    cy.viewport(1920, 1080)
     cy.visit('/sign-in')
   })
-  if (Cypress.env('NODE_ENV') == 'development') {
-  }
+  // if (Cypress.env('NODE_ENV') == 'development') {
+  // }
 
   // https://on.cypress.io/interacting-with-elements
 
@@ -31,23 +33,25 @@ context('Actions', () => {
     cy.get('[data-cy="manual-upload"]').click()
 
     // input manual-upload fild
-    cy.get('[data-cy="itemNumber"]').type('item test 1')
+    cy.get('[data-cy="item-number"]').type('item test 1')
     // {enter} mean press enter
-    cy.get('[data-cy="faceSideSep"] [data-cy="contentText"] input').type(
-      'content1 {enter}'
-    )
-    cy.get('[data-cy="faceSideSep"] [data-cy="contentTextValue"] input').type(
-      '100 {enter}'
-    )
-    cy.get('[data-cy="faceSideSep"] [data-cy="cuttableWidthText"] input').type(
-      '456'
-    )
-    cy.get('[data-cy="faceSideSep"] [data-cy="WeightText"] input').type('789')
-    cy.get('[data-cy="faceSideSep"] [data-cy="fullWidthText"] input').type(
-      '234'
-    )
+    cy.get(
+      '[data-cy="face-side-specification"] [data-cy="content-text"] input'
+    ).type('content1 {enter}')
+    cy.get(
+      '[data-cy="face-side-specification"] [data-cy="content-text-value"] input'
+    ).type('100 {enter}')
+    cy.get(
+      '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input'
+    ).type('456')
+    cy.get(
+      '[data-cy="face-side-specification"] [data-cy="weight-text"] input'
+    ).type('789')
+    cy.get(
+      '[data-cy="face-side-specification"] [data-cy="full-width-text"] input'
+    ).type('234')
     // clicke save
-    cy.get('[data-cy="saveButton"]').click()
+    cy.get('[data-cy="save-button"]').click()
 
     // check is success for upload
     cy.get('[data-cy="modal-how-to-scan-header"]').should('have.text', 'Great')

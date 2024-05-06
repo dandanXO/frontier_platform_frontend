@@ -241,7 +241,7 @@ export class OrgPage {
   clickAboutGroupDeleteBtn = () =>
     this.page.locator('[data-cy="group-about_delete"]').click()
   clickModalConfirmPrimary = () =>
-    this.page.locator('[data-cy="modal-confirm_primary"]').click()
+    this.page.locator('[data-cy="modal-confirm-primary"]').click()
   clickStorageDropdown = () =>
     this.page.locator('[data-cy="modal-choose-storage_select"]').click()
   clickFirstCountry = () =>

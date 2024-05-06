@@ -7,6 +7,7 @@ div(class="flex flex-col gap-y-7.5 pb-10")
         @update:selectValue="isDoubleSide.onInput"
         :dropdownMenuTree="singleOrDoubleMenuTree"
         class="w-50"
+        data-cy="create-material-side-information-selecter"
       )
       f-select-dropdown(
         v-if="!isDoubleSide.value"
@@ -21,6 +22,7 @@ div(class="flex flex-col gap-y-7.5 pb-10")
       :inputValue="isComposite.value"
       @update:inputValue="isComposite.onInput"
       :label="$t('MI0004')"
+      data-cy="create-material-check-box"
     )
 </template>
 

@@ -3,6 +3,7 @@ div(
   ref="refTrigger"
   :class="[isNotFitWidth ? 'w-full' : 'w-fit']"
   aria-describedby="tooltip"
+  data-cy="tooltip"
   @mouseenter="mouseenterHandler"
   @mouseleave="mouseleaveHandler"
 )

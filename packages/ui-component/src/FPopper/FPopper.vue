@@ -4,10 +4,11 @@ div(
   aria-describedby="popper"
   @click="expandPopper"
   v-bind="$attrs"
+  data-cy="f-popper"
 )
   slot(name="trigger" :isExpand="isExpand")
 teleport(v-if="isExpand" to="body")
-  div(class="fixed z-popper w-screen h-screen")
+  div(class="fixed z-popper w-screen h-screen" data-cy="f-popper-body")
     div(
       class="fixed w-screen h-screen top-0 left-0"
       @click="collapsePopper"

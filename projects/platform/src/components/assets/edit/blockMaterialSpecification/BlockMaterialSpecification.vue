@@ -5,6 +5,7 @@ div
     :optionList="sideOptionList"
     v-model:inputValue="currentMaterialSide"
     class="pt-4 pb-3"
+    data-cy="side-select"
   )
   div(class="flex flex-col pt-1 gap-y-8")
     f-input-text(
@@ -16,7 +17,7 @@ div
       :placeholder="t('MI0010')"
       :label="t('RR0013')"
       class="w-50"
-      data-cy="itemNumber"
+      data-cy="item-number"
     )
     f-input-container(v-if="showItemNoAndSeasonFields" :label="t('MI0011')")
       template(#slot:suffix)
@@ -49,16 +50,17 @@ div
     face-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.FACE_SIDE"
       v-show="currentMaterialSide === MaterialSideType.FACE_SIDE"
-      data-cy="faceSideSep"
+      data-cy="face-side-specification"
     )
     middle-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.middleSide"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.MIDDLE"
+      data-cy="middle-side-specification"
     )
     back-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.BACK_SIDE"
       v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.BACK"
-      data-cy="backSideSep"
+      data-cy="back-side-specification"
     )
 </template>
 

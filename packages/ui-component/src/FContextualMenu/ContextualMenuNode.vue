@@ -8,6 +8,7 @@ div(
   @mouseleave="mouseLeaveHandler"
   @click.prevent="clickMenuHandler"
   @touchstart.prevent.stop="clickMenuHandler"
+  data-cy="contextual-menu-node"
 )
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"

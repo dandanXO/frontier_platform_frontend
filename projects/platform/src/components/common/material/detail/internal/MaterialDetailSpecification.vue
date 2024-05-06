@@ -9,6 +9,7 @@ div(class="grid gap-y-4.5")
     :inputValue="currentSideType"
     @update:inputValue="$emit('switchSideType', $event)"
     class="pb-3"
+    data-cy="filter-range"
   )
   f-infobar(
     v-if="isAutoSyncFaceToBackSideInfo && currentSideType === MATERIAL_SIDE_TYPE.BACK"
@@ -21,7 +22,10 @@ div(class="grid gap-y-4.5")
       class="text-body2/1.6"
       :class="[specificationInfo.seasonInfo.textColor, { 'bg-grey-50 px-3 py-2 rounded ': !specificationInfo.seasonInfo.isPublic }]"
     ) {{ specificationInfo.seasonInfo.value }}
-    div(v-if="specificationInfo.featureList.value.length > 0")
+    div(
+      v-if="specificationInfo.featureList.value.length > 0"
+      data-cy="value-of-features"
+    )
       p(
         :class="[specificationInfo.featureList.textColor, { 'line-clamp-1': !hasExtendedContent }]"
         class="text-body2/1.6 break-word"

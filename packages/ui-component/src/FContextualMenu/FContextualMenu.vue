@@ -47,6 +47,7 @@ div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"
     class="overflow-y-auto overflow-x-hidden overscroll-contain"
+    data-cy="f-context-menu"
   )
     template(
       v-for="(block, index) in filteredBlockList"
