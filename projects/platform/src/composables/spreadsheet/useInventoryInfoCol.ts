@@ -27,7 +27,7 @@ import {
 import {
   getDefaultHangersRemainingList,
   getDefaultYardageRemainingInfo,
-  getInventoryQtyInY,
+  getTotalInventoryQty,
   processYardageRemainingInfo,
 } from '@/utils/material'
 import { computed, type ComputedRef } from 'vue'
@@ -246,7 +246,7 @@ const useInventoryInfoCol = (): ComputedRef<
                 .map((a) => a.qty || 0)
                 .reduce((prev, current) => prev + current, 0)
 
-              const inventoryQtyInY = getInventoryQtyInY(
+              const inventoryQtyInY = getTotalInventoryQty(
                 width.full,
                 width.unit,
                 weight.value,

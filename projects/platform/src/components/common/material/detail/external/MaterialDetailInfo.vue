@@ -5,7 +5,7 @@ div(class="grid gap-y-8 content-start")
     div(v-if="material.priceInfo.pricing" class="flex items-end gap-x-1 mb-5")
       p(class="text-grey-900 font-bold text-body1") $ {{ material.priceInfo.pricing.price }}
       p(class="text-grey-600 text-caption") {{ material.priceInfo.pricing.currencyCode }} / {{ material.priceInfo.pricing.unit }}
-      p(v-if="material.inventoryTotalQtyInYard" class="text-grey-600 text-caption") ({{ material.inventoryTotalQtyInYard }}Y available)
+      p(v-if="material.inventoryTotalQtyInYard" class="text-grey-600 text-caption") ({{ material.inventoryTotalQtyInYard }}{{ material.inventoryUnit }} available)
     div(class="grid gap-y-2")
       template(v-for="item in priceInfo" :key="item")
         div(v-if="item" class="flex text-grey-900 text-body2/1.6")
@@ -19,7 +19,7 @@ div(class="grid gap-y-8 content-start")
       p(class="font-bold text-body2") Inventory
       div(class="flex text-grey-900 text-body2/1.6")
         p(class="w-[70%] pr-6") Available Stock
-        p {{ material.inventoryTotalQtyInYard }}y
+        p {{ material.inventoryTotalQtyInYard }}{{ material.inventoryUnit }}
   //- Certification
   div(v-if="material.tagInfo.certificationTagList.length > 0")
     p(class="mb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}

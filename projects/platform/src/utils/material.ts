@@ -37,7 +37,7 @@ const toGSM = (
   }
 }
 
-export const getInventoryQtyInY = (
+export const getTotalInventoryQty = (
   fullWidthValue: number,
   widthUnit: LengthUnit,
   weightValue: number,
@@ -48,23 +48,19 @@ export const getInventoryQtyInY = (
   const fullWidthInInch =
     widthUnit === LengthUnit.CM ? cmToInch(fullWidthValue) : fullWidthValue
 
-  const toQtyInY = () => {
-    switch (inventoryUnit) {
-      case MaterialQuantityUnit.Y: {
-        return inventoryQty
-      }
-      case MaterialQuantityUnit.M: {
-        return toDP2(inventoryQty / 0.9114)
-      }
-      case MaterialQuantityUnit.KG: {
-        const gsm = toGSM(weightValue, weightUnit, fullWidthInInch)
-        return toDP2(inventoryQty / (gsm * 0.02323 * fullWidthInInch) / 1000)
-      }
+  switch (inventoryUnit) {
+    case MaterialQuantityUnit.Y:
+    case MaterialQuantityUnit.PCS: {
+      return inventoryQty
+    }
+    case MaterialQuantityUnit.M: {
+      return toDP2(inventoryQty / 0.9114)
+    }
+    case MaterialQuantityUnit.KG: {
+      const gsm = toGSM(weightValue, weightUnit, fullWidthInInch)
+      return toDP2((inventoryQty / (gsm * 0.02323 * fullWidthInInch)) * 1000)
     }
   }
-
-  const totalInventoryInY = toQtyInY()
-  return totalInventoryInY
 }
 
 export const getDefaultHangersRemainingList = () => {

@@ -13,7 +13,7 @@ div(class="flex flex-col gap-y-10")
           :textValue="totalInventoryQtyInY"
           disabled
           :clearable="false"
-          :addOnRight="MaterialQuantityUnit.Y"
+          :addOnRight="inventoryUnit"
         )
         f-input-switch(
           :inputValue="isTotalPublic.value"
@@ -32,7 +32,7 @@ div(class="flex flex-col gap-y-10")
       :label="$t('RR0030')"
       :placeholder="$t('MI0060')"
     )
-    f-input-container(:label="`${$t('RR0031')}`")
+    f-input-container(:label="$t('RR0031')")
       div(class="flex flex-col gap-y-4")
         div(
           v-for="(field, index) in sampleCardsRemainingFields"
@@ -58,7 +58,7 @@ div(class="flex flex-col gap-y-10")
               :placeholder="$t('MI0056')"
               :addOnRight="$t('RR0307')"
             )
-            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+            f-input-container(class="w-full" :label="$t('RR0036')")
               div(class="flex flex-row gap-x-3 w-full")
                 f-input-text(
                   class="flex-grow"
@@ -94,7 +94,7 @@ div(class="flex flex-col gap-y-10")
               iconName="delete"
               @click="removeSampleCardsRemainingField(index)"
             )
-    f-input-container(:label="`${$t('RR0033')}`")
+    f-input-container(:label="$t('RR0033')")
       div(class="flex flex-col gap-y-4")
         div(
           v-for="(field, index) in hangersRemainingFields"
@@ -120,7 +120,7 @@ div(class="flex flex-col gap-y-10")
               :placeholder="$t('MI0056')"
               :addOnRight="$t('RR0307')"
             )
-            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+            f-input-container(class="w-full" :label="$t('RR0036')")
               div(class="flex flex-row gap-x-3 w-full")
                 f-input-text(
                   class="flex-grow"
@@ -207,7 +207,7 @@ div(class="flex flex-col gap-y-10")
             )
               template(#slot:right-dropdown-trigger="{ selectedMenu }")
                 p {{ selectedMenu?.title }}
-            f-input-container(class="w-full" :label="`${$t('RR0036')}`")
+            f-input-container(class="w-full" :label="$t('RR0036')")
               div(class="flex flex-row gap-x-3 w-full")
                 f-input-text(
                   class="flex-grow"
@@ -261,8 +261,13 @@ const materialFormService = inject<MaterialFormService>(materialFormServiceKey)
 if (!materialFormService) {
   throw new Error('useMaterialForm is not provided')
 }
-const { inputMenu, defineInputBinds, displayErrors, totalInventoryQtyInY } =
-  materialFormService
+const {
+  inputMenu,
+  defineInputBinds,
+  displayErrors,
+  totalInventoryQtyInY,
+  inventoryUnit,
+} = materialFormService
 const { inventoryUnitList } = inputMenu
 
 const nativeCode = defineInputBinds('internalInfo.nativeCode')

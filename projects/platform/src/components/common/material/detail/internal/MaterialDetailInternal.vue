@@ -166,7 +166,7 @@ div
         template(v-else-if="currentTab === TAB.INVENTORY")
           div(class="text-body2 text-grey-900 grid grid-cols-12")
             p(class="col-span-4") {{ t('RR0034') }}
-            p(class="col-span-8") {{ material.inventoryTotalQtyInYard }} Y
+            p(class="col-span-8") {{ material.inventoryTotalQtyInYard }} {{ material.inventoryUnit }}
           div(class="rounded-md bg-grey-50 p-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="grid gap-y-15 pt-7.5")
@@ -258,7 +258,11 @@ import MaterialDetailInventoryTable from '@/components/common/material/detail/in
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 import useAssets from '@/composables/useAssets'
-import type { Material } from '@frontier/platform-web-sdk'
+import type {
+  Material,
+  MaterialInternalInventoryInfoSampleCardsRemainingListInner,
+  MaterialInternalInventoryInfoYardageRemainingInfoListInner,
+} from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
 import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
@@ -417,12 +421,7 @@ const sampleCardsRemaining = computed(() => {
     ],
     itemList:
       props.material.internalInfo?.inventoryInfo.sampleCardsRemainingList?.map(
-        (inventory) => ({
-          source: inventory.source,
-          qtyInPcs: inventory.qtyInPcs,
-          shelf: `${inventory.shelf1} ${inventory.shelf2}`,
-          location: inventory.location,
-        })
+        (inventory) => inventoryToItem(inventory)
       ) ?? [],
   }
 })
@@ -448,17 +447,14 @@ const hangersRemaining = computed(() => {
     ],
     itemList:
       props.material.internalInfo?.inventoryInfo.hangersRemainingList?.map(
-        (inventory) => ({
-          source: inventory.source,
-          qtyInPcs: inventory.qtyInPcs,
-          shelf: `${inventory.shelf1} ${inventory.shelf2}`,
-          location: inventory.location,
-        })
+        (inventory) => inventoryToItem(inventory)
       ) ?? [],
   }
 })
 
 const yardageRemaining = computed(() => {
+  const unit =
+    props.material.internalInfo?.inventoryInfo.yardageRemainingInfo?.unit
   return {
     headerList: [
       {
@@ -497,11 +493,28 @@ const yardageRemaining = computed(() => {
           source: inventory.source,
           roll: inventory.roll,
           lot: inventory.lot,
-          qty: inventory.qty,
-          shelf: `${inventory.shelf1} ${inventory.shelf2}`,
+          qty: inventory.qty ? `${inventory.qty} ${unit}` : '',
+          shelf: shelfTrimString(inventory),
           location: inventory.location,
         })
       ) ?? [],
   }
 })
+
+const shelfTrimString = (
+  inventory:
+    | MaterialInternalInventoryInfoYardageRemainingInfoListInner
+    | MaterialInternalInventoryInfoSampleCardsRemainingListInner
+) => `${inventory.shelf1 ?? ''} ${inventory.shelf2 ?? ''}`.trim()
+
+const inventoryToItem = (
+  inventory: MaterialInternalInventoryInfoSampleCardsRemainingListInner
+) => {
+  return {
+    source: inventory.source,
+    qtyInPcs: inventory.qtyInPcs ? `${inventory.qtyInPcs} ${t('RR0307')}` : '',
+    shelf: shelfTrimString(inventory),
+    location: inventory.location,
+  }
+}
 </script>

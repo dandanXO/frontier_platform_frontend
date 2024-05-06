@@ -21,7 +21,7 @@ import useMaterialSchema, {
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
-import { getInventoryQtyInY } from '@/utils/material'
+import { getTotalInventoryQty } from '@/utils/material'
 
 configure({ validateOnInput: true })
 
@@ -260,6 +260,13 @@ const useMaterialForm = ({
     return {}
   })
 
+  const inventoryUnit = computed(() => {
+    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
+      'PCS'
+      ? 'PCS'
+      : 'Y'
+  })
+
   const totalInventoryQtyInY = computed(() => {
     const fullWidth = values.width?.full
     const widthUnit = values.width?.unit
@@ -285,7 +292,7 @@ const useMaterialForm = ({
       .map((a) => a.qty || 0)
       .reduce((prev, current) => prev + current, 0)
 
-    return getInventoryQtyInY(
+    return getTotalInventoryQty(
       fullWidth,
       widthUnit,
       weightValue,
@@ -611,6 +618,7 @@ const useMaterialForm = ({
     defineInputBinds,
     submitCount,
     currentMaterialSide,
+    inventoryUnit,
     totalInventoryQtyInY,
     handleSubmit,
     setFieldValue,
