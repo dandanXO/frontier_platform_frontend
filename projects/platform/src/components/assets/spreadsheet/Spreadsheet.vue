@@ -786,10 +786,8 @@ const updateSubmitStatus = () => {
           },
         }
       }
+      // The 'result.error' object holds Zod validation error messages for each field.
       const result = materialSchema.safeParse(reqRow)
-      if (!result.success) {
-        console.error(result.error)
-      }
       return result.success
     }
     return (
