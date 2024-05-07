@@ -292,28 +292,20 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
           // Material Type: Woven
           case 'MIW_Cons_1':
-            newRow[sideKey]!.construction.warpDensity = boundedNumber(
-              row.MIW_Cons_1,
-              0,
-              999
-            )
+            newRow[sideKey]!.construction.warpDensity =
+              row.MIW_Cons_1.trim().slice(0, 100)
             break
           case 'MIW_Cons_2':
-            newRow[sideKey]!.construction.weftDensity = boundedNumber(
-              row.MIW_Cons_2,
-              0,
-              999
-            )
+            newRow[sideKey]!.construction.weftDensity =
+              row.MIW_Cons_2.trim().slice(0, 100)
             break
           case 'MIW_Cons_3':
-            newRow[sideKey]!.construction.warpYarnSize = row.MIW_Cons_3.trim()
+            newRow[sideKey]!.construction.warpYarnSize =
+              row.MIW_Cons_3.trim().slice(0, 100)
             break
           case 'MIW_Cons_4':
-            newRow[sideKey]!.construction.weftYarnSize = boundedNumber(
-              row.MIW_Cons_4,
-              0,
-              999
-            )
+            newRow[sideKey]!.construction.weftYarnSize =
+              row.MIW_Cons_4.trim().slice(0, 100)
             break
 
           // Material Type: Knit
