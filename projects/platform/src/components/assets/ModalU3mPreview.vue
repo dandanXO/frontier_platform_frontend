@@ -1,10 +1,11 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('EE0067')"
-  :primaryBtnText="$t('UU0038')"
-  :secondaryBtnText="$t('UU0039')"
-  @click:primary="handleCreateU3mAuto"
-  @click:secondary="handleRecutImage"
+  :primaryBtnText="$t('UU0039')"
+  :secondaryBtnText="$t('UU0038')"
+  @click:primary="handleRecutImage"
+  @click:secondary="handleCreateU3mAuto"
+  :secondaryBtnDisabled="hideAutoButton"
 )
   div(:class="[isDoubleSide ? 'w-152' : 'w-70']")
     div(class="flex justify-between items-center gap-12")
@@ -23,6 +24,7 @@ modal-behavior(
         )
           img(v-if="backSideU3mImage" :src="backSideU3mImage?.crop" class="w-full")
     i18n-t(
+      v-if="showEE0068hint"
       keypath="EE0068"
       tag="div"
       class="mt-3.5 text-grey-900 text-body2 leading-1.6"
@@ -43,6 +45,10 @@ import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import assetsApi from '@/apis/assets'
+
+// F22-3410
+const hideAutoButton = true
+const showEE0068hint = false
 
 const props = defineProps<{
   material: Material
