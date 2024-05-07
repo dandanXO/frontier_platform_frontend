@@ -201,15 +201,22 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             )
             const contentPercentageList = convertStringToList(
               row.CON_2,
-              (percentage) => boundedNumber(percentage, 0, 100)
+              (percentage) => Number(percentage)
             )
-            const combinedList = contentNameList.map((contentName, index) => {
-              return {
-                name: contentName,
-                percentage: contentPercentageList[index] || 0,
-                contentId: null,
-              }
-            })
+            const combinedList = contentNameList.reduce(
+              (acc, contentName, index) => {
+                if (contentName && contentPercentageList[index]) {
+                  acc.push({
+                    name: contentName,
+                    percentage: contentPercentageList[index],
+                    contentId: null,
+                  })
+                }
+                return acc
+              },
+              []
+            )
+
             newRow[sideKey]!.contentList = getUniqueItemsByField(
               combinedList,
               'name'
@@ -675,7 +682,7 @@ function convertStringToList(
   callback: (val: string) => any
 ): any[] {
   return value
-    .split(/[/,]+/)
+    .split('/')
     .map((item) => item.trim())
     .filter((item) => item != null)
     .map(callback)
