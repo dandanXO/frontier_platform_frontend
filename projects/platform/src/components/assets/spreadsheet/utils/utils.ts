@@ -574,7 +574,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
         // Weight
         case 'WE_1':
-          newRow.weight!.value = boundedNumber(row.WE_1, 1, 999)
+          newRow.weight!.value = boundedNumber(row.WE_1, 1, 99999, 3)
           break
         case 'WE_2':
           newRow.weight!.unit =
@@ -615,13 +615,20 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
   return materialData
 }
 
-function boundedNumber(input: string, min: number, max: number): number {
-  const decimalNumber = parseFloat(input.trim())
+function boundedNumber(
+  input: string,
+  min: number,
+  max: number,
+  decimalPlaces?: number
+): number {
+  let decimalNumber = parseFloat(input.trim())
+  if (decimalPlaces !== undefined) {
+    decimalNumber = parseFloat(decimalNumber.toFixed(decimalPlaces))
+  }
   return isNaN(decimalNumber) || decimalNumber < min
     ? min
     : Math.min(max, decimalNumber)
 }
-
 function boundedStringValue(input: string, min: string, max: string): string {
   const decimalNumber = new BigNumber(input.trim())
   const minNumber = new BigNumber(min)
