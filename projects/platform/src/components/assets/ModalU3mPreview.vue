@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('EE0067')"
-  :primaryBtnText="$t('UU0039')"
+  :primaryBtnText="$t('EE0150')"
   :secondaryBtnText="$t('UU0038')"
   @click:primary="handleRecutImage"
   @click:secondary="handleCreateU3mAuto"
@@ -33,7 +33,7 @@ modal-behavior(
       template(#auto)
         strong {{ $t('EE0085') }}
       template(#reCut)
-        strong {{ $t('EE0086') }}
+        strong {{ $t('EE0150') }}
 </template>
 
 <script setup lang="ts">
