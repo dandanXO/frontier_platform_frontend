@@ -44,6 +44,7 @@ const useWeightInfoCol = (): ComputedRef<
   return computed(() => {
     return {
       headerName: t('RR0015'),
+      groupId: 'weightInfo',
       children: [
         {
           field: 'weight.value',

@@ -792,6 +792,16 @@ const updateSubmitStatus = () => {
       if (process.env.NODE_ENV !== 'production' && !result.success) {
         console.error(result.error)
       }
+      if (!result.success) {
+        gridApi.value?.setColumnGroupOpened('faceSide', true)
+        gridApi.value?.setColumnGroupOpened('backside', true)
+        gridApi.value?.setColumnGroupOpened('construction', true)
+        gridApi.value?.setColumnGroupOpened('weightInfo', true)
+        gridApi.value?.setColumnGroupOpened('priceInfo', true)
+        gridApi.value?.setColumnGroupOpened('internalInfo', true)
+        gridApi.value?.setColumnGroupOpened('tagInfo', true)
+        gridApi.value?.setColumnGroupOpened('inventoryInfo', true)
+      }
       return result.success
     }
     return (

@@ -303,10 +303,12 @@ const usePriceInfoCol = (
   return computed(() => {
     return {
       headerName: t('RR0094'),
+      groupId: 'priceInfo',
       children: [
         ...getPriceCols({ internal: false }),
         {
           headerName: t('RR0289'),
+          groupId: 'internalInfo',
           columnGroupShow: 'open',
           children: getPriceCols({ internal: true }),
         },

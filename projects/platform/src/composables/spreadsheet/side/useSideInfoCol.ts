@@ -117,6 +117,7 @@ const useSideInfoCol = (
   return computed(() => {
     return {
       headerName,
+      groupId: side,
       children: [
         {
           field: `${side}.frontierNo`,
@@ -387,6 +388,7 @@ const useSideInfoCol = (
         },
         {
           headerName: t('MI0026'),
+          groupId: 'construction',
           columnGroupShow: 'open',
           children: [
             {

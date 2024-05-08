@@ -46,6 +46,7 @@ const useTagInfoCol = (
   return computed(() => {
     return {
       headerName: t('RR0133'),
+      groupId: 'tagInfo',
       children: [
         {
           headerName: t('RR0027'),

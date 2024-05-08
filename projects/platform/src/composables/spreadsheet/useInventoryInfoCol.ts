@@ -207,6 +207,7 @@ const useInventoryInfoCol = (): ComputedRef<
   return computed(() => {
     return {
       headerName: t('RR0135'),
+      groupId: 'inventoryInfo',
       children: [
         {
           field: 'internalInfo.inventoryInfo.isTotalPublic',

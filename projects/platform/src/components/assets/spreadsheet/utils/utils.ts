@@ -371,19 +371,22 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
           // Material Type: Trim
           case 'MIT_Diameter':
             newRow[sideKey]!.construction.outerDiameter =
-              row.MIT_Diameter.trim()
+              row.MIT_Diameter.trim().slice(0, 50)
             break
           case 'MIT_Length':
-            newRow[sideKey]!.construction.length = row.MIT_Length.trim()
+            newRow[sideKey]!.construction.length = row.MIT_Length.trim().slice(
+              0,
+              50
+            )
             break
           case 'MIT_Thickness':
-            newRow[sideKey]!.construction.thickness = row.MIT_Thickness.trim()
+            newRow[sideKey]!.construction.thickness =
+              row.MIT_Thickness.trim().slice(0, 50)
             break
           case 'MIT_Width':
-            newRow[sideKey]!.construction.width = boundedNumber(
-              row.MIT_Width,
+            newRow[sideKey]!.construction.width = row.MIT_Width.trim().slice(
               0,
-              999
+              50
             )
             break
 
