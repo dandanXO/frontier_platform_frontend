@@ -22,8 +22,7 @@ import type {
 } from '@frontier/platform-web-sdk'
 import { useNotifyStore } from '@/stores/notify'
 import BlockMaterialTags from '@/components/assets/edit/BlockMaterialTags.vue'
-import useMaterialForm from '@/composables/material/useMaterialForm'
-import type { MaterialFormService } from '@/types'
+import { useMaterialTagForm } from '@/composables/material/useMaterialForm'
 import { materialFormServiceKey } from '@/utils/constants'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
@@ -37,11 +36,12 @@ const store = useStore()
 const notify = useNotifyStore()
 const { t } = useI18n()
 
-const materialFormService: MaterialFormService = useMaterialForm({
+const materialFormService = useMaterialTagForm({
   material: props.material,
   materialOptions: props.materialOptions,
 })
 
+// 從這改變 provide 影響子組件block-material-tags inject
 provide(materialFormServiceKey, materialFormService)
 
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)

@@ -21,8 +21,8 @@ import type {
   MaterialUpdatePublicPrice,
 } from '@frontier/platform-web-sdk'
 import { useNotifyStore } from '@/stores/notify'
-import type { MaterialFormService } from '@/types'
-import useMaterialForm from '@/composables/material/useMaterialForm'
+
+import { useMaterialPublicPriceForm } from '@/composables/material/useMaterialForm'
 import { materialFormServiceKey } from '@/utils/constants'
 import BlockMaterialPricing from './BlockMaterialPricing.vue'
 import assetsApi from '@/apis/assets'
@@ -39,11 +39,12 @@ const notify = useNotifyStore()
 const { t } = useI18n()
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 
-const materialFormService: MaterialFormService = useMaterialForm({
+const materialFormService = useMaterialPublicPriceForm({
   material: props.material,
   materialOptions: props.materialOptions,
 })
 
+// 從這改變 provide 影響子組件block-material-public-price inject
 provide(materialFormServiceKey, materialFormService)
 
 const updateMaterialSimpleTag = async () => {

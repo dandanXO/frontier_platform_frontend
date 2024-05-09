@@ -18,6 +18,9 @@ import {
 import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema, {
   getDefaults,
+  useuseMaterialInventorySchema,
+  useMaterialPublicPriceSchema,
+  useMaterialTagSchema,
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
@@ -632,5 +635,314 @@ const useMaterialForm = ({
     inputMenu,
   }
 }
-
 export default useMaterialForm
+
+export const useMaterialInventoryForm = ({
+  material,
+  materialOptions,
+  pantoneList,
+}: {
+  material?: Material
+  materialOptions: MaterialOptions
+  pantoneList?: PantoneColor[]
+}) => {
+  const materialInventorySchema = useuseMaterialInventorySchema()
+
+  const {
+    values,
+    defineInputBinds,
+    setFieldValue,
+    setValues,
+    errors,
+    meta,
+    validate,
+    handleSubmit,
+    submitCount,
+  } = useForm({
+    initialValues: material
+      ? mapMaterialToForm(material)
+      : (getDefaults(materialInventorySchema) as z.infer<
+          ReturnType<typeof useMaterialSchema>
+        >),
+    validationSchema: toTypedSchema(materialInventorySchema),
+  })
+
+  const mode = computed(() =>
+    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+  )
+
+  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
+    material?.sideType === MaterialSideType.BACK_SIDE
+      ? MATERIAL_SIDE_TYPE.BACK
+      : MATERIAL_SIDE_TYPE.FACE
+  )
+
+  const inputMenu = useMaterialInputMenu(
+    values as any,
+    materialOptions,
+    currentMaterialSide
+  )
+
+  const displayErrors = computed(() => {
+    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
+      return errors.value
+    }
+
+    if (mode.value === CREATE_EDIT.EDIT) {
+      return errors.value
+    }
+
+    return {}
+  })
+
+  const inventoryUnit = computed(() => {
+    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
+      'PCS'
+      ? 'PCS'
+      : 'Y'
+  })
+
+  const totalInventoryQtyInY = computed(() => {
+    const fullWidth = values.width?.full
+    const widthUnit = values.width?.unit
+    const weightValue = values.weight?.value
+    const weightUnit = values.weight?.unit
+    const inventoryList =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
+    const inventoryUnit =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
+
+    if (
+      !fullWidth ||
+      !widthUnit ||
+      !weightUnit ||
+      !weightValue ||
+      !inventoryUnit ||
+      !inventoryList
+    ) {
+      return 0
+    }
+
+    const inventoryTotalQty = inventoryList
+      .map((a) => a.qty || 0)
+      .reduce((prev, current) => prev + current, 0)
+
+    return getTotalInventoryQty(
+      fullWidth,
+      widthUnit,
+      weightValue,
+      weightUnit,
+      inventoryTotalQty,
+      inventoryUnit
+    )
+  })
+
+  const isSpecificationTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key === 'itemNo' ||
+        key.startsWith('season') ||
+        key.startsWith('faceSide') ||
+        key.startsWith('middleSide') ||
+        key.startsWith('backSide') ||
+        key.startsWith('weight') ||
+        key.startsWith('width')
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
+  const isInventoryTabValid = computed(() => {
+    return !Object.keys(displayErrors.value).some((key) => {
+      if (
+        key === 'internalInfo.nativeCode' ||
+        key.startsWith('internalInfo.inventoryInfo')
+      ) {
+        return true
+      }
+
+      return false
+    })
+  })
+
+  return {
+    mode,
+    values,
+    displayErrors,
+    errors,
+    isSpecificationTabValid,
+    isInventoryTabValid,
+    meta,
+    pantoneList,
+    defineInputBinds,
+    submitCount,
+    currentMaterialSide,
+    inventoryUnit,
+    totalInventoryQtyInY,
+    handleSubmit,
+    setFieldValue,
+    validate,
+    inputMenu,
+  }
+}
+
+export const useMaterialPublicPriceForm = ({
+  material,
+  materialOptions,
+  pantoneList,
+}: {
+  material?: Material
+  materialOptions: MaterialOptions
+  pantoneList?: PantoneColor[]
+}) => {
+  const materialPublicPriceSchema = useMaterialPublicPriceSchema()
+
+  const {
+    values,
+    defineInputBinds,
+    setFieldValue,
+    setValues,
+    errors,
+    meta,
+    validate,
+    handleSubmit,
+    submitCount,
+  } = useForm({
+    initialValues: material
+      ? mapMaterialToForm(material)
+      : (getDefaults(materialPublicPriceSchema) as z.infer<
+          ReturnType<typeof useMaterialSchema>
+        >),
+    validationSchema: toTypedSchema(materialPublicPriceSchema),
+  })
+
+  const mode = computed(() =>
+    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+  )
+
+  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
+    material?.sideType === MaterialSideType.BACK_SIDE
+      ? MATERIAL_SIDE_TYPE.BACK
+      : MATERIAL_SIDE_TYPE.FACE
+  )
+
+  const inputMenu = useMaterialInputMenu(
+    values as any,
+    materialOptions,
+    currentMaterialSide
+  )
+
+  const displayErrors = computed(() => {
+    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
+      return errors.value
+    }
+
+    if (mode.value === CREATE_EDIT.EDIT) {
+      return errors.value
+    }
+
+    return {}
+  })
+
+  const inventoryUnit = computed(() => {
+    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
+      'PCS'
+      ? 'PCS'
+      : 'Y'
+  })
+
+  return {
+    mode,
+    values,
+    displayErrors,
+    errors,
+    meta,
+    pantoneList,
+    defineInputBinds,
+    submitCount,
+    currentMaterialSide,
+    inventoryUnit,
+    handleSubmit,
+    setFieldValue,
+    validate,
+    inputMenu,
+  }
+}
+
+export const useMaterialTagForm = ({
+  material,
+  materialOptions,
+  pantoneList,
+}: {
+  material?: Material
+  materialOptions: MaterialOptions
+  pantoneList?: PantoneColor[]
+}) => {
+  const materialTagSchema = useMaterialTagSchema()
+
+  const {
+    values,
+    defineInputBinds,
+    setFieldValue,
+    setValues,
+    errors,
+    meta,
+    validate,
+    handleSubmit,
+    submitCount,
+  } = useForm({
+    initialValues: material
+      ? mapMaterialToForm(material)
+      : (getDefaults(materialTagSchema) as z.infer<
+          ReturnType<typeof useMaterialSchema>
+        >),
+    validationSchema: toTypedSchema(materialTagSchema),
+  })
+
+  const mode = computed(() =>
+    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+  )
+
+  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
+    material?.sideType === MaterialSideType.BACK_SIDE
+      ? MATERIAL_SIDE_TYPE.BACK
+      : MATERIAL_SIDE_TYPE.FACE
+  )
+
+  const inputMenu = useMaterialInputMenu(
+    values,
+    materialOptions,
+    currentMaterialSide
+  )
+
+  const displayErrors = computed(() => {
+    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
+      return errors.value
+    }
+
+    if (mode.value === CREATE_EDIT.EDIT) {
+      return errors.value
+    }
+
+    return {}
+  })
+
+  return {
+    mode,
+    values,
+    displayErrors,
+    errors,
+    meta,
+    pantoneList,
+    defineInputBinds,
+    submitCount,
+    currentMaterialSide,
+    handleSubmit,
+    setFieldValue,
+    validate,
+    inputMenu,
+  }
+}

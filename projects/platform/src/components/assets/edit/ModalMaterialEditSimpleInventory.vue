@@ -17,7 +17,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { materialFormServiceKey } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
-import useMaterialForm from '@/composables/material/useMaterialForm'
+import { useMaterialInventoryForm } from '@/composables/material/useMaterialForm'
 import type { MaterialFormService } from '@/types'
 import type {
   Material,
@@ -39,11 +39,12 @@ const store = useStore()
 const notify = useNotifyStore()
 
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
-const materialFormService: MaterialFormService = useMaterialForm({
+const materialFormService = useMaterialInventoryForm({
   material: props.material,
   materialOptions: props.materialOptions,
 })
 
+// 從這改變 provide 影響子組件block-material-inventory inject
 provide(materialFormServiceKey, materialFormService)
 
 const updateMaterialSimpleInventory = async () => {

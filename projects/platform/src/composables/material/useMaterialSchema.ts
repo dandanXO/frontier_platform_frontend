@@ -589,7 +589,59 @@ export const weightDisplaySettingSchema = z
     isShowWeightGy: false,
     isShowWeightGm: false,
   })
+export const useuseMaterialInventorySchema = () => {
+  const schema = z.object({
+    internalInfo: z.object({
+      tagList: tagListSchema,
+      remark: z
+        .string()
+        .max(...getMaxLengthParams(2500))
+        .nullable()
+        .default(null),
+      priceInfo: materialPriceInfoSchema,
+      inventoryInfo: inventoryInfoSchema,
+      nativeCode: z
+        .string()
+        .max(...getMaxLengthParams(50))
+        .nullable()
+        .default(null),
+    }),
+  })
 
+  return schema
+}
+export const useMaterialPublicPriceSchema = () => {
+  const schema = z.object({
+    priceInfo: materialPriceInfoSchema,
+  })
+
+  return schema
+}
+export const useMaterialTagSchema = () => {
+  const schema = z.object({
+    internalInfo: z.object({
+      tagList: tagListSchema,
+      remark: z
+        .string()
+        .max(...getMaxLengthParams(2500))
+        .nullable()
+        .default(null),
+      priceInfo: materialPriceInfoSchema,
+      inventoryInfo: inventoryInfoSchema,
+      nativeCode: z
+        .string()
+        .max(...getMaxLengthParams(50))
+        .nullable()
+        .default(null),
+    }),
+    tagInfo: z.object({
+      tagList: tagListSchema,
+      certificationTagIdList: z.array(z.number().int()).nullable().default([]),
+    }),
+  })
+
+  return schema
+}
 const useMaterialSchema = () => {
   const materialSchema = z.object({
     itemNo: z
