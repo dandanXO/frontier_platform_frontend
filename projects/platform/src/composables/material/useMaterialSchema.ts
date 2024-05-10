@@ -589,7 +589,7 @@ export const weightDisplaySettingSchema = z
     isShowWeightGy: false,
     isShowWeightGm: false,
   })
-export const useuseMaterialInventorySchema = () => {
+export const useMaterialInventorySchema = () => {
   const schema = z.object({
     internalInfo: z.object({
       tagList: tagListSchema,

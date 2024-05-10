@@ -18,7 +18,7 @@ import {
 import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema, {
   getDefaults,
-  useuseMaterialInventorySchema,
+  useMaterialInventorySchema,
   useMaterialPublicPriceSchema,
   useMaterialTagSchema,
 } from '@/composables/material/useMaterialSchema'
@@ -646,7 +646,7 @@ export const useMaterialInventoryForm = ({
   materialOptions: MaterialOptions
   pantoneList?: PantoneColor[]
 }) => {
-  const materialInventorySchema = useuseMaterialInventorySchema()
+  const materialInventorySchema = useMaterialInventorySchema()
 
   const {
     values,
