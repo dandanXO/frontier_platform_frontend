@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
 import { useForm, configure } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
@@ -14,8 +14,8 @@ import {
   type MaterialPriceInfoPricing,
   LengthUnit,
   WeightUnit,
+  type MaterialInternalInventoryInfo,
 } from '@frontier/platform-web-sdk'
-import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema, {
   getDefaults,
   useMaterialInventorySchema,
@@ -23,31 +23,36 @@ import useMaterialSchema, {
   useMaterialTagSchema,
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
-import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
-import { getTotalInventoryQty } from '@/utils/material'
+import { CREATE_EDIT, MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import {
+  mapPricing,
+  getInventoryUnit,
+  getTotalInventoryQty,
+} from '@/utils/material'
 
 configure({ validateOnInput: true })
 
 type PrimarySideKey = 'faceSide' | 'backSide'
 
-const mapPricing = (pricing: MaterialPriceInfoPricing | null | undefined) => {
-  if (!pricing) {
-    return {
-      currencyCode: CurrencyCode.USD,
-      price: null,
-      unit: MaterialQuantityUnit.Y,
-    }
-  }
+const getMode = (material: Material | undefined | null): CREATE_EDIT => {
+  return material !== null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+}
 
-  return {
-    ...pricing,
-    price: Number(pricing.price),
-  }
+const getCurrentMaterialSide = (material: Material | undefined) => {
+  return ref<MATERIAL_SIDE_TYPE>(
+    material?.sideType === MaterialSideType.BACK_SIDE
+      ? MATERIAL_SIDE_TYPE.BACK
+      : MATERIAL_SIDE_TYPE.FACE
+  )
 }
 
 const mapMaterialToForm = (
-  material: Material
+  material: Material | undefined,
+  schema: any
 ): z.infer<ReturnType<typeof useMaterialSchema>> => {
+  if (!material) {
+    return getDefaults(schema) as z.infer<ReturnType<typeof useMaterialSchema>>
+  }
   return {
     ...material,
     faceSide: material.faceSide
@@ -175,6 +180,58 @@ const mapMaterialToForm = (
   }
 }
 
+const getErrors = (
+  material: Material | undefined,
+  submitCount: Ref<number>,
+  errors: any
+) => {
+  return computed(() => {
+    const mode = getMode(material)
+    if (mode === CREATE_EDIT.CREATE && submitCount.value > 0) {
+      return errors.value
+    }
+    if (mode === CREATE_EDIT.EDIT) {
+      return errors.value
+    }
+    return {}
+  })
+}
+const getTotalInventoryQtyWithUnit = (values: any) => {
+  return computed(() => {
+    const fullWidth = values.width?.full
+    const widthUnit = values.width?.unit
+    const weightValue = values.weight?.value
+    const weightUnit = values.weight?.unit
+    const inventoryList =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
+    const inventoryUnit = getInventoryUnit(values.internalInfo?.inventoryInfo)
+
+    if (
+      !fullWidth ||
+      !widthUnit ||
+      !weightUnit ||
+      !weightValue ||
+      !inventoryUnit ||
+      !inventoryList
+    ) {
+      return 0
+    }
+
+    const inventoryTotalQty = inventoryList
+      .map((a: any) => a.qty || 0)
+      .reduce((prev: any, current: any) => prev + current, 0)
+
+    return getTotalInventoryQty(
+      fullWidth,
+      widthUnit,
+      weightValue,
+      weightUnit,
+      inventoryTotalQty,
+      inventoryUnit
+    )
+  })
+}
+
 const useMaterialForm = ({
   material,
   materialOptions,
@@ -224,86 +281,25 @@ const useMaterialForm = ({
     handleSubmit,
     submitCount,
   } = useForm({
-    // initialValues: mapMaterialToForm(material),
-    initialValues: material
-      ? mapMaterialToForm(material)
-      : (getDefaults(materialSchema) as z.infer<
-          ReturnType<typeof useMaterialSchema>
-        >),
+    initialValues: mapMaterialToForm(material, materialSchema),
     validationSchema: toTypedSchema(
       materialSchemaWithPreprocess
     ) as typeof materialSchema,
   })
 
-  const mode = computed(() =>
-    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
-  )
-
-  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
-    material?.sideType === MaterialSideType.BACK_SIDE
-      ? MATERIAL_SIDE_TYPE.BACK
-      : MATERIAL_SIDE_TYPE.FACE
-  )
-
+  const mode = getMode(material)
+  const currentMaterialSide = getCurrentMaterialSide(material)
   const inputMenu = useMaterialInputMenu(
-    values,
+    values as any,
     materialOptions,
     currentMaterialSide
   )
 
-  const displayErrors = computed(() => {
-    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
-      return errors.value
-    }
+  const displayErrors = getErrors(material, submitCount, errors)
 
-    if (mode.value === CREATE_EDIT.EDIT) {
-      return errors.value
-    }
+  const inventoryUnit = getInventoryUnit(values.internalInfo.inventoryInfo)
 
-    return {}
-  })
-
-  const inventoryUnit = computed(() => {
-    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
-      'PCS'
-      ? 'PCS'
-      : 'Y'
-  })
-
-  const totalInventoryQtyInY = computed(() => {
-    const fullWidth = values.width?.full
-    const widthUnit = values.width?.unit
-    const weightValue = values.weight?.value
-    const weightUnit = values.weight?.unit
-    const inventoryList =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
-    const inventoryUnit =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
-
-    if (
-      !fullWidth ||
-      !widthUnit ||
-      !weightUnit ||
-      !weightValue ||
-      !inventoryUnit ||
-      !inventoryList
-    ) {
-      return 0
-    }
-
-    const inventoryTotalQty = inventoryList
-      .map((a) => a.qty || 0)
-      .reduce((prev, current) => prev + current, 0)
-
-    return getTotalInventoryQty(
-      fullWidth,
-      widthUnit,
-      weightValue,
-      weightUnit,
-      inventoryTotalQty,
-      inventoryUnit
-    )
-  })
+  const totalInventoryQtyInY = getTotalInventoryQtyWithUnit(values)
 
   const isSpecificationTabValid = computed(() => {
     return !Object.keys(displayErrors.value).some((key) => {
@@ -640,151 +636,36 @@ export default useMaterialForm
 export const useMaterialInventoryForm = ({
   material,
   materialOptions,
-  pantoneList,
 }: {
   material?: Material
   materialOptions: MaterialOptions
-  pantoneList?: PantoneColor[]
 }) => {
   const materialInventorySchema = useMaterialInventorySchema()
 
-  const {
-    values,
-    defineInputBinds,
-    setFieldValue,
-    setValues,
-    errors,
-    meta,
-    validate,
-    handleSubmit,
-    submitCount,
-  } = useForm({
-    initialValues: material
-      ? mapMaterialToForm(material)
-      : (getDefaults(materialInventorySchema) as z.infer<
-          ReturnType<typeof useMaterialSchema>
-        >),
+  const { values, defineInputBinds, errors, meta, submitCount } = useForm({
+    initialValues: mapMaterialToForm(material, materialInventorySchema),
     validationSchema: toTypedSchema(materialInventorySchema),
   })
-
-  const mode = computed(() =>
-    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
-  )
-
-  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
-    material?.sideType === MaterialSideType.BACK_SIDE
-      ? MATERIAL_SIDE_TYPE.BACK
-      : MATERIAL_SIDE_TYPE.FACE
-  )
-
   const inputMenu = useMaterialInputMenu(
     values as any,
     materialOptions,
-    currentMaterialSide
+    getCurrentMaterialSide(material)
   )
-
-  const displayErrors = computed(() => {
-    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
-      return errors.value
-    }
-
-    if (mode.value === CREATE_EDIT.EDIT) {
-      return errors.value
-    }
-
-    return {}
-  })
-
-  const inventoryUnit = computed(() => {
-    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
-      'PCS'
-      ? 'PCS'
-      : 'Y'
-  })
-
-  const totalInventoryQtyInY = computed(() => {
-    const fullWidth = values.width?.full
-    const widthUnit = values.width?.unit
-    const weightValue = values.weight?.value
-    const weightUnit = values.weight?.unit
-    const inventoryList =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
-    const inventoryUnit =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
-
-    if (
-      !fullWidth ||
-      !widthUnit ||
-      !weightUnit ||
-      !weightValue ||
-      !inventoryUnit ||
-      !inventoryList
-    ) {
-      return 0
-    }
-
-    const inventoryTotalQty = inventoryList
-      .map((a) => a.qty || 0)
-      .reduce((prev, current) => prev + current, 0)
-
-    return getTotalInventoryQty(
-      fullWidth,
-      widthUnit,
-      weightValue,
-      weightUnit,
-      inventoryTotalQty,
-      inventoryUnit
-    )
-  })
-
-  const isSpecificationTabValid = computed(() => {
-    return !Object.keys(displayErrors.value).some((key) => {
-      if (
-        key === 'itemNo' ||
-        key.startsWith('season') ||
-        key.startsWith('faceSide') ||
-        key.startsWith('middleSide') ||
-        key.startsWith('backSide') ||
-        key.startsWith('weight') ||
-        key.startsWith('width')
-      ) {
-        return true
-      }
-
-      return false
-    })
-  })
-
-  const isInventoryTabValid = computed(() => {
-    return !Object.keys(displayErrors.value).some((key) => {
-      if (
-        key === 'internalInfo.nativeCode' ||
-        key.startsWith('internalInfo.inventoryInfo')
-      ) {
-        return true
-      }
-
-      return false
-    })
-  })
+  const displayErrors = getErrors(material, submitCount, errors)
+  const inventoryUnit = getInventoryUnit(
+    values.internalInfo?.inventoryInfo as MaterialInternalInventoryInfo
+  )
+  const totalInventoryQtyInY = getTotalInventoryQtyWithUnit(values)
 
   return {
-    mode,
     values,
     displayErrors,
     errors,
-    isSpecificationTabValid,
-    isInventoryTabValid,
     meta,
-    pantoneList,
     defineInputBinds,
     submitCount,
-    currentMaterialSide,
     inventoryUnit,
     totalInventoryQtyInY,
-    handleSubmit,
-    setFieldValue,
-    validate,
     inputMenu,
   }
 }
@@ -792,82 +673,30 @@ export const useMaterialInventoryForm = ({
 export const useMaterialPublicPriceForm = ({
   material,
   materialOptions,
-  pantoneList,
 }: {
   material?: Material
   materialOptions: MaterialOptions
-  pantoneList?: PantoneColor[]
 }) => {
   const materialPublicPriceSchema = useMaterialPublicPriceSchema()
 
-  const {
-    values,
-    defineInputBinds,
-    setFieldValue,
-    setValues,
-    errors,
-    meta,
-    validate,
-    handleSubmit,
-    submitCount,
-  } = useForm({
-    initialValues: material
-      ? mapMaterialToForm(material)
-      : (getDefaults(materialPublicPriceSchema) as z.infer<
-          ReturnType<typeof useMaterialSchema>
-        >),
+  const { values, defineInputBinds, errors, meta, submitCount } = useForm({
+    initialValues: mapMaterialToForm(material, materialPublicPriceSchema),
     validationSchema: toTypedSchema(materialPublicPriceSchema),
   })
-
-  const mode = computed(() =>
-    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
-  )
-
-  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
-    material?.sideType === MaterialSideType.BACK_SIDE
-      ? MATERIAL_SIDE_TYPE.BACK
-      : MATERIAL_SIDE_TYPE.FACE
-  )
-
   const inputMenu = useMaterialInputMenu(
     values as any,
     materialOptions,
-    currentMaterialSide
+    getCurrentMaterialSide(material)
   )
-
-  const displayErrors = computed(() => {
-    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
-      return errors.value
-    }
-
-    if (mode.value === CREATE_EDIT.EDIT) {
-      return errors.value
-    }
-
-    return {}
-  })
-
-  const inventoryUnit = computed(() => {
-    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
-      'PCS'
-      ? 'PCS'
-      : 'Y'
-  })
+  const displayErrors = getErrors(material, submitCount, errors)
 
   return {
-    mode,
     values,
     displayErrors,
     errors,
     meta,
-    pantoneList,
     defineInputBinds,
     submitCount,
-    currentMaterialSide,
-    inventoryUnit,
-    handleSubmit,
-    setFieldValue,
-    validate,
     inputMenu,
   }
 }
@@ -875,74 +704,30 @@ export const useMaterialPublicPriceForm = ({
 export const useMaterialTagForm = ({
   material,
   materialOptions,
-  pantoneList,
 }: {
   material?: Material
   materialOptions: MaterialOptions
-  pantoneList?: PantoneColor[]
 }) => {
   const materialTagSchema = useMaterialTagSchema()
 
-  const {
-    values,
-    defineInputBinds,
-    setFieldValue,
-    setValues,
-    errors,
-    meta,
-    validate,
-    handleSubmit,
-    submitCount,
-  } = useForm({
-    initialValues: material
-      ? mapMaterialToForm(material)
-      : (getDefaults(materialTagSchema) as z.infer<
-          ReturnType<typeof useMaterialSchema>
-        >),
+  const { values, defineInputBinds, errors, meta, submitCount } = useForm({
+    initialValues: mapMaterialToForm(material, materialTagSchema),
     validationSchema: toTypedSchema(materialTagSchema),
   })
-
-  const mode = computed(() =>
-    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
-  )
-
-  const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(
-    material?.sideType === MaterialSideType.BACK_SIDE
-      ? MATERIAL_SIDE_TYPE.BACK
-      : MATERIAL_SIDE_TYPE.FACE
-  )
-
   const inputMenu = useMaterialInputMenu(
-    values,
+    values as any,
     materialOptions,
-    currentMaterialSide
+    getCurrentMaterialSide(material)
   )
-
-  const displayErrors = computed(() => {
-    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
-      return errors.value
-    }
-
-    if (mode.value === CREATE_EDIT.EDIT) {
-      return errors.value
-    }
-
-    return {}
-  })
+  const displayErrors = getErrors(material, submitCount, errors)
 
   return {
-    mode,
     values,
     displayErrors,
     errors,
     meta,
-    pantoneList,
     defineInputBinds,
     submitCount,
-    currentMaterialSide,
-    handleSubmit,
-    setFieldValue,
-    validate,
     inputMenu,
   }
 }

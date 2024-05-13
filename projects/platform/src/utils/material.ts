@@ -10,6 +10,7 @@ import {
   type MaterialSide,
   type MaterialSideBase,
   type MaterialMiddleSide,
+  CurrencyCode,
 } from '@frontier/platform-web-sdk'
 import { CM_PER_INCH, toDP2 } from './cropper'
 import type { MaterialRow } from '@/types'
@@ -162,6 +163,12 @@ export const convertInventoryFormToReq = (
   }
 }
 
+export const getInventoryUnit = (
+  inventoryInfo: MaterialInternalInventoryInfo | undefined | null
+) => {
+  return inventoryInfo?.yardageRemainingInfo?.unit === 'PCS' ? 'PCS' : 'Y'
+}
+
 export const convertPriceInfoFormToReq = (
   priceInfo: MaterialPriceInfo
 ): MaterialPriceInfo => {
@@ -214,12 +221,14 @@ export const convertSpreadSheetPriceInfoFormToReq = (
   }
 }
 
-const mapPricing = (pricing: MaterialPriceInfoPricing | null | undefined) => {
+export const mapPricing = (
+  pricing: MaterialPriceInfoPricing | null | undefined
+) => {
   if (!pricing) {
     return {
-      currencyCode: null,
+      currencyCode: CurrencyCode.USD,
       price: null,
-      unit: null,
+      unit: MaterialQuantityUnit.Y,
     }
   }
 
