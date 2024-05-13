@@ -5,6 +5,7 @@ div(class="flex items-start gap-x-10")
     :availableFileList="availableFileList"
     :currentSideType="currentSideType"
     class="w-125 shrink-0"
+    :material="material"
   )
   //- Right Side: Item#, Spec, Color and Pattern, 3D Material
   div

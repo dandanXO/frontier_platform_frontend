@@ -11,7 +11,8 @@ div(
       v-default-img
     )
     div(v-else class="w-full h-full flex items-center justify-center bg-grey-100")
-      p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
+      p(v-if="!loading" class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
+      f-svg-icon(v-else iconName="loading" size="24" class="text-primary-500, min-h-6")
   template(v-else-if="[MOV, MP4].includes(extension)")
     video-view(
       v-if="originalUrl"
@@ -39,6 +40,7 @@ export interface PropsFileThumbnail {
   thumbnailUrl: string | null
   originalUrl: string | null
   extension: Extension
+  loading?: boolean
 }
 
 defineProps<PropsFileThumbnail>()

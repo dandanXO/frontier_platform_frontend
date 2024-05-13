@@ -10029,6 +10029,12 @@ export interface Material {
      */
     'inventoryTotalQtyInYard': number | null;
     /**
+     * 庫存明細單位若為Y、M、KG 換算成Y 庫存明細單位若為PCS 不換算直接給PCS 
+     * @type {string}
+     * @memberof Material
+     */
+    'inventoryUnit': string;
+    /**
      * 
      * @type {MaterialCarbonEmission}
      * @memberof Material

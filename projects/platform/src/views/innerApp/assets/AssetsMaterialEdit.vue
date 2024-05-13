@@ -30,6 +30,7 @@ div(class="w-full h-full flex justify-center")
           :availableFileList="availableFileList"
           @updateCurrentCoverIndex="handleUpdateCurrentCoverIndex"
           hideMagnifier
+          :material="material"
         )
         block-material-u3m(:material="material")
       div(class="w-full flex flex-col divide-y divide-grey-250")

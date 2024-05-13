@@ -125,7 +125,8 @@ export default function useMaterial(
       faceSide,
       backSide,
       multimediaList,
-      digitalDrape,
+      u3m: { digitalDrape },
+      customU3m: { digitalDrape: customDigitalDrape },
     } = material.value
 
     const list: Array<MaterialFile> = [
@@ -196,19 +197,23 @@ export default function useMaterial(
       )
     }
 
-    if (digitalDrape) {
-      list.push({
-        id: 'digitalDrape',
-        fileId: null,
-        displayUrl: digitalDrape.displayUrl,
-        originalUrl: digitalDrape.originalUrl,
-        thumbnailUrl: digitalDrape.thumbnailUrl,
-        displayName: `${t('MI0136')}(${t('MI0137')})`,
-        displayNameShort: t('MI0136'),
-        caption: t('MI0137'),
-        extension: Extension.JPG,
-      })
-    }
+    // Digital Drape
+    const selectedDigitalDrape = customDigitalDrape?.isSelected
+      ? customDigitalDrape
+      : digitalDrape
+    list.push({
+      id: 'digitalDrape',
+      fileId: null,
+      displayUrl: selectedDigitalDrape?.displayUrl ?? null,
+      originalUrl: selectedDigitalDrape?.originalUrl ?? null,
+      thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
+      displayName: `${t('MI0136')}${
+        customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
+      }`,
+      displayNameShort: t('MI0136'),
+      caption: null,
+      extension: Extension.JPG,
+    })
 
     multimediaList.length > 0 &&
       list.push(
