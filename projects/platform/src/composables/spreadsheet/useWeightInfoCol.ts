@@ -56,7 +56,6 @@ const useWeightInfoCol = (): ComputedRef<
             t('MI0039')
           ),
         },
-
         {
           field: 'weight.unit',
           headerName: t('RR0320'),

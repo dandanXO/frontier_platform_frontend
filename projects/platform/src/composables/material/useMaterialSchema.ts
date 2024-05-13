@@ -54,9 +54,12 @@ const nonNullParams = {
   errorMap: nonNullErrorMap,
 }
 
-const toCommaSeparated = (n: number | string | BigNumber) => {
+const toCommaSeparated = (
+  n: number | string | BigNumber,
+  decimalPlaces: number = 2
+) => {
   const bigNumberValue = new BigNumber(n)
-  return bigNumberValue.toFormat(2)
+  return bigNumberValue.toFormat(decimalPlaces)
 }
 
 const getMaxLengthParams = (qty: number) => {
@@ -66,9 +69,14 @@ const getMaxLengthParams = (qty: number) => {
   return [qty, message] as const
 }
 
-const getMaxNumberParams = (qty: number | string | BigNumber) => {
+const getMaxNumberParams = (
+  qty: number | string | BigNumber,
+  decimalPlaces?: number
+) => {
   const bigQty = new BigNumber(qty)
-  const message = i18n.global.t('WW0153', { maxNum: toCommaSeparated(bigQty) })
+  const message = i18n.global.t('WW0153', {
+    maxNum: toCommaSeparated(bigQty, decimalPlaces),
+  })
   const numberQty = BigNumber.isBigNumber(qty) ? qty.toNumber() : Number(qty)
   return [numberQty, message] as const
 }
@@ -572,7 +580,7 @@ export const materialWeightSchema = z.object({
     .number(nonNullParams)
     .multipleOf(...getMaxDecimalPlacesParams(3))
     .min(...getMinNumberParams(1))
-    .max(...getMaxNumberParams(99999)),
+    .max(...getMaxNumberParams(99999, 3)),
   unit: z.nativeEnum(WeightUnit, nonNullParams).default(WeightUnit.GSM),
 })
 
