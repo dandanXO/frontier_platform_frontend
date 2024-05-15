@@ -15,18 +15,15 @@ div(
       p(class="text-[10px] bold") {{ $t('DD0046') }}
       p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[196px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="bold mb-2" :class="fontSizeOptions[fontSizeIndex + 1]") {{ material.itemNo }}
+  div(class="w-[194px] h-full max-h-full flex flex-col overflow-hidden")
+    p(class="bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
       class="w-full flex"
     )
       p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
     div(class="flex flex-row")
-      div(
-        v-for="key in Object.keys(carbonEmissions)"
-        class="flex flex-row items-center"
-      )
+      div(v-for="key in Object.keys(carbonEmissions)" class="flex flex-row items-center")
         img(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
           :src="emissionsIconMapper[key]"
@@ -63,17 +60,14 @@ div(
       p(class="text-[10px] bold") {{ $t('DD0047') }}
       p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[196px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="bold mb-2" :class="fontSizeOptions[fontSizeIndex + 1]") {{ material.itemNo }}
+  div(class="w-[194px] h-full max-h-full flex flex-col overflow-hidden")
+    p(class="bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
     )
       p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
     div(class="flex flex-row")
-      div(
-        v-for="key in Object.keys(carbonEmissions)"
-        class="flex flex-row items-center"
-      )
+      div(v-for="key in Object.keys(carbonEmissions)" class="flex flex-row items-center")
         img(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
           :src="emissionsIconMapper[key]"
@@ -98,7 +92,7 @@ div(
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed, toRef, onMounted } from 'vue'
+import { computed, toRef, onMounted, watch } from 'vue'
 import type { Material } from '@frontier/platform-web-sdk'
 import usePrint from '@/composables/material/usePrint'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
@@ -117,6 +111,7 @@ const props = defineProps<{
   index: number
   size: number
   setting: QrCodePrintLabelSetting
+  reloadQrcode: boolean
 }>()
 
 const { t } = useI18n()
@@ -185,14 +180,23 @@ const emissionsSettingMapper = {
 const isCustomize = computed<boolean>(() =>
   PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
 )
-
-onMounted(async () => {
+const randerQrcode = async () => {
   const qrCode = document.getElementById(`qr-code-${index.value}-${type.value}`)
-  if (qrCode)
+  if (qrCode) {
     await makeQrCode(
       `${material.value.materialId}`,
       `qr-code-${index.value}-${type.value}`,
       size.value
     )
+  }
+}
+watch(
+  () => props.reloadQrcode,
+  () => {
+    randerQrcode()
+  }
+)
+onMounted(async () => {
+  randerQrcode()
 })
 </script>

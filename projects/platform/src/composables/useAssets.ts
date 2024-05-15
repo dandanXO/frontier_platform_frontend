@@ -453,11 +453,11 @@ export default function useAssets() {
         component: 'modal-label-preview',
         properties: {
           materialList: toMaterialList(m),
-          printLabel: (
+          printLabel: async (
             materialList: Material[],
             setting: QrCodePrintLabelSetting
-          ): void => {
-            print.printLabel(materialList, setting)
+          ): Promise<void> => {
+            await print.printLabel(materialList, setting)
           },
           updateSetting: async (
             setting: QrCodePrintLabelSetting

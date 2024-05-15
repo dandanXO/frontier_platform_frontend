@@ -1,6 +1,7 @@
 import QRCode from 'qrcode'
 // https://www.npmjs.com/package/qrcode
 import domtoimage from 'dom-to-image'
+import html2canvas from 'html2canvas'
 import { jsPDF as JsPDF } from 'jspdf'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -48,7 +49,10 @@ const emissionsSettingMapper = {
   land: 'isPrintLandUse',
 }
 
-const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
+const makePdf = async (
+  pdf: JsPDF,
+  imgDataUrlList: (string | HTMLCanvasElement)[]
+) => {
   for (let i = 0; i < imgDataUrlList.length; i++) {
     pdf.addImage(
       imgDataUrlList[i],
@@ -64,7 +68,14 @@ const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
   }
 
   pdf.setProperties({ title: 'New Report' })
-  window.open(pdf.output('bloburl').toString())
+  // This method of opening is even safer.
+  try {
+    const blob = pdf.output('blob')
+    window.open(URL.createObjectURL(blob))
+  } catch (e) {
+    console.error('in makePdf')
+    throw e
+  }
 }
 
 const makeQrCode = async (
@@ -85,19 +96,35 @@ const makeQrCode = async (
   })
   qrcode.style.width = `${width}px`
   qrcode.style.height = `${width}px`
+  // 防呆 保證裡面只有一個 canvas
+  qrCodeContainer.innerHTML = ''
   qrCodeContainer.appendChild(qrcode)
 }
 
-const getImageDataUrl = (node: Node, width: number, height: number) => {
-  const scale = 5
-  return domtoimage.toJpeg(node, {
-    width: width * scale,
-    height: height * scale,
-    style: {
-      transform: 'scale(' + scale + ')',
-      transformOrigin: 'top left',
-    },
-  })
+const getImageDataUrl = (
+  node: Node,
+  width: number,
+  height: number,
+  isA4Paper: boolean = false
+) => {
+  const scale = 4
+  if (isA4Paper) {
+    return domtoimage.toPng(node, {
+      width: width * scale,
+      height: height * scale,
+      style: {
+        transform: 'scale(' + scale + ')',
+        transformOrigin: 'top left',
+      },
+    })
+  } else {
+    return html2canvas(node as HTMLElement, {
+      scale: scale,
+      width: width,
+      height: height,
+      useCORS: true,
+    }).then((canvas) => canvas)
+  }
 }
 
 const generate = async (
@@ -105,7 +132,8 @@ const generate = async (
   materialList: Material[],
   width: number,
   height: number,
-  jsPDF: JsPDF
+  jsPDF: JsPDF,
+  isA4Paper: boolean = false
 ) => {
   const imgDataUrlList = []
   for (const material of materialList) {
@@ -130,12 +158,22 @@ const generate = async (
 
     for (const side of sideList) {
       const pdfVirtualDom = await generator(side)
-      const imgDataUrl = await getImageDataUrl(pdfVirtualDom, width, height)
+      const imgDataUrl = await getImageDataUrl(
+        pdfVirtualDom,
+        width,
+        height,
+        isA4Paper
+      )
       imgDataUrlList.push(imgDataUrl)
       pdfVirtualDom.remove()
     }
   }
-  await makePdf(jsPDF, imgDataUrlList)
+  try {
+    await makePdf(jsPDF, imgDataUrlList)
+  } catch (e) {
+    console.error('in generate')
+    throw e
+  }
 }
 
 const usePrint = () => {
@@ -309,13 +347,19 @@ const usePrint = () => {
 
     const A4_WIDTH = 594
     const A4_HEIGHT = 842
-    await generate(
-      domGenerator,
-      materialList,
-      A4_WIDTH,
-      A4_HEIGHT,
-      new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
-    )
+    try {
+      await generate(
+        domGenerator,
+        materialList,
+        A4_WIDTH,
+        A4_HEIGHT,
+        new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' }),
+        true
+      )
+    } catch (e) {
+      console.error('in domGenerator')
+      store.dispatch('helper/closeModalLoading')
+    }
 
     store.dispatch('helper/closeModalLoading')
   }
@@ -521,7 +565,7 @@ const usePrint = () => {
       colorPattern.push(patternInfo.pattern)
     }
     if (colorPattern.length > 0) {
-      infoList.push(colorPattern.join(', '));
+      infoList.push(colorPattern.join(', '))
     }
 
     return infoList
@@ -560,8 +604,8 @@ const usePrint = () => {
       'w-[15.5px] h-[15.5px]',
     ]
     const infoSize = fontSizeOptions[fontSizeIndex()]
-    const itemNoSize = fontSizeOptions[fontSizeIndex() + 1]
     const iconSize = iconSizeOptions[fontSizeIndex()]
+    const infoContainerWidth = 'w-[215px]'
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -593,8 +637,8 @@ const usePrint = () => {
 
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
-          <div id="info-container" class="w-[198px] h-full max-h-full flex flex-col overflow-hidden">
-            <p class="${itemNoSize} bold mb-2">${itemNo}</p>
+          <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
+            <p class="bold mb-2">${itemNo}</p>
           </div>
         `
       }
@@ -619,8 +663,8 @@ const usePrint = () => {
 
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
-          <div id="info-container" class="w-[198px] h-full max-h-full flex flex-col overflow-hidden">
-            <p class="${itemNoSize} bold mb-2">${itemNo}</p>
+          <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
+            <p class="bold mb-2">${itemNo}</p>
           </div>
         `
       }
@@ -644,7 +688,7 @@ const usePrint = () => {
         normalLabel(virtualDom)
       }
       document.body.appendChild(virtualDom)
-      let qrWidth = 62
+      const qrWidth = 62
       await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
 
       const infoContainer = document.getElementById('info-container')!
@@ -729,8 +773,10 @@ const usePrint = () => {
         orientation: 'l',
       })
     )
-
     store.dispatch('helper/closeModalLoading')
+    return new Promise((res, rej) => {
+      res('finish printLabel')
+    })
   }
 
   const printBackSideLabel = async () => {

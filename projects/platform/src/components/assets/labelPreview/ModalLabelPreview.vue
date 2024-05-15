@@ -42,6 +42,7 @@ modal-behavior(
                 :material="material"
                 :size="62"
                 :setting="currentLabelSetting"
+                :reloadQrcode="needReloadQrcode"
               )
               label-preview(
                 :type="'back'"
@@ -49,6 +50,7 @@ modal-behavior(
                 :material="material"
                 :size="62"
                 :setting="currentLabelSetting"
+                :reloadQrcode="needReloadQrcode"
               )
     div(class="w-60")
       div(
@@ -149,10 +151,10 @@ import {
 
 const props = defineProps<{
   materialList: Material[]
-  printLabel: (materials: Material[], setting: QrCodePrintLabelSetting) => void
+  printLabel: (materials: Material[], setting: QrCodePrintLabelSetting) => any
   updateSetting: (setting: QrCodePrintLabelSetting) => void
 }>()
-
+const needReloadQrcode = ref(false)
 const { value: fontSizeValue, errorMessage } = useField<number>(
   'fontSize',
   (value) => {
@@ -355,7 +357,7 @@ const handleSetDefault = () => {
   store.dispatch('helper/closeModalLoading')
 }
 
-const handlePrintLabel = () => {
+const handlePrintLabel = async () => {
   store.dispatch('helper/pushModalLoading')
   const printMaterials: Material[] = []
   let index = 0
@@ -378,11 +380,16 @@ const handlePrintLabel = () => {
 
   const currentSetting = getCurrentSetting()
   if (printMaterials.length > 0) {
-    props.printLabel(
-      printMaterials,
-      currentSetting as unknown as QrCodePrintLabelSetting
-    )
+    props
+      .printLabel(
+        printMaterials,
+        currentSetting as unknown as QrCodePrintLabelSetting
+      )
+      .then(() => {
+        needReloadQrcode.value = true
+      })
   }
+
   store.dispatch('helper/closeModalLoading')
 }
 
