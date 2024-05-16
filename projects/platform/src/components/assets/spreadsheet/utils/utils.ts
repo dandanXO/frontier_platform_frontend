@@ -13,6 +13,7 @@ import type { GridApi } from 'ag-grid-enterprise'
 import type { Ref } from 'vue'
 import { read, type WorkBook } from 'xlsx'
 import BigNumber from 'bignumber.js'
+import Fuse from 'fuse.js'
 
 export const convertDataToWorkbook = (dataRows: any) => {
   /* convert data to binary string */
@@ -261,14 +262,16 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               'name'
             )
             break
-          case 'MI_MatType':
-            const materialTypeKey = row.MI_MatType.trim()
-              .toUpperCase()
-              .replace(/-/g, '_')
+          case 'MI_MatType': {
+            const input = row.MI_MatType.trim()
+            const materialTypeKey = fuzzySearchMaterialType(input) as
+              | keyof typeof MaterialType
+              | null
             const materialTypeValue =
-              MaterialType[materialTypeKey as keyof typeof MaterialType]
+              materialTypeKey !== null ? MaterialType[materialTypeKey] : null
             newRow[sideKey]!.materialType = materialTypeValue
             break
+          }
           case 'MI_PUB_1':
             newRow[sideKey]!.construction.isPublic = parseYesNoValue(
               row.MI_PUB_1,
@@ -757,4 +760,17 @@ function getUniqueItemsByField<T extends Record<string, any>>(
   } else {
     return Array.from(new Set(list))
   }
+}
+
+function fuzzySearchMaterialType(input: string): string | null {
+  const keys = Object.keys(MaterialType)
+  const fuse = new Fuse(keys, { includeScore: true })
+
+  const result = fuse.search(input)
+
+  if (result.length > 0) {
+    return result[0].item // return the matched key
+  }
+
+  return null
 }
