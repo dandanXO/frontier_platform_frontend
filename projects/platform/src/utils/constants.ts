@@ -14,6 +14,13 @@ export const ROLE_ID = {
   MEMBER3: 6,
 }
 
+export const INVALID_IMAGE_CODE = {
+  INVALID_DIMENSION: 1,
+  INVALID_FILE_SIZE: 2,
+  INVALID_FILE_TYPE: 3,
+  INVALID_RESOLUTION: 4,
+}
+
 export const COLOR = {
   RED: '#E04A4B',
   LAVA: '#F07D73',

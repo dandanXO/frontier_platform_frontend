@@ -209,6 +209,7 @@ class FileOperator {
     }
 
     Array.from(files).forEach((file) => this.uploadHandler(file))
+    this.event.emit('filesValidated', files)
   }
 
   uploadHandler(file: File) {

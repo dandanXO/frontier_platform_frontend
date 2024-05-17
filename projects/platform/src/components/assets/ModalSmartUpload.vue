@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="isUploading ? $t('DD0112') : isFinish ? $t('DD0113') : $t('DD0094')"
+  :header="isUploading ? $t('DD0112') : isFinish ? $t('DD0113') : isCheckingFiles || isDisplayingCheckResult ? $t('DD0126') : $t('DD0094')"
   :primaryBtnText="isUploading ? '' : isFinish ? $t('UU0087') : $t('UU0022')"
   :secondaryBtnText="isFinish ? $t('UU0026') : $t('UU0002')"
   :primaryBtnDisabled="disabledUpload"
@@ -52,6 +52,32 @@ modal-behavior(
             data-cy="modal-smart-upload_browse"
             @click="chooseFile"
           ) {{ $t('UU0025') }}
+    template(v-else-if="isCheckingFiles")
+      div(class="flex items-center flex-col")
+        div(class="text-grey-850 text-center mb-4") {{ $t('DD0127') }}
+        f-circle-progress-bar(
+          class="mb-2"
+          :size="80"
+          :current="materialImageList.length"
+          :max="totalFiles"
+        )
+        div(class="text-grey-800 text-center font-bold") {{ materialImageList.length }} {{  " " + $t('DD0128') + " "  }} {{ totalFiles }}
+    template(v-else-if="isDisplayingCheckResult")
+      div(class="flex items-center flex-col overflow-auto")
+        accordion(
+          :title="$t('DD0131')"
+          titleClass="text-primary-600"
+          :items="validImages"
+        )
+        accordion(
+          :title="$t('DD0132')"
+          titleClass="text-red-600"
+          :items="invalidImages"
+          isExpanded
+        )
+        div(v-if="invalidImages.length > 0" class="w-full bg-red-100 rounded-md p-3 flex") 
+          f-svg-icon(iconName="error_outline" size="20" class="text-red-600 mr-2")
+          div(class="text-grey-700 text-sm") {{ $t('WW0172') }}
     template(v-else)
       template(v-if="isFinish")
         div(class="flex items-center bg-grey-50 py-2.5 px-4 mb-1 h-14.5")
@@ -60,7 +86,7 @@ modal-behavior(
         f-scrollbar-container(class="h-59.5")
           div(class="grid divide-y divide-grey-100")
             div(
-              v-for="image in materialImageList"
+              v-for="image in validImages"
               :key="image.file.name"
               class="py-1 h-11 flex items-center"
             )
@@ -75,7 +101,7 @@ modal-behavior(
       f-scrollbar-container(v-else class="h-75")
         div(class="grid divide-y divide-grey-100")
           div(
-            v-for="(image, index) in materialImageList"
+            v-for="(image, index) in validImages"
             :key="image.file.name"
             class="py-1 h-11 flex items-center"
             data-cy="modal-smart-upload_item"
@@ -120,11 +146,19 @@ import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { useAssetsStore } from '@/stores/assets'
 import { type S3UploadedObject, Extension } from '@frontier/platform-web-sdk'
+import Accordion from '@/components/assets/modalSmartUpload/Accordion.vue'
+import { INVALID_IMAGE_CODE } from '@/utils/constants'
+import { readImageFile } from '@/utils/readImageFile'
 
 interface ImageItem {
   file: File
   processing: number
   isRemoved: boolean
+  type: string
+  size: number
+  width: number
+  height: number
+  invalidCode: number | null
 }
 
 const store = useStore()
@@ -139,10 +173,28 @@ const removeImage = (imageItem: ImageItem, index: number) => {
   imageItem.isRemoved = true
   materialImageList.value.splice(index, 1)
 }
-const disabledUpload = computed(() => materialImageList.value.length === 0)
+const validImages = computed(() =>
+  materialImageList.value.filter(
+    (image) => !image.isRemoved && !image.invalidCode
+  )
+)
+const invalidImages = computed(() =>
+  materialImageList.value.filter(
+    (image) => image.isRemoved || image.invalidCode
+  )
+)
+
+const isCheckingFiles = ref(false)
+const isDisplayingCheckResult = ref(false)
+const totalFiles = ref(0)
+
+const disabledUpload = computed(
+  () => validImages.value.length === 0 || isCheckingFiles.value
+)
 
 const fileSizeMaxLimit = 100 * Math.pow(1024, 2)
 const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
+const minimumDimensions = 800
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {
@@ -153,16 +205,71 @@ const onDrop = (evt: DragEvent) => {
   fileOperator.onDrop(evt)
 }
 
-fileOperator.on('finish', (file: File) => {
-  errorCode.value = null
-  materialImageList.value.push({ file, processing: 0, isRemoved: false })
+fileOperator.on('finish', async (file: File) => {
+  isCheckingFiles.value = true
+  try {
+    const imageInfo = await readImageFile(file)
+
+    const item: ImageItem = {
+      file,
+      processing: 0,
+      isRemoved: false,
+      invalidCode: null,
+      ...imageInfo,
+    }
+
+    validateImage(item, imageInfo)
+
+    errorCode.value = null
+    materialImageList.value.push(item)
+  } catch (error) {
+    console.error('Error reading image file:', error)
+  }
+  if (materialImageList.value.length === totalFiles.value) {
+    isCheckingFiles.value = false
+    isDisplayingCheckResult.value = true
+  }
 })
+
+function validateImage(item: ImageItem, imageInfo: any) {
+  if (
+    imageInfo.width < minimumDimensions ||
+    imageInfo.height < minimumDimensions
+  ) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
+    item.isRemoved = true
+  }
+
+  if (imageInfo.size > fileSizeMaxLimit) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
+    item.isRemoved = true
+  }
+
+  if (
+    !acceptType.some((type) =>
+      imageInfo.type.toLowerCase().includes(type.toLowerCase())
+    )
+  ) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_TYPE
+    item.isRemoved = true
+  }
+
+  if (imageInfo.xResolution < 600 || imageInfo.yResolution < 600) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_RESOLUTION
+    item.isRemoved = true
+  }
+}
 
 fileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
   errorCode.value = code
 })
 
+fileOperator.on('filesValidated', (files: File[]) => {
+  totalFiles.value = files.length
+})
+
 const startUpload = () => {
+  isDisplayingCheckResult.value = false
   isUploading.value = true
 
   const uploadToAws = async (image: ImageItem) => {
@@ -194,7 +301,7 @@ const startUpload = () => {
     })
   }
 
-  Promise.all(materialImageList.value.map(uploadToAws))
+  Promise.all(validImages.value.map(uploadToAws))
     .then((fileList) =>
       ogBaseAssetsApi('smartUploadAssetsMaterialList', {
         fileList: fileList.filter((file) => file) as S3UploadedObject[],
@@ -203,6 +310,9 @@ const startUpload = () => {
     .then(() => {
       isFinish.value = true
       isUploading.value = false
+    })
+    .catch((error) => {
+      console.error(error || 'Error uploading images')
     })
 }
 
