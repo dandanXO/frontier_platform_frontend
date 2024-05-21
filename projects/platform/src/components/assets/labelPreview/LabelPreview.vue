@@ -92,7 +92,7 @@ div(
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed, toRef, onMounted, watch } from 'vue'
+import { computed, toRef, onMounted, watch, nextTick } from 'vue'
 import type { Material } from '@frontier/platform-web-sdk'
 import usePrint from '@/composables/material/usePrint'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
@@ -111,7 +111,7 @@ const props = defineProps<{
   index: number
   size: number
   setting: QrCodePrintLabelSetting
-  reloadQrcode: boolean
+  reloadQrcode: number
 }>()
 
 const { t } = useI18n()
@@ -192,7 +192,8 @@ const randerQrcode = async () => {
 }
 watch(
   () => props.reloadQrcode,
-  () => {
+  async () => {
+    await nextTick()
     randerQrcode()
   }
 )

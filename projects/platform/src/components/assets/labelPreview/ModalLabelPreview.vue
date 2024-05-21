@@ -1,5 +1,6 @@
 <template lang="pug">
 modal-behavior(
+  :primaryBtnDisabled="disablePrintBtn()"
   :header="$t('MM0038')"
   :primaryBtnText="$t('MM0042')"
   :primaryBtnIcon="'open_in_new'"
@@ -154,7 +155,7 @@ const props = defineProps<{
   printLabel: (materials: Material[], setting: QrCodePrintLabelSetting) => any
   updateSetting: (setting: QrCodePrintLabelSetting) => void
 }>()
-const needReloadQrcode = ref(false)
+const needReloadQrcode = ref(0)
 const { value: fontSizeValue, errorMessage } = useField<number>(
   'fontSize',
   (value) => {
@@ -266,6 +267,10 @@ const materialShowConfigs = computed(() => {
 
   return materialShow
 })
+
+const disablePrintBtn = () => {
+  return !materialShow.value.some((item) => item)
+}
 
 const checkMaterial = (e: Event) => {
   if (!e.target) {
@@ -386,7 +391,8 @@ const handlePrintLabel = async () => {
         currentSetting as unknown as QrCodePrintLabelSetting
       )
       .then(() => {
-        needReloadQrcode.value = true
+        // 強制觸發 vue的子組件watch rerander qrcode img 的作法
+        needReloadQrcode.value = Math.random()
       })
   }
 

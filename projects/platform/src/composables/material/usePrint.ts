@@ -118,6 +118,12 @@ const getImageDataUrl = (
       },
     })
   } else {
+    document
+      .getElementById('googleidentityservice_button_styles')
+      ?.setAttribute('data-html2canvas-ignore', 'true')
+    document
+      .getElementById('svg-sprite-component-wrap')
+      ?.setAttribute('data-html2canvas-ignore', 'true')
     return html2canvas(node as HTMLElement, {
       scale: scale,
       width: width,
@@ -155,7 +161,6 @@ const generate = async (
         material,
       })
     }
-
     for (const side of sideList) {
       const pdfVirtualDom = await generator(side)
       const imgDataUrl = await getImageDataUrl(
