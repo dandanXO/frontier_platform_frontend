@@ -362,12 +362,21 @@ export const materialSideSchema = z.object({
 const PRICE_MAX_VALUE = '999999999999999999.99'
 export const priceSchema = z
   .union([z.string(), z.number()])
-  .refine((value) => new BigNumber(value).lte(PRICE_MAX_VALUE), {
-    message: getMaxNumberParams(PRICE_MAX_VALUE)[1],
-    path: [],
+  .superRefine((value, ctx) => {
+    if (
+      value &&
+      value !== 'null' &&
+      !new BigNumber(value).lte(PRICE_MAX_VALUE)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: getMaxNumberParams(PRICE_MAX_VALUE)[1],
+      })
+    }
   })
   .nullable()
   .optional()
+
   .transform((value) =>
     value !== null && value !== undefined ? String(value) : value
   )

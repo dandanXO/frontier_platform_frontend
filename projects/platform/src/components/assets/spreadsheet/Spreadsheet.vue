@@ -50,7 +50,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, provide, watch } from 'vue'
+import { computed, ref, reactive, provide } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -735,7 +735,6 @@ const handleValueChange = (e: CellValueChangedEvent<MaterialRow>) => {
   if (!node.data) {
     return
   }
-
   node.updateData({
     ...node.data,
     isDirty: true,
@@ -788,7 +787,6 @@ const updateSubmitStatus = () => {
       }
       // The 'result.error' object holds Zod validation error messages for each field.
       const result = materialSchema.safeParse(reqRow)
-
       if (process.env.NODE_ENV !== 'production' && !result.success) {
         console.error(result.error)
       }
@@ -961,7 +959,7 @@ const getPayload = (materialRowList: MaterialRow[]): SubmitPayload => {
     .map(removeAdditional)
     .map(getReq)
   const updateList = materialRowList
-    .filter((m) => !m.isCreate && !m.isDelete && m.isDirty)
+    .filter((m) => !m.isCreate && !m.isDelete)
     .map(removeAdditional)
     .map(getReq)
   const deleteIdList = materialRowList
