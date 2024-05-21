@@ -5,17 +5,18 @@ stages:
   - build
   - deploy
 
-platform-merge-build:
-  image: node:18.15.0
-  stage: build
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  script:
-    - npm install -g pnpm
-    - pnpm i
-    - npm run test
-    - cd ./projects/platform
-    - npm run build --mode=development
+# Note: Skip main merge build to save Gitlab cloud Compute Minutes
+# platform-merge-build:
+#   image: node:18.15.0
+#   stage: build
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#   script:
+#     - npm install -g pnpm
+#     - pnpm i
+#     - npm run test
+#     - cd ./projects/platform
+#     - npm run build --mode=development
 
 platform-build:
   image: node:18.15.0
