@@ -204,7 +204,8 @@ const getTotalInventoryQtyWithUnit = (values: any) => {
     const weightUnit = values.weight?.unit
     const inventoryList =
       values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
-    const inventoryUnit = getInventoryUnit(values.internalInfo?.inventoryInfo)
+    const inventoryUnit =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
 
     if (
       !fullWidth ||
@@ -297,7 +298,12 @@ const useMaterialForm = ({
 
   const displayErrors = getErrors(material, submitCount, errors)
 
-  const inventoryUnit = getInventoryUnit(values.internalInfo.inventoryInfo)
+  const inventoryUnit = computed(() => {
+    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
+      'PCS'
+      ? 'pcs'
+      : 'Y'
+  })
 
   const totalInventoryQtyInY = getTotalInventoryQtyWithUnit(values)
 

@@ -31,7 +31,15 @@ import { getNameValueMap } from '@/utils/mapping'
 import store from '@/store'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
 
+import { computed } from 'vue'
+import { CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST } from '../constants'
+
 const t = i18n.global.t
+
+const orgId = computed<number>(() => store?.getters['organization/orgId'])
+const isCustomizeWeight = CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST.includes(
+  orgId.value
+)
 
 const materialInfoForDisplay = {
   seasonInfo: (seasonInfo: MaterialSeasonInfo | null) => {
@@ -244,17 +252,23 @@ const materialInfoForDisplay = {
       function getItemDisplay(weight: MaterialWeight) {
         return `${weight.value} ${WeightUnitText[weight.unit]}`
       }
-      function getItemDisplayRounded(item: {
-        value: number
-        unit: WeightUnit
-      }) {
-        let displayValue = item.value
+      function getItemDisplayRounded(weight: MaterialWeight) {
+        let displayValue = weight.value
         if (displayValue > 1) {
           displayValue = Math.round(displayValue)
         } else {
           displayValue = parseFloat(displayValue.toFixed(2))
         }
-        return `${displayValue} ${WeightUnitText[item.unit]}`
+        return `${displayValue} ${WeightUnitText[weight.unit]}`
+      }
+      function getItemDisplayFloor(weight: MaterialWeight) {
+        let displayValue = weight.value
+        if (displayValue > 1) {
+          displayValue = Math.floor(displayValue)
+        } else {
+          displayValue = parseFloat(displayValue.toFixed(2))
+        }
+        return `${displayValue} ${WeightUnitText[weight.unit]}`
       }
       const originWeightDisplay = getItemDisplay(weight)
       const computedWeightDisplay = [
@@ -276,7 +290,7 @@ const materialInfoForDisplay = {
               return weightDisplaySetting.isShowWeightGm
           }
         })
-        .map(getItemDisplayRounded)
+        .map(isCustomizeWeight ? getItemDisplayFloor : getItemDisplayRounded)
         .join(', ')
       if (computedWeightDisplay.length === 0) {
         return originWeightDisplay
