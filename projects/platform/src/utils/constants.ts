@@ -72,6 +72,7 @@ export const INVENTORY_UNIT = {
   Y: 'Y',
   M: 'M',
   KG: 'KG',
+  PCS: 'PCS',
 }
 
 export const MATERIAL_PRICING_CURRENCY = {

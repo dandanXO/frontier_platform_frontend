@@ -23,7 +23,11 @@ import useMaterialSchema, {
   useMaterialTagSchema,
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
-import { CREATE_EDIT, MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import {
+  CREATE_EDIT,
+  MATERIAL_SIDE_TYPE,
+  INVENTORY_UNIT,
+} from '@/utils/constants'
 import {
   mapPricing,
   getInventoryUnit,
@@ -206,7 +210,23 @@ const getTotalInventoryQtyWithUnit = (values: any) => {
       values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
     const inventoryUnit =
       values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
+    const inventoryTotalQty = inventoryList
+      .map((a: any) => a.qty || 0)
+      .reduce((prev: any, current: any) => prev + current, 0)
 
+    // 單位 是 Y 或是 PCS不用換算直接回傳加總後數值 且 重量和長度 不是"必要"要條件
+    if (
+      (inventoryUnit === INVENTORY_UNIT.Y ||
+        inventoryUnit === INVENTORY_UNIT.PCS) &&
+      (!fullWidth ||
+        !widthUnit ||
+        !weightUnit ||
+        !weightValue ||
+        !inventoryUnit)
+    ) {
+      return inventoryTotalQty
+    }
+    // 什麼東西的都沒有 直接回傳 0
     if (
       !fullWidth ||
       !widthUnit ||
@@ -217,11 +237,7 @@ const getTotalInventoryQtyWithUnit = (values: any) => {
     ) {
       return 0
     }
-
-    const inventoryTotalQty = inventoryList
-      .map((a: any) => a.qty || 0)
-      .reduce((prev: any, current: any) => prev + current, 0)
-
+    // 是 kg 或 M 要進入換算 並回傳
     return getTotalInventoryQty(
       fullWidth,
       widthUnit,
@@ -658,9 +674,12 @@ export const useMaterialInventoryForm = ({
     getCurrentMaterialSide(material)
   )
   const displayErrors = getErrors(material, submitCount, errors)
-  const inventoryUnit = getInventoryUnit(
-    values.internalInfo?.inventoryInfo as MaterialInternalInventoryInfo
-  )
+  const inventoryUnit = computed(() => {
+    return values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit ===
+      'PCS'
+      ? 'pcs'
+      : 'Y'
+  })
   const totalInventoryQtyInY = getTotalInventoryQtyWithUnit(values)
 
   return {

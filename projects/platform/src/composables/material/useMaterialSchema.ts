@@ -606,8 +606,27 @@ export const weightDisplaySettingSchema = z
     isShowWeightGy: false,
     isShowWeightGm: false,
   })
+// 簡易編輯需要 跳過 寬度和重量的檢查 因此 寫一個新的可以放入null
+export const inventoryMaterialWidthSchema = z.object({
+  cuttable: z.number().nullable().default(0),
+  full: z.number().nullable().default(0),
+  unit: z.nativeEnum(LengthUnit, nonNullParams).default(LengthUnit.INCH),
+})
+// 簡易編輯需要 跳過 寬度和重量的檢查 因此 寫一個新的可以放入null
+export const inventoryMaterialWeightSchema = z.object({
+  value: z
+    .number()
+    .multipleOf(...getMaxDecimalPlacesParams(3))
+    .min(...getMinNumberParams(0))
+    .max(...getMaxNumberParams(99999, 3))
+    .nullable()
+    .default(0),
+  unit: z.nativeEnum(WeightUnit, nonNullParams).default(WeightUnit.GSM),
+})
 export const useMaterialInventorySchema = () => {
   const schema = z.object({
+    width: inventoryMaterialWidthSchema,
+    weight: inventoryMaterialWeightSchema,
     internalInfo: z.object({
       tagList: tagListSchema,
       remark: z
