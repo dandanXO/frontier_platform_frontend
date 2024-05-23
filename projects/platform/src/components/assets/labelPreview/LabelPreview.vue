@@ -20,14 +20,19 @@ div(
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
       class="w-full flex"
+      :key="info"
     )
       p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
     div(class="flex flex-row")
-      div(v-for="key in Object.keys(carbonEmissions)" class="flex flex-row items-center")
+      div(
+        v-for="key in Object.keys(carbonEmissions)"
+        class="flex flex-row items-center"
+        :key="key"
+      )
         img(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
           :src="emissionsIconMapper[key]"
-          :class="iconSizeOptions[fontSizeIndex]"
+          :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
         )
         p(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
@@ -64,14 +69,19 @@ div(
     p(class="bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
+      :key="info"
     )
       p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
     div(class="flex flex-row")
-      div(v-for="key in Object.keys(carbonEmissions)" class="flex flex-row items-center")
+      div(
+        v-for="key in Object.keys(carbonEmissions)"
+        class="flex flex-row items-center"
+        :key="key"
+      )
         img(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
           :src="emissionsIconMapper[key]"
-          :class="iconSizeOptions[fontSizeIndex]"
+          :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
         )
         p(
           v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
@@ -183,8 +193,12 @@ const isCustomize = computed<boolean>(() =>
 const randerQrcode = async () => {
   const qrCode = document.getElementById(`qr-code-${index.value}-${type.value}`)
   if (qrCode) {
+    const frontierNumber =
+      type.value === 'face'
+        ? material.value.faceSide?.frontierNo
+        : material.value.backSide?.frontierNo
     await makeQrCode(
-      `${material.value.materialId}`,
+      `${frontierNumber}`,
       `qr-code-${index.value}-${type.value}`,
       size.value
     )
