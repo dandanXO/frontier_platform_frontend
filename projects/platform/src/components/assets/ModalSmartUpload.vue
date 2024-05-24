@@ -22,6 +22,8 @@ modal-behavior(
       div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-4 pr-3 mb-3")
         div(class="text-grey-600") {{ $t('RR0243') }}
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
+        div(class="text-grey-600") {{ $t('DD0133') }}
+        div(class="text-grey-900 font-bold") {{ $t('DD0134') }}
         div(class="text-grey-600") {{ $t('RR0145') }}
         i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
           template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 2) }}
@@ -195,6 +197,7 @@ const disabledUpload = computed(
 const fileSizeMaxLimit = 100 * Math.pow(1024, 2)
 const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
 const minimumDimensions = 800
+const minimumResolution = 300
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {
@@ -254,7 +257,10 @@ function validateImage(item: ImageItem, imageInfo: any) {
     item.isRemoved = true
   }
 
-  if (imageInfo.xResolution < 600 || imageInfo.yResolution < 600) {
+  if (
+    imageInfo.xResolution < minimumResolution ||
+    imageInfo.yResolution < minimumResolution
+  ) {
     item.invalidCode = INVALID_IMAGE_CODE.INVALID_RESOLUTION
     item.isRemoved = true
   }
