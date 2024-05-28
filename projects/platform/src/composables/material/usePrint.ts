@@ -82,9 +82,19 @@ const makeQrCode = async (
   key: string,
   containerHtmlId: string,
   width: number,
-  withURL: boolean = true
+  withURL: boolean = true,
+  logoUrl = ''
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
+  const logoImage = document.createElement('img')
+  if(logoUrl){
+    logoImage.setAttribute('src', logoUrl)
+    logoImage.classList.add('w-[18px]', 'h-[18px]', 'absolute')
+    logoImage.style.top = '50%'
+    logoImage.style.left = '50%'
+    logoImage.style.transform = 'translateY(-50%) translateX(-50%)'
+    qrCodeContainer.appendChild(logoImage)
+  }
   const canvasScale = 10
   const qrCodeContent = withURL
     ? `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`
@@ -99,6 +109,10 @@ const makeQrCode = async (
   // 防呆 保證裡面只有一個 canvas
   qrCodeContainer.innerHTML = ''
   qrCodeContainer.appendChild(qrcode)
+  if(logoUrl){
+    qrCodeContainer.appendChild(logoImage)
+  }
+  
 }
 
 const getImageDataUrl = (
@@ -242,7 +256,7 @@ const usePrint = () => {
                   ? t('RR0312')
                   : t('DD0051')
               }</p>
-              <div id="qr-code-container"></div>
+              <div id="qr-code-container" class="relative"></div>
               <p class="text-caption2 text-grey-900">${frontierNo}</p>
             </div>
           </div>
@@ -345,7 +359,7 @@ const usePrint = () => {
         infoContainer.appendChild(row)
       })
 
-      await makeQrCode(frontierNo, 'qr-code-container', 60)
+      await makeQrCode(frontierNo, 'qr-code-container', 60, true, logo.value)
 
       return virtualDom
     }
@@ -623,14 +637,11 @@ const usePrint = () => {
 
       const normalLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          <div class="w-[83px] h-full flex flex-col">
-            <div class="w-full flex justify-start ml-[-4px]">
-              <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
-            </div>
+          <div class="w-[83px] h-full flex flex-col justify-between">
             <div class="w-full flex flex-row justify-center mt-2 mb-4">
-              <div id="qr-code-container"></div>
+              <div id="qr-code-container" class="relative"></div>
             </div>
-            <div class="w-full flex flex-col items-center">
+            <div class="w-full flex flex-col items-center mb-[10px]">
               <p class="text-[10px] bold whitespace-nowrap">${
                 sideType === MaterialSideType.FACE_SIDE
                   ? t('DD0046')
@@ -654,7 +665,7 @@ const usePrint = () => {
               <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
             </div>
             <div class="w-full flex flex-row justify-center mt-2 mb-4">
-              <div id="qr-code-container"></div>
+              <div id="qr-code-container" class="relative"></div>
             </div>
             <div class="w-full flex flex-col items-center">
               <p class="text-[10px] bold whitespace-nowrap">${
@@ -694,7 +705,7 @@ const usePrint = () => {
       }
       document.body.appendChild(virtualDom)
       const qrWidth = 62
-      await makeQrCode(frontierNo, 'qr-code-container', qrWidth)
+      await makeQrCode(frontierNo, 'qr-code-container', qrWidth, true, logo.value)
 
       const infoContainer = document.getElementById('info-container')!
       const infoList: string[] = getPrintLabelItems(
@@ -804,7 +815,7 @@ const usePrint = () => {
     </div>
   `
     document.body.appendChild(pdfVirtualDom)
-    await makeQrCode('Scan Back Side', 'qr-code-container', 100, false)
+    await makeQrCode('Scan Back Side', 'qr-code-container', 100, false, logo.value)
     const imgDataUrl = await getImageDataUrl(
       pdfVirtualDom,
       LABEL_WIDTH,

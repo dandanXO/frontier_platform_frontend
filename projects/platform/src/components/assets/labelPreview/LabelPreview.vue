@@ -3,19 +3,16 @@ div(
   v-if="type === 'face' && faceSideMaterial"
   class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
 )
-  div(class="w-[83px] h-full flex flex-col")
-    div(
-      class="w-full flex"
-      :class="isCustomize ? 'justify-center' : 'justify-start ml-[-4px]'"
-    )
+  div(class="w-[83px] h-full flex flex-col" :class="[{'justify-between': !isCustomize}]")
+    div( v-if="isCustomize" class="w-full flex justify-center")
       img(:src="logo" class="w-8 h-8 object-cover rounded")
     div(class="w-full flex flex-row justify-center mt-2 mb-4")
-      div(:id="`qr-code-${index}-face`")
-    div(class="w-full flex flex-col items-center")
+      div(:id="`qr-code-${index}-face`" class="relative")
+    div(class="w-full flex flex-col items-center" :class="[{'mb-[3px]': !isCustomize}]")
       p(class="text-[10px] bold") {{ $t('DD0046') }}
       p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[194px] h-full max-h-full flex flex-col overflow-hidden")
+  div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
     p(class="bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
@@ -53,19 +50,16 @@ div(
   v-if="type === 'back' && backSideMaterial"
   class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
 )
-  div(class="w-[83px] h-full flex flex-col")
-    div(
-      class="w-full flex"
-      :class="isCustomize ? 'justify-center' : 'justify-start ml-[-4px]'"
-    )
+  div(class="w-[83px] h-full flex flex-col" :class="[{'justify-between': !isCustomize}]")
+    div( v-if="isCustomize" class="w-full flex justify-center")
       img(:src="logo" class="w-8 h-8 object-cover rounded")
     div(class="w-full flex flex-row justify-center mt-2 mb-4")
-      div(:id="`qr-code-${index}-back`")
-    div(class="w-full flex flex-col items-center")
+      div(:id="`qr-code-${index}-back`" class="relative")
+    div(class="w-full flex flex-col items-center" :class="[{'mb-[3px]': !isCustomize}]")
       p(class="text-[10px] bold") {{ $t('DD0047') }}
       p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[194px] h-full max-h-full flex flex-col overflow-hidden")
+  div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
     p(class="bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
@@ -197,10 +191,13 @@ const randerQrcode = async () => {
       type.value === 'face'
         ? material.value.faceSide?.frontierNo
         : material.value.backSide?.frontierNo
+    // org ID: 1694 customize 不需要logo在中間
     await makeQrCode(
       `${frontierNumber}`,
       `qr-code-${index.value}-${type.value}`,
-      size.value
+      size.value,
+      true,
+      isCustomize.value ? '':logo.value
     )
   }
 }
