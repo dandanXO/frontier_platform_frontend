@@ -28,6 +28,9 @@ platform-build:
     - if: $CI_COMMIT_REF_NAME == "staging"
       variables:
         DEPLOY_ENV: 'staging'
+    - if: $CI_COMMIT_REF_NAME == "feat"
+      variables:
+        DEPLOY_ENV: 'feat'
     - if: $CI_COMMIT_REF_NAME == "pre-production"
       variables:
         DEPLOY_ENV: 'pre-production'
@@ -63,6 +66,16 @@ platform-deploy-to-staging:
   script:
     - cd ./projects/platform
     - bash ./scripts/deploy.sh staging
+
+platform-deploy-to-feat:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - feat
+  script:
+    - cd ./projects/platform
+    - bash ./scripts/deploy.sh feat
 
 platform-deploy-to-pre-production:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest

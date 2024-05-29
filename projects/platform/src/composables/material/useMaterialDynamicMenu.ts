@@ -8,6 +8,8 @@ import type {
   MaterialOptionsContentListDefaultInner,
   MaterialSeasonInfoSeason,
 } from '@frontier/platform-web-sdk'
+// type 1:public, 2:private
+import { MaterialOptionsTagListDefaultInnerTypeEnum } from '@frontier/platform-web-sdk'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import type useMaterialSchema from '@/composables/material/useMaterialSchema'
@@ -26,30 +28,100 @@ const useMaterialDynamicMenu = (
   currentMaterialSide: Ref<MATERIAL_SIDE_TYPE>
 ) => {
   const { t } = useI18n()
-
-  const menuTreePublicTag = ref({
+  const materialFormValuesInternalInfoTagList =
+    materialFormValues.internalInfo.tagList
+  const newPrivateTagList = reactive<Nullable<string>[]>([])
+  const materialFormValuesTagInfoTagList = materialFormValues.tagInfo.tagList
+  const newPublicTagList = reactive<Nullable<string>[]>([])
+  const publicTagCustomList = computed(() => {
+    const customList: any = []
+    materialOptions.tagList.custom.map((item) => {
+      if (item.type === MaterialOptionsTagListDefaultInnerTypeEnum.PUBLIC) {
+        customList.push(item.name)
+      }
+    })
+    // 去除 選擇和顯示 的重複顯示問題
+    return (
+      Array.from(
+        new Set([
+          ...newPublicTagList,
+          ...materialFormValuesTagInfoTagList,
+          ...customList,
+        ])
+      ).map((tag) => ({
+        title: tag,
+        selectValue: tag,
+      })) || []
+    )
+  })
+  const publicTagDefaultList = computed(() => {
+    const defaultList: any = []
+    materialOptions.tagList.default.map((item) => {
+      if (item.type === MaterialOptionsTagListDefaultInnerTypeEnum.PUBLIC) {
+        defaultList.push(item.name)
+      }
+    })
+    return Array.from(new Set([...defaultList])).map((tag) => ({
+      title: tag,
+      selectValue: tag,
+    }))
+  })
+  const menuTreePublicTag = computed(() => ({
     blockList: [
       {
-        menuList:
-          materialFormValues.tagInfo?.tagList?.map((tag) => ({
-            title: tag,
-            selectValue: tag,
-          })) || [],
+        blockTitle: t('RR0258'),
+        menuList: publicTagCustomList.value || [],
+      },
+      {
+        menuList: publicTagDefaultList.value || [],
       },
     ],
-  })
+  }))
 
-  const menuTreePrivateTag = ref({
+  const privateTagCustomList = computed(() => {
+    const customList: any = []
+    materialOptions.tagList.custom.map((item) => {
+      if (item.type === MaterialOptionsTagListDefaultInnerTypeEnum.PRIVATE) {
+        customList.push(item.name)
+      }
+    })
+    // 去除 選擇和顯示 的重複顯示問題
+    return (
+      Array.from(
+        new Set([
+          ...newPrivateTagList,
+          ...materialFormValuesInternalInfoTagList,
+          ...customList,
+        ])
+      ).map((tag) => ({
+        title: tag,
+        selectValue: tag,
+      })) || []
+    )
+  })
+  const privateTagDefaultList = computed(() => {
+    const defaultList: any = []
+    materialOptions.tagList.default.map((item) => {
+      if (item.type === MaterialOptionsTagListDefaultInnerTypeEnum.PRIVATE) {
+        defaultList.push(item.name)
+      }
+    })
+    return Array.from(new Set([...defaultList])).map((tag) => ({
+      title: tag,
+      selectValue: tag,
+    }))
+  })
+  const menuTreePrivateTag = computed(() => ({
     blockList: [
       {
-        menuList:
-          materialFormValues.internalInfo?.tagList?.map((tag) => ({
-            title: tag,
-            selectValue: tag,
-          })) || [],
+        blockTitle: t('RR0258'),
+        menuList: privateTagCustomList.value || [],
+      },
+      {
+        menuList: privateTagDefaultList.value || [],
       },
     ],
-  })
+  }))
 
   const newSeasonList = reactive<Nullable<MaterialSeasonInfoSeason>[]>([])
   const newContentList = reactive<
@@ -297,14 +369,12 @@ const useMaterialDynamicMenu = (
       name: contentName,
     })
   }
-
-  const addNewTag = (newMenu: string, source: MenuTree) => {
-    source.blockList[0].menuList.push({
-      title: newMenu,
-      selectValue: newMenu,
-    })
+  const addNewPublicTag = (contentName: string) => {
+    newPublicTagList.push(contentName)
   }
-
+  const addNewPrivateTag = (contentName: string) => {
+    newPrivateTagList.push(contentName)
+  }
   return {
     specOptions,
     allContentList,
@@ -316,7 +386,8 @@ const useMaterialDynamicMenu = (
     addDescriptionOption,
     addFinishOption,
     addContentOption,
-    addNewTag,
+    addNewPublicTag,
+    addNewPrivateTag,
   }
 }
 

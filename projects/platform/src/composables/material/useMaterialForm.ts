@@ -105,6 +105,7 @@ const mapMaterialToForm = (
     },
     tagInfo: {
       ...material.tagInfo,
+      tagList: material.tagInfo?.tagList.map((tag, i) => tag),
       certificationTagIdList:
         material.tagInfo?.certificationTagList.map((t) => t.certificateId) ||
         [],

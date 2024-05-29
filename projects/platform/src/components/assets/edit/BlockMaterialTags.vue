@@ -5,7 +5,7 @@ div(class="flex flex-col gap-y-10")
       :selectValue="publicTagList.value"
       @update:selectValue="publicTagList.onInput"
       :dropdownMenuTree="menuTreePublicTag"
-      @addNew="addNewTag($event, menuTreePublicTag)"
+      @addNew="addNewPublicTag($event, menuTreePublicTag)"
       :label="$t('RR0027')"
       :placeholder="$t('RR0288')"
       :hintError="displayErrors['tagInfo.tagList']"
@@ -30,7 +30,7 @@ div(class="flex flex-col gap-y-10")
       :selectValue="privateTagList.value"
       @update:selectValue="privateTagList.onInput"
       :dropdownMenuTree="menuTreePrivateTag"
-      @addNew="addNewTag($event, menuTreePrivateTag)"
+      @addNew="addNewPrivateTag($event, menuTreePrivateTag)"
       :label="$t('RR0028')"
       :placeholder="$t('RR0290')"
       :hintError="displayErrors['internalInfo.tagList']"
@@ -62,8 +62,13 @@ if (!materialFormService) {
   throw new Error('useMaterialForm is not provided')
 }
 const { inputMenu, defineInputBinds, displayErrors } = materialFormService
-const { specOptions, addNewTag, menuTreePublicTag, menuTreePrivateTag } =
-  inputMenu
+const {
+  specOptions,
+  addNewPublicTag,
+  addNewPrivateTag,
+  menuTreePublicTag,
+  menuTreePrivateTag,
+} = inputMenu
 
 const publicTagList = defineInputBinds('tagInfo.tagList')
 const certificationTagIdList = defineInputBinds(

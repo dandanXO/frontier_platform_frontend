@@ -2432,35 +2432,10 @@ export interface CreateMultimediaFile {
     'isCover': boolean;
     /**
      * 
-     * @type {CreateMultimediaFileAllOfCroppedImage}
+     * @type {object}
      * @memberof CreateMultimediaFile
      */
-    'croppedImage': CreateMultimediaFileAllOfCroppedImage | null;
-}
-/**
- * 
- * @export
- * @interface CreateMultimediaFileAllOfCroppedImage
- */
-export interface CreateMultimediaFileAllOfCroppedImage {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMultimediaFileAllOfCroppedImage
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMultimediaFileAllOfCroppedImage
-     */
-    'fileName': string;
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof CreateMultimediaFileAllOfCroppedImage
-     */
-    'cropRecord': CropImageRecord;
+    'croppedImage': object | null;
 }
 /**
  * 
@@ -5123,16 +5098,16 @@ export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {object}
      * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': object | null;
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
+     * @type {object}
      * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
      */
-    'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
+    'perspectiveCropRecord': object | null;
 }
 /**
  * 
@@ -10104,17 +10079,17 @@ export interface MaterialBackSide {
      */
     'isMainSide': boolean;
     /**
-     * 
-     * @type {MaterialSideAllOfSideImage}
+     * 布面圖片
+     * @type {object}
      * @memberof MaterialBackSide
      */
-    'sideImage': MaterialSideAllOfSideImage | null;
+    'sideImage': object | null;
     /**
      * 
-     * @type {MaterialU3mImage}
+     * @type {object}
      * @memberof MaterialBackSide
      */
-    'u3mImage': MaterialU3mImage;
+    'u3mImage': object | null;
     /**
      * 
      * @type {MaterialType}
@@ -10129,10 +10104,10 @@ export interface MaterialBackSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialConstruction}
+     * @type {object}
      * @memberof MaterialBackSide
      */
-    'construction': MaterialConstruction;
+    'construction': object | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
@@ -10934,17 +10909,17 @@ export interface MaterialFaceSide {
      */
     'isMainSide': boolean;
     /**
-     * 
-     * @type {MaterialSideAllOfSideImage}
+     * 布面圖片
+     * @type {object}
      * @memberof MaterialFaceSide
      */
-    'sideImage': MaterialSideAllOfSideImage | null;
+    'sideImage': object | null;
     /**
      * 
-     * @type {MaterialU3mImage}
+     * @type {object}
      * @memberof MaterialFaceSide
      */
-    'u3mImage': MaterialU3mImage;
+    'u3mImage': object | null;
     /**
      * 
      * @type {MaterialType}
@@ -10959,10 +10934,10 @@ export interface MaterialFaceSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialConstruction}
+     * @type {object}
      * @memberof MaterialFaceSide
      */
-    'construction': MaterialConstruction;
+    'construction': object | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
@@ -11035,53 +11010,16 @@ export interface MaterialGenerateU3mSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {object}
      * @memberof MaterialGenerateU3mSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': object | null;
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
+     * @type {object}
      * @memberof MaterialGenerateU3mSide
      */
-    'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
-}
-/**
- * 
- * @export
- * @interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord
- */
-export interface MaterialGenerateU3mSideAllOfPerspectiveCropRecord {
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
-     */
-    'leftTop': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
-     */
-    'leftBottom': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
-     */
-    'rightTop': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
-     */
-    'rightBottom': Coordinate;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialGenerateU3mSideAllOfPerspectiveCropRecord
-     */
-    'rotateDeg': number;
+    'perspectiveCropRecord': object | null;
 }
 /**
  * External Page(非Asset或WorkSpace的頁面)時，回應 null
@@ -11566,6 +11504,18 @@ export interface MaterialOptions {
      * @memberof MaterialOptions
      */
     'certificateList': Array<MaterialCertification>;
+    /**
+     * 
+     * @type {MaterialOptionsTagList}
+     * @memberof MaterialOptions
+     */
+    'tagList': MaterialOptionsTagList;
+    /**
+     * 
+     * @type {MaterialOptionsFeatureList}
+     * @memberof MaterialOptions
+     */
+    'featureList': MaterialOptionsFeatureList;
 }
 /**
  * 成分
@@ -11649,6 +11599,38 @@ export interface MaterialOptionsDescriptionList {
     'others': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
 }
 /**
+ * 特性選項清單
+ * @export
+ * @interface MaterialOptionsFeatureList
+ */
+export interface MaterialOptionsFeatureList {
+    /**
+     * 
+     * @type {Array<MaterialOptionsFeatureListDefaultInner>}
+     * @memberof MaterialOptionsFeatureList
+     */
+    'default': Array<MaterialOptionsFeatureListDefaultInner>;
+    /**
+     * 
+     * @type {Array<MaterialOptionsFeatureListDefaultInner>}
+     * @memberof MaterialOptionsFeatureList
+     */
+    'custom': Array<MaterialOptionsFeatureListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsFeatureListDefaultInner
+ */
+export interface MaterialOptionsFeatureListDefaultInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialOptionsFeatureListDefaultInner
+     */
+    'name': string;
+}
+/**
  * 後處理
  * @export
  * @interface MaterialOptionsFinishList
@@ -11705,6 +11687,52 @@ export interface MaterialOptionsSeasonListDefaultInner {
      */
     'name': string;
 }
+/**
+ * 標籤選項清單
+ * @export
+ * @interface MaterialOptionsTagList
+ */
+export interface MaterialOptionsTagList {
+    /**
+     * 
+     * @type {Array<MaterialOptionsTagListDefaultInner>}
+     * @memberof MaterialOptionsTagList
+     */
+    'default': Array<MaterialOptionsTagListDefaultInner>;
+    /**
+     * 
+     * @type {Array<MaterialOptionsTagListDefaultInner>}
+     * @memberof MaterialOptionsTagList
+     */
+    'custom': Array<MaterialOptionsTagListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsTagListDefaultInner
+ */
+export interface MaterialOptionsTagListDefaultInner {
+    /**
+     * 1: Public 2: Private 
+     * @type {number}
+     * @memberof MaterialOptionsTagListDefaultInner
+     */
+    'type': MaterialOptionsTagListDefaultInnerTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialOptionsTagListDefaultInner
+     */
+    'name': string;
+}
+
+export const MaterialOptionsTagListDefaultInnerTypeEnum = {
+    PUBLIC: 1,
+    PRIVATE: 2
+} as const;
+
+export type MaterialOptionsTagListDefaultInnerTypeEnum = typeof MaterialOptionsTagListDefaultInnerTypeEnum[keyof typeof MaterialOptionsTagListDefaultInnerTypeEnum];
+
 /**
  * 
  * @export
@@ -12221,17 +12249,17 @@ export interface MaterialSide {
      */
     'isMainSide': boolean;
     /**
-     * 
-     * @type {MaterialSideAllOfSideImage}
+     * 布面圖片
+     * @type {object}
      * @memberof MaterialSide
      */
-    'sideImage': MaterialSideAllOfSideImage | null;
+    'sideImage': object | null;
     /**
      * 
-     * @type {MaterialU3mImage}
+     * @type {object}
      * @memberof MaterialSide
      */
-    'u3mImage': MaterialU3mImage | null;
+    'u3mImage': object | null;
     /**
      * 
      * @type {MaterialType}
@@ -12246,10 +12274,10 @@ export interface MaterialSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialConstruction}
+     * @type {object}
      * @memberof MaterialSide
      */
-    'construction': MaterialConstruction | null;
+    'construction': object | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
@@ -12393,55 +12421,6 @@ export interface MaterialSideAllOfPantoneList {
      * @memberof MaterialSideAllOfPantoneList
      */
     'materialPantoneId': number;
-}
-/**
- * 布面圖片
- * @export
- * @interface MaterialSideAllOfSideImage
- */
-export interface MaterialSideAllOfSideImage {
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'originalUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'displayUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'thumbnailUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'rulerUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'rulerThumbnailUrl': string;
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'cropRecord': CropImageRecord | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialSideAllOfSideImage
-     */
-    'dpi': number;
 }
 /**
  * 
@@ -12918,16 +12897,84 @@ export interface MaterialU3mImage {
 export interface MaterialU3mImageCropRecord {
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialU3mImageCropRecordSquareCropRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord | null;
+    'squareCropRecord': MaterialU3mImageCropRecordSquareCropRecord | null;
     /**
      * 
-     * @type {MaterialGenerateU3mSideAllOfPerspectiveCropRecord}
+     * @type {MaterialU3mImageCropRecordPerspectiveCropRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'perspectiveCropRecord': MaterialGenerateU3mSideAllOfPerspectiveCropRecord | null;
+    'perspectiveCropRecord': MaterialU3mImageCropRecordPerspectiveCropRecord | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialU3mImageCropRecordPerspectiveCropRecord
+ */
+export interface MaterialU3mImageCropRecordPerspectiveCropRecord {
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
+     */
+    'leftTop': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
+     */
+    'leftBottom': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
+     */
+    'rightTop': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
+     */
+    'rightBottom': Coordinate;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
+     */
+    'rotateDeg': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialU3mImageCropRecordSquareCropRecord
+ */
+export interface MaterialU3mImageCropRecordSquareCropRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialU3mImageCropRecordSquareCropRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialU3mImageCropRecordSquareCropRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialU3mImageCropRecordSquareCropRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialU3mImageCropRecordSquareCropRecord
+     */
+    'scaleRatio': number;
 }
 /**
  * 1: Frontier產生 2: 客製化上傳
@@ -13755,10 +13802,10 @@ export interface Moodboard {
     'attachmentList': Array<MoodboardAllOfAttachmentList>;
     /**
      * 
-     * @type {MoodboardAllOfProperties}
+     * @type {object}
      * @memberof Moodboard
      */
-    'properties': MoodboardAllOfProperties;
+    'properties': object;
 }
 
 
@@ -13799,12 +13846,6 @@ export interface MoodboardAllOfAttachmentList {
      */
     'extension': string;
 }
-/**
- * @type MoodboardAllOfProperties
- * @export
- */
-export type MoodboardAllOfProperties = MoodboardPropertiesDemander | MoodboardPropertiesProvider;
-
 /**
  * 
  * @export
@@ -14532,44 +14573,13 @@ export interface MultimediaFile {
     'isCover': boolean;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {object}
      * @memberof MultimediaFile
      */
-    'cropRecord': MultimediaFileAllOfCropRecord | null;
+    'cropRecord': object | null;
 }
 
 
-/**
- * 
- * @export
- * @interface MultimediaFileAllOfCropRecord
- */
-export interface MultimediaFileAllOfCropRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof MultimediaFileAllOfCropRecord
-     */
-    'x': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MultimediaFileAllOfCropRecord
-     */
-    'y': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MultimediaFileAllOfCropRecord
-     */
-    'rotateDeg': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MultimediaFileAllOfCropRecord
-     */
-    'scaleRatio': number;
-}
 /**
  * 
  * @export
