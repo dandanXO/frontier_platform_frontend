@@ -128,7 +128,7 @@ const generate = async (
       const pdfVirtualDom = await generator(side)
       const imgDataUrl = await getImageDataUrl(pdfVirtualDom, width, height)
       imgDataUrlList.push(imgDataUrl)
-      pdfVirtualDom.remove()
+      // pdfVirtualDom.remove()
     }
   }
   try {

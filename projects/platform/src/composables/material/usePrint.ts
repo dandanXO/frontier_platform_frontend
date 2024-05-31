@@ -87,7 +87,7 @@ const makeQrCode = async (
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
   const logoImage = document.createElement('img')
-  if(logoUrl){
+  if (logoUrl) {
     logoImage.setAttribute('src', logoUrl)
     logoImage.classList.add('w-[18px]', 'h-[18px]', 'absolute')
     logoImage.style.top = '50%'
@@ -109,10 +109,9 @@ const makeQrCode = async (
   // 防呆 保證裡面只有一個 canvas
   qrCodeContainer.innerHTML = ''
   qrCodeContainer.appendChild(qrcode)
-  if(logoUrl){
+  if (logoUrl) {
     qrCodeContainer.appendChild(logoImage)
   }
-  
 }
 
 const getImageDataUrl = (
@@ -358,8 +357,16 @@ const usePrint = () => {
         `
         infoContainer.appendChild(row)
       })
-
-      await makeQrCode(frontierNo, 'qr-code-container', 60, true, logo.value)
+      const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(
+        orgId.value
+      )
+      await makeQrCode(
+        frontierNo,
+        'qr-code-container',
+        60,
+        true,
+        isCustomize ? '' : logo.value
+      )
 
       return virtualDom
     }
@@ -705,7 +712,14 @@ const usePrint = () => {
       }
       document.body.appendChild(virtualDom)
       const qrWidth = 62
-      await makeQrCode(frontierNo, 'qr-code-container', qrWidth, true, logo.value)
+
+      await makeQrCode(
+        frontierNo,
+        'qr-code-container',
+        qrWidth,
+        true,
+        isCustomize ? '' : logo.value
+      )
 
       const infoContainer = document.getElementById('info-container')!
       const infoList: string[] = getPrintLabelItems(
@@ -815,7 +829,13 @@ const usePrint = () => {
     </div>
   `
     document.body.appendChild(pdfVirtualDom)
-    await makeQrCode('Scan Back Side', 'qr-code-container', 100, false, logo.value)
+    await makeQrCode(
+      'Scan Back Side',
+      'qr-code-container',
+      100,
+      false,
+      logo.value
+    )
     const imgDataUrl = await getImageDataUrl(
       pdfVirtualDom,
       LABEL_WIDTH,
