@@ -430,8 +430,10 @@ export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 
 export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
 
-// ORG_ID 1694 is Textpert, 6 is Fabric Pro for testing.
-export const PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST = [1694, 6]
+// ORG_ID 1694 is Textpert, 136 is fack Textpert on pre
+export const PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST = [1694, 136]
+// ORG_ID 113 is J&B INT'L, 6 is Fabric Pro for testing.
+export const CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST = [113, 6]
 // ORG_ID 96 is Taiwan Taffeta, 6 and 136 are test org.
 export const CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST = [96, 6, 136]
 

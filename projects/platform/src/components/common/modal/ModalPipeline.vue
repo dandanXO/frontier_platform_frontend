@@ -289,6 +289,9 @@ export default {
     ModalLabelPreview: defineAsyncComponent(() =>
       import('@/components/assets/labelPreview/ModalLabelPreview.vue')
     ),
+    ModalLabelPreviewCustom: defineAsyncComponent(() =>
+      import('@/components/assets/labelPreview/custom/ModalLabelPreview.vue')
+    ),
   },
   setup() {
     const store = useStore()

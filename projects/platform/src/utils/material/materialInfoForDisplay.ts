@@ -226,23 +226,30 @@ const materialInfoForDisplay = {
     name: t('Custom Construction'),
     value: constructionCustomPropertyList,
   }),
-  width: (width: MaterialWidth | null) => ({
-    name: t('RR0088'),
-    value: (() => {
-      if (!width) {
-        return ''
-      }
-      const { cuttable, full } = width
-      const unit =
-        width.unit === LengthUnit.INCH ? '"' : ` ${LengthUnitText[width.unit]}`
+  width: (width: MaterialWidth | null, onlyCuttable = false) => {
+    return {
+      name: t('RR0088'),
+      value: (() => {
+        if (!width) {
+          return ''
+        }
+        const { cuttable, full } = width
+        const unit =
+          width.unit === LengthUnit.INCH
+            ? '"'
+            : ` ${LengthUnitText[width.unit]}`
 
-      return `${cuttable}/${full}${unit}`
-    })(),
-  }),
+        return onlyCuttable
+          ? `${cuttable}${unit}`
+          : `${cuttable}/${full}${unit}`
+      })(),
+    }
+  },
   weight: (
     weight: MaterialWeight | null,
     weightForDisplay: MaterialWeightForDisplay,
-    weightDisplaySetting: MaterialWeightDisplaySetting
+    weightDisplaySetting: MaterialWeightDisplaySetting,
+    onlyOriginWeight = false
   ) => {
     const getWeightDisplay = () => {
       if (!weight) {
@@ -297,6 +304,12 @@ const materialInfoForDisplay = {
       }
 
       return `${originWeightDisplay} (${computedWeightDisplay})`
+    }
+    if (onlyOriginWeight) {
+      return {
+        name: t('RR0015'),
+        value: weight ? `${weight.value} ${WeightUnitText[weight.unit]}` : '',
+      }
     }
     return {
       name: t('RR0015'),

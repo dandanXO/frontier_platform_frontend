@@ -6,7 +6,9 @@ import { U3M_STATUS, NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
+import useCPrint from '@/composables/material/useCustomPrint'
 import generalApi from '@/apis/general'
+import { CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST } from '@/utils/constants'
 import userApi from '@/apis/user'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
@@ -157,6 +159,7 @@ export const DefaultPrintLabelSetting: QrCodePrintLabelSetting = {
 
 export default function useAssets() {
   const print = usePrint()
+  const customPrint = useCPrint()
   const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
   const toMaterialList = (m: Material | Material[]) =>
     Array.isArray(m) ? m : [m]
@@ -166,6 +169,7 @@ export default function useAssets() {
 
   const { t } = useI18n()
   const store = useStore()
+  const orgId = store.getters['organization/orgId']
   const {
     ogBaseAssetsApi,
     startSpreadsheetUpdate: startSpreadsheetUpdateAction,
@@ -450,14 +454,18 @@ export default function useAssets() {
     name: () => t('RR0061'),
     func: async (m) => {
       store.dispatch('helper/openModalBehavior', {
-        component: 'modal-label-preview',
+        component: CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST.includes(orgId)
+          ? 'modal-label-preview-custom'
+          : 'modal-label-preview',
         properties: {
           materialList: toMaterialList(m),
           printLabel: async (
             materialList: Material[],
             setting: QrCodePrintLabelSetting
           ): Promise<void> => {
-            await print.printLabel(materialList, setting)
+            CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST.includes(orgId)
+              ? await customPrint.printLabel(materialList)
+              : await print.printLabel(materialList, setting)
           },
           updateSetting: async (
             setting: QrCodePrintLabelSetting
