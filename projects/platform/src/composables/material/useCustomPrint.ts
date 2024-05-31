@@ -348,7 +348,7 @@ const usePrint = () => {
         const divRightCol = document.createElement('div')
         // Add 6px margin bottom in last row to fix pdf cut half row issue.
         if (key === 'Finish') {
-          divRow.style.marginBottom = '6px'
+          divRow.style.marginBottom = '12px'
         }
         if (Array.isArray(infoTopList[key])) {
           infoTopList[key] = infoTopList[key].join(', ')
