@@ -437,6 +437,9 @@ export const CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST = [113, 6]
 // ORG_ID 96 is Taiwan Taffeta, 6 and 136 are test org.
 export const CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST = [96, 6, 136]
 
+// ORG_ID X(還沒決定) is littleking, 6 and X are test org.
+export const CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST = [6]
+
 export const materialFormServiceKey = Symbol('MaterialFormService')
 export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')
 export const materialMultimediaCreateServiceKey = Symbol(

@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex flex-col")
   menu-org
-  div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col")
+  div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col" v-if="showPublicLibrary")
     div(class="grid gap-y-1.5")
       sidebar-item#PublicLibrary(:goTo="goToPublicLibrary")
         img(src="@/assets/images/logo.png" class="w-5 h-5")
@@ -123,6 +123,9 @@ const isPromotingNewFeature = computed(
 )
 const organization = computed<Organization>(
   () => store.getters['organization/organization']
+)
+const showPublicLibrary = computed(
+  () => store.getters['permission/littlekingRule']
 )
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])

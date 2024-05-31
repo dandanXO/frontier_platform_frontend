@@ -32,6 +32,7 @@ div(class="w-full relative")
             :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )
         div(
+          v-if="canCreateNewOrg"
           class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
           @click="openModalCreateOrg"
           data-cy="open-create-org-modal"
@@ -47,14 +48,24 @@ import { useRoute, useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 import remindVerifyEmail from '@/utils/remind-verify-email'
-import { SIGNUP_SOURCE } from '@/utils/constants'
+import {
+  SIGNUP_SOURCE,
+  CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST,
+} from '@/utils/constants'
+import { some, includes } from 'lodash/fp'
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const user = computed(() => store.getters['user/user'])
 const orgList = computed(() => store.getters['user/organizationList'])
-
+const canCreateNewOrg = computed(() => {
+  const orgIds = user.value.organizationList.map((org) => org.orgId)
+  const notLittleKing = !CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST.some((orgId) =>
+    orgIds.includes(orgId)
+  )
+  return notLittleKing
+})
 const goToPublicLibrary = (orgNo) => {
   if (!user.value.isVerify) {
     remindVerifyEmail()

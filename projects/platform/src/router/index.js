@@ -168,6 +168,19 @@ const routes = [
         }
         next()
       },
+      async (to, from, next) => {
+        const organization = await store.getters['organization/organization']
+        // 特殊客戶不給看 sourcing library 導去 dashborad
+        if (
+          !store.getters['permission/littlekingRule'] &&
+          to.name === 'PublicLibrary'
+        ) {
+          return next(
+            `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/dashboard`
+          )
+        }
+        next()
+      },
     ],
     children: [
       {
@@ -331,6 +344,16 @@ const routes = [
         name: 'PublicLibrary',
         props: true,
         component: () => import('@/views/innerApp/PublicLibrary.vue'),
+        beforeEach: async (to, from, next) => {
+          const organization = await store.getters['organization/organization']
+          // 特殊客戶不給看 sourcing library 導去 dashborad
+          if (!store.getters['permission/littlekingRule']) {
+            return next(
+              `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/dashboard`
+            )
+          }
+          next()
+        },
       },
       {
         path: 'public-library/material/:nodeId',

@@ -60,7 +60,7 @@ search-table(
         :optionList="optionNode(node)"
         @click:node="handleNodeClick(node, visit)"
       )
-        template(#corner-bottom-left v-if="isFirstLayer")
+        template(#corner-bottom-left v-if="showPublicLibrary && isFirstLayer")
           f-svg-icon(
             :iconName="node.nodeMeta.isPublic ? 'public' : 'internal'"
             :tooltipMessage="node.nodeMeta.isPublic ? $t('FF0072') : $t('FF0073')"
@@ -139,6 +139,10 @@ const {
   deleteMultipleNode,
   openModalCreateOrEditCollection,
 } = useWorkspace()
+
+const showPublicLibrary = computed(
+  () => store.getters['permission/littlekingRule']
+)
 
 const optionSort = computed(() => {
   const {

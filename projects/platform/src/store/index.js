@@ -9,6 +9,7 @@ import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import polling from '@/store/modules/polling'
 import sticker from '@/store/modules/sticker'
+import permission from '@/store/modules/permission'
 
 export default createStore({
   actions: {
@@ -58,5 +59,6 @@ export default createStore({
     assets,
     polling,
     sticker,
+    permission,
   },
 })
