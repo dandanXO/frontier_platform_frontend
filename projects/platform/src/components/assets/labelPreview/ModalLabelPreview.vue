@@ -12,7 +12,7 @@ modal-behavior(
 )
   div(class="flex mx-[-21px] my-[-21px]")
     div(class="w-200")
-      f-scrollbar-container(class="w-fit max-h-153 box-content relative")
+      f-scrollbar-container(class="w-fit max-h-103 box-content relative")
         div(v-for="(material, index) in materialList")
           div(
             class="h-52 w-full flex flex-row border border-transparent border-b-grey-200"
@@ -53,7 +53,7 @@ modal-behavior(
                 :setting="currentLabelSetting"
                 :reloadQrcode="needReloadQrcode"
               )
-    div(class="w-60")
+    div(class="w-60 max-h-103 overflow-y-scroll")
       div(
         class="w-full py-3 px-3 flex flex-row justify-between border border-transparent border-b-grey-150"
       )
