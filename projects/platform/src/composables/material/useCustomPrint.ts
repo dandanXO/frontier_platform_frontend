@@ -296,8 +296,8 @@ const usePrint = () => {
         virtualDom.innerHTML = `
           <div class="w-full flex justify-center items-center h-[28px] max-h-[28px] text-[16px]">${itemNo}</div> 
           <div class="w-full flex justify-start items-start flex-col relative overflow-hidden" id="info-top-content"></div>
-          <div class="w-full flex flex-row relative items-stretch justify-between overflow-hidden max-h-[50%] relative top-[-6px]" id="info-content-2">
-            <div class="h-auto flex flex-col overflow-hidden " id="info-bottom-left-content"></div>
+          <div class="w-full flex flex-row relative items-stretch justify-between overflow-hidden max-h-[50%] relative top-[-6px] min-h-[64px]" id="info-content-2">
+            <div class="h-auto flex flex-col overflow-hidden break-words" id="info-bottom-left-content"></div>
             <div class="bottom-0 right-0 flex items-end">
               <div id="qurcode-content" style="width:63px; height:63px;">
                 <div id="qr-code-container" class="relative"></div>
@@ -321,7 +321,8 @@ const usePrint = () => {
         'flex-col',
         'overflow-hidden',
         'items-start',
-        'relative'
+        'relative',
+        'top-[-9999px]'
       )
 
       customizeLabel(virtualDom)
