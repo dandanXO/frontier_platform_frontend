@@ -342,6 +342,7 @@ const cancel = async () => {
     type: NOTIFY_TYPE.WARNING,
     header: t('RR0305'),
     contentText: t('RR0306'),
+    primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
       goToAssets()
