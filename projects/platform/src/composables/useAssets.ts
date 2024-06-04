@@ -8,7 +8,6 @@ import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
 import useCPrint from '@/composables/material/useCustomPrint'
 import generalApi from '@/apis/general'
-import { CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST } from '@/utils/constants'
 import userApi from '@/apis/user'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
@@ -454,7 +453,7 @@ export default function useAssets() {
     name: () => t('RR0061'),
     func: async (m) => {
       store.dispatch('helper/openModalBehavior', {
-        component: CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST.includes(orgId)
+        component: store.getters['permission/isJBRule']
           ? 'modal-label-preview-custom'
           : 'modal-label-preview',
         properties: {
@@ -463,7 +462,7 @@ export default function useAssets() {
             materialList: Material[],
             setting: QrCodePrintLabelSetting
           ): Promise<void> => {
-            CUSTOMIZE_LABEL_LAYOUT_ORG_ID_LIST.includes(orgId)
+            store.getters['permission/isJBRule']
               ? await customPrint.printLabel(materialList)
               : await print.printLabel(materialList, setting)
           },

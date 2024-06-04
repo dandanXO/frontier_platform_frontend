@@ -13,7 +13,6 @@ import type {
   MaterialLeatherConstruction,
   MaterialNonWovenConstruction,
   MaterialTrimConstruction,
-  Group,
 } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
@@ -26,7 +25,6 @@ import land from '@/assets/images/land.png'
 import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
-import { PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST } from '@/utils/constants'
 import {
   type QrCodePrintLabelSetting,
   DefaultPrintLabelSetting,
@@ -200,10 +198,12 @@ const usePrint = () => {
   const org = computed<Organization>(
     () => store?.getters['organization/organization']
   )
-  const orgId = computed<number>(() => store?.getters['organization/orgId'])
   const logo = computed<string>(() => store?.getters['organization/orgLogo'])
   const orgType = computed<any>(() => store?.getters['helper/routeLocation'])
   const group = computed(() => store.getters['group/group'])
+  const isTexpertsRule = computed<boolean>(
+    () => store.getters['permission/isTexpertsRule']
+  )
 
   const printA4Swatch = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
@@ -357,15 +357,13 @@ const usePrint = () => {
         `
         infoContainer.appendChild(row)
       })
-      const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(
-        orgId.value
-      )
+
       await makeQrCode(
         frontierNo,
         'qr-code-container',
         60,
         true,
-        isCustomize ? '' : logo.value
+        isTexpertsRule.value ? '' : logo.value
       )
 
       return virtualDom
@@ -603,7 +601,6 @@ const usePrint = () => {
   ) => {
     store.dispatch('helper/pushModalLoading')
 
-    const isCustomize = PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
     const fontSizeIndex = () => {
       const value = setting.fontSize ? setting.fontSize : 5
 
@@ -705,7 +702,7 @@ const usePrint = () => {
         'overflow-hidden',
         'font-bold'
       )
-      if (isCustomize) {
+      if (isTexpertsRule.value) {
         customizeLabel(virtualDom)
       } else {
         normalLabel(virtualDom)
@@ -718,7 +715,7 @@ const usePrint = () => {
         'qr-code-container',
         qrWidth,
         true,
-        isCustomize ? '' : logo.value
+        isTexpertsRule.value ? '' : logo.value
       )
 
       const infoContainer = document.getElementById('info-container')!

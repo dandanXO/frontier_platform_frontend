@@ -45,27 +45,18 @@ div(class="w-full relative")
 <script setup>
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 import remindVerifyEmail from '@/utils/remind-verify-email'
-import {
-  SIGNUP_SOURCE,
-  CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST,
-} from '@/utils/constants'
-import { some, includes } from 'lodash/fp'
+import { SIGNUP_SOURCE } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const user = computed(() => store.getters['user/user'])
 const orgList = computed(() => store.getters['user/organizationList'])
-const canCreateNewOrg = computed(() => {
-  const orgIds = user.value.organizationList.map((org) => org.orgId)
-  const notLittleKing = !CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST.some((orgId) =>
-    orgIds.includes(orgId)
-  )
-  return notLittleKing
-})
+const canCreateNewOrg = computed(
+  () => store.getters['permission/noLittleKingInOrgList']
+)
 const goToPublicLibrary = (orgNo) => {
   if (!user.value.isVerify) {
     remindVerifyEmail()

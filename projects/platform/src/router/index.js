@@ -172,7 +172,7 @@ const routes = [
         const organization = await store.getters['organization/organization']
         // 特殊客戶不給看 sourcing library 導去 dashborad
         if (
-          !store.getters['permission/littlekingRule'] &&
+          store.getters['permission/isLittleKingRule'] &&
           to.name === 'PublicLibrary'
         ) {
           return next(
@@ -347,7 +347,7 @@ const routes = [
         beforeEach: async (to, from, next) => {
           const organization = await store.getters['organization/organization']
           // 特殊客戶不給看 sourcing library 導去 dashborad
-          if (!store.getters['permission/littlekingRule']) {
+          if (store.getters['permission/isLittleKingRule']) {
             return next(
               `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/dashboard`
             )

@@ -1,17 +1,39 @@
-import { CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST } from '@/utils/constants'
-const state = () => ({})
+import { some, includes } from 'lodash/fp'
+
+// 6 is Fabric Pro for testing.
+// Other test org id need to delete before prod.
+const state = () => ({
+  taiwanTaffet: [96, 6, 136],
+  // J&B INT"L
+  jbIntL: [113, 6],
+  texperts: [1694, 136],
+  littleKing: [1879, 6],
+})
 
 const getters = {
-  littlekingRule: (state, getters, rootState) => {
-    // 特殊客戶不給看 sourcing library
-    if (
-      CUSTOMIZE_LITTLEKING_RULE_ORG_ID_LIST.includes(
-        rootState.organization.orgId
-      )
-    ) {
-      return false
-    }
-    return true
+  noLittleKingInOrgList: (state, getters, rootState) => {
+    const orgIds = rootState.user.organizationList.map((org) => org.orgId)
+    return !state.littleKing.some((orgId) => orgIds.includes(orgId))
+  },
+  isLittleKingRule: (state, getters, rootState) => {
+    // Hide sourcing library
+    return state.littleKing.includes(rootState.organization.orgId)
+  },
+  notLittleKingRule: (state, getters, rootState) => {
+    // Show sourcing library
+    return !state.littleKing.includes(rootState.organization.orgId)
+  },
+  isTaiwanTaffetaRule: (state, getters, rootState) => {
+    // Convert weight by cuttable width
+    return state.taiwanTaffet.includes(rootState.organization.orgId)
+  },
+  isJBRule: (state, getters, rootState) => {
+    // J&B QR code label layout
+    return state.jbIntL.includes(rootState.organization.orgId)
+  },
+  isTexpertsRule: (state, getters, rootState) => {
+    // Texperts QR code label layout
+    return state.texperts.includes(rootState.organization.orgId)
   },
 }
 

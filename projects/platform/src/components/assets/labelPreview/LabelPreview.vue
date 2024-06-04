@@ -3,12 +3,15 @@ div(
   v-if="type === 'face' && faceSideMaterial"
   class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
 )
-  div(class="w-[83px] h-full flex flex-col" :class="[{'justify-between': !isCustomize}]")
-    div( v-if="isCustomize" class="w-full flex justify-center")
+  div(
+    class="w-[83px] h-full flex flex-col"
+    :class="[{ 'justify-between': !isCustomize }]"
+  )
+    div(v-if="isCustomize" class="w-full flex justify-center")
       img(:src="logo" class="w-8 h-8 object-cover rounded")
     div(class="w-full flex flex-row justify-center mt-2 mb-4")
       div(:id="`qr-code-${index}-face`" class="relative")
-    div(class="w-full flex flex-col items-center" :class="[{'mb-[3px]': !isCustomize}]")
+    div(class="w-full flex flex-col items-center" :class="[{ 'mb-[3px]': !isCustomize }]")
       p(class="text-[10px] bold") {{ $t('DD0046') }}
       p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
@@ -50,12 +53,15 @@ div(
   v-if="type === 'back' && backSideMaterial"
   class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
 )
-  div(class="w-[83px] h-full flex flex-col" :class="[{'justify-between': !isCustomize}]")
-    div( v-if="isCustomize" class="w-full flex justify-center")
+  div(
+    class="w-[83px] h-full flex flex-col"
+    :class="[{ 'justify-between': !isCustomize }]"
+  )
+    div(v-if="isCustomize" class="w-full flex justify-center")
       img(:src="logo" class="w-8 h-8 object-cover rounded")
     div(class="w-full flex flex-row justify-center mt-2 mb-4")
       div(:id="`qr-code-${index}-back`" class="relative")
-    div(class="w-full flex flex-col items-center" :class="[{'mb-[3px]': !isCustomize}]")
+    div(class="w-full flex flex-col items-center" :class="[{ 'mb-[3px]': !isCustomize }]")
       p(class="text-[10px] bold") {{ $t('DD0047') }}
       p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
@@ -104,7 +110,6 @@ import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { toYYYYMMDDFormat, toHHMMAFormat } from '@frontier/lib/src/utils/date'
-import { PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST } from '@/utils/constants'
 import water from '@/assets/images/water.png'
 import co2 from '@/assets/images/co2.png'
 import land from '@/assets/images/land.png'
@@ -181,8 +186,8 @@ const emissionsSettingMapper = {
   land: 'isPrintLandUse',
 }
 
-const isCustomize = computed<boolean>(() =>
-  PRINT_CUSTOMIZE_LABEL_ORG_ID_LIST.includes(orgId.value)
+const isCustomize = computed<boolean>(
+  () => store.getters['permission/isTexpertsRule']
 )
 const randerQrcode = async () => {
   const qrCode = document.getElementById(`qr-code-${index.value}-${type.value}`)
@@ -197,7 +202,7 @@ const randerQrcode = async () => {
       `qr-code-${index.value}-${type.value}`,
       size.value,
       true,
-      isCustomize.value ? '':logo.value
+      isCustomize.value ? '' : logo.value
     )
   }
 }

@@ -141,7 +141,7 @@ const {
 } = useWorkspace()
 
 const showPublicLibrary = computed(
-  () => store.getters['permission/littlekingRule']
+  () => store.getters['permission/notLittleKingRule']
 )
 
 const optionSort = computed(() => {

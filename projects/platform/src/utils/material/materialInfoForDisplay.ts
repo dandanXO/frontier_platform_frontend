@@ -32,13 +32,11 @@ import store from '@/store'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
 
 import { computed } from 'vue'
-import { CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST } from '../constants'
 
 const t = i18n.global.t
 
-const orgId = computed<number>(() => store?.getters['organization/orgId'])
-const isCustomizeWeight = CUSTOMIZE_WEIGHT_LOGIC_ORG_ID_LIST.includes(
-  orgId.value
+const isCustomizeWeight = computed(
+  () => store.getters['permission/isTaiwanTaffetaRule']
 )
 
 const materialInfoForDisplay = {
@@ -297,7 +295,9 @@ const materialInfoForDisplay = {
               return weightDisplaySetting.isShowWeightGm
           }
         })
-        .map(isCustomizeWeight ? getItemDisplayFloor : getItemDisplayRounded)
+        .map(
+          isCustomizeWeight.value ? getItemDisplayFloor : getItemDisplayRounded
+        )
         .join(', ')
       if (computedWeightDisplay.length === 0) {
         return originWeightDisplay
