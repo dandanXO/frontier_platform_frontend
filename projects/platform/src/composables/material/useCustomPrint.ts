@@ -309,7 +309,6 @@ const usePrint = () => {
 
       const virtualDom = document.createElement('div')
       virtualDom.classList.add(
-        'border',
         'w-[7cm]',
         'h-[6cm]',
         'bg-[#ffffff]',
