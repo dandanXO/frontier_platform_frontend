@@ -270,12 +270,40 @@ const getBarChartBaseOption = (
   },
 })
 
+const isLittleKingRule = computed(
+  () => store.getters['permission/isLittleKingRule']
+)
 const textureOption = computed(() => {
   if (!textureCounts.value) {
     return
   }
 
-  return Object.assign(
+  const littleKingData = Object.assign(
+    getBarChartBaseOption(
+      t('BB0124'),
+      [],
+      textureCounts.value.map((data) => data.name),
+      54,
+      'break'
+    ),
+    {
+      series: [
+        {
+          name: t('BB0128'),
+          type: 'bar',
+          data: textureCounts.value.map((data) => data.internal),
+          barWidth: 8,
+          barGap: 0.4,
+          color: colors.primary[400],
+          itemStyle: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    }
+  )
+
+  const normalData = Object.assign(
     getBarChartBaseOption(
       t('BB0124'),
       [t('BB0128'), t('BB0129')],
@@ -310,6 +338,8 @@ const textureOption = computed(() => {
       ],
     }
   )
+
+  return isLittleKingRule.value ? littleKingData : normalData
 })
 
 enum KEYWORD_DATE {
