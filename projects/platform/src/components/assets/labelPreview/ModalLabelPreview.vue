@@ -62,17 +62,14 @@ modal-behavior(
       div(
         class="w-full px-3 pt-4 pb-6 justify-between border border-transparent border-b-grey-150"
       )
-        p(class="text-xs font-bold mb-2") {{ $t('MM0043') }}
-        f-input-text(
-          v-model:textValue="fontSizeValue"
-          inputType="number"
-          :placeholder="$t('MI0043')"
-          :hintError="errorMessage"
-          class="w-full"
+        p(class="text-xs font-bold mb-2") {{ $t('MM0043') }} {{ fontSizeValue }}px
+        f-input-slider(
+          :canReset="false"
+          :defaultRange="fontSizeDefaultRange"
           :min="5"
           :max="12"
-          :required="true"
-          @update:textValue="setAbleToUpdateSetting"
+          v-model:range="fontSizeValue"
+          ref="fontSzieSliderRef"
         )
       div(class="w-full px-3 pt-4 pb-3 justify-between")
         p(class="text-xs font-bold mb-2") {{ $t('MM0039') }}
@@ -143,6 +140,7 @@ import { computed, ref, toRef, onMounted } from 'vue'
 import { useField } from 'vee-validate'
 import { type Material } from '@frontier/platform-web-sdk'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
+import type { FInputSlider } from '@frontier/ui-component'
 import LabelPreview from '@/components/assets/labelPreview/LabelPreview.vue'
 import {
   PrintLabelSettingMaterialType,
@@ -169,7 +167,10 @@ const { value: fontSizeValue, errorMessage } = useField<number>(
     return true
   }
 )
-
+// mounted前必須要有數值不能是undefind
+fontSizeValue.value = 5
+const fontSizeDefaultRange = ref(5)
+const fontSzieSliderRef = ref<InstanceType<typeof FInputSlider> | null>(null)
 const { t } = useI18n()
 const store = useStore()
 
@@ -403,5 +404,7 @@ onMounted(async () => {
   await store.dispatch('user/getPrintLabelSetting')
 
   fontSizeValue.value = printSetting.value.fontSize
+  fontSizeDefaultRange.value = printSetting.value.fontSize
+  fontSzieSliderRef.value?.setValue(printSetting.value.fontSize)
 })
 </script>

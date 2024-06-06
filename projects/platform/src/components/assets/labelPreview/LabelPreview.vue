@@ -16,7 +16,7 @@ div(
       p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
   div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="bold mb-2") {{ material.itemNo }}
+    p(class="font-bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
       class="w-full flex"
@@ -66,7 +66,7 @@ div(
       p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
   div(class="w-px h-[150px] bg-grey-250 mx-2")
   div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="bold mb-2") {{ material.itemNo }}
+    p(class="font-bold mb-2") {{ material.itemNo }}
     div(
       v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
       :key="info"

@@ -628,7 +628,7 @@ const usePrint = () => {
     ]
     const infoSize = fontSizeOptions[fontSizeIndex()]
     const iconSize = iconSizeOptions[fontSizeIndex()]
-    const infoContainerWidth = 'w-[215px]'
+    const infoContainerWidth = 'w-[195px]'
 
     const domGenerator = async (item: {
       sideType: MaterialSideType
@@ -658,7 +658,7 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="bold mb-2">${itemNo}</p>
+            <p class="font-bold mb-2">${itemNo}</p>
           </div>
         `
       }
@@ -684,14 +684,14 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="bold mb-2">${itemNo}</p>
+            <p class="font-bold mb-2">${itemNo}</p>
           </div>
         `
       }
 
       const virtualDom = document.createElement('div')
       virtualDom.classList.add(
-        'w-[312px]',
+        'w-[300px]',
         'h-[170px]',
         'bg-[#ffffff]',
         'px-2',
@@ -789,7 +789,7 @@ const usePrint = () => {
 
       return virtualDom
     }
-    const LABEL_WIDTH = 312
+    const LABEL_WIDTH = 300
     const LABEL_HEIGHT = 170
     await generate(
       domGenerator,

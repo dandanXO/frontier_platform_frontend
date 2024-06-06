@@ -3,11 +3,11 @@ import { some, includes } from 'lodash/fp'
 // 6 is Fabric Pro for testing.
 // Other test org id need to delete before prod.
 const state = () => ({
-  taiwanTaffet: [96, 6, 136],
+  taiwanTaffet: [96],
   // J&B INT"L
-  jbIntL: [113, 6],
-  texperts: [1694, 136],
-  littleKing: [1879, 6],
+  jbIntL: [113],
+  texperts: [1694],
+  littleKing: [1879],
 })
 
 const getters = {
