@@ -143,8 +143,15 @@ const useMaterialDynamicMenu = (
     trim: { default: [], custom: [] },
     others: { default: [], custom: [] },
   })
-
+  const featureListCustomList = materialOptions.featureList?.custom.map(
+    (tag) => tag.name
+  )
+  const featureListDefaultList = materialOptions.featureList?.default.map(
+    (tag) => tag.name
+  )
   const getInitialFeatureList = () => [
+    ...(featureListDefaultList || []),
+    ...(featureListCustomList || []),
     ...(materialFormValues.faceSide?.featureList || []),
     ...(materialFormValues.middleSide?.featureList || []),
     ...(materialFormValues.backSide?.featureList || []),
