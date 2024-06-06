@@ -101,10 +101,9 @@ const materialInfoForDisplay = {
     if (isComposite) {
       stringList.push('Composite')
     }
-
     if (setting) {
       const materialOption = setting[MaterialTypeOption[materialType]]
-      if (materialOption.isPrintMaterialType) {
+      if (materialOption?.isPrintMaterialType) {
         stringList.push(MaterialTypeText[materialType])
       }
 
