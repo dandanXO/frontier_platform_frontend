@@ -700,7 +700,9 @@ const usePrint = () => {
         'flex',
         'flex-row',
         'overflow-hidden',
-        'font-bold'
+        'font-bold',
+        'relative',
+        'top-[-9999px]'
       )
       if (isTexpertsRule.value) {
         customizeLabel(virtualDom)
