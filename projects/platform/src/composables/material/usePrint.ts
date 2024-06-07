@@ -700,7 +700,6 @@ const usePrint = () => {
         'flex',
         'flex-row',
         'overflow-hidden',
-        'font-bold',
         'relative',
         'top-[-9999px]'
       )
