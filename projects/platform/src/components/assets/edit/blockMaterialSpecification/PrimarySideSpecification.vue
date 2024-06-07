@@ -473,6 +473,7 @@ div(class="flex flex-col gap-y-7.5")
     :hintError="displayErrors[`${primarySideType}.finishList`]"
     multiple
     :multipleTagInputValidations="[inputValidate, lengthValidate]"
+    data-cy="finish-info"
   )
   f-input-container(v-if="mode === CREATE_EDIT.EDIT" :label="$t('EE0040')")
     div(class="flex flex-col gap-y-4")
@@ -520,6 +521,7 @@ div(class="flex flex-col gap-y-7.5")
           :hintError="displayErrors[`${primarySideType}.colorInfo.color`]"
           :placeholder="$t('MI0041')"
           class="w-50"
+          data-cy="color-info"
         )
         div(
           class="flex items-center gap-x-3"
@@ -576,6 +578,7 @@ div(class="flex flex-col gap-y-7.5")
           :hintError="displayErrors[`${primarySideType}.patternInfo.pattern`]"
           :placeholder="$t('MI0042')"
           class="w-50"
+          data-cy="pattern-info"
         )
         div(
           class="flex items-center gap-x-3"

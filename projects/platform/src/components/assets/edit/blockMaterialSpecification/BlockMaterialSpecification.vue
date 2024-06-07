@@ -38,6 +38,7 @@ div
           :hintError="displayErrors['seasonInfo.season.name']"
           class="w-80"
           :multipleTagInputValidations="[lengthValidate]"
+          data-cy="season-input"
         )
         f-input-text(
           :textValue="seasonYear.value"
@@ -46,6 +47,7 @@ div
           :hintError="displayErrors['seasonInfo.year']"
           :placeholder="t('MI0013')"
           class="w-64"
+          data-cy="season-input-year"
         )
     face-side-specification(
       v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.FACE_SIDE"

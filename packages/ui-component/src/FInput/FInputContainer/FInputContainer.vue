@@ -26,7 +26,11 @@ div
             )
               template(#newline)
                 br
-            p(v-else class="text-caption text-red-400 leading-1.3 whitespace-nowrap") {{ hintError }}
+            p(
+              v-else
+              class="text-caption text-red-400 leading-1.3 whitespace-nowrap"
+              data-cy="hintError"
+            ) {{ hintError }}
         slot(name="slot:hint-supporting")
           template(v-if="!!hintSupporting")
             i18n-t(

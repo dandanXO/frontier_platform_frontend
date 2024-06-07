@@ -12,7 +12,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: 'http://localhost:8080',
-    defaultCommandTimeout: 10 * 10000,
+    baseUrl: 'http://localhost:8080/',
+    defaultCommandTimeout: 10 * 1000,
   },
 })
