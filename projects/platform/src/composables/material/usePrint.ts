@@ -245,7 +245,9 @@ const usePrint = () => {
               logo.value
             }" class="w-12.5 h-12.5 rounded flex-shrink-0" />
             <div class="flex-grow text-grey-900">
-              <h6 class="w-full text-body1 font-bold line-clamp-1">${itemNo}</h6>
+              <h6 class="w-full text-body1 font-bold line-clamp-1">${
+                itemNo ?? ''
+              }</h6>
               <div id="info-container" class="pt-2 grid gap-y-1 !text-[8px] leading-[1.6] text-grey-900">
               </div>
             </div>
@@ -658,7 +660,7 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2">${itemNo}</p>
+            <p class="font-bold mb-2">${itemNo ?? ''}</p>
           </div>
         `
       }
@@ -684,7 +686,7 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2">${itemNo}</p>
+            <p class="font-bold mb-2">${itemNo ?? ''}</p>
           </div>
         `
       }

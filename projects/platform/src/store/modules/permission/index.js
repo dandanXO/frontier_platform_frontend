@@ -6,7 +6,7 @@ const state = () => ({
   taiwanTaffet: [96],
   // J&B INT"L
   jbIntL: [113],
-  texperts: [1694, 6],
+  texperts: [1694],
   littleKing: [1879],
 })
 
