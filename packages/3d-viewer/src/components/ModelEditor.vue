@@ -23,12 +23,10 @@ const props = withDefaults(
     normalImgUrl: string
     dispImgUrl: string
     roughImgUrl: string
-    showCustomModels?: boolean
+
     onClose?: () => void
   }>(),
-  {
-    showCustomModels: false,
-  }
+  {}
 )
 
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -70,8 +68,7 @@ const {
   props.baseImgUrl,
   props.normalImgUrl,
   props.roughImgUrl,
-  props.dispImgUrl,
-  props.showCustomModels
+  props.dispImgUrl
 )
 const { takeScreenshot } = useScreenshot(camera, canvas, modelObject)
 

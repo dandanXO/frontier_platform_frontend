@@ -5,12 +5,6 @@ import Pica from 'pica'
 import { image2Object } from '../utils/cropper'
 import MODELS from '../constants/models'
 import useColors from './useColors'
-import croppedTopModel from '../assets/models/croppedTop/scene.glb'
-import croppedTopCoverImg from '../assets/models/croppedTop/cover.png'
-import mansShortsModel from '../assets/models/mansShorts/scene.glb'
-import mansShortsCoverImg from '../assets/models/mansShorts/cover.png'
-import tightModel from '../assets/models/tight/scene.glb'
-import tightCoverImg from '../assets/models/tight/cover.png'
 import type { Ref } from 'vue'
 import type { U3M } from './useU3M'
 
@@ -123,27 +117,6 @@ const useMoireEffectPreventSwitch = (
   }
 }
 
-const orgCustomModels = [
-  {
-    name: 'croppedTop',
-    filePath: croppedTopModel,
-    coverImg: croppedTopCoverImg,
-    size: 100,
-  },
-  {
-    name: 'mansShorts',
-    filePath: mansShortsModel,
-    coverImg: mansShortsCoverImg,
-    size: 100,
-  },
-  {
-    name: 'tight',
-    filePath: tightModel,
-    coverImg: tightCoverImg,
-    size: 100,
-  },
-]
-
 export default function useModels(
   scene: Ref<THREE.Scene | undefined>,
   u3m: Ref<U3M | undefined>,
@@ -151,12 +124,11 @@ export default function useModels(
   baseImgUrl: string,
   normalImgUrl: string,
   roughImgUrl: string,
-  dispImgUrl: string,
-  showCustomModels = false
+  dispImgUrl: string
 ) {
   const isLoading = ref(true)
 
-  const models = [...MODELS, ...(showCustomModels ? orgCustomModels : [])]
+  const models = [...MODELS]
   const modelIndex = ref<number>(0)
   const modelObject = ref<THREE.Group>()
   const material = ref<THREE.MeshPhysicalMaterial>()

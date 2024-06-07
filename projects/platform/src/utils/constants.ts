@@ -428,9 +428,6 @@ export enum CREATE_EDIT {
 export const COLLECTION_NAME_MAX_LENGTH = 100
 export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 
-// TODO: consider include in same pattern.
-export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
-
 export const materialFormServiceKey = Symbol('MaterialFormService')
 export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')
 export const materialMultimediaCreateServiceKey = Symbol(

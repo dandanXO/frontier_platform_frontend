@@ -6,7 +6,6 @@ model-editor(
   :normalImgUrl="u3m.normalImgUrl"
   :roughImgUrl="u3m.roughImgUrl"
   :dispImgUrl="u3m.dispImgUrl"
-  :showCustomModels="showCustomModels"
   @close="$store.dispatch('helper/closeModalBehavior')"
 )
 </template>
@@ -18,7 +17,6 @@ import useLogSender from '@/composables/useLogSender'
 const props = defineProps<{
   materialId: number
   u3m: Required<MaterialCustomU3m | MaterialU3m>
-  showCustomModels?: boolean
 }>()
 
 const logSender = useLogSender()
