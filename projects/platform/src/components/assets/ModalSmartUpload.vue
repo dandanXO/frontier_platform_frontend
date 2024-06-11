@@ -257,13 +257,14 @@ function validateImage(item: ImageItem, imageInfo: any) {
     item.isRemoved = true
   }
 
-  if (
-    imageInfo.xResolution < minimumResolution ||
-    imageInfo.yResolution < minimumResolution
-  ) {
-    item.invalidCode = INVALID_IMAGE_CODE.INVALID_RESOLUTION
-    item.isRemoved = true
-  }
+  // F22-3547 disable image upload resolution validation
+  // if (
+  //   imageInfo.xResolution < minimumResolution ||
+  //   imageInfo.yResolution < minimumResolution
+  // ) {
+  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_RESOLUTION
+  //   item.isRemoved = true
+  // }
 }
 
 fileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
