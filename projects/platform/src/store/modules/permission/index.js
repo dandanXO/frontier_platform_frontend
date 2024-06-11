@@ -8,7 +8,7 @@ const state = () => ({
   jbIntL: [113],
   texperts: [1694],
   littleKing: [1879],
-  trialDigitalDrape: [6],
+  trialDigitalDrape: [6, 27, 147, 1498],
 })
 
 const getters = {
