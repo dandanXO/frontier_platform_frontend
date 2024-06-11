@@ -8,6 +8,7 @@ const state = () => ({
   jbIntL: [113],
   texperts: [1694],
   littleKing: [1879],
+  trialDigitalDrape: [6],
 })
 
 const getters = {
@@ -34,6 +35,10 @@ const getters = {
   isTexpertsRule: (state, getters, rootState) => {
     // Texperts QR code label layout
     return state.texperts.includes(rootState.organization.orgId)
+  },
+  isDigitalDrapeTrialRule: (state, getters, rootState) => {
+    // Show Digital Drape
+    return state.trialDigitalDrape.includes(rootState.organization.orgId)
   },
 }
 

@@ -15,6 +15,7 @@ import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
+import { useStore } from 'vuex'
 
 export type MaterialSpecificationInfoBasicProperty = {
   name: string
@@ -63,6 +64,7 @@ export default function useMaterial(
   material: ComputedRef<Material> | Ref<Material>
 ) {
   const { t } = useI18n()
+  const store = useStore()
   const { isMobile } = useBreakpoints()
 
   const mainSideType = computed(() => getMaterialMainSideType(material.value))
@@ -113,9 +115,10 @@ export default function useMaterial(
    * A: cover image
    * B: face side original image + ruler image
    * C: back side original image + ruler image
-   * D: multimedia
+   * D: Digital Drape
+   * F: multimedia
    *
-   * publicFileList = A + B + C + D
+   * publicFileList = A + B + C + D + F
    */
   const publicFileList = computed(() => {
     const {
@@ -198,22 +201,24 @@ export default function useMaterial(
     }
 
     // Digital Drape
-    const selectedDigitalDrape = customDigitalDrape?.isSelected
-      ? customDigitalDrape
-      : digitalDrape
-    list.push({
-      id: 'digitalDrape',
-      fileId: null,
-      displayUrl: selectedDigitalDrape?.displayUrl ?? null,
-      originalUrl: selectedDigitalDrape?.originalUrl ?? null,
-      thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
-      displayName: `${t('MI0136')}${
-        customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
-      }`,
-      displayNameShort: t('MI0136'),
-      caption: null,
-      extension: Extension.JPG,
-    })
+    if (store.getters['permission/isDigitalDrapeTrialRule']) {
+      const selectedDigitalDrape = customDigitalDrape?.isSelected
+        ? customDigitalDrape
+        : digitalDrape
+      list.push({
+        id: 'digitalDrape',
+        fileId: null,
+        displayUrl: selectedDigitalDrape?.displayUrl ?? null,
+        originalUrl: selectedDigitalDrape?.originalUrl ?? null,
+        thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
+        displayName: `${t('MI0136')}${
+          customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
+        }`,
+        displayNameShort: t('MI0136'),
+        caption: null,
+        extension: Extension.JPG,
+      })
+    }
 
     multimediaList.length > 0 &&
       list.push(
