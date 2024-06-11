@@ -660,7 +660,7 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2">${itemNo ?? ''}</p>
+            <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
           </div>
         `
       }
@@ -686,7 +686,7 @@ const usePrint = () => {
           <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
           <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2">${itemNo ?? ''}</p>
+            <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
           </div>
         `
       }
