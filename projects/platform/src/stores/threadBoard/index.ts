@@ -602,7 +602,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     isCreatingWorkflowStage.value = false
-    creatingWorkflowStageName.value = null
     creatingWorkflowStageThreadList.value = []
 
     setLoading(true)
