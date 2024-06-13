@@ -1,6 +1,6 @@
 <template lang="pug">
 span(
-  class="flex items-center absolute gap-x-4 top-5 left-1/2 -translate-x-1/2 h-11.5 bg-grey-850 text-grey-100 px-5 rounded-md border border-grey-700"
+  class="flex items-center absolute gap-x-4 top-15 left-1/2 -translate-x-1/2 h-11.5 bg-grey-850 text-grey-100 px-5 rounded-md border border-grey-700"
 )
   div(class="flex items-center gap-x-3")
     f-tooltip-standard(:tooltipMessage="$t('EE0157')" theme="dark")

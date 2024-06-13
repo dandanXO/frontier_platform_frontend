@@ -3,7 +3,29 @@ div(class="h-full flex flex-col")
   div(class="flex-1 flex flex-row gap-x-6 items-stretch px-7.5")
     div(class="dark relative flex-1 flex flex-col" @click="handleAreaClick('edit')")
       div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
-        div(ref="sourceCanvasContainer" class="relative w-full h-full bg-grey-900")
+        div(
+          ref="sourceCanvasContainer"
+          class="relative w-full h-full bg-grey-900"
+          @mousemove="sourceCanvasContainerHandleMouseMove"
+          @mouseleave="sourceCanvasContainerHideLines"
+        )
+          div(
+            ref="refHorizontalLine"
+            class="absolute w-full h-[1px] bg-grey-100 z-30 pointer-events-none"
+            :style="{ top: coords.y + 'px', display: coords.show ? 'block' : 'none' }"
+          )
+          div(
+            ref="refVerticalLine"
+            class="absolute h-full w-[1px] bg-grey-100 z-30 pointer-events-none"
+            :style="{ left: coords.x + 'px', display: coords.show ? 'block' : 'none' }"
+          )
+          div(class="flex w-full absolute z-1 pointer-events-none")
+            div(class="w-[50px] h-[50px] bg-grey-800")
+            div(ref="RefRoulerH" class="w-full h-[50px] absolute left-[50px]")
+          div(
+            class="flex w-full flex-col h-full absolute top-[50px] z-1 pointer-events-none"
+          )
+            div(ref="RefRoulerV" class="h-full w-[50px]")
           perspective-canvas(
             ref="refPerspectiveCanvas"
             v-if="sourceCanvasContainer && sourceImage && downSampledCanvases"
@@ -15,6 +37,7 @@ div(class="h-full flex flex-col")
             :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord"
             :initialRecord="props.side.perspectiveCropRecord"
             :gridColor="sourceGridColor"
+            @rotateDegChange="handleRotateDegChange"
             @scaleChange="handleSourceScaleChange"
             @cropStart="handleCropStart"
             @cropSuccess="handleCropSuccess"
@@ -101,6 +124,16 @@ div(class="h-full flex flex-col")
             :size="SIZE.LG"
             @click="handleRotate(180)"
           ) 180°
+          f-input-slider(
+            ref="rotateDegSliderRef"
+            :canReset="false"
+            class="w-80"
+            :range="rotateDeg"
+            @update:range="chagneRotateInSlider"
+            v-bind="scaleSetting"
+            :theme="THEME.LIGHT"
+            withInput
+          )
           f-button-label(
             :disabled="!side.perspectiveEditStatus.isRotationDirty"
             :theme="THEME.DARK"
@@ -116,6 +149,7 @@ import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
 import usePreview from '@/composables/usePreview'
 import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
+import Ruler from '@scena/ruler'
 import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
 import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
 import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
@@ -127,7 +161,7 @@ import {
   THEME,
   SIZE,
 } from '@/utils/constants'
-import { toDP2 } from '@/utils/cropper'
+import { toDP2, cmToPixel } from '@/utils/cropper'
 import { getDimension, preRender } from '@/utils/perspectiveCropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 import type {
@@ -151,7 +185,25 @@ const store = useStore()
 const { t } = useI18n()
 
 const dpi = toRaw(props.side.config.dpi)
-
+// https://daybrush.com/ruler/release/latest/doc/
+// 1cm = 37.7952px
+// zoom: 37.7952
+// unit: 1 (every 1cm)
+const rulerPixelCM = 37.7952
+const coords = ref({ x: 0, y: 0, show: false })
+const RefRoulerH = ref<HTMLDivElement>()
+const RefRoulerV = ref<HTMLDivElement>()
+const hRuler = ref()
+const vRuler = ref()
+const rotateDeg = ref(0)
+const rotateDegSliderRef = ref()
+const scaleSetting = {
+  defaultRange: 0,
+  max: 360,
+  min: 0,
+  step: 0.1,
+  tooltips: false,
+}
 const sourceCanvasContainer = ref<HTMLDivElement>()
 const previewCanvasContainer = ref<HTMLDivElement>()
 const destinationCanvas = ref<HTMLCanvasElement>()
@@ -181,6 +233,16 @@ const sourceDimension = computed(() => {
   return getDimension(sourceImage.value.width, sourceImage.value.height, dpi)
 })
 
+const sourceCanvasContainerHandleMouseMove = (event: any) => {
+  const rect = sourceCanvasContainer.value?.getBoundingClientRect()
+
+  coords.value.x = event.clientX - (rect?.left || 0)
+  coords.value.y = event.clientY - (rect?.top || 0)
+  coords.value.show = true
+}
+const sourceCanvasContainerHideLines = () => {
+  coords.value.show = false
+}
 const errorHandler = (err: Error) => {
   console.error(err)
   store.dispatch('helper/openModalConfirm', {
@@ -255,8 +317,16 @@ const getSourceImageWithDownSampled = async (
     }
   })
 }
+const handleRotateDegChange = (v: number) => {
+  rotateDeg.value = v
+}
 
-const handleSourceScaleChange = (v: number) => (sourceScale.value = v)
+const handleSourceScaleChange = (cm: number) => {
+  hRuler.value.zoom = cmToPixel(cm, dpi)
+  vRuler.value.zoom = cmToPixel(cm, dpi)
+
+  return (sourceScale.value = cm)
+}
 
 const handleCropStart = () => {
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
@@ -403,11 +473,34 @@ const handlePreviewZoomUpdate = (type: string) => {
       return
   }
 }
+const chagneRotateInSlider = (val) => {
+  refPerspectiveCanvas?.value?.rotate(val || 0)
+}
 
+watch(
+  () => rotateDeg.value,
+  (v) => {
+    rotateDegSliderRef?.value?.setValue(v)
+  }
+)
 watch(previewGridColor, () => {
   previewDisplay.value?.setGridColor(previewGridColor.value)
 })
 
+onMounted(async () => {
+  hRuler.value = new Ruler(RefRoulerH.value as HTMLDivElement, {
+    type: 'horizontal',
+    zoom: rulerPixelCM,
+    unit: 1,
+    height: 50,
+  })
+  vRuler.value = new Ruler(RefRoulerV.value as HTMLDivElement, {
+    type: 'vertical',
+    zoom: rulerPixelCM,
+    unit: 1,
+    width: 50,
+  })
+})
 onMounted(async () => {
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const result = await getSourceImageWithDownSampled(

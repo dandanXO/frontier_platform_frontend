@@ -140,6 +140,7 @@ const emit = defineEmits<{
   ): void
   (e: 'cropError', err: Error): void
   (e: 'scaleChange', v: number): void
+  (e: 'rotateDegChange', v: number): void
   (e: 'rotationChange', v: number): void
   (e: 'editStatusChange', status: EditStatus): void
 }>()
@@ -232,8 +233,8 @@ const leftInfoRectConfig = reactive({ ...rectProps })
 const topInfoRectConfig = reactive({ ...rectProps })
 const rightInfoRectConfig = reactive({ ...rectProps })
 const bottomInfoRectConfig = reactive({ ...rectProps })
-
-const rotateDeg = computed(() => ROTATE_PRESETS[rotatePresetsIndex.value])
+const rotateDegRef = ref(0)
+const rotateDeg = computed(() => rotateDegRef.value)
 const scaleInverse = computed(() => 1 / scale.value)
 const infoVisible = computed(() => isCirclesPressing.value)
 
@@ -956,9 +957,8 @@ watch(rotateDeg, crop)
 
 const rotate = (deg: number) => {
   const result = ROTATE_PRESETS.findIndex((presetDeg) => presetDeg === deg)
-  if (result === -1) {
-    throw new Error('invalid deg')
-  }
+  rotateDegRef.value = deg
+  emit('rotateDegChange', rotateDegRef.value)
   rotatePresetsIndex.value = result
 }
 

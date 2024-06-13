@@ -70,7 +70,7 @@ importers:
         version: 0.28.0
       vitest:
         specifier: ^0.30.1
-        version: 0.30.1(happy-dom@9.20.3)(playwright@1.44.0)(sass@1.77.2)
+        version: 0.30.1(happy-dom@9.20.3)(less@4.2.0)(playwright@1.44.0)(sass@1.77.2)(terser@5.31.0)
       vue:
         specifier: 3.3.4
         version: 3.3.4
@@ -107,7 +107,7 @@ importers:
         version: 1.5.5
       '@vitejs/plugin-vue':
         specifier: ^3.0.3
-        version: 3.2.0(vite@3.2.10(@types/node@16.18.97)(sass@1.77.2))(vue@3.3.4)
+        version: 3.2.0(vite@3.2.10(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0))(vue@3.3.4)
       '@vue/eslint-config-prettier':
         specifier: ^7.0.0
         version: 7.1.0(eslint@8.57.0)(prettier@2.8.8)
@@ -288,6 +288,9 @@ importers:
 
   projects/platform:
     dependencies:
+      '@scena/ruler':
+        specifier: ^0.20.0
+        version: 0.20.0
       '@techstark/opencv-js':
         specifier: 4.6.0-release.1
         version: 4.6.0-release.1
@@ -1076,9 +1079,15 @@ packages:
   '@cypress/xvfb@1.2.4':
     resolution: {integrity: sha512-skbBzPggOVYCbnGgV+0dmBdW/s77ZkAOXIC1knS8NagwDjBrNC1LuXtQJeiN6l+m7lzmHtaoUw/ctJKdqkG57Q==}
 
+  '@daybrush/utils@1.13.0':
+    resolution: {integrity: sha512-ALK12C6SQNNHw1enXK+UO8bdyQ+jaWNQ1Af7Z3FNxeAwjYhQT7do+TRE4RASAJ3ObaS2+TJ7TXR3oz2Gzbw0PQ==}
+
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
+
+  '@egjs/list-differ@1.0.1':
+    resolution: {integrity: sha512-OTFTDQcWS+1ZREOdCWuk5hCBgYO4OsD30lXcOCyVOAjXMhgL5rBRDnt/otb6Nz8CzU0L/igdcaQBDLWc4t9gvg==}
 
   '@emotion/use-insertion-effect-with-fallbacks@1.0.1':
     resolution: {integrity: sha512-jT/qyKZ9rzLErtrjGgdkMBn2OP8wl0G3sQlBb3YPryvKHsjvINUhVaPFfP+fpBcOkmrVOVEEHQFJ7nbj2TH2gw==}
@@ -1710,6 +1719,12 @@ packages:
 
   '@rushstack/eslint-patch@1.10.3':
     resolution: {integrity: sha512-qC/xYId4NMebE6w/V33Fh9gWxLgURiNYgVNObbJl2LZv0GUUItCcCqC5axQSwRaAgaxl2mELq1rMzlswaQ0Zxg==}
+
+  '@scena/react-ruler@0.19.0':
+    resolution: {integrity: sha512-2OEOjLMOptDxdSuEqID2JAljQuYoeoV09MnLjiBeyzJxoUcVjzyBCPwkMbHRKj2Z3WrwztJAFBF+y6yNNM5Lcw==}
+
+  '@scena/ruler@0.20.0':
+    resolution: {integrity: sha512-KVrIwU0EvNJK1833yX7Qg8h/DvSZ04S6aR012UtuWqLaD/+T80HfN5b4IEs0rtoJ26FvvfMigVnOAmyHqc1S6g==}
 
   '@sideway/address@4.1.5':
     resolution: {integrity: sha512-IqO/DUQHUkPeixNQ8n0JA6102hT9CmaljNTPmQ1u8MEhBo/R4Q8eKLN/vGZxuebwOroDB4cbpjheD4+/sKFK4Q==}
@@ -3146,6 +3161,12 @@ packages:
   crelt@1.0.6:
     resolution: {integrity: sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g==}
 
+  croact-ruler@0.18.0:
+    resolution: {integrity: sha512-FZtYH1n3Mpv7VX24y26lAMOVqem+/qRG4a7nBy9pwDeh9Q8UycOQqAdmWxNC1CNh1Pw1k4K28/gRQOyo4r1Zag==}
+
+  croact@1.0.4:
+    resolution: {integrity: sha512-9GhvyzTY/IVUrMQ2iz/mzgZ8+NcjczmIo/t4FkC1CU0CEcau6v6VsEih4jkTa4ZmRgYTF0qXEZLObCzdDFplpw==}
+
   cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
 
@@ -3930,6 +3951,9 @@ packages:
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
+
+  framework-utils@1.1.0:
+    resolution: {integrity: sha512-KAfqli5PwpFJ8o3psRNs8svpMGyCSAe8nmGcjQ0zZBWN2H6dZDnq+ABp3N3hdUmFeMrLtjOCTXD4yplUJIWceg==}
 
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
@@ -6777,6 +6801,9 @@ packages:
   vue-component-type-helpers@2.0.19:
     resolution: {integrity: sha512-cN3f1aTxxKo4lzNeQAkVopswuImUrb5Iurll9Gaw5cqpnbTAxtEMM1mgi6ou4X79OCyqYv1U1mzBHJkzmiK82w==}
 
+  vue-component-type-helpers@2.0.21:
+    resolution: {integrity: sha512-3NaicyZ7N4B6cft4bfb7dOnPbE9CjLcx+6wZWAg5zwszfO4qXRh+U52dN5r5ZZfc6iMaxKCEcoH9CmxxoFZHLg==}
+
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
     engines: {node: '>=12'}
@@ -7929,7 +7956,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@daybrush/utils@1.13.0': {}
+
   '@discoveryjs/json-ext@0.5.7': {}
+
+  '@egjs/list-differ@1.0.1': {}
 
   '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.3.1)':
     dependencies:
@@ -8521,6 +8552,16 @@ snapshots:
   '@remirror/core-constants@2.0.2': {}
 
   '@rushstack/eslint-patch@1.10.3': {}
+
+  '@scena/react-ruler@0.19.0':
+    dependencies:
+      '@daybrush/utils': 1.13.0
+      framework-utils: 1.1.0
+
+  '@scena/ruler@0.20.0':
+    dependencies:
+      croact: 1.0.4
+      croact-ruler: 0.18.0
 
   '@sideway/address@4.1.5':
     dependencies:
@@ -9206,7 +9247,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.3.4
-      vue-component-type-helpers: 2.0.19
+      vue-component-type-helpers: 2.0.21
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -9618,7 +9659,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@vitejs/plugin-vue@3.2.0(vite@3.2.10(@types/node@16.18.97)(sass@1.77.2))(vue@3.3.4)':
+  '@vitejs/plugin-vue@3.2.0(vite@3.2.10(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0))(vue@3.3.4)':
     dependencies:
       vite: 3.2.10(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0)
       vue: 3.3.4
@@ -10599,6 +10640,15 @@ snapshots:
 
   crelt@1.0.6: {}
 
+  croact-ruler@0.18.0:
+    dependencies:
+      '@scena/react-ruler': 0.19.0
+
+  croact@1.0.4:
+    dependencies:
+      '@daybrush/utils': 1.13.0
+      '@egjs/list-differ': 1.0.1
+
   cross-fetch@3.1.8:
     dependencies:
       node-fetch: 2.7.0
@@ -11558,6 +11608,8 @@ snapshots:
   frac@1.1.2: {}
 
   fraction.js@4.3.7: {}
+
+  framework-utils@1.1.0: {}
 
   fresh@0.5.2: {}
 
@@ -14601,7 +14653,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite-node@0.30.1(@types/node@16.18.97)(sass@1.77.2):
+  vite-node@0.30.1(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.4(supports-color@8.1.1)
@@ -14636,7 +14688,7 @@ snapshots:
       sass: 1.77.2
       terser: 5.31.0
 
-  vitest@0.30.1(happy-dom@9.20.3)(playwright@1.44.0)(sass@1.77.2):
+  vitest@0.30.1(happy-dom@9.20.3)(less@4.2.0)(playwright@1.44.0)(sass@1.77.2)(terser@5.31.0):
     dependencies:
       '@types/chai': 4.3.16
       '@types/chai-subset': 1.3.5
@@ -14662,7 +14714,7 @@ snapshots:
       tinybench: 2.8.0
       tinypool: 0.4.0
       vite: 3.2.10(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0)
-      vite-node: 0.30.1(@types/node@16.18.97)(sass@1.77.2)
+      vite-node: 0.30.1(@types/node@16.18.97)(less@4.2.0)(sass@1.77.2)(terser@5.31.0)
       why-is-node-running: 2.2.2
     optionalDependencies:
       happy-dom: 9.20.3
@@ -14716,6 +14768,8 @@ snapshots:
   vscode-uri@3.0.8: {}
 
   vue-component-type-helpers@2.0.19: {}
+
+  vue-component-type-helpers@2.0.21: {}
 
   vue-demi@0.13.11(vue@3.3.4):
     dependencies:

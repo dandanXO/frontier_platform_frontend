@@ -24,6 +24,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@scena/ruler": "^0.20.0",
     "@techstark/opencv-js": "4.6.0-release.1",
     "@tiptap/extension-document": "2.0.0-beta.209",
     "@tiptap/extension-mention": "2.0.0-beta.209",
