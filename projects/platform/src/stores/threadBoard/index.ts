@@ -613,6 +613,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         ),
       })
       await fetchThreadBoard()
+      creatingWorkflowStageName.value = null
       notify.showNotifySnackbar({
         messageText: t('WW0129'),
       })
