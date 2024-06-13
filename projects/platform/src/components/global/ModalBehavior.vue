@@ -23,7 +23,7 @@ div(
         class="cursor-pointer text-grey-600"
         @click="closeModalBehavior"
       )
-    f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content relative")
+    f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-115 box-content relative")
       slot(name="default")
     div(
       v-if="footer"

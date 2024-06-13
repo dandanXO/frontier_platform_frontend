@@ -38,6 +38,10 @@ export const COLOR = {
   GREY: '#939393',
 }
 
+export enum HOLE_TYPE {
+  BLACK = 0,
+  WHITE = 1,
+}
 export const CROPPER_GRID_COLORS = [
   { color: colors.grey[900], invertContent: false },
   { color: colors.grey[0], invertContent: true },

@@ -89,6 +89,7 @@ import {
   U3M_CUT_SIDE,
   MODAL_TYPE,
   THEME,
+  HOLE_TYPE,
 } from '@/utils/constants'
 import { coordToDP1, Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
 import type { EditStatus, U3mCropRecord, U3mSide } from '@/types'
@@ -104,6 +105,8 @@ import { uploadFileToS3 } from '@/utils/fileUpload'
 
 const props = defineProps<{
   material: Material
+  HasHole: Boolean
+  HoleColor: HOLE_TYPE
 }>()
 
 const cropRectSize = 176
@@ -115,6 +118,8 @@ const scaleOptions = {
 }
 
 const material = toRef(props.material)
+const hasHole = toRef(props.HasHole)
+const holeColor = toRef(props.HoleColor)
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
@@ -429,12 +434,13 @@ const handleConfirm = async () => {
     getSideReq(faceSide.value),
     getSideReq(backSide.value),
   ])
-
   const result = await ogBaseAssetsApi('generateAssetsMaterialU3m', {
     materialId: material.value.materialId,
     faceSide: faceSideReq,
     backSide: backSideReq,
     isAutoRepeat: false,
+    hasHole: hasHole.value,
+    holeColor: holeColor.value,
   })
   material.value.u3m.status = result.data.result!.u3mStatus
 
