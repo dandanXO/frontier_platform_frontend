@@ -29,7 +29,7 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
       @wheel.prevent="wheelHandler"
       @touchstart.prevent="touchstartHandler"
       @touchmove.prevent="touchmoveHandler"
-      @touchend.prevent="touchendHandler"
+      @touchend.capture="touchendHandler"
     )
       file-thumbnail(
         v-for="(image, index) in availablePublicFileList"
@@ -39,7 +39,7 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
         :originalUrl="image.originalUrl"
         :extension="image.extension"
         :class="{ 'border-2 border-primary-300': currentIndex === index }"
-        @click="currentIndex = index"
+        v-on:click="currentIndex = index"
         @touchend.prevent="!isTouchMoving && (currentIndex = index)"
       )
   div(ref="refImage" class="flex-grow relative aspect-square")
