@@ -166,7 +166,7 @@ const closeModal = () => {
 
 const validMergedList = computed(() => {
   return mergedList.filter(
-    (row) => row.block.faceSide || row.block.backSide || row.block.detail
+    (row) => (row.block.faceSide || row.block.backSide) && row.block.detail
   )
 })
 
