@@ -17,6 +17,7 @@ div(class="flex flex-col gap-y-7.5")
     :hintError="displayErrors['middleSide.featureList']"
     multiple
     :multipleTagInputValidations="[inputValidate, lengthValidate]"
+    data-cy="features-input"
   )
   f-select-input(
     :selectValue="middleSideFinishList.value"
@@ -28,6 +29,7 @@ div(class="flex flex-col gap-y-7.5")
     :hintError="displayErrors['middleSide.finishList']"
     multiple
     :multipleTagInputValidations="[inputValidate, lengthValidate]"
+    data-cy="finish-info"
   )
   div(
     class="flex items-center gap-x-3"

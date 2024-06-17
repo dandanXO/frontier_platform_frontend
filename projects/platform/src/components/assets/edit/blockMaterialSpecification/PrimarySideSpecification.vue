@@ -342,6 +342,7 @@ div(class="flex flex-col gap-y-7.5")
   f-input-container(
     v-if="!hideBackSideFields"
     :label="$t('RR0021')"
+    data-cy="content-box"
     required
     :hintError="contentDisplayError"
   )
