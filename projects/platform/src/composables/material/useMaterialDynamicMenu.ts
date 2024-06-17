@@ -29,9 +29,10 @@ const useMaterialDynamicMenu = (
 ) => {
   const { t } = useI18n()
   const materialFormValuesInternalInfoTagList =
-    materialFormValues.internalInfo.tagList
+    materialFormValues?.internalInfo?.tagList || []
   const newPrivateTagList = reactive<Nullable<string>[]>([])
-  const materialFormValuesTagInfoTagList = materialFormValues.tagInfo.tagList
+  const materialFormValuesTagInfoTagList =
+    materialFormValues?.tagInfo?.tagList || []
   const newPublicTagList = reactive<Nullable<string>[]>([])
   const publicTagCustomList = computed(() => {
     const customList: any = []
