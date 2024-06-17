@@ -515,7 +515,7 @@ div(class="flex flex-col gap-y-7.5")
         f-input-text(
           :disabled="disableBackSideFields"
           :textValue="color.value"
-          @input="color.onInput"
+          @update:textValue="color.onInput"
           @change="color.onChange"
           @blur="color.onBlur"
           :hintError="displayErrors[`${primarySideType}.colorInfo.color`]"
@@ -572,7 +572,7 @@ div(class="flex flex-col gap-y-7.5")
         f-input-text(
           :disabled="disableBackSideFields"
           :textValue="pattern.value"
-          @input="pattern.onInput"
+          @update:textValue="pattern.onInput"
           @change="pattern.onChange"
           @blur="pattern.onBlur"
           :hintError="displayErrors[`${primarySideType}.patternInfo.pattern`]"
