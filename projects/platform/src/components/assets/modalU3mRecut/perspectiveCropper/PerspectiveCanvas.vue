@@ -956,10 +956,12 @@ watch(editStatus, (newVal, oldVal) => {
 watch(rotateDeg, crop)
 
 const rotate = (deg: number) => {
-  const result = ROTATE_PRESETS.findIndex((presetDeg) => presetDeg === deg)
-  rotateDegRef.value = deg
+  const innerDeg = Math.abs(deg)
+  rotateDegRef.value = innerDeg
   emit('rotateDegChange', rotateDegRef.value)
-  rotatePresetsIndex.value = result
+
+  const shiftedDeg = (innerDeg + 45) % 360
+  rotatePresetsIndex.value = Math.floor(shiftedDeg / 90)
 }
 
 const resetRotation = () => {
