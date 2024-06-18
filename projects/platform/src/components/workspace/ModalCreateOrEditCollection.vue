@@ -2,16 +2,9 @@
 modal-behavior(
   :header="mode === CREATE_EDIT.EDIT ? $t('FF0009') : $t('FF0022')"
   :primaryBtnText="mode === CREATE_EDIT.EDIT ? $t('UU0018') : $t('UU0020')"
-  :primaryBtnDisabled="!isFormValid"
-  @click:primary="actionHandler"
+  :primaryBtnDisabled="primaryBtnDisabled"
+  @click:primary="primaryHandler"
 )
-  template(#note)
-    file-upload-error-note(
-      v-if="refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode"
-      :errorCode="refInputTrendBoardUpload.errorCode"
-      :fileSizeMaxLimit="refInputTrendBoardUpload.fileSizeMaxLimit"
-      data-cy="modal-mass-upload_error"
-    )
   div(class="w-101")
     p(class="text-right pb-0.5 text-caption text-grey-600") *{{ $t('RR0163') }}
     f-input-text(
@@ -83,6 +76,7 @@ if (props.mode === CREATE_EDIT.EDIT) {
   collectionDescription.value = description
   defaultTrendBoard.value = trendBoard
 }
+
 const removeHandler = () => {
   if (props.mode === CREATE_EDIT.EDIT) {
     ogBaseWorkspaceApi('removeWorkspaceCollectionTrendBoard', {
@@ -93,11 +87,12 @@ const removeHandler = () => {
 
 const refInputCollectionName = ref<InstanceType<typeof FInputText>>()
 const refInputDescription = ref<InstanceType<typeof FInputText>>()
-const isFormValid = computed(
+const primaryBtnDisabled = computed(
   () =>
-    collectionName.value &&
-    !refInputCollectionName.value?.isError &&
-    !refInputDescription.value?.isError
+    !collectionName.value ||
+    refInputCollectionName.value?.isError ||
+    refInputDescription.value?.isError ||
+    refInputTrendBoardUpload.value?.errorCode
 )
 
 const isCollectionNameExist = ref(false)
@@ -106,7 +101,7 @@ watch(
   () => (isCollectionNameExist.value = false)
 )
 
-const actionHandler = async () => {
+const primaryHandler = async () => {
   if (!collectionName.value) {
     return
   }

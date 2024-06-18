@@ -7,12 +7,6 @@ modal-behavior(
   @click:primary="primaryHandler"
   @click:secondary="closeModal"
 )
-  template(#note)
-    file-upload-error-note(
-      v-if="(refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode) || fileUploadErrorCode"
-      :errorCode="(refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode) || fileUploadErrorCode"
-      :fileSizeMaxLimit="fileSizeMaxLimit"
-    )
   div(class="w-121.5 flex flex-col gap-y-6")
     f-input-text(
       ref="refInputName"
@@ -168,6 +162,7 @@ const primaryBtnDisabled = computed(
     !moodboardName.value ||
     refInputName.value?.isError ||
     !description.value ||
+    refInputTrendBoardUpload.value?.errorCode ||
     refInputDescription.value?.isError
 )
 const primaryHandler = async () => {

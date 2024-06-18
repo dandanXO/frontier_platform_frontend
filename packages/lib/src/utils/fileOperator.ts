@@ -124,7 +124,7 @@ const getFileExtension = (filename: string) => {
   if (parts.length === 1) {
     throw new Error('unknown file extension')
   }
-  return parts[parts.length - 1] as Extension
+  return parts[parts.length - 1].toLowerCase() as Extension
 }
 
 const getFileNameExcludeExtension = (filename: string) => {
@@ -203,7 +203,7 @@ class FileOperator {
       const file = files[i]
 
       if (file.size > this.fileSizeMaxLimit) {
-        this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT)
+        this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT, { file })
         return
       }
     }
