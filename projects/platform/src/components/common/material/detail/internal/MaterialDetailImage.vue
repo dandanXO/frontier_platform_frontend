@@ -321,7 +321,9 @@ const isShowStar = computed(
 )
 
 const isShowDDButton = computed(
-  () => props.availableFileList[currentDisplayIndex.value].id === 'digitalDrape'
+  // F22-3498 Hide and wait for custom U3M DD ready.
+  () => false
+  // () => props.availableFileList[currentDisplayIndex.value].id === 'digitalDrape'
 )
 
 const isShowEdit = computed(
