@@ -24,6 +24,7 @@ div(
           v-else-if="fileType.video.includes(file.extension)"
           :src="file.originalUrl"
           controls
+          autoplay
         )
         others-file-view(
           v-else-if="fileType.others.includes(file.extension)"

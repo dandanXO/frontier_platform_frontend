@@ -17,7 +17,7 @@ div(
   template(
     v-else-if="VIDEO_FILE_ACCEPT_TYPE.includes(extension?.toLowerCase())"
   )
-    video-view(v-if="originalUrl" :src="originalUrl" selfControl)
+    video-view(v-if="originalUrl" :src="originalUrl" selfControl autoplay)
   div(
     v-else-if="extension === ZIP"
     class="flex justify-center items-center w-full h-full bg-grey-250"

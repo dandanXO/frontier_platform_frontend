@@ -13,7 +13,7 @@ div(class="flex flex-col gap-y-4")
         class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
         @click="openViewMode"
       )
-        f-svg-icon(iconName="search" size="32" class="text-grey-900")
+        f-svg-icon(iconName="visibility" size="32" class="text-grey-900")
       button(
         v-if="isShowEdit"
         class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"

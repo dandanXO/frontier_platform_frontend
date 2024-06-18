@@ -3,7 +3,7 @@ div(
   class="shrink-0 w-full h-27.5 bg-grey-900 px-3 md:px-10 flex items-center justify-between border-b border-grey-700 gap-x-10"
 )
   div(class="flex items-center gap-x-1 md:gap-x-4")
-    f-svg-icon(iconName="zoom_in" size="24" class="text-grey-50")
+    f-svg-icon(iconName="visibility" size="24" class="text-grey-50")
     p(class="text-grey-50 text-caption md:text-body1 font-bold") {{ $t('RR0301') }}
   div(class="relative flex flex-1 min-w-0 justify-center")
     div(ref="refCarousel" class="flex overflow-x-scroll hide-scrollbar gap-x-2")

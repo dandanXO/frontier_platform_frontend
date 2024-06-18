@@ -17,8 +17,8 @@ div(
     video-view(
       v-if="originalUrl"
       :src="originalUrl"
-      selfControl
       :canPlay="false"
+      :autoplay="false"
     )
   img(v-else-if="extension === YDT" src="@/assets/images/YDT.png")
   img(v-else-if="extension === SCCH" src="@/assets/images/SCCH.png")
