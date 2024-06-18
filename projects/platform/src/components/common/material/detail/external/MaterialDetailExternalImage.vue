@@ -92,14 +92,14 @@ const availablePublicFileList = computed(() =>
     ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
   )
 )
+const totalImages = availablePublicFileList.value.length
+
 const next = () => {
-  currentIndex.value = Math.min(
-    availablePublicFileList.value.length - 1,
-    currentIndex.value + 1
-  )
+  currentIndex.value = (currentIndex.value + 1) % totalImages
 }
+
 const prev = () => {
-  currentIndex.value = Math.max(currentIndex.value - 1, 0)
+  currentIndex.value = (currentIndex.value - 1 + totalImages) % totalImages
 }
 
 const refSlider = ref<HTMLDivElement | null>(null)
