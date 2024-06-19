@@ -227,18 +227,19 @@ const getTotalInventoryQtyWithUnit = (values: any) => {
     ) {
       return inventoryTotalQty
     }
-    // 什麼東西的都沒有 直接回傳 0
+    // kg 且 缺乏必填  直接回傳 0
     if (
-      !fullWidth ||
-      !widthUnit ||
-      !weightUnit ||
-      !weightValue ||
-      !inventoryUnit ||
-      !inventoryList
+      inventoryUnit === INVENTORY_UNIT.KG &&
+      (!fullWidth ||
+        !widthUnit ||
+        !weightUnit ||
+        !weightValue ||
+        !inventoryUnit ||
+        !inventoryList)
     ) {
       return 0
     }
-    // 是 kg 或 M 要進入換算 並回傳
+    // 是 kg(有寬度) 或 M(有寬度沒寬度都可) 要進入換算 並回傳
     return getTotalInventoryQty(
       fullWidth,
       widthUnit,
