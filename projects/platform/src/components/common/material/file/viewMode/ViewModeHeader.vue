@@ -43,8 +43,9 @@ div(
 import type { MaterialViewModeFile } from '@/types'
 import { onMounted, onUnmounted, ref } from 'vue'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
+import { KEYBOARD_EVENT_KEYS } from '@frontier/constants'
 
-defineProps<{
+const props = defineProps<{
   currentIndex: number
   fileList: MaterialViewModeFile[]
 }>()
@@ -53,7 +54,6 @@ const emits = defineEmits<{
   (e: 'close'): void
   (e: 'changeIndex', index: number): void
 }>()
-
 const refCarousel = ref<HTMLDivElement>()
 const canScrollLeft = ref(false)
 const canScrollRight = ref(false)
@@ -92,12 +92,31 @@ const scrollRight = () => {
   })
 }
 
+const keyboardListener = (e: KeyboardEvent) => {
+  const key = e.key as KEYBOARD_EVENT_KEYS
+  const totalImages = props.fileList.length
+
+  const determinedIndex = {
+    [KEYBOARD_EVENT_KEYS.ARROW_LEFT]: props.currentIndex - 1 + totalImages,
+    [KEYBOARD_EVENT_KEYS.ARROW_RIGHT]: props.currentIndex + 1,
+  }
+
+  if (key === KEYBOARD_EVENT_KEYS.ESC) {
+    emits('close')
+    return
+  }
+
+  determinedIndex[key] &&
+    emits('changeIndex', determinedIndex[key] % totalImages)
+}
+
 onMounted(() => {
   if (!refCarousel.value) {
     return
   }
   checkCanScroll()
   refCarousel.value.addEventListener('scroll', checkCanScroll)
+  document.addEventListener('keydown', keyboardListener)
   observer.observe(refCarousel.value, { box: 'content-box' })
 })
 
@@ -106,6 +125,7 @@ onUnmounted(() => {
     return
   }
   refCarousel.value.removeEventListener('scroll', checkCanScroll)
+  document.removeEventListener('keydown', keyboardListener)
   observer.unobserve(refCarousel.value)
 })
 </script>

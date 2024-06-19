@@ -52,9 +52,5 @@ watchEffect(() => {
   if (!fileList.value.length) {
     return closeModal()
   }
-
-  if (!fileList.value[currentIndex.value]) {
-    currentIndex.value = fileList.value.length - 1
-  }
 })
 </script>

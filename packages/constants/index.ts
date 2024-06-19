@@ -80,6 +80,12 @@ export enum NATIVE_EXTENSION {
   JSON = 'json',
 }
 
+export enum KEYBOARD_EVENT_KEYS {
+  ESC = 'Escape',
+  ARROW_RIGHT = 'ArrowRight',
+  ARROW_LEFT = 'ArrowLeft',
+}
+
 export enum CUSTOMIZED_EXTENSION {
   FOLDER = 'folder',
   U3M = 'u3m',
