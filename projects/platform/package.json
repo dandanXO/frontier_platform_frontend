@@ -44,6 +44,7 @@
     "echarts": "^5.4.2",
     "exifreader": "^4.23.1",
     "fuse.js": "^7.0.0",
+    "frontier-3d-viewer": "^0.0.85",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jszip": "^3.10.1",

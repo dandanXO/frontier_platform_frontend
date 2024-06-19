@@ -239,6 +239,9 @@ export default {
     Modal3dViewer: defineAsyncComponent(() =>
       import('@/components/common/material/u3m/Modal3dViewer.vue')
     ),
+    Modal3dViewerReact: defineAsyncComponent(() =>
+      import('@/components/common/material/u3m/Modal3DViwerReact.vue')
+    ),
     ModalDigitalThreadSummary: defineAsyncComponent(() =>
       import('@/components/sticker/ModalDigitalThreadSummary.vue')
     ),

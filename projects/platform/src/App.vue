@@ -49,7 +49,7 @@ watch(
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 
-#app {
+#appVue {
   font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
   @apply h-full flex flex-col;
 }

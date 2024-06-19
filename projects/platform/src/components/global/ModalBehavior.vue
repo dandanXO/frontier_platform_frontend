@@ -5,7 +5,7 @@ div(
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
   div(
     class="absolute w-min rounded card-show pt-5 shadow-32"
-    :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0']"
+    :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', needFullScreen ? 'w-screen h-screen' : '']"
   )
     div(
       class="h-8.5 px-5 pb-5 flex justify-between items-start border-b"
@@ -94,6 +94,10 @@ defineProps({
     type: String,
     default: 'sm',
     validator: (v) => ['sm', 'md'].includes(v),
+  },
+  needFullScreen: {
+    type: Boolean,
+    default: false,
   },
   primaryBtnText: {
     type: String,

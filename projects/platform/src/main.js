@@ -95,7 +95,7 @@ app
   .use(uiComponents)
   .use(ModelEditor)
   .use(VueKonva)
-  .mount('#app')
+  .mount('#appVue')
 
 if (window.Worker) {
   const worker = new Worker(new URL('./worker.js', import.meta.url))

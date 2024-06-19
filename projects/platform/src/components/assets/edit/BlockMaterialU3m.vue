@@ -24,7 +24,8 @@ div(class="w-79")
     template(#content)
       div(class="-mt-2.5 mb-5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
-          material-u3m-viewer-button(
+          material-u3m-viewer-react-button(
+            :material="material"
             :materialId="material.materialId"
             :u3m="material.u3m"
           )
@@ -138,7 +139,7 @@ import { useI18n } from 'vue-i18n'
 import { useField } from 'vee-validate'
 import { z } from 'zod'
 import { MaterialU3mStatus, type Material } from '@frontier/platform-web-sdk'
-import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
+import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
 import { CREATE_EDIT } from '@/utils/constants'

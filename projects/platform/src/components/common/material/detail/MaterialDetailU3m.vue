@@ -17,8 +17,9 @@ div
     keyField="id"
   )
     div(class="flex items-center gap-x-2 py-2.5")
-      material-u3m-viewer-button(
+      material-u3m-viewer-react-button(
         :key="currentTab"
+        :material="material"
         :materialId="material.materialId"
         :u3m="selectedU3m"
       )
@@ -41,7 +42,7 @@ import type {
 import { FTabs } from '@frontier/ui-component'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
-import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
+import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import useLogSender from '@/composables/useLogSender'

@@ -57,7 +57,8 @@ div(class="grid gap-y-8 content-start")
             span(class="font-bold") &nbsp{{ property.unitShort }}
   //- 3D Viewer
   div(class="w-full p-4 rounded grid gap-y-4 bg-grey-50")
-    material-u3m-viewer-button(
+    material-u3m-viewer-react-button(
+      :material="material"
       :materialId="material.materialId"
       :u3m="selectedU3m"
     )
@@ -192,7 +193,7 @@ import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
 import useMaterial from '@/composables/material/useMaterial'
 import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
 import { useStore } from 'vuex'
-import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
+import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
 import { useRoute } from 'vue-router'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
