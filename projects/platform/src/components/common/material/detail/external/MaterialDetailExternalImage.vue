@@ -55,7 +55,7 @@ div(class="flex flex-col-reverse tablet:flex-row gap-4")
         class="absolute w-10 h-10 rounded-full bg-grey-0/80 bottom-5 left-5 flex items-center justify-center cursor-pointer"
         @click="openModalFileViewer"
       )
-        f-svg-icon(iconName="search" size="24" class="text-grey-900")
+        f-svg-icon(iconName="visibility" size="24" class="text-grey-900")
       div(class="absolute bottom-5 right-5 flex items-center gap-x-2")
         button(
           @click="prev"
