@@ -157,7 +157,7 @@ import {
 } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
-import { isEqual } from '@frontier/lib'
+import { isIframe, isEqual } from '@frontier/lib'
 
 const { SINGLE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -517,7 +517,7 @@ onBeforeUnmount(() => {
 
 const expand = () => {
   isFocus.value = true
-  refInput.value.focus()
+  refInput.value.focus({ preventScroll: isIframe() })
   !props.multiple && (inputText.value = displayText.value)
 }
 
