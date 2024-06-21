@@ -752,10 +752,10 @@ const usePrint = () => {
           carbonEmissionSetting
         ) {
           info += `
-            <div class="flex flex-row items-center">
+            <div class="flex flex-row items-center justify-center">
               <img src="${
                 emissionsIconMapper[carbonInfo.icon]
-              }" class="${iconSize}" />
+              }" class="${iconSize} mt-3 mr-0.5" />
               <p class="${infoSize}">${carbonInfo.value} ${t(
             emissionsTextCodeMapper[carbonInfo.icon]
           )}</p>
