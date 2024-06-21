@@ -1,4 +1,5 @@
 import { some, includes } from 'lodash/fp'
+import { DIGITAL_DRAPE_LIST } from '@/utils/trialDigitalDrape'
 
 // 6 is Fabric Pro for testing.
 // Other test org id need to delete before prod.
@@ -8,7 +9,7 @@ const state = () => ({
   jbIntL: [113],
   texperts: [1694],
   littleKing: [1879],
-  trialDigitalDrape: [6, 27, 147, 1498],
+  trialDigitalDrape: DIGITAL_DRAPE_LIST,
 })
 
 const getters = {
