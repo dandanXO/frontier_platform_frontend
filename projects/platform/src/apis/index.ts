@@ -118,11 +118,11 @@ instance.interceptors.response.use(
       }
       store.dispatch('helper/clearModalPipeline')
       router.push({ name: 'SignIn', query })
-    } else if ([400, 404, 500].includes(status)) {
+    } else {
       store.dispatch('helper/openModalConfirm', {
         type: NOTIFY_TYPE.ALERT,
         header: i18n.global.t('RR0107'),
-        contentText: i18n.global.t('RR0108'),
+        contentText: `${i18n.global.t('RR0108')} code: ${status}`,
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload(),
       })
