@@ -7,11 +7,14 @@ import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
 import { OgType } from '@frontier/platform-web-sdk'
 import { config } from 'vue-gtag'
+import { resetTracker } from '@frontier/lib'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
   if (!user.isVerify) {
     remindVerifyEmail()
+    resetTracker()
+
     return next('/')
   }
   next()
@@ -63,6 +66,8 @@ const routes = [
       config({
         user_id: null,
       })
+      resetTracker()
+
       window.location.replace('https://frontier.cool/')
     },
   },

@@ -116,6 +116,9 @@ import useCurrentUnit from '@/composables/useCurrentUnit'
 import usePrint from '@/composables/material/usePrint'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
 import type { Organization } from '@frontier/platform-web-sdk'
+import { onMounted } from 'vue'
+import { track } from '@frontier/lib'
+import { TRACKER_PREFIX } from '@frontier/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -128,6 +131,9 @@ const {
 const { ogUploadMaterialEmail } = useCurrentUnit()
 const { printBackSideLabel } = usePrint()
 const openModalSmartUpload = () => {
+  track({
+    eventName: `${TRACKER_PREFIX.CHOOSE} Upload an Existing Image`,
+  })
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-smart-upload',
   })
@@ -137,37 +143,42 @@ const org = computed<Organization>(
   () => store.getters['organization/organization']
 )
 
-const alternativeUploadOptions = computed(() => {
-  const options = [
-    {
-      id: 'smart-upload',
-      icon: 'image_file',
-      title: t('DD0088'),
-      content: t('DD0089'),
-      action: openModalSmartUpload,
-      testId: 'smart-upload',
+const alternativeUploadOptions = [
+  {
+    id: 'smart-upload',
+    icon: 'image_file',
+    title: t('DD0088'),
+    content: t('DD0089'),
+    action: openModalSmartUpload,
+    testId: 'smart-upload',
+  },
+  {
+    id: 'manual-upload',
+    icon: 'add_box_outline',
+    title: t('DD0116'),
+    content: t('DD0117'),
+    action: () => {
+      track({
+        eventName: `${TRACKER_PREFIX.CHOOSE} Create Asset`,
+      })
+      goToAssetsMaterialCreate()
     },
-    {
-      id: 'manual-upload',
-      icon: 'add_box_outline',
-      title: t('DD0116'),
-      content: t('DD0117'),
-      action: goToAssetsMaterialCreate,
-      testId: 'manual-upload',
-    },
-  ]
-
-  options.push({
+    testId: 'manual-upload',
+  },
+  {
     id: 'mass-upload',
     icon: 'multiple_file',
     title: t('DD0092'),
     content: t('DD0093'),
-    action: goToAssetMaterialSpreadSheet,
+    action: () => {
+      track({
+        eventName: `${TRACKER_PREFIX.CHOOSE} Mass Upload`,
+      })
+      goToAssetMaterialSpreadSheet()
+    },
     testId: 'mass-upload',
-  })
-
-  return options
-})
+  },
+]
 
 const locationList = computed(() => {
   return [
@@ -180,5 +191,11 @@ const locationList = computed(() => {
       goTo: goToMaterialUpload,
     },
   ]
+})
+
+onMounted(() => {
+  track({
+    eventName: `${TRACKER_PREFIX.START_FLOW} Upload Assets`,
+  })
 })
 </script>

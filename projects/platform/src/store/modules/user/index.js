@@ -1,5 +1,10 @@
 import userApi from '@/apis/user'
 import i18n from '@frontier/i18n'
+import {
+  setDefaultTrackerProperties,
+  setProfileTrackerProperties,
+  setTrackerId,
+} from '@frontier/lib'
 
 const state = () => ({
   lastName: '',
@@ -27,13 +32,22 @@ const mutations = {
     Object.assign(state, user)
   },
   SET_printLabelSetting(state, printLabelSetting) {
-    Object.assign(state, {printLabelSetting})
+    Object.assign(state, { printLabelSetting })
   },
 }
 
 const actions = {
   setUser({ commit }, data) {
     commit('SET_user', data)
+    const { email: userEmail } = data
+    userEmail && setTrackerId(userEmail)
+    setProfileTrackerProperties({
+      $email: userEmail,
+      $name: userEmail,
+    })
+    setDefaultTrackerProperties({
+      userEmail,
+    })
   },
   setPrintLabelSetting({ commit }, data) {
     commit('SET_printLabelSetting', data)
@@ -124,16 +138,16 @@ const actions = {
     })
     return data.result.feedbackAttachmentList
   },
-  async createPrintLabelSetting({dispatch}, payload) {
-    const { data } = await userApi.createPrintLabelSetting(payload);
+  async createPrintLabelSetting({ dispatch }, payload) {
+    const { data } = await userApi.createPrintLabelSetting(payload)
     if (data.success) {
-      dispatch('setPrintLabelSetting', payload);
+      dispatch('setPrintLabelSetting', payload)
     }
   },
-  async getPrintLabelSetting({dispatch}) {
-    const { data } = await userApi.getPrintLabelSetting();
-    dispatch('setPrintLabelSetting', data.result);
-    return data.result;
+  async getPrintLabelSetting({ dispatch }) {
+    const { data } = await userApi.getPrintLabelSetting()
+    dispatch('setPrintLabelSetting', data.result)
+    return data.result
   },
   readAnnouncement() {
     userApi.readAnnouncement()

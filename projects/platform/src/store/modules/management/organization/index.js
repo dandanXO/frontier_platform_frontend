@@ -3,7 +3,7 @@ import orgUser from '@/store/modules/management/organization/orgUser.js'
 import { putBinaryData } from '@/utils/fileUpload'
 import { SIGNUP_SOURCE } from '@/utils/constants'
 import axios from '@/apis'
-import { toYYYYMMDDFormat } from '@frontier/lib'
+import { setDefaultTrackerProperties, toYYYYMMDDFormat } from '@frontier/lib'
 
 export default {
   namespaced: true,
@@ -118,6 +118,11 @@ export default {
       return await organizationApi[func](getters.orgId, params)
     },
     setOrganization({ commit }, data) {
+      const { orgId, orgName } = data
+      setDefaultTrackerProperties({
+        orgId,
+        orgName,
+      })
       commit('SET_organization', data)
     },
     async createOrg({ state, dispatch }) {

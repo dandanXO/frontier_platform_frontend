@@ -15,11 +15,13 @@ import VueKonva from 'vue-konva'
 import uiComponents from '@frontier/ui-component'
 import ModelEditor from '@frontier/3d-viewer'
 import { NOTIFY_TYPE } from '@/utils/constants'
-import { inputRules } from '@frontier/lib'
+import { initTracker, inputRules } from '@frontier/lib'
 
 const app = createApp(App)
 
 app.config.globalProperties.$inputRules = inputRules
+
+initTracker()
 
 dayjs.extend(isToday)
 dayjs.extend(isYesterday)

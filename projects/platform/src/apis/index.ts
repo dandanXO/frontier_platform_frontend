@@ -3,6 +3,7 @@ import router from '@/router'
 import store from '@/store'
 import i18n from '@frontier/i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
+import { resetTracker } from '@frontier/lib'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
@@ -117,6 +118,7 @@ instance.interceptors.response.use(
         query.redirect = `${window.location.pathname}${window.location.search}`
       }
       store.dispatch('helper/clearModalPipeline')
+      resetTracker()
       router.push({ name: 'SignIn', query })
     } else {
       store.dispatch('helper/openModalConfirm', {

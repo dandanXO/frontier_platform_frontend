@@ -47,6 +47,9 @@ importers:
       '@popperjs/core':
         specifier: ^2.11.7
         version: 2.11.8
+      '@types/mixpanel-browser':
+        specifier: ^2.49.0
+        version: 2.49.0
       axios:
         specifier: ^0.27.2
         version: 0.27.2(debug@4.3.4)
@@ -62,6 +65,9 @@ importers:
       events:
         specifier: ^3.3.0
         version: 3.3.0
+      mixpanel-browser:
+        specifier: ^2.52.0
+        version: 2.52.0
       overlayscrollbars:
         specifier: ^1.13.1
         version: 1.13.3
@@ -70,7 +76,7 @@ importers:
         version: 0.28.0
       vitest:
         specifier: ^0.30.1
-        version: 0.30.1(happy-dom@9.20.3)(playwright@1.44.1)(sass@1.77.6)
+        version: 0.30.1(happy-dom@9.20.3)(less@4.2.0)(playwright@1.44.1)(sass@1.77.6)(terser@5.31.1)
       vue:
         specifier: 3.3.4
         version: 3.3.4
@@ -107,7 +113,7 @@ importers:
         version: 1.5.5
       '@vitejs/plugin-vue':
         specifier: ^3.0.3
-        version: 3.2.0(vite@4.5.3(@types/node@16.18.99)(sass@1.77.6))(vue@3.3.4)
+        version: 3.2.0(vite@4.5.3(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1))(vue@3.3.4)
       '@vue/eslint-config-prettier':
         specifier: ^7.0.0
         version: 7.1.0(eslint@8.57.0)(prettier@2.8.8)
@@ -1737,6 +1743,9 @@ packages:
       rollup:
         optional: true
 
+  '@rrweb/types@2.0.0-alpha.15':
+    resolution: {integrity: sha512-NsD2D8oFYT+XZidklW3T/waqDyaUqu+GqBNMZRJ5UQ7hbwtlx0lmt6ZCvKa29cT/6GfEwNYxAQqelodAwRnHTw==}
+
   '@rushstack/eslint-patch@1.10.3':
     resolution: {integrity: sha512-qC/xYId4NMebE6w/V33Fh9gWxLgURiNYgVNObbJl2LZv0GUUItCcCqC5axQSwRaAgaxl2mELq1rMzlswaQ0Zxg==}
 
@@ -2128,6 +2137,9 @@ packages:
   '@types/cross-spawn@6.0.6':
     resolution: {integrity: sha512-fXRhhUkG4H3TQk5dBhQ7m/JDdSNHKwR2BBia62lhwEIq9xGiQKLxd6LymNhn47SjXhsUEPmxi+PKw2OkW4LLjA==}
 
+  '@types/css-font-loading-module@0.0.7':
+    resolution: {integrity: sha512-nl09VhutdjINdWyXxHWN/w9zlNCfr60JUqJbd24YXUuCwgeL0TpFSdElCwb6cxfB6ybE19Gjj4g0jsgkXxKv1Q==}
+
   '@types/debounce@1.2.4':
     resolution: {integrity: sha512-jBqiORIzKDOToaF63Fm//haOCHuwQuLa2202RK4MozpA6lh93eCBc+/8+wZn5OzjJt3ySdc+74SXWXB55Ewtyw==}
 
@@ -2199,6 +2211,9 @@ packages:
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
+
+  '@types/mixpanel-browser@2.49.0':
+    resolution: {integrity: sha512-StmgUnS58d44DmIAEX9Kk8qwisAYCl6E2qulIjYyHXUPuJCPOuyUMTTKBp+aU2F2do+kxAzCxiBtsB4fnBT9Fg==}
 
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
@@ -2566,6 +2581,9 @@ packages:
   '@xmldom/xmldom@0.8.10':
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+
+  '@xstate/fsm@1.6.5':
+    resolution: {integrity: sha512-b5o1I6aLNeYlU/3CPlj/Z91ybk1gUsKT+5NAJI+2W4UjvS5KLG28K9v5UvNoFVjHV8PajVZ00RH3vnjyQO7ZAw==}
 
   '@xtuc/ieee754@1.2.0':
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
@@ -5074,6 +5092,12 @@ packages:
   mitt@2.1.0:
     resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==}
 
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+
+  mixpanel-browser@2.52.0:
+    resolution: {integrity: sha512-aWrL477cOqcmgEakZUsw9ZEyrsdekGVbvHQZGFycgBtueG40DzenMD9Drhx7T/PR4agFkU/TEBPmRKoSKqkyEw==}
+
   mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
 
@@ -6030,6 +6054,15 @@ packages:
 
   rope-sequence@1.3.4:
     resolution: {integrity: sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ==}
+
+  rrdom@2.0.0-alpha.15:
+    resolution: {integrity: sha512-c7BMmqJf6u9cm5G1wx7Mgnc5pyNog4CLaGTDUZCDGZAIfRIFOWwu7A4f2z9IPiEeokgc5wq8R/8/dKp6xpg8Ug==}
+
+  rrweb-snapshot@2.0.0-alpha.15:
+    resolution: {integrity: sha512-U5lOYoMt6YsmxKcnWVhX1ller6B8/OICQqLWqvylajTYv5oRHgAk68AFDTAXxLsjMSTQjtr1Vp+REFSmnhWrIg==}
+
+  rrweb@2.0.0-alpha.13:
+    resolution: {integrity: sha512-a8GXOCnzWHNaVZPa7hsrLZtNZ3CGjiL+YrkpLo0TfmxGLhjNZbWY2r7pE06p+FcjFNlgUVTmFrSJbK3kO7yxvw==}
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -8791,6 +8824,10 @@ snapshots:
     optionalDependencies:
       rollup: 3.29.4
 
+  '@rrweb/types@2.0.0-alpha.15':
+    dependencies:
+      rrweb-snapshot: 2.0.0-alpha.15
+
   '@rushstack/eslint-patch@1.10.3': {}
 
   '@rushstack/node-core-library@4.0.2(@types/node@16.18.99)':
@@ -9673,6 +9710,8 @@ snapshots:
     dependencies:
       '@types/node': 16.18.99
 
+  '@types/css-font-loading-module@0.0.7': {}
+
   '@types/debounce@1.2.4': {}
 
   '@types/debug@4.1.12':
@@ -9746,6 +9785,8 @@ snapshots:
   '@types/mime-types@2.1.4': {}
 
   '@types/mime@1.3.5': {}
+
+  '@types/mixpanel-browser@2.49.0': {}
 
   '@types/ms@0.7.34': {}
 
@@ -9933,7 +9974,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@vitejs/plugin-vue@3.2.0(vite@4.5.3(@types/node@16.18.99)(sass@1.77.6))(vue@3.3.4)':
+  '@vitejs/plugin-vue@3.2.0(vite@4.5.3(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1))(vue@3.3.4)':
     dependencies:
       vite: 4.5.3(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1)
       vue: 3.3.4
@@ -10274,6 +10315,8 @@ snapshots:
 
   '@xmldom/xmldom@0.8.10':
     optional: true
+
+  '@xstate/fsm@1.6.5': {}
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -13203,6 +13246,12 @@ snapshots:
 
   mitt@2.1.0: {}
 
+  mitt@3.0.1: {}
+
+  mixpanel-browser@2.52.0:
+    dependencies:
+      rrweb: 2.0.0-alpha.13
+
   mkdirp-classic@0.5.3: {}
 
   mkdirp@0.5.6:
@@ -14235,6 +14284,23 @@ snapshots:
 
   rope-sequence@1.3.4: {}
 
+  rrdom@2.0.0-alpha.15:
+    dependencies:
+      rrweb-snapshot: 2.0.0-alpha.15
+
+  rrweb-snapshot@2.0.0-alpha.15: {}
+
+  rrweb@2.0.0-alpha.13:
+    dependencies:
+      '@rrweb/types': 2.0.0-alpha.15
+      '@types/css-font-loading-module': 0.0.7
+      '@xstate/fsm': 1.6.5
+      base64-arraybuffer: 1.0.2
+      fflate: 0.4.8
+      mitt: 3.0.1
+      rrdom: 2.0.0-alpha.15
+      rrweb-snapshot: 2.0.0-alpha.15
+
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
@@ -15060,7 +15126,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite-node@0.30.1(@types/node@16.18.99)(sass@1.77.6):
+  vite-node@0.30.1(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1):
     dependencies:
       cac: 6.7.14
       debug: 4.3.5(supports-color@8.1.1)
@@ -15112,7 +15178,7 @@ snapshots:
       sass: 1.77.6
       terser: 5.31.1
 
-  vitest@0.30.1(happy-dom@9.20.3)(playwright@1.44.1)(sass@1.77.6):
+  vitest@0.30.1(happy-dom@9.20.3)(less@4.2.0)(playwright@1.44.1)(sass@1.77.6)(terser@5.31.1):
     dependencies:
       '@types/chai': 4.3.16
       '@types/chai-subset': 1.3.5
@@ -15138,7 +15204,7 @@ snapshots:
       tinybench: 2.8.0
       tinypool: 0.4.0
       vite: 4.5.3(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1)
-      vite-node: 0.30.1(@types/node@16.18.99)(sass@1.77.6)
+      vite-node: 0.30.1(@types/node@16.18.99)(less@4.2.0)(sass@1.77.6)(terser@5.31.1)
       why-is-node-running: 2.2.2
     optionalDependencies:
       happy-dom: 9.20.3

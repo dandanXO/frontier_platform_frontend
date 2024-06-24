@@ -98,3 +98,9 @@ export const EXTENSION = {
   ...CUSTOMIZED_EXTENSION,
 }
 export type EXTENSION = NATIVE_EXTENSION | CUSTOMIZED_EXTENSION
+
+export enum TRACKER_PREFIX {
+  START_FLOW = 'Start Flow',
+  CHOOSE = 'Choose',
+  SUBMIT_DATA = 'Submit Data',
+}
