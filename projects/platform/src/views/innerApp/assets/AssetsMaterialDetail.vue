@@ -15,6 +15,7 @@ import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
 import { useSearchStore } from '@/stores/search'
+import isShowCarbonEmissionValue from '@/utils/material/isShowCarbonEmissionValue'
 
 const props = defineProps<{
   materialId: string
@@ -29,6 +30,12 @@ const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
   materialId: Number(props.materialId),
   searchLog: getSearchLog(),
 })
+if (isShowCarbonEmissionValue(data.result?.material)) {
+  data.result.material!.carbonEmission!.co2 = null
+  data.result.material!.carbonEmission!.land = null
+  data.result.material!.carbonEmission!.lastUpdateTime = null
+  data.result.material!.carbonEmission!.water = null
+}
 const material = ref(data.result.material)
 
 const locationList = computed(() => {
