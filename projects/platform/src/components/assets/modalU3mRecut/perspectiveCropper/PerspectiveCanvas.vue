@@ -41,7 +41,9 @@
             @mouseleave="handleCircleMouseLeave"
             @mousedown="handleCircleMouseDown($event, 'leftTop')"
             @mouseup="handleCircleMouseUp"
-            @dragmove="handleCircleDragMove($event, circleLeftTopPosition)"
+            @dragmove="
+              handleCircleDragMove($event, circleLeftTopPosition, 'LeftTop')
+            "
             @dragend="handleCircleDragEnd"
           ></v-circle>
           <v-circle
@@ -53,7 +55,9 @@
             @mouseleave="handleCircleMouseLeave"
             @mousedown="handleCircleMouseDown($event, 'rightTop')"
             @mouseup="handleCircleMouseUp"
-            @dragmove="handleCircleDragMove($event, circleRightTopPosition)"
+            @dragmove="
+              handleCircleDragMove($event, circleRightTopPosition, 'RightTop')
+            "
             @dragend="handleCircleDragEnd"
           ></v-circle>
           <v-circle
@@ -65,7 +69,13 @@
             @mouseleave="handleCircleMouseLeave"
             @mousedown="handleCircleMouseDown($event, 'rightBottom')"
             @mouseup="handleCircleMouseUp"
-            @dragmove="handleCircleDragMove($event, circleRightBottomPosition)"
+            @dragmove="
+              handleCircleDragMove(
+                $event,
+                circleRightBottomPosition,
+                'RightBottom'
+              )
+            "
             @dragend="handleCircleDragEnd"
           ></v-circle>
           <v-circle
@@ -77,7 +87,13 @@
             @mouseleave="handleCircleMouseLeave"
             @mousedown="handleCircleMouseDown"
             @mouseup="handleCircleMouseUp"
-            @dragmove="handleCircleDragMove($event, circleLeftBottomPosition)"
+            @dragmove="
+              handleCircleDragMove(
+                $event,
+                circleLeftBottomPosition,
+                'LeftBottom'
+              )
+            "
             @dragend="handleCircleDragEnd"
           ></v-circle>
         </v-group>
@@ -127,6 +143,7 @@ const props = defineProps<{
   dpi: number
   restoreRecord: PerspectiveCropRecord | undefined
   initialRecord: PerspectiveCropRecord | undefined
+  isSquare?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -742,7 +759,8 @@ const handleCircleMouseUp = (e: Konva.KonvaEventObject<'mouseup'>) => {
 
 const handleCircleDragMove = (
   e: Konva.KonvaEventObject<'dragmove'>,
-  position: Coord
+  position: Coord,
+  positionType: 'LeftTop' | 'RightTop' | 'RightBottom' | 'LeftBottom'
 ) => {
   e.cancelBubble = true
   const circle = e.target
@@ -753,6 +771,65 @@ const handleCircleDragMove = (
   handleBoundingLimit()
   position.x = circle.x()
   position.y = circle.y()
+
+  if (props.isSquare) {
+    if (positionType === 'LeftTop') {
+      let size = Math.max(
+        Math.abs(position.x - circleRightTopPosition.x),
+        Math.abs(position.y - circleLeftBottomPosition.y)
+      )
+      position.x = circleRightBottomPosition.x - size
+      position.y = circleRightBottomPosition.y - size
+      circleLeftTopPosition.x = position.x
+      circleLeftTopPosition.y = position.y
+      circleRightTopPosition.x = position.x + size
+      circleRightTopPosition.y = position.y
+      circleLeftBottomPosition.x = position.x
+      circleLeftBottomPosition.y = position.y + size
+    }
+    if (positionType === 'RightTop') {
+      let size = Math.max(
+        Math.abs(position.x - circleLeftTopPosition.x),
+        Math.abs(position.y - circleRightBottomPosition.y)
+      )
+      position.x = circleLeftBottomPosition.x + size
+      position.y = circleLeftBottomPosition.y - size
+      circleRightTopPosition.x = position.x
+      circleRightTopPosition.y = position.y
+      circleLeftTopPosition.x = position.x - size
+      circleLeftTopPosition.y = position.y
+      circleRightBottomPosition.x = position.x
+      circleRightBottomPosition.y = position.y + size
+    }
+    if (positionType === 'RightBottom') {
+      let size = Math.max(
+        Math.abs(position.x - circleLeftBottomPosition.x),
+        Math.abs(position.y - circleRightTopPosition.y)
+      )
+      position.x = circleLeftTopPosition.x + size
+      position.y = circleLeftTopPosition.y + size
+      circleRightBottomPosition.x = position.x
+      circleRightBottomPosition.y = position.y
+      circleRightTopPosition.x = position.x
+      circleRightTopPosition.y = position.y - size
+      circleLeftBottomPosition.x = position.x - size
+      circleLeftBottomPosition.y = position.y
+    }
+    if (positionType === 'LeftBottom') {
+      let size = Math.max(
+        Math.abs(position.x - circleRightBottomPosition.x),
+        Math.abs(position.y - circleLeftTopPosition.y)
+      )
+      position.x = circleRightTopPosition.x - size
+      position.y = circleRightTopPosition.y + size
+      circleLeftBottomPosition.x = position.x
+      circleLeftBottomPosition.y = position.y
+      circleLeftTopPosition.x = position.x
+      circleLeftTopPosition.y = position.y - size
+      circleRightBottomPosition.x = position.x + size
+      circleRightBottomPosition.y = position.y
+    }
+  }
 }
 
 const handleCircleDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {

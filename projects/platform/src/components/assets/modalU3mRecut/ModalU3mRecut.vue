@@ -28,47 +28,13 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
           @update:editStatus="handlePerspectiveEditStatusChange"
         )
       template(v-if="side.cropMode === CROP_MODE.SQUARE")
-        div(
-          v-show="side.sideName === currentSideName"
-          class="flex h-full justify-center items-center"
-          :class="[side.sideName]"
+        perspective-cropper(
+          v-if="side.sideName === currentSideName"
+          isSquare
+          :side="side"
+          :ref="(el) => handlePerspectiveCropAreaRefUpdate(side.sideName, el)"
+          @update:editStatus="handlePerspectiveEditStatusChange"
         )
-          div
-            cropper-default-layout(
-              :ref="(el) => handleCropLayoutRefUpdate(side.sideName, el)"
-              :theme="THEME.DARK"
-              class="w-70"
-              scaleUnit="cm"
-              :scaleInputStep="scaleOptions.step"
-              :scaleInitial="side.scaleSizeInCm"
-              :scaleStart="side.scaleStartInCm"
-              :scaleRange="[scaleOptions.min, scaleOptions.max]"
-              :rotateStart="side.rotateStart"
-              :config="side.config"
-              @update:rotateDeg="side.config.rotateDeg = $event"
-              @update:scaleRatio="handleUpdateScaleSize(side, $event)"
-            )
-              template(#imageCropArea="{ innerScaleSize }")
-                image-crop-area(
-                  :theme="THEME.DARK"
-                  :ref="(el) => handleCropAreaRefUpdate(side.sideName, el)"
-                  :config="side.config"
-                  :cropRectSize="cropRectSize"
-                  @update:options="Object.assign(side.config.options, $event)"
-                )
-                  div(class="mt-1 absolute w-full")
-                    div(
-                      class="h-2 flex items-center border-r-2 border-l-2 border-grey-100"
-                    )
-                      div(class="h-0.5 bg-grey-100 w-full")
-                    div(class="text-caption text-grey-100 font-bold text-center") {{ `${innerScaleSize} cm` }}
-          div(class="w-125 h-125 bg-grey-250 ml-21 grid grid-cols-3 grid-rows-3")
-            div(v-for="i in 9" class="overflow-hidden" :key="i")
-              cropped-image(
-                :config="side.config"
-                :previewScaleRatio="previewScaleRatio"
-                :movable="false"
-              )
 </template>
 
 <script setup lang="ts">

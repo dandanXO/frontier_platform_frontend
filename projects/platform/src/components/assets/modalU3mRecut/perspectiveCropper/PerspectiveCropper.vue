@@ -29,6 +29,7 @@ div(class="h-full flex flex-col")
           perspective-canvas(
             ref="refPerspectiveCanvas"
             v-if="sourceCanvasContainer && sourceImage && downSampledCanvases"
+            :isSquare="props.isSquare"
             :container="sourceCanvasContainer"
             :sourceImage="sourceImage"
             :downSampleScales="downSampleScales"
@@ -143,7 +144,15 @@ div(class="h-full flex flex-col")
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, toRaw, watch } from 'vue'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  onBeforeUnmount,
+  ref,
+  toRaw,
+  watch,
+} from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
@@ -171,9 +180,15 @@ import type {
   PerspectiveCropRecord,
 } from '@/types'
 
-const props = defineProps<{
-  side: U3mSide
-}>()
+const props = withDefaults(
+  defineProps<{
+    side: U3mSide
+    isSquare: boolean
+  }>(),
+  {
+    isSquare: false,
+  }
+)
 
 const emit = defineEmits<{
   (e: 'update:editStatus', editStatus: EditStatus): void
@@ -511,7 +526,9 @@ onMounted(async () => {
   downSampledCanvases.value = result.downSampledCanvases
   store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
 })
-
+onBeforeUnmount(() => {
+  refPerspectiveCanvas?.value?.resetPositions()
+})
 onUnmounted(() => {
   if (destinationImage.value.src) {
     URL.revokeObjectURL(destinationImage.value.src)
