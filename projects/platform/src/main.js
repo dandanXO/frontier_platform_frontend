@@ -40,7 +40,7 @@ app.config.errorHandler = (err, vm, info) => {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.ALERT,
       header: i18n.global.t('RR0107'),
-      contentText: i18n.global.t('RR0108'),
+      contentText: i18n.global.t('RR0108', { code: status }),
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload(),
     })

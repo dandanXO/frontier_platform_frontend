@@ -21,7 +21,7 @@ div(
     f-scrollbar-container(class="max-h-92.5 flex-grow pl-6.5 md:pl-8.5")
       p(
         v-if="!!contentText"
-        class="text-caption md:text-body2 leading-1.6"
+        class="text-caption md:text-body2 leading-1.6 whitespace-pre-line"
         :class="[theme === THEME.DARK ? 'text-grey-250' : 'text-grey-600']"
       ) {{ contentText }}
       component(v-else :is="contentComponent")

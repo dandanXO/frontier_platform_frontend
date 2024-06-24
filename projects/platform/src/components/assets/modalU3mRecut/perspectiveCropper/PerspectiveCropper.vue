@@ -248,7 +248,7 @@ const errorHandler = (err: Error) => {
   store.dispatch('helper/openModalConfirm', {
     type: NOTIFY_TYPE.ALERT,
     header: t('RR0107'),
-    contentText: t('RR0108'),
+    contentText: t('RR0108', { code: 500 }),
     primaryBtnText: t('UU0031'),
     primaryBtnHandler: () => window.location.reload(),
   })
