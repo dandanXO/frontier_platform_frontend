@@ -102,5 +102,19 @@ export type EXTENSION = NATIVE_EXTENSION | CUSTOMIZED_EXTENSION
 export enum TRACKER_PREFIX {
   START_FLOW = 'Start Flow',
   CHOOSE = 'Choose',
-  SUBMIT_DATA = 'Submit Data',
+  SUBMIT_DATA = 'Submit Data to',
+}
+
+export enum TRACKER_POSTFIX {
+  ERROR = 'Error',
+  SUCCESS = 'Success',
+}
+
+export enum TRACKER_ADDITIONAL_PROPERTIES {
+  ERROR_LOCATION = 'Error Location',
+}
+
+export enum TRACKER_ERROR_LOCATION {
+  FE = 'Frontend',
+  BE = 'Backend',
 }

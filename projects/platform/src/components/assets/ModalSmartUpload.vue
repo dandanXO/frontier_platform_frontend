@@ -142,7 +142,12 @@ modal-behavior(
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@frontier/lib'
+import {
+  FileOperator,
+  TRACKER_PREFIX,
+  TRACKER_POSTFIX,
+  track,
+} from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
 import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
@@ -162,6 +167,8 @@ interface ImageItem {
   height: number
   invalidCode: number | null
 }
+
+const TRACKER_ID = 'Upload an Existing Image'
 
 const store = useStore()
 const { ogBaseAssetsApi } = useAssetsStore()
@@ -315,11 +322,26 @@ const startUpload = () => {
       })
     )
     .then(() => {
+      track({
+        eventName: [
+          TRACKER_PREFIX.SUBMIT_DATA,
+          TRACKER_ID,
+          TRACKER_POSTFIX.SUCCESS,
+        ].join(' '),
+      })
       isFinish.value = true
       isUploading.value = false
     })
     .catch((error) => {
       console.error(error || 'Error uploading images')
+      track({
+        eventName: [
+          TRACKER_PREFIX.SUBMIT_DATA,
+          TRACKER_ID,
+          TRACKER_POSTFIX.ERROR,
+        ].join(' '),
+        properties: { error },
+      })
     })
 }
 

@@ -29,6 +29,15 @@ import type { MaterialRow, SubmitPayload } from '@/types'
 import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
 import { mapMaterialToMaterialRow } from '@/utils/material'
+import {
+  TRACKER_POSTFIX,
+  TRACKER_PREFIX,
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_ERROR_LOCATION,
+  track,
+} from '@frontier/lib'
+
+const TRACKER_ID = 'Mass Upload'
 
 const store = useStore()
 const { t } = useI18n()
@@ -89,12 +98,31 @@ const handleSubmit = async (payload: SubmitPayload) => {
   > = { s3UploadId, fileName }
   try {
     await ogBaseAssetsApi('massCreateUpdateDeleteAssetsMaterialList', req)
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.SUCCESS,
+      ].join(' '),
+    })
     goToProgress({}, PROGRESS_TAB.SPREADSHEET)
   } catch (error) {
     const { code, message, result } =
       error as MassCreateUpdateDeleteAssetsMaterialList200Response
     const errorList = result!.errorList
 
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.ERROR,
+      ].join(' '),
+      properties: {
+        error: { message },
+        [TRACKER_ADDITIONAL_PROPERTIES.ERROR_LOCATION]:
+          TRACKER_ERROR_LOCATION.BE,
+      },
+    })
     // switch (code) {
     //   case 'ERR0036': {
     //     store.dispatch('helper/openModalBehavior', {

@@ -80,7 +80,15 @@ import {
   convertPriceInfoFormToReq,
 } from '@/utils/material'
 import type { Organization } from '@frontier/platform-web-sdk'
+import {
+  TRACKER_POSTFIX,
+  TRACKER_PREFIX,
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_ERROR_LOCATION,
+  track,
+} from '@frontier/lib'
 
+const TRACKER_ID = 'Create Asset'
 const { t } = useI18n()
 const store = useStore()
 const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
@@ -171,18 +179,34 @@ const tabList = computed(() => [
   },
 ])
 
-const submit = handleSubmit(async (form) =>
-  createMaterial({
-    form,
-    multimediaList: multimediaCreateService.multimediaList,
-    attachmentList: attachmentCreateService.attachmentList,
-    u3m: u3mSelectService.u3mFile.value
-      ? {
-          u3mFile: u3mSelectService.u3mFile.value,
-          needToGeneratePhysical: u3mSelectService.needToGeneratePhysical.value,
-        }
-      : undefined,
-  })
+const submit = handleSubmit(
+  async (form) =>
+    createMaterial({
+      form,
+      multimediaList: multimediaCreateService.multimediaList,
+      attachmentList: attachmentCreateService.attachmentList,
+      u3m: u3mSelectService.u3mFile.value
+        ? {
+            u3mFile: u3mSelectService.u3mFile.value,
+            needToGeneratePhysical:
+              u3mSelectService.needToGeneratePhysical.value,
+          }
+        : undefined,
+    }),
+  (error) => {
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.ERROR,
+      ].join(' '),
+      properties: {
+        error,
+        [TRACKER_ADDITIONAL_PROPERTIES.ERROR_LOCATION]:
+          TRACKER_ERROR_LOCATION.FE,
+      },
+    })
+  }
 )
 
 const createMaterial = async (payload: {
@@ -310,6 +334,13 @@ const createMaterial = async (payload: {
     })
   }
 
+  track({
+    eventName: [
+      TRACKER_PREFIX.SUBMIT_DATA,
+      TRACKER_ID,
+      TRACKER_POSTFIX.SUCCESS,
+    ].join(' '),
+  })
   isConfirmedToLeave.value = true
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-how-to-scan',
