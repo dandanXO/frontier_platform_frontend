@@ -6,6 +6,7 @@ export default function (material: Material): boolean {
   const excludedTypes = [MaterialType.OTHERS, MaterialType.TRIM]
   return (
     !material.isDoubleSide &&
+    !!material.carbonEmission &&
     (excludedTypes.includes(material.faceSide?.materialType) ||
       excludedTypes.includes(material.backSide?.materialType))
   )

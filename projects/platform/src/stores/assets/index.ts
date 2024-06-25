@@ -15,8 +15,7 @@ import { useNotifyStore } from '@/stores/notify'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import useNavigation from '@/composables/useNavigation'
-import { MaterialType } from '@frontier/platform-web-sdk'
-import isShowCarbonEmissionValue from '@/utils/material/isShowCarbonEmissionValue'
+import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
 
 export const useAssetsStore = defineStore('assets', () => {
   const { t } = useI18n()
@@ -37,13 +36,7 @@ export const useAssetsStore = defineStore('assets', () => {
     const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload)
 
     materialList.value = data.result.materialList.map((item) => {
-      if (isShowCarbonEmissionValue(item)) {
-        item!.carbonEmission!.co2 = null
-        item!.carbonEmission!.land = null
-        item!.carbonEmission!.lastUpdateTime = null
-        item!.carbonEmission!.water = null
-      }
-      return item
+      return assignCarbonEmissionValue(item)
     })
 
     searchStore.setPaginationRes(data.result.pagination)
