@@ -17,7 +17,15 @@ div
     keyField="id"
   )
     div(class="flex items-center gap-x-2 py-2.5")
+      material-u3m-viewer-button(
+        v-if="store.getters['permission/isShowOld3DViewer']"
+        :key="currentTab"
+        :material="material"
+        :materialId="material.materialId"
+        :u3m="selectedU3m"
+      )
       material-u3m-viewer-react-button(
+        v-else
         :key="currentTab"
         :material="material"
         :materialId="material.materialId"
@@ -34,6 +42,7 @@ div
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 import type {
   Material,
   MaterialCustomU3m,
@@ -43,6 +52,7 @@ import { FTabs } from '@frontier/ui-component'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
 import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
+import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import useLogSender from '@/composables/useLogSender'
@@ -50,7 +60,7 @@ import { downloadDataURLFile } from '@frontier/lib'
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
 
 const logSender = useLogSender()
-
+const store = useStore()
 const props = withDefaults(
   defineProps<{
     material: Material

@@ -284,7 +284,9 @@ const getMaterial = async (materialId: number) => {
 const openModal3dViewer = async (item: ProgressU3mItem) => {
   const material = await getMaterial(item.materialId)
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-3d-viewer-react',
+    component: store.getters['permission/isShowOld3DViewer']
+      ? 'modal-3d-viewer'
+      : 'modal-3d-viewer-react',
     properties: {
       material: material,
       materialId: item.materialId,

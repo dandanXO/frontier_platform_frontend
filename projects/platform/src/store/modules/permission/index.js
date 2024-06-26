@@ -10,9 +10,13 @@ const state = () => ({
   texperts: [1694],
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
+  old3DViewer: [1701, 1892, 6],
 })
 
 const getters = {
+  isShowOld3DViewer: (state, getters, rootState) => {
+    return state.old3DViewer.includes(rootState.organization.orgId)
+  },
   noLittleKingInOrgList: (state, getters, rootState) => {
     const orgIds = rootState.user.organizationList.map((org) => org.orgId)
     return !state.littleKing.some((orgId) => orgIds.includes(orgId))
