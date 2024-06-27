@@ -10,7 +10,7 @@ const state = () => ({
   texperts: [1694],
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
-  old3DViewer: [1701, 6],
+  old3DViewer: [1701, 6, 1854, 1888],
 })
 
 const getters = {
