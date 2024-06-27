@@ -525,6 +525,14 @@ onMounted(async () => {
   sourceImage.value = result.sourceImage
   downSampledCanvases.value = result.downSampledCanvases
   store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
+  if (!localStorage.perspectiveCropperToolTour) {
+    store.dispatch(
+      'helper/pushModal',
+      { component: 'perspective-cropper-tour-step-1', closable: false },
+      { root: true }
+    )
+    localStorage.setItem('perspectiveCropperToolTour', 'true')
+  }
 })
 onBeforeUnmount(() => {
   refPerspectiveCanvas?.value?.resetPositions()

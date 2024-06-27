@@ -82,6 +82,7 @@ export interface Colors {
   }
   forestgreen: {
     800: '#1D401D'
+    700: '#005A42'
     500: '#48A148'
     400: '#6DB46D'
     300: '#91C791'
@@ -179,6 +180,7 @@ const colors: Colors = {
   },
   forestgreen: {
     800: '#1D401D',
+    700: '#005A42',
     500: '#48A148',
     400: '#6DB46D',
     300: '#91C791',

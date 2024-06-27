@@ -1,10 +1,10 @@
 <template lang="pug">
 div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
-)
+) 
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-grey-0 rounded shadow-32")
-    div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
+    div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center" v-show="closable")
       p(v-if="header !== ''" class="text-h6 font-bold text-grey-900") {{ header }}
       f-svg-icon(
         v-if="closable"
@@ -52,6 +52,16 @@ export default {
     ),
     ModalViewMode: defineAsyncComponent(() =>
       import('@/components/common/material/file/viewMode/ModalViewMode.vue')
+    ),
+    perspectiveCropperTourStep1: defineAsyncComponent(() =>
+      import(
+        '@/components/assets/modalU3mRecut/perspectiveCropper/tourGuide/Step1.vue'
+      )
+    ),
+    perspectiveCropperTourStep2: defineAsyncComponent(() =>
+      import(
+        '@/components/assets/modalU3mRecut/perspectiveCropper/tourGuide/Step2.vue'
+      )
     ),
   },
   props: {
