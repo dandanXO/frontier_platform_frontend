@@ -57,13 +57,13 @@ div(class="grid gap-y-8 content-start")
             span(class="font-bold") &nbsp{{ property.unitShort }}
   //- 3D Viewer
   div(class="w-full p-4 rounded grid gap-y-4 bg-grey-50")
-    material-u3m-viewer-button(
-      v-if="store.getters['permission/isShowOld3DViewer']"
+    material-u3m-viewer-react-button(
+      v-if="store.getters['permission/isShowNew3DViewer']"
       :material="material"
       :materialId="material.materialId"
       :u3m="selectedU3m"
     )
-    material-u3m-viewer-react-button(
+    material-u3m-viewer-button(
       v-else
       :material="material"
       :materialId="material.materialId"

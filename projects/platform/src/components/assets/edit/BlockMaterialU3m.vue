@@ -24,13 +24,13 @@ div(class="w-79")
     template(#content)
       div(class="-mt-2.5 mb-5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
-          material-u3m-viewer-button(
-            v-if="store.getters['permission/isShowOld3DViewer']"
+          material-u3m-viewer-react-button(
+            v-if="store.getters['permission/isShowNew3DViewer']"
             :material="material"
             :materialId="material.materialId"
             :u3m="material.u3m"
           )
-          material-u3m-viewer-react-button(
+          material-u3m-viewer-button(
             v-else
             :material="material"
             :materialId="material.materialId"
@@ -105,13 +105,13 @@ div(class="w-79")
     template(#content)
       div(class="-mt-2.5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
-          material-u3m-viewer-button(
-            v-if="store.getters['permission/isShowOld3DViewer']"
+          material-u3m-viewer-react-button(
+            v-if="store.getters['permission/isShowNew3DViewer']"
             :material="material"
             :materialId="material.materialId"
             :u3m="material.customU3m"
           )
-          material-u3m-viewer-react-button(
+          material-u3m-viewer-button(
             v-else
             :material="material"
             :materialId="material.materialId"

@@ -17,14 +17,14 @@ div
     keyField="id"
   )
     div(class="flex items-center gap-x-2 py-2.5")
-      material-u3m-viewer-button(
-        v-if="store.getters['permission/isShowOld3DViewer']"
+      material-u3m-viewer-react-button(
+        v-if="store.getters['permission/isShowNew3DViewer']"
         :key="currentTab"
         :material="material"
         :materialId="material.materialId"
         :u3m="selectedU3m"
       )
-      material-u3m-viewer-react-button(
+      material-u3m-viewer-button(
         v-else
         :key="currentTab"
         :material="material"
