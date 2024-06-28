@@ -222,7 +222,7 @@ export class OrgPage {
   clickOrgOrGroupByName = (name: string) =>
     this.page.locator('[data-cy="list-item"]').locator(`text="${name}"`).click()
   clickManagementBtn = () =>
-    this.page.locator('[data-cy="sidebar_management"]').click()
+    this.page.locator('[data-cy="sidebar-item-management"]').click()
   clickCreateOrgBtn = () =>
     this.page.locator('[data-cy="open-create-org-modal"]').click()
   clickCountryDropdown = () =>

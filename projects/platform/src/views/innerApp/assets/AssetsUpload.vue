@@ -8,7 +8,7 @@ f-scrollbar-container(class="w-full h-full")
   div(class="w-full h-full flex justify-center")
     div(class="w-240")
       div(class="ml-5 mt-15.5")
-        h3(class="text-h3 text-grey-900 pb-5 font-medium") {{ $t('DD0001') }}
+        h3(class="text-h3 text-grey-900 pb-5 font-medium" data-cy="smart-upload-title") {{ $t('DD0001') }}
         div(class="flex justify-between items-end")
           div(class="text-grey-900 text-body1 leading-1.6")
             p {{ $t('DD0079') }}

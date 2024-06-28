@@ -59,7 +59,11 @@ div(class="relative")
             class="transform text-grey-600 group-hover:!text-primary-400 inline-block"
             :class="{ 'text-primary-500': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
           )
-    div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
+    div(
+      v-if="isLoading"
+      class="w-full h-full flex justify-center items-center"
+      data-cy="loading-indicator"
+    )
       f-svg-icon(iconName="loading" size="92" class="text-primary-400")
     template(v-else)
       div(

@@ -9,12 +9,14 @@ f-tooltip-standard(
       class="svg-icon"
       arid-hidden="true"
       :style="{ width: `${size}px`, height: `${size}px`, minWidth: `${size}px`, minHeight: `${size}px` }"
+      :data-cy="testId"
     )
       use(:xlink:href="`#${iconName}`")
 svg(
   v-else
   class="svg-icon"
   arid-hidden="true"
+  :data-cy="testId"
   :style="{ width: `${size}px`, height: `${size}px`, minWidth: `${size}px`, minHeight: `${size}px` }"
 )
   use(:xlink:href="`#${iconName}`")
@@ -38,6 +40,7 @@ withDefaults(
     size?: string
     tooltipTitle?: string
     tooltipMessage?: string
+    testId?: string
   }>(),
   {
     size: '20',

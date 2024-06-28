@@ -9,7 +9,11 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     class="my-5"
     :class="{ 'mx-auto': containerWidth === 1140 }"
   )
-    div(v-if="isLoading" class="w-full flex justify-center items-center")
+    div(
+      v-if="isLoading"
+      class="w-full flex justify-center items-center"
+      data-cy="loading-indicator"
+    )
       f-svg-icon(iconName="loading" size="92" class="text-primary-400")
     template(v-else)
       div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")

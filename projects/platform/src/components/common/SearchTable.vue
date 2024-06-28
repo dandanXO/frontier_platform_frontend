@@ -17,7 +17,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
       f-input-checkbox(
         v-if="isKeywordDirty"
         :inputValue="isShowMatch"
-        @update:inputValue="searchStore.setIsShowMatch($event); search()"
+        @update:inputValue="handleCheckboxInput"
         :label="$t('RR0069')"
         binary
         iconSize="20"
@@ -52,6 +52,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
         iconName="loading"
         size="92"
         class="text-primary-400"
+        testId="loading-indicator"
       )
       p(
         v-else-if="inSearch && pagination.totalCount === 0"
@@ -354,6 +355,12 @@ const search = async (targetPage = 1) => {
 
   isSearching.value = false
 }
+
+const handleCheckboxInput = (value: any) => {
+  searchStore.setIsShowMatch(value)
+  search()
+}
+
 // Initialize search and filter
 const {
   currentPage,

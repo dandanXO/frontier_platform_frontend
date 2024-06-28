@@ -2,7 +2,7 @@
 div(
   class="fixed inset-0 z-modal-confirm w-screen h-screen bg-grey-900/40 flex justify-center items-center"
   @click="closeModalConfirm"
-  data-cy="modal-confirm"
+  :data-cy="testId"
 )
   div(
     class="w-[min(416px,calc(100vw_-_80px))] max-h-125 min-h-30 md:min-h-54 px-4 md:px-8 py-4 md:py-6 bg-grey-0 rounded flex flex-col shadow-32"
@@ -130,6 +130,10 @@ const props = defineProps({
   },
   afterTextBtnHandler: {
     type: Function,
+  },
+  testId: {
+    type: String,
+    default: 'modal-confirm',
   },
 })
 

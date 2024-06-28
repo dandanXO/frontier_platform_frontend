@@ -29,6 +29,14 @@ declare global {
   namespace Cypress {
     interface Chainable {
       mount: typeof mount
+      checkErrorMessages: (selector: string, errorMessage: string) => void
+      login: VoidFunction
+      waitLoadingDissmissed: VoidFunction
+      shouldNotCrash: VoidFunction
+      accessPage: VoidFunction
+      saveLocalStorage: VoidFunction
+      restoreLocalStorage: VoidFunction
+      chooseOrganization: VoidFunction
     }
   }
 }

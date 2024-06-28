@@ -3,6 +3,7 @@ div(
   class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-pointer"
   :class="[{ 'bg-grey-150': isActive }, { 'pointer-events-none': disabled }]"
   @click="innerGoTo"
+  :data-cy="`sidebar-item-${testId}`"
 )
   slot
     f-svg-icon(
@@ -29,6 +30,7 @@ const props = defineProps<{
   disabled?: boolean
   goTo?: () => any
   ogKey?: string
+  testId: string
 }>()
 
 const store = useStore()

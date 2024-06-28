@@ -5,6 +5,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-essential',
     'plugin:vue-pug/vue3-recommended',
+    'plugin:cypress/recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier',

@@ -9,7 +9,7 @@ export class AssetPage {
 
   clickFirstOrg = () => this.page.locator('[data-cy="org"]').first().click()
   clickFirstSideBarGroup = () =>
-    this.page.locator('[data-cy="sidebar_location"]').first().click()
+    this.page.locator('[data-cy^="sidebar-org-"]').first().click()
   clickUploadPageIcon = () =>
     this.page.locator('[data-cy="upload-page"]').click()
   clickMassUploadBtn = () =>

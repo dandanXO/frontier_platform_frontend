@@ -21,7 +21,7 @@ main(v-else class="flex flex-col h-full")
       suspense
         component(:is="Component")
         template(#fallback)
-          div(class="h-full flex justify-center items-center")
+          div(class="h-full flex justify-center items-center" data-cy="loading-indicator")
             f-svg-icon(iconName="loading" size="92" class="text-primary-500")
   footer(class="w-full h-13 bg-grey-50 shadow-4 shrink-0 rwd-app-padding-x")
     div(

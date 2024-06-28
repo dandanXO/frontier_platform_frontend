@@ -45,6 +45,7 @@ app.config.errorHandler = (err, vm, info) => {
       contentText: i18n.global.t('RR0108', { code: status }),
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload(),
+      testId: 'modal-confirm-crash',
     })
   } else if (status === 401) {
     return
@@ -56,6 +57,7 @@ app.config.errorHandler = (err, vm, info) => {
       contentText: content,
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload(),
+      testId: 'modal-confirm-crash',
     })
   }
 

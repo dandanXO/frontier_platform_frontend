@@ -1,9 +1,15 @@
 <template lang="pug">
-div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex flex-col")
+div(
+  class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex flex-col"
+  data-cy="sidebar"
+)
   menu-org
   div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col" v-if="showPublicLibrary")
     div(class="grid gap-y-1.5")
-      sidebar-item#PublicLibrary(:goTo="goToPublicLibrary")
+      sidebar-item#PublicLibrary(
+        :goTo="goToPublicLibrary"
+        testId="public-library"
+      )
         img(src="@/assets/images/logo.png" class="w-5 h-5")
         p(class="text-body2 text-grey-900 line-clamp-1") {{ $t('RR0003') }}
   div(class="flex-grow px-1 flex flex-col")
@@ -15,15 +21,16 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
           :goTo="goToDashboard"
           icon="dashboard"
           :disabled="planStatus.INACTIVE"
+          testId="dashboard"
         )
         sidebar-item#Management(
           :title="$t('RR0004')"
           :goTo="goToManagement"
           icon="member_setting"
           :disabled="planStatus.INACTIVE"
-          data-cy="sidebar_management"
+          testId="management"
         )
-        sidebar-item#Progress(:goTo="goToProgress")
+        sidebar-item#Progress(:goTo="goToProgress" testId="progress-status")
           f-svg-icon(
             iconName="progress"
             size="20"
@@ -42,7 +49,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
           v-for="og in ogList"
           :key="og.ogId"
           :class="[{ 'pointer-events-none': og.disabled }]"
-          data-cy="sidebar_location"
+          :data-cy="`sidebar-org-${og.ogType}-${og.ogId}`"
         )
           template(#trigger="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-100")
@@ -69,6 +76,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
                 v-bind="menu"
                 class="relative flex justify-between"
                 :style="{ zIndex: 20 - index }"
+                :data-cy="`child-sidebar-org-${og.ogType}-${og.ogId}-${menu.testId}`"
               )
                 p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
                 template(v-if="menu.id === 'Assets'")
@@ -131,6 +139,7 @@ const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
 const ogList = computed(() => {
   const { orgId, orgName, labelColor, nodeId } = organization.value
+
   return [
     {
       ogType: OgType.ORG,
@@ -170,21 +179,25 @@ const ogSideItemList = (ogType: OgType, ogId: number, nodeId: number) => {
       id: 'Assets',
       title: t('RR0008'),
       goTo: goToAssets.bind(null, navReq),
+      testId: 'assets-library',
     },
     {
       id: 'Workspace',
       title: t('RR0009'),
       goTo: goToWorkspace.bind(null, navReq, nodeId),
+      testId: 'workspace',
     },
     {
       id: 'Moodboard',
       title: t('QQ0001'),
       goTo: goToMoodboard.bind(null, navReq),
+      testId: 'mood-board',
     },
     {
       id: 'ThreadBoard',
       title: t('TT0132'),
       goTo: goToThreadBoard.bind(null, navReq),
+      testId: 'thread-board',
     },
   ]
 }
