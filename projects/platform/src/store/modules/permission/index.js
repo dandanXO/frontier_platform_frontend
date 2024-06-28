@@ -15,7 +15,7 @@ const state = () => ({
 
 const getters = {
   isShowNew3DViewer: (state, getters, rootState) => {
-    return state.old3DViewer.includes(rootState.organization.orgId)
+    return state.new3DViewer.includes(rootState.organization.orgId)
   },
   noLittleKingInOrgList: (state, getters, rootState) => {
     const orgIds = rootState.user.organizationList.map((org) => org.orgId)
