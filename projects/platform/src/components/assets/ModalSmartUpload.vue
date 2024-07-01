@@ -25,8 +25,8 @@ modal-behavior(
         div(class="text-grey-600") {{ $t('DD0133') }}
         div(class="text-grey-900 font-bold") {{ $t('DD0134') }}
         div(class="text-grey-600") {{ $t('RR0145') }}
-        i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
-          template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 2) }}
+        i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold") 
+          template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
         div(class="text-grey-600") {{ $t('DD0102') }}
         div(class="text-grey-900 font-bold") {{ $t('DD0103') }}
         div(class="text-grey-600") {{ $t('DD0118') }}
@@ -147,6 +147,7 @@ import {
   TRACKER_PREFIX,
   TRACKER_POSTFIX,
   track,
+  bytesToSize,
 } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
 import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
@@ -201,11 +202,13 @@ const disabledUpload = computed(
   () => validImages.value.length === 0 || isCheckingFiles.value
 )
 
-const fileSizeMaxLimit = 100 * Math.pow(1024, 2)
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
 const minimumDimensions = 800
 const minimumResolution = 300
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit.value)
 
 const chooseFile = () => {
   fileOperator.upload(true)
@@ -250,7 +253,7 @@ function validateImage(item: ImageItem, imageInfo: any) {
     item.isRemoved = true
   }
 
-  if (imageInfo.size > fileSizeMaxLimit) {
+  if (imageInfo.size > fileSizeMaxLimit.value) {
     item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
     item.isRemoved = true
   }

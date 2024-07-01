@@ -32,12 +32,19 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
     ) {{ $t('UU0136') }}
     div(class="text-caption2 text-grey-600 leading-1.3")
       p {{ $t('RR0243') }} jpg, jpeg, png
-      p {{ $t('RR0145') }} 100 MB (per file)
+      p {{ $t('RR0145') }}
+        i18n-t(keypath="DD0101" tag="p" class="inline-block") 
+          template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
       p {{ $t('RR0244') }} 800 x 800 px
       p {{ $t('DD0075') }}
 </template>
 
 <script setup lang="ts">
+import { bytesToSize } from '@frontier/lib'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+const store = useStore()
 defineProps<{
   title: string
   originalThumbnailUrl?: string | null
@@ -48,6 +55,9 @@ const emits = defineEmits<{
   (e: 'upload'): void
   (e: 'delete'): void
 }>()
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 </script>
 
 <style scoped></style>

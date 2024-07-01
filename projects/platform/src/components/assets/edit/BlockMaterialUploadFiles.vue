@@ -14,7 +14,9 @@ div(class="flex flex-col gap-y-15")
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
           p {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-          p {{ $t('RR0145') }} 20MB (per file)
+          p {{ $t('RR0145') }}
+            i18n-t(keypath="DD0101" tag="p" class="inline-block") 
+              template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
         template(v-if="multimediaList.length > 0")
           f-infobar(
             class="w-full mt-4"
@@ -121,7 +123,9 @@ div(class="flex flex-col gap-y-15")
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
           p {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-          p {{ $t('RR0145') }} 20MB (per file)
+          p {{ $t('RR0145') }}
+            i18n-t(keypath="DD0101" tag="p" class="inline-block") 
+              template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
         div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5 mt-10")
           draggable(
             class="flex flex-wrap gap-5"
@@ -154,6 +158,7 @@ import {
   materialAttachmentCreateServiceKey,
   fileCardDragOptions,
 } from '@/utils/constants'
+import { bytesToSize } from '@frontier/lib'
 import AttachmentCard from '@/components/common/material/attachment/AttachmentCard.vue'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import type {
@@ -213,7 +218,9 @@ const {
 
 const store = useStore()
 const { goToBillings } = useNavigation()
-
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
 const multimediaListForDraggable = computed({
   get: () => multimediaList,
   set: updateMultimediaList,
