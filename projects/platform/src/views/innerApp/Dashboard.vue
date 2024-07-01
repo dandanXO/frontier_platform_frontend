@@ -286,7 +286,9 @@ const textureOption = computed(() => {
     getBarChartBaseOption(
       t('BB0124'),
       [],
-      textureCounts.value.map((data) => data.name),
+      textureCounts.value.map((data) =>
+        data.name === 'NonWoven' ? 'Non Woven' : data.name
+      ),
       54,
       'break'
     ),
@@ -311,7 +313,9 @@ const textureOption = computed(() => {
     getBarChartBaseOption(
       t('BB0124'),
       [t('BB0128'), t('BB0129')],
-      textureCounts.value.map((data) => data.name),
+      textureCounts.value.map((data) =>
+        data.name === 'NonWoven' ? 'Non Woven' : data.name
+      ),
       54,
       'break'
     ),
