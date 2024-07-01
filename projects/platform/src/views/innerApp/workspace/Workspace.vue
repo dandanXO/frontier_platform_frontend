@@ -303,7 +303,8 @@ const handleNodeClick = (node: NodeChild, visit: Function) => {
     goToWorkspaceMaterialDetail(
       {},
       node.nodeMeta.nodeId,
-      node.nodeMeta.rank ?? undefined
+      node.nodeMeta.rank ?? undefined,
+      currentNodeId.value ?? undefined
     )
   }
 }

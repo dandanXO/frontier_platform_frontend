@@ -184,10 +184,23 @@ export default function useNavigation() {
   const goToWorkspaceMaterialDetail = (
     navReq: NavigationReq = {},
     nodeId: number,
-    rank?: number
+    rank?: number,
+    preLayerNodeId?: number
   ) => {
     const basePath = `${prefixPath}/workspace/material/${nodeId}`
-    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    const queryParams = new URLSearchParams()
+
+    if (rank !== undefined) {
+      queryParams.append('rank', rank.toString())
+    }
+
+    if (preLayerNodeId !== undefined) {
+      queryParams.append('preLayerNodeId', preLayerNodeId.toString())
+    }
+
+    const queryString = queryParams.toString()
+    const path = queryString ? `${basePath}?${queryString}` : basePath
+
     router.push(parsePath(path, navReq))
   }
 

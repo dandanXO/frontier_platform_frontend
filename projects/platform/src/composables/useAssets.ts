@@ -2,7 +2,9 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 import { U3M_STATUS, NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
+import { useRoute } from 'vue-router'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
@@ -159,6 +161,8 @@ export const DefaultPrintLabelSetting: QrCodePrintLabelSetting = {
 export default function useAssets() {
   const print = usePrint()
   const customPrint = useCPrint()
+  const route = useRoute()
+  const { ogNodeId } = useCurrentUnit()
   const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
   const toMaterialList = (m: Material | Material[]) =>
     Array.isArray(m) ? m : [m]
@@ -174,8 +178,12 @@ export default function useAssets() {
     startSpreadsheetUpdate: startSpreadsheetUpdateAction,
   } = useAssetsStore()
   const notify = useNotifyStore()
-  const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
-    useNavigation()
+  const {
+    goToAssetMaterialEdit,
+    goToMaterialUpload,
+    goToProgress,
+    goToWorkspace,
+  } = useNavigation()
 
   const editMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.EDIT,
@@ -497,7 +505,10 @@ export default function useAssets() {
   const deleteMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DELETE,
     name: () => t('RR0063'),
-    func: async (m) => {
+    func: async (
+      // & symbol is used as an intersection type operator to combine multiple types into one that includes all properties from the constituent types.
+      m: (Material[] | Material) & { routerBackNodeId?: number }
+    ) => {
       const materialIdList = toMaterialIdList(m)
       const {
         data: {
@@ -506,6 +517,7 @@ export default function useAssets() {
       } = await ogBaseAssetsApi('checkDeleteAssetsMaterialList', {
         materialIdList,
       })
+
       if (!isOnExportingExcel && !isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
           type: NOTIFY_TYPE.WARNING,
@@ -518,7 +530,11 @@ export default function useAssets() {
               materialIdList,
             })
             store.dispatch('helper/closeModalLoading')
-            store.dispatch('helper/reloadInnerApp')
+            if (route.path.includes('/workspace/material')) {
+              goToWorkspace({}, m?.routerBackNodeId || ogNodeId.value)
+            } else {
+              store.dispatch('helper/reloadInnerApp')
+            }
           },
           secondaryBtnText: t('UU0002'),
         })

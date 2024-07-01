@@ -251,6 +251,7 @@ div
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import MaterialDetailUpperContent from '@/components/common/material/detail/internal/MaterialDetailUpperContent.vue'
@@ -281,6 +282,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 
 const {
   editMaterial,
@@ -351,12 +353,14 @@ const menuTree = computed<MenuTree>(() => {
     [printLabel, printA4Swatch],
     [deleteMaterial],
   ]
-
+  // & symbol is used as an intersection type operator to combine multiple types into one that includes all properties from the constituent types.
+  const material: Material & { routerBackNodeId?: number } = props.material
+  material.routerBackNodeId = Number(route.query.preLayerNodeId) || undefined
   return {
     blockList: optionList.map((block) => ({
       menuList: block.map((option) => ({
         title: option.name(props.material),
-        clickHandler: () => option.func(props.material),
+        clickHandler: () => option.func(material),
         disabled: option.disabled ? option.disabled(props.material) : false,
       })),
     })),

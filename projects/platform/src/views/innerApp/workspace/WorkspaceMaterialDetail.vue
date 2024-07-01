@@ -21,12 +21,11 @@ import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValu
 const props = defineProps<{
   nodeId: string
 }>()
-
 const { t } = useI18n()
 const { ogNodeId } = useCurrentUnit()
 const { getSearchLog } = useSearchStore()
 const { ogBaseWorkspaceApi } = useWorkspaceStore()
-const { goToWorkspace, goToWorkspaceMaterialDetail } = useNavigation()
+const { goToWorkspace } = useNavigation()
 
 const res = await ogBaseWorkspaceApi('getWorkspaceMaterial', {
   nodeId: Number(props.nodeId),
