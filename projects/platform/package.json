@@ -19,7 +19,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
     "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore",
     "cy:open": "cypress open  --env NODE_ENV=development",
-    "cy:run": "cypress run  --env NODE_ENV=development",
+    "cy:run": "cypress run --spec cypress/e2e/custom/*.cy.js  --env NODE_ENV=development",
     "test": "vitest run",
     "test:watch": "vitest"
   },

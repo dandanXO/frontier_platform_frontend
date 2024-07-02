@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname $0)/_/husky.sh"
+
+folders=($(git diff HEAD~1 --name-only | xargs dirname | sort | uniq))
+isDisabled=true
+
+for folder in "${folders[@]}"
+do
+  if [[ $folder != *"packages/i18n/locales"* ]];then
+    npm run dev:platform & (npm run test:e2e:normal && node .husky/stopServer.js)
+    break
+  fi
+
+   # or do whatever with individual element of the array
+done
