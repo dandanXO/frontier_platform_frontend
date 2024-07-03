@@ -59,7 +59,7 @@ div(class="grid gap-y-8 content-start")
   div(class="w-full p-4 rounded grid gap-y-4 bg-grey-50")
     f-tooltip-standard(
       :tooltipMessage="U3M_PROVIDER.FRONTIER === currentTab ? $t('EE0213') : $t('EE0212')"
-      class="flex-grow w-full"
+      class=""
       :disabledTooltip="disabledTooltipErrorMessage()"
     )
       template(#slot:tooltip-trigger)

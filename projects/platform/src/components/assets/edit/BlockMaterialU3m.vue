@@ -26,7 +26,7 @@ div(class="w-79")
         div(class="flex items-center gap-x-2")
           f-tooltip-standard(
             :tooltipMessage="$t('EE0213')"
-            class="flex-grow"
+            class=""
             :disabledTooltip="disabledTooltipErrorMessage(U3M_PROVIDER.FRONTIER)"
           )
             template(#slot:tooltip-trigger)
@@ -115,7 +115,7 @@ div(class="w-79")
         div(class="flex items-center gap-x-2")
         f-tooltip-standard(
           :tooltipMessage="$t('EE0212')"
-          class="flex-grow w-full"
+          class=""
           :disabledTooltip="disabledTooltipCostomerErrorMessage(U3M_PROVIDER.CUSTOMER)"
         )
           template(#slot:tooltip-trigger)
