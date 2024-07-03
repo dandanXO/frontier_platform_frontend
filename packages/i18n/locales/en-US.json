@@ -1195,7 +1195,7 @@
   "FF0088": "Private Share",
   "FF0089": "Add emails and share material with others.",
   "GG0001": "This material has already been added to \"Shared With Me\"",
-  "GG0002": "This collection has already been added to \"Shared With Me\"",
+  "GG0002": "This collection has already been added to \"Workspace > Shared With Me\" tab",
   "GG0003": "Unable To Save",
   "GG0004": " © Frontier.cool Inc. ",
   "GG0008": "Already Added",
@@ -2173,5 +2173,8 @@
   "MI0148": "Make sure all edits are complete before confirming. {newline} You can review your changes in the 'Revision History'",
   "MI0149": "Additional Unit Preferences",
   "MI0150": "",
-  "MI0151": ""
+  "MI0151": "",
+  "MI0152": "",
+  "MI0153": "",
+  "MI0154": ""
 }
