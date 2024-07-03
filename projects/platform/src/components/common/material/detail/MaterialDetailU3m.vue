@@ -20,7 +20,7 @@ div
       f-tooltip-standard(
         :tooltipMessage="$t('EE0212')"
         class="flex-grow"
-        :disabledTooltip="disabledTooltipErrorMessage"
+        :disabledTooltip="disabledTooltipErrorMessage()"
       )
         template(#slot:tooltip-trigger)
           material-u3m-viewer-react-button(

@@ -60,7 +60,7 @@ div(class="grid gap-y-8 content-start")
     f-tooltip-standard(
       :tooltipMessage="$t('EE0212')"
       class="flex-grow w-full"
-      :disabledTooltip="disabledTooltipErrorMessage"
+      :disabledTooltip="disabledTooltipErrorMessage()"
     )
       template(#slot:tooltip-trigger)
         material-u3m-viewer-react-button(
