@@ -2,7 +2,7 @@ import type { trackParams, Properties } from './types'
 import mixpanel from 'mixpanel-browser'
 
 const COMPANY_EMAIL = '@frontier.cool'
-const isProd = process.env.NODE_ENV === 'production'
+const token = import.meta.env.VITE_APP_MIXPANEL_TOKEN
 
 const getDistinctId = () => {
   try {
@@ -15,7 +15,7 @@ const getDistinctId = () => {
 const isExternalUserEmail = () =>
   !String(getDistinctId()).endsWith(COMPANY_EMAIL)
 
-const isTrackerEnabled = () => isProd && isExternalUserEmail()
+const isTrackerEnabled = () => token && isExternalUserEmail()
 
 const executeIfEnabled =
   (fn: Function) =>
@@ -26,7 +26,7 @@ const executeIfEnabled =
   }
 
 export const initTracker = executeIfEnabled(() => {
-  mixpanel.init(import.meta.env.VITE_APP_MIXPANEL_TOKEN)
+  token && mixpanel.init(token)
 })
 
 export const track = executeIfEnabled(

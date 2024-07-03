@@ -7,6 +7,8 @@ function getVar() {
   echo ${var##*|}
 }
 
+MIXPANEL_ENV=( "production" "pre-production" )
+
 if [ $1 = "development" ]; then
   PREFIX="DEV"
   NODE_ENV="development"
@@ -46,4 +48,8 @@ echo VITE_APP_GA_MEASUREMENT_ID=$(getVar $GA_MEASUREMENT_ID) >>.env.$1.local
 echo VITE_APP_GOOGLE_CLIENT_ID=$(getVar "GOOGLE_CLIENT_ID") >>.env.$1.local
 echo VITE_APP_FACEBOOK_APP_ID=$(getVar "FACEBOOK_APP_ID") >>.env.$1.local
 echo VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED=$(getVar "AG_GRID_LICENSE_KEY_BASE64_ENCODED") >>.env.$1.local
-echo VITE_APP_MIXPANEL_TOKEN=$(getVar "MIXPANEL_TOKEN") >> .env.$1.local
+
+if [[ " ${MIXPANEL_ENV[*]} " =~ [[:space:]]${1}[[:space:]] ]]; then
+  echo VITE_APP_MIXPANEL_TOKEN=$(getVar $PREFIX"_MIXPANEL_TOKEN") >> .env.$1.local
+fi
+
