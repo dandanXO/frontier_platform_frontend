@@ -10,7 +10,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
     @next="handleGoNext"
     @confirm="handleConfirm"
     @close="handleClose"
-  )
+  ) 
   modal-u3m-recut-switch-control-bar(
     :cropMode="currentSideCropMode || CROP_MODE.SQUARE"
     @update:cropMode="handleCropModeChange"
@@ -32,7 +32,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
           v-if="side.sideName === currentSideName"
           isSquare
           :side="side"
-          :ref="(el) => handlePerspectiveCropAreaRefUpdate(side.sideName, el)"
+          :ref="(el) => handleCropAreaRefUpdate(side.sideName, el)"
           @update:editStatus="handlePerspectiveEditStatusChange"
         )
 </template>
@@ -302,12 +302,20 @@ const handleConfirm = async () => {
 
     const { options, rotateDeg: squareCropRotateDeg } = side.config
     if (side.cropMode === CROP_MODE.SQUARE) {
+      const { perspectiveCropRecord } = side
+      if (!perspectiveCropRecord) {
+        throw new Error('perspectiveCropRecord not existed.')
+      }
+      const { leftTop, leftBottom, rightTop, rightBottom, rotateDeg } =
+        perspectiveCropRecord
+
       return {
         squareCropRecord: {
-          x: toDP1(options.x),
-          y: toDP1(options.y),
-          rotateDeg: toDP1(squareCropRotateDeg),
-          scaleRatio: toDP1(side.scaleSizeInCm),
+          leftTop: coordToDP1(leftTop),
+          leftBottom: coordToDP1(leftBottom),
+          rightTop: coordToDP1(rightTop),
+          rightBottom: coordToDP1(rightBottom),
+          rotateDeg: toDP1(rotateDeg),
         },
       }
     }
@@ -330,20 +338,21 @@ const handleConfirm = async () => {
       },
     }
   }
-
   if (currentSideCropMode.value === CROP_MODE.SQUARE) {
     if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
       if (!refFaceSideCropArea.value) {
         throw new Error('refFaceSideCropArea undefined')
       }
-      currentSide.value.croppedImage =
-        await refFaceSideCropArea.value.cropImage()
+      const result = await refFaceSideCropArea.value.cropImage()
+      currentSide.value.croppedImage = result.imageFile
+      currentSide.value.perspectiveCropRecord = result.cropRecord
     } else {
       if (!refBackSideCropArea.value) {
         throw new Error('refBackSideCropArea undefined')
       }
-      currentSide.value.croppedImage =
-        await refBackSideCropArea.value.cropImage()
+      const result = await refBackSideCropArea.value.cropImage()
+      currentSide.value.croppedImage = result.imageFile
+      currentSide.value.perspectiveCropRecord = result.cropRecord
     }
   } else {
     if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
@@ -378,7 +387,6 @@ const handleConfirm = async () => {
 
     const { croppedImage } = side
     const cropImageRecord = getRecord(side)
-
     if (!croppedImage || !cropImageRecord) {
       return null
     }
@@ -395,7 +403,6 @@ const handleConfirm = async () => {
       perspectiveCropRecord: cropImageRecord.perspectiveCropRecord || null,
     }
   }
-
   const [faceSideReq, backSideReq] = await Promise.all([
     getSideReq(faceSide.value),
     getSideReq(backSide.value),
@@ -520,12 +527,24 @@ onMounted(async () => {
 
   const getCurrentSide = () => {
     if (material.value.isDoubleSide) {
+      if (faceSide?.value && !faceSide.value.cropMode) {
+        faceSide.value.cropMode = CROP_MODE.SQUARE
+      }
+      if (backSide?.value && !backSide.value.cropMode) {
+        backSide.value.cropMode = CROP_MODE.SQUARE
+      }
       return faceSideU3mImage.value ? faceSide.value : backSide.value
     }
     if (faceSideU3mImage.value) {
+      if (faceSide?.value && !faceSide.value.cropMode) {
+        faceSide.value.cropMode = CROP_MODE.SQUARE
+      }
       return faceSide.value
     }
     if (backSideU3mImage.value) {
+      if (backSide?.value && !backSide.value.cropMode) {
+        backSide.value.cropMode = CROP_MODE.SQUARE
+      }
       return backSide.value
     }
   }
