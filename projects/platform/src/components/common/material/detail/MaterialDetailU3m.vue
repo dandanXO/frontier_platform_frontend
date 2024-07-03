@@ -18,7 +18,7 @@ div
   )
     div(class="flex items-center gap-x-2 py-2.5")
       f-tooltip-standard(
-        :tooltipMessage="$t('EE0212')"
+        :tooltipMessage="U3M_PROVIDER.FRONTIER === currentTab ? $t('EE0213') : $t('EE0212')"
         class="flex-grow"
         :disabledTooltip="disabledTooltipErrorMessage()"
       )

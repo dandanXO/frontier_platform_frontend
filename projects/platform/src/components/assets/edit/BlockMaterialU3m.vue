@@ -25,7 +25,7 @@ div(class="w-79")
       div(class="-mt-2.5 mb-5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
           f-tooltip-standard(
-            :tooltipMessage="$t('EE0212')"
+            :tooltipMessage="$t('EE0213')"
             class="flex-grow"
             :disabledTooltip="disabledTooltipErrorMessage(U3M_PROVIDER.FRONTIER)"
           )
