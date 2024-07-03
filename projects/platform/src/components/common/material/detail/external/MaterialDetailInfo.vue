@@ -57,18 +57,27 @@ div(class="grid gap-y-8 content-start")
             span(class="font-bold") &nbsp{{ property.unitShort }}
   //- 3D Viewer
   div(class="w-full p-4 rounded grid gap-y-4 bg-grey-50")
-    material-u3m-viewer-react-button(
-      v-if="store.getters['permission/isShowNew3DViewer']"
-      :material="material"
-      :materialId="material.materialId"
-      :u3m="selectedU3m"
+    f-tooltip-standard(
+      :tooltipMessage="$t('EE0212')"
+      class="flex-grow w-full"
+      :disabledTooltip="disabledTooltipErrorMessage"
     )
-    material-u3m-viewer-button(
-      v-else
-      :material="material"
-      :materialId="material.materialId"
-      :u3m="selectedU3m"
-    )
+      template(#slot:tooltip-trigger)
+        material-u3m-viewer-react-button(
+          v-if="store.getters['permission/isShowNew3DViewer']"
+          :material="material"
+          :materialId="material.materialId"
+          :u3m="selectedU3m"
+          :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER === currentTab ? U3M_PROVIDER.FRONTIER : U3M_PROVIDER.CUSTOMER]"
+        )
+        material-u3m-viewer-button(
+          v-else
+          class="w-full"
+          :material="material"
+          :materialId="material.materialId"
+          :u3m="selectedU3m"
+          :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER === currentTab ? U3M_PROVIDER.FRONTIER : U3M_PROVIDER.CUSTOMER]"
+        )
     f-tabs(
       ref="refTab"
       :tabList="tabList"
@@ -184,10 +193,15 @@ div(class="grid gap-y-8 content-start")
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, inject } from 'vue'
+import { computed, onMounted, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import materialForDisplay from '@/utils/material/materialInfoForDisplay'
-import { U3M_PROVIDER, U3M_DOWNLOAD_PROP, NOTIFY_TYPE } from '@/utils/constants'
+import {
+  U3M_PROVIDER,
+  U3M_DOWNLOAD_PROP,
+  NOTIFY_TYPE,
+  U3M_STATUS,
+} from '@/utils/constants'
 import { FTabs } from '@frontier/ui-component'
 import {
   type MaterialU3m,
@@ -205,6 +219,7 @@ import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3
 import { useRoute } from 'vue-router'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
+import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
 
 const props = defineProps<{
   material: Material
@@ -340,4 +355,31 @@ const openMultimediaViewMode = (index: number) => {
     },
   })
 }
+const threeDViewerDisabledMap: {
+  [U3M_PROVIDER.CUSTOMER]: boolean
+  [U3M_PROVIDER.FRONTIER]: boolean
+} = reactive({
+  1: true,
+  2: true,
+})
+const disabledTooltipErrorMessage = () => {
+  if (selectedU3m.value.status === U3M_STATUS.COMPLETED) {
+    return !threeDViewerDisabledMap[
+      U3M_PROVIDER.FRONTIER === currentTab.value
+        ? U3M_PROVIDER.FRONTIER
+        : U3M_PROVIDER.CUSTOMER
+    ]
+  } else {
+    return true
+  }
+}
+
+onMounted(async () => {
+  threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER] = await checkU3mImageExist(
+    props.material?.u3m
+  )
+  threeDViewerDisabledMap[U3M_PROVIDER.CUSTOMER] = await checkU3mImageExist(
+    props.material?.customU3m
+  )
+})
 </script>

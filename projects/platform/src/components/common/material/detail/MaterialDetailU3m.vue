@@ -17,20 +17,28 @@ div
     keyField="id"
   )
     div(class="flex items-center gap-x-2 py-2.5")
-      material-u3m-viewer-react-button(
-        v-if="store.getters['permission/isShowNew3DViewer']"
-        :key="currentTab"
-        :material="material"
-        :materialId="material.materialId"
-        :u3m="selectedU3m"
+      f-tooltip-standard(
+        :tooltipMessage="$t('EE0212')"
+        class="flex-grow"
+        :disabledTooltip="disabledTooltipErrorMessage"
       )
-      material-u3m-viewer-button(
-        v-else
-        :key="currentTab"
-        :material="material"
-        :materialId="material.materialId"
-        :u3m="selectedU3m"
-      )
+        template(#slot:tooltip-trigger)
+          material-u3m-viewer-react-button(
+            v-if="store.getters['permission/isShowNew3DViewer']"
+            :key="currentTab"
+            :material="material"
+            :materialId="material.materialId"
+            :u3m="selectedU3m"
+            :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER === currentTab ? U3M_PROVIDER.FRONTIER : U3M_PROVIDER.CUSTOMER]"
+          )
+          material-u3m-viewer-button(
+            v-else
+            :key="currentTab"
+            :material="material"
+            :materialId="material.materialId"
+            :u3m="selectedU3m"
+            :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER === currentTab ? U3M_PROVIDER.FRONTIER : U3M_PROVIDER.CUSTOMER]"
+          )
       material-u3m-download-button(
         :isMultiple="false"
         :status="selectedU3m.status"
@@ -41,8 +49,8 @@ div
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { computed, onMounted, reactive } from 'vue'
 import type {
   Material,
   MaterialCustomU3m,
@@ -54,10 +62,11 @@ import MaterialU3mDownloadButton from '@/components/common/material/u3m/Material
 import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import u3mInstructionImage from '@/assets/images/u3m.png'
-import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import { U3M_PROVIDER, U3M_DOWNLOAD_PROP, U3M_STATUS } from '@/utils/constants'
 import useLogSender from '@/composables/useLogSender'
 import { downloadDataURLFile } from '@frontier/lib'
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
+import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
 
 const logSender = useLogSender()
 const store = useStore()
@@ -85,4 +94,32 @@ const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
   downloadDataURLFile(url, fileName)
   logSender.createDownloadLog(props.material.materialId, format)
 }
+
+const threeDViewerDisabledMap: {
+  [U3M_PROVIDER.FRONTIER]: boolean
+  [U3M_PROVIDER.CUSTOMER]: boolean
+} = reactive({
+  1: true,
+  2: true,
+})
+const disabledTooltipErrorMessage = () => {
+  if (selectedU3m.value.status === U3M_STATUS.COMPLETED) {
+    return !threeDViewerDisabledMap[
+      U3M_PROVIDER.FRONTIER === currentTab.value
+        ? U3M_PROVIDER.FRONTIER
+        : U3M_PROVIDER.CUSTOMER
+    ]
+  } else {
+    return true
+  }
+}
+
+onMounted(async () => {
+  threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER] = await checkU3mImageExist(
+    props.material?.u3m
+  )
+  threeDViewerDisabledMap[U3M_PROVIDER.CUSTOMER] = await checkU3mImageExist(
+    props.material?.customU3m
+  )
+})
 </script>

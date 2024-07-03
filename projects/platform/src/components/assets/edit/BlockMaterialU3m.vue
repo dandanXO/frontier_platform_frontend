@@ -24,18 +24,26 @@ div(class="w-79")
     template(#content)
       div(class="-mt-2.5 mb-5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
-          material-u3m-viewer-react-button(
-            v-if="store.getters['permission/isShowNew3DViewer']"
-            :material="material"
-            :materialId="material.materialId"
-            :u3m="material.u3m"
+          f-tooltip-standard(
+            :tooltipMessage="$t('EE0212')"
+            class="flex-grow"
+            :disabledTooltip="disabledTooltipErrorMessage(U3M_PROVIDER.FRONTIER)"
           )
-          material-u3m-viewer-button(
-            v-else
-            :material="material"
-            :materialId="material.materialId"
-            :u3m="material.u3m"
-          )
+            template(#slot:tooltip-trigger)
+              material-u3m-viewer-react-button(
+                v-if="store.getters['permission/isShowNew3DViewer']"
+                :material="material"
+                :materialId="material.materialId"
+                :u3m="material.u3m"
+                :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER]"
+              )
+              material-u3m-viewer-react-button(
+                v-else
+                :material="material"
+                :materialId="material.materialId"
+                :u3m="material.u3m"
+                :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER]"
+              )
           f-button(
             v-if="material.u3m.status === INITIAL"
             size="md"
@@ -105,22 +113,30 @@ div(class="w-79")
     template(#content)
       div(class="-mt-2.5 flex flex-col gap-y-2.5")
         div(class="flex items-center gap-x-2")
-          material-u3m-viewer-react-button(
-            v-if="store.getters['permission/isShowNew3DViewer']"
-            :material="material"
-            :materialId="material.materialId"
-            :u3m="material.customU3m"
-          )
-          material-u3m-viewer-button(
-            v-else
-            :material="material"
-            :materialId="material.materialId"
-            :u3m="material.customU3m"
-          )
+        f-tooltip-standard(
+          :tooltipMessage="$t('EE0212')"
+          class="flex-grow w-full"
+          :disabledTooltip="disabledTooltipCostomerErrorMessage(U3M_PROVIDER.CUSTOMER)"
+        )
+          template(#slot:tooltip-trigger)
+            material-u3m-viewer-react-button(
+              v-if="store.getters['permission/isShowNew3DViewer']"
+              :material="material"
+              :materialId="material.materialId"
+              :u3m="material.u3m"
+              :disabled="threeDViewerDisabledMap[U3M_PROVIDER.CUSTOMER]"
+            )
+            material-u3m-viewer-button(
+              v-else
+              :material="material"
+              :materialId="material.materialId"
+              :u3m="material.customU3m"
+              :disabled="threeDViewerDisabledMap[U3M_PROVIDER.CUSTOMER]"
+            )
 
         material-u3m-status-block(:u3m="material.customU3m")
           template(
-            v-if="material.customU3m.status === COMPLETED"
+            v-if="material.customU3m.status === U3M_STATUS.COMPLETED"
             #slot:prepend-item
           )
             div(class="flex items-center gap-x-2")
@@ -148,7 +164,7 @@ div(class="w-79")
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useField } from 'vee-validate'
@@ -158,9 +174,10 @@ import MaterialU3mViewerReactButton from '@/components/common/material/u3m/Mater
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
-import { CREATE_EDIT } from '@/utils/constants'
+import { CREATE_EDIT, U3M_PROVIDER, U3M_STATUS } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import useAssets from '@/composables/useAssets'
+import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
 import useMaterial from '@/composables/material/useMaterial'
 import useMaterialSchema, {
   materialSideSchema,
@@ -277,4 +294,34 @@ const openModalSendFeedback = () => {
     component: 'modal-send-feedback',
   })
 }
+const threeDViewerDisabledMap: {
+  [U3M_PROVIDER.CUSTOMER]: boolean
+  [U3M_PROVIDER.FRONTIER]: boolean
+} = reactive({
+  1: true,
+  2: true,
+})
+const disabledTooltipErrorMessage = (type: U3M_PROVIDER) => {
+  if (material.value.u3m.status === U3M_STATUS.COMPLETED) {
+    return !threeDViewerDisabledMap[type]
+  } else {
+    return true
+  }
+}
+const disabledTooltipCostomerErrorMessage = (type: U3M_PROVIDER) => {
+  if (material.value.customU3m.status === U3M_STATUS.COMPLETED) {
+    return !threeDViewerDisabledMap[type]
+  } else {
+    return true
+  }
+}
+
+onMounted(async () => {
+  threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER] = await checkU3mImageExist(
+    props.material?.u3m
+  )
+  threeDViewerDisabledMap[U3M_PROVIDER.CUSTOMER] = await checkU3mImageExist(
+    props.material?.customU3m
+  )
+})
 </script>
