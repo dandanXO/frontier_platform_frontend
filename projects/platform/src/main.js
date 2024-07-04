@@ -29,20 +29,20 @@ app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
   const { status, message } = err
-
-  if (!status || [400, 403, 404, 500].includes(status)) {
-    !status &&
-      store.dispatch('trackError', {
-        info: `${info}`,
-        errorMsg: message,
-        errorStack: err.stack,
-        url: window.location.href,
-      }) // Client Side Error
-
+  const apiTranslateContent = err.code ? i18n.global.t(err.code) : ''
+  if (!status) {
+    store.dispatch('trackError', {
+      info: `${info}`,
+      errorMsg: message || 'No message',
+      errorStack: err.stack || 'No error stack',
+      url: window.location.href,
+    })
+  } else if ([400, 403, 404, 500].includes(status)) {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.ALERT,
       header: i18n.global.t('RR0107'),
-      contentText: i18n.global.t('RR0108', { code: status }),
+      contentText:
+        apiTranslateContent || i18n.global.t('RR0108', { code: status }),
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload(),
       testId: 'modal-confirm-crash',
@@ -50,11 +50,15 @@ app.config.errorHandler = (err, vm, info) => {
   } else if (status === 401) {
     return
   } else {
+    // status exist but not 400, 401, 403, 404, 500
     const { type, title, content } = message || {}
     store.dispatch('helper/openModalConfirm', {
       type: type || 3,
       header: title || i18n.global.t('WW0122'),
-      contentText: content,
+      contentText:
+        apiTranslateContent ||
+        content ||
+        i18n.global.t('RR0108', { code: status }),
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload(),
       testId: 'modal-confirm-crash',

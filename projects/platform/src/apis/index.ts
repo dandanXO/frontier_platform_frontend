@@ -121,10 +121,17 @@ instance.interceptors.response.use(
       resetTracker()
       router.push({ name: 'SignIn', query })
     } else {
+      // status 999 is Client Side Data Error
+      const apiTranslateContent = response.code
+        ? i18n.global.t(response.code)
+        : ''
       store.dispatch('helper/openModalConfirm', {
         type: NOTIFY_TYPE.ALERT,
-        header: i18n.global.t('RR0107'),
-        contentText: `${i18n.global.t('RR0108', { code: status })}`,
+        header: message.title || i18n.global.t('RR0107'),
+        contentText:
+          apiTranslateContent ||
+          message.content ||
+          i18n.global.t('RR0108', { code: status || 999 }),
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload(),
       })
