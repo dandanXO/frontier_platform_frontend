@@ -41,6 +41,7 @@ platform-build:
     - npm install -g pnpm
     - pnpm i
     - npm run test
+    - if [ "$DEPLOY_ENV" == "pre-production" ]; then bash .husky/pre-push; fi
     - cd ./projects/platform
     - npm run build --mode=$DEPLOY_ENV
   artifacts:
