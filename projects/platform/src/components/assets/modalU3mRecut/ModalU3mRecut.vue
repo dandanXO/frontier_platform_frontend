@@ -507,9 +507,7 @@ onMounted(async () => {
         u3mCropRecord: u3mImage.cropRecord,
         dpi: sideImage.dpi,
       },
-      cropMode: u3mImage.cropRecord.perspectiveCropRecord
-        ? CROP_MODE.PERSPECTIVE
-        : CROP_MODE.SQUARE,
+      cropMode: CROP_MODE.SQUARE,
       croppedImage: null,
       perspectiveCropRecord: u3mImage.cropRecord.perspectiveCropRecord,
       config,
