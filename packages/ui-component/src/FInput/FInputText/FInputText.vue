@@ -206,7 +206,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, toRefs, computed, useSlots, nextTick } from 'vue'
+import { ref, toRefs, computed, useSlots, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import flatPickr from 'vue-flatpickr-component'
@@ -481,10 +481,13 @@ const onInput = async () => {
       emit('update:textValue', text)
     })
   }
-  await nextTick()
-  !isFilled.value && emit('update:textValue', null)
   emit('input')
 }
+
+watch(isFilled.value, (filled) => {
+  !filled && emit('update:textValue', null)
+  emit('input')
+})
 
 const onBigNumberInput = async (event) => {
   const value = event.target.value
