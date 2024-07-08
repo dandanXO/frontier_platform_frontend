@@ -4,7 +4,7 @@ div(
   class="fixed top-0 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
 )
   div(
-    class="w-80 h-42 bg-grey-0 rounded-lg relative flex overflow-hidden absolute -top-90"
+    class="w-80 h-42 bg-grey-0 rounded-lg relative flex overflow-hidden absolute -top-[150px]"
   )
     div(class="flex-grow p-4")
       div(class="flex flex-col")
