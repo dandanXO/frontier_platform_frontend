@@ -10,4 +10,6 @@ export const TEXTURE_TYPE = {
   NORMAL: 1,
   ROUGHNESS: 2,
   DISPLACEMENT: 3,
+  METAL: 4,
+  ALPHA: 5,
 }

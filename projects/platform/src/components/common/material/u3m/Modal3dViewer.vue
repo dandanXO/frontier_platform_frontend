@@ -6,6 +6,8 @@ model-editor(
   :normalImgUrl="u3m.normalImgUrl"
   :roughImgUrl="u3m.roughImgUrl"
   :dispImgUrl="u3m.dispImgUrl"
+  :bumpImgUrl="u3m.bumpImgUrl"
+  :alphaImgUrl="u3m.alphaImgUrl"
   @close="$store.dispatch('helper/closeModalBehavior')"
 )
 </template>

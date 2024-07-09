@@ -63,7 +63,11 @@ const useMoireEffectPreventSwitch = (
   moireEffectPreventedBaseTexture: Ref<THREE.Texture | undefined>,
   moireEffectPreventedNormalTexture: Ref<THREE.Texture | undefined>,
   moireEffectPreventedRoughnessTexture: Ref<THREE.Texture | undefined>,
-  moireEffectPreventedDisplacementTexture: Ref<THREE.Texture | undefined>
+  moireEffectPreventedDisplacementTexture: Ref<THREE.Texture | undefined>,
+  bumpTexture: Ref<THREE.Texture | undefined>,
+  alphaTexture: Ref<THREE.Texture | undefined>,
+  moireEffectPreventedBumplacementTexture: Ref<THREE.Texture | undefined>,
+  moireEffectPreventedAlphalacementTexture: Ref<THREE.Texture | undefined>
 ) => {
   /**
    * Only for testing purpose, it should always be true in production env.
@@ -85,7 +89,9 @@ const useMoireEffectPreventSwitch = (
         !moireEffectPreventedBaseTexture.value ||
         !moireEffectPreventedNormalTexture.value ||
         !moireEffectPreventedRoughnessTexture.value ||
-        !moireEffectPreventedDisplacementTexture.value
+        !moireEffectPreventedDisplacementTexture.value ||
+        !moireEffectPreventedBumplacementTexture.value ||
+        !moireEffectPreventedAlphalacementTexture.value
       ) {
         return
       }
@@ -94,12 +100,16 @@ const useMoireEffectPreventSwitch = (
       material.value.roughnessMap = moireEffectPreventedRoughnessTexture.value
       material.value.displacementMap =
         moireEffectPreventedDisplacementTexture.value
+      material.value.bumpMap = moireEffectPreventedBumplacementTexture.value
+      material.value.alphaMap = moireEffectPreventedAlphalacementTexture.value
     } else {
       if (
         !baseTexture.value ||
         !normalTexture.value ||
         !roughnessTexture.value ||
-        !displacementTexture.value
+        !displacementTexture.value ||
+        !bumpTexture.value ||
+        !alphaTexture.value
       ) {
         return
       }
@@ -107,6 +117,8 @@ const useMoireEffectPreventSwitch = (
       material.value.normalMap = normalTexture.value
       material.value.roughnessMap = roughnessTexture.value
       material.value.displacementMap = displacementTexture.value
+      material.value.bumpMap = bumpTexture.value
+      material.value.alphaMap = alphaTexture.value
     }
     material.value.needsUpdate = true
   })
@@ -124,7 +136,9 @@ export default function useModels(
   baseImgUrl: string,
   normalImgUrl: string,
   roughImgUrl: string,
-  dispImgUrl: string
+  dispImgUrl: string,
+  bumpImgUrl: string,
+  alphaImgUrl: string
 ) {
   const isLoading = ref(true)
 
@@ -136,11 +150,21 @@ export default function useModels(
   const normalTexture = ref<THREE.Texture>()
   const roughnessTexture = ref<THREE.Texture>()
   const displacementTexture = ref<THREE.Texture>()
+
+  const bumpTexture = ref<THREE.Texture | undefined>(undefined)
+  const alphaTexture = ref<THREE.Texture | undefined>(undefined)
+
   const moireEffectPreventedBaseImage = ref<HTMLImageElement>()
   const moireEffectPreventedBaseTexture = ref<THREE.Texture>()
   const moireEffectPreventedNormalTexture = ref<THREE.Texture>()
   const moireEffectPreventedRoughnessTexture = ref<THREE.Texture>()
   const moireEffectPreventedDisplacementTexture = ref<THREE.Texture>()
+  const moireEffectPreventedBumplacementTexture = ref<
+    THREE.Texture | undefined
+  >(undefined)
+  const moireEffectPreventedAlphalacementTexture = ref<
+    THREE.Texture | undefined
+  >(undefined)
   const scale = ref<number>(1)
   const originRepeatTimesX = ref<number>(1)
   const textureRatio = ref(1)
@@ -174,21 +198,27 @@ export default function useModels(
       moireEffectPreventedBaseTexture,
       moireEffectPreventedNormalTexture,
       moireEffectPreventedRoughnessTexture,
-      moireEffectPreventedDisplacementTexture
+      moireEffectPreventedDisplacementTexture,
+      bumpTexture,
+      alphaTexture,
+      moireEffectPreventedBumplacementTexture,
+      moireEffectPreventedAlphalacementTexture
     )
 
   const initMaterial = async () => {
     if (!scene || !u3m.value) {
       return
     }
-    const setUpTextures = (textures: THREE.Texture[]) => {
+    const setUpTextures = (textures: (THREE.Texture | null)[]) => {
       textures.forEach((texture) => {
-        texture.matrixAutoUpdate = true
-        texture.wrapS = THREE.RepeatWrapping
-        texture.wrapT = THREE.RepeatWrapping
-        texture.minFilter = THREE.LinearMipMapLinearFilter
-        texture.needsUpdate = true
-        texture.flipY = false
+        if (texture) {
+          texture.matrixAutoUpdate = true
+          texture.wrapS = THREE.RepeatWrapping
+          texture.wrapT = THREE.RepeatWrapping
+          texture.minFilter = THREE.LinearMipMapLinearFilter
+          texture.needsUpdate = true
+          texture.flipY = false
+        }
       })
     }
 
@@ -204,7 +234,6 @@ export default function useModels(
       getMoireEffectPreventedTexture(roughImgUrl),
       getMoireEffectPreventedTexture(dispImgUrl),
     ])
-    console.timeEnd('texture image network loading time')
     baseTexture.value = loadResult[0]
     normalTexture.value = loadResult[1]
     roughnessTexture.value = loadResult[2]
@@ -214,6 +243,19 @@ export default function useModels(
     moireEffectPreventedNormalTexture.value = loadResult[5].texture
     moireEffectPreventedRoughnessTexture.value = loadResult[6].texture
     moireEffectPreventedDisplacementTexture.value = loadResult[7].texture
+
+    if (bumpImgUrl) {
+      const result = await loader.loadAsync(bumpImgUrl)
+      const result2 = await getMoireEffectPreventedTexture(bumpImgUrl)
+      bumpTexture.value = result
+      moireEffectPreventedBumplacementTexture.value = result2.texture
+    }
+    if (alphaImgUrl) {
+      const result = await loader.loadAsync(alphaImgUrl)
+      const result2 = await getMoireEffectPreventedTexture(alphaImgUrl)
+      alphaTexture.value = result
+      moireEffectPreventedAlphalacementTexture.value = result2.texture
+    }
 
     const { width, height } = baseTexture.value.image as HTMLImageElement
     textureRatio.value = width / height
@@ -227,14 +269,19 @@ export default function useModels(
       normalTexture.value,
       roughnessTexture.value,
       displacementTexture.value,
+      bumpTexture.value || null,
+      alphaTexture.value || null,
       moireEffectPreventedBaseTexture.value,
       moireEffectPreventedNormalTexture.value,
       moireEffectPreventedRoughnessTexture.value,
       moireEffectPreventedDisplacementTexture.value,
+      moireEffectPreventedBumplacementTexture.value || null,
+      moireEffectPreventedAlphalacementTexture.value || null,
     ])
 
     material.value = new THREE.MeshPhysicalMaterial({
       side: THREE.DoubleSide,
+      alphaTest: 0.5,
       map: applyMoireEffectPreventedTexture.value
         ? moireEffectPreventedBaseTexture.value
         : baseTexture.value,
@@ -253,6 +300,12 @@ export default function useModels(
       specularIntensity: u3m.value.specular,
       displacementScale: DISPLACEMENT_SCALE_BASE / repeatTimesX.value,
       transparent: true,
+      metalnessMap: applyMoireEffectPreventedTexture.value
+        ? moireEffectPreventedBumplacementTexture.value
+        : bumpTexture.value,
+      alphaMap: applyMoireEffectPreventedTexture.value
+        ? moireEffectPreventedAlphalacementTexture.value
+        : alphaTexture.value,
     })
   }
 
@@ -307,10 +360,23 @@ export default function useModels(
         if (mesh.name.includes('Mesh_')) {
           mesh.material = material.value
         }
+        // 球體其中一層需要消失
+        if (mesh.name === 'Mesh_1_1') {
+          mesh.material = new THREE.MeshPhongMaterial({
+            color: 0xffffff,
+            flatShading: true,
+            transparent: true,
+            visible: false,
+            depthWrite: false,
+          })
+        }
         if (mesh.name.includes('Ball_')) {
           mesh.material = new THREE.MeshPhongMaterial({
             color: 0xffffff,
             flatShading: true,
+            transparent: true,
+            visible: false,
+            depthWrite: false,
           })
         }
       })
@@ -335,10 +401,14 @@ export default function useModels(
       normalTexture.value,
       roughnessTexture.value,
       displacementTexture.value,
+      bumpTexture.value,
+      alphaTexture.value,
       moireEffectPreventedBaseTexture.value,
       moireEffectPreventedNormalTexture.value,
       moireEffectPreventedRoughnessTexture.value,
       moireEffectPreventedDisplacementTexture.value,
+      moireEffectPreventedBumplacementTexture.value,
+      moireEffectPreventedAlphalacementTexture.value,
     ].forEach((texture) => {
       texture?.repeat.set(repeatTimesX.value, repeatTimesY.value)
     })

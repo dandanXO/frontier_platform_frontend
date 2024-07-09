@@ -34,6 +34,18 @@ div(
               :active="textureType === TEXTURE_TYPE.BASE"
             ) base
             f-label(
+              v-if="textureImages[TEXTURE_TYPE.ALPHA]"
+              :theme="THEME.DARK"
+              @click="emit('textureClick', TEXTURE_TYPE.ALPHA)"
+              :active="textureType === TEXTURE_TYPE.ALPHA"
+            ) alpha
+            f-label(
+              v-if="textureImages[TEXTURE_TYPE.METAL]"
+              :theme="THEME.DARK"
+              @click="emit('textureClick', TEXTURE_TYPE.METAL)"
+              :active="textureType === TEXTURE_TYPE.METAL"
+            ) metal
+            f-label(
               :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"
               :active="textureType === TEXTURE_TYPE.NORMAL"
@@ -48,6 +60,18 @@ div(
               @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
               :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
             ) displacement
+            f-label(
+              v-if="textureImages[TEXTURE_TYPE.METAL]"
+              :theme="THEME.DARK"
+              @click="emit('textureClick', TEXTURE_TYPE.METAL)"
+              :active="textureType === TEXTURE_TYPE.METAL"
+            ) metal
+            f-label(
+              v-if="textureImages[TEXTURE_TYPE.ALPHA]"
+              :theme="THEME.DARK"
+              @click="emit('textureClick', TEXTURE_TYPE.ALPHA)"
+              :active="textureType === TEXTURE_TYPE.ALPHA"
+            ) alpha
       div(
         v-show="canScrollLeft"
         class="absolute top-1/2 transform -translate-y-1/2 bottom-0 left-0 w-16 h-20 bg-gradient-to-r from-grey-900 to-transparent cursor-pointer flex items-center justify-center"
@@ -88,6 +112,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 defineProps<{
+  textureImages: { [x: number]: string }
   displayMode: number
   models: Model[]
   currentModel: Model

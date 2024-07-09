@@ -35,7 +35,6 @@ export const setupScene = () => {
   scene.add(groundMesh)
   scene.add(spotLight)
   scene.add(hemiLight)
-
   return scene
 }
 

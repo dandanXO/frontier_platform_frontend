@@ -23,7 +23,8 @@ const props = withDefaults(
     normalImgUrl: string
     dispImgUrl: string
     roughImgUrl: string
-
+    bumpImgUrl: string
+    alphaImgUrl: string
     onClose?: () => void
   }>(),
   {}
@@ -68,8 +69,11 @@ const {
   props.baseImgUrl,
   props.normalImgUrl,
   props.roughImgUrl,
-  props.dispImgUrl
+  props.dispImgUrl,
+  props.bumpImgUrl || '',
+  props.alphaImgUrl || ''
 )
+
 const { takeScreenshot } = useScreenshot(camera, canvas, modelObject)
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
@@ -95,6 +99,8 @@ const textureImages = {
   [TEXTURE_TYPE.NORMAL]: props.normalImgUrl,
   [TEXTURE_TYPE.ROUGHNESS]: props.roughImgUrl,
   [TEXTURE_TYPE.DISPLACEMENT]: props.dispImgUrl,
+  [TEXTURE_TYPE.METAL]: props.bumpImgUrl,
+  [TEXTURE_TYPE.ALPHA]: props.alphaImgUrl,
 }
 
 const textureImage = computed(() => textureImages[textureType.value])
@@ -109,6 +115,7 @@ const handleSidebarToggle = () => {
 <template lang="pug">
 div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex flex-col")
   editor-header(
+    :textureImages="textureImages"
     :displayMode="displayMode"
     :currentModel="currentModel"
     :textureType="textureType"
