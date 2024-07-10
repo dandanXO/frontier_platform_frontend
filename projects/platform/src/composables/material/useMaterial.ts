@@ -15,6 +15,7 @@ import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
+import isTrimOrOthersType from '@/utils/material/isTrimOrOthersType'
 import { useStore } from 'vuex'
 
 export type MaterialSpecificationInfoBasicProperty = {
@@ -201,7 +202,10 @@ export default function useMaterial(
     }
 
     // Digital Drape
-    if (store.getters['permission/isDigitalDrapeTrialRule']) {
+    if (
+      !isTrimOrOthersType(material.value) &&
+      store.getters['permission/isDigitalDrapeTrialRule']
+    ) {
       const selectedDigitalDrape = customDigitalDrape?.isSelected
         ? customDigitalDrape
         : digitalDrape
