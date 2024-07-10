@@ -359,8 +359,8 @@ const threeDViewerDisabledMap: {
   [U3M_PROVIDER.CUSTOMER]: boolean
   [U3M_PROVIDER.FRONTIER]: boolean
 } = reactive({
-  1: true,
-  2: true,
+  1: false,
+  2: false,
 })
 const disabledTooltipErrorMessage = () => {
   if (selectedU3m.value.status === U3M_STATUS.COMPLETED) {
