@@ -44,7 +44,7 @@ div(
               :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.METAL)"
               :active="textureType === TEXTURE_TYPE.METAL"
-            ) metal
+            ) metalness
             f-label(
               :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"

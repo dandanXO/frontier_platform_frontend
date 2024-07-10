@@ -63,36 +63,37 @@ div(
         :theme="THEME.DARK"
         useLog
       )
-      div(class="w-full my-6")
-        hr(class="w-full text-grey-600")
-      h5(class="text-body1 font-bold mb-2") {{ $t('EE0139') }}
-      div(class="flex flex-col w-full gap-y-3 mt-3")
-        color-input(
-          :key="index"
-          v-for="(currentColor, index) in currentColors"
-          :index="index"
-          :color="currentColor"
-          :pantoneList="pantoneList"
-          @colorChange="(v, index) => emit('colorChange', v, index)"
-          @colorInput="(v, index) => emit('colorInput', v, index)"
-        )
-        div(class="flex flex-row justify-around items-center gap-x-2")
-          f-button(
-            class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
-            :theme="THEME.DARK"
-            type="text"
-            :size="SIZE.MD"
-            :disabled="!colorRemovable"
-            @click="emit('colorRemove')"
-          ) {{ $t('UU0121') }}
-          f-button(
-            :theme="THEME.DARK"
-            :size="SIZE.MD"
-            prependIcon="add"
-            type="secondary"
-            :disabled="!colorAddable"
-            @click="emit('colorAdd')"
-          ) {{ $t('UU0120') }}
+      //- F22-3668 Hide color editor feature
+      //- div(class="w-full my-6")
+      //-   hr(class="w-full text-grey-600")
+      //- h5(class="text-body1 font-bold mb-2") {{ $t('EE0139') }}
+      //- div(class="flex flex-col w-full gap-y-3 mt-3")
+      //-   color-input(
+      //-     :key="index"
+      //-     v-for="(currentColor, index) in currentColors"
+      //-     :index="index"
+      //-     :color="currentColor"
+      //-     :pantoneList="pantoneList"
+      //-     @colorChange="(v, index) => emit('colorChange', v, index)"
+      //-     @colorInput="(v, index) => emit('colorInput', v, index)"
+      //-   )
+      //-   div(class="flex flex-row justify-around items-center gap-x-2")
+      //-     f-button(
+      //-       class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
+      //-       :theme="THEME.DARK"
+      //-       type="text"
+      //-       :size="SIZE.MD"
+      //-       :disabled="!colorRemovable"
+      //-       @click="emit('colorRemove')"
+      //-     ) {{ $t('UU0121') }}
+      //-     f-button(
+      //-       :theme="THEME.DARK"
+      //-       :size="SIZE.MD"
+      //-       prependIcon="add"
+      //-       type="secondary"
+      //-       :disabled="!colorAddable"
+      //-       @click="emit('colorAdd')"
+      //-     ) {{ $t('UU0120') }}
       div(class="mt-auto")
         div(class="w-full my-6")
           hr(class="w-full text-grey-600")
