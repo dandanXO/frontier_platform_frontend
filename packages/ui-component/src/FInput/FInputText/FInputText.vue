@@ -379,9 +379,12 @@ const emit = defineEmits([
   'click:button',
 ])
 
+const handleEmptyValue = (text) =>
+  props.inputType === 'number' ? (text === '' ? null : text) : text
+
 const innerTextValue = computed({
   get: () => props.textValue,
-  set: (v) => emit('update:textValue', v),
+  set: (v) => emit('update:textValue', handleEmptyValue(v)),
 })
 const { rules, hintError, disabled } = toRefs(props)
 const {
@@ -475,7 +478,7 @@ const flatPickrConfig = {
 
 const onInput = async () => {
   if (props.onInputValidations.length) {
-    let text = props.textValue
+    let text = handleEmptyValue(props.textValue)
     props.onInputValidations.forEach((rule) => {
       text = rule(text)
       emit('update:textValue', text)
