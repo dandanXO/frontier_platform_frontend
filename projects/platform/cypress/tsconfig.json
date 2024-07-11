@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "noEmit": false,
+    "sourceMap": false,
+    "types": ["cypress"]
+  }
+}

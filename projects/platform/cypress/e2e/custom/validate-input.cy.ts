@@ -1,44 +1,15 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 /* eslint-disable no-undef */
-/// <reference types="cypress" />
 
 context(
   'Check the face, back and middle side display correct target information',
   () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080)
-      cy.visit('/sign-in')
-      // typing email
-      cy.get('[data-cy="email"]').type('demo_tester@frontier.cool')
-      cy.get('[data-cy="email"] input').should(
-        'have.value',
-        'demo_tester@frontier.cool'
-      )
-      // typing password
-      cy.get('[data-cy="password"]').type('qweasdzxc')
-      cy.get('[data-cy="password"] input').should('have.value', 'qweasdzxc')
-      // click login button
-      cy.get('[data-cy="login"]').click()
+      cy.login()
     })
-    // if (Cypress.env('NODE_ENV') == 'development') {
-    // }
-
-    // https://on.cypress.io/interacting-with-elements
 
     describe('add one noarmal action check all input field', () => {
       it('start add', () => {
-        // select fabric Pro
-        // if over 1 group need to manual select
-        const selectedOrg = 'Fabric Pro';
-
-        cy.get('[data-cy="org"]').each(($el) => {
-          const value = $el.text().trim();
-          if (value.includes(selectedOrg)) {
-            cy.wrap($el).click();
-            return false;
-          }
-        });
-        // click upload button to upload page
-        cy.wait(2000)
         cy.get('[data-cy="upload-page"]').click({ force: true })
         // face side----------
         // click manual-upload
@@ -70,7 +41,7 @@ context(
         ).click()
         cy.get('[data-cy="f-popper-body"] input').type('faceSideSep1 {enter}')
         // blur m-input
-        cy.get('body').click()
+        cy.get('body').click(0, 0)
 
         // {enter} mean press enter
         cy.get(
@@ -97,7 +68,7 @@ context(
           .click()
         cy.get('[data-cy="f-popper-body"] input').type('middleSideSep1 {enter}')
         // blur m-input
-        cy.get('body').click()
+        cy.get('body').click(0, 0)
 
         // back side----------
         // select back side
@@ -109,7 +80,7 @@ context(
         ).click()
         cy.get('[data-cy="f-popper-body"] input').type('backSideSep1 {enter}')
         // blur m-input
-        cy.get('body').click()
+        cy.get('body').click(0, 0)
 
         // {enter} mean press enter
         cy.get(

@@ -37,9 +37,12 @@ elif [ $1 = "production" ]; then
 fi
 
 rm .env.$1.local
+rm .env.testing.local
+
+API_ENDPOINT=$(getVar $PREFIX"_API_ENDPOINT")
 
 echo NODE_ENV=$NODE_ENV >>.env.$1.local
-echo VITE_APP_API_ENDPOINT=$(getVar $PREFIX"_API_ENDPOINT") >>.env.$1.local
+echo VITE_APP_API_ENDPOINT=$API_ENDPOINT >>.env.$1.local
 echo VITE_APP_TEXTILE_CLOUD_ENDPOINT=$(getVar $PREFIX"_TEXTILE_CLOUD_ENDPOINT") >>.env.$1.local
 echo VITE_APP_OPEN_API_ENDPOINT=$(getVar $PREFIX"_OPEN_API_ENDPOINT") >>.env.$1.local
 echo VITE_APP_WEB_URL=$(getVar $PREFIX"_WEB_URL") >>.env.$1.local
@@ -52,4 +55,8 @@ echo VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED=$(getVar "AG_GRID_LICENSE_KEY_B
 if [[ " ${MIXPANEL_ENV[*]} " =~ [[:space:]]${1}[[:space:]] ]]; then
   echo VITE_APP_MIXPANEL_TOKEN=$(getVar $PREFIX"_MIXPANEL_TOKEN") >> .env.$1.local
 fi
+
+
+#for testing purposed
+echo CYPRESS_API_ENDPOINT=$API_ENDPOINT >>.env.testing.local
 

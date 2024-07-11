@@ -1,33 +1,9 @@
-/* eslint-disable no-undef */
-/// <reference types="cypress" />
-
 context('Actions Add ONE material', () => {
   beforeEach(() => {
-    cy.viewport(1920, 1080)
-    cy.visit('/sign-in')
+    cy.accessPage()
   })
-  // if (Cypress.env('NODE_ENV') == 'development') {
-  // }
-
-  // https://on.cypress.io/interacting-with-elements
 
   it('add one noarmal action', () => {
-    // typing email
-    cy.get('[data-cy="email"]').type('demo_tester@frontier.cool')
-    cy.get('[data-cy="email"] input').should(
-      'have.value',
-      'demo_tester@frontier.cool'
-    )
-    // typing password
-    cy.get('[data-cy="password"]').type('qweasdzxc')
-    cy.get('[data-cy="password"] input').should('have.value', 'qweasdzxc')
-
-    // click login button
-    cy.get('[data-cy="login"]').click()
-    // select fabric Pro
-    cy.get('[data-cy="org"]').eq(1).click()
-    // click upload button to upload page
-    cy.wait(1000)
     cy.get('[data-cy="upload-page"]').click({ force: true })
     // click manual-upload
     cy.get('[data-cy="manual-upload"]').click()

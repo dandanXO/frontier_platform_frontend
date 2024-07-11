@@ -1,5 +1,3 @@
-import './helper'
-
 context('Visit All Sidebar Pages', () => {
   beforeEach(() => {
     cy.restoreLocalStorage()
@@ -11,7 +9,7 @@ context('Visit All Sidebar Pages', () => {
   })
 
   describe('Access Common Pages', () => {
-    const clickSidebarItem = (key) =>
+    const clickSidebarItem = (key: string) =>
       cy.get(`[data-cy="sidebar-item-${key}"]`).click()
 
     it('able to access public library page', () => {
@@ -42,11 +40,14 @@ context('Visit All Sidebar Pages', () => {
       cy.get('[data-cy^="sidebar-org-"]').each((org) => {
         const testId = org.attr('data-cy')
 
-        const clickSidebarItem = (key) => {
+        const clickSidebarItem = (key: string) => {
           cy.get(`[data-cy="child-${testId}-${key}"]`).click()
         }
 
-        const isPageItemActive = (key, { checkloading = true } = {}) => {
+        const isPageItemActive = (
+          key: string,
+          { checkloading = true } = {}
+        ) => {
           clickSidebarItem(key)
           checkloading && cy.waitLoadingDissmissed()
           cy.shouldNotCrash()

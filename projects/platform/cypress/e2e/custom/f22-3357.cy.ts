@@ -1,67 +1,19 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
+/* eslint-disable cypress/unsafe-to-chain-command */
 /* eslint-disable no-undef */
-/// <reference types="cypress" />
-import TestData from './testdata'
-import ErrorMessages from './errormessages'
-import './helper'
-
-function generateRandomString(length) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+import { ERROR_MESSAGES } from '../../constants'
+import { generateRandomString } from '../../utils/string'
 
 context(
   'Check the face, back and middle side display correct target information',
   () => {
     beforeEach(() => {
-      cy.viewport(1920, 1080)
-      cy.visit('/sign-in')
+      cy.login()
     })
-    const {
-      selectedOrg,
-      string10Length,
-      string50Length,
-      string51Length,
-      string500Length,
-      string501Length,
-      string100Length,
-      string101Length,
-    } = TestData
 
-    const { mandatoryField } = ErrorMessages
-    // if (Cypress.env('NODE_ENV') == 'development') {
-    // }
-
-    // https://on.cypress.io/interacting-with-elements
+    const { MANDATORY_FIELD } = ERROR_MESSAGES
 
     it('add one noarmal action', () => {
-      // typing email
-      cy.get('[data-cy="email"]').type('demo_tester@frontier.cool')
-      cy.get('[data-cy="email"] input').should(
-        'have.value',
-        'demo_tester@frontier.cool'
-      )
-      // typing password
-      cy.get('[data-cy="password"]').type('qweasdzxc')
-      cy.get('[data-cy="password"] input').should('have.value', 'qweasdzxc')
-
-      // click login button
-      cy.get('[data-cy="login"]').click()
-      // select fabric Pro
-
-      cy.get('[data-cy="org"]').each(($el) => {
-        const value = $el.text().trim()
-        if (value.includes(selectedOrg)) {
-          cy.wrap($el).click()
-          return false
-        }
-      })
-      // click upload button to upload page
-      cy.wait(5000)
       cy.get('[data-cy="upload-page"]').click({ force: true })
       // face side----------
       // click manual-upload
@@ -79,13 +31,11 @@ context(
         .check({ force: true })
 
       // verify item-number
-      cy.get('[data-cy="item-number"]').type(`${string51Length}`, {
+      const itemChar51 = generateRandomString(51)
+      cy.get('[data-cy="item-number"]').type(itemChar51, {
         parseSpecialCharSequences: false,
       })
-      cy.get('[data-cy="item-number"] input').should(
-        'have.value',
-        string51Length
-      )
+      cy.get('[data-cy="item-number"] input').should('have.value', itemChar51)
 
       cy.checkErrorMessages(
         '[data-cy="item-number"] [data-cy="hintError"]',
@@ -95,77 +45,91 @@ context(
       cy.get('[data-cy="item-number"] input').clear()
       cy.checkErrorMessages(
         '[data-cy="item-number"] [data-cy="hintError"]',
-        mandatoryField
+        MANDATORY_FIELD
       )
 
-      cy.get('[data-cy="item-number"]')
-        .type(`${string50Length}`, { parseSpecialCharSequences: false });
+      const itemChar50 = generateRandomString(50)
+
+      cy.get('[data-cy="item-number"]').type(itemChar50, {
+        parseSpecialCharSequences: false,
+      })
 
       cy.get('[data-cy="item-number"]').click()
 
-      cy.get('[data-cy="item-number"] input')
-        .should('have.value', string50Length)
+      cy.get('[data-cy="item-number"] input').should('have.value', itemChar50)
 
       //verify season-input and season-input-year
 
-      let temp= generateRandomString(51)
+      let temp = generateRandomString(51)
       cy.get('[data-cy="season-input"] [data-cy="f-popper"]').click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp.slice(0, 10))
-      .type('{enter}')
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp.slice(0, 10))
+        .type('{enter}')
 
       //verify with negative value
-      cy.get('[data-cy="season-input-year"]')
-        .type(`-1 {enter}`)
+      cy.get('[data-cy="season-input-year"]').type(`-1 {enter}`)
       cy.get('[data-cy="item-number"]').click()
       cy.get('[data-cy="season-input-year"] input').should('have.value', '-1')
 
-      cy.checkErrorMessages('[data-cy="season-input-year"] [data-cy="hintError"]','Must be at least 0.00.')
+      cy.checkErrorMessages(
+        '[data-cy="season-input-year"] [data-cy="hintError"]',
+        'Must be at least 0.00.'
+      )
 
       //verify with decimal value
       cy.get('[data-cy="season-input-year"]').clear()
       cy.get('[data-cy="season-input-year"]').type(`22.3 {enter}`)
       cy.get('[data-cy="item-number"]').click()
       cy.get('[data-cy="season-input-year"] input').should('have.value', '22.3')
-      cy.checkErrorMessages('[data-cy="season-input-year"] [data-cy="hintError"]','Integers only')
+      cy.checkErrorMessages(
+        '[data-cy="season-input-year"] [data-cy="hintError"]',
+        'Integers only'
+      )
 
       //verify with more than 9999
       cy.get('[data-cy="season-input-year"]').clear()
-      cy.get(
-        '[data-cy="season-input-year"]'
-      )
-        .type(`10000 {enter}`)
+      cy.get('[data-cy="season-input-year"]').type(`10000 {enter}`)
       cy.get('[data-cy="item-number"]').click()
-      cy.get('[data-cy="season-input-year"] input').should('have.value', '10000')
-      cy.checkErrorMessages('[data-cy="season-input-year"] [data-cy="hintError"]','Must be no more than 9,999.00.')
+      cy.get('[data-cy="season-input-year"] input').should(
+        'have.value',
+        '10000'
+      )
+      cy.checkErrorMessages(
+        '[data-cy="season-input-year"] [data-cy="hintError"]',
+        'Must be no more than 9,999.00.'
+      )
 
       //verify with max value
       cy.get('[data-cy="season-input-year"]').clear()
-      cy.get(
-        '[data-cy="season-input-year"]'
-      )
-        .type(`9999 {enter}`)
+      cy.get('[data-cy="season-input-year"]').type(`9999 {enter}`)
       cy.get('[data-cy="item-number"]').click()
       cy.get('[data-cy="season-input-year"] input').should('have.value', '9999')
 
       // verify features-input
-      temp= generateRandomString(501)
-      cy.get('[data-cy="face-side-specification"] [data-cy="features-input"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="features-input"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp.slice(0, 500))
-      .type('{enter}')
-      cy.get('body').click()
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp.slice(0, 500))
+        .type('{enter}')
+      cy.get('body').click(0, 0)
 
       //test with string length more than 100
-      temp=generateRandomString(101)
-      cy.get('[data-cy="face-side-specification"] [data-cy="content-text"]').click()
+      temp = generateRandomString(101)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp)
-      .type('{enter}')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','100.00 character limit, This field is required.')
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp)
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        '100.00 character limit, This field is required.'
+      )
 
       //test with value more than 100
       cy.get(
@@ -173,7 +137,10 @@ context(
       )
         .type('101 {enter}')
         .should('have.value', '101')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00'
+      )
 
       //test with value 3 decimal
       cy.get(
@@ -184,7 +151,10 @@ context(
       )
         .type('20.001 {enter}')
         .should('have.value', '20.001')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only'
+      )
 
       //test with value -1
       cy.get(
@@ -195,7 +165,10 @@ context(
       )
         .type('-1 {enter}')
         .should('have.value', '-1')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+      )
 
       //test with value 0
       cy.get(
@@ -206,7 +179,10 @@ context(
       )
         .type('0 {enter}')
         .should('have.value', '0')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+      )
 
       //test with empty content
       cy.get(
@@ -217,22 +193,32 @@ context(
       )
         .type('100 {enter}')
         .should('have.value', '100')
-      cy.get('[data-cy="face-side-specification"] [data-cy="content-text"]').click()
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] .ease-out svg').click()
       cy.get('body').click()
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //test with empty content value
-      temp=generateRandomString(100)
+      temp = generateRandomString(100)
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="content-text-value"] input'
       ).clear()
-      cy.get('[data-cy="face-side-specification"] [data-cy="content-text"]').click()
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
         .type(`${temp}`)
         .should('have.value', temp)
         .type('{enter}')
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //test with max value for content and content value
       cy.get(
@@ -248,13 +234,19 @@ context(
       )
         .type('0.99')
         .should('have.value', 0.99)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]','Must be at least 1.00.')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]',
+        'Must be at least 1.00.'
+      )
 
       //verify with empty value
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input'
       ).clear()
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //verify with 3 decimal
       cy.get(
@@ -262,17 +254,22 @@ context(
       )
         .type('1.001 {enter}')
         .should('have.value', 1.001)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]','Enter with 2 decimal places only')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] [data-cy="hintError"]',
+        'Enter with 2 decimal places only'
+      )
 
       //verify with max value
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input'
       ).clear()
-      cy.get('[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input')
-        .type('999.00 {enter}')
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input'
+      ).type('999.00 {enter}')
       cy.get('body').click()
-      cy.get('[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input')
-        .should('have.value', 999)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="cuttable-width-text"] input'
+      ).should('have.value', 999)
 
       //verify with max decimal digit
       cy.get(
@@ -291,13 +288,19 @@ context(
       )
         .type('0.99')
         .should('have.value', 0.99)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]','Must be at least 1.00.')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]',
+        'Must be at least 1.00.'
+      )
 
       //verify with empty value
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="full-width-text"] input'
       ).clear()
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //verify with 3 decimal
       cy.get(
@@ -305,7 +308,10 @@ context(
       )
         .type('1.001 {enter}')
         .should('have.value', 1.001)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]','Enter with 2 decimal places only')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="full-width-text"] [data-cy="hintError"]',
+        'Enter with 2 decimal places only'
+      )
 
       //verify with max value
       cy.get(
@@ -313,11 +319,11 @@ context(
       ).clear()
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="full-width-text"] input'
-      )
-        .type('999.00 {enter}')
+      ).type('999.00 {enter}')
       cy.get('body').click()
-      cy.get('[data-cy="face-side-specification"] [data-cy="full-width-text"] input')
-        .should('have.value', 999)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="full-width-text"] input'
+      ).should('have.value', 999)
 
       //verify with max decimal digit
       cy.get(
@@ -336,13 +342,19 @@ context(
       )
         .type('0.99')
         .should('have.value', 0.99)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]','Must be at least 1.00.')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]',
+        'Must be at least 1.00.'
+      )
 
       //verify with empty value
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="weight-text"] input'
       ).clear()
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //verify with 3 decimal
       cy.get(
@@ -350,7 +362,10 @@ context(
       )
         .type('1.0012 {enter}')
         .should('have.value', 1.0012)
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]','Enter with 3 decimal places only')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="weight-text"] [data-cy="hintError"]',
+        'Enter with 3 decimal places only'
+      )
 
       //verify with max value
       cy.get(
@@ -358,13 +373,11 @@ context(
       ).clear()
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="weight-text"] input'
-      )
-        .type('99999.00 {enter}')
+      ).type('99999.00 {enter}')
       cy.get('body').click()
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="weight-text"] input'
-      )
-        .should('have.value', 99999)
+      ).should('have.value', 99999)
 
       //verify with max decimal digit
       cy.get(
@@ -377,8 +390,10 @@ context(
         .should('have.value', 99998.999)
 
       //verify finish info
-      temp= generateRandomString(501)
-      cy.get('[data-cy="face-side-specification"] [data-cy="finish-info"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="finish-info"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
         .type(`${temp}`)
         .should('have.value', temp.slice(0, 500))
@@ -386,62 +401,80 @@ context(
       cy.get('body').click(1, 1)
 
       // //verify color info
-      temp= generateRandomString(101)
+      temp = generateRandomString(101)
       cy.get('[data-cy="face-side-specification"] [data-cy="color-info"] input')
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="color-info"] [data-cy="hintError"]','100.00 character limit')
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="color-info"] [data-cy="hintError"]',
+        '100.00 character limit'
+      )
 
       //empty value
-      cy.get('[data-cy="face-side-specification"] [data-cy="color-info"]').click()
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="color-info"]'
+      ).click()
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="color-info"] input'
       ).clear()
 
       //max length
-      temp= generateRandomString(100)
+      temp = generateRandomString(100)
       cy.get('[data-cy="face-side-specification"] [data-cy="color-info"] input')
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
+        .type('{enter}')
 
       //verify pattern info
-      temp= generateRandomString(101)
-      cy.get('[data-cy="face-side-specification"] [data-cy="pattern-info"] input')
-      .type(`${temp}`)
-      .should('have.value', temp)
-      .type('{enter}');
-      cy.checkErrorMessages('[data-cy="face-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]','100.00 character limit')
+      temp = generateRandomString(101)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="pattern-info"] input'
+      )
+        .type(`${temp}`)
+        .should('have.value', temp)
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="face-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]',
+        '100.00 character limit'
+      )
 
       //empty value
-      cy.get('[data-cy="face-side-specification"] [data-cy="pattern-info"]').click()
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="pattern-info"]'
+      ).click()
       cy.get(
         '[data-cy="face-side-specification"] [data-cy="pattern-info"] input'
       ).clear()
 
       //max length
-      temp= generateRandomString(100)
-      cy.get('[data-cy="face-side-specification"] [data-cy="pattern-info"] input')
+      temp = generateRandomString(100)
+      cy.get(
+        '[data-cy="face-side-specification"] [data-cy="pattern-info"] input'
+      )
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
+        .type('{enter}')
 
       // middle side----------
       // select middle side
       cy.get('[data-cy="side-select"]>div').eq(1).click()
       // verify features
-      temp= generateRandomString(501)
-      cy.get('[data-cy="middle-side-specification"] [data-cy="features-input"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="middle-side-specification"] [data-cy="features-input"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp.slice(0, 500))
-      .type('{enter}')
-      cy.get('body').click()
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp.slice(0, 500))
+        .type('{enter}')
+      cy.get('body').click(0, 0)
 
       // verify finish info
-      temp= generateRandomString(501)
-      cy.get('[data-cy="middle-side-specification"] [data-cy="finish-info"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="middle-side-specification"] [data-cy="finish-info"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
         .type(`${temp}`, { parseSpecialCharSequences: false })
         .should('have.value', temp.slice(0, 500))
@@ -453,22 +486,29 @@ context(
       cy.get('[data-cy="side-select"]>div').eq(2).click()
 
       // verify features
-      temp= generateRandomString(501)
-      cy.get('[data-cy="back-side-specification"] [data-cy="features-input"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="features-input"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp.slice(0, 500))
-      .type('{enter}')
-      cy.get('body').click()
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp.slice(0, 500))
+        .type('{enter}')
+      cy.get('body').click(0, 0)
 
       //test with string length more than 100
-      temp=generateRandomString(101)
-      cy.get('[data-cy="back-side-specification"] [data-cy="content-text"]').click()
+      temp = generateRandomString(101)
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
-      .type(`${temp}`, { parseSpecialCharSequences: false })
-      .should('have.value', temp)
-      .type('{enter}')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','100.00 character limit, This field is required.')
+        .type(`${temp}`, { parseSpecialCharSequences: false })
+        .should('have.value', temp)
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        '100.00 character limit, This field is required.'
+      )
 
       //test with value more than 100
       cy.get(
@@ -476,7 +516,10 @@ context(
       )
         .type('101 {enter}')
         .should('have.value', '101')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00'
+      )
 
       //test with value 3 decimal
       cy.get(
@@ -487,7 +530,10 @@ context(
       )
         .type('20.001 {enter}')
         .should('have.value', '20.001')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only'
+      )
 
       //test with value -1
       cy.get(
@@ -498,7 +544,10 @@ context(
       )
         .type('-1 {enter}')
         .should('have.value', '-1')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+      )
 
       //test with value 0
       cy.get(
@@ -509,7 +558,10 @@ context(
       )
         .type('0 {enter}')
         .should('have.value', '0')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]','The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+      )
 
       //test with empty content
       cy.get(
@@ -520,32 +572,44 @@ context(
       )
         .type('100 {enter}')
         .should('have.value', '100')
-      cy.get('[data-cy="back-side-specification"] [data-cy="content-text"]').click()
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] .ease-out svg').click()
-      cy.get('body').click(1,1)
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',mandatoryField)
+      cy.get('body').click(1, 1)
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //test with empty content value
-      temp=generateRandomString(100)
+      temp = generateRandomString(100)
       cy.get(
         '[data-cy="back-side-specification"] [data-cy="content-text-value"] input'
       ).clear()
-      cy.get('[data-cy="back-side-specification"] [data-cy="content-text"]').click()
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="content-text"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
         .type(`${temp}`)
         .should('have.value', temp)
         .type('{enter}')
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',mandatoryField)
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
+        MANDATORY_FIELD
+      )
 
       //test with max value for content and content value
       cy.get(
         '[data-cy="back-side-specification"] [data-cy="content-text-value"] input'
       )
-      .type('100')
-      .should('have.value', '100')
+        .type('100')
+        .should('have.value', '100')
 
-      temp= generateRandomString(501)
-      cy.get('[data-cy="back-side-specification"] [data-cy="finish-info"]').click()
+      temp = generateRandomString(501)
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="finish-info"]'
+      ).click()
       cy.get('[data-cy="f-popper-body"] input')
         .type(`${temp}`)
         .should('have.value', temp.slice(0, 500))
@@ -553,46 +617,60 @@ context(
       cy.get('body').click(1, 1)
 
       // //verify color info
-      temp= generateRandomString(101)
+      temp = generateRandomString(101)
       cy.get('[data-cy="back-side-specification"] [data-cy="color-info"] input')
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="color-info"] [data-cy="hintError"]','100.00 character limit')
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="color-info"] [data-cy="hintError"]',
+        '100.00 character limit'
+      )
 
       //empty value
-      cy.get('[data-cy="back-side-specification"] [data-cy="color-info"]').click()
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="color-info"]'
+      ).click()
       cy.get(
         '[data-cy="back-side-specification"] [data-cy="color-info"] input'
       ).clear()
 
       //max length
-      temp= generateRandomString(100)
+      temp = generateRandomString(100)
       cy.get('[data-cy="back-side-specification"] [data-cy="color-info"] input')
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
+        .type('{enter}')
 
       //verify pattern info
-      temp= generateRandomString(101)
-      cy.get('[data-cy="back-side-specification"] [data-cy="pattern-info"] input')
-      .type(`${temp}`)
-      .should('have.value', temp)
-      .type('{enter}');
-      cy.checkErrorMessages('[data-cy="back-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]','100.00 character limit')
+      temp = generateRandomString(101)
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="pattern-info"] input'
+      )
+        .type(`${temp}`)
+        .should('have.value', temp)
+        .type('{enter}')
+      cy.checkErrorMessages(
+        '[data-cy="back-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]',
+        '100.00 character limit'
+      )
 
       //empty value
-      cy.get('[data-cy="back-side-specification"] [data-cy="pattern-info"]').click()
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="pattern-info"]'
+      ).click()
       cy.get(
         '[data-cy="back-side-specification"] [data-cy="pattern-info"] input'
       ).clear()
 
       //max length
-      temp= generateRandomString(100)
-      cy.get('[data-cy="back-side-specification"] [data-cy="pattern-info"] input')
+      temp = generateRandomString(100)
+      cy.get(
+        '[data-cy="back-side-specification"] [data-cy="pattern-info"] input'
+      )
         .type(`${temp}`)
         .should('have.value', temp)
-        .type('{enter}');
+        .type('{enter}')
 
       // clicke save
       cy.get('[data-cy="save-button"]').click()

@@ -7,7 +7,7 @@ isDisabled=true
 for folder in "${folders[@]}"
 do
   if [[ $folder != *"packages/i18n/locales"* ]];then
-    npm run dev:platform & (npm run test:e2e:normal && node .husky/stopServer.js)
+    npx start-server-and-test dev:platform 8080 test:e2e:normal
     break
   fi
 

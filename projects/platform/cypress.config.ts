@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress'
+const env = require('dotenv').config({ path: '.env.testing.local' }).parsed
 
 export default defineConfig({
   component: {
@@ -19,6 +20,7 @@ export default defineConfig({
       })
     },
     baseUrl: 'http://localhost:8080/',
+    env,
     defaultCommandTimeout: 10 * 1000,
   },
 })

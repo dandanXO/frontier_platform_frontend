@@ -168,6 +168,9 @@ importers:
       socket.io-client:
         specifier: ^4.7.5
         version: 4.7.5
+      start-server-and-test:
+        specifier: ^1.14.0
+        version: 1.15.5
       tailwindcss:
         specifier: 3.3.0
         version: 3.3.0(postcss@8.4.38)
@@ -7021,8 +7024,8 @@ packages:
   vue-component-type-helpers@2.0.21:
     resolution: {integrity: sha512-3NaicyZ7N4B6cft4bfb7dOnPbE9CjLcx+6wZWAg5zwszfO4qXRh+U52dN5r5ZZfc6iMaxKCEcoH9CmxxoFZHLg==}
 
-  vue-component-type-helpers@2.0.24:
-    resolution: {integrity: sha512-Jr5N8QVYEcbQuMN1LRgvg61758G8HTnzUlQsAFOxx6Y6X8kmhJ7C+jOvWsQruYxi3uHhhS6BghyRlyiwO99DBg==}
+  vue-component-type-helpers@2.0.26:
+    resolution: {integrity: sha512-sO9qQ8oC520SW6kqlls0iqDak53gsTVSrYylajgjmkt1c0vcgjsGSy1KzlDrbEx8pm02IEYhlUkU5hCYf8rwtg==}
 
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
@@ -9624,7 +9627,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.3.4
-      vue-component-type-helpers: 2.0.24
+      vue-component-type-helpers: 2.0.26
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -15384,7 +15387,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.21: {}
 
-  vue-component-type-helpers@2.0.24: {}
+  vue-component-type-helpers@2.0.26: {}
 
   vue-demi@0.13.11(vue@3.3.4):
     dependencies:
