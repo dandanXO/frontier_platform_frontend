@@ -361,7 +361,7 @@ export default function useModels(
           mesh.material = material.value
         }
         // 球體其中一層需要消失
-        if (mesh.name === 'Mesh_1_1') {
+        if (mesh.name === 'Mesh_1_2') {
           mesh.material = new THREE.MeshPhongMaterial({
             color: 0xffffff,
             flatShading: true,
