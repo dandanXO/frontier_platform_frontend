@@ -47,10 +47,75 @@ const emissionsSettingMapper = {
   land: 'isPrintLandUse',
 }
 
-const makePdf = async (
-  pdf: JsPDF,
+const DEFAULT_SCALE = 4
+const LABEL_WIDTH = 300
+const LABEL_HEIGHT = 170
+const BACK_SIDE_LABEL_WIDTH = 452
+const BACK_SIDE_LABEL_HEIGHT = 226
+const A4_WIDTH = 594
+const A4_HEIGHT = 842
+
+const makeA4standardSwatchPdf = async (
   imgDataUrlList: (string | HTMLCanvasElement)[]
 ) => {
+  const createPdf = (images: any[], isFinal = false) => {
+    const pdf = new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
+    images.forEach((img, index) => {
+      pdf.addImage(
+        img,
+        'JPEG',
+        0,
+        0,
+        pdf.internal.pageSize.getWidth(),
+        pdf.internal.pageSize.getHeight()
+      )
+      if (index !== images.length - 1 || !isFinal) {
+        pdf.addPage()
+      }
+    })
+    pdf.setProperties({ title: 'New Report' })
+    try {
+      const blob = pdf.output('blob')
+      window.open(URL.createObjectURL(blob))
+    } catch (e) {
+      console.error('in makeA4standardSwatchPdf')
+      throw e
+    }
+  }
+
+  const batchSize = 10
+  const totalImages = imgDataUrlList.length
+
+  if (totalImages <= batchSize) {
+    createPdf(imgDataUrlList, true)
+  } else {
+    const fullBatches = Math.floor(totalImages / batchSize)
+    const remainingImages = totalImages % batchSize
+
+    for (let j = 0; j < fullBatches; j++) {
+      const batchImages = imgDataUrlList.slice(
+        j * batchSize,
+        (j + 1) * batchSize
+      )
+      createPdf(batchImages)
+    }
+
+    if (remainingImages > 0) {
+      const remainingBatch = imgDataUrlList.slice(fullBatches * batchSize)
+      createPdf(remainingBatch, true)
+    }
+  }
+}
+
+const makeQRcodeLabelPdf = async (
+  imgDataUrlList: (string | HTMLCanvasElement)[]
+) => {
+  const pdf = new JsPDF({
+    unit: 'px',
+    format: [LABEL_HEIGHT, LABEL_WIDTH],
+    orientation: 'l',
+  })
+
   for (let i = 0; i < imgDataUrlList.length; i++) {
     pdf.addImage(
       imgDataUrlList[i],
@@ -64,14 +129,13 @@ const makePdf = async (
       pdf.addPage()
     }
   }
-
   pdf.setProperties({ title: 'New Report' })
   // This method of opening is even safer.
   try {
     const blob = pdf.output('blob')
     window.open(URL.createObjectURL(blob))
   } catch (e) {
-    console.error('in makePdf')
+    console.error('in makeQRcodeLabelPdf')
     throw e
   }
 }
@@ -112,19 +176,13 @@ const makeQrCode = async (
   }
 }
 
-const getImageDataUrl = (
-  node: Node,
-  width: number,
-  height: number,
-  isA4Paper: boolean = false
-) => {
-  const scale = 4
-  if (isA4Paper) {
+const getImageDataUrl = (node: Node, isA4Swatch: boolean = false) => {
+  if (isA4Swatch) {
     return domtoimage.toPng(node, {
-      width: width * scale,
-      height: height * scale,
+      width: A4_WIDTH * DEFAULT_SCALE,
+      height: A4_HEIGHT * DEFAULT_SCALE,
       style: {
-        transform: 'scale(' + scale + ')',
+        transform: 'scale(' + DEFAULT_SCALE + ')',
         transformOrigin: 'top left',
       },
     })
@@ -136,21 +194,18 @@ const getImageDataUrl = (
       .getElementById('svg-sprite-component-wrap')
       ?.setAttribute('data-html2canvas-ignore', 'true')
     return html2canvas(node as HTMLElement, {
-      scale: scale,
-      width: width,
-      height: height,
+      scale: DEFAULT_SCALE,
+      width: LABEL_WIDTH,
+      height: LABEL_HEIGHT,
       useCORS: true,
     }).then((canvas) => canvas)
   }
 }
 
-const generate = async (
+const pdfGenerator = async (
   generator: DomGenerator,
   materialList: Material[],
-  width: number,
-  height: number,
-  jsPDF: JsPDF,
-  isA4Paper: boolean = false
+  isA4Swatch: boolean = false
 ) => {
   const imgDataUrlList = []
   for (const material of materialList) {
@@ -174,20 +229,19 @@ const generate = async (
     }
     for (const side of sideList) {
       const pdfVirtualDom = await generator(side)
-      const imgDataUrl = await getImageDataUrl(
-        pdfVirtualDom,
-        width,
-        height,
-        isA4Paper
-      )
+      const imgDataUrl = await getImageDataUrl(pdfVirtualDom, isA4Swatch)
       imgDataUrlList.push(imgDataUrl)
       pdfVirtualDom.remove()
     }
   }
   try {
-    await makePdf(jsPDF, imgDataUrlList)
+    if (isA4Swatch) {
+      await makeA4standardSwatchPdf(imgDataUrlList)
+    } else {
+      await makeQRcodeLabelPdf(imgDataUrlList)
+    }
   } catch (e) {
-    console.error('in generate')
+    console.error('in pdfGenerator')
     throw e
   }
 }
@@ -206,6 +260,7 @@ const usePrint = () => {
   )
 
   const printA4Swatch = async (materialList: Material[]) => {
+    const isA4Swatch = true
     store.dispatch('helper/pushModalLoading')
 
     const domGenerator: DomGenerator = async (item) => {
@@ -371,17 +426,8 @@ const usePrint = () => {
       return virtualDom
     }
 
-    const A4_WIDTH = 594
-    const A4_HEIGHT = 842
     try {
-      await generate(
-        domGenerator,
-        materialList,
-        A4_WIDTH,
-        A4_HEIGHT,
-        new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' }),
-        true
-      )
+      await pdfGenerator(domGenerator, materialList, isA4Swatch)
     } catch (e) {
       console.error('in domGenerator')
       store.dispatch('helper/closeModalLoading')
@@ -790,19 +836,8 @@ const usePrint = () => {
 
       return virtualDom
     }
-    const LABEL_WIDTH = 300
-    const LABEL_HEIGHT = 170
-    await generate(
-      domGenerator,
-      materialList,
-      LABEL_WIDTH,
-      LABEL_HEIGHT,
-      new JsPDF({
-        unit: 'px',
-        format: [LABEL_WIDTH, LABEL_HEIGHT],
-        orientation: 'l',
-      })
-    )
+
+    await pdfGenerator(domGenerator, materialList)
     store.dispatch('helper/closeModalLoading')
     return new Promise((res, rej) => {
       res('finish printLabel')
@@ -812,12 +847,10 @@ const usePrint = () => {
   const printBackSideLabel = async () => {
     store.dispatch('helper/pushModalLoading')
 
-    const LABEL_WIDTH = 452
-    const LABEL_HEIGHT = 226
     const pdfVirtualDom = document.createElement('div')
-    pdfVirtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
+    pdfVirtualDom.classList.add('overflow-hidden')
     pdfVirtualDom.innerHTML = `
-    <div class="relative flex items-center bg-grey-0 px-8 py-8" style="width: ${LABEL_WIDTH}px; height: ${LABEL_HEIGHT}px">
+    <div class="relative flex items-center bg-grey-0 px-8 py-8" style="width: ${BACK_SIDE_LABEL_WIDTH}px; height: ${BACK_SIDE_LABEL_HEIGHT}px">
       <div id="qr-code-container" class="mr-5.5"></div>
       <div class="flex flex-col">
         <span class="mb-2 text-grey-900 font-bold text-h5">${t('DD0051')}</span>
@@ -829,22 +862,15 @@ const usePrint = () => {
     </div>
   `
     document.body.appendChild(pdfVirtualDom)
-    await makeQrCode(
-      'Scan Back Side',
-      'qr-code-container',
-      100,
-      false,
-      logo.value
-    )
-    const imgDataUrl = await getImageDataUrl(
-      pdfVirtualDom,
-      LABEL_WIDTH,
-      LABEL_HEIGHT
-    )
+    await makeQrCode('Scan Back Side', 'qr-code-container', 100, false)
+    const imgDataUrl = await html2canvas(pdfVirtualDom as HTMLElement, {
+      scale: DEFAULT_SCALE,
+      width: BACK_SIDE_LABEL_WIDTH,
+      height: BACK_SIDE_LABEL_HEIGHT,
+      useCORS: true,
+    }).then((canvas) => canvas)
     pdfVirtualDom.remove()
-    await makePdf(new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' }), [
-      imgDataUrl,
-    ])
+    await makeQRcodeLabelPdf([imgDataUrl])
 
     store.dispatch('helper/closeModalLoading')
   }
