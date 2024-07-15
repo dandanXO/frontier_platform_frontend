@@ -63,6 +63,9 @@ export default {
         '@/components/assets/modalU3mRecut/perspectiveCropper/tourGuide/Step2.vue'
       )
     ),
+    ModalUploadAssetsSettings: defineAsyncComponent(() =>
+      import('@/components/assets/ModalUploadSettings.vue')
+    ),
   },
   props: {
     component: {

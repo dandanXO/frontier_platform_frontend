@@ -2380,7 +2380,6 @@ export interface CreateMoodboardRequest {
     'attachmentList': Array<S3UploadedObject> | null;
 }
 
-
 /**
  * 
  * @export
@@ -9926,7 +9925,7 @@ export interface Material {
      */
     'weightDisplaySetting': MaterialWeightDisplaySetting;
     /**
-     * 
+     * 布片季節資訊
      * @type {MaterialSeasonInfo}
      * @memberof Material
      */
@@ -9968,23 +9967,23 @@ export interface Material {
      */
     'isAutoSyncFaceToBackSideInfo': boolean;
     /**
-     * 
-     * @type {MaterialFaceSide}
+     * 正面布資訊
+     * @type {MaterialSide}
      * @memberof Material
      */
-    'faceSide': MaterialFaceSide | null;
+    'faceSide': MaterialSide | null;
     /**
-     * 
+     * 中間布資訊
      * @type {MaterialMiddleSide}
      * @memberof Material
      */
     'middleSide': MaterialMiddleSide | null;
     /**
-     * 
-     * @type {MaterialBackSide}
+     * 背面布資訊
+     * @type {MaterialSide}
      * @memberof Material
      */
-    'backSide': MaterialBackSide | null;
+    'backSide': MaterialSide | null;
     /**
      * 
      * @type {MaterialTagInfo}
@@ -10010,7 +10009,7 @@ export interface Material {
      */
     'inventoryUnit': string;
     /**
-     * 
+     * 碳排放資訊 如果沒有可視權限，則為 null 
      * @type {MaterialCarbonEmission}
      * @memberof Material
      */
@@ -10043,106 +10042,7 @@ export interface Material {
 
 
 /**
- * 背面布資訊
- * @export
- * @interface MaterialBackSide
- */
-export interface MaterialBackSide {
-    /**
-     * 布面ID
-     * @type {number}
-     * @memberof MaterialBackSide
-     */
-    'materialSideId': number;
-    /**
-     * Frontier編號
-     * @type {string}
-     * @memberof MaterialBackSide
-     */
-    'frontierNo': string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof MaterialBackSide
-     */
-    'featureList': Array<string>;
-    /**
-     * 
-     * @type {Array<MaterialFinish>}
-     * @memberof MaterialBackSide
-     */
-    'finishList': Array<MaterialFinish>;
-    /**
-     * 是否為主要布面
-     * @type {boolean}
-     * @memberof MaterialBackSide
-     */
-    'isMainSide': boolean;
-    /**
-     * 布面圖片
-     * @type {object}
-     * @memberof MaterialBackSide
-     */
-    'sideImage': object | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof MaterialBackSide
-     */
-    'u3mImage': object | null;
-    /**
-     * 
-     * @type {MaterialType}
-     * @memberof MaterialBackSide
-     */
-    'materialType': MaterialType;
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialDescription>}
-     * @memberof MaterialBackSide
-     */
-    'descriptionList': Array<MaterialDescription>;
-    /**
-     * 
-     * @type {object}
-     * @memberof MaterialBackSide
-     */
-    'construction': object | null;
-    /**
-     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
-     * @memberof MaterialBackSide
-     */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyList>;
-    /**
-     * 
-     * @type {Array<MaterialSideAllOfContentList>}
-     * @memberof MaterialBackSide
-     */
-    'contentList': Array<MaterialSideAllOfContentList>;
-    /**
-     * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneList>}
-     * @memberof MaterialBackSide
-     */
-    'pantoneList': Array<MaterialSideAllOfPantoneList>;
-    /**
-     * 
-     * @type {MaterialPatternInfo}
-     * @memberof MaterialBackSide
-     */
-    'patternInfo': MaterialPatternInfo;
-    /**
-     * 
-     * @type {MaterialColorInfo}
-     * @memberof MaterialBackSide
-     */
-    'colorInfo': MaterialColorInfo;
-}
-
-
-/**
- * 碳排放資訊 如果沒有可視權限，則為 null 
+ * 碳排放資訊 如果沒有可視權限，則為 null
  * @export
  * @interface MaterialCarbonEmission
  */
@@ -10872,105 +10772,6 @@ export interface MaterialDigitalThreadInfo {
      */
     'hasUnreadThread': boolean;
 }
-/**
- * 正面布資訊
- * @export
- * @interface MaterialFaceSide
- */
-export interface MaterialFaceSide {
-    /**
-     * 布面ID
-     * @type {number}
-     * @memberof MaterialFaceSide
-     */
-    'materialSideId': number;
-    /**
-     * Frontier編號
-     * @type {string}
-     * @memberof MaterialFaceSide
-     */
-    'frontierNo': string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof MaterialFaceSide
-     */
-    'featureList': Array<string>;
-    /**
-     * 
-     * @type {Array<MaterialFinish>}
-     * @memberof MaterialFaceSide
-     */
-    'finishList': Array<MaterialFinish>;
-    /**
-     * 是否為主要布面
-     * @type {boolean}
-     * @memberof MaterialFaceSide
-     */
-    'isMainSide': boolean;
-    /**
-     * 布面圖片
-     * @type {object}
-     * @memberof MaterialFaceSide
-     */
-    'sideImage': object | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof MaterialFaceSide
-     */
-    'u3mImage': object | null;
-    /**
-     * 
-     * @type {MaterialType}
-     * @memberof MaterialFaceSide
-     */
-    'materialType': MaterialType;
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialDescription>}
-     * @memberof MaterialFaceSide
-     */
-    'descriptionList': Array<MaterialDescription>;
-    /**
-     * 
-     * @type {object}
-     * @memberof MaterialFaceSide
-     */
-    'construction': object | null;
-    /**
-     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialSideAllOfConstructionCustomPropertyList>}
-     * @memberof MaterialFaceSide
-     */
-    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyList>;
-    /**
-     * 
-     * @type {Array<MaterialSideAllOfContentList>}
-     * @memberof MaterialFaceSide
-     */
-    'contentList': Array<MaterialSideAllOfContentList>;
-    /**
-     * Pantone Color清單
-     * @type {Array<MaterialSideAllOfPantoneList>}
-     * @memberof MaterialFaceSide
-     */
-    'pantoneList': Array<MaterialSideAllOfPantoneList>;
-    /**
-     * 
-     * @type {MaterialPatternInfo}
-     * @memberof MaterialFaceSide
-     */
-    'patternInfo': MaterialPatternInfo;
-    /**
-     * 
-     * @type {MaterialColorInfo}
-     * @memberof MaterialFaceSide
-     */
-    'colorInfo': MaterialColorInfo;
-}
-
-
 /**
  * 後處理
  * @export
@@ -11965,11 +11766,11 @@ export interface MaterialPrivateMetaData {
      */
     'createdByInfo': MaterialUserInfo;
     /**
-     * 
-     * @type {MaterialPrivateMetaDataLastModifiedByInfo}
+     * Last modified by - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name 由於布料編輯者一定是同組織成員建置，因此組織資訊非必要不秀。 
+     * @type {MaterialUserInfo}
      * @memberof MaterialPrivateMetaData
      */
-    'lastModifiedByInfo': MaterialPrivateMetaDataLastModifiedByInfo | null;
+    'lastModifiedByInfo': MaterialUserInfo | null;
     /**
      * 
      * @type {MaterialPrivateMetaDataCopiedFromInfo}
@@ -12007,43 +11808,6 @@ export interface MaterialPrivateMetaDataCopiedFromInfo {
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'copiedFromItemNo'?: string;
-}
-/**
- * Last modified by - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name 由於布料編輯者一定是同組織成員建置，因此組織資訊非必要不秀。 
- * @export
- * @interface MaterialPrivateMetaDataLastModifiedByInfo
- */
-export interface MaterialPrivateMetaDataLastModifiedByInfo {
-    /**
-     * 使用者名稱
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
-     */
-    'userName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
-     */
-    'avatar': string;
-    /**
-     * 使用者單位標籤顏色
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
-     */
-    'unitName': string;
-    /**
-     * 使用者單位標籤顏色
-     * @type {string}
-     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
-     */
-    'unitLabelColor': string | null;
-    /**
-     * 新增或修改日期
-     * @type {number}
-     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
-     */
-    'date': number;
 }
 /**
  * 
@@ -12897,84 +12661,16 @@ export interface MaterialU3mImage {
 export interface MaterialU3mImageCropRecord {
     /**
      * 
-     * @type {MaterialU3mImageCropRecordSquareCropRecord}
+     * @type {CropImageRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'squareCropRecord': MaterialU3mImageCropRecordSquareCropRecord | null;
+    'squareCropRecord': CropImageRecord | null;
     /**
      * 
-     * @type {MaterialU3mImageCropRecordPerspectiveCropRecord}
+     * @type {PerspectiveCropImageRecord}
      * @memberof MaterialU3mImageCropRecord
      */
-    'perspectiveCropRecord': MaterialU3mImageCropRecordPerspectiveCropRecord | null;
-}
-/**
- * 
- * @export
- * @interface MaterialU3mImageCropRecordPerspectiveCropRecord
- */
-export interface MaterialU3mImageCropRecordPerspectiveCropRecord {
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
-     */
-    'leftTop': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
-     */
-    'leftBottom': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
-     */
-    'rightTop': Coordinate;
-    /**
-     * 
-     * @type {Coordinate}
-     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
-     */
-    'rightBottom': Coordinate;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialU3mImageCropRecordPerspectiveCropRecord
-     */
-    'rotateDeg': number;
-}
-/**
- * 
- * @export
- * @interface MaterialU3mImageCropRecordSquareCropRecord
- */
-export interface MaterialU3mImageCropRecordSquareCropRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialU3mImageCropRecordSquareCropRecord
-     */
-    'x': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialU3mImageCropRecordSquareCropRecord
-     */
-    'y': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialU3mImageCropRecordSquareCropRecord
-     */
-    'rotateDeg': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialU3mImageCropRecordSquareCropRecord
-     */
-    'scaleRatio': number;
+    'perspectiveCropRecord': PerspectiveCropImageRecord | null;
 }
 /**
  * 1: Frontier產生 2: 客製化上傳
@@ -17634,7 +17330,7 @@ export interface Pagination {
      */
     'isShowMatch': boolean;
     /**
-     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 - 16. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排後 - 17. 重量輕到重 Light to Heavy - 18. 重量重到輕 Heavy to Light 
      * @type {number}
      * @memberof Pagination
      */
@@ -17662,7 +17358,10 @@ export const PaginationSortEnum = {
     RANDOM: 12,
     GHG_LOW_TO_HIGH: 13,
     WATER_LOW_TO_HIGH: 14,
-    LAND_LOW_TO_HIGH: 15
+    LAND_LOW_TO_HIGH: 15,
+    CREATE_DATE_ASC_C_M: 16,
+    WEIGHT_LIGHT_TO_HEAVY: 17,
+    WEIGHT_HEAVY_TO_LIGHT: 18
 } as const;
 
 export type PaginationSortEnum = typeof PaginationSortEnum[keyof typeof PaginationSortEnum];
@@ -17680,7 +17379,7 @@ export interface PaginationReq {
      */
     'isShowMatch': boolean;
     /**
-     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 - 16. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排後 - 17. 重量輕到重 Light to Heavy - 18. 重量重到輕 Heavy to Light 
      * @type {number}
      * @memberof PaginationReq
      */
@@ -17714,7 +17413,10 @@ export const PaginationReqSortEnum = {
     RANDOM: 12,
     GHG_LOW_TO_HIGH: 13,
     WATER_LOW_TO_HIGH: 14,
-    LAND_LOW_TO_HIGH: 15
+    LAND_LOW_TO_HIGH: 15,
+    CREATE_DATE_ASC_C_M: 16,
+    WEIGHT_LIGHT_TO_HEAVY: 17,
+    WEIGHT_HEAVY_TO_LIGHT: 18
 } as const;
 
 export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof PaginationReqSortEnum];
@@ -17732,7 +17434,7 @@ export interface PaginationRes {
      */
     'isShowMatch': boolean;
     /**
-     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 - 16. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排後 - 17. 重量輕到重 Light to Heavy - 18. 重量重到輕 Heavy to Light 
      * @type {number}
      * @memberof PaginationRes
      */
@@ -17778,7 +17480,10 @@ export const PaginationResSortEnum = {
     RANDOM: 12,
     GHG_LOW_TO_HIGH: 13,
     WATER_LOW_TO_HIGH: 14,
-    LAND_LOW_TO_HIGH: 15
+    LAND_LOW_TO_HIGH: 15,
+    CREATE_DATE_ASC_C_M: 16,
+    WEIGHT_LIGHT_TO_HEAVY: 17,
+    WEIGHT_HEAVY_TO_LIGHT: 18
 } as const;
 
 export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof PaginationResSortEnum];
@@ -21061,6 +20766,50 @@ export type SlotContentType = typeof SlotContentType[keyof typeof SlotContentTyp
 /**
  * 
  * @export
+ * @interface SmartUploadAssetsGetConfig200Response
+ */
+export interface SmartUploadAssetsGetConfig200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SmartUploadAssetsGetConfig200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof SmartUploadAssetsGetConfig200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {SmartUploadAssetsGetConfig200ResponseAllOfResult}
+     * @memberof SmartUploadAssetsGetConfig200Response
+     */
+    'result'?: SmartUploadAssetsGetConfig200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof SmartUploadAssetsGetConfig200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsGetConfig200ResponseAllOfResult
+ */
+export interface SmartUploadAssetsGetConfig200ResponseAllOfResult {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SmartUploadAssetsGetConfig200ResponseAllOfResult
+     */
+    'isEnableOCR'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface SmartUploadAssetsMaterialListRequest
  */
 export interface SmartUploadAssetsMaterialListRequest {
@@ -21088,6 +20837,75 @@ export interface SmartUploadAssetsMaterialListRequest {
      * @memberof SmartUploadAssetsMaterialListRequest
      */
     'fileList': Array<S3UploadedObject>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsUpdateConfig200Response
+ */
+export interface SmartUploadAssetsUpdateConfig200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SmartUploadAssetsUpdateConfig200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof SmartUploadAssetsUpdateConfig200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SmartUploadAssetsUpdateConfig200Response
+     */
+    'result'?: boolean;
+    /**
+     * 
+     * @type {object}
+     * @memberof SmartUploadAssetsUpdateConfig200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsUpdateConfigRequest
+ */
+export interface SmartUploadAssetsUpdateConfigRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SmartUploadAssetsUpdateConfigRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SmartUploadAssetsUpdateConfigRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SmartUploadAssetsUpdateConfigRequest
+     */
+    'ogId': number;
+    /**
+     * @type {boolean}
+     * @memberof SmartUploadAssetsUpdateConfigRequest
+     */
+    'isEnableOCR': boolean;
+    /**
+     * 
+     * @type {SmartUploadAssetsGetConfig200ResponseAllOfResult}
+     * @memberof SmartUploadAssetsUpdateConfigRequest
+     */
+    'result'?: SmartUploadAssetsGetConfig200ResponseAllOfResult;
 }
 
 
@@ -25187,6 +25005,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * 
+         * @summary Get Smart Upload config
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsGetConfig: async (oGBaseRequestBody: OGBaseRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'oGBaseRequestBody' is not null or undefined
+            assertParamExists('smartUploadAssetsGetConfig', 'oGBaseRequestBody', oGBaseRequestBody)
+            const localVarPath = `/assets/material/smart-upload/get-config`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
          * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
@@ -25220,6 +25078,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(smartUploadAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Smart Upload config
+         * @param {SmartUploadAssetsUpdateConfigRequest} smartUploadAssetsUpdateConfigRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsUpdateConfig: async (smartUploadAssetsUpdateConfigRequest: SmartUploadAssetsUpdateConfigRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'smartUploadAssetsUpdateConfigRequest' is not null or undefined
+            assertParamExists('smartUploadAssetsUpdateConfig', 'smartUploadAssetsUpdateConfigRequest', smartUploadAssetsUpdateConfigRequest)
+            const localVarPath = `/assets/material/smart-upload/update-config`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(smartUploadAssetsUpdateConfigRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25921,6 +25819,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary Get Smart Upload config
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async smartUploadAssetsGetConfig(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmartUploadAssetsGetConfig200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsGetConfig(oGBaseRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.smartUploadAssetsGetConfig']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
          * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
@@ -25931,6 +25842,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetsApi.smartUploadAssetsMaterialList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update Smart Upload config
+         * @param {SmartUploadAssetsUpdateConfigRequest} smartUploadAssetsUpdateConfigRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest: SmartUploadAssetsUpdateConfigRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmartUploadAssetsUpdateConfig200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.smartUploadAssetsUpdateConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -26321,6 +26245,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.setAssetsMaterialDigitalDrape(setAssetsMaterialDigitalDrapeRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary Get Smart Upload config
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsGetConfig(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<SmartUploadAssetsGetConfig200Response> {
+            return localVarFp.smartUploadAssetsGetConfig(oGBaseRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
          * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
@@ -26329,6 +26263,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update Smart Upload config
+         * @param {SmartUploadAssetsUpdateConfigRequest} smartUploadAssetsUpdateConfigRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest: SmartUploadAssetsUpdateConfigRequest, options?: any): AxiosPromise<SmartUploadAssetsUpdateConfig200Response> {
+            return localVarFp.smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * **Access roles:** To be clear define
@@ -26743,6 +26687,18 @@ export class AssetsApi extends BaseAPI {
     }
 
     /**
+     * 
+     * @summary Get Smart Upload config
+     * @param {OGBaseRequestBody} oGBaseRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public smartUploadAssetsGetConfig(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).smartUploadAssetsGetConfig(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      *  **Access roles:** To be clear define
      * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
      * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
@@ -26752,6 +26708,18 @@ export class AssetsApi extends BaseAPI {
      */
     public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update Smart Upload config
+     * @param {SmartUploadAssetsUpdateConfigRequest} smartUploadAssetsUpdateConfigRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest: SmartUploadAssetsUpdateConfigRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).smartUploadAssetsUpdateConfig(smartUploadAssetsUpdateConfigRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
