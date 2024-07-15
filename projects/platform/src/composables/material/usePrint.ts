@@ -194,7 +194,7 @@ const getImageDataUrl = (node: Node, isA4Swatch: boolean = false) => {
       .getElementById('svg-sprite-component-wrap')
       ?.setAttribute('data-html2canvas-ignore', 'true')
     return html2canvas(node as HTMLElement, {
-      scale: DEFAULT_SCALE,
+      scale: DEFAULT_SCALE * 5,
       width: LABEL_WIDTH,
       height: LABEL_HEIGHT,
       useCORS: true,

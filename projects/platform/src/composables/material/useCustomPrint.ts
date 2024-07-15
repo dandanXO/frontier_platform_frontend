@@ -11,7 +11,6 @@ import type {
   MaterialNonWovenConstruction,
   MaterialTrimConstruction,
 } from '@frontier/platform-web-sdk'
-import { computed } from 'vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import { getMaterialBySide } from '@/utils/material/getMaterialBySide'
@@ -22,10 +21,13 @@ type DomGenerator = (item: {
   material: Material
 }) => Promise<HTMLDivElement>
 
-const makePdf = async (
-  pdf: JsPDF,
-  imgDataUrlList: (string | HTMLCanvasElement)[]
-) => {
+const makePdf = async (imgDataUrlList: (string | HTMLCanvasElement)[]) => {
+  const pdf = new JsPDF({
+    unit: 'cm',
+    format: [7, 6],
+    // Orientation of the first page. Possible values are "portrait" or "landscape" (or shortcuts "p" or "l").
+    orientation: 'l',
+  })
   for (let i = 0; i < imgDataUrlList.length; i++) {
     pdf.addImage(
       imgDataUrlList[i],
@@ -55,16 +57,16 @@ const makeQrCode = async (
   key: string,
   containerHtmlId: string,
   width: number,
-  withURL: boolean = true,
-  logoUrl = ''
+  withURL: boolean = true
 ) => {
   const qrCodeContainer = document.getElementById(containerHtmlId)!
   const logoImage = document.createElement('img')
-  logoImage.setAttribute('src', logoUrl)
+  logoImage.setAttribute('src', '/logo/JB.png')
   logoImage.classList.add('w-[18px]', 'h-[18px]', 'absolute')
   logoImage.style.top = '50%'
-  logoImage.style.left = '50%'
+  logoImage.style.left = '49%'
   logoImage.style.transform = 'translateY(-50%) translateX(-50%)'
+  logoImage.style.backgroundColor = 'white'
   const canvasScale = 10
   const qrCodeContent = withURL
     ? `${import.meta.env.VITE_APP_TEXTILE_CLOUD_ENDPOINT}/${key}`
@@ -83,8 +85,8 @@ const makeQrCode = async (
   qrCodeContainer.appendChild(logoImage)
 }
 
-const getImageDataUrl = (node: Node, width: number, height: number) => {
-  const scale = 4
+const getImageDataUrl = (node: Node) => {
+  const scale = 20
   document
     .getElementById('googleidentityservice_button_styles')
     ?.setAttribute('data-html2canvas-ignore', 'true')
@@ -97,13 +99,7 @@ const getImageDataUrl = (node: Node, width: number, height: number) => {
   }).then((canvas) => canvas)
 }
 
-const generate = async (
-  generator: DomGenerator,
-  materialList: Material[],
-  width: number,
-  height: number,
-  jsPDF: JsPDF
-) => {
+const generate = async (generator: DomGenerator, materialList: Material[]) => {
   const imgDataUrlList = []
   for (const material of materialList) {
     const { isDoubleSide, sideType } = material
@@ -126,13 +122,13 @@ const generate = async (
 
     for (const side of sideList) {
       const pdfVirtualDom = await generator(side)
-      const imgDataUrl = await getImageDataUrl(pdfVirtualDom, width, height)
+      const imgDataUrl = await getImageDataUrl(pdfVirtualDom)
       imgDataUrlList.push(imgDataUrl)
       pdfVirtualDom.remove()
     }
   }
   try {
-    await makePdf(jsPDF, imgDataUrlList)
+    await makePdf(imgDataUrlList)
   } catch (e) {
     console.error('in generate')
     throw e
@@ -141,8 +137,6 @@ const generate = async (
 
 const usePrint = () => {
   const store = useStore()
-  const logo = computed<string>(() => store?.getters['organization/orgLogo'])
-
   const getCustomLabelTopItems = (
     sideType: MaterialSideType,
     material: Material
@@ -330,13 +324,7 @@ const usePrint = () => {
 
       document.body.appendChild(virtualDom)
       const qrWidth = 62
-      await makeQrCode(
-        frontierNo,
-        'qr-code-container',
-        qrWidth,
-        true,
-        logo.value
-      )
+      await makeQrCode(frontierNo, 'qr-code-container', qrWidth, true)
 
       const infoTopConten = document.getElementById('info-top-content')!
       const infoBottomLeftContent = document.getElementById(
@@ -402,20 +390,7 @@ const usePrint = () => {
 
       return virtualDom
     }
-    const LABEL_WIDTH = 210
-    const LABEL_HEIGHT = 180
-    await generate(
-      domGenerator,
-      materialList,
-      LABEL_WIDTH,
-      LABEL_HEIGHT,
-      new JsPDF({
-        unit: 'cm',
-        format: [7, 6],
-        // Orientation of the first page. Possible values are "portrait" or "landscape" (or shortcuts "p" or "l").
-        orientation: 'l',
-      })
-    )
+    await generate(domGenerator, materialList)
     store.dispatch('helper/closeModalLoading')
     return new Promise((res, _rej) => {
       res('finish printLabel')

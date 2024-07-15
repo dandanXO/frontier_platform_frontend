@@ -6,7 +6,7 @@ import { DIGITAL_DRAPE_LIST } from '@/utils/trialDigitalDrape'
 const state = () => ({
   taiwanTaffet: [96],
   // J&B INT"L
-  jbIntL: [113],
+  jbIntL: [113, 6],
   texperts: [1694],
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
