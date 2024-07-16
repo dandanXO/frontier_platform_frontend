@@ -45,7 +45,7 @@ import Decimal from 'decimal.js'
 import useNavigation from '@/composables/useNavigation'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
-import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
+import type ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import ModalU3mRecutHeader from '@/components/assets/modalU3mRecut/ModalU3mRecutHeader.vue'
 import ModalU3mRecutSwitchControlBar from '@/components/assets/modalU3mRecut/ModalU3mRecutSwitchControlBar.vue'
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
@@ -288,29 +288,49 @@ const handleGoNext = async () => {
   store.dispatch('helper/closeModalLoading')
 }
 
-const handleConfirm = async () => {
-  if (!currentSide.value) {
-    throw new Error('refTargetSide not existed.')
-  }
-
-  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
-
-  const getRecord = (side?: U3mSide): U3mCropRecord | null => {
-    if (!side) {
-      return null
+const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
+  try {
+    if (!currentSide.value) {
+      throw new Error('refTargetSide not existed.')
     }
 
-    const { options, rotateDeg: squareCropRotateDeg } = side.config
-    if (side.cropMode === CROP_MODE.SQUARE) {
+    store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
+
+    const getRecord = (side?: U3mSide): U3mCropRecord | null => {
+      if (!side) {
+        return null
+      }
+
+      const { options, rotateDeg: squareCropRotateDeg } = side.config
+      if (side.cropMode === CROP_MODE.SQUARE) {
+        const { perspectiveCropRecord } = side
+        if (!perspectiveCropRecord) {
+          throw new Error('perspectiveCropRecord not existed.')
+        }
+        const { leftTop, leftBottom, rightTop, rightBottom, rotateDeg } =
+          perspectiveCropRecord
+
+        return {
+          squareCropRecord: {
+            leftTop: coordToDP1(leftTop),
+            leftBottom: coordToDP1(leftBottom),
+            rightTop: coordToDP1(rightTop),
+            rightBottom: coordToDP1(rightBottom),
+            rotateDeg: toDP1(rotateDeg),
+          },
+        }
+      }
+
       const { perspectiveCropRecord } = side
       if (!perspectiveCropRecord) {
         throw new Error('perspectiveCropRecord not existed.')
       }
+
       const { leftTop, leftBottom, rightTop, rightBottom, rotateDeg } =
         perspectiveCropRecord
 
       return {
-        squareCropRecord: {
+        perspectiveCropRecord: {
           leftTop: coordToDP1(leftTop),
           leftBottom: coordToDP1(leftBottom),
           rightTop: coordToDP1(rightTop),
@@ -319,114 +339,122 @@ const handleConfirm = async () => {
         },
       }
     }
-
-    const { perspectiveCropRecord } = side
-    if (!perspectiveCropRecord) {
-      throw new Error('perspectiveCropRecord not existed.')
-    }
-
-    const { leftTop, leftBottom, rightTop, rightBottom, rotateDeg } =
-      perspectiveCropRecord
-
-    return {
-      perspectiveCropRecord: {
-        leftTop: coordToDP1(leftTop),
-        leftBottom: coordToDP1(leftBottom),
-        rightTop: coordToDP1(rightTop),
-        rightBottom: coordToDP1(rightBottom),
-        rotateDeg: toDP1(rotateDeg),
-      },
-    }
-  }
-  if (currentSideCropMode.value === CROP_MODE.SQUARE) {
-    if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
-      if (!refFaceSideCropArea.value) {
-        throw new Error('refFaceSideCropArea undefined')
+    if (currentSideCropMode.value === CROP_MODE.SQUARE) {
+      if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
+        if (!refFaceSideCropArea.value) {
+          throw new Error('refFaceSideCropArea undefined')
+        }
+        const result = await refFaceSideCropArea.value.cropImage()
+        currentSide.value.croppedImage = result.imageFile
+        currentSide.value.perspectiveCropRecord = result.cropRecord
+      } else {
+        if (!refBackSideCropArea.value) {
+          throw new Error('refBackSideCropArea undefined')
+        }
+        const result = await refBackSideCropArea.value.cropImage()
+        currentSide.value.croppedImage = result.imageFile
+        currentSide.value.perspectiveCropRecord = result.cropRecord
       }
-      const result = await refFaceSideCropArea.value.cropImage()
-      currentSide.value.croppedImage = result.imageFile
-      currentSide.value.perspectiveCropRecord = result.cropRecord
     } else {
-      if (!refBackSideCropArea.value) {
-        throw new Error('refBackSideCropArea undefined')
+      if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
+        if (!refFaceSidePerspectiveCropArea.value) {
+          throw new Error('refFaceSidePerspectiveCropArea undefined')
+        }
+        const result = await refFaceSidePerspectiveCropArea.value.cropImage()
+        if (!result) {
+          throw new Error('perspective crop result undefined')
+        }
+        currentSide.value.croppedImage = result.imageFile
+        currentSide.value.perspectiveCropRecord = result.cropRecord
+      } else {
+        if (!refBackSidePerspectiveCropArea.value) {
+          throw new Error('refFaceSidePerspectiveCropArea undefined')
+        }
+        const result = await refBackSidePerspectiveCropArea.value.cropImage()
+        if (!result) {
+          throw new Error('perspective crop result undefined')
+        }
+        currentSide.value.croppedImage = result.imageFile
+        currentSide.value.perspectiveCropRecord = result.cropRecord
       }
-      const result = await refBackSideCropArea.value.cropImage()
-      currentSide.value.croppedImage = result.imageFile
-      currentSide.value.perspectiveCropRecord = result.cropRecord
     }
-  } else {
-    if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
-      if (!refFaceSidePerspectiveCropArea.value) {
-        throw new Error('refFaceSidePerspectiveCropArea undefined')
+
+    const getSideReq = async (
+      side: U3mSide | undefined
+    ): Promise<MaterialGenerateU3mSide | null> => {
+      if (!side) {
+        return null
       }
-      const result = await refFaceSidePerspectiveCropArea.value.cropImage()
-      if (!result) {
-        throw new Error('perspective crop result undefined')
+
+      const { croppedImage } = side
+      const cropImageRecord = getRecord(side)
+      if (!croppedImage || !cropImageRecord) {
+        return null
       }
-      currentSide.value.croppedImage = result.imageFile
-      currentSide.value.perspectiveCropRecord = result.cropRecord
-    } else {
-      if (!refBackSidePerspectiveCropArea.value) {
-        throw new Error('refFaceSidePerspectiveCropArea undefined')
+
+      const { s3UploadId, fileName } = await uploadFileToS3(
+        croppedImage,
+        croppedImage.name
+      )
+
+      return {
+        s3UploadId,
+        fileName,
+        squareCropRecord: cropImageRecord.squareCropRecord || null,
+        perspectiveCropRecord: cropImageRecord.perspectiveCropRecord || null,
       }
-      const result = await refBackSidePerspectiveCropArea.value.cropImage()
-      if (!result) {
-        throw new Error('perspective crop result undefined')
-      }
-      currentSide.value.croppedImage = result.imageFile
-      currentSide.value.perspectiveCropRecord = result.cropRecord
     }
+    const [faceSideReq, backSideReq] = await Promise.all([
+      getSideReq(faceSide.value),
+      getSideReq(backSide.value),
+    ])
+    const result = await ogBaseAssetsApi('generateAssetsMaterialU3m', {
+      materialId: material.value.materialId,
+      faceSide: faceSideReq,
+      backSide: backSideReq,
+      isAutoRepeat: false,
+      isReplaceFaceAndBackSide,
+      hasHole: hasHole.value,
+      holeColor: holeColor.value,
+    })
+    material.value.u3m.status = result.data.result!.u3mStatus
+
+    store.dispatch('helper/closeModalLoading')
+    handleClose()
+
+    store.dispatch('helper/openModalConfirm', {
+      type: MODAL_TYPE.LOADING,
+      header: t('EE0121'),
+      contentText: t('EE0122', { RR0008: t('RR0008') }),
+      primaryBtnText: t('UU0103'),
+      secondaryBtnText: t('UU0090'),
+      secondaryBtnHandler: () => goToProgress({}, 'u3m'),
+    })
+  } catch (error) {
+    console.error(error)
+    store.dispatch('helper/closeModalLoading')
   }
+}
 
-  const getSideReq = async (
-    side: U3mSide | undefined
-  ): Promise<MaterialGenerateU3mSide | null> => {
-    if (!side) {
-      return null
-    }
+const handleClose = () => {
+  store.dispatch('helper/closeModal')
+}
 
-    const { croppedImage } = side
-    const cropImageRecord = getRecord(side)
-    if (!croppedImage || !cropImageRecord) {
-      return null
-    }
-
-    const { s3UploadId, fileName } = await uploadFileToS3(
-      croppedImage,
-      croppedImage.name
-    )
-
-    return {
-      s3UploadId,
-      fileName,
-      squareCropRecord: cropImageRecord.squareCropRecord || null,
-      perspectiveCropRecord: cropImageRecord.perspectiveCropRecord || null,
-    }
+const handleConfirm = async () => {
+  const onGenereteMaterial = (isReplaceFaceAndBackSide: boolean) => () => {
+    setTimeout(() => {
+      generateAssetsMaterialU3m(isReplaceFaceAndBackSide)
+    }, 500)
   }
-  const [faceSideReq, backSideReq] = await Promise.all([
-    getSideReq(faceSide.value),
-    getSideReq(backSide.value),
-  ])
-  const result = await ogBaseAssetsApi('generateAssetsMaterialU3m', {
-    materialId: material.value.materialId,
-    faceSide: faceSideReq,
-    backSide: backSideReq,
-    isAutoRepeat: false,
-    hasHole: hasHole.value,
-    holeColor: holeColor.value,
-  })
-  material.value.u3m.status = result.data.result!.u3mStatus
-
-  store.dispatch('helper/closeModalLoading')
-  handleClose()
-
-  store.dispatch('helper/openModalConfirm', {
-    type: MODAL_TYPE.LOADING,
-    header: t('EE0121'),
-    contentText: t('EE0122', { RR0008: t('RR0008') }),
-    primaryBtnText: t('UU0103'),
-    secondaryBtnText: t('UU0090'),
-    secondaryBtnHandler: () => goToProgress({}, 'u3m'),
+  store.dispatch('helper/pushModalConfirm', {
+    type: NOTIFY_TYPE.INFO,
+    theme: THEME.LIGHT,
+    header: t('EE0202'),
+    contentText: t('EE0203'),
+    primaryBtnText: t('EE0205'),
+    secondaryBtnText: t('EE0204'),
+    primaryBtnHandler: onGenereteMaterial(true),
+    secondaryBtnHandler: onGenereteMaterial(false),
   })
 }
 
@@ -461,10 +489,6 @@ const handlePerspectiveCropAreaRefUpdate = (
   if (sideName === U3M_CUT_SIDE.BACK_SIDE) {
     refBackSidePerspectiveCropArea.value = el
   }
-}
-
-const handleClose = () => {
-  store.dispatch('helper/closeModal')
 }
 
 const handlePerspectiveEditStatusChange = (editStatus: EditStatus) => {

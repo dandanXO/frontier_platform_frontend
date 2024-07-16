@@ -2399,6 +2399,7 @@ export interface CreateMoodboardRequestAllOfTrendBoard {
      */
     'fileName': string;
 }
+
 /**
  * 
  * @export
@@ -5074,6 +5075,12 @@ export interface GenerateAssetsMaterialU3mRequest {
      * @memberof GenerateAssetsMaterialU3mRequest
      */
     'backSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide | null;
+    /**
+     * 是否更換正面和背面影像。
+     * @type {boolean}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'isReplaceFaceAndBackSide'?: boolean;
 }
 
 
@@ -20899,13 +20906,7 @@ export interface SmartUploadAssetsUpdateConfigRequest {
      * @type {boolean}
      * @memberof SmartUploadAssetsUpdateConfigRequest
      */
-    'isEnableOCR': boolean;
-    /**
-     * 
-     * @type {SmartUploadAssetsGetConfig200ResponseAllOfResult}
-     * @memberof SmartUploadAssetsUpdateConfigRequest
-     */
-    'result'?: SmartUploadAssetsGetConfig200ResponseAllOfResult;
+    'isEnableOCR'?: boolean;
 }
 
 
@@ -39829,11 +39830,11 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {unknown} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant: async (uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getThreadBoardMostParticipant: async (uNKNOWNBASETYPE: unknown, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'uNKNOWNBASETYPE' is not null or undefined
             assertParamExists('getThreadBoardMostParticipant', 'uNKNOWNBASETYPE', uNKNOWNBASETYPE)
             const localVarPath = `/thread-board/get-most-participant`;
@@ -40503,11 +40504,11 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {unknown} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
+        async getThreadBoardMostParticipant(uNKNOWNBASETYPE: unknown, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardMostParticipant200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ThreadBoardApi.getThreadBoardMostParticipant']?.[localVarOperationServerIndex]?.url;
@@ -40775,11 +40776,11 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-         * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+         * @param {unknown} uNKNOWNBASETYPE 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
+        getThreadBoardMostParticipant(uNKNOWNBASETYPE: unknown, options?: any): AxiosPromise<GetThreadBoardMostParticipant200Response> {
             return localVarFp.getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41021,12 +41022,12 @@ export class ThreadBoardApi extends BaseAPI {
     /**
      * 
      * @summary 在Thread Board中取得該單位(組織或團隊)最常參與的使用者
-     * @param {UNKNOWN_BASE_TYPE} uNKNOWNBASETYPE 
+     * @param {unknown} uNKNOWNBASETYPE 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardMostParticipant(uNKNOWNBASETYPE: UNKNOWN_BASE_TYPE, options?: RawAxiosRequestConfig) {
+    public getThreadBoardMostParticipant(uNKNOWNBASETYPE: unknown, options?: RawAxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getThreadBoardMostParticipant(uNKNOWNBASETYPE, options).then((request) => request(this.axios, this.basePath));
     }
 
