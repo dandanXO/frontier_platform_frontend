@@ -264,13 +264,14 @@ const handleGoNext = async () => {
   if (!faceSide.value) {
     throw new Error('faceSide not existed.')
   }
-
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   if (currentSideCropMode.value === CROP_MODE.SQUARE) {
     if (!refFaceSideCropArea.value) {
       throw new Error('refFaceSide not existed.')
     }
-    faceSide.value.croppedImage = await refFaceSideCropArea.value.cropImage()
+    const result = await refFaceSideCropArea.value.cropImage()
+    faceSide.value.croppedImage = result.imageFile
+    faceSide.value.perspectiveCropRecord = result.cropRecord
   } else if (currentSideCropMode.value === CROP_MODE.PERSPECTIVE) {
     if (!refFaceSidePerspectiveCropArea.value) {
       return
