@@ -53,7 +53,7 @@ search-table(
         row-item(
           :material="item"
           v-model:selectedList="selectedMaterialList"
-          data-cy="assets"
+          data-cy="assets-item-list"
         )
         div(
           v-if="index !== materialList.length - 1"
@@ -72,6 +72,7 @@ search-table(
           :optionList="optionList"
           @click.stop="clickMaterialItemHandler(material.materialId)"
           :drawerOpenFromLocationList="[]"
+          data-cy="assets-item-grid"
         )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
@@ -138,7 +139,7 @@ const clickMaterialItemHandler = (materialId: number) => {
 }
 
 const selectedMaterialList = ref<Material[]>([])
-const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.LIST)
+const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.GRID)
 const optionSort = computed(() => {
   const {
     CREATE_DATE,

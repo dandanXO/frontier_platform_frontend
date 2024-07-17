@@ -687,11 +687,9 @@ context(
 
       //TODO:verify value after submit
       // select first asset your test case
-      cy.get('[data-cy="assets"] .w-full.relative.aspect-square')
-        .eq(0)
-        .trigger('mouseenter')
+      cy.get('[data-cy="assets-item-grid"]').eq(0).trigger('mouseenter')
       cy.wait(300)
-      cy.get('[data-cy="assets"] .w-full.relative.aspect-square').eq(0).click()
+      cy.get('[data-cy="assets-item-grid"]').eq(0).click()
       cy.wait(300)
       // check faceSideSep1 value correct
       cy.get('[data-cy="value-of-features"] p').should('not.be.empty')
