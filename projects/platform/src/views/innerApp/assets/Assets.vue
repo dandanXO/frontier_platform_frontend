@@ -19,7 +19,7 @@ search-table(
       :optionList="displayModeOptionList"
       v-model:inputValue="displayMode"
     )
-    f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
+    f-button(size="sm" prependIcon="texture_add" @click="goToMaterialUpload") {{ $t('UU0020') }}
   template(#default)
     template(v-if="materialList.length > 0")
       //- Jira: F22-3010
@@ -80,7 +80,7 @@ search-table(
           class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
           @click="goToMaterialUpload()"
         )
-          f-svg-icon(iconName="add" size="24" class="text-grey-900")
+          f-svg-icon(iconName="texture_add" size="24" class="text-grey-900")
         p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
 </template>
 
