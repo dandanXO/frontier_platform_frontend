@@ -21,6 +21,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run --spec cypress/e2e/custom/*.cy.ts",
     "test": "vitest run",
+    "test:e2e": "bash ./scripts/e2eTesting.sh $npm_config_mode",
     "test:watch": "vitest"
   },
   "dependencies": {
