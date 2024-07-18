@@ -1,7 +1,12 @@
 <template lang="pug">
 div(class="relative flex-1 w-full flex flex-col gap-y-4")
   div(v-if="!readOnly" class="flex flex-row gap-x-4")
-    f-button(type="secondary" size="md" prependIcon="add" @click="handleAdd") {{ $t('UU0020') }}
+    f-button(
+      type="secondary"
+      size="md"
+      prependIcon="texture_add"
+      @click="handleAdd"
+    ) {{ $t('UU0020') }}
     f-button(
       type="secondary"
       size="md"

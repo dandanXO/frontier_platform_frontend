@@ -88,9 +88,9 @@ div(
                         @click.stop="goToMaterialUpload({ orgNo: organization.orgNo, ogKey: `${og.ogType}-${og.ogId}` })"
                       )
                         f-svg-icon(
-                          :iconName="'upload'"
+                          iconName="texture_add"
                           size="20"
-                          class="text-grey-600"
+                          class="text-grey-900"
                         )
       div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
     div(
