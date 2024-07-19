@@ -219,27 +219,44 @@ const onDrop = (evt: DragEvent) => {
 }
 
 fileOperator.on('finish', async (file: File) => {
-  isCheckingFiles.value = false
+  isCheckingFiles.value = true
+  try {
+    const imageInfo = await readImageFile(file)
+
+    const item: ImageItem = {
+      file,
+      processing: 0,
+      isRemoved: false,
+      invalidCode: null,
+      ...imageInfo,
+    }
+
+    validateImage(item, imageInfo)
+
+    errorCode.value = null
+    materialImageList.value.push(item)
+  } catch (error) {
+    console.error('Error reading image file:', error)
+  }
   if (materialImageList.value.length === totalFiles.value) {
     isCheckingFiles.value = false
-    isDisplayingCheckResult.value = false
+    isDisplayingCheckResult.value = true
   }
 })
 
 function validateImage(item: ImageItem, imageInfo: any) {
-  // 暫時移除不用的檢查 f22-3766
-  // if (
-  //   imageInfo.width < minimumDimensions ||
-  //   imageInfo.height < minimumDimensions
-  // ) {
-  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
-  //   item.isRemoved = true
-  // }
-  // 暫時移除不用的檢查 f22-3766
-  // if (imageInfo.size > fileSizeMaxLimit.value) {
-  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
-  //   item.isRemoved = true
-  // }
+  if (
+    imageInfo.width < minimumDimensions ||
+    imageInfo.height < minimumDimensions
+  ) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
+    item.isRemoved = true
+  }
+
+  if (imageInfo.size > fileSizeMaxLimit.value) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
+    item.isRemoved = true
+  }
 
   if (
     !acceptType.some((type) =>
@@ -264,31 +281,8 @@ fileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
   errorCode.value = code
 })
 
-fileOperator.on('filesValidated', async (files: File[]) => {
+fileOperator.on('filesValidated', (files: File[]) => {
   totalFiles.value = files.length
-  const _files = Array.from(files)
-  for (let i = 0; i < _files.length; i += 1) {
-    try {
-      const imageInfo = await readImageFile(_files[i])
-
-      const item: ImageItem = {
-        file: _files[i],
-        processing: 0,
-        isRemoved: false,
-        invalidCode: null,
-        ...imageInfo,
-      }
-
-      validateImage(item, imageInfo)
-
-      errorCode.value = null
-      materialImageList.value.push(item)
-    } catch (error) {
-      console.error('Error reading image file:', error)
-    }
-  }
-
-  startUpload()
 })
 
 const startUpload = () => {
