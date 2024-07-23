@@ -37,7 +37,7 @@ div(class="w-79")
                 :u3m="material.u3m"
                 :disabled="threeDViewerDisabledMap[U3M_PROVIDER.FRONTIER]"
               )
-              material-u3m-viewer-react-button(
+              material-u3m-viewer-button(
                 v-else
                 :material="material"
                 :materialId="material.materialId"
