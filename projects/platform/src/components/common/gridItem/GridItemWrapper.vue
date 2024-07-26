@@ -122,6 +122,7 @@ const menuTree = computed<MenuTree>(() => ({
         title: option.name(props.selectValue),
         clickHandler: () => option.func(props.selectValue),
         disabled: option.disabled ? option.disabled(props.selectValue) : false,
+        testId: option.testId
       })),
     })) ?? [],
 }))

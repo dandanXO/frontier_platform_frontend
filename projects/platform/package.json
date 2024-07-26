@@ -19,7 +19,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
     "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore",
     "cy:open": "cypress open",
-    "cy:run": "cypress run --spec cypress/e2e/custom/*.cy.ts",
+    "cy:run": "cypress run --spec 'cypress/e2e/**/*.cy.ts'",
     "test": "vitest run",
     "test:e2e": "bash ./scripts/e2eTesting.sh $npm_config_mode",
     "test:watch": "vitest"

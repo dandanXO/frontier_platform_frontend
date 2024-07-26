@@ -16,12 +16,14 @@ div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 
           :theme="THEME.DARK"
           size="md"
           type="secondary"
+          data-cy="btn-back"
           @click="emit('back')"
         ) {{ $t('UU0004') }}
         f-button(
           :theme="THEME.DARK"
           size="md"
           :disabled="!isValid"
+          data-cy="btn-create"
           :prependIcon="readyToSubmit ? 'done' : ''"
           @click="readyToSubmit ? emit('confirm') : emit('next')"
         ) {{ readyToSubmit ? $t('UU0020') : $t('UU0021') }}
@@ -30,6 +32,7 @@ div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 
       :theme="THEME.DARK"
       type="secondary"
       size="md"
+      data-cy="btn-exit"
       @click="emit('close')"
     ) {{ $t('UU0112') }}
 </template>

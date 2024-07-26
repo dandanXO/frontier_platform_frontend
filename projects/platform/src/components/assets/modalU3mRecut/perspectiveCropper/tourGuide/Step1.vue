@@ -19,6 +19,7 @@ div(
       class="absolute bottom-4 right-29"
       type="secondary"
       size="md"
+      data-cy="btn-skip"
       @click="closeModal"
     ) {{ $t('UU0155') }}
     f-button(

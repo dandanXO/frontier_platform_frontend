@@ -36,7 +36,7 @@ export enum ASSETS_MATERIAL_FUNCTION {
 export type AssetsFunctionOption = FunctionOption<
   Material,
   ASSETS_MATERIAL_FUNCTION
->
+>&{testId?:string}
 
 export interface QrCodePrintLabelSetting {
   fontSize: number
@@ -308,6 +308,7 @@ export default function useAssets() {
       return material.u3m.status === U3M_STATUS.COMPLETED
         ? t('RR0074')
         : t('RR0058')
+    
     },
     func: (m) => {
       const material = toMaterial(m)
@@ -403,6 +404,7 @@ export default function useAssets() {
         })
       }
     },
+    testId:"create-3d-material",
   }
   const downloadU3m: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DOWNLOAD_U3M,

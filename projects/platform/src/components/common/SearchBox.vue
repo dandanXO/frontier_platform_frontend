@@ -3,7 +3,8 @@ div(class="grid")
   div(
     class="justify-self-center my-3.5 w-[min(calc(100vw_-_40px),800px)] h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5"
   )
-    div(class="flex-grow flex items-center")
+    div(class="flex-grow flex items-center" data-cy="search-box")
+    
       f-svg-icon(
         v-if="!keyword"
         class="pr-1 text-grey-250"

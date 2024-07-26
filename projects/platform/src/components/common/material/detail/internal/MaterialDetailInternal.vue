@@ -362,6 +362,7 @@ const menuTree = computed<MenuTree>(() => {
         title: option.name(props.material),
         clickHandler: () => option.func(material),
         disabled: option.disabled ? option.disabled(props.material) : false,
+        testId: option.testId
       })),
     })),
   }

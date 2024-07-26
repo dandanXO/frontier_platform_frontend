@@ -8,7 +8,7 @@ div(
   @mouseleave="mouseLeaveHandler"
   @click.prevent="clickMenuHandler"
   @touchstart.prevent.stop="clickMenuHandler"
-  data-cy="contextual-menu-node"
+  :data-cy="currentTestId"
 )
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"
@@ -195,7 +195,7 @@ const props = withDefaults(
     theme: THEME.LIGHT,
   }
 )
-
+const currentTestId = props.menu.testId ?? "contextual-menu-node"
 const { isDesktop } = useBreakpoints()
 
 const innerMenu = computed<Required<MenuItem>>(() =>
