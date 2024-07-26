@@ -15,6 +15,7 @@ f-scrollbar-container(class="w-full h-full")
           ) {{ $t('DD0001') }}
           f-button(
             size="md"
+            data-cy="text-recognition-setting"
             @click="openModalUploadSettings"
             type="secondary"
             prependIcon="setting"
