@@ -1,16 +1,17 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+
+import { downloadFile } from '@frontier/lib'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import useCurrentUnit from '@/composables/useCurrentUnit'
-import { U3M_STATUS, NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
+import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { useRoute } from 'vue-router'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
 import useCPrint from '@/composables/material/useCustomPrint'
 import generalApi from '@/apis/general'
-import userApi from '@/apis/user'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
 import { useAssetsStore } from '@/stores/assets'
@@ -36,7 +37,7 @@ export enum ASSETS_MATERIAL_FUNCTION {
 export type AssetsFunctionOption = FunctionOption<
   Material,
   ASSETS_MATERIAL_FUNCTION
->&{testId?:string}
+> & { testId?: string }
 
 export interface QrCodePrintLabelSetting {
   fontSize: number
@@ -308,7 +309,6 @@ export default function useAssets() {
       return material.u3m.status === U3M_STATUS.COMPLETED
         ? t('RR0074')
         : t('RR0058')
-    
     },
     func: (m) => {
       const material = toMaterial(m)
@@ -404,7 +404,7 @@ export default function useAssets() {
         })
       }
     },
-    testId:"create-3d-material",
+    testId: 'create-3d-material',
   }
   const downloadU3m: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DOWNLOAD_U3M,
@@ -436,26 +436,15 @@ export default function useAssets() {
     name: () => t('RR0060'),
     func: async (m) => {
       const materialIdList = toMaterialIdList(m)
-      if (materialIdList.length >= 100) {
-        await ogBaseAssetsApi('massExportAssetsMaterialExcel', {
-          materialIdList,
-        })
-        store.dispatch('helper/openModalConfirm', {
-          type: NOTIFY_TYPE.SUCCESS,
-          header: t('PP0030'),
-          contentText: t('PP0031'),
-          primaryBtnText: t('UU0031'),
-          secondaryBtnText: t('UU0090'),
-          secondaryBtnHandler: () => {
-            goToProgress({}, PROGRESS_TAB.EXCEL)
-            store.dispatch('helper/closeModalBehavior')
-          },
-        })
-      } else {
-        store.dispatch('helper/openModalLoading')
-        await ogBaseAssetsApi('exportAssetsMaterialExcel', { materialIdList })
-        store.dispatch('helper/closeModalLoading')
-      }
+      store.dispatch('helper/openModalLoading')
+      const {
+        data: { result },
+      } = await ogBaseAssetsApi('exportAssetsMaterialExcel', {
+        materialIdList,
+      })
+      result?.excelUrl && downloadFile(result.excelUrl)
+
+      store.dispatch('helper/closeModalLoading')
     },
   }
   const printLabel: AssetsFunctionOption = {

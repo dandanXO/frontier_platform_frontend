@@ -4236,19 +4236,7 @@ export interface ExportAssetsMaterialExcel200ResponseAllOfResult {
      * @type {string}
      * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
      */
-    'file'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
-     */
-    'fileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
-     */
-    'extension'?: string;
+    'excelUrl'?: string;
 }
 /**
  * 

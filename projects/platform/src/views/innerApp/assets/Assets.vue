@@ -187,6 +187,7 @@ const {
   addToWorkspace,
   printLabel,
   mergeMaterial,
+  exportExcel,
   deleteMaterial,
   startSpreadSheetUpdate,
 } = useAssets()
@@ -208,6 +209,7 @@ const optionMultiSelect = computed(() => [
   mergeMaterial,
   deleteMaterial,
   startSpreadSheetUpdate,
+  exportExcel,
 ])
 
 const getMaterialList = async (
