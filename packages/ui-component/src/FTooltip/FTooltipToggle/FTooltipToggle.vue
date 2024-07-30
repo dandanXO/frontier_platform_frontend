@@ -68,7 +68,7 @@ f-popper(class="w-fit" :placement="placement" :disabled="disabledTooltip")
       class="flex items-center gap-x-2 p-1 hover:bg-grey-100 hover:rounded cursor-pointer"
     )
       span(v-if="!!triggerText" class="text-caption text-grey-900") {{ triggerText }}
-      f-svg-icon(:iconName="triggerIcon" size="16" class="text-grey-600")
+      f-svg-icon(:iconName="triggerIcon" :size="size" class="text-grey-600")
   template(#content="{ isExpand, collapsePopper }") 
     div(
       class="relative rounded bg-grey-900/80 max-w-85 p-5 box-border text-grey-50 text-caption/1.3"
@@ -111,6 +111,7 @@ export interface TooltipMediaProps {
   triggerIcon?: string
   triggerText?: string
   disabledTooltip?: boolean
+  size?: number
 }
 
 withDefaults(defineProps<TooltipMediaProps>(), {
@@ -119,6 +120,7 @@ withDefaults(defineProps<TooltipMediaProps>(), {
   triggerIcon: 'question',
   triggerText: '',
   disabledTooltip: false,
+  size: 16,
 })
 
 const slots = useSlots()

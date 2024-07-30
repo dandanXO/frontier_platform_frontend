@@ -1198,6 +1198,8 @@
   "FF0087": "Open Share",
   "FF0088": "Private Share",
   "FF0089": "Add emails and share material with others.",
+  "FF0090": "Print QR Code",
+  "FF0091": "Use QR Code for Backside",
   "GG0001": "This material has already been added to \"Shared With Me\"",
   "GG0002": "This collection has already been added to \"Workspace > Shared With Me\" tab",
   "GG0003": "Unable To Save",

@@ -26,8 +26,8 @@ transition
   )
     div(
       ref="refSnackbar"
-      class="w-fit mx-auto px-4 flex items-start gap-x-4 rounded shadow-16 bg-grey-800"
-      :class="getContainerPaddingY"
+      class="w-fit mx-auto px-4 flex items-start gap-x-4 rounded shadow-16"
+      :class="[getContainerPaddingY, bgColor]"
     )
       f-svg-icon(
         :iconName="NOTIFY_TYPE_ICON[notifyType]"
@@ -39,7 +39,7 @@ transition
         class="flex-grow"
         :class="[getMessageMinHeight, !shouldBeNextLine && display === DISPLAY.FLEX ? 'flex items-start gap-x-4' : '']"
       )
-        div(class="flex-grow self-center text-grey-100" :class="getFontSize")
+        div(class="flex-grow self-center" :class="[getFontSize, textColor]")
           p(v-if="!!title" class="font-bold flex-shrink-0") {{ title }}
           p(v-if="!!messageText") {{ messageText }}
           component(v-else :is="messageComponent")
@@ -104,6 +104,9 @@ export interface NotifySnackbarProps {
    * How much time(ms) after it will close
    */
   delay?: number
+  // cusomerClass
+  bgColor: string
+  textColor: string
 }
 
 const emit = defineEmits<{
@@ -119,8 +122,9 @@ const props = withDefaults(defineProps<NotifySnackbarProps>(), {
   hasCloseButton: true,
   willClose: true,
   delay: 4000,
+  bgColor: 'bg-grey-800',
+  textColor: 'text-gery-100',
 })
-
 const getContainerPaddingY = computed(() => {
   switch (props.size) {
     case SIZE.SM:
