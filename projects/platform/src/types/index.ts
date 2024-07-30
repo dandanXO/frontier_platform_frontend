@@ -155,6 +155,7 @@ export interface FunctionOption<Type, Id = number> {
   func: (n: Type | Type[]) => any
   icon?: (n?: Type | Type[]) => string
   disabled?: (n: Type | Type[]) => boolean
+  testId?: string
 }
 
 export type MaterialFormService = ReturnType<typeof useMaterialForm>

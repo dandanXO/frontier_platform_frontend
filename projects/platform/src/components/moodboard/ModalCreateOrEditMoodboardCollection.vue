@@ -23,6 +23,7 @@ modal-behavior(
       :rules="[inputRules.required(), inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :label="$t('FF0010')"
       :placeholder="$t('QQ0058')"
+      data-cy="input-collection-name"
       class="mb-7.5"
     )
     input-trend-board-upload(
@@ -35,6 +36,7 @@ modal-behavior(
       v-model:textValue="collectionDescription"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
+      data-cy="input-description-collection"
       :rules="[inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0142', { limitNumber: COLLECTION_DESCRIPTION_MAX_LENGTH }))]"
       minHeight="min-h-30"
     )

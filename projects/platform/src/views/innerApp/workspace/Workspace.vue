@@ -20,7 +20,7 @@ search-table(
     div(class="flex items-end")
       global-breadcrumb-list(
         :breadcrumbList="locationList"
-        @click:item="currentNodeId = $event.nodeId; visit()"
+        @click:item="(item: any) => onClickBreadcrumbItem(item, visit)"
         fontSize="text-h6"
       )
       p(class="flex text-caption text-grey-600 pl-1")
@@ -35,7 +35,12 @@ search-table(
       type="secondary"
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
-    f-button(size="sm" prependIcon="add" @click="createCollection") {{ $t('FF0003') }}
+    f-button(
+      size="sm"
+      prependIcon="add"
+      @click="createCollection"
+      data-cy="create-new-collection"
+    ) {{ $t('FF0003') }}
   template(v-if="!isFirstLayer" #sub-header)
     p(
       v-if="workspaceNodeCollection?.nodeMeta.createDate"
@@ -53,12 +58,13 @@ search-table(
           f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
           span(class="text-body1 text-grey-900") {{ $t('UU0055') }}
       grid-item-node(
-        v-for="node in nodeList"
+        v-for="(node, index) in nodeList"
         :key="node.nodeMeta.nodeId"
         v-model:selectedValue="selectedNodeList"
         :node="node"
         :optionList="optionNode(node)"
         @click:node="handleNodeClick(node, visit)"
+        :testId="`workspace-item-${index}`"
       )
         template(#corner-bottom-left v-if="showPublicLibrary && isFirstLayer")
           f-svg-icon(
@@ -143,6 +149,12 @@ const {
 const showPublicLibrary = computed(
   () => store.getters['permission/notLittleKingRule']
 )
+
+const onClickBreadcrumbItem = (item: any, visit: VoidFunction) => {
+
+  currentNodeId.value = item.nodeId
+  visit()
+}
 
 const optionSort = computed(() => {
   const {

@@ -7,6 +7,7 @@ grid-item-wrapper(
   :optionList="optionList"
   @click="clickNodeHandler"
   :cornerTopRightHover="mainMaterial.digitalThreadInfo.threadQty === 0 && currentMaterialId !== mainMaterial.materialId"
+  :data-cy="testId"
 )
   template(#title) {{ mainMaterial.itemNo }}
   template(#content)
@@ -46,6 +47,7 @@ grid-item-collection(
   :selectValue="node"
   :optionList="optionList"
   @click="clickNodeHandler"
+  :data-cy="testId"
 )
   template(#corner-top-right)
     slot(name="corner-top-right")
@@ -81,6 +83,7 @@ const props = withDefaults(
     optionList?:
       | FunctionOption<NodeChild>[][]
       | FunctionOption<ShareNodeChild>[][]
+    testId?: string
   }>(),
   {
     isSelectable: true,

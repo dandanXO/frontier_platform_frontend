@@ -15,6 +15,7 @@ div
     :placeholder="$t('QQ0009')"
     :acceptType="acceptType"
     :maximumSize="fileSizeMaxLimit"
+    data-cy= "add-your-banner-image"
     @finish="uploadedFromLocale"
     @clear="removeTrendBoard"
     @error="errorCode = $event"

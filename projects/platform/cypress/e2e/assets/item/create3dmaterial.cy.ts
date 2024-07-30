@@ -14,7 +14,7 @@ context(
       cy.get('[data-cy="child-sidebar-org-1-6-assets-library"]').click({ force: true })
 
       //search the data
-      cy.get('[data-cy="assets-item-grid"]', { timeout: 10000 })
+      cy.get('[data-cy="assets-item-grid"]')
       .should('be.visible')
 
       cy.get('[data-cy="search-box"] input')
@@ -22,8 +22,8 @@ context(
       .type('Leather print Test {enter}')
 
       //select the first one
-      cy.get('[data-cy="assets-item-grid"]', { timeout: 10000 }).first().within(() => {
-        cy.contains('p', 'Leather print Test', { timeout: 10000 })
+      cy.get('[data-cy="assets-item-grid"]').first().within(() => {
+        cy.contains('p', 'Leather print Test')
           .should('be.visible')
           .click()
       });
