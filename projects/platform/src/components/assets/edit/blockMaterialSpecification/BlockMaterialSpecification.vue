@@ -50,18 +50,15 @@ div
           data-cy="season-input-year"
         )
     face-side-specification(
-      v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.FACE_SIDE"
-      v-show="currentMaterialSide === MaterialSideType.FACE_SIDE"
+      v-show="showFaceSideSpecification"
       data-cy="face-side-specification"
     )
     middle-side-specification(
-      v-if="mode === CREATE_EDIT.CREATE || values.middleSide"
-      v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.MIDDLE"
+      v-show="showMiddleSideSpecification"
       data-cy="middle-side-specification"
     )
     back-side-specification(
-      v-if="mode === CREATE_EDIT.CREATE || values.isDoubleSide || values.sideType === MaterialSideType.BACK_SIDE"
-      v-show="currentMaterialSide === MATERIAL_SIDE_TYPE.BACK"
+      v-show="showBackSideSpecification"
       data-cy="back-side-specification"
     )
 </template>
@@ -100,6 +97,31 @@ const itemNo = defineInputBinds('itemNo')
 const seasonName = defineInputBinds('seasonInfo.season.name')
 const seasonYear = defineInputBinds('seasonInfo.year')
 const isSeasonPublic = defineInputBinds('seasonInfo.isPublic')
+
+const showFaceSideSpecification = computed(() => {
+  return (
+    currentMaterialSide.value === MaterialSideType.FACE_SIDE &&
+    (mode === CREATE_EDIT.CREATE ||
+      values.isDoubleSide ||
+      values.sideType === MaterialSideType.FACE_SIDE)
+  )
+})
+
+const showMiddleSideSpecification = computed(() => {
+  return (
+    currentMaterialSide.value === MATERIAL_SIDE_TYPE.MIDDLE &&
+    (mode === CREATE_EDIT.CREATE || values.middleSide)
+  )
+})
+
+const showBackSideSpecification = computed(() => {
+  return (
+    currentMaterialSide.value === MATERIAL_SIDE_TYPE.BACK &&
+    (mode === CREATE_EDIT.CREATE ||
+      values.isDoubleSide ||
+      values.sideType === MaterialSideType.BACK_SIDE)
+  )
+})
 
 const lengthValidate = (str: string) => str.slice(0, 10)
 
