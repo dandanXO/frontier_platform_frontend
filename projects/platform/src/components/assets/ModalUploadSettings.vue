@@ -40,34 +40,34 @@ modal-behavior(
             size="24"
             class="md:left-5 text-primary-500 top-7"
           )
-    div(class="w-[1px] border-r border-grey-200")
-    div(class="flex flex-row font-bold w-1/2 ml-4")
-      div(class="flex items-start mr-2")
-        f-svg-icon(iconName="qr_code" size="26" class="md:left-5 top-7 text-grey-900")
-      div(class="flex flex-col items-start")
-        p(class="flex items-center") {{ $t('FF0091') }}
-          f-tooltip-toggle(
-            placement="bottom"
-            :triggerText="''"
-            triggerIcon="info_outline"
-            size="20"
-          )
-            template(#slot:tooltip-toggle-content)
-              i18n-t(
-                keypath="DD0010"
-                tag="div"
-                class="pb-1 text-caption/1.3 text-grey-50"
-                scope="global"
-              )
-        p(
-          class="flex cursor-pointer mt-2 text-primary-500"
-          @click="printBackSideLabel"
-        ) {{ $t('FF0090') }}
-          f-svg-icon(
-            iconName="open_in_new"
-            size="24"
-            class="md:left-5 text-primary-500 top-7"
-          )
+    //- div(class="w-[1px] border-r border-grey-200")
+    //- div(class="flex flex-row font-bold w-1/2 ml-4")
+    //-   div(class="flex items-start mr-2")
+    //-     f-svg-icon(iconName="qr_code" size="26" class="md:left-5 top-7 text-grey-900")
+    //-   div(class="flex flex-col items-start")
+    //-     p(class="flex items-center") {{ $t('FF0091') }}
+    //-       f-tooltip-toggle(
+    //-         placement="bottom"
+    //-         :triggerText="''"
+    //-         triggerIcon="info_outline"
+    //-         size="20"
+    //-       )
+    //-         template(#slot:tooltip-toggle-content)
+    //-           i18n-t(
+    //-             keypath="DD0010"
+    //-             tag="div"
+    //-             class="pb-1 text-caption/1.3 text-grey-50"
+    //-             scope="global"
+    //-           )
+    //-     p(
+    //-       class="flex cursor-pointer mt-2 text-primary-500"
+    //-       @click="printBackSideLabel"
+    //-     ) {{ $t('FF0090') }}
+    //-       f-svg-icon(
+    //-         iconName="open_in_new"
+    //-         size="24"
+    //-         class="md:left-5 text-primary-500 top-7"
+    //-       )
 </template>
 
 <script setup lang="ts">
