@@ -51,10 +51,14 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([ab], { type: mimeString })
 }
 
-const downloadFile = async (url: string, fileName = 'file') => {
+const downloadFile = async (url: string, fileName?: string) => {
   const link = document.createElement('a')
   link.hidden = true
-  link.download = decodeURIComponent(fileName)
+
+  if (fileName) {
+    link.download = decodeURIComponent(fileName)
+  }
+
   link.href = url
   link.text = 'downloading...'
   link.target = '_blank'
