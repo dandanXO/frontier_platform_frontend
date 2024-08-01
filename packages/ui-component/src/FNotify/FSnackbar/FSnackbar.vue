@@ -123,7 +123,7 @@ const props = withDefaults(defineProps<NotifySnackbarProps>(), {
   willClose: true,
   delay: 4000,
   bgColor: 'bg-grey-800',
-  textColor: 'text-gery-100',
+  textColor: 'text-grey-100',
 })
 const getContainerPaddingY = computed(() => {
   switch (props.size) {
