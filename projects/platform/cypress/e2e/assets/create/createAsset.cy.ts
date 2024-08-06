@@ -39,7 +39,7 @@ context(
 
       cy.checkErrorMessages(
         '[data-cy="item-number"] [data-cy="hintError"]',
-        `50.00 character limit`
+        `50 character limit`
       )
 
       cy.get('[data-cy="item-number"] input').clear()
@@ -74,7 +74,7 @@ context(
 
       cy.checkErrorMessages(
         '[data-cy="season-input-year"] [data-cy="hintError"]',
-        'Must be at least 0.00.'
+        'Must be at least 0.'
       )
 
       //verify with decimal value
@@ -97,7 +97,7 @@ context(
       )
       cy.checkErrorMessages(
         '[data-cy="season-input-year"] [data-cy="hintError"]',
-        'Must be no more than 9,999.00.'
+        'Must be no more than 9,999.'
       )
 
       //verify with max value
@@ -128,7 +128,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        '100.00 character limit, This field is required.'
+        '100 character limit, This field is required.'
       )
 
       //test with value more than 100
@@ -139,7 +139,7 @@ context(
         .should('have.value', '101')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Cannot exceed 100'
       )
 
       //test with value 3 decimal
@@ -153,7 +153,7 @@ context(
         .should('have.value', '20.001')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only'
+        'The total fabric content percentage must be 100%, 100 character limit, Enter with 2 decimal places only'
       )
 
       //test with value -1
@@ -167,7 +167,7 @@ context(
         .should('have.value', '-1')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Must be greater than 0'
       )
 
       //test with value 0
@@ -181,7 +181,7 @@ context(
         .should('have.value', '0')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Must be greater than 0'
       )
 
       //test with empty content
@@ -408,7 +408,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="color-info"] [data-cy="hintError"]',
-        '100.00 character limit'
+        '100 character limit'
       )
 
       //empty value
@@ -436,7 +436,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="face-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]',
-        '100.00 character limit'
+        '100 character limit'
       )
 
       //empty value
@@ -507,7 +507,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        '100.00 character limit, This field is required.'
+        '100 character limit, This field is required.'
       )
 
       //test with value more than 100
@@ -518,7 +518,7 @@ context(
         .should('have.value', '101')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Cannot exceed 100.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Cannot exceed 100'
       )
 
       //test with value 3 decimal
@@ -532,7 +532,7 @@ context(
         .should('have.value', '20.001')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Enter with 2 decimal places only'
+        'The total fabric content percentage must be 100%, 100 character limit, Enter with 2 decimal places only'
       )
 
       //test with value -1
@@ -546,7 +546,7 @@ context(
         .should('have.value', '-1')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Must be greater than 0'
       )
 
       //test with value 0
@@ -560,7 +560,7 @@ context(
         .should('have.value', '0')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="content-box"] [data-cy="hintError"]',
-        'The total fabric content percentage must be 100%, 100.00 character limit, Must be greater than 0.00'
+        'The total fabric content percentage must be 100%, 100 character limit, Must be greater than 0'
       )
 
       //test with empty content
@@ -624,7 +624,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="color-info"] [data-cy="hintError"]',
-        '100.00 character limit'
+        '100 character limit'
       )
 
       //empty value
@@ -652,7 +652,7 @@ context(
         .type('{enter}')
       cy.checkErrorMessages(
         '[data-cy="back-side-specification"] [data-cy="pattern-info"] [data-cy="hintError"]',
-        '100.00 character limit'
+        '100 character limit'
       )
 
       //empty value

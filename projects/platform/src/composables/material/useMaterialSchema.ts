@@ -56,7 +56,7 @@ const nonNullParams = {
 
 const toCommaSeparated = (
   n: number | string | BigNumber,
-  decimalPlaces: number = 2
+  decimalPlaces: number = 0
 ) => {
   const bigNumberValue = new BigNumber(n)
   return bigNumberValue.toFormat(decimalPlaces)
@@ -86,8 +86,10 @@ const getCanNotExceedNumberParams = (qty: number) => {
   return [qty, message] as const
 }
 
-const getMinNumberParams = (qty: number) => {
-  const message = i18n.global.t('WW0143', { minNum: toCommaSeparated(qty) })
+const getMinNumberParams = (qty: number, decimalPlaces?: number) => {
+  const message = i18n.global.t('WW0143', {
+    minNum: toCommaSeparated(qty, decimalPlaces),
+  })
   return [qty, message] as const
 }
 
@@ -575,8 +577,8 @@ export const seasonInfoSchema = z.object({
 export const widthValueSchema = z
   .number(nonNullParams)
   .multipleOf(...getMaxDecimalPlacesParams(2))
-  .min(...getMinNumberParams(1))
-  .max(...getMaxNumberParams(999))
+  .min(...getMinNumberParams(1, 2))
+  .max(...getMaxNumberParams(999, 2))
 
 export const materialWidthSchema = z.object({
   cuttable: widthValueSchema,
@@ -588,7 +590,7 @@ export const materialWeightSchema = z.object({
   value: z
     .number(nonNullParams)
     .multipleOf(...getMaxDecimalPlacesParams(3))
-    .min(...getMinNumberParams(1))
+    .min(...getMinNumberParams(1, 2))
     .max(...getMaxNumberParams(99999, 3)),
   unit: z.nativeEnum(WeightUnit, nonNullParams).default(WeightUnit.GSM),
 })
