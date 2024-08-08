@@ -496,6 +496,7 @@ export default function useAssets() {
   const deleteMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DELETE,
     name: () => t('RR0063'),
+    testId:"delete-material",
     func: async (
       // & symbol is used as an intersection type operator to combine multiple types into one that includes all properties from the constituent types.
       m: (Material[] | Material) & { routerBackNodeId?: number }

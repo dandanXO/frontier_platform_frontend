@@ -14,7 +14,8 @@ const canConvertToInt = (str: string) => Number.isInteger(Number(str))
  */
 const getMenuTreeFromEnumText = (
   width: string,
-  enumText: Record<number | string, string>
+  enumText: Record<number | string, string>,
+  prefixTestId?: string
 ): MenuTree => {
   return {
     width,
@@ -23,6 +24,7 @@ const getMenuTreeFromEnumText = (
         menuList: Object.entries(enumText).map(([value, name]) => ({
           selectValue: getSelectValue(value),
           title: name,
+          testId: prefixTestId ? `${prefixTestId}-${value}` : undefined
         })),
       },
     ],
@@ -57,7 +59,7 @@ const useMaterialStaticMenu = () => {
   }))
 
   const sideTypeMenuTree = computed<MenuTree>(() =>
-    getMenuTreeFromEnumText('w-25', materialSideTypeText.value)
+    getMenuTreeFromEnumText('w-25', materialSideTypeText.value, "material-side")
   )
 
   const singleOrDoubleMenuTree = computed<MenuTree>(() => ({
@@ -65,8 +67,8 @@ const useMaterialStaticMenu = () => {
     blockList: [
       {
         menuList: [
-          { title: t('DD0061'), selectValue: false },
-          { title: t('DD0014'), selectValue: true },
+          { title: t('DD0061'), selectValue: false, testId: "1-side"},
+          { title: t('DD0014'), selectValue: true, testId: "2-sides"},
         ],
       },
     ],

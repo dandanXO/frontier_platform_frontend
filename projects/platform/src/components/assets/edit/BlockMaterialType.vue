@@ -15,6 +15,7 @@ div(class="flex flex-col gap-y-7.5 pb-10")
         @update:selectValue="sideType.onInput"
         :dropdownMenuTree="sideTypeMenuTree"
         class="w-25"
+        data-cy="select-material-side"
       )
   f-input-container(:label="$t('MI0003')")
     f-input-checkbox(

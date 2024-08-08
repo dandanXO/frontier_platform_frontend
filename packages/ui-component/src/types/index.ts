@@ -33,6 +33,7 @@ export interface MenuItem {
   scrollAreaMaxHeight?: string // String (Tailwindcss),
   labelColor?: string
   hasNotify?: boolean
+  testId?: string
   clickHandler?: (v: MenuItem) => void
   mouseEnterHandler?: () => void
   mouseLeaveHandler?: () => void

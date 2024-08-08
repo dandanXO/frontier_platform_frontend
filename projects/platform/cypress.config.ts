@@ -2,6 +2,12 @@ import { defineConfig } from 'cypress'
 const env = require('dotenv').config({ path: '.env.testing.local' }).parsed
 
 export default defineConfig({
+  chromeWebSecurity: false,
+  env: {
+    chromeFlags: [
+      '--max-old-space-size=4096', // ram 4096MB
+    ],
+  },
   component: {
     devServer: {
       framework: 'vue',
@@ -23,4 +29,6 @@ export default defineConfig({
     env,
     defaultCommandTimeout: 10 * 1000,
   },
+  experimentalMemoryManagement: true,
+  numTestsKeptInMemory: 1,
 })
