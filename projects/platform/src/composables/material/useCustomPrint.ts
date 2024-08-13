@@ -261,7 +261,7 @@ const usePrint = () => {
     // Only show cuttable width
     const widthDisplayStr = materialInfoForDisplay.width(width, true).value
     // Need to add bold style on Weight title.
-    const weightTitle = `<span class="font-bold ml-2"> Weight：</span>`
+    const weightTitle = `<span class="ml-2"> Weight：</span>`
     const weightDisplayStr = materialInfoForDisplay.weight(
       weight,
       weightForDisplay,
@@ -288,14 +288,14 @@ const usePrint = () => {
       const { frontierNo } = getMaterialBySide(material, sideType)
       const customizeLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          <div class="w-full flex justify-center items-center text-[16px] -mt-[6.5px]">${
+          <div class="w-full flex justify-center items-center text-[16px] py-2 -mt-2">${
             itemNo ?? ''
           }</div>
           <div class="w-full flex justify-start items-start flex-col relative overflow-hidden" id="info-top-content"></div>
-          <div class="w-full flex flex-row relative items-stretch justify-between overflow-hidden max-h-[50%] top-[-6px] min-h-[64px]" id="info-content-2">
+          <div class="w-full flex flex-row static items-stretch justify-between overflow-hidden max-h-[50%] top-[-6px] min-h-[64px]" id="info-content-2">
             <div class="h-auto flex flex-col overflow-hidden break-words" id="info-bottom-left-content"></div>
             <div class="bottom-0 right-0 flex items-end">
-              <div id="qurcode-content" style="width:63px; height:63px;">
+              <div id="qurcode-content" style="width:63px; height:63px;" class="absolute bottom-2 right-2">
                 <div id="qr-code-container" class="relative"></div>
               </div>
             </div>
@@ -345,7 +345,7 @@ const usePrint = () => {
         }
         divRow.classList.add('w-full', 'flex', 'flex-row')
         const rowTitle = document.createElement('p')
-        rowTitle.classList.add(infoSize, 'font-bold')
+        rowTitle.classList.add(infoSize)
         rowTitle.innerHTML = `${key}： `
         divLeftCol.appendChild(rowTitle)
 
@@ -373,7 +373,7 @@ const usePrint = () => {
         }
         divRow.classList.add('w-full', 'flex', 'flex-row')
         const rowTitle = document.createElement('p')
-        rowTitle.classList.add(infoSize, 'font-bold')
+        rowTitle.classList.add(infoSize)
         rowTitle.innerHTML = `${key}： `
         divLeftCol.appendChild(rowTitle)
 
