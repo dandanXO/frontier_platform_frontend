@@ -11,6 +11,7 @@ div(class="flex flex-col gap-y-15")
           size="md"
           prependIcon="add"
           @click="openModalMultimediaSelect"
+          data-cy="upload-button"
         ) {{ $t('UU0022') }}
         div(class="text-caption2 text-grey-600 mt-1")
           p {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}

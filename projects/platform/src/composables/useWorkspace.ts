@@ -202,7 +202,7 @@ export default function useWorkspace() {
 
   const deleteCollection: WorkspaceFunctionOption = {
     id: WORKSPACE_FUNCTION.DELETE_NODE,
-    testId:"delete-collection",
+    testId: 'delete-collection',
     name: () => t('RR0063'),
     func: (n) => {
       const node = toNode(n)
@@ -212,6 +212,7 @@ export default function useWorkspace() {
 
   const deleteMaterial: WorkspaceFunctionOption = {
     id: WORKSPACE_FUNCTION.DELETE_NODE,
+    testId: 'delete-material-inside-collection',
     name: () => t('RR0063'),
     func: (n) => {
       const node = toNode(n)

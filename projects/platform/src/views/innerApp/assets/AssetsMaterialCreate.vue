@@ -176,6 +176,7 @@ const tabList = computed(() => [
   {
     name: t('RR0297'),
     id: TAB.UPLOAD_FILES,
+    testId: 'tab-item-upload-files',
   },
 ])
 

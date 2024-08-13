@@ -6,6 +6,7 @@ search-table(
   :optionSort="optionSort"
   :optionMultiSelect="optionMultiSelect"
   :itemList="nodeList"
+  testId="workspace-name-header"
   v-model:selectedItemList="selectedNodeList"
 )
   template(#box-above)
@@ -52,6 +53,7 @@ search-table(
     )
       div(
         class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+        data-cy="add-asset-inside-workspace"
         @click="openModalAssetsList"
       )
         div(class="flex flex-col justify-center items-center")
@@ -151,7 +153,6 @@ const showPublicLibrary = computed(
 )
 
 const onClickBreadcrumbItem = (item: any, visit: VoidFunction) => {
-
   currentNodeId.value = item.nodeId
   visit()
 }

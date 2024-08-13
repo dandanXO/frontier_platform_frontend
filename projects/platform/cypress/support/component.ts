@@ -37,6 +37,12 @@ declare global {
       saveLocalStorage: VoidFunction
       restoreLocalStorage: VoidFunction
       chooseOrganization: VoidFunction
+      createAsset: (
+        itemNumber: string,
+        twoSides: boolean,
+        middleSide: boolean,
+        side?: string
+      ) => void
     }
   }
 }

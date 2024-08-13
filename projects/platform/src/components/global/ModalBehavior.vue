@@ -5,6 +5,7 @@ div(
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
   div(
     class="absolute w-min rounded card-show pt-5 shadow-32"
+    :data-cy="testId"
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', needFullScreen ? 'w-screen h-screen' : '']"
   )
     div(
@@ -75,6 +76,7 @@ export default {
 <script setup>
 import { useStore } from 'vuex'
 import { THEME } from '@/utils/constants'
+import { string } from 'zod'
 
 defineEmits(['click:primary', 'click:secondary', 'click:text'])
 defineProps({
@@ -138,6 +140,10 @@ defineProps({
   footer: {
     type: Boolean,
     default: true,
+  },
+  testId: {
+    type: String,
+    default: 'modal-behavior-content',
   },
 })
 

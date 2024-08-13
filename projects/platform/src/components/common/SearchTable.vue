@@ -5,6 +5,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
   slot(name="header-above" :visit="visit")
   div(
     data-tooltip-boundary-reference="search-table-header"
+    :data-cy="testId ?? 'search-table'"
     class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
   )
     div
@@ -153,6 +154,7 @@ const props = withDefaults(
       query: RouteQuery
     ) => Promise<void>
     itemList: Material[] | NodeChild[] | ShareNodeChild[]
+    testId?: string
     canSelectAll?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
   }>(),

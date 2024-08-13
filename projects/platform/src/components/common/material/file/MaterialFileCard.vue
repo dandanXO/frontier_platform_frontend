@@ -32,7 +32,7 @@ div(class="w-25 relative cursor-pointer" @click="emits('click')")
             f-svg-icon(iconName="more_horiz" size="24" class="hover:text-primary-400")
       template(#content="{ collapsePopper }")
         f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
-  div(class="absolute left-0 bottom-6")
+  div(class="absolute left-0 bottom-6" data-cy="star-button")
     slot
 </template>
 

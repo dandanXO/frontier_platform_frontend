@@ -4,6 +4,7 @@ modal-behavior(
   :primaryBtnText="actionText"
   :primaryBtnDisabled="actionButtonDisabled"
   :secondaryBtnText="$t('UU0002')"
+  testId="modal-add-asset-in-collection"
   @click:primary="innerActionCallback"
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 ) 
@@ -15,6 +16,7 @@ modal-behavior(
       prependIcon="search"
       :placeholder="$t('FF0017')"
       :disabled="isInRoot"
+      data-cy="search-table-inside-workspace"
       @enter="getMaterialList()"
     )
     div(class="flex-grow flex flex-col")
@@ -74,8 +76,9 @@ modal-behavior(
               p(class="text-caption text-center font-bold line-clamp-3") {{ og.ogName }}
           template(v-else)
             grid-item-material-for-modal(
-              v-for="material in materialList"
+              v-for="(material, index) in materialList"
               class="w-25"
+              :data-cy="`asset-item-workspace-${index}`"
               :key="material.materialId"
               v-model:selectedValue="selectedValue"
               :material="material"

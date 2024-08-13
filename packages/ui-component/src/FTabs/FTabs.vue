@@ -3,11 +3,12 @@ div(class="flex flex-col")
   div(class="border-b border-grey-250 h-10 flex items-end")
     div(class="grid gap-x-6 grid-flow-col justify-start")
       div(
-        v-for="tab in tabList"
+        v-for="(tab, index) in tabList"
         :key="tab.name"
         class="flex cursor-pointer"
         :class="[tab[keyField] === currentTab ? 'border-b-2 border-primary-400 text-grey-900' : 'text-grey-600 hover:text-grey-900', { '!text-grey-250 point-events-none': tab.disabled }]"
         @click="!tab.disabled && switchTab(tab)"
+        :data-cy="tab.testId ?? `tab-item-${index}`"
       )
         f-svg-icon(v-if="tab.icon" :iconName="tab.icon" size="14" class="mr-1")
         p(
