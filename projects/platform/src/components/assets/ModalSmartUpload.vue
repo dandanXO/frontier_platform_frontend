@@ -1,11 +1,12 @@
 <template lang="pug">
 modal-behavior(
-  :header="isUploading ? $t('DD0112') : isFinish ? $t('DD0113') : isCheckingFiles || isDisplayingCheckResult ? $t('DD0126') : $t('DD0094')"
-  :primaryBtnText="isUploading ? '' : isFinish ? $t('UU0087') : $t('UU0022')"
-  :secondaryBtnText="isFinish ? $t('UU0026') : $t('UU0002')"
+  :header="modalHeaderText"
+  :primaryBtnText="primaryBtnText"
+  :secondaryBtnText="secondaryBtnText"
   :primaryBtnDisabled="disabledUpload"
   @click:primary="isFinish ? confirmAndViewProgress() : startUpload()"
   @click:secondary="isFinish ? closeModalBehavior() : cancelUpload()"
+  :usingCustomFooter="isDisplayingCheckResult && !isCheckingFiles"
 )
   template(#note)
     file-upload-error-note(
@@ -17,7 +18,7 @@ modal-behavior(
     div(v-else-if="isUploading" class="flex items-center text-grey-600 leading-1.6")
       f-svg-icon(iconName="info_outline" size="14" class="mr-1.5")
       div(class="w-62.5") {{ $t('DD0106') }}
-  div(class="w-94")
+  div(:class="`w-${isDisplayingCheckResult ? 160 : 94}`")
     template(v-if="materialImageList.length === 0")
       div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-4 pr-3 mb-3")
         div(class="text-grey-600") {{ $t('RR0243') }}
@@ -65,21 +66,18 @@ modal-behavior(
         )
         div(class="text-grey-800 text-center font-bold") {{ materialImageList.length }} {{  " " + $t('DD0128') + " "  }} {{ totalFiles }}
     template(v-else-if="isDisplayingCheckResult")
-      div(class="flex items-center flex-col overflow-auto")
+      div(class="flex items-center flex-col")
         accordion(
-          :title="$t('DD0131')"
-          titleClass="text-primary-600"
+          :title="$t('DD0153', { total: validImages.length })"
+          titleClass="text-primary-400"
           :items="validImages"
         )
         accordion(
-          :title="$t('DD0132')"
+          :title="$t('DD0154', { total: invalidImages.length })"
           titleClass="text-red-600"
           :items="invalidImages"
           isExpanded
         )
-        div(v-if="invalidImages.length > 0" class="w-full bg-red-100 rounded-md p-3 flex") 
-          f-svg-icon(iconName="error_outline" size="20" class="text-red-600 mr-2")
-          div(class="text-grey-700 text-sm") {{ $t('WW0172') }}
     template(v-else)
       template(v-if="isFinish")
         div(class="flex items-center bg-grey-50 py-2.5 px-4 mb-1 h-14.5")
@@ -137,41 +135,50 @@ modal-behavior(
                   class="text-primary-400"
                   data-cy="modal-smart-upload_done"
                 )
+  template(#custom-footer)
+    div(class="p-5 flex flex-col gap-5 shadow-[0_-8px_16px_0px_rgba(0,0,0,0.08)] z-popper")
+      div(v-if="invalidImages.length > 0" class="w-full bg-red-0 rounded-md p-3 flex") 
+        f-svg-icon(iconName="cancel_outline" size="20" class="text-red-600 mr-2")
+        div(class="text-grey-700 text-sm") {{ $t('WW0174') }}
+
+      f-button(
+        size="md"
+        @click="!!validImages.length ? startUpload() : onReuploadModal()"
+      ) {{ primaryBtnTextCustomFooter }}
 </template>
+
+<script lang="ts">
+export const MIN_DIMENSION = 800
+</script>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+
 import {
   FileOperator,
   TRACKER_PREFIX,
   TRACKER_POSTFIX,
   track,
   bytesToSize,
+  UPLOAD_ERROR_CODE,
 } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
-import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { useAssetsStore } from '@/stores/assets'
 import { type S3UploadedObject, Extension } from '@frontier/platform-web-sdk'
-import Accordion from '@/components/assets/modalSmartUpload/Accordion.vue'
+import Accordion, {
+  type ImageItem,
+} from '@/components/assets/modalSmartUpload/Accordion.vue'
 import { INVALID_IMAGE_CODE } from '@/utils/constants'
 import { readImageFile } from '@/utils/readImageFile'
-
-interface ImageItem {
-  file: File
-  processing: number
-  isRemoved: boolean
-  type: string
-  size: number
-  width: number
-  height: number
-  invalidCode: number | null
-}
 
 const TRACKER_ID = 'Upload an Existing Image'
 
 const store = useStore()
+const { t } = useI18n()
+
 const { ogBaseAssetsApi } = useAssetsStore()
 const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const { goToProgress } = useNavigation()
@@ -194,6 +201,56 @@ const invalidImages = computed(() =>
   )
 )
 
+const modalHeaderText = computed(() => {
+  if (isUploading.value) {
+    return t('DD0112')
+  }
+
+  if (isFinish.value) {
+    return t('DD0113')
+  }
+
+  if (isCheckingFiles.value) {
+    return t('DD0126')
+  }
+
+  if (isDisplayingCheckResult.value) {
+    return t('WW0177', { total: materialImageList.value.length })
+  }
+
+  return t('DD0094')
+})
+
+const primaryBtnText = computed(() => {
+  if (isDisplayingCheckResult.value) {
+    return undefined
+  }
+
+  if (isUploading.value) {
+    return ''
+  }
+
+  return isFinish.value ? t('UU0087') : t('UU0022')
+})
+
+const onReuploadModal = () => {
+  isCheckingFiles.value = false
+  isDisplayingCheckResult.value = false
+  materialImageList.value = []
+}
+
+const primaryBtnTextCustomFooter = computed(() => {
+  return validImages.value.length ? t('WW0176') : t('WW0175')
+})
+
+const secondaryBtnText = computed(() => {
+  if (isDisplayingCheckResult.value) {
+    return undefined
+  }
+
+  return isFinish.value ? t('UU0026') : t('UU0002')
+})
+
 const isCheckingFiles = ref(false)
 const isDisplayingCheckResult = ref(false)
 const totalFiles = ref(0)
@@ -206,8 +263,6 @@ const fileSizeMaxLimit = computed(
   () => store.getters['organization/materialAttachmentUploadSizeLimit']
 )
 const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
-const minimumDimensions = 800
-const minimumResolution = 300
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit.value)
 
 const chooseFile = () => {
@@ -219,27 +274,48 @@ const onDrop = (evt: DragEvent) => {
 }
 
 fileOperator.on('finish', async (file: File) => {
-  isCheckingFiles.value = false
+  isCheckingFiles.value = true
+  try {
+    const imageInfo = await readImageFile(file)
+
+    const item: ImageItem = {
+      file,
+      processing: 0,
+      isRemoved: false,
+      invalidCode: null,
+      ...imageInfo,
+    }
+
+    validateImage(item, imageInfo)
+
+    errorCode.value = null
+    materialImageList.value.push(item)
+  } catch (error) {
+    console.error('Error reading image file:', error)
+  }
+
+  const invalidDataExists = !!materialImageList.value.find(
+    (image) => !!image.invalidCode
+  )
+
   if (materialImageList.value.length === totalFiles.value) {
     isCheckingFiles.value = false
-    isDisplayingCheckResult.value = false
   }
+
+  isDisplayingCheckResult.value = invalidDataExists
+  !invalidDataExists && startUpload()
 })
 
 function validateImage(item: ImageItem, imageInfo: any) {
-  // 暫時移除不用的檢查 f22-3766
-  // if (
-  //   imageInfo.width < minimumDimensions ||
-  //   imageInfo.height < minimumDimensions
-  // ) {
-  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
-  //   item.isRemoved = true
-  // }
-  // 暫時移除不用的檢查 f22-3766
-  // if (imageInfo.size > fileSizeMaxLimit.value) {
-  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
-  //   item.isRemoved = true
-  // }
+  if (imageInfo.width < MIN_DIMENSION || imageInfo.height < MIN_DIMENSION) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
+    item.isRemoved = true
+  }
+
+  if (imageInfo.size > fileSizeMaxLimit.value) {
+    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
+    item.isRemoved = true
+  }
 
   if (
     !acceptType.some((type) =>
@@ -249,46 +325,14 @@ function validateImage(item: ImageItem, imageInfo: any) {
     item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_TYPE
     item.isRemoved = true
   }
-
-  // F22-3547 disable image upload resolution validation
-  // if (
-  //   imageInfo.xResolution < minimumResolution ||
-  //   imageInfo.yResolution < minimumResolution
-  // ) {
-  //   item.invalidCode = INVALID_IMAGE_CODE.INVALID_RESOLUTION
-  //   item.isRemoved = true
-  // }
 }
 
 fileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
   errorCode.value = code
 })
 
-fileOperator.on('filesValidated', async (files: File[]) => {
+fileOperator.on('filesValidated', (files: File[]) => {
   totalFiles.value = files.length
-  const _files = Array.from(files)
-  for (let i = 0; i < _files.length; i += 1) {
-    try {
-      const imageInfo = await readImageFile(_files[i])
-
-      const item: ImageItem = {
-        file: _files[i],
-        processing: 0,
-        isRemoved: false,
-        invalidCode: null,
-        ...imageInfo,
-      }
-
-      validateImage(item, imageInfo)
-
-      errorCode.value = null
-      materialImageList.value.push(item)
-    } catch (error) {
-      console.error('Error reading image file:', error)
-    }
-  }
-
-  startUpload()
 })
 
 const startUpload = () => {

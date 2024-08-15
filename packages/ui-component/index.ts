@@ -11,6 +11,7 @@ export default {
 }
 
 import FButton from './src/FButton/FButton.vue'
+import FBadge from './src/FBadge/FBadge.vue'
 import FButtonLabel from './src/FButtonLabel/FButtonLabel.vue'
 import FSvgIcon from './src/FSvgIcon/FSvgIcon.vue'
 import FLabel from './src/FLabel/FLabel.vue'
@@ -32,6 +33,7 @@ import FTag from './src/FTag/FTag.vue'
 
 export {
   FButton,
+  FBadge,
   FButtonLabel,
   FSvgIcon,
   FLabel,

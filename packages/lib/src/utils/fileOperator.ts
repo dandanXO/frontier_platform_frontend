@@ -202,16 +202,19 @@ class FileOperator {
     this.validateFiles(evt!.dataTransfer!.files)
   }
 
-  validateFiles(files: FileList) {
-    // 暫時移除不用的檢查 f22-3766
-    // for (let i = 0; i < files.length; i++) {
-    //   const file = files[i]
+  validateFiles(fileList: FileList) {
+    const files = Array.from(fileList)
+    const isError = files.some((file) => {
+      if (file.size > this.fileSizeMaxLimit) {
+        this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT, { file })
+        return true
+      }
+      return false
+    })
 
-    //   if (file.size > this.fileSizeMaxLimit) {
-    //     this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT, { file })
-    //     return
-    //   }
-    // }
+    if (isError) {
+      return
+    }
 
     Array.from(files).forEach((file) => this.uploadHandler(file))
     this.event.emit('filesValidated', files)

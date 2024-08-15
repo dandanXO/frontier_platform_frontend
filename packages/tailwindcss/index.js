@@ -38,6 +38,7 @@ module.exports = plugin(function () {}, {
       cyan: colors.cyan,
       yellow: colors.yellow,
       red: colors.red,
+      green: colors.green,
     },
     extend: {
       colors: {

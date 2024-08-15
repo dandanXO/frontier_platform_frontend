@@ -168,6 +168,9 @@ importers:
       start-server-and-test:
         specifier: ^1.14.0
         version: 1.15.5
+      storybook-addon-vue-slots:
+        specifier: ^0.9.29
+        version: 0.9.29(@storybook/blocks@7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/components@7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/core-events@7.6.19)(@storybook/preview-api@7.6.19)(@storybook/theming@7.6.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/types@7.6.19)(@storybook/vue3@7.6.19(vue@3.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vue@3.3.4)
       tailwindcss:
         specifier: 3.3.0
         version: 3.3.0(postcss@8.4.38)
@@ -6365,6 +6368,25 @@ packages:
   store2@2.14.3:
     resolution: {integrity: sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==}
 
+  storybook-addon-vue-slots@0.9.29:
+    resolution: {integrity: sha512-7KdbUbYN8Lmblc9Rf06mYNQX10aYePNZBONpNMtFIS+VsZGxVXiaclkE95siou3/TPe/yRhv3hnE/VbFsnUlFw==}
+    peerDependencies:
+      '@storybook/blocks': ^7.0.27
+      '@storybook/components': ^7.0.27
+      '@storybook/core-events': ^7.0.27
+      '@storybook/preview-api': ^7.0.27
+      '@storybook/theming': ^7.0.27
+      '@storybook/types': ^7.0.27
+      '@storybook/vue3': ^7.0.27
+      react: ^16.8.0 || ^17.0.27 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.27 || ^18.0.0
+      vue: ^3.3.4
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   storybook@7.6.19:
     resolution: {integrity: sha512-xWD1C4vD/4KMffCrBBrUpsLUO/9uNpm8BVW8+Vcb30gkQDfficZ0oziWkmLexpT53VSioa24iazGXMwBqllYjQ==}
     hasBin: true
@@ -7016,8 +7038,8 @@ packages:
   vue-component-type-helpers@2.0.21:
     resolution: {integrity: sha512-3NaicyZ7N4B6cft4bfb7dOnPbE9CjLcx+6wZWAg5zwszfO4qXRh+U52dN5r5ZZfc6iMaxKCEcoH9CmxxoFZHLg==}
 
-  vue-component-type-helpers@2.0.26:
-    resolution: {integrity: sha512-sO9qQ8oC520SW6kqlls0iqDak53gsTVSrYylajgjmkt1c0vcgjsGSy1KzlDrbEx8pm02IEYhlUkU5hCYf8rwtg==}
+  vue-component-type-helpers@2.0.29:
+    resolution: {integrity: sha512-58i+ZhUAUpwQ+9h5Hck0D+jr1qbYl4voRt5KffBx8qzELViQ4XdT/Tuo+mzq8u63teAG8K0lLaOiL5ofqW38rg==}
 
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
@@ -9619,7 +9641,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.3.4
-      vue-component-type-helpers: 2.0.26
+      vue-component-type-helpers: 2.0.29
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -14683,6 +14705,20 @@ snapshots:
 
   store2@2.14.3: {}
 
+  storybook-addon-vue-slots@0.9.29(@storybook/blocks@7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/components@7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/core-events@7.6.19)(@storybook/preview-api@7.6.19)(@storybook/theming@7.6.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/types@7.6.19)(@storybook/vue3@7.6.19(vue@3.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vue@3.3.4):
+    dependencies:
+      '@storybook/blocks': 7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/components': 7.6.19(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/core-events': 7.6.19
+      '@storybook/preview-api': 7.6.19
+      '@storybook/theming': 7.6.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/types': 7.6.19
+      '@storybook/vue3': 7.6.19(vue@3.3.4)
+      vue: 3.3.4
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   storybook@7.6.19:
     dependencies:
       '@storybook/cli': 7.6.19
@@ -15377,7 +15413,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.21: {}
 
-  vue-component-type-helpers@2.0.26: {}
+  vue-component-type-helpers@2.0.29: {}
 
   vue-demi@0.13.11(vue@3.3.4):
     dependencies:

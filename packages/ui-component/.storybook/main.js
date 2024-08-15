@@ -8,6 +8,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
     '@storybook/addon-styling',
+    'storybook-addon-vue-slots',
   ],
   framework: {
     name: '@storybook/vue3-vite',

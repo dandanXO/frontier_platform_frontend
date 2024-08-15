@@ -27,7 +27,7 @@ div(
     f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-115 box-content relative")
       slot(name="default")
     div(
-      v-if="footer"
+      v-if="footer && !usingCustomFooter"
       class="p-5 h-18.5 border-content border-t flex items-center"
       :class="[theme === THEME.DARK ? 'border-grey-700' : 'border-grey-100']"
     )
@@ -65,6 +65,7 @@ div(
             data-cy="modal-behavior_primary"
             @click="$emit('click:primary')"
           ) {{ primaryBtnText }}
+    slot(v-if="usingCustomFooter" name="custom-footer")
 </template>
 
 <script>
@@ -144,6 +145,9 @@ defineProps({
   testId: {
     type: String,
     default: 'modal-behavior-content',
+  usingCustomFooter: {
+    type: Boolean,
+    default: false,
   },
 })
 

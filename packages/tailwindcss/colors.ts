@@ -15,6 +15,7 @@ export interface Colors {
     300: '#57B4DF'
     200: '#7AD1ED'
     100: '#A8EAFA'
+    50: '#ECF8FB'
     0: '#D4F7FD'
   }
   yellow: {
@@ -27,7 +28,14 @@ export interface Colors {
     300: '#F3DB86'
     200: '#F7E69D'
     100: '#FBF0BE'
+    50: '#FEF9EB'
     0: '#FEF9DB'
+  }
+  green: {
+    50: '#EBF3F1'
+    200: '#9CC5BA'
+    400: '#4E9784'
+    700: '#005B43'
   }
   red: {
     900: '#460118'
@@ -39,6 +47,7 @@ export interface Colors {
     300: '#F0938A'
     200: '#F5A491'
     100: '#FAC9B8'
+    50: '#FDEBEE'
     0: '#FDE7DA'
   }
   grey: {
@@ -113,6 +122,7 @@ const colors: Colors = {
     300: '#57B4DF',
     200: '#7AD1ED',
     100: '#A8EAFA',
+    50: '#ECF8FB',
     0: '#D4F7FD',
   },
   yellow: {
@@ -125,6 +135,7 @@ const colors: Colors = {
     300: '#F3DB86',
     200: '#F7E69D',
     100: '#FBF0BE',
+    50: '#FEF9EB',
     0: '#FEF9DB',
   },
   red: {
@@ -137,6 +148,7 @@ const colors: Colors = {
     300: '#F0938A',
     200: '#F5A491',
     100: '#FAC9B8',
+    50: '#FDEBEE',
     0: '#FDE7DA',
   },
   grey: {
@@ -177,6 +189,12 @@ const colors: Colors = {
     300: '#C7A288',
     100: '#ECE0D7',
     50: '#F6F0EB',
+  },
+  green: {
+    700: '#005B43',
+    200: '#9CC5BA',
+    400: '#4E9784',
+    50: '#EBF3F1',
   },
   forestgreen: {
     800: '#1D401D',
