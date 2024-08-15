@@ -289,7 +289,7 @@ const handleGoNext = async () => {
   store.dispatch('helper/closeModalLoading')
 }
 
-const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
+const handleConfirm = async () => {
   try {
     if (!currentSide.value) {
       throw new Error('refTargetSide not existed.')
@@ -302,7 +302,6 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
         return null
       }
 
-      const { options, rotateDeg: squareCropRotateDeg } = side.config
       if (side.cropMode === CROP_MODE.SQUARE) {
         const { perspectiveCropRecord } = side
         if (!perspectiveCropRecord) {
@@ -414,7 +413,7 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
       faceSide: faceSideReq,
       backSide: backSideReq,
       isAutoRepeat: false,
-      isReplaceFaceAndBackSide,
+      isReplaceFaceAndBackSide: true,
       hasHole: hasHole.value,
       holeColor: holeColor.value,
     })
@@ -439,33 +438,6 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
 
 const handleClose = () => {
   store.dispatch('helper/closeModal')
-}
-
-const handleConfirm = async () => {
-  const onGenereteMaterial = (isReplaceFaceAndBackSide: boolean) => () => {
-    setTimeout(() => {
-      generateAssetsMaterialU3m(isReplaceFaceAndBackSide)
-    }, 500)
-  }
-  store.dispatch('helper/pushModalConfirm', {
-    type: NOTIFY_TYPE.INFO,
-    theme: THEME.LIGHT,
-    header: t('EE0202'),
-    contentText: t('EE0203'),
-    primaryBtnText: t('EE0205'),
-    secondaryBtnText: t('EE0204'),
-    primaryBtnHandler: onGenereteMaterial(true),
-    secondaryBtnHandler: onGenereteMaterial(false),
-  })
-}
-
-const handleCropLayoutRefUpdate = (sideName: U3M_CUT_SIDE, el: any) => {
-  if (sideName === U3M_CUT_SIDE.FACE_SIDE) {
-    refFaceSideCropLayout.value = el
-  }
-  if (sideName === U3M_CUT_SIDE.BACK_SIDE) {
-    refBackSideCropLayout.value = el
-  }
 }
 
 const handleCropAreaRefUpdate = (

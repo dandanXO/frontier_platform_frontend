@@ -145,6 +145,7 @@ defineProps({
   testId: {
     type: String,
     default: 'modal-behavior-content',
+  },
   usingCustomFooter: {
     type: Boolean,
     default: false,
