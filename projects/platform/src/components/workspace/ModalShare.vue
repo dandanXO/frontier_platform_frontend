@@ -97,7 +97,7 @@ modal-behavior(
                     template(#slot:tooltip-trigger)
                       f-tag(class="rounded-[20px]" @click="copyEmbedAccessCode")
                         f-svg-icon(
-                          iconName="copy_link"
+                          iconName="content_copy"
                           size="16"
                           class="text-grey-800"
                         )
