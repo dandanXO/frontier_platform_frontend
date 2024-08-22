@@ -1,48 +1,56 @@
 <template lang="pug">
 div(
   v-if="type === 'face' && faceSideMaterial"
-  class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
+  class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-col overflow-hidden"
 )
-  div(
-    class="w-[83px] h-full flex flex-col"
-    :class="[{ 'justify-between': !isCustomize }]"
-  )
-    div(v-if="isCustomize" class="w-full flex justify-center")
-      img(:src="logo" class="w-8 h-8 object-cover rounded")
-    div(class="w-full flex flex-row justify-center mt-2 mb-4")
-      div(:id="`qr-code-${index}-face`" class="relative")
-    div(class="w-full flex flex-col items-center" :class="[{ 'mb-[3px]': !isCustomize }]")
-      p(class="text-[10px] bold") {{ $t('DD0046') }}
-      p(class="text-[10px] text-grey-600") {{ faceSideMaterial.frontierNo }}
-  div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="font-bold mb-2") {{ material.itemNo }}
+  div(class="text-[8.5px]" v-if="setting.materialInfoOptions.isPrintOrgName") {{ orgName }}
+  div(class="flex flex-row overflow-hidden")
     div(
-      v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
-      class="w-full flex"
-      :key="info"
+      class="w-[83px] h-full flex flex-col"
+      :class="[{ 'justify-between': !isCustomize }]"
     )
-      p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
-    div(class="flex flex-row")
+      div(v-if="isCustomize" class="w-full flex justify-center")
+        img(:src="logo" class="w-8 h-8 object-cover rounded")
+      div(class="w-full flex flex-row justify-center mt-2 mb-2")
+        div(:id="`qr-code-${index}-face`" class="relative")
       div(
-        v-for="key in Object.keys(carbonEmissions)"
-        class="flex flex-row items-center"
-        :key="key"
+        class="w-full flex flex-col items-center"
+        :class="[{ 'mb-[3px]': !isCustomize }]"
       )
-        img(
-          v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
-          :src="emissionsIconMapper[key]"
-          :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
-        )
+        p(class="text-[10px] bold") {{ $t('DD0046') }}
         p(
-          v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
+          class="text-[10px] text-grey-600"
+          v-if="setting.materialInfoOptions.isPrintFrontierNo"
+        ) {{ faceSideMaterial.frontierNo }}
+    div(class="w-px h-[150px] bg-grey-250 mx-2")
+    div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
+      p(class="font-bold mb-2") {{ material.itemNo }}
+      div(
+        v-for="info in getPrintLabelItems({ sideType: MaterialSideType.FACE_SIDE, material: material }, setting)"
+        class="w-full flex"
+        :key="info"
+      )
+        p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
+      div(class="flex flex-row")
+        div(
+          v-for="key in Object.keys(carbonEmissions)"
+          class="flex flex-row items-center"
+          :key="key"
+        )
+          img(
+            v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
+            :src="emissionsIconMapper[key]"
+            :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
+          )
+          p(
+            v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
+            :class="fontSizeOptions[fontSizeIndex]"
+          ) {{ `${carbonEmissions[key].value} ${t(emissionsTextCodeMapper[key])}` }}
+      div(class="flex flex-row")
+        p(
+          v-if="setting.ecoImpactorOptions.isPrintCapturedTime && material.carbonEmission && material.carbonEmission.lastUpdateTime"
           :class="fontSizeOptions[fontSizeIndex]"
-        ) {{ `${carbonEmissions[key].value} ${t(emissionsTextCodeMapper[key])}` }}
-    div(class="flex flex-row")
-      p(
-        v-if="setting.ecoImpactorOptions.isPrintCapturedTime && material.carbonEmission && material.carbonEmission.lastUpdateTime"
-        :class="fontSizeOptions[fontSizeIndex]"
-      ) {{ t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime) }) }}
+        ) {{ t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime) }) }}
 div(
   v-else-if="type === 'face' && !faceSideMaterial"
   class="w-[300px] h-[167px] border border-dotted border-grey-250 mr-4 flex flex-row justify-center bg-[#f9f9f9]"
@@ -51,46 +59,54 @@ div(
     p(class="text-[12px] text-grey-250") {{ $t('MM0045') }}
 div(
   v-if="type === 'back' && backSideMaterial"
-  class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-row overflow-hidden"
+  class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-col overflow-hidden"
 )
-  div(
-    class="w-[83px] h-full flex flex-col"
-    :class="[{ 'justify-between': !isCustomize }]"
-  )
-    div(v-if="isCustomize" class="w-full flex justify-center")
-      img(:src="logo" class="w-8 h-8 object-cover rounded")
-    div(class="w-full flex flex-row justify-center mt-2 mb-4")
-      div(:id="`qr-code-${index}-back`" class="relative")
-    div(class="w-full flex flex-col items-center" :class="[{ 'mb-[3px]': !isCustomize }]")
-      p(class="text-[10px] bold") {{ $t('DD0047') }}
-      p(class="text-[10px] text-grey-600") {{ backSideMaterial.frontierNo }}
-  div(class="w-px h-[150px] bg-grey-250 mx-2")
-  div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
-    p(class="font-bold mb-2") {{ material.itemNo }}
+  div(class="text-[8.5px]" v-if="setting.materialInfoOptions.isPrintOrgName") {{ orgName }}
+  div(class="flex flex-row overflow-hidden")
     div(
-      v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
-      :key="info"
+      class="w-[83px] h-full flex flex-col"
+      :class="[{ 'justify-between': !isCustomize }]"
     )
-      p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
-    div(class="flex flex-row")
+      div(v-if="isCustomize" class="w-full flex justify-center")
+        img(:src="logo" class="w-8 h-8 object-cover rounded")
+      div(class="w-full flex flex-row justify-center mt-2 mb-4")
+        div(:id="`qr-code-${index}-back`" class="relative")
       div(
-        v-for="key in Object.keys(carbonEmissions)"
-        class="flex flex-row items-center"
-        :key="key"
+        class="w-full flex flex-col items-center"
+        :class="[{ 'mb-[3px]': !isCustomize }]"
       )
-        img(
-          v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
-          :src="emissionsIconMapper[key]"
-          :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
-        )
+        p(class="text-[10px] bold") {{ $t('DD0047') }}
         p(
-          v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
-          :class="fontSizeOptions[fontSizeIndex]"
-        ) {{ `${carbonEmissions[key].value} ${t(emissionsTextCodeMapper[key])}` }}
-    p(
-      v-if="setting.ecoImpactorOptions.isPrintCapturedTime && material.carbonEmission && material.carbonEmission.lastUpdateTime"
-      :class="fontSizeOptions[fontSizeIndex]"
-    ) {{ t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime) }) }}
+          class="text-[10px] text-grey-600"
+          v-if="setting.materialInfoOptions.isPrintFrontierNo"
+        ) {{ backSideMaterial.frontierNo }}
+    div(class="w-px h-[150px] bg-grey-250 mx-2")
+    div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
+      p(class="font-bold mb-2") {{ material.itemNo }}
+      div(
+        v-for="info in getPrintLabelItems({ sideType: MaterialSideType.BACK_SIDE, material: material }, setting)"
+        :key="info"
+      )
+        p(:class="fontSizeOptions[fontSizeIndex]") {{ info }}
+      div(class="flex flex-row")
+        div(
+          v-for="key in Object.keys(carbonEmissions)"
+          class="flex flex-row items-center"
+          :key="key"
+        )
+          img(
+            v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
+            :src="emissionsIconMapper[key]"
+            :class="[iconSizeOptions[fontSizeIndex], 'mr-[2px]']"
+          )
+          p(
+            v-if="setting.ecoImpactorOptions[emissionsSettingMapper[key]] && carbonEmissions[key].value"
+            :class="fontSizeOptions[fontSizeIndex]"
+          ) {{ `${carbonEmissions[key].value} ${t(emissionsTextCodeMapper[key])}` }}
+      p(
+        v-if="setting.ecoImpactorOptions.isPrintCapturedTime && material.carbonEmission && material.carbonEmission.lastUpdateTime"
+        :class="fontSizeOptions[fontSizeIndex]"
+      ) {{ t('BB0141', { date: toYYYYMMDDFormat(material.carbonEmission.lastUpdateTime), time: toHHMMAFormat(material.carbonEmission.lastUpdateTime) }) }}
 div(
   v-else-if="type === 'back' && !backSideMaterial"
   class="w-[300px] h-[167px] border border-dotted border-grey-250 ml-4 flex flex-row justify-center bg-[#f9f9f9]"
@@ -129,7 +145,9 @@ const store = useStore()
 
 const logo = computed<string>(() => store.getters['organization/orgLogo'])
 const orgId = computed<number>(() => store.getters['organization/orgId'])
-
+const orgName = computed<number>(
+  () => store.getters['organization/organization'].orgName
+)
 const material = toRef(props.material)
 const faceSideMaterial = computed(() =>
   getMaterialBySide(material.value, MaterialSideType.FACE_SIDE)

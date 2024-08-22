@@ -554,3 +554,11 @@ export const PrintLabelSettingEcoImpactor = {
   ],
   dataKey: 'ecoImpactorOptions',
 }
+
+export const PrintLabelSettingBasicInfo = {
+  options: [
+    { label: i18n.global.t('OO0022'), value: 'isPrintOrgName' },
+    { label: i18n.global.t('RR0084'), value: 'isPrintFrontierNo' },
+  ],
+  dataKey: 'materialInfoOptions',
+}

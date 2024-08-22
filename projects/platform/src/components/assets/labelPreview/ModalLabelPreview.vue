@@ -74,6 +74,15 @@ modal-behavior(
       div(class="w-full px-3 pt-4 pb-3 justify-between")
         p(class="text-xs font-bold mb-2") {{ $t('MM0039') }}
         div(class="border border-transparent border-b-grey-150 mb-5 pb-3")
+          f-input-checkbox(
+            v-for="(option, index) in PrintBaseInfoConfig.options"
+            :key="index"
+            v-model:inputValue="PrintBaseInfoConfig.list.value"
+            :label="option.label"
+            :value="option.value"
+            class="px-1"
+            @update:inputValue="setAbleToUpdateSetting"
+          )
           p(class="text-[10px] font-bold mb-2 text-grey-400") {{ $t('MI0003') }}
           div(v-for="(materialType, index) in materialTypeConfig" class="")
             f-expansion-panel(class="hover:bg-grey-150 rounded mb-2")
@@ -145,6 +154,7 @@ import LabelPreview from '@/components/assets/labelPreview/LabelPreview.vue'
 import {
   PrintLabelSettingMaterialType,
   PrintLabelSettingEcoImpactor,
+  PrintLabelSettingBasicInfo,
   PrintLabelSettingMaterialInformation,
 } from '@/utils/constants'
 
@@ -241,6 +251,25 @@ const ecoImpactorConfig = computed(() => {
   }
 })
 
+const PrintBaseInfoConfig = computed(() => {
+  const mappedList: string[] = []
+  for (const option of PrintLabelSettingBasicInfo.options) {
+    if (
+      printSetting.value &&
+      printSetting.value[`${PrintLabelSettingBasicInfo.dataKey}`][
+        `${option.value}`
+      ]
+    ) {
+      mappedList.push(option.value)
+    }
+  }
+
+  return {
+    options: PrintLabelSettingBasicInfo.options,
+    list: ref<string[]>(mappedList),
+  }
+})
+
 const hasSetSetting = ref<boolean>(false)
 
 const setHasSetting = (status: boolean): void => {
@@ -315,6 +344,15 @@ const getCurrentSetting = (): QrCodePrintLabelSetting => {
     materialInfoObject = {
       ...materialInfoObject,
       [configKey.value]: materialInformationConfig.value.list.value.includes(
+        configKey.value
+      ),
+    }
+  }
+  // company name and frontier number
+  for (const configKey of PrintLabelSettingBasicInfo.options) {
+    materialInfoObject = {
+      ...materialInfoObject,
+      [configKey.value]: PrintBaseInfoConfig.value.list.value.includes(
         configKey.value
       ),
     }

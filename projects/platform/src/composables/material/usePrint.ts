@@ -689,50 +689,72 @@ const usePrint = () => {
 
       const normalLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          <div class="w-[83px] h-full flex flex-col justify-between">
-            <div class="w-full flex flex-row justify-center mt-2 mb-4">
-              <div id="qr-code-container" class="relative"></div>
+          ${
+            setting.materialInfoOptions.isPrintOrgName
+              ? `<div class="text-[8px] mb-[6px] -mt-2">${org.value.orgName}</div>`
+              : ''
+          }
+          <div class="flex flex-row overflow-hidden">
+            <div class="w-[83px] h-full flex flex-col justify-between">
+              <div class="w-full flex flex-row justify-center mt-2 mb-2">
+                <div id="qr-code-container" class="relative"></div>
+              </div>
+              <div class="w-full flex flex-col items-center mb-[10px]">
+                <p class="text-[10px] bold whitespace-nowrap">${
+                  sideType === MaterialSideType.FACE_SIDE
+                    ? t('DD0046')
+                    : t('DD0047')
+                }</p>
+                ${
+                  setting.materialInfoOptions.isPrintFrontierNo
+                    ? `<p class="text-[10px] text-grey-600">${frontierNo}</p>`
+                    : ''
+                }
+              </div>
             </div>
-            <div class="w-full flex flex-col items-center mb-[10px]">
-              <p class="text-[10px] bold whitespace-nowrap">${
-                sideType === MaterialSideType.FACE_SIDE
-                  ? t('DD0046')
-                  : t('DD0047')
-              }</p>
-              <p class="text-[10px] text-grey-600">${frontierNo}</p>
+
+            <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
+
+            <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
+              <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
             </div>
-          </div>
-
-          <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
-
-          <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
           </div>
         `
       }
       const customizeLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          <div class="w-[83px] h-full flex flex-col">
-            <div class="w-full flex justify-center">
-              <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
+          ${
+            setting.materialInfoOptions.isPrintOrgName
+              ? `<div class="text-[8px] mb-[6px] -mt-2">${org.value.orgName}</div>`
+              : ''
+          }
+          <div class="flex flex-row overflow-hidden">
+            <div class="w-[83px] h-full flex flex-col">
+              <div class="w-full flex justify-center">
+                <img src="${logo.value}" class="w-8 h-8 object-cover rounded" />
+              </div>
+              <div class="w-full flex flex-row justify-center mt-2 ≈">
+                <div id="qr-code-container" class="relative"></div>
+              </div>
+              <div class="w-full flex flex-col items-center">
+                <p class="text-[10px] bold whitespace-nowrap">${
+                  sideType === MaterialSideType.FACE_SIDE
+                    ? t('DD0046')
+                    : t('DD0047')
+                }</p>
+                ${
+                  setting.materialInfoOptions.isPrintFrontierNo
+                    ? `<p class="text-[10px] text-grey-600">${frontierNo}</p>`
+                    : ''
+                }
+              </div>
             </div>
-            <div class="w-full flex flex-row justify-center mt-2 mb-4">
-              <div id="qr-code-container" class="relative"></div>
-            </div>
-            <div class="w-full flex flex-col items-center">
-              <p class="text-[10px] bold whitespace-nowrap">${
-                sideType === MaterialSideType.FACE_SIDE
-                  ? t('DD0046')
-                  : t('DD0047')
-              }</p>
-              <p class="text-[10px] text-grey-600">${frontierNo}</p>
-            </div>
-          </div>
 
-          <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
+            <div class="w-px h-[150px] bg-grey-250 mx-2"></div>
 
-          <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
-            <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
+            <div id="info-container" class="${infoContainerWidth} h-full max-h-full flex flex-col overflow-hidden">
+              <p class="font-bold mb-2 mt-[-5px]">${itemNo ?? ''}</p>
+            </div>
           </div>
         `
       }
@@ -746,7 +768,7 @@ const usePrint = () => {
         'pt-2',
         'pb-1',
         'flex',
-        'flex-row',
+        'flex-col',
         'overflow-hidden',
         'relative',
         'top-[-9999px]'
