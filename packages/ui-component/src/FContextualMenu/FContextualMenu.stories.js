@@ -1,4 +1,4 @@
-import FContextualMenu from './FContextualMenu.vue'
+import FContextualMenu, { CONTEXTUAL_MENU_TYPE } from './FContextualMenu.vue'
 import { CONTEXTUAL_MENU_MODE, SIZE, THEME } from '../constants'
 import { h, ref, shallowRef } from 'vue'
 
@@ -9,6 +9,7 @@ const menuTree = {
   width: 'w-60',
   blockList: [
     {
+      blockTitle: 'Menu Title',
       menuList: [
         {
           title: 'Menu 1',
@@ -44,6 +45,10 @@ export default {
     selectMode: {
       control: { type: 'select' },
       options: [0, 1, 2, 3],
+    },
+    type: {
+      control: { type: 'radio' },
+      options: [CONTEXTUAL_MENU_TYPE.LIST, CONTEXTUAL_MENU_TYPE.TAB],
     },
   },
 }

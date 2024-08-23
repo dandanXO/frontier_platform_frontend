@@ -127,6 +127,9 @@ f-input-container(
           :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
           :menuTree="dropdownMenuTree"
         )
+          template(#custom-not-found)
+            slot(name="custom-not-found")
+
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
@@ -559,7 +562,11 @@ const addNewMenu = async () => {
    */
 
   // step 1
-  if (!isFilled.value || !props.canAddNew) {
+  if (
+    !isFilled.value ||
+    !props.canAddNew ||
+    refContextualMenu.value.disabledAddNew
+  ) {
     return
   }
 

@@ -1,12 +1,12 @@
 <template lang="pug">
 div(class="flex flex-col")
   div(class="border-b border-grey-250 h-10 flex items-end")
-    div(class="grid gap-x-6 grid-flow-col justify-start")
+    div(:class="tabListContainerStyle")
       div(
         v-for="(tab, index) in tabList"
         :key="tab.name"
         class="flex cursor-pointer"
-        :class="[tab[keyField] === currentTab ? 'border-b-2 border-primary-400 text-grey-900' : 'text-grey-600 hover:text-grey-900', { '!text-grey-250 point-events-none': tab.disabled }]"
+        :class="[tab[keyField] === currentTab ? 'border-b-2 border-primary-400 text-grey-900' : 'text-grey-600 hover:text-grey-900', { '!text-grey-250 point-events-none': tab.disabled }, tabItemContainerStyle]"
         @click="!tab.disabled && switchTab(tab)"
         :data-cy="tab.testId ?? `tab-item-${index}`"
       )
@@ -58,6 +58,13 @@ const props = defineProps({
    */
   initValue: {
     type: [String, Number],
+  },
+  tabListContainerStyle: {
+    type: String,
+    default: 'grid gap-x-6 grid-flow-col justify-start',
+  },
+  tabItemContainerStyle: {
+    type: String,
   },
 })
 const emit = defineEmits(['switch'])

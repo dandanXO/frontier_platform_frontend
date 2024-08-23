@@ -15,6 +15,15 @@ div(
     v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
     v-bind="innerMenuTree.button"
   )
+  f-tabs(
+    v-if="innerMenuTree.type === CONTEXTUAL_MENU_TYPE.TAB"
+    ref="refTab"
+    :tabList="tabList"
+    @switch="switchTab($event.id)"
+    tabListContainerStyle="flex flex-row justify-center flex-1"
+    tabItemContainerStyle="flex-1 flex-row justify-center"
+    keyField="id"
+  )
   //- Search Input
   template(v-if="innerMenuTree.searchEnable")
     div(class="h-8 flex items-center px-4")
@@ -26,15 +35,15 @@ div(
       )
     div(class="w-full h-px my-1 bg-grey-150")
   //- Add New Menu
-  template(v-if="canAddNew")
+  template(v-if="!disabledAddNew")
     template(v-if="!!searchInput && !menuIsExist")
       div(class="px-4 min-h-6 flex items-center")
         p(class="text-caption text-grey-600 break-all")
           span Press
           span(class="font-bold") &nbspEnter&nbsp
           span to create "{{ searchInput }}"
-      div(v-if="filteredBlockList.length !== 0" class="w-full h-px my-1 bg-grey-150")
-    div(v-else-if="filteredBlockList.length === 0" class="px-4 min-h-6 flex items-center")
+      div(v-if="!isEmpty" class="w-full h-px my-1 bg-grey-150")
+    div(v-else-if="isEmpty" class="px-4 min-h-6 flex items-center")
       i18n-t(
         keypath="RR0256"
         tag="p"
@@ -44,13 +53,21 @@ div(
         template(#Enter)
           span(class="font-bold") Enter
   div(
-    v-if="filteredBlockList.length > 0"
-    :class="innerMenuTree.scrollAreaMaxHeight"
+    v-if="isItemsExist[innerMenuTree.type ?? CONTEXTUAL_MENU_TYPE.LIST]"
     class="overflow-y-auto overflow-x-hidden overscroll-contain"
     data-cy="f-context-menu"
   )
+    contextual-menu-node(
+      v-for="menu in filteredBlockTabItems"
+      :key="menu.title"
+      :theme="theme"
+      :menu="menu"
+      @click:menu="clickMenuHandler($event)"
+      :selectMode="selectMode"
+      :inputSelectValue="inputSelectValue"
+    )
     template(
-      v-for="(block, index) in filteredBlockList"
+      v-for="(block, index) in filteredBlockListItems"
       :key="`block-${index}`"
     )
       //- Block Title
@@ -88,11 +105,18 @@ div(
         :inputSelectValue="inputSelectValue"
       )
       div(
-        v-if="index !== filteredBlockList.length - 1"
+        v-if="index !== filteredBlockListItems.length - 1"
         class="w-full h-px my-1 bg-grey-150"
         :class="{ 'bg-grey-750': theme === THEME.DARK }"
       )
-  div(v-else-if="!canAddNew" class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
+  div(
+    v-else-if="disabledAddNew && !usingCustomNotFound"
+    class="h-6 py-1.5 px-4 text-caption text-grey-600"
+  ) No Results Found
+  slot(
+    v-else-if="disabledAddNew && usingCustomNotFound"
+    name="custom-not-found"
+  )
   //- Button if position is bottom
   contextual-menu-button(
     v-if="innerMenuTree.button && innerMenuTree.button.position === 'bottom'"
@@ -108,7 +132,7 @@ export default {
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CONTEXTUAL_MENU_MODE, THEME } from '../constants'
+import { CONTEXTUAL_MENU_MODE, CONTEXTUAL_MENU_TYPE, THEME } from '../constants'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { isEqual } from '@frontier/lib'
@@ -121,6 +145,12 @@ const emit = defineEmits<{
   (e: 'update:inputSelectValue', inputSelectValue: any): void
   (e: 'click:menu', menu: Required<MenuItem>): void
 }>()
+
+const activeTab = ref(0)
+
+const switchTab = (id: number) => {
+  activeTab.value = id
+}
 
 const props = withDefaults(
   defineProps<{
@@ -206,6 +236,14 @@ const props = withDefaults(
   }
 )
 
+const usingCustomNotFound = computed(() => {
+  if (innerMenuTree.value.type === CONTEXTUAL_MENU_TYPE.TAB) {
+    return innerMenuTree.value.blockList[activeTab.value].usingCustomNotFound
+  }
+
+  return false
+})
+
 // const props = defineProps({
 //   theme: {
 //     type: String,
@@ -241,7 +279,7 @@ const props = withDefaults(
 //   },
 // })
 
-const innerMenuTree = computed<Required<MenuTree>>(() =>
+const innerMenuTree = computed<MenuTree>(() =>
   Object.assign(
     {},
     {
@@ -249,10 +287,17 @@ const innerMenuTree = computed<Required<MenuTree>>(() =>
       searchEnable: false,
       button: null,
       width: 'w-60',
+      type: CONTEXTUAL_MENU_TYPE.LIST,
       scrollAreaMaxHeight: 'max-h-100',
     },
     props.menuTree
   )
+)
+
+const disabledAddNew = computed(
+  () =>
+    !props.canAddNew ||
+    innerMenuTree.value.blockList[activeTab.value].disabledAddNew
 )
 
 const clickMenuHandler = (menu: Required<MenuItem>) => {
@@ -281,7 +326,11 @@ const clickMenuHandler = (menu: Required<MenuItem>) => {
 }
 
 const searchInput = ref('')
-const filteredBlockList = computed(() => {
+const filteredBlockListItems = computed(() => {
+  if (innerMenuTree.value.type === CONTEXTUAL_MENU_TYPE.TAB) {
+    return []
+  }
+
   const blockList: MenuBlock[] = []
   innerMenuTree.value.blockList.forEach((block) => {
     const filteredMenuList = block.menuList.filter((menu) =>
@@ -297,6 +346,29 @@ const filteredBlockList = computed(() => {
   return blockList
 })
 
+const filteredBlockTabItems = computed(() => {
+  if (
+    innerMenuTree.value.type === CONTEXTUAL_MENU_TYPE.LIST ||
+    !innerMenuTree.value.blockList[activeTab.value]
+  ) {
+    return []
+  }
+
+  return innerMenuTree.value.blockList[activeTab.value].menuList.filter(
+    (menu) => menu.title.toLowerCase().includes(searchInput.value.toLowerCase())
+  )
+})
+
+const isItemsExist = computed(() => ({
+  [CONTEXTUAL_MENU_TYPE.LIST]: !!filteredBlockListItems.value.length,
+  [CONTEXTUAL_MENU_TYPE.TAB]: !!filteredBlockTabItems.value.length,
+}))
+
+const isEmpty = computed(
+  () =>
+    filteredBlockListItems.value.length || filteredBlockTabItems.value.length
+)
+
 // invoke externally e.g. FSelectInput.vue
 const setSearchInput = (v: string) => (searchInput.value = v)
 const menuIsExist = computed(() =>
@@ -305,9 +377,19 @@ const menuIsExist = computed(() =>
   )
 )
 
+const tabList = computed(() =>
+  innerMenuTree.value.blockList.map((tab, id) => ({
+    name: tab.blockTitle,
+    id,
+  }))
+)
+
 defineExpose({
   setSearchInput,
   menuIsExist,
   clickMenuHandler,
+  activeTab,
+  tabList,
+  disabledAddNew,
 })
 </script>

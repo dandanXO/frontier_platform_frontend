@@ -11,6 +11,11 @@ export enum CONTEXTUAL_MENU_MODE {
   MULTIPLE = 3,
 }
 
+export const CONTEXTUAL_MENU_TYPE = {
+  TAB: 'TAB',
+  LIST: 'LIST',
+} as const
+
 export enum UPLOAD_ERROR_CODE {
   INVALID_TYPE = 1,
   EXCEED_LIMIT = 2,

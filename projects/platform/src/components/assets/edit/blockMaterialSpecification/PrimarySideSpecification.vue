@@ -74,16 +74,38 @@ div(class="flex flex-col gap-y-7.5")
         template(v-if="materialTypeValue != null")
           f-select-input(
             :disabled="disableBackSideFields"
+            :selectValue="materialTypeConstruction.value?.name"
+            @update:selectValue="selectMaterialTypeConstruction"
+            :dropdownMenuTree="specOptions.materialTypeConstructionList"
+            @addNew="addMaterialTypeConstructionOption"
+            :label="$t('MI0150')"
+            :placeholder="$t('MI0152')"
+            :hintError="displayErrors[`${primarySideType}.materialTypeConstruction`]"
+            class="w-full"
+            required
+          )
+            template(#custom-not-found)
+              custom-not-found
+          f-select-input(
+            :disabled="disableBackSideFields"
             :selectValue="descriptionList.value"
             @update:selectValue="descriptionList.onInput"
             :dropdownMenuTree="specOptions.descriptionList"
             @addNew="addDescriptionOption($event)"
-            :label="$t('MI0023')"
-            :placeholder="$t('MI0024')"
+            :label="$t('MI0153')"
+            :placeholder="$t('MI0151')"
             :hintError="displayErrors[`${primarySideType}.descriptionList`]"
             multiple
             :multipleTagInputValidations="[inputValidate, lengthValidate]"
             class="w-full"
+          )
+            template(#custom-not-found)
+              custom-not-found
+          f-infobar(
+            :display="DISPLAY.FLEX"
+            :notifyType="NOTIFY_TYPE.INFO"
+            :messageText="$t('MI0155')"
+            :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
           )
           f-input-container(:label="$t('MI0026')")
             template(#slot:suffix)
@@ -355,7 +377,7 @@ div(class="flex flex-col gap-y-7.5")
         f-select-input(
           :disabled="disableBackSideFields"
           :selectValue="field.value.name"
-          @update:selectValue="(name) => selectContent(name, index, field.value)"
+          @update:selectValue="(name:string) => selectContent(name, index, field.value)"
           :dropdownMenuTree="specOptions.contentList"
           @addNew="addContentOption($event)"
           :placeholder="$t('MI0035')"
@@ -364,6 +386,8 @@ div(class="flex flex-col gap-y-7.5")
           :multipleTagInputValidations="[inputValidate, lengthValidate]"
           data-cy="content-text"
         )
+          template(#custom-not-found)
+            custom-not-found
         f-input-text(
           :disabled="disableBackSideFields"
           v-model:textValue="field.value.percentage"
@@ -631,6 +655,7 @@ import { useStore } from 'vuex'
 import {
   type MaterialPatternCustomPropertyBase,
   MaterialType,
+  type MaterialOptionsMaterialTypeConstructionListWoven,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE, DISPLAY } from '@frontier/constants'
 import { WeightUnit } from '@frontier/platform-web-sdk'
@@ -639,6 +664,7 @@ import IconButton from '@/components/assets/edit/blockMaterialSpecification/Icon
 import type { MaterialFormService } from '@/types'
 import { materialFormServiceKey } from '@/utils/constants'
 import useEnumText from '@/composables/useEnumText'
+import CustomNotFound from './CustomNotFound.vue'
 
 const props = defineProps<{
   primarySideType: 'faceSide' | 'backSide'
@@ -670,6 +696,7 @@ const {
   addFinishOption,
   addContentOption,
   addDescriptionOption,
+  addMaterialTypeConstructionOption,
   widthUnitList,
   weightUnitList,
   allContentList,
@@ -689,6 +716,10 @@ const finishList = defineInputBinds(`${props.primarySideType}.finishList`)
 const descriptionList = defineInputBinds(
   `${props.primarySideType}.descriptionList`
 )
+const materialTypeConstruction = defineInputBinds(
+  `${props.primarySideType}.materialTypeConstruction`
+)
+
 const materialType = defineInputBinds(`${props.primarySideType}.materialType`)
 const materialTypeValue = computed(
   () => values[props.primarySideType]?.materialType ?? null
@@ -817,6 +848,29 @@ const contentDisplayError = computed(() => {
 
   return errors.length ? [...new Set(errors)].join(', ') : ''
 })
+
+const selectMaterialTypeConstruction = (
+  value:
+    | string
+    | MaterialOptionsMaterialTypeConstructionListWoven['default'][number]
+) => {
+  if (typeof value === 'string') {
+    materialTypeConstruction.value.onInput({
+      //@ts-expect-error unhandled onInput types by library
+      id: null,
+      isCustom: false,
+      name: value,
+    })
+    return
+  }
+
+  materialTypeConstruction.value.onInput({
+    //@ts-expect-error unhandled onInput types by library
+    id: value.id,
+    isCustom: !!value.isCustom,
+    name: value.name ?? '',
+  })
+}
 
 const selectContent = (
   name: string | null,
@@ -991,6 +1045,12 @@ const pantoneValueDisplayList = computed(() => {
 
 const handleMaterialTypeChange = (v: MaterialType) => {
   clearMaterialTypeConstructionFields(props.primarySideType)
+  materialTypeConstruction.value.onInput({
+    //@ts-expect-error unhandled onInput types by library
+    id: null,
+    isCustom: false,
+    name: '',
+  })
   materialType.value.onInput(v)
 }
 

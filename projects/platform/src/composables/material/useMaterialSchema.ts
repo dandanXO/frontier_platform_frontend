@@ -347,6 +347,11 @@ export const materialSideSchema = z.object({
   materialType: materialTypeSchema,
   descriptionList: descriptionListSchema,
   construction: materialConstructionSchema,
+  materialTypeConstruction: z.object({
+    id: z.number().nullable(),
+    isCustom: z.boolean(),
+    name: z.string().nonempty(requiredMessage),
+  }),
   constructionCustomPropertyList: customPropertyListSchema.default([]),
   contentList: contentListSchema,
   patternInfo: patternInfoSchema,

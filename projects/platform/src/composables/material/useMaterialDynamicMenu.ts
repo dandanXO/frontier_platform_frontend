@@ -6,14 +6,15 @@ import type {
   MaterialFinish,
   MaterialOptions,
   MaterialOptionsContentListDefaultInner,
+  MaterialOptionsMaterialTypeConstructionListWoven,
   MaterialSeasonInfoSeason,
 } from '@frontier/platform-web-sdk'
 // type 1:public, 2:private
 import { MaterialOptionsTagListDefaultInnerTypeEnum } from '@frontier/platform-web-sdk'
 import { MaterialType } from '@frontier/platform-web-sdk'
-import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { CONTEXTUAL_MENU_TYPE, MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import type useMaterialSchema from '@/composables/material/useMaterialSchema'
-import type { MenuTree } from '@frontier/ui-component'
+import type { MenuBlock, MenuTree } from '@frontier/ui-component'
 
 type Nullable<T> = { [K in keyof T]: T[K] | null }
 
@@ -198,7 +199,21 @@ const useMaterialDynamicMenu = (
     }
   })
 
-  const descriptionMenuDefaultList = computed(() => {
+  const newMaterialTypeConstructionOptions = reactive<
+    Record<
+      Exclude<typeof currentSideMaterialType.value, null>,
+      MaterialOptionsMaterialTypeConstructionListWoven
+    >
+  >({
+    woven: { default: [], custom: [] },
+    knit: { default: [], custom: [] },
+    leather: { default: [], custom: [] },
+    nonWoven: { default: [], custom: [] },
+    trim: { default: [], custom: [] },
+    others: { default: [], custom: [] },
+  })
+
+  const descriptionMenuDefaultList = computed<MenuBlock['menuList']>(() => {
     if (currentSideMaterialType.value == null) {
       return []
     }
@@ -213,7 +228,7 @@ const useMaterialDynamicMenu = (
     }))
   })
 
-  const descriptionMenuCustomList = computed(() => {
+  const descriptionMenuCustomList = computed<MenuBlock['menuList']>(() => {
     if (currentSideMaterialType.value == null) {
       return []
     }
@@ -227,7 +242,7 @@ const useMaterialDynamicMenu = (
       ...newDescriptionList[currentSideMaterialType.value].custom,
       ...materialOptionsDescriptionList[currentSideMaterialType.value].custom,
     ].map((description) => ({
-      title: description.name,
+      title: description.name ?? '',
       selectValue: description,
     }))
   })
@@ -263,28 +278,31 @@ const useMaterialDynamicMenu = (
             })),
         },
         {
-          menuList:
-            materialOptions.seasonList?.default.map((season) => ({
-              selectValue: season.name,
-              title: season.name,
-            })) || [],
+          menuList: materialOptions.seasonList?.default.map((season) => ({
+            selectValue: season.name,
+            title: season.name,
+          })),
         },
       ],
     })),
-    contentList: computed(() => ({
+    contentList: computed<MenuTree>(() => ({
       scrollAreaMaxHeight: 'max-h-72',
+      type: CONTEXTUAL_MENU_TYPE.TAB,
       blockList: [
+        {
+          blockTitle: t('M2F033'),
+          menuList: contentDefaultList.value.map((content) => ({
+            selectValue: content.name,
+            title: content.name,
+          })),
+          disabledAddNew: true,
+          usingCustomNotFound: true,
+        },
         {
           blockTitle: t('RR0258'),
           menuList: contentCustomList.value.map((content) => ({
             selectValue: content.name,
-            title: content.name,
-          })),
-        },
-        {
-          menuList: contentDefaultList.value.map((content) => ({
-            selectValue: content.name,
-            title: content.name,
+            title: content.name ?? '',
           })),
         },
       ],
@@ -301,11 +319,17 @@ const useMaterialDynamicMenu = (
         },
       ],
     })),
-    descriptionList: computed(() => ({
+    descriptionList: computed<MenuTree>(() => ({
       scrollAreaMaxHeight: 'max-h-72',
+      type: CONTEXTUAL_MENU_TYPE.TAB,
       blockList: [
+        {
+          blockTitle: t('M2F033'),
+          menuList: descriptionMenuDefaultList.value,
+          disabledAddNew: true,
+          usingCustomNotFound: true,
+        },
         { blockTitle: t('RR0258'), menuList: descriptionMenuCustomList.value },
-        { menuList: descriptionMenuDefaultList.value },
       ],
     })),
     finishList: computed(() => ({
@@ -340,6 +364,57 @@ const useMaterialDynamicMenu = (
         },
       ],
     })),
+    materialTypeConstructionList: computed<MenuTree>(() => {
+      if (!currentSideMaterialType.value) {
+        return {
+          blockList: [],
+        }
+      }
+
+      const options =
+        materialOptions.materialTypeConstructionList?.[
+          currentSideMaterialType.value
+        ]
+
+      const userCustomOptions =
+        newMaterialTypeConstructionOptions[currentSideMaterialType.value]
+          .custom ?? []
+
+      return {
+        scrollAreaMaxHeight: 'max-h-72',
+        type: CONTEXTUAL_MENU_TYPE.TAB,
+        blockList: [
+          {
+            blockTitle: t('M2F033'),
+            menuList:
+              options?.default.map(({ id, isCustom, name }) => ({
+                title: name ?? '',
+                selectValue: {
+                  id,
+                  name,
+                  isCustom,
+                },
+              })) ?? [],
+            disabledAddNew: true,
+            usingCustomNotFound: true,
+          },
+          {
+            blockTitle: t('RR0258'),
+            menuList:
+              [...userCustomOptions, ...(options?.custom ?? [])].map(
+                ({ id, isCustom, name }) => ({
+                  title: name ?? '',
+                  selectValue: {
+                    id,
+                    name,
+                    isCustom,
+                  },
+                })
+              ) ?? [],
+          },
+        ],
+      }
+    }),
   })
 
   const addSeasonOption = (seasonName: string) => {
@@ -361,6 +436,21 @@ const useMaterialDynamicMenu = (
     newDescriptionList[currentSideMaterialType.value].custom.push({
       descriptionId: null,
       name: descriptionName,
+    })
+  }
+
+  const addMaterialTypeConstructionOption = (descriptionName: string) => {
+    if (!currentSideMaterialType.value) {
+      throw new Error('currentSideMaterialType is null')
+    }
+
+    newMaterialTypeConstructionOptions[
+      currentSideMaterialType.value
+    ].custom.push({
+      //@ts-expect-error the id should be null when we adding some custom option
+      id: null,
+      name: descriptionName,
+      isCustom: true,
     })
   }
 
@@ -391,6 +481,7 @@ const useMaterialDynamicMenu = (
     menuTreePrivateTag,
     addSeasonOption,
     addFeatureOption,
+    addMaterialTypeConstructionOption,
     addDescriptionOption,
     addFinishOption,
     addContentOption,

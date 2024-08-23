@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { DISPLAY } from '@frontier/constants'
+import type { CONTEXTUAL_MENU_TYPE, DISPLAY } from '@frontier/constants'
 
 export interface MenuButton {
   position: 'top' | 'bottom'
@@ -42,6 +42,8 @@ export interface MenuItem {
 export interface MenuBlock {
   blockTitle?: String
   menuList: MenuItem[]
+  disabledAddNew?: boolean
+  usingCustomNotFound?: boolean
 }
 
 export interface MenuTree {
@@ -51,6 +53,7 @@ export interface MenuTree {
   width?: string // String (Tailwindcss),
   scrollAreaMaxHeight?: string // String (Tailwindcss),
   blockList: MenuBlock[]
+  type?: (typeof CONTEXTUAL_MENU_TYPE)[keyof typeof CONTEXTUAL_MENU_TYPE]
 }
 
 export interface Action {
