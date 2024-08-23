@@ -1,5 +1,10 @@
-import FContextualMenu, { CONTEXTUAL_MENU_TYPE } from './FContextualMenu.vue'
-import { CONTEXTUAL_MENU_MODE, SIZE, THEME } from '../constants'
+import FContextualMenu from './FContextualMenu.vue'
+import {
+  CONTEXTUAL_MENU_MODE,
+  SIZE,
+  THEME,
+  CONTEXTUAL_MENU_TYPE,
+} from '../constants'
 import { h, ref, shallowRef } from 'vue'
 
 const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
