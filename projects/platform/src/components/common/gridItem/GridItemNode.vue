@@ -121,11 +121,7 @@ const materialInfo = computed(() => {
   const { materialType, descriptionList, contentList, finishList } = mainSide
 
   const list = [
-    materialInfoForDisplay.materialType(
-      isComposite,
-      materialType,
-      descriptionList
-    ).value,
+    materialInfoForDisplay.materialType(isComposite, materialType).value,
   ]
 
   if (contentList.length > 0) {

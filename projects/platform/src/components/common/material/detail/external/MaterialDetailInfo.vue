@@ -130,6 +130,10 @@ div(class="grid gap-y-8 content-start")
           class="text-grey-600 break-word mt-[2px]"
         )
         p(class="break-word") {{ specificationInfo.materialType.value }}
+    div(v-if="specificationInfo.constructionType" class="grid grid-cols-7 gap-x-6")
+      p(class="col-span-2") {{ specificationInfo.constructionType.name }}
+      div(class="col-span-5 flex items-start gap-x-1.5")
+        p(class="break-word") {{ specificationInfo.constructionType.value }}
     div(v-if="specificationInfo.contentList" class="grid grid-cols-7 gap-x-6")
       p(class="col-span-2") {{ specificationInfo.contentList.name }}
       p(class="col-span-5 break-word") {{ specificationInfo.contentList.value }}

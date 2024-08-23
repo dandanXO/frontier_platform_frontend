@@ -366,11 +366,7 @@ const usePrint = () => {
           .value ?? []
       const infoList = [
         {
-          ...materialInfoForDisplay.materialType(
-            isComposite,
-            materialType,
-            descriptionList
-          ),
+          ...materialInfoForDisplay.materialType(isComposite, materialType),
           isTwoLine: true,
         },
         ...Object.values(constructionList)

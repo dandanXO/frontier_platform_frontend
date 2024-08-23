@@ -1,7 +1,6 @@
 import {
   type Material,
-  type MaterialBackSide,
-  type MaterialFaceSide,
+  type MaterialSide,
   type MaterialMiddleSide,
   MaterialSideType,
   Extension,
@@ -40,6 +39,7 @@ export type MaterialSpecificationInfo = {
     value: Record<string, { name: string; value: string }> | null
     textColor: string
   } | null
+  constructionType?: MaterialSpecificationInfoBasicProperty
   constructionCustomPropertyList: {
     name: string
     value: {
@@ -260,16 +260,15 @@ export default function useMaterial(
   })
 
   const currentSideType = ref<MATERIAL_SIDE_TYPE>(mainSideType.value)
-  const currentSide = computed<
-    MaterialFaceSide | MaterialBackSide | MaterialMiddleSide
-  >(() => {
+  const currentSide = computed(() => {
     const { faceSide, middleSide, backSide } = material.value
     return currentSideType.value === MATERIAL_SIDE_TYPE.FACE
-      ? (faceSide as MaterialFaceSide)
+      ? faceSide
       : currentSideType.value === MATERIAL_SIDE_TYPE.BACK
-      ? (backSide as MaterialBackSide)
-      : (middleSide as MaterialMiddleSide)
+      ? backSide
+      : middleSide
   })
+
   const switchSideType = (sideType: MATERIAL_SIDE_TYPE) =>
     (currentSideType.value = sideType)
 
@@ -285,7 +284,9 @@ export default function useMaterial(
     const { isComposite, sideType } = material.value
 
     if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
-      if (sideType === MaterialSideType.BACK_SIDE) return 'text-grey-900'
+      if (sideType === MaterialSideType.BACK_SIDE) {
+        return 'text-grey-900'
+      }
       if (isMaterialProperty && !isCompositeSideProperty) {
         return 'text-grey-300'
       }
@@ -316,18 +317,25 @@ export default function useMaterial(
       textColor: getTextColor(seasonInfo?.isPublic ?? false, true, false),
     })
     const getFeatureList = () => ({
-      ...materialInfoForDisplay.featureList(currentSide.value.featureList),
+      ...materialInfoForDisplay.featureList(
+        currentSide.value?.featureList ?? []
+      ),
       textColor: getTextColor(true, false, false),
     })
     const getFinishList = () => ({
-      ...materialInfoForDisplay.finishList(currentSide.value.finishList),
+      ...materialInfoForDisplay.finishList(currentSide.value?.finishList ?? []),
+      textColor: getTextColor(true, false, false),
+    })
+    const getConstructionType = (materialSide: MaterialSide) => ({
+      ...materialInfoForDisplay.constructionType(
+        materialSide?.materialTypeConstruction,
+        materialSide?.descriptionList
+      ),
       textColor: getTextColor(true, false, false),
     })
 
     if (currentSideType.value !== MATERIAL_SIDE_TYPE.MIDDLE) {
-      const sideWithoutMiddleSide = currentSide.value as
-        | MaterialFaceSide
-        | MaterialBackSide
+      const sideWithoutMiddleSide = currentSide.value as MaterialSide
       return {
         seasonInfo: getSeasonInfo(),
         featureList: getFeatureList(),
@@ -335,12 +343,12 @@ export default function useMaterial(
           return {
             ...materialInfoForDisplay.materialType(
               isComposite,
-              sideWithoutMiddleSide.materialType,
-              sideWithoutMiddleSide.descriptionList
+              sideWithoutMiddleSide.materialType
             ),
             textColor: getTextColor(true, false, true),
           }
         })(),
+        constructionType: getConstructionType(sideWithoutMiddleSide),
         construction: {
           ...materialInfoForDisplay.construction(
             sideWithoutMiddleSide.materialType,
@@ -404,7 +412,7 @@ export default function useMaterial(
       return null
     }
 
-    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    const side = currentSide.value as MaterialSide
     return side.pantoneList
   })
   const colorInfo = computed(() => {
@@ -412,7 +420,7 @@ export default function useMaterial(
       return null
     }
 
-    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    const side = currentSide.value as MaterialSide
     return {
       name: t('RR0026'),
       value: side.colorInfo,
@@ -423,7 +431,7 @@ export default function useMaterial(
       return null
     }
 
-    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    const side = currentSide.value as MaterialSide
     return {
       name: t('RR0025'),
       value: side.patternInfo,

@@ -19,6 +19,7 @@ import {
   type MaterialWeightForDisplay,
   WeightUnit,
   type MaterialWeightDisplaySetting,
+  type IdTextWithCustomData,
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
@@ -58,6 +59,20 @@ const materialInfoForDisplay = {
     name: t('MI0016'),
     value: featureList.join(', '),
   }),
+  constructionType: (
+    constructionType: IdTextWithCustomData,
+    descriptionList: MaterialDescription[]
+  ) => {
+    const valueInArray = [constructionType.name]
+
+    if (descriptionList.length > 0) {
+      valueInArray.push(...descriptionList.map(({ name }) => name))
+    }
+    return {
+      name: t('MI0150'),
+      value: valueInArray.join(', '),
+    }
+  },
   finishList: (finishList: MaterialFinish[]) => ({
     name: t('RR0022'),
     value: finishList.map((finish) => finish.name).join(', '),
@@ -68,11 +83,7 @@ const materialInfoForDisplay = {
       .map((content) => `${content.percentage}% ${content.name}`)
       .join(', '),
   }),
-  materialType: (
-    isComposite: boolean,
-    materialType: MaterialType,
-    descriptionList: MaterialDescription[]
-  ) => {
+  materialType: (isComposite: boolean, materialType: MaterialType) => {
     const stringList = []
 
     if (isComposite) {
@@ -80,10 +91,6 @@ const materialInfoForDisplay = {
     }
 
     stringList.push(MaterialTypeText[materialType])
-
-    if (descriptionList.length > 0) {
-      stringList.push(...descriptionList.map((description) => description.name))
-    }
 
     return {
       name: t('MI0003'),

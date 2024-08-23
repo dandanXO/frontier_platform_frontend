@@ -5071,7 +5071,6 @@ export interface GenerateAssetsMaterialU3mRequest {
     'isReplaceFaceAndBackSide'?: boolean;
 }
 
-
 /**
  * 
  * @export
@@ -9340,6 +9339,31 @@ export interface HideWorkflowStageRequest {
 
 
 /**
+ * Default object for id-text pair
+ * @export
+ * @interface IdTextWithCustomData
+ */
+export interface IdTextWithCustomData {
+    /**
+     * 
+     * @type {number}
+     * @memberof IdTextWithCustomData
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof IdTextWithCustomData
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof IdTextWithCustomData
+     */
+    'isCustom'?: boolean;
+}
+/**
  * 
  * @export
  * @interface InnerExternalFilter
@@ -10037,7 +10061,7 @@ export interface Material {
 
 
 /**
- * 碳排放資訊 如果沒有可視權限，則為 null
+ * 
  * @export
  * @interface MaterialCarbonEmission
  */
@@ -10323,6 +10347,12 @@ export interface MaterialCreateBackSide {
      */
     'materialType': MaterialType;
     /**
+     * 
+     * @type {MaterialSideCreateAllOfMaterialTypeConstruction}
+     * @memberof MaterialCreateBackSide
+     */
+    'materialTypeConstruction': MaterialSideCreateAllOfMaterialTypeConstruction;
+    /**
      * 布種材料描述清單
      * @type {Array<MaterialSideCreateAllOfDescriptionList>}
      * @memberof MaterialCreateBackSide
@@ -10385,6 +10415,12 @@ export interface MaterialCreateFaceSide {
      * @memberof MaterialCreateFaceSide
      */
     'materialType': MaterialType;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfMaterialTypeConstruction}
+     * @memberof MaterialCreateFaceSide
+     */
+    'materialTypeConstruction': MaterialSideCreateAllOfMaterialTypeConstruction;
     /**
      * 布種材料描述清單
      * @type {Array<MaterialSideCreateAllOfDescriptionList>}
@@ -11122,7 +11158,7 @@ export interface MaterialLeatherConstruction {
     'thicknessPerMm': number | null;
 }
 /**
- * 中間布資訊
+ * 
  * @export
  * @interface MaterialMiddleSide
  */
@@ -11312,6 +11348,12 @@ export interface MaterialOptions {
      * @memberof MaterialOptions
      */
     'featureList': MaterialOptionsFeatureList;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionList}
+     * @memberof MaterialOptions
+     */
+    'materialTypeConstructionList'?: MaterialOptionsMaterialTypeConstructionList;
 }
 /**
  * 成分
@@ -11444,6 +11486,68 @@ export interface MaterialOptionsFinishList {
      * @memberof MaterialOptionsFinishList
      */
     'custom': Array<MaterialFinish>;
+}
+/**
+ * 布種材料描述
+ * @export
+ * @interface MaterialOptionsMaterialTypeConstructionList
+ */
+export interface MaterialOptionsMaterialTypeConstructionList {
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'woven': MaterialOptionsMaterialTypeConstructionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'knit': MaterialOptionsMaterialTypeConstructionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'leather': MaterialOptionsMaterialTypeConstructionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'nonWoven': MaterialOptionsMaterialTypeConstructionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'trim': MaterialOptionsMaterialTypeConstructionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsMaterialTypeConstructionListWoven}
+     * @memberof MaterialOptionsMaterialTypeConstructionList
+     */
+    'others': MaterialOptionsMaterialTypeConstructionListWoven;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsMaterialTypeConstructionListWoven
+ */
+export interface MaterialOptionsMaterialTypeConstructionListWoven {
+    /**
+     * 
+     * @type {Array<IdTextWithCustomData>}
+     * @memberof MaterialOptionsMaterialTypeConstructionListWoven
+     */
+    'default': Array<IdTextWithCustomData>;
+    /**
+     * 
+     * @type {Array<IdTextWithCustomData>}
+     * @memberof MaterialOptionsMaterialTypeConstructionListWoven
+     */
+    'custom': Array<IdTextWithCustomData>;
 }
 /**
  * season options
@@ -11884,7 +11988,7 @@ export type MaterialQuantityUnit = typeof MaterialQuantityUnit[keyof typeof Mate
 
 
 /**
- * 布片季節資訊
+ * 
  * @export
  * @interface MaterialSeasonInfo
  */
@@ -12025,6 +12129,12 @@ export interface MaterialSide {
      * @memberof MaterialSide
      */
     'materialType': MaterialType;
+    /**
+     * 
+     * @type {IdTextWithCustomData}
+     * @memberof MaterialSide
+     */
+    'materialTypeConstruction': IdTextWithCustomData;
     /**
      * 布種材料描述清單
      * @type {Array<MaterialDescription>}
@@ -12237,6 +12347,12 @@ export interface MaterialSideCreate {
      */
     'materialType': MaterialType;
     /**
+     * 
+     * @type {MaterialSideCreateAllOfMaterialTypeConstruction}
+     * @memberof MaterialSideCreate
+     */
+    'materialTypeConstruction': MaterialSideCreateAllOfMaterialTypeConstruction;
+    /**
      * 布種材料描述清單
      * @type {Array<MaterialSideCreateAllOfDescriptionList>}
      * @memberof MaterialSideCreate
@@ -12318,6 +12434,31 @@ export interface MaterialSideCreateAllOfDescriptionList {
      * @memberof MaterialSideCreateAllOfDescriptionList
      */
     'name': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOfMaterialTypeConstruction
+ */
+export interface MaterialSideCreateAllOfMaterialTypeConstruction {
+    /**
+     * set to null to create new custom construction (with isCustom true)
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfMaterialTypeConstruction
+     */
+    'id': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfMaterialTypeConstruction
+     */
+    'name': string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialSideCreateAllOfMaterialTypeConstruction
+     */
+    'isCustom': boolean;
 }
 /**
  * 
@@ -12821,6 +12962,12 @@ export interface MaterialUpdateFaceSide {
      */
     'materialType': MaterialType;
     /**
+     * 
+     * @type {MaterialSideCreateAllOfMaterialTypeConstruction}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'materialTypeConstruction': MaterialSideCreateAllOfMaterialTypeConstruction;
+    /**
      * 布種材料描述清單
      * @type {Array<MaterialSideCreateAllOfDescriptionList>}
      * @memberof MaterialUpdateFaceSide
@@ -13050,6 +13197,12 @@ export interface MaterialUpdateSpecFaceSide {
      * @memberof MaterialUpdateSpecFaceSide
      */
     'materialType': MaterialType;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfMaterialTypeConstruction}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'materialTypeConstruction': MaterialSideCreateAllOfMaterialTypeConstruction;
     /**
      * 布種材料描述清單
      * @type {Array<MaterialSideCreateAllOfDescriptionList>}
@@ -20891,6 +21044,7 @@ export interface SmartUploadAssetsUpdateConfigRequest {
      */
     'ogId': number;
     /**
+     * 
      * @type {boolean}
      * @memberof SmartUploadAssetsUpdateConfigRequest
      */

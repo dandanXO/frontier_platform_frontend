@@ -54,6 +54,15 @@ modal-behavior(
         p(:class="specificationInfo.featureList.textColor" class="mb-1.5") {{ specificationInfo.featureList.value }}
         //- Construction
         div(
+          v-if="specificationInfo.constructionType"
+          class="grid gap-y-2"
+          :class="specificationInfo.constructionType?.textColor"
+        )
+          div(class="grid grid-cols-5 gap-x-2")
+            p(class="col-span-1") {{ specificationInfo.constructionType?.name }}
+            p(class="col-span-4") {{ specificationInfo.constructionType?.value }}
+        //- Construction
+        div(
           v-if="specificationInfo.construction && specificationInfo.construction.value && specificationInfo.construction.isPublic"
           class="grid gap-y-2"
           :class="specificationInfo.construction.textColor"
