@@ -41,7 +41,7 @@ modal-behavior(
                 :type="'face'"
                 :index="index + 1"
                 :material="material"
-                :size="62"
+                :size="isTexpertsRule ? 64 : 79"
                 :setting="currentLabelSetting"
                 :reloadQrcode="needReloadQrcode"
               )
@@ -49,7 +49,7 @@ modal-behavior(
                 :type="'back'"
                 :index="index + 1"
                 :material="material"
-                :size="62"
+                :size="isTexpertsRule ? 64 : 79"
                 :setting="currentLabelSetting"
                 :reloadQrcode="needReloadQrcode"
               )
@@ -74,17 +74,18 @@ modal-behavior(
       div(class="w-full px-3 pt-4 pb-3 justify-between")
         p(class="text-xs font-bold mb-2") {{ $t('MM0039') }}
         div(class="border border-transparent border-b-grey-150 mb-5 pb-3")
-          f-input-checkbox(
-            v-for="(option, index) in PrintBaseInfoConfig.options"
-            :key="index"
-            v-model:inputValue="PrintBaseInfoConfig.list.value"
-            :label="option.label"
-            :value="option.value"
-            class="px-1"
-            @update:inputValue="setAbleToUpdateSetting"
-          )
+          template(v-if="!isTexpertsRule")
+            f-input-checkbox(
+              v-for="(option, index) in PrintBaseInfoConfig.options"
+              :key="index"
+              v-model:inputValue="PrintBaseInfoConfig.list.value"
+              :label="option.label"
+              :value="option.value"
+              class="px-1"
+              @update:inputValue="setAbleToUpdateSetting"
+            )
           p(class="text-[10px] font-bold mb-2 text-grey-400") {{ $t('MI0003') }}
-          div(v-for="(materialType, index) in materialTypeConfig" class="")
+          div(v-for="(materialType, index) in materialTypeConfig" :key="index" class="")
             f-expansion-panel(class="hover:bg-grey-150 rounded mb-2")
               template(#trigger="{ isExpand }")
                 div(
@@ -101,7 +102,7 @@ modal-behavior(
                     p(class="text-xs text-grey-900 font-bold") {{ materialType.key }}
                   p(class="text-xs text-grey-400") {{ $t('MM0040', { number: materialType.list.value.length }) }}
               template(#content)
-                div(class="bg-grey-100 rounded px-1.5 py-2")
+                div(class="bg-grey-100 rounded px-1.5 py-2") 111
                   f-input-checkbox(
                     v-for="(option, index) in materialType.options"
                     :key="index"
@@ -185,7 +186,9 @@ const { t } = useI18n()
 const store = useStore()
 
 const materialList = toRef(props.materialList)
-
+const isTexpertsRule = computed<boolean>(
+  () => store.getters['permission/isTexpertsRule']
+)
 const printSetting = computed(() => store.getters['user/printLabelSetting'])
 
 const materialTypeConfig = computed(() => {

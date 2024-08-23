@@ -687,15 +687,15 @@ const usePrint = () => {
         virtualDom.innerHTML = `
           ${
             setting.materialInfoOptions.isPrintOrgName
-              ? `<div class="text-[8px] mb-[6px] -mt-2">${org.value.orgName}</div>`
+              ? `<div class="text-[10px] mb-[6px] -mt-2">${org.value.orgName}</div>`
               : ''
           }
           <div class="flex flex-row overflow-hidden">
             <div class="w-[83px] h-full flex flex-col justify-between">
-              <div class="w-full flex flex-row justify-center mt-2 mb-2">
+              <div class="w-full flex flex-row justify-start mt-2 mb-2">
                 <div id="qr-code-container" class="relative"></div>
               </div>
-              <div class="w-full flex flex-col items-center mb-[10px]">
+              <div class="w-full flex flex-col items-start mb-[10px]">
                 <p class="text-[10px] bold whitespace-nowrap">${
                   sideType === MaterialSideType.FACE_SIDE
                     ? t('DD0046')
@@ -717,13 +717,8 @@ const usePrint = () => {
           </div>
         `
       }
-      const customizeLabel = (virtualDom: HTMLDivElement) => {
+      const customizeTexpertsLabel = (virtualDom: HTMLDivElement) => {
         virtualDom.innerHTML = `
-          ${
-            setting.materialInfoOptions.isPrintOrgName
-              ? `<div class="text-[8px] mb-[6px] -mt-2">${org.value.orgName}</div>`
-              : ''
-          }
           <div class="flex flex-row overflow-hidden">
             <div class="w-[83px] h-full flex flex-col">
               <div class="w-full flex justify-center">
@@ -738,11 +733,7 @@ const usePrint = () => {
                     ? t('DD0046')
                     : t('DD0047')
                 }</p>
-                ${
-                  setting.materialInfoOptions.isPrintFrontierNo
-                    ? `<p class="text-[10px] text-grey-600">${frontierNo}</p>`
-                    : ''
-                }
+                <p class="text-[10px] text-grey-600">${frontierNo}</p>
               </div>
             </div>
 
@@ -770,12 +761,12 @@ const usePrint = () => {
         'top-[-9999px]'
       )
       if (isTexpertsRule.value) {
-        customizeLabel(virtualDom)
+        customizeTexpertsLabel(virtualDom)
       } else {
         normalLabel(virtualDom)
       }
       document.body.appendChild(virtualDom)
-      const qrWidth = 62
+      const qrWidth = isTexpertsRule.value ? 64 : 79
 
       await makeQrCode(
         frontierNo,

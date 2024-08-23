@@ -3,24 +3,30 @@ div(
   v-if="type === 'face' && faceSideMaterial"
   class="w-[300px] h-[167px] mr-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-col overflow-hidden"
 )
-  div(class="text-[8.5px]" v-if="setting.materialInfoOptions.isPrintOrgName") {{ orgName }}
+  div(
+    class="text-[10px]"
+    v-if="!isTexpertsRule && setting.materialInfoOptions.isPrintOrgName"
+  ) {{ orgName }}
   div(class="flex flex-row overflow-hidden")
     div(
       class="w-[83px] h-full flex flex-col"
-      :class="[{ 'justify-between': !isCustomize }]"
+      :class="[{ 'justify-between': !isTexpertsRule }]"
     )
-      div(v-if="isCustomize" class="w-full flex justify-center")
+      div(v-if="isTexpertsRule" class="w-full flex justify-center")
         img(:src="logo" class="w-8 h-8 object-cover rounded")
-      div(class="w-full flex flex-row justify-center mt-2 mb-2")
+      div(
+        class="w-full flex flex-row mt-2 mb-2"
+        :class="[isTexpertsRule ? 'justify-center' : 'justify-start']"
+      )
         div(:id="`qr-code-${index}-face`" class="relative")
       div(
-        class="w-full flex flex-col items-center"
-        :class="[{ 'mb-[3px]': !isCustomize }]"
+        class="w-full flex flex-col"
+        :class="[{ 'mb-[3px]': !isTexpertsRule }, isTexpertsRule ? 'items-center' : 'items-start']"
       )
         p(class="text-[10px] bold") {{ $t('DD0046') }}
         p(
           class="text-[10px] text-grey-600"
-          v-if="setting.materialInfoOptions.isPrintFrontierNo"
+          v-if="setting.materialInfoOptions.isPrintFrontierNo || isTexpertsRule"
         ) {{ faceSideMaterial.frontierNo }}
     div(class="w-px h-[150px] bg-grey-250 mx-2")
     div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
@@ -61,24 +67,30 @@ div(
   v-if="type === 'back' && backSideMaterial"
   class="w-[300px] h-[167px] ml-4 bg-[#ffffff] px-2 pt-2 pb-1 flex flex-col overflow-hidden"
 )
-  div(class="text-[8.5px]" v-if="setting.materialInfoOptions.isPrintOrgName") {{ orgName }}
+  div(
+    class="text-[10px]"
+    v-if="!isTexpertsRule && setting.materialInfoOptions.isPrintOrgName"
+  ) {{ orgName }}
   div(class="flex flex-row overflow-hidden")
     div(
       class="w-[83px] h-full flex flex-col"
-      :class="[{ 'justify-between': !isCustomize }]"
+      :class="[{ 'justify-between': !isTexpertsRule }]"
     )
-      div(v-if="isCustomize" class="w-full flex justify-center")
+      div(v-if="isTexpertsRule" class="w-full flex justify-center")
         img(:src="logo" class="w-8 h-8 object-cover rounded")
-      div(class="w-full flex flex-row justify-center mt-2 mb-4")
+      div(
+        class="w-full flex flex-row mt-2 mb-2"
+        :class="[isTexpertsRule ? 'justify-center' : 'justify-start']"
+      )
         div(:id="`qr-code-${index}-back`" class="relative")
       div(
-        class="w-full flex flex-col items-center"
-        :class="[{ 'mb-[3px]': !isCustomize }]"
+        class="w-full flex flex-col"
+        :class="[{ 'mb-[3px]': !isTexpertsRule }, isTexpertsRule ? 'items-center' : 'items-start']"
       )
         p(class="text-[10px] bold") {{ $t('DD0047') }}
         p(
           class="text-[10px] text-grey-600"
-          v-if="setting.materialInfoOptions.isPrintFrontierNo"
+          v-if="setting.materialInfoOptions.isPrintFrontierNo || isTexpertsRule"
         ) {{ backSideMaterial.frontierNo }}
     div(class="w-px h-[150px] bg-grey-250 mx-2")
     div(class="w-[195px] h-full max-h-full flex flex-col overflow-hidden")
@@ -204,7 +216,7 @@ const emissionsSettingMapper = {
   land: 'isPrintLandUse',
 }
 
-const isCustomize = computed<boolean>(
+const isTexpertsRule = computed<boolean>(
   () => store.getters['permission/isTexpertsRule']
 )
 const randerQrcode = async () => {
@@ -220,7 +232,7 @@ const randerQrcode = async () => {
       `qr-code-${index.value}-${type.value}`,
       size.value,
       true,
-      isCustomize.value ? '' : logo.value
+      isTexpertsRule.value ? '' : logo.value
     )
   }
 }
