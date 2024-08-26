@@ -348,7 +348,9 @@ const materialTypeConstructionSchema = z
   .object({
     id: z.number().nullable(),
     isCustom: z.boolean(),
-    name: z.string(),
+    name: z
+      .string()
+      .max(...getMaxLengthParams(MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH)),
   })
   .default({ id: null, isCustom: false, name: '' })
 
@@ -388,21 +390,6 @@ export const materialFaceSideSchema = materialSideSchema.superRefine(
           inclusive: true,
           path: ['materialTypeConstruction'],
           message: requiredMessage,
-        })
-      }
-      if (
-        materialTypeConstruction.name.length >
-        MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.too_big,
-          maximum: MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH,
-          type: 'string',
-          inclusive: true,
-          path: ['materialTypeConstruction'],
-          message: getMaxLengthParams(
-            MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH
-          )[1],
         })
       }
     }
