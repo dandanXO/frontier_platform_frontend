@@ -341,17 +341,26 @@ export const materialTypeSchema = z
   .nativeEnum(MaterialType, nonNullParams)
   .default(MaterialType.WOVEN)
 
+export const MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH = 60
+
+const materialTypeConstructionSchema = z
+  .object({
+    id: z.number().nullable(),
+    isCustom: z.boolean(),
+    name: z
+      .string(nonNullParams)
+      .min(1, requiredMessage)
+      .max(...getMaxLengthParams(MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH)),
+  })
+  .default({ id: null, isCustom: false, name: '' })
+
 export const materialSideSchema = z.object({
   featureList: featureListSchema,
   finishList: finishListSchema,
   materialType: materialTypeSchema,
   descriptionList: descriptionListSchema,
   construction: materialConstructionSchema,
-  materialTypeConstruction: z.object({
-    id: z.number().nullable(),
-    isCustom: z.boolean(),
-    name: z.string().nonempty(requiredMessage),
-  }),
+  materialTypeConstruction: materialTypeConstructionSchema,
   constructionCustomPropertyList: customPropertyListSchema.default([]),
   contentList: contentListSchema,
   patternInfo: patternInfoSchema,

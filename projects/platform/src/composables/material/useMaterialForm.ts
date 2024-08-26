@@ -64,6 +64,12 @@ const mapMaterialToForm = (
           ...material.faceSide,
           construction: material.faceSide?.construction ?? {},
           materialType: material.faceSide?.materialType || MaterialType.WOVEN,
+          materialTypeConstruction: material.faceSide
+            ?.materialTypeConstruction || {
+            id: null,
+            isCustom: false,
+            name: '',
+          },
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
             : [{ contentId: null, name: '', percentage: null }],
@@ -304,6 +310,7 @@ const useMaterialForm = ({
     validationSchema: toTypedSchema(
       materialSchemaWithPreprocess
     ) as typeof materialSchema,
+    validateOnMount: true,
   })
 
   const mode = getMode(material)

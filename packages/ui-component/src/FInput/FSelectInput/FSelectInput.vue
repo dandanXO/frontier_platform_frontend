@@ -29,7 +29,7 @@ f-input-container(
             :size="size === 'lg' ? '24' : '20'"
           )
         //- display text
-        div(class="flex-grow w-full h-full flex items-center")
+        div(class="flex-1 flex-grow w-full h-full flex items-center")
           div(
             v-show="multiple && displayText.length !== 0"
             :class="classChipContainer"
