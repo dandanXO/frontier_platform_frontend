@@ -8,7 +8,7 @@ import {
   type MaterialLeatherConstruction,
   type MaterialNonWovenConstruction,
   type MaterialTrimConstruction,
-  type MaterialSideAllOfConstructionCustomPropertyListInner,
+  type MaterialSideAllOfConstructionCustomPropertyList,
   type MaterialWidth,
   type MaterialWeight,
   type MaterialPriceInfo,
@@ -33,6 +33,7 @@ import store from '@/store'
 import { type QrCodePrintLabelSetting } from '@/composables/useAssets'
 
 import { computed } from 'vue'
+import { WITH_CONSTRUCTION_TYPE_MATERIALS } from '../constants'
 
 const t = i18n.global.t
 
@@ -60,16 +61,22 @@ const materialInfoForDisplay = {
     value: featureList.join(', '),
   }),
   constructionType: (
+    materialType: MaterialType,
     constructionType: IdTextWithCustomData,
     descriptionList: MaterialDescription[]
   ) => {
-    const valueInArray = [constructionType.name]
+    const withConstructionType =
+      WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialType)
+    const valueInArray =
+      withConstructionType && !!constructionType.name
+        ? [constructionType.name]
+        : []
 
     if (descriptionList.length > 0) {
       valueInArray.push(...descriptionList.map(({ name }) => name))
     }
     return {
-      name: t('MI0150'),
+      name: t(withConstructionType ? 'MI0150' : 'MI0153'),
       value: valueInArray.join(', '),
     }
   },
@@ -225,7 +232,7 @@ const materialInfoForDisplay = {
     }
   },
   constructionCustomPropertyList: (
-    constructionCustomPropertyList: MaterialSideAllOfConstructionCustomPropertyListInner[]
+    constructionCustomPropertyList: MaterialSideAllOfConstructionCustomPropertyList[]
   ) => ({
     name: t('Custom Construction'),
     value: constructionCustomPropertyList,

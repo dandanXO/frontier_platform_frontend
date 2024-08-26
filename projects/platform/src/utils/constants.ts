@@ -2,7 +2,7 @@ export * from '@frontier/constants'
 import i18n from '@frontier/i18n'
 import { computed } from 'vue'
 import colors from '@frontier/tailwindcss/colors'
-import { WeightUnit, Extension } from '@frontier/platform-web-sdk'
+import { WeightUnit, Extension, MaterialType } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 
 export const ROLE_ID = {
@@ -431,6 +431,11 @@ export enum CREATE_EDIT {
 
 export const COLLECTION_NAME_MAX_LENGTH = 100
 export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
+
+export const WITH_CONSTRUCTION_TYPE_MATERIALS = [
+  MaterialType.WOVEN,
+  MaterialType.KNIT,
+] as MaterialType[]
 
 export const materialFormServiceKey = Symbol('MaterialFormService')
 export const materialU3mSelectServiceKey = Symbol('MaterialU3mSelectService')

@@ -9,9 +9,10 @@ import {
   WeightUnit,
 } from '@frontier/platform-web-sdk'
 import BigNumber from 'bignumber.js'
+import { WITH_CONSTRUCTION_TYPE_MATERIALS } from '@/utils/constants'
 
 const integerOnlyMessage = i18n.global.t('WW0007')
-const requiredMessage = i18n.global.t('WW0002')
+export const requiredMessage = i18n.global.t('WW0002')
 
 // https://github.com/colinhacks/zod/discussions/1953
 export function getDefaults<T extends z.ZodTypeAny>(
@@ -341,16 +342,13 @@ export const materialTypeSchema = z
   .nativeEnum(MaterialType, nonNullParams)
   .default(MaterialType.WOVEN)
 
-export const MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH = 60
+export const MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH = 50
 
 const materialTypeConstructionSchema = z
   .object({
     id: z.number().nullable(),
     isCustom: z.boolean(),
-    name: z
-      .string(nonNullParams)
-      .min(1, requiredMessage)
-      .max(...getMaxLengthParams(MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH)),
+    name: z.string(),
   })
   .default({ id: null, isCustom: false, name: '' })
 
@@ -374,6 +372,42 @@ export const materialSideSchema = z.object({
     )
     .default([]),
 })
+
+export const materialBackSideSchema = materialSideSchema.omit({
+  materialTypeConstruction: true,
+})
+
+export const materialFaceSideSchema = materialSideSchema.superRefine(
+  ({ materialTypeConstruction, materialType }, ctx) => {
+    if (WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialType)) {
+      if (!materialTypeConstruction.name) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_small,
+          minimum: 1,
+          type: 'string',
+          inclusive: true,
+          path: ['materialTypeConstruction'],
+          message: requiredMessage,
+        })
+      }
+      if (
+        materialTypeConstruction.name.length >
+        MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_big,
+          maximum: MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH,
+          type: 'string',
+          inclusive: true,
+          path: ['materialTypeConstruction'],
+          message: getMaxLengthParams(
+            MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH
+          )[1],
+        })
+      }
+    }
+  }
+)
 
 const PRICE_MAX_VALUE = '999999999999999999.99'
 export const priceSchema = z
@@ -694,7 +728,11 @@ export const useMaterialTagSchema = () => {
 
   return schema
 }
-const useMaterialSchema = () => {
+const useMaterialSchema = (uploadExcel?: boolean) => {
+  const faceSideSchema = uploadExcel
+    ? materialBackSideSchema
+    : materialFaceSideSchema
+
   const materialSchema = z.object({
     itemNo: z
       .string(nonNullParams)
@@ -712,15 +750,13 @@ const useMaterialSchema = () => {
     weight: materialWeightSchema,
     weightDisplaySetting: weightDisplaySettingSchema,
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
-    faceSide: materialSideSchema
-      .nullable()
-      .default(getDefaults(materialSideSchema)),
+    faceSide: faceSideSchema.nullable().default(getDefaults(faceSideSchema)),
     middleSide: materialMiddleSideSchema
       .nullable()
       .default(getDefaults(materialMiddleSideSchema)),
-    backSide: materialSideSchema
+    backSide: materialBackSideSchema
       .nullable()
-      .default(getDefaults(materialSideSchema)),
+      .default(getDefaults(materialBackSideSchema)),
     tagInfo: z.object({
       tagList: tagListSchema,
       certificationTagIdList: z.array(z.number().int()).nullable().default([]),

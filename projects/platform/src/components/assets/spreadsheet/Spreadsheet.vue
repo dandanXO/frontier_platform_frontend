@@ -177,7 +177,7 @@ const menuTreePrivateTag = computed(() => ({
   blockList: [{ menuList: privateTagMenuList.value }],
 }))
 
-const materialSchema = useMaterialSchema()
+const materialSchema = useMaterialSchema(true)
 
 const newSeasonList = ref<Nullable<MaterialSeasonInfoSeason>[]>([])
 const allSeasonList = computed(() => {

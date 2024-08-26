@@ -328,6 +328,7 @@ export default function useMaterial(
     })
     const getConstructionType = (materialSide: MaterialSide) => ({
       ...materialInfoForDisplay.constructionType(
+        materialSide?.materialType,
         materialSide?.materialTypeConstruction,
         materialSide?.descriptionList
       ),

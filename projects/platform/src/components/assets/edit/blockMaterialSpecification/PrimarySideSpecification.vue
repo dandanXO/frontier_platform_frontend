@@ -53,7 +53,7 @@ div(class="flex flex-col gap-y-7.5")
             class="mt-4"
           )
         div(
-          v-if="[MaterialType.LEATHER, MaterialType.NON_WOVEN, MaterialType.TRIM, MaterialType.OTHERS].includes(materialTypeValue)"
+          v-if="!!materialTypeValue && !WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)"
           class="flex flex-col gap-y-4"
         )
           f-infobar(
@@ -80,9 +80,10 @@ div(class="flex flex-col gap-y-7.5")
             @addNew="addMaterialTypeConstructionOption"
             :label="$t('MI0150')"
             :placeholder="$t('MI0152')"
-            :hintError="displayErrors[`${primarySideType}.materialTypeConstruction`]"
+            :hintError="materialTypeConstructionDisplayError"
             class="w-full"
             required
+            v-if="WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)"
           )
             template(#custom-not-found)
               custom-not-found
@@ -102,7 +103,7 @@ div(class="flex flex-col gap-y-7.5")
             template(#custom-not-found)
               custom-not-found
           f-infobar(
-            :display="DISPLAY.FLEX"
+            :display="DISPLAY.BLOCK"
             :notifyType="NOTIFY_TYPE.INFO"
             :messageText="$t('MI0155')"
             :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
@@ -659,12 +660,16 @@ import {
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE, DISPLAY } from '@frontier/constants'
 import { WeightUnit } from '@frontier/platform-web-sdk'
-import { CREATE_EDIT } from '@/utils/constants'
+import {
+  CREATE_EDIT,
+  WITH_CONSTRUCTION_TYPE_MATERIALS,
+} from '@/utils/constants'
 import IconButton from '@/components/assets/edit/blockMaterialSpecification/IconButton.vue'
 import type { MaterialFormService } from '@/types'
 import { materialFormServiceKey } from '@/utils/constants'
 import useEnumText from '@/composables/useEnumText'
 import CustomNotFound from './CustomNotFound.vue'
+import { requiredMessage } from '@/composables/material/useMaterialSchema'
 
 const props = defineProps<{
   primarySideType: 'faceSide' | 'backSide'
@@ -847,6 +852,20 @@ const contentDisplayError = computed(() => {
   }
 
   return errors.length ? [...new Set(errors)].join(', ') : ''
+})
+
+const materialTypeConstructionDisplayError = computed(() => {
+  if (
+    !materialTypeConstruction.value.value?.name &&
+    materialType.value.value &&
+    WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialType.value.value)
+  ) {
+    return requiredMessage
+  }
+
+  return displayErrors.value[
+    `${props.primarySideType}.materialTypeConstruction`
+  ]
 })
 
 const selectMaterialTypeConstruction = (

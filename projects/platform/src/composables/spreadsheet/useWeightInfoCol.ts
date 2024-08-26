@@ -22,7 +22,7 @@ const useWeightInfoCol = (): ComputedRef<
   ColDef<MaterialRow> | ColGroupDef<MaterialRow>
 > => {
   const { t } = useI18n()
-  const materialSchema = useMaterialSchema()
+  const materialSchema = useMaterialSchema(true)
   const { weightUnitText } = useEnumText()
 
   const weightDisplayEditable =
