@@ -76,7 +76,7 @@ const materialInfoForDisplay = {
       valueInArray.push(...descriptionList.map(({ name }) => name))
     }
     return {
-      name: t(withConstructionType ? 'MI0150' : 'MI0153'),
+      name: t(withConstructionType ? 'MI0150' : 'MI0023'),
       value: valueInArray.join(', '),
     }
   },

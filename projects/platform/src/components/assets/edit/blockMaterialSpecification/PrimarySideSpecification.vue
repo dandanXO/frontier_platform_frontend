@@ -93,7 +93,7 @@ div(class="flex flex-col gap-y-7.5")
             @update:selectValue="descriptionList.onInput"
             :dropdownMenuTree="specOptions.descriptionList"
             @addNew="addDescriptionOption($event)"
-            :label="$t('MI0153')"
+            :label="$t('MI0023')"
             :placeholder="$t('MI0151')"
             :hintError="displayErrors[`${primarySideType}.descriptionList`]"
             multiple
