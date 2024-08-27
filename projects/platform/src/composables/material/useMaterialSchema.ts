@@ -740,54 +740,52 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
     ? materialSideWithoutTypeConstructionSchema
     : materialSideSchema
 
-  const materialSchema = z
-    .object({
-      itemNo: z
-        .string(nonNullParams)
-        .nonempty(requiredMessage)
-        .max(...getMaxLengthParams(50))
-        .default(''),
-      isDoubleSide: z.boolean(nonNullParams).default(false),
-      sideType: z
-        .nativeEnum(MaterialSideType)
+  const materialSchema = z.object({
+    itemNo: z
+      .string(nonNullParams)
+      .nonempty(requiredMessage)
+      .max(...getMaxLengthParams(50))
+      .default(''),
+    isDoubleSide: z.boolean(nonNullParams).default(false),
+    sideType: z
+      .nativeEnum(MaterialSideType)
+      .nullable()
+      .default(MaterialSideType.FACE_SIDE),
+    isComposite: z.boolean(nonNullParams).default(false),
+    seasonInfo: seasonInfoSchema,
+    width: materialWidthSchema,
+    weight: materialWeightSchema,
+    weightDisplaySetting: weightDisplaySettingSchema,
+    isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
+    faceSide: sideSchema.nullable().default(getDefaults(sideSchema)),
+    middleSide: materialMiddleSideSchema
+      .nullable()
+      .default(getDefaults(materialMiddleSideSchema)),
+    backSide: sideSchema.nullable().default(getDefaults(sideSchema)),
+    tagInfo: z.object({
+      tagList: tagListSchema,
+      certificationTagIdList: z.array(z.number().int()).nullable().default([]),
+    }),
+    priceInfo: materialPriceInfoSchema,
+    internalInfo: z.object({
+      tagList: tagListSchema,
+      remark: z
+        .string()
+        .max(...getMaxLengthParams(2500))
         .nullable()
-        .default(MaterialSideType.FACE_SIDE),
-      isComposite: z.boolean(nonNullParams).default(false),
-      seasonInfo: seasonInfoSchema,
-      width: materialWidthSchema,
-      weight: materialWeightSchema,
-      weightDisplaySetting: weightDisplaySettingSchema,
-      isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
-      faceSide: sideSchema.nullable().default(getDefaults(sideSchema)),
-      middleSide: materialMiddleSideSchema
-        .nullable()
-        .default(getDefaults(materialMiddleSideSchema)),
-      backSide: sideSchema.nullable().default(getDefaults(sideSchema)),
-      tagInfo: z.object({
-        tagList: tagListSchema,
-        certificationTagIdList: z
-          .array(z.number().int())
-          .nullable()
-          .default([]),
-      }),
+        .default(null),
       priceInfo: materialPriceInfoSchema,
-      internalInfo: z.object({
-        tagList: tagListSchema,
-        remark: z
-          .string()
-          .max(...getMaxLengthParams(2500))
-          .nullable()
-          .default(null),
-        priceInfo: materialPriceInfoSchema,
-        inventoryInfo: inventoryInfoSchema,
-        nativeCode: z
-          .string()
-          .max(...getMaxLengthParams(50))
-          .nullable()
-          .default(null),
-      }),
-    })
-    .superRefine(({ faceSide, backSide, isComposite, isDoubleSide }, ctx) => {
+      inventoryInfo: inventoryInfoSchema,
+      nativeCode: z
+        .string()
+        .max(...getMaxLengthParams(50))
+        .nullable()
+        .default(null),
+    }),
+  })
+
+  materialSchema.superRefine(
+    ({ faceSide, backSide, isComposite, isDoubleSide }, ctx) => {
       if (!faceSide || uploadExcel) {
         return
       }
@@ -805,7 +803,8 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
           ctx
         )
       }
-    })
+    }
+  )
 
   return materialSchema
 }
