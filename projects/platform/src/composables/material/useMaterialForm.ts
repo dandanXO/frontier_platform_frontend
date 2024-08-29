@@ -6,21 +6,20 @@ import { clone } from 'ramda'
 import {
   MaterialSideType,
   MaterialType,
-  CurrencyCode,
   MaterialQuantityUnit,
   type Material,
   type MaterialOptions,
   type PantoneColor,
-  type MaterialPriceInfoPricing,
   LengthUnit,
   WeightUnit,
-  type MaterialInternalInventoryInfo,
 } from '@frontier/platform-web-sdk'
 import useMaterialSchema, {
   getDefaults,
+  materialSideSchema,
   useMaterialInventorySchema,
   useMaterialPublicPriceSchema,
   useMaterialTagSchema,
+  type MaterialSchemaWithConstructionType,
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import {
@@ -28,11 +27,9 @@ import {
   MATERIAL_SIDE_TYPE,
   INVENTORY_UNIT,
 } from '@/utils/constants'
-import {
-  mapPricing,
-  getInventoryUnit,
-  getTotalInventoryQty,
-} from '@/utils/material'
+import { mapPricing, getTotalInventoryQty } from '@/utils/material'
+import { validateMaterialTypeConstruction } from './useMaterialSchema'
+import { getKeys } from '@frontier/lib'
 
 configure({ validateOnInput: true })
 
@@ -53,10 +50,26 @@ const getCurrentMaterialSide = (material: Material | undefined) => {
 const mapMaterialToForm = (
   material: Material | undefined,
   schema: any
-): z.infer<ReturnType<typeof useMaterialSchema>> => {
+): MaterialSchemaWithConstructionType => {
   if (!material) {
-    return getDefaults(schema) as z.infer<ReturnType<typeof useMaterialSchema>>
+    return getDefaults(schema) as MaterialSchemaWithConstructionType
   }
+
+  const getSideType = (
+    faceSide: Material['faceSide'],
+    backSide: Material['backSide']
+  ) => {
+    if (faceSide?.isMainSide) {
+      return MaterialSideType.FACE_SIDE
+    }
+
+    if (backSide?.isMainSide) {
+      return MaterialSideType.BACK_SIDE
+    }
+
+    return MaterialSideType.FACE_SIDE
+  }
+
   return {
     ...material,
     faceSide: material.faceSide
@@ -64,11 +77,10 @@ const mapMaterialToForm = (
           ...material.faceSide,
           construction: material.faceSide?.construction ?? {},
           materialType: material.faceSide?.materialType || MaterialType.WOVEN,
-          materialTypeConstruction: material.faceSide
-            ?.materialTypeConstruction || {
-            id: null,
-            isCustom: false,
-            name: '',
+          materialTypeConstruction: {
+            id: material.faceSide.materialTypeConstruction.id,
+            isCustom: !!material.faceSide.materialTypeConstruction.isCustom,
+            name: material.faceSide?.materialTypeConstruction.name ?? '',
           },
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
@@ -81,6 +93,11 @@ const mapMaterialToForm = (
       ? {
           ...material.backSide,
           materialType: material.backSide?.materialType || MaterialType.WOVEN,
+          materialTypeConstruction: {
+            id: material.backSide.materialTypeConstruction.id,
+            isCustom: !!material.backSide.materialTypeConstruction.isCustom,
+            name: material.backSide.materialTypeConstruction.name ?? '',
+          },
           construction: material.backSide?.construction ?? {},
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
@@ -188,6 +205,7 @@ const mapMaterialToForm = (
               },
       },
     },
+    sideType: getSideType(material.faceSide, material.backSide),
   }
 }
 
@@ -268,32 +286,72 @@ const useMaterialForm = ({
 }) => {
   const materialSchema = useMaterialSchema()
 
-  const materialSchemaWithPreprocess = z.preprocess((val) => {
-    const material = val as z.infer<typeof materialSchema>
-    if (material.isDoubleSide) {
-      if (material.isComposite) {
-        return material
-      } else {
-        return {
-          ...material,
-          backSide: {
-            ...material.backSide,
-            contentList: material.faceSide?.contentList,
-            materialType: material.faceSide?.materialType || MaterialType.WOVEN,
-            construction: material.faceSide?.construction,
-            constructionCustomPropertyList:
-              material.faceSide?.constructionCustomPropertyList,
-          },
+  const materialSchemaWithPreprocess = z.preprocess(
+    (val) => {
+      const material = val as z.infer<typeof materialSchema>
+      if (material.isDoubleSide) {
+        if (material.isComposite) {
+          return material
+        } else {
+          return {
+            ...material,
+            backSide: {
+              ...material.backSide,
+              contentList: material.faceSide?.contentList,
+              materialType:
+                material.faceSide?.materialType || MaterialType.WOVEN,
+              construction: material.faceSide?.construction,
+              constructionCustomPropertyList:
+                material.faceSide?.constructionCustomPropertyList,
+            },
+          }
         }
       }
-    }
-    if (material.sideType === MaterialSideType.FACE_SIDE) {
-      return { ...material, backSide: null }
-    }
-    if (material.sideType === MaterialSideType.BACK_SIDE) {
-      return { ...material, faceSide: null }
-    }
-  }, materialSchema)
+      if (material.sideType === MaterialSideType.FACE_SIDE) {
+        return { ...material, backSide: null }
+      }
+      if (material.sideType === MaterialSideType.BACK_SIDE) {
+        return { ...material, faceSide: null }
+      }
+    },
+    materialSchema.superRefine(
+      ({ faceSide, backSide, isComposite, isDoubleSide, sideType }, ctx) => {
+        const mainSide = {
+          [MaterialSideType.FACE_SIDE]: {
+            key: 'faceSide',
+            data: faceSide,
+          },
+          [MaterialSideType.BACK_SIDE]: {
+            key: 'backSide',
+            data: backSide,
+          },
+        } as const
+        const mainData = mainSide[sideType].data as z.infer<
+          typeof materialSideSchema
+        >
+
+        if (mainData) {
+          validateMaterialTypeConstruction(
+            mainSide[sideType].key,
+            mainData,
+            ctx
+          )
+          return
+        }
+
+        if (isComposite && isDoubleSide) {
+          getKeys(mainSide)
+            .filter((key) => mainSide[key].data)
+            .map((key) => {
+              const mainData = mainSide[key].data as z.infer<
+                typeof materialSideSchema
+              >
+              validateMaterialTypeConstruction(mainSide[key].key, mainData, ctx)
+            })
+        }
+      }
+    )
+  )
 
   const {
     values,
@@ -307,9 +365,7 @@ const useMaterialForm = ({
     submitCount,
   } = useForm({
     initialValues: mapMaterialToForm(material, materialSchema),
-    validationSchema: toTypedSchema(
-      materialSchemaWithPreprocess
-    ) as typeof materialSchema,
+    validationSchema: toTypedSchema(materialSchemaWithPreprocess),
     validateOnMount: true,
   })
 

@@ -749,7 +749,6 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
     isDoubleSide: z.boolean(nonNullParams).default(false),
     sideType: z
       .nativeEnum(MaterialSideType)
-      .nullable()
       .default(MaterialSideType.FACE_SIDE),
     isComposite: z.boolean(nonNullParams).default(false),
     seasonInfo: seasonInfoSchema,
@@ -784,29 +783,15 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
     }),
   })
 
-  materialSchema.superRefine(
-    ({ faceSide, backSide, isComposite, isDoubleSide }, ctx) => {
-      if (!faceSide || uploadExcel) {
-        return
-      }
-
-      validateMaterialTypeConstruction(
-        'faceSide',
-        faceSide as z.infer<typeof materialSideSchema>,
-        ctx
-      )
-
-      if (isComposite && isDoubleSide && backSide) {
-        validateMaterialTypeConstruction(
-          'backSide',
-          backSide as z.infer<typeof materialSideSchema>,
-          ctx
-        )
-      }
-    }
-  )
-
   return materialSchema
+}
+
+export type MaterialSchemaWithConstructionType = Omit<
+  z.infer<ReturnType<typeof useMaterialSchema>>,
+  'faceSide' | 'backSide'
+> & {
+  faceSide: z.infer<typeof materialSideSchema> | null
+  backSide: z.infer<typeof materialSideSchema> | null
 }
 
 export default useMaterialSchema
