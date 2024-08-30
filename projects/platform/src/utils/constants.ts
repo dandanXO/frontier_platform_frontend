@@ -65,6 +65,7 @@ export const MODAL_TYPE = {
   LOADING: 2,
   CONFIRM: 3,
   BEHAVIOR: 4,
+  COMMON: 5,
 }
 
 export const SIDE_TYPE = {

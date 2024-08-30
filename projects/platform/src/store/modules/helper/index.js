@@ -84,6 +84,16 @@ const actions = {
   replaceModalBehavior({ commit }, options) {
     commit('REPLACE_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
   },
+  openModalCommon({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.COMMON, options })
+  },
+  pushModalCommon({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.COMMON, options })
+  },
+  replaceModalCommon({ commit }, options) {
+    commit('REPLACE_modalPipeline', { type: MODAL_TYPE.COMMON, options })
+  },
   closeModalBehavior({ commit }) {
     commit('CLOSE_modalPipeline')
   },

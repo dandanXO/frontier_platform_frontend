@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('MM0006')"
+  :header="title ?? $t('MM0006')"
   :primaryBtnText="$t('UU0049')"
   :primaryBtnDisabled="actionBtnDisabled"
   @click:primary="actionHandler"
@@ -61,7 +61,7 @@ modal-behavior(
       p {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useConstants } from '@/utils/constants'
 import { ref, reactive, computed } from 'vue'
 import { FileOperator, bytesToSize } from '@frontier/lib'
@@ -69,6 +69,12 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { v4 as uuidv4 } from 'uuid'
+
+interface Props {
+  title: string
+}
+
+defineProps<Props>()
 
 const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()

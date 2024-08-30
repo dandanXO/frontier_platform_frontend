@@ -1,5 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { computed } from 'vue'
 
 import { downloadFile } from '@frontier/lib'
 import { useNotifyStore } from '@/stores/notify'
@@ -19,6 +20,7 @@ import type { PropsModalItemNoList } from '@/components/common/material/ModalIte
 import type { PropsModalHowToScan } from '@/components/assets/ModalHowToScan.vue'
 import type { PropsModalWorkspaceNodeList } from '@/components/workspace/ModalWorkspaceNodeList.vue'
 import type { PropsModalU3mDownload } from '@/components/common/material/u3m/ModalU3mDownload.vue'
+import Modal3dQuotaExceeded from '@/components/assets/Modal3dQuotaExceeded.vue'
 
 export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
@@ -165,6 +167,8 @@ export default function useAssets() {
   const print = usePrint()
   const customPrint = useCPrint()
   const route = useRoute()
+  const plan = computed(() => store.getters['polling/plan'])
+
   const { ogNodeId } = useCurrentUnit()
   const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
   const toMaterialList = (m: Material | Material[]) =>
@@ -379,6 +383,17 @@ export default function useAssets() {
           contentText: t('EE0072'),
           primaryBtnText: t('UU0031'),
         })
+      }
+
+      if (
+        !plan.value.quota.u3m.isUnlimited &&
+        plan.value.quota.u3m.used === plan.value.quota.u3m.max
+      ) {
+        store.dispatch('helper/openModalCommon', {
+          body: Modal3dQuotaExceeded,
+          classModal: 'w-128',
+        })
+        return
       }
 
       if (localStorage.getItem('haveReadU3mInstruction') === 'y') {

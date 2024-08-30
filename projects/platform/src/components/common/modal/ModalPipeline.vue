@@ -15,6 +15,11 @@ template(v-if="modalPipeline.length > 0")
         )
         template(#fallback)
           modal-loading(v-bind="modal.options")
+    template(v-if="modal.type === MODAL_TYPE.COMMON")
+      suspense(:key="modal.options.component")
+        modal-common(v-bind="modal.options")
+        template(#fallback)
+          modal-loading(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.CONFIRM")
       modal-confirm(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.LOADING")
@@ -26,6 +31,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import Modal from '@/components/common/modal/Modal.vue'
 import ModalConfirm from '@/components/common/modal/ModalConfirm.vue'
+import ModalCommon from '@/components/common/modal/ModalCommon.vue'
 import ModalLoading from '@/components/common/modal/ModalLoading.vue'
 import { MODAL_TYPE } from '@/utils/constants'
 import { defineAsyncComponent } from 'vue'
@@ -36,6 +42,7 @@ export default {
     Modal,
     ModalConfirm,
     ModalLoading,
+    ModalCommon,
     ModalCreateOrEditMoodboard: defineAsyncComponent(() =>
       import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')
     ),
