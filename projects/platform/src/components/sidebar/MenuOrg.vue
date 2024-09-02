@@ -21,16 +21,13 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
-              p(class="text-grey-900 text-caption") {{ $t('OO0002') }}: {{ plan.quota.material.used }}/{{ plan.quota.material.isUnlimited ? $t('OO0173') : plan.quota.material.max }}
+              p(class="text-grey-900 text-caption") {{ $t('OO0178') }}: {{ plan.quota.material.used }}/{{ plan.quota.material.isUnlimited ? $t('OO0173') : plan.quota.material.max }}
               //- button(
               //-   v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
               //-   v-if="planStatus.ACTIVE && !planType.ENT"
               //-   class="rounded-full flex items-center justify-center bg-primary-400 text-grey-0 px-3.5 py-1 text-caption hover:bg-primary-500"
               //-   @click="openModalManageMaterialQuota"
               //- ) {{ $t("UU0073") }}
-          f-list-item(class="h-10")
-            div(class="pl-4.5 w-full flex justify-between items-center")
-              p(class="text-grey-900 text-caption") {{ $t('OO0003') }}: {{ plan.quota.u3m.used }}/{{ plan.quota.u3m.isUnlimited ? $t('OO0173') : plan.quota.u3m.max }}
               //- button(
               //-   v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
               //-   v-if="planStatus.ACTIVE && !planType.ENT"
@@ -40,7 +37,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item(
             v-permission="FUNC_ID.VISIT_BILLING_PAGE"
-            @click="goToBillings(); collapsePopper()"
+            @click="onVisitBillingPage(collapsePopper)"
             class="cursor-pointer"
           )
             div(class="w-full flex justify-between items-center")
@@ -125,6 +122,11 @@ const moreThan4Notification = computed(
 const haveUnreadNotification = computed(() =>
   notificationList.value.some(({ isRead }) => !isRead)
 )
+
+const onVisitBillingPage = (collapsePopper) => {
+  goToBillings()
+  collapsePopper()
+}
 
 const readNotification = () => {
   haveUnreadNotification.value &&
