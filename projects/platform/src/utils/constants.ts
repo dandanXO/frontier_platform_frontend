@@ -568,3 +568,5 @@ export const PrintLabelSettingBasicInfo = {
   ],
   dataKey: 'materialInfoOptions',
 }
+
+export const U3M_QUOTA_FS_TRIAL = 10

@@ -11,9 +11,13 @@ div(class="w-195")
       )
         template(#UU0082)
           span(class="text-cyan-400 cursor-pointer" @click="payLastMonthUnbilledInfo") {{ $t('UU0082') }}
-  div(class="grid grid-cols-2 grid-rows-2 gap-3 h-78")
+  div(
+    class="grid grid-rows-2 gap-3 h-78"
+    :class="isFSTrialPlan ? 'grid-cols-3' : 'grid-cols-2'"
+  )
     div(
-      class="col-span-2 border border-grey-250 rounded px-7.5 flex justify-between items-center"
+      class="border border-grey-250 rounded px-7.5 flex justify-between items-center"
+      :class="isFSTrialPlan ? 'col-span-3' : 'col-span-2'"
     )
       div
         h5(class="font-bold text-h5 text-grey-900 mb-2") {{ planName }}
@@ -44,6 +48,28 @@ div(class="w-195")
       )
         div(class="text-caption font-normal text-grey-900 text-center")
           p(:class="{ 'text-red-400': isMaterialFull }") {{ ((materialQuota.used / materialQuota.max) * 100).toFixed(0) }}%
+          p {{ $t('OO0005') }}
+    div(
+      class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between"
+      v-if="isFSTrialPlan"
+    )
+      div
+        p(class="text-body1 font-bold text-grey-900 mb-1") {{ $t('OO0003') }}
+        p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
+        p(
+          class="text-body1 font-bold leading-1.6"
+          :class="[isU3mFull ? 'text-red-400' : 'text-primary-500']"
+        ) {{ u3mQuota.used }}/{{ u3mQuota.isUnlimited ? $t('OO0173') : u3mQuota.max }}
+          span(class="text-caption font-normal pl-1") {{ $t('OO0035') }}
+      f-circle-progress-bar(
+        class="self-end"
+        :size="60"
+        :current="u3mQuota.used"
+        :max="u3mQuota.max"
+        :primaryColor="planStatus.ACTIVE ? (isU3mFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
+      )
+        div(class="text-caption font-normal text-grey-900 text-center")
+          p(:class="{ 'text-red-400': isU3mFull }") {{ ((u3mQuota.used / u3mQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
     div(class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
@@ -78,7 +104,7 @@ import { useStore } from 'vuex'
 import usePlanOld from '@/composables/usePlanOld.js'
 import usePlan from '@/composables/usePlan'
 import PlanValueAddedService from '@/components/billings/PlanValueAddedService.vue'
-
+import { U3M_QUOTA_FS_TRIAL } from '@/utils/constants'
 const store = useStore()
 const { openModalChoosePlan, deactivateOrg, payLastMonthUnbilledInfo } =
   usePlanOld()
@@ -95,6 +121,7 @@ const hasNoValueAddedService = computed(
 )
 const materialQuota = computed(() => plan.value.quota.material)
 const u3mQuota = computed(() => plan.value.quota.u3m)
+const isFSTrialPlan = computed(() => u3mQuota.value.max === U3M_QUOTA_FS_TRIAL)
 const memberQuota = computed(() => plan.value.quota.member)
 const isMaterialFull = computed(() => {
   const { used, max } = materialQuota.value
