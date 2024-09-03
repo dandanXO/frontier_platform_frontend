@@ -173,7 +173,6 @@ import Accordion, {
 } from '@/components/assets/modalSmartUpload/Accordion.vue'
 import { INVALID_IMAGE_CODE } from '@/utils/constants'
 import { readImageFile } from '@/utils/readImageFile'
-
 const TRACKER_ID = 'Upload an Existing Image'
 
 const store = useStore()
@@ -192,12 +191,12 @@ const removeImage = (imageItem: ImageItem, index: number) => {
 }
 const validImages = computed(() =>
   materialImageList.value.filter(
-    (image) => !image.isRemoved && !image.invalidCode
+    (image) => !image.isRemoved && !image.invalidCode.length
   )
 )
 const invalidImages = computed(() =>
   materialImageList.value.filter(
-    (image) => image.isRemoved || image.invalidCode
+    (image) => image.isRemoved || image.invalidCode.length
   )
 )
 
@@ -273,47 +272,62 @@ const onDrop = (evt: DragEvent) => {
   fileOperator.onDrop(evt)
 }
 
-fileOperator.on('finish', async (file: File) => {
-  isCheckingFiles.value = true
+const onReadImageAsset = async (file: File, item: ImageItem) => {
   try {
     const imageInfo = await readImageFile(file)
 
-    const item: ImageItem = {
-      file,
-      processing: 0,
-      isRemoved: false,
-      invalidCode: null,
+    const newItem: ImageItem = {
+      ...item,
       ...imageInfo,
     }
 
-    validateImage(item, imageInfo)
+    validateImage(newItem, imageInfo)
 
     errorCode.value = null
-    materialImageList.value.push(item)
+    materialImageList.value.push(newItem)
   } catch (error) {
     console.error('Error reading image file:', error)
+    item.invalidCode.push(INVALID_IMAGE_CODE.INVALID_FILE_TYPE)
+    item.isRemoved = true
+
+    materialImageList.value.push(item)
+  }
+}
+
+fileOperator.on('finish', async (file: File) => {
+  isCheckingFiles.value = true
+  const item: ImageItem = {
+    file,
+    processing: 0,
+    isRemoved: false,
+    invalidCode: [],
+    height: 0,
+    size: file.size,
+    type: file.type,
+    width: 0,
+  }
+  if (file.size > fileSizeMaxLimit.value) {
+    item.invalidCode.push(INVALID_IMAGE_CODE.INVALID_FILE_SIZE)
+    item.isRemoved = true
   }
 
+  await onReadImageAsset(file, item)
+
   const invalidDataExists = !!materialImageList.value.find(
-    (image) => !!image.invalidCode
+    (image) => !!image.invalidCode.length
   )
 
   if (materialImageList.value.length === totalFiles.value) {
     isCheckingFiles.value = false
+    !invalidDataExists && startUpload()
   }
 
   isDisplayingCheckResult.value = invalidDataExists
-  !invalidDataExists && startUpload()
 })
 
 function validateImage(item: ImageItem, imageInfo: any) {
   if (imageInfo.width < MIN_DIMENSION || imageInfo.height < MIN_DIMENSION) {
-    item.invalidCode = INVALID_IMAGE_CODE.INVALID_DIMENSION
-    item.isRemoved = true
-  }
-
-  if (imageInfo.size > fileSizeMaxLimit.value) {
-    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_SIZE
+    item.invalidCode.push(INVALID_IMAGE_CODE.INVALID_DIMENSION)
     item.isRemoved = true
   }
 
@@ -322,7 +336,7 @@ function validateImage(item: ImageItem, imageInfo: any) {
       imageInfo.type.toLowerCase().includes(type.toLowerCase())
     )
   ) {
-    item.invalidCode = INVALID_IMAGE_CODE.INVALID_FILE_TYPE
+    item.invalidCode.push(INVALID_IMAGE_CODE.INVALID_FILE_TYPE)
     item.isRemoved = true
   }
 }

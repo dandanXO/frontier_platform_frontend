@@ -19,7 +19,7 @@ export const INVALID_IMAGE_CODE = {
   INVALID_FILE_SIZE: 2,
   INVALID_FILE_TYPE: 3,
   INVALID_RESOLUTION: 4,
-}
+} as const
 
 export const COLOR = {
   RED: '#E04A4B',

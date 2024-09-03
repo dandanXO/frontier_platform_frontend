@@ -15,11 +15,19 @@ div(
       div(v-for="(item, index) in items" :key="item.file.name") 
         div(class="flex flex-col space-y-2 text-grey-900")
           div(class="font-semibold text-sm") {{ item.file.name }}
-          div(class="flex mb-2")
+          div(class="flex mb-2 gap-2")
             div(class="text-grey-600 flex items-center text-xs") {{ (item.size / 1048576).toFixed(2) }} MB
-            div(v-if="item.invalidCode" class="flex items-center justify-center p-2")
+            div(
+              v-if="item.invalidCode.length"
+              class="flex items-center justify-center p-2"
+            )
               div(class="w-0.5 h-0.5 bg-grey-600 rounded-full") 
-            f-badge(v-if="item.invalidCode" type="critical" size="small") {{ item.invalidCode && getErrorMessage(item.invalidCode) }}
+            f-badge(
+              v-for="invalidCode in item.invalidCode"
+              type="critical"
+              size="small"
+              :key="`${item.file.name}-invalid-code-${invalidCode}`"
+            ) {{ item.invalidCode && getErrorMessage(invalidCode) }}
         hr(v-if="index < items.length - 1" class="border border-grey-150 my-2")
 </template>
 
@@ -31,6 +39,8 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { MIN_DIMENSION } from '../ModalSmartUpload.vue'
 
+type InvalidCode = (typeof INVALID_IMAGE_CODE)[keyof typeof INVALID_IMAGE_CODE]
+
 export interface ImageItem {
   file: File
   processing: number
@@ -39,7 +49,7 @@ export interface ImageItem {
   size: number
   width: number
   height: number
-  invalidCode: number | null
+  invalidCode: InvalidCode[]
 }
 
 interface Props {
