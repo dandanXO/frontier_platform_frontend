@@ -54,6 +54,7 @@ div(
           span(class="font-bold") Enter
   div(
     v-if="isItemsExist[innerMenuTree.type ?? CONTEXTUAL_MENU_TYPE.LIST]"
+    :class="innerMenuTree.scrollAreaMaxHeight"
     class="overflow-y-auto overflow-x-hidden overscroll-contain"
     data-cy="f-context-menu"
   )
