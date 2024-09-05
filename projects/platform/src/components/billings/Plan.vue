@@ -44,6 +44,7 @@ div(class="w-195")
         :size="60"
         :current="materialQuota.used"
         :max="materialQuota.max"
+        v-if="!materialQuota.isUnlimited"
         :primaryColor="planStatus.ACTIVE ? (isMaterialFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
       )
         div(class="text-caption font-normal text-grey-900 text-center")
@@ -66,6 +67,7 @@ div(class="w-195")
         :size="60"
         :current="u3mQuota.used"
         :max="u3mQuota.max"
+        v-if="!u3mQuota.isUnlimited"
         :primaryColor="planStatus.ACTIVE ? (isU3mFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
       )
         div(class="text-caption font-normal text-grey-900 text-center")
@@ -77,6 +79,16 @@ div(class="w-195")
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
         p(class="text-body1 font-bold text-primary-500 leading-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
+      f-circle-progress-bar(
+        class="self-end"
+        :size="60"
+        :current="memberQuota.used"
+        :max="memberQuota.max"
+        :primaryColor="planStatus.ACTIVE ? (isMemberFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
+      )
+        div(class="text-caption font-normal text-grey-900 text-center")
+          p(:class="{ 'text-red-400': iisMemberFull }") {{ ((memberQuota.used / memberQuota.max) * 100).toFixed(0) }}%
+          p {{ $t('OO0005') }}
   template(v-if="planType.PRO")
     p(
       v-if="planStatus.ACTIVE || planStatus.BUFFER"
@@ -125,10 +137,15 @@ const isFSTrialPlan = computed(() => u3mQuota.value.max === U3M_QUOTA_FS_TRIAL)
 const memberQuota = computed(() => plan.value.quota.member)
 const isMaterialFull = computed(() => {
   const { used, max } = materialQuota.value
-  return used === max
+  return used >= max
 })
 const isU3mFull = computed(() => {
   const { used, max } = u3mQuota.value
-  return used === max
+  return used >= max
+})
+
+const isMemberFull = computed(() => {
+  const { used, max } = memberQuota.value
+  return used >= max
 })
 </script>
