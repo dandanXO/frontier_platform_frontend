@@ -57,6 +57,7 @@ f-button(
   size="md"
   class="mt-2"
   prependIcon="edit_pencil"
+  v-if="currentOption === fileOptionId.Spreadsheet"
   @click="goToAssetMaterialSpreadSheet()"
 ) {{ $t('DD0149') }}
 </template>
@@ -144,10 +145,15 @@ fileOperator.on('filesValidated', (files: File[]) => {
     })
   }
 })
-const handleExcelButtonDrop = (evt: any) => {
-  if (evt) {
-    console.log('dan', evt!.dataTransfer!.files)
-    assetsStore.addSpreadsheetInputFile(evt!.dataTransfer!.files[0])
+const handleExcelButtonDrop = (evt: DragEvent) => {
+  if (!evt.dataTransfer?.files) {
+    return
+  }
+
+  const excelFile = Array.from(evt.dataTransfer.files).find((file) => file)
+
+  if (excelFile) {
+    excelFile && assetsStore.addSpreadsheetInputFile(excelFile)
     goToAssetMaterialSpreadSheet()
     return
   }
