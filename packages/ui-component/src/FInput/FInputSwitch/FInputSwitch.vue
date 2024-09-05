@@ -22,7 +22,7 @@ label(class="flex items-center")
   div(
     v-if="label !== ''"
     class="pl-1 text-body2 whitespace-nowrap"
-    :class="[disabled ? 'text-grey-250' : 'text-grey-900 cursor-pointer']"
+    :class="[disabled ? 'text-grey-250' : 'text-grey-900 cursor-pointer', disabled ? '' : innerClass]"
   ) {{ label }}
 </template>
 
@@ -48,6 +48,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    innerClass: {
+      type: String,
+      default: '',
     },
   },
   emits: ['update:inputValue'],

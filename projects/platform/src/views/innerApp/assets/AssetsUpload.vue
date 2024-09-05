@@ -13,13 +13,13 @@ f-scrollbar-container(class="w-full h-full")
             class="text-h3 text-grey-900 pb-5 font-medium"
             data-cy="smart-upload-title"
           ) {{ $t('DD0001') }}
-          f-button(
-            size="md"
-            data-cy="text-recognition-setting"
-            @click="openModalUploadSettings"
-            type="secondary"
-            prependIcon="setting"
-          ) {{ $t('DD0135') }}
+          div(class="flex flex-row items-center gap-x-4")
+            f-button(
+              size="md"
+              @click="openModalUploadSettings"
+              type="secondary"
+              prependIcon="setting"
+            ) {{ $t('DD0135') }}
 
         div(class="flex justify-between items-end")
           div(class="text-grey-900 text-body1 leading-1.6")
@@ -124,6 +124,7 @@ import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useAssetsStore } from '@/stores/assets'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import usePrint from '@/composables/material/usePrint'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
@@ -134,12 +135,18 @@ import { TRACKER_PREFIX } from '@frontier/constants'
 
 const { t } = useI18n()
 const store = useStore()
+
 const {
   goToAssets,
   goToMaterialUpload,
+  goToMaterialCreate,
   goToAssetsMaterialCreate,
   goToAssetMaterialSpreadSheet,
 } = useNavigation()
+const assetsStore = useAssetsStore()
+if (assetsStore.useNewAssetsView) {
+  goToMaterialCreate()
+}
 const { ogUploadMaterialEmail } = useCurrentUnit()
 const { printBackSideLabel } = usePrint()
 const openModalSmartUpload = () => {

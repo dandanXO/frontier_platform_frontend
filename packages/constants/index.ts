@@ -123,3 +123,9 @@ export enum TRACKER_ERROR_LOCATION {
   FE = 'Frontend',
   BE = 'Backend',
 }
+
+export enum fileOptionId {
+  '2d_file' = '2d_file',
+  '3d_file' = '3d_file',
+  'Spreadsheet' = 'Spreadsheet',
+}

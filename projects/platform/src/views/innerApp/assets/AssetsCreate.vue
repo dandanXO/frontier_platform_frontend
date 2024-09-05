@@ -1,0 +1,276 @@
+<template lang="pug">
+f-scrollbar-container(class="w-full h-full")
+  div(class="ml-7.5 mt-7.5")
+    global-breadcrumb-list(
+      :breadcrumbList="locationList"
+      @click:item="$event.goTo()"
+    )
+  div(class="w-full flex justify-center")
+    div(class="w-full p-8")
+      div(class="mt-9.5")
+        div(class="flex justify-between")
+          h3(
+            class="text-h3 text-grey-900 pb-5 font-medium"
+            data-cy="smart-upload-title"
+          ) {{ $t('DD0138') }}
+          div(class="flex flex-row items-center gap-x-4")
+            f-button(
+              size="md"
+              type="secondary"
+              prependIcon="player_play"
+              @click="openVideo"
+            ) {{ $t('DD0140') }}
+            f-button(
+              size="md"
+              @click="openModalUploadSettings"
+              type="secondary"
+              prependIcon="setting"
+            ) {{ $t('DD0141') }}
+      div(class="flex flex-row gap-x-4") 
+        div(class="w-1/2 xl:w-5/12 flex flex-col gap-y-4") 
+          div(
+            @click="clickFileOption('2d_file')"
+            class="bg flex flex-row justify-between gap-x-3 p-4 rounded-lg border border-grey-200"
+            :class="[currentSelectedOption === fileOptionId['2d_file'] ? 'text-grey-0' : 'text-grey-700', { 'bg-active': currentSelectedOption === fileOptionId['2d_file'] }]"
+          )
+            div(class="flex flex-row flex-grow")
+              f-svg-icon(
+                iconName="picture"
+                size="32"
+                class="mr-5 mt-2"
+                :class="[currentSelectedOption === fileOptionId['2d_file'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+              div(class="flex-grow")
+                p(class="font-bold text-base mb-1") {{ $t('DD0150') }}
+                p(
+                  class="text-sm border-b pb-3 mb-3"
+                  :class="[currentSelectedOption === fileOptionId['2d_file'] ? 'text-grey-0' : 'text-grey-700']"
+                ) {{ $t('DD0099') }}
+                ul(
+                  class="list-disc list-inside text-xs ml-1"
+                  :class="[currentSelectedOption === fileOptionId['2d_file'] ? 'text-grey-0' : 'text-grey-700']"
+                )
+                  li {{ $t('RR0145') }}
+                    i18n-t(keypath="DD0101" tag="span" class="font-bold")
+                      template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
+                  li {{ $t('RR0244') }} &nbsp;
+                    span(class="font-bold") {{ $t('DD0119') }}
+                  li {{ $t('DD0146') }}&nbsp;
+                    |
+                    span(class="font-bold") 300 DPI
+            div
+              f-svg-icon(
+                iconName="keyboard_arrow_right"
+                size="32"
+                :class="[currentSelectedOption === fileOptionId['2d_file'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+          //- TODO hide wait back end api
+          div(
+            @click="clickFileOption('3d_file')"
+            class="bg text-grey-0 flex flex-row justify-between gap-x-3 p-4 rounded-lg border border-grey-200"
+            :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-700', { 'bg-active': currentSelectedOption === fileOptionId['3d_file'] }]"
+          )
+            div(class="flex flex-row flex-grow")
+              f-svg-icon(
+                iconName="3d_file"
+                size="32"
+                class="mr-5 mt-2"
+                :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+              div(class="flex-grow")
+                p(
+                  class="font-bold text-base mb-1"
+                  :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-700']"
+                ) {{ $t('DD0151') }}
+                p(
+                  class="text-sm border-b pb-3 mb-3"
+                  :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-700']"
+                ) {{ $t('DD0147') }}
+                ul(
+                  class="list-disc list-inside text-xs ml-1"
+                  :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-700']"
+                )
+                  li {{ $t('RR0145') }}
+                    i18n-t(keypath="DD0101" tag="span" class="font-bold")
+                      template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
+            div
+              f-svg-icon(
+                iconName="keyboard_arrow_right"
+                size="32"
+                :class="[currentSelectedOption === fileOptionId['3d_file'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+          div(
+            @click="clickFileOption('Spreadsheet')"
+            class="bg text-grey-0 flex flex-row justify-between gap-x-3 p-4 rounded-lg border border-grey-200"
+            :class="[currentSelectedOption === fileOptionId['Spreadsheet'] ? 'text-grey-0' : 'text-grey-700', { 'bg-active': currentSelectedOption === fileOptionId['Spreadsheet'] }]"
+          )
+            div(class="flex flex-row")
+              f-svg-icon(
+                iconName="sheetFile"
+                size="32"
+                class="mr-5 mt-2"
+                :class="[currentSelectedOption === fileOptionId['Spreadsheet'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+              div
+                p(
+                  class="font-bold text-base mb-1"
+                  :class="[currentSelectedOption === fileOptionId['Spreadsheet'] ? 'text-grey-0' : 'text-grey-700']"
+                ) {{ $t('DD0152') }}
+                p(
+                  class="text-sm pb-3 mb-3"
+                  :class="[currentSelectedOption === fileOptionId['Spreadsheet'] ? 'text-grey-0' : 'text-grey-500']"
+                ) {{ $t('DD0148') }}
+            div
+              f-svg-icon(
+                iconName="keyboard_arrow_right"
+                size="32"
+                :class="[currentSelectedOption === fileOptionId['Spreadsheet'] ? 'text-grey-0' : 'text-grey-800']"
+              )
+        div(class="w-1/2 xl:w-7/12 h-full") 
+          upload-area(
+            :currentOption="currentSelectedOption"
+            v-if="showUploadArea"
+          )
+</template>
+
+<script setup lang="ts">
+import useNavigation from '@/composables/useNavigation'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { useAssetsStore } from '@/stores/assets'
+// import usePrint from '@/composables/material/usePrint'
+import type { Organization } from '@frontier/platform-web-sdk'
+import { onMounted, nextTick } from 'vue'
+import { track, bytesToSize } from '@frontier/lib'
+import { TRACKER_PREFIX, fileOptionId } from '@frontier/constants'
+import uploadArea from '@/components/assets/UploadArea.vue'
+
+type option = '2d_file' | '3d_file' | 'Spreadsheet'
+const { t } = useI18n()
+const assetsStore = useAssetsStore()
+const store = useStore()
+
+const {
+  goToAssets,
+  goToMaterialUpload,
+  goToAssetsMaterialCreate,
+  goToAssetMaterialSpreadSheet,
+} = useNavigation()
+if (!assetsStore.useNewAssetsView) {
+  goToMaterialUpload()
+}
+const fileInput = ref(null)
+const currentSelectedOption = ref<option>('2d_file')
+const fileSizeMaxLimit = computed(
+  () => store.getters['organization/materialAttachmentUploadSizeLimit']
+)
+const openModalSmartUpload = () => {
+  track({
+    eventName: `${TRACKER_PREFIX.CHOOSE} Upload an Existing Image`,
+  })
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-smart-upload',
+  })
+}
+
+const openModalUploadSettings = () => {
+  store.dispatch(
+    'helper/openModal',
+    { component: 'modal-upload-assets-settings' },
+    { root: true }
+  )
+}
+
+const org = computed<Organization>(
+  () => store.getters['organization/organization']
+)
+
+const alternativeUploadOptions = [
+  {
+    id: 'smart-upload',
+    icon: 'image_file',
+    title: t('DD0088'),
+    content: t('DD0089'),
+    action: openModalSmartUpload,
+    testId: 'smart-upload',
+  },
+  {
+    id: 'manual-upload',
+    icon: 'add_box_outline',
+    title: t('DD0116'),
+    content: t('DD0117'),
+    action: () => {
+      track({
+        eventName: `${TRACKER_PREFIX.CHOOSE} Create Asset`,
+      })
+      goToAssetsMaterialCreate()
+    },
+    testId: 'manual-upload',
+  },
+  {
+    id: 'mass-upload',
+    icon: 'multiple_file',
+    title: t('DD0092'),
+    content: t('DD0093'),
+    action: () => {
+      track({
+        eventName: `${TRACKER_PREFIX.CHOOSE} Mass Upload`,
+      })
+      goToAssetMaterialSpreadSheet()
+    },
+    testId: 'mass-upload',
+  },
+]
+
+const locationList = computed(() => {
+  return [
+    {
+      name: t('RR0008'),
+      goTo: goToAssets,
+    },
+    {
+      name: t('DD0138'),
+      goTo: goToMaterialUpload,
+    },
+  ]
+})
+const showUploadArea = ref(true)
+const openVideo = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-video-show',
+    properties: {
+      videoUrl: 'https://www.youtube.com/embed/DPCAHtG90Gk?autoplay=1',
+      title: '',
+    },
+  })
+}
+const clickFileOption = async (type: option) => {
+  currentSelectedOption.value = fileOptionId[type]
+  showUploadArea.value = false
+  await nextTick()
+  showUploadArea.value = true
+}
+
+onMounted(() => {
+  track({
+    eventName: `${TRACKER_PREFIX.START_FLOW} Upload Create NEW`,
+  })
+})
+</script>
+
+<style lang="scss" scoped>
+.bg-active {
+  background: radial-gradient(
+    100% 564.06% at 0% 0%,
+    #2cac8f 0%,
+    #2c9f71 28.26%,
+    #278d5f 48.09%,
+    #1b6f52 65.08%,
+    #185e4b 87%
+  );
+  @apply border;
+  @apply border-solid;
+  @apply border-primary-800;
+}
+</style>

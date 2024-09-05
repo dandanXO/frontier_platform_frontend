@@ -137,7 +137,10 @@ export default function useNavigation() {
     await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath(`${prefixPath}/assets/upload`, navReq))
   }
-
+  const goToMaterialCreate = async (navReq: NavigationReq = {}) => {
+    await store.dispatch('sticker/closeStickerDrawer')
+    router.push(parsePath(`${prefixPath}/assets/create`, navReq))
+  }
   const goToAssetMaterialDetail = async (
     navReq: NavigationReq = {},
     materialId: number
@@ -364,6 +367,7 @@ export default function useNavigation() {
     goToLobby,
     goToAssets,
     goToMaterialUpload,
+    goToMaterialCreate,
     goToAssetMaterialDetail,
     goToAssetsMaterialCreate,
     goToAssetMaterialEdit,

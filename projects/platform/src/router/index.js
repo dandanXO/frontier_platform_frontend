@@ -241,6 +241,12 @@ const routes = [
             component: () => import('@/views/innerApp/assets/AssetsUpload.vue'),
           },
           {
+            path: 'assets/create',
+            name: 'AssetsCreate',
+            meta: { nextVer: true },
+            component: () => import('@/views/innerApp/assets/AssetsCreate.vue'),
+          },
+          {
             path: 'assets/upload/manual',
             name: 'AssetsMaterialCreate',
             component: () =>

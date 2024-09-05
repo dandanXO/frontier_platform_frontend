@@ -7,8 +7,8 @@ import type {
   PaginationReq,
   Search,
   AssetsFilter,
+  SmartUploadAssetsMaterialV2U3MRequestAllOfU3MListInner,
 } from '@frontier/platform-web-sdk'
-import { NOTIFY_TYPE } from '@frontier/constants'
 import assetsApi from '@/apis/assets'
 import { useSearchStore } from '@/stores/search'
 import { useNotifyStore } from '@/stores/notify'
@@ -18,14 +18,15 @@ import useNavigation from '@/composables/useNavigation'
 import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
 
 export const useAssetsStore = defineStore('assets', () => {
-  const { t } = useI18n()
   const store = useStore()
   const { goToAssetMaterialSpreadSheet } = useNavigation()
-  const { showNotifyBanner, closeNotifyBanner } = useNotifyStore()
+  const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
   const uploadingU3mMaterialIdList = ref<number[]>([])
   const spreadsheetInitialMaterial = ref<Material[]>([])
+  const useNewAssetsView = ref<boolean>(true)
+  const spreadsheetInputFile = ref<File | null>(null)
 
   const materialList = ref<Material[]>([])
   const getAssetsMaterialList = async (payload: {
@@ -49,21 +50,13 @@ export const useAssetsStore = defineStore('assets', () => {
   }) => {
     const { materialId, u3mFile, needToGeneratePhysical } = payload
 
-    showNotifyBanner({
-      notifyType: NOTIFY_TYPE.INFO,
-      title: t('EE0176'),
-      messageText: t('EE0177'),
-    })
-
     const cancelCustomU3mUpload = () =>
       cancelCustomU3mUploadByMaterialId(materialId)
-
     if (uploadingU3mMaterialIdList.value.length === 0) {
       window.addEventListener('unload', cancelCustomU3mUpload)
     }
 
     uploadingU3mMaterialIdList.value.push(materialId)
-
     const { s3UploadId, fileName } = await uploadFileToS3(u3mFile, u3mFile.name)
     await ogBaseAssetsApi('uploadAssetsMaterialCustomU3m', {
       materialId,
@@ -82,6 +75,35 @@ export const useAssetsStore = defineStore('assets', () => {
     }
   }
 
+  const uploadCustomU3mV2 = async (
+    payload: {
+      u3mFile: File
+      needToGeneratePhysical: boolean
+    }[]
+  ) => {
+    const u3MList: SmartUploadAssetsMaterialV2U3MRequestAllOfU3MListInner[] =
+      await Promise.all<SmartUploadAssetsMaterialV2U3MRequestAllOfU3MListInner>(
+        payload.map(async (data) => {
+          const { u3mFile, needToGeneratePhysical } = data
+
+          const { s3UploadId, fileName } = await uploadFileToS3(
+            u3mFile,
+            u3mFile.name
+          )
+
+          return {
+            fileName,
+            needToGeneratePhysical,
+            s3UploadId,
+          }
+        })
+      )
+
+    return await ogBaseAssetsApi('smartUploadAssetsMaterialV2U3M', {
+      u3MList,
+    })
+  }
+
   const cancelCustomU3mUploadByMaterialId = (materialId: number) => {
     const type = store.getters['helper/routeLocation']
     const id = store.getters['helper/routeLocationId']
@@ -93,10 +115,16 @@ export const useAssetsStore = defineStore('assets', () => {
     const headers = {
       type: 'application/json',
     }
-    const data = {
+    const data: {
+      materialId: number
+      orgId?: string
+      groupId?: string
+      accessToken: string | null
+    } = {
       materialId,
       accessToken: localStorage.getItem('accessToken'),
     }
+
     if (type === 'org') {
       data['orgId'] = id
     } else {
@@ -116,14 +144,22 @@ export const useAssetsStore = defineStore('assets', () => {
     spreadsheetInitialMaterial.value = []
   }
 
+  const addSpreadsheetInputFile = (file: File | null) => {
+    spreadsheetInputFile.value = file
+  }
+
   return {
     materialList,
     spreadsheetInitialMaterial,
     getAssetsMaterialList,
     uploadingU3mMaterialIdList,
     uploadCustomU3m,
+    uploadCustomU3mV2,
     ogBaseAssetsApi,
     startSpreadsheetUpdate,
     cleanUpSpreadSheet,
+    addSpreadsheetInputFile,
+    useNewAssetsView,
+    spreadsheetInputFile,
   }
 })

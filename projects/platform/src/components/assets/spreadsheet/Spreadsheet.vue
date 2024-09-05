@@ -55,7 +55,7 @@ div(class="relative flex-1 w-full flex flex-col gap-y-4")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, provide } from 'vue'
+import { computed, ref, reactive, provide, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -144,6 +144,7 @@ const originMaterialRowList: MaterialRow[] = clone(props.materialRowList)
 
 const store = useStore()
 const { ogBaseAssetsApi } = useAssetsStore()
+const assetsStore = useAssetsStore()
 const { materialSideTypeText, currencyText } = useEnumText()
 
 const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
@@ -1006,6 +1007,30 @@ const handleSubmit = () => {
   const submitPayload = getPayload(materialRowList)
   emit('submit', submitPayload)
 }
+onMounted(() => {
+  if (assetsStore.spreadsheetInputFile) {
+    const target = assetsStore.spreadsheetInputFile
+    if (!target) {
+      return
+    }
+    const file = target
+
+    const reader = new FileReader()
+    reader.onload = function (e) {
+      if (!e.target) {
+        return
+      }
+      const data = e.target.result
+      const workbook = convertDataToWorkbook(data)
+      populateGrid(workbook, gridApi, materialOptions)
+      updateSubmitStatus()
+      // Reset the value of the input to allow the same file to be selected again
+      target.value = ''
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+})
 </script>
 
 <style scoped>

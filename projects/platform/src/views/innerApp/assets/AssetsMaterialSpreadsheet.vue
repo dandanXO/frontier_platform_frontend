@@ -41,8 +41,12 @@ const TRACKER_ID = 'Mass Upload'
 
 const store = useStore()
 const { t } = useI18n()
-const { ogBaseAssetsApi, spreadsheetInitialMaterial, cleanUpSpreadSheet } =
-  useAssetsStore()
+const {
+  ogBaseAssetsApi,
+  spreadsheetInitialMaterial,
+  cleanUpSpreadSheet,
+  addSpreadsheetInputFile,
+} = useAssetsStore()
 const { goToAssets, goToProgress, goToAssetMaterialSpreadSheet } =
   useNavigation()
 
@@ -154,7 +158,10 @@ onBeforeRouteLeave(async () => {
       header: t('RR0305'),
       contentText: t('RR0306'),
       primaryBtnText: t('UU0001'),
-      primaryBtnHandler: () => resolve('confirm'),
+      primaryBtnHandler: () => {
+        addSpreadsheetInputFile(null)
+        return resolve('confirm')
+      },
       secondaryBtnText: t('UU0002'),
       secondaryBtnHandler: () => resolve('cancel'),
     })

@@ -150,6 +150,12 @@ export default {
     ModalSmartUpload: defineAsyncComponent(() =>
       import('@/components/assets/ModalSmartUpload.vue')
     ),
+    ModalPictureCheckUpload: defineAsyncComponent(() =>
+      import('@/components/assets/ModalPictureCheckUpload.vue')
+    ),
+    Modal3DFileUpload: defineAsyncComponent(() =>
+      import('@/components/assets/Modal3DFileUpload.vue')
+    ),
     ModalHowToScan: defineAsyncComponent(() =>
       import('@/components/assets/ModalHowToScan.vue')
     ),
@@ -301,6 +307,9 @@ export default {
     ),
     ModalLabelPreviewCustom: defineAsyncComponent(() =>
       import('@/components/assets/labelPreview/custom/ModalLabelPreview.vue')
+    ),
+    ModalVideoShow: defineAsyncComponent(() =>
+      import('@/components/common/ModalvideoShow.vue')
     ),
   },
   setup() {
