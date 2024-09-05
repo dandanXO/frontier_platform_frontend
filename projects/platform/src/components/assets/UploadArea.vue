@@ -65,7 +65,7 @@ f-button(
 <script setup lang="ts">
 import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@frontier/lib'
+import { FileOperator, getFileExtension } from '@frontier/lib'
 import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
@@ -145,6 +145,29 @@ fileOperator.on('filesValidated', (files: File[]) => {
     })
   }
 })
+
+const onShowSpreadsheetEditor = (file: File) => {
+  try {
+    if (getFileExtension(file.name) !== Extension.XLSX) {
+      throw Error(t('WW0173'))
+    }
+    file && assetsStore.addSpreadsheetInputFile(file)
+    goToAssetMaterialSpreadSheet()
+  } catch (error) {
+    const errorMessage = error?.message?.content || (error as string)
+
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: t('WW0122'),
+      contentText: errorMessage,
+      primaryBtnText: t('UU0031'),
+      primaryBtnHandler: () => {
+        store.dispatch('helper/closeModalConfirm')
+      },
+      testId: 'modal-confirm-crash',
+    })
+  }
+}
 const handleExcelButtonDrop = (evt: DragEvent) => {
   if (!evt.dataTransfer?.files) {
     return
@@ -152,11 +175,7 @@ const handleExcelButtonDrop = (evt: DragEvent) => {
 
   const excelFile = Array.from(evt.dataTransfer.files).find((file) => file)
 
-  if (excelFile) {
-    excelFile && assetsStore.addSpreadsheetInputFile(excelFile)
-    goToAssetMaterialSpreadSheet()
-    return
-  }
+  excelFile && onShowSpreadsheetEditor(excelFile)
 }
 const handleExcelButtonClick = () => {
   if (fileInput.value) {
@@ -170,10 +189,6 @@ const handleExcelSelect = (event: Event) => {
   }
   const file = target.files[0]
 
-  if (!file) {
-    return
-  }
-  assetsStore.addSpreadsheetInputFile(file)
-  goToAssetMaterialSpreadSheet()
+  file && onShowSpreadsheetEditor(file)
 }
 </script>

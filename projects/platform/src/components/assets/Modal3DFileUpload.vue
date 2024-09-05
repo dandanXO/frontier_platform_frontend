@@ -153,9 +153,17 @@ onMounted(async () => {
       ({ materialId }) =>
         materialId && goToAssetMaterialEdit(materialId, ogType.value)
     )
-    // TODO goto material edit page
   } catch (e) {
-    customizedErrorMsg.value = e?.message?.content || (e as string)
+    const errorMessage = e?.message?.content || (e as string)
+    customizedErrorMsg.value = errorMessage
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: t('WW0122'),
+      contentText: errorMessage || t('WW0173'),
+      primaryBtnText: t('UU0031'),
+      primaryBtnHandler: closeModalBehavior,
+      testId: 'modal-confirm-crash',
+    })
   } finally {
     isLoading.value = false
     isUploading.value = false

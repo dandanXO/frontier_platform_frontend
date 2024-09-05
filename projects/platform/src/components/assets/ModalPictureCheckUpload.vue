@@ -106,13 +106,8 @@ modal-behavior(
 <script setup lang="ts">
 import { computed, onMounted, ref, toRef } from 'vue'
 import { useStore } from 'vuex'
-import {
-  FileOperator,
-  TRACKER_PREFIX,
-  TRACKER_POSTFIX,
-  track,
-  bytesToSize,
-} from '@frontier/lib'
+import { TRACKER_PREFIX, TRACKER_POSTFIX, track } from '@frontier/lib'
+import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
@@ -144,6 +139,7 @@ const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const { goToProgress, goToAssetMaterialEdit, ogType } = useNavigation()
 const isUploading = ref(false)
 const isFinish = ref(false)
+const { t } = useI18n()
 
 const materialImageList = ref<ImageItem[]>([])
 const materialImageListNew = toRef(props.materialImageListNew)
@@ -176,17 +172,6 @@ const fileSizeMaxLimit = computed(
 const acceptType = [Extension.JPG, Extension.JPEG, Extension.PNG]
 const minimumDimensions = 800
 const minimumResolution = 300
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit.value)
-
-fileOperator.on('finish', async (file: File) => {
-  isCheckingFiles.value = false
-  isDisplayingCheckResult.value = false
-
-  if (materialImageList.value.length === totalFiles.value) {
-    isCheckingFiles.value = false
-    isDisplayingCheckResult.value = false
-  }
-})
 
 function validateImage(item: ImageItem, imageInfo: any) {
   if (
@@ -207,34 +192,6 @@ function validateImage(item: ImageItem, imageInfo: any) {
   //   item.isRemoved = true
   // }
 }
-
-fileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
-  errorCode.value = code
-})
-
-fileOperator.on('filesValidated', async (files: File[]) => {
-  totalFiles.value = files.length
-  const _files = Array.from(files)
-  for (let i = 0; i < _files.length; i += 1) {
-    try {
-      const imageInfo = await readImageFile(_files[i])
-
-      const item: ImageItem = {
-        file: _files[i],
-        processing: 0,
-        isRemoved: false,
-        invalidCode: null,
-        ...imageInfo,
-      }
-      validateImage(item, imageInfo)
-
-      errorCode.value = null
-      materialImageList.value.push(item)
-    } catch (error) {
-      console.error('Error reading image file:', error)
-    }
-  }
-})
 
 const startUpload = () => {
   isDisplayingCheckResult.value = false
@@ -340,6 +297,14 @@ onMounted(() => {
       materialImageList.value.push(item)
     } catch (error) {
       console.error('Error reading image file:', error)
+      store.dispatch('helper/openModalConfirm', {
+        type: 3,
+        header: t('WW0122'),
+        contentText: t('WW0173'),
+        primaryBtnText: t('UU0031'),
+        primaryBtnHandler: closeModalBehavior,
+        testId: 'modal-confirm-crash',
+      })
     }
 
     isCheckingFiles.value = false
