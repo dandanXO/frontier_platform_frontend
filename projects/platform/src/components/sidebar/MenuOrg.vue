@@ -22,7 +22,10 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           f-list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-grey-900 text-caption") {{ $t('OO0178') }}: {{ plan.quota.material.used }}/{{ plan.quota.material.isUnlimited ? $t('OO0173') : plan.quota.material.max }}
-          f-list-item(class="h-10" v-if="plan.quota.u3m.max === U3M_QUOTA_FS_TRIAL")
+          f-list-item(
+            class="h-10"
+            v-if="plan.platform === PlanPlatformEnum.FabriSelect"
+          )
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-grey-900 text-caption") {{ $t('OO0003') }}: {{ plan.quota.u3m.used }}/{{ plan.quota.u3m.isUnlimited ? $t('OO0173') : plan.quota.u3m.max }}
               //- button(
@@ -97,12 +100,12 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
             p(v-else class="px-10.5") {{ $t('NN0005') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation'
-import { FUNC_ID, U3M_QUOTA_FS_TRIAL } from '@/utils/constants'
-
+import { FUNC_ID } from '@/utils/constants'
+import { PlanPlatformEnum, type Plan } from '@frontier/platform-web-sdk'
 const store = useStore()
 const { goToBillings, goToLobby } = useNavigation()
 
@@ -110,7 +113,7 @@ const isExpand = ref(false)
 
 const org = computed(() => store.getters['organization/organization'])
 const orgLogo = computed(() => store.getters['organization/orgLogo'])
-const plan = computed(() => store.getters['polling/plan'])
+const plan = computed<Plan>(() => store.getters['polling/plan'])
 const planName = computed(() => store.getters['polling/planName'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
 // const planType = computed(() => store.getters['polling/planType'])

@@ -110,19 +110,19 @@ div(class="w-195")
   plan-value-added-service(v-if="hasNoValueAddedService")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import usePlanOld from '@/composables/usePlanOld.js'
 import usePlan from '@/composables/usePlan'
 import PlanValueAddedService from '@/components/billings/PlanValueAddedService.vue'
-import { U3M_QUOTA_FS_TRIAL } from '@/utils/constants'
+import { PlanPlatformEnum, type Plan } from '@frontier/platform-web-sdk'
 const store = useStore()
 const { openModalChoosePlan, deactivateOrg, payLastMonthUnbilledInfo } =
   usePlanOld()
 const { cancelDesignerPlan } = usePlan()
 
-const plan = computed(() => store.getters['polling/plan'])
+const plan = computed<Plan>(() => store.getters['polling/plan'])
 const deactivatedDate = computed(() => store.getters['polling/deactivatedDate'])
 const canCancelPlan = computed(() => store.getters['polling/canCancelPlan'])
 const planName = computed(() => store.getters['polling/planName'])
@@ -133,7 +133,9 @@ const hasNoValueAddedService = computed(
 )
 const materialQuota = computed(() => plan.value.quota.material)
 const u3mQuota = computed(() => plan.value.quota.u3m)
-const isFSTrialPlan = computed(() => u3mQuota.value.max === U3M_QUOTA_FS_TRIAL)
+const isFSTrialPlan = computed(
+  () => plan.value.platform === PlanPlatformEnum.FabriSelect
+)
 const memberQuota = computed(() => plan.value.quota.member)
 const isMaterialFull = computed(() => {
   const { used, max } = materialQuota.value

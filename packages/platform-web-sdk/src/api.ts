@@ -12139,6 +12139,12 @@ export interface MaterialSide {
      * @memberof MaterialSide
      */
     'colorInfo': MaterialColorInfo;
+    /**
+     * indicates the image has lower DPI number than what we agreed upon (currently set to 300DPI)
+     * @type {boolean}
+     * @memberof MaterialSide
+     */
+    'isLowDpi': boolean;
 }
 
 
@@ -17701,6 +17707,12 @@ export interface Plan {
      * @type {number}
      * @memberof Plan
      */
+    'platform'?: PlanPlatformEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof Plan
+     */
     'status'?: PlanStatusEnum;
     /**
      * 停用日
@@ -17741,6 +17753,12 @@ export const PlanPlanTypeEnum = {
 } as const;
 
 export type PlanPlanTypeEnum = typeof PlanPlanTypeEnum[keyof typeof PlanPlanTypeEnum];
+export const PlanPlatformEnum = {
+    TextileCloud: 1,
+    FabriSelect: 3
+} as const;
+
+export type PlanPlatformEnum = typeof PlanPlatformEnum[keyof typeof PlanPlatformEnum];
 export const PlanStatusEnum = {
     NUMBER_null: null,
     NUMBER_null2: null,
@@ -23597,6 +23615,18 @@ export interface UserQrcodeLabelPrintSettingCreatePostRequestMaterialInfoOptions
      * @memberof UserQrcodeLabelPrintSettingCreatePostRequestMaterialInfoOptions
      */
     'isPrintPattern': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserQrcodeLabelPrintSettingCreatePostRequestMaterialInfoOptions
+     */
+    'isPrintOrgName': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserQrcodeLabelPrintSettingCreatePostRequestMaterialInfoOptions
+     */
+    'isPrintFrontierNo': boolean;
 }
 /**
  * 
