@@ -14,7 +14,7 @@ div(class="relative")
         div(class="flex items-end")
           global-breadcrumb-list(
             :breadcrumbList="locationList"
-            @click:item="$event.goTo(); visit()"
+            @click:item="onClickBreadCrumbs($event, visit)"
             fontSize="text-h6"
           )
           p(class="flex text-caption text-grey-600 pl-1")
@@ -66,7 +66,7 @@ div(class="relative")
           :textColor="banner.color"
           :slotContent="banner.description"
         )
-        div(class="mt-4 w-full")
+        div(class="mt-4")
           showroom-carousel(:showroomList="showroomList")
     template(#default="{ visit }")
       div(
@@ -84,8 +84,8 @@ div(class="relative")
         )
           template(#caption v-if="isFirstLayer")
             div(
-              class="mt-1.5 h-6 flex items-center"
-              @click.stop="searchOrgId = node.nodeMeta.orgId; visit()"
+              class="mt-1.5 h-6 flex items-center cursor-pointer"
+              @click.stop="onClickItem(node.nodeMeta.orgId, visit)"
             )
               f-avatar(:imageUrl="node.nodeMeta.unitLogo" type="org" size="sm")
               p(class="pl-1 font-bold text-caption text-grey-900") {{ node.nodeMeta.unitName }}
@@ -124,6 +124,7 @@ import {
 import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import { useShowroomStore } from '@/stores/showroom'
 import ShowroomBanner from '@/components/showroom/ShowroomBanner.vue'
+import GlobalBreadcrumbList from '@/components/global/GlobalBreadcrumbList.vue'
 
 const props = defineProps<{
   nodeId?: string
@@ -218,6 +219,21 @@ const nodeList = computed(
 const optionNode = computed(() => [
   [publicLibraryCloneByNodeList, publicLibraryShare],
 ])
+
+const onClickBreadCrumbs = (
+  item: InstanceType<
+    typeof GlobalBreadcrumbList
+  >['$props']['breadcrumbList'][number],
+  visit: VoidFunction
+) => {
+  item?.goTo?.()
+  visit()
+}
+
+const onClickItem = (orgId: number, visit: VoidFunction) => {
+  searchOrgId.value = orgId
+  visit()
+}
 
 const getPublicList = async (
   payload: SearchPayload<InnerExternalFilter>,
