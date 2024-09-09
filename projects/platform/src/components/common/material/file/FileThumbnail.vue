@@ -5,8 +5,9 @@ div(
 )
   template(v-if="[PNG, JPEG, JPG, PDF, GIF].includes(extension)")
     img(
-      v-if="thumbnailUrl"
+      v-if="thumbnailUrl && showImage"
       :src="thumbnailUrl"
+      @error="imageOnerror($event)"
       class="w-full h-full object-contain"
       v-default-img
     )
@@ -33,7 +34,7 @@ div(
 <script setup lang="ts">
 import { Extension } from '@frontier/platform-web-sdk'
 import VideoView from '@/components/common/material/file/viewMode/VideoView.vue'
-
+import { ref } from 'Vue'
 const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF, YDT, SCCH } = Extension
 
 export interface PropsFileThumbnail {
@@ -41,6 +42,10 @@ export interface PropsFileThumbnail {
   originalUrl: string | null
   extension: Extension
   loading?: boolean
+}
+const showImage = ref(true)
+const imageOnerror = () => {
+  showImage.value = false
 }
 
 defineProps<PropsFileThumbnail>()
