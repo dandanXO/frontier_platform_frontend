@@ -35,10 +35,10 @@ import { useStore } from 'vuex'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
 import { FileOperator, unzip } from '@frontier/lib'
+import type { UnzippedFile } from '@frontier/lib'
 import type { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { Extension } from '@frontier/platform-web-sdk'
-
 const props = defineProps<{
   isShimaseiki: boolean
   uploadedHandler: (payload: {
@@ -75,7 +75,12 @@ onMounted(async () => {
     const payload = await Promise.all(
       props.u3mFile.map(async (file) => {
         let hasPhysicalData = false
-        const unzippedU3mFileList = await unzip(file, [Extension.U3M])
+        const unzippedU3mFileList: UnzippedFile[] = []
+        try {
+          unzippedU3mFileList.push(...(await unzip(file, [Extension.U3M])))
+        } catch (error) {
+          throw t('WW0173')
+        }
 
         const u3m = unzippedU3mFileList.find(
           (item) => item.extension === Extension.U3M
