@@ -34,7 +34,7 @@ div(
 <script setup lang="ts">
 import { Extension } from '@frontier/platform-web-sdk'
 import VideoView from '@/components/common/material/file/viewMode/VideoView.vue'
-import { ref } from 'Vue'
+import { ref } from 'vue'
 const { PNG, JPEG, JPG, GIF, MOV, MP4, ZIP, PDF, YDT, SCCH } = Extension
 
 export interface PropsFileThumbnail {
