@@ -73,7 +73,10 @@ div(class="w-195")
         div(class="text-caption font-normal text-grey-900 text-center")
           p(:class="{ 'text-red-400': isU3mFull }") {{ ((u3mQuota.used / u3mQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
-    div(class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
+    div(
+      class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between"
+      v-if="memberQuota"
+    )
       div
         p(class="text-body1 font-bold text-grey-900 mb-1") {{ $t('OO0155') }}
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
@@ -84,10 +87,11 @@ div(class="w-195")
         :size="60"
         :current="memberQuota.used"
         :max="memberQuota.max"
+        v-if="!!memberQuota.max"
         :primaryColor="planStatus.ACTIVE ? (isMemberFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
       )
         div(class="text-caption font-normal text-grey-900 text-center")
-          p(:class="{ 'text-red-400': iisMemberFull }") {{ ((memberQuota.used / memberQuota.max) * 100).toFixed(0) }}%
+          p(:class="{ 'text-red-400': isMemberFull }") {{ ((memberQuota.used / memberQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
   template(v-if="planType.PRO")
     p(
@@ -147,6 +151,10 @@ const isU3mFull = computed(() => {
 })
 
 const isMemberFull = computed(() => {
+  if (!memberQuota.value) {
+    return false
+  }
+
   const { used, max } = memberQuota.value
   return used >= max
 })
