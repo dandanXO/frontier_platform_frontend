@@ -5,6 +5,7 @@ export interface Colors {
   pink: DefaultColors['pink']
   blue: DefaultColors['blue']
   purple: DefaultColors['purple']
+  white: '#FAFCFC'
   cyan: {
     900: '#001C49'
     800: '#08295F'
@@ -112,6 +113,7 @@ const colors: Colors = {
   pink: defaultColors.pink,
   blue: defaultColors.blue,
   purple: defaultColors.purple,
+  white: '#FAFCFC',
   cyan: {
     900: '#001C49',
     800: '#08295F',

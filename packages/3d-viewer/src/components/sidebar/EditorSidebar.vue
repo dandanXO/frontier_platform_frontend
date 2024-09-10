@@ -9,6 +9,12 @@ div(
       class="flex flex-col items-stretch border-r border-grey-800 pt-6 pb-[26px] text-grey-100"
       :class="isMobile ? 'w-77.5 pl-5 pr-3.5' : 'w-85 pl-10 pr-6'"
     )
+      f-infobar(
+        class="mb-2 items-center"
+        :notifyType="NOTIFY_TYPE.WARNING"
+        :messageText="$t('EE0214')"
+        v-if="material.backSide?.isLowDpi || material.faceSide?.isLowDpi"
+      )
       h5(v-if="!isMobile" class="text-body1 font-bold mb-4") {{ $t('EE0137') }}
       f-input-slider(
         :range="alpha"
@@ -125,15 +131,17 @@ div(
 <script setup lang="ts">
 import ColorInput from '../ColorInput.vue'
 import ToggleExpandButton from './ToggleExpandButton.vue'
-import { useBreakpoints } from '@frontier/lib'
+import { NOTIFY_TYPE, useBreakpoints } from '@frontier/lib'
 import type { PantoneItem } from '../../composables/useColors'
 import { THEME, SIZE } from '../../constants'
 import type { U3M } from '@/composables/useU3M'
+import type { Material } from '@frontier/platform-web-sdk'
 
 defineProps<{
   originU3m: U3M | undefined
   pantoneList?: { [code: string]: PantoneItem }
   currentColors: string[]
+  material: Material
   colorRemovable: boolean
   colorAddable: boolean
   alpha: number

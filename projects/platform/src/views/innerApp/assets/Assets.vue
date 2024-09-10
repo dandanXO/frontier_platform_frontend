@@ -73,7 +73,13 @@ search-table(
           @click.stop="clickMaterialItemHandler(material.materialId)"
           :drawerOpenFromLocationList="[]"
           data-cy="assets-item-grid"
+          :data-tooltip-boundary-reference="`material-${material.materialId}`"
         )
+          template(
+            #title-right-icon
+            v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+          )
+            low-dpi-label
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
         div(
@@ -100,6 +106,8 @@ import {
   SEARCH_TYPE,
   ASSET_LIST_DISPLAY_MODE,
   NOTIFY_TYPE,
+  THEME,
+  TOOLTIP_PLACEMENT,
 } from '@/utils/constants'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
@@ -110,6 +118,7 @@ import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
 import type { AssetsFilter, Material } from '@frontier/platform-web-sdk'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()

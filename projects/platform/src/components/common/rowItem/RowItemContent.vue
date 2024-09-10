@@ -35,14 +35,17 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
   div(class="my-2 text-body2 text-grey-900")
     p(:class="['line-clamp-1', specificationInfo.seasonInfo.textColor]") {{ specificationInfo.seasonInfo.value }}
     p(:class="['line-clamp-1', specificationInfo.featureList.textColor]") {{ specificationInfo.featureList.value }}
-  div(class="flex items-center")
-    f-svg-icon(
-      :iconName="scanImageStatus.iconName"
-      :tooltipMessage="scanImageStatus.tooltipMessage"
-      size="24"
-      class="text-grey-900 pr-3"
-    )
-    slot(name="slot:action" :isHover="isHover")
+  div(class="flex items-center justify-between")
+    div(class="flex gap-3 items-center")
+      f-svg-icon(
+        :iconName="scanImageStatus.iconName"
+        :tooltipMessage="scanImageStatus.tooltipMessage"
+        size="24"
+        class="text-grey-900"
+      )
+      slot(name="slot:action" :isHover="isHover")
+    low-dpi-label
+
 div(class="grid gap-x-14 grid-cols-2 col-span-8")
   div(class="min-w-75 max-w-115")
     div(class="flex justify-between pb-2 border-grey-250 border-b mb-2")
@@ -177,6 +180,7 @@ import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 import { useI18n } from 'vue-i18n'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 
 const props = defineProps<{
   canEdit: boolean

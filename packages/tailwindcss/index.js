@@ -34,6 +34,7 @@ module.exports = plugin(function () {}, {
       current: 'currentColor',
       pink: colors.pink,
       blue: colors.blue,
+      white: colors.white,
       purple: colors.purple,
       cyan: colors.cyan,
       yellow: colors.yellow,

@@ -7,6 +7,8 @@ div(class="flex flex-col gap-y-4")
       :originalUrl="localFileList[currentDisplayIndex]?.originalUrl"
       :extension="localFileList[currentDisplayIndex]?.extension"
     )
+    div(class="absolute top-2 right-2 flex gap-x-5")
+      low-dpi-label
     div(class="absolute bottom-5 left-5 right-5 flex gap-x-5")
       button(
         v-if="!props.hideMagnifier"
@@ -118,6 +120,7 @@ import {
 import useAssets from '@/composables/useAssets'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 // 預防edge case暫存上一個選擇
 const preDisplayIndex = ref(0)
 const props = withDefaults(

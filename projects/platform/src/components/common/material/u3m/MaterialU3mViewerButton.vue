@@ -10,13 +10,18 @@ f-button(
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
+import type {
+  Material,
+  MaterialCustomU3m,
+  MaterialU3m,
+} from '@frontier/platform-web-sdk'
 import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
 
 const props = defineProps<{
   materialId: number
   u3m: MaterialCustomU3m | MaterialU3m
+  material: Material
 }>()
 
 const store = useStore()
@@ -31,6 +36,7 @@ const openModal3DViewer = () => {
     properties: {
       materialId: props.materialId,
       u3m: props.u3m,
+      material: props.material,
     },
   })
 }

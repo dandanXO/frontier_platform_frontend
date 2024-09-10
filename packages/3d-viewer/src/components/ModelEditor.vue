@@ -14,12 +14,14 @@ import HiddenSidebar from './sidebar/HiddenSidebar.vue'
 import EditorLoader from './EditorLoader.vue'
 import MobileModelControlBar from './MobileModelControlBar.vue'
 import MobileTextureControlBar from './MobileTextureControlBar.vue'
+import type { Material } from '@frontier/platform-web-sdk'
 
 const props = withDefaults(
   defineProps<{
     u3mPath: string
     dpi: number
     baseImgUrl: string
+    material: Material
     normalImgUrl: string
     dispImgUrl: string
     roughImgUrl: string
@@ -142,6 +144,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
           :roughness="roughness"
           :specular="specular"
           :scale="scale"
+          :material="material"
           @toggleExpand="handleSidebarToggle"
           @colorAdd="handleColorAdd"
           @colorRemove="handleColorRemove"

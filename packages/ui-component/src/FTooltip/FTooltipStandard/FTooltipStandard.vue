@@ -13,7 +13,7 @@ div(
       ref="refTooltip"
       role="tooltip"
       class="z-tooltip rounded px-2 py-1.5 max-w-85 text-caption/1.3"
-      :class="[theme === THEME.LIGHT ? 'bg-grey-900/80 text-grey-50' : 'bg-grey-100/70 text-grey-900']"
+      :class="[theme === THEME.LIGHT ? 'bg-grey-900/80 text-grey-50' : 'bg-grey-100/70 text-grey-900', classContent]"
     )
       slot(
         v-if="slots['slot:tooltip-content']"
@@ -39,6 +39,7 @@ import { useTooltip } from '../../FTooltip'
 
 export interface TooltipStandardProps {
   theme?: `${THEME}`
+  classContent?: string
   placement?: `${TOOLTIP_PLACEMENT}`
   offset?: [number, number]
   isNotFitWidth?: boolean
@@ -66,6 +67,7 @@ const emit = defineEmits<{
 const props = withDefaults(defineProps<TooltipStandardProps>(), {
   theme: THEME.LIGHT,
   placement: TOOLTIP_PLACEMENT.TOP,
+  classContent: '',
   offset: () => [0, 8],
   isNotFitWidth: false,
   disabledTooltip: false,
