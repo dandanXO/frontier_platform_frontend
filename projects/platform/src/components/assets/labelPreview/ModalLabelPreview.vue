@@ -102,7 +102,7 @@ modal-behavior(
                     p(class="text-xs text-grey-900 font-bold") {{ materialType.key }}
                   p(class="text-xs text-grey-400") {{ $t('MM0040', { number: materialType.list.value.length }) }}
               template(#content)
-                div(class="bg-grey-100 rounded px-1.5 py-2") 111
+                div(class="bg-grey-100 rounded px-1.5 py-2") 
                   f-input-checkbox(
                     v-for="(option, index) in materialType.options"
                     :key="index"
