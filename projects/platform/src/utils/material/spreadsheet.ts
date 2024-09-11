@@ -119,7 +119,12 @@ export const getNumberCellProps = (
     cellRenderer: NumberCellRenderer,
     cellRendererParams: { schema },
     valueParser: (params) => {
+      if (params.newValue.length === 0) {
+        return null
+      }
+
       const newValue = Number(params.newValue)
+
       if (Number.isNaN(newValue)) {
         return params.oldValue
       }

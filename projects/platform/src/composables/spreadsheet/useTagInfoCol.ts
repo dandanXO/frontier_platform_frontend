@@ -123,12 +123,13 @@ const useTagInfoCol = (
             if (isProxy(newValue)) {
               newValue = toRaw(newValue)
             }
+
             if (
               params.data &&
               params.data.tagInfo &&
               newValue !== params.data.tagInfo.certificationTagIdList
             ) {
-              params.data.tagInfo.certificationTagIdList = newValue
+              params.data.tagInfo.certificationTagIdList = newValue || null
               return true
             }
             return false
