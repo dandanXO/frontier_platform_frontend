@@ -749,6 +749,7 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
     isDoubleSide: z.boolean(nonNullParams).default(false),
     sideType: z
       .nativeEnum(MaterialSideType)
+      .nullable()
       .default(MaterialSideType.FACE_SIDE),
     isComposite: z.boolean(nonNullParams).default(false),
     seasonInfo: seasonInfoSchema,

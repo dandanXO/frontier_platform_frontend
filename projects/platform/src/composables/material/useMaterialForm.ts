@@ -326,6 +326,22 @@ const useMaterialForm = ({
             data: backSide,
           },
         } as const
+
+        if (isComposite && isDoubleSide) {
+          getKeys(mainSide)
+            .filter((key) => mainSide[key].data)
+            .map((key) => {
+              const mainData = mainSide[key].data as z.infer<
+                typeof materialSideSchema
+              >
+              validateMaterialTypeConstruction(mainSide[key].key, mainData, ctx)
+            })
+          return
+        }
+
+        if (!sideType) {
+          return
+        }
         const mainData = mainSide[sideType].data as z.infer<
           typeof materialSideSchema
         >
@@ -337,17 +353,6 @@ const useMaterialForm = ({
             ctx
           )
           return
-        }
-
-        if (isComposite && isDoubleSide) {
-          getKeys(mainSide)
-            .filter((key) => mainSide[key].data)
-            .map((key) => {
-              const mainData = mainSide[key].data as z.infer<
-                typeof materialSideSchema
-              >
-              validateMaterialTypeConstruction(mainSide[key].key, mainData, ctx)
-            })
         }
       }
     )
