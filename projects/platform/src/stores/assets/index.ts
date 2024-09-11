@@ -16,6 +16,7 @@ import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import useNavigation from '@/composables/useNavigation'
 import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
+import { TRACKER_PREFIX, TRACKER_POSTFIX, track } from '@frontier/lib'
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
@@ -147,8 +148,25 @@ export const useAssetsStore = defineStore('assets', () => {
   const addSpreadsheetInputFile = (file: File | null) => {
     spreadsheetInputFile.value = file
   }
+  const switchCreateAssetsView = () => {
+    useNewAssetsView.value = !useNewAssetsView.value
+    track({
+      eventName: useNewAssetsView.value
+        ? 'switch_to_new_page'
+        : 'switch_to_old_page',
+      properties: {
+        time: new Date().toString(),
+        userId: store.getters['user/email'],
+        orgId: store.getters['organization/orgId'],
+        tag: useNewAssetsView.value
+          ? 'switch_to_new_page'
+          : 'switch_to_old_page',
+      },
+    })
+  }
 
   return {
+    switchCreateAssetsView,
     materialList,
     spreadsheetInitialMaterial,
     getAssetsMaterialList,

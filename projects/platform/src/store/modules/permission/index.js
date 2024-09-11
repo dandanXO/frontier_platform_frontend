@@ -11,9 +11,13 @@ const state = () => ({
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   new3DViewer: [1498, 1892, 1815],
+  newUserOrdId: 1930,
 })
 
 const getters = {
+  isNewUserOrgId: (state, getters, rootState) => {
+    return state.newUserOrdId <= rootState.organization.orgId
+  },
   isShowNew3DViewer: (state, getters, rootState) => {
     return state.new3DViewer.includes(rootState.organization.orgId)
   },

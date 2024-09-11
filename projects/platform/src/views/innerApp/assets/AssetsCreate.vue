@@ -14,6 +14,13 @@ f-scrollbar-container(class="w-full h-full")
             data-cy="smart-upload-title"
           ) {{ $t('DD0138') }}
           div(class="flex flex-row items-center gap-x-4")
+            f-input-switch(
+              v-if="!isNewOrgId"
+              :inputValue="assetsStore.useNewAssetsView"
+              @update:inputValue="changeViewSwitch"
+              :label="$t('DD0139')"
+              :innerClass="'text-primary-400'"
+            )
             f-button(
               size="md"
               type="secondary"
@@ -173,6 +180,7 @@ const openModalSmartUpload = () => {
     component: 'modal-smart-upload',
   })
 }
+const isNewOrgId = computed(() => store.getters['permission/isNewUserOrgId'])
 
 const openModalUploadSettings = () => {
   store.dispatch(
@@ -244,6 +252,12 @@ const openVideo = () => {
       title: '',
     },
   })
+}
+const changeViewSwitch = (e: boolean) => {
+  assetsStore.switchCreateAssetsView()
+  if (!e) {
+    goToMaterialUpload()
+  }
 }
 const clickFileOption = async (type: option) => {
   currentSelectedOption.value = fileOptionId[type]
