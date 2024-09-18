@@ -164,7 +164,6 @@ import {
   bytesToSize,
   TRACKER_ADDITIONAL_PROPERTIES,
 } from '@frontier/lib'
-import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { useAssetsStore } from '@/stores/assets'
