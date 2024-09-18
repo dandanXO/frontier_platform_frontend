@@ -34,11 +34,21 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
-import { FileOperator, unzip } from '@frontier/lib'
+import {
+  FileOperator,
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_POSTFIX,
+  TRACKER_PREFIX,
+  track,
+  unzip,
+} from '@frontier/lib'
 import type { UnzippedFile } from '@frontier/lib'
 import type { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { Extension } from '@frontier/platform-web-sdk'
+
+const TRACKER_ID = 'Advanced View Upload 3D Material'
+
 const props = defineProps<{
   isShimaseiki: boolean
   uploadedHandler: (payload: {
@@ -51,7 +61,7 @@ const { t } = useI18n()
 const store = useStore()
 const { goToAssetMaterialEdit, ogType } = useNavigation()
 
-const { uploadCustomU3mV2 } = useAssetsStore()
+const { uploadCustomU3mV2, viewMode } = useAssetsStore()
 const errorCode = ref<UPLOAD_ERROR_CODE | string>('')
 const fileSizeMaxLimit = computed(
   () => store.getters['organization/materialAttachmentUploadSizeLimit']
@@ -153,21 +163,41 @@ onMounted(async () => {
       data: { result },
     } = await uploadCustomU3mV2(payload)
     closeModalBehavior()
-
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.SUCCESS,
+      ].join(' '),
+      properties: {
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+      },
+    })
     result?.find(
       ({ materialId }) =>
         materialId && goToAssetMaterialEdit(materialId, ogType.value)
     )
   } catch (e) {
-    const errorMessage = e?.message?.content || (e as string)
+    const errorMessage = e?.message?.content || (e as string) || t('WW0173')
     customizedErrorMsg.value = errorMessage
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: t('WW0122'),
-      contentText: errorMessage || t('WW0173'),
+      contentText: errorMessage,
       primaryBtnText: t('UU0031'),
       primaryBtnHandler: closeModalBehavior,
       testId: 'modal-confirm-crash',
+    })
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.ERROR,
+      ].join(' '),
+      properties: {
+        error: errorMessage,
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+      },
     })
   } finally {
     isLoading.value = false

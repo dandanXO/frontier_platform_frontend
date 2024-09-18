@@ -1,4 +1,3 @@
-import { some, includes } from 'lodash/fp'
 import { DIGITAL_DRAPE_LIST } from '@/utils/trialDigitalDrape'
 
 // 6 is Fabric Pro for testing.

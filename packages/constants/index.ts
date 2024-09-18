@@ -117,11 +117,18 @@ export enum TRACKER_POSTFIX {
 
 export enum TRACKER_ADDITIONAL_PROPERTIES {
   ERROR_LOCATION = 'Error Location',
+  CREATE_MATERIAL_MODE = 'Create Material View Mode',
 }
 
 export enum TRACKER_ERROR_LOCATION {
   FE = 'Frontend',
   BE = 'Backend',
+}
+
+export enum CREATE_MATERIAL_MODE {
+  ADVANCED = 'ADVANCED_ONLY',
+  OLD = 'OLD_ONLY',
+  BOTH = 'BOTH',
 }
 
 export enum fileOptionId {

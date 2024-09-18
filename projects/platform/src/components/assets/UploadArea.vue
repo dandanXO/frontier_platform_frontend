@@ -58,21 +58,27 @@ f-button(
   class="mt-2"
   prependIcon="edit_pencil"
   v-if="currentOption === fileOptionId.Spreadsheet"
-  @click="goToAssetMaterialSpreadSheet()"
+  @click="onEditSpreadsheet"
 ) {{ $t('DD0149') }}
 </template>
 
 <script setup lang="ts">
 import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator, getFileExtension } from '@frontier/lib'
-import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
+import { FileOperator, getFileExtension, track } from '@frontier/lib'
+import {
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_PREFIX,
+  type UPLOAD_ERROR_CODE,
+} from '@frontier/constants'
 import { useAssetsStore } from '@/stores/assets'
 import useNavigation from '@/composables/useNavigation'
 import { Extension } from '@frontier/platform-web-sdk'
 import { fileOptionId } from '@frontier/constants'
 import { useI18n } from 'vue-i18n'
 type option = '2d_file' | '3d_file' | 'Spreadsheet'
+
+const TRACKER_ID = 'Advanced View Mass Upload'
 
 const assetsStore = useAssetsStore()
 const props = defineProps<{
@@ -151,10 +157,30 @@ const onShowSpreadsheetEditor = (file: File) => {
     if (getFileExtension(file.name) !== Extension.XLSX) {
       throw Error(t('WW0173'))
     }
-    file && assetsStore.addSpreadsheetInputFile(file)
+    assetsStore.addSpreadsheetInputFile(file)
+    track({
+      eventName: [TRACKER_PREFIX.CHOOSE, `${TRACKER_ID} with File Input`].join(
+        ' '
+      ),
+      properties: {
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+          assetsStore.viewMode,
+      },
+    })
     goToAssetMaterialSpreadSheet()
   } catch (error) {
-    const errorMessage = error?.message?.content || (error as string)
+    const errorMessage = error as string
+
+    track({
+      eventName: [TRACKER_PREFIX.CHOOSE, `${TRACKER_ID} with File Input`].join(
+        ' '
+      ),
+      properties: {
+        error: errorMessage,
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+          assetsStore.viewMode,
+      },
+    })
 
     store.dispatch('helper/openModalConfirm', {
       type: 3,
@@ -167,6 +193,17 @@ const onShowSpreadsheetEditor = (file: File) => {
       testId: 'modal-confirm-crash',
     })
   }
+}
+
+const onEditSpreadsheet = () => {
+  track({
+    eventName: [TRACKER_PREFIX.CHOOSE, TRACKER_ID].join(' '),
+    properties: {
+      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+        assetsStore.viewMode,
+    },
+  })
+  goToAssetMaterialSpreadSheet()
 }
 const handleExcelButtonDrop = (evt: DragEvent) => {
   if (!evt.dataTransfer?.files) {

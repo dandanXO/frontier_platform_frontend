@@ -138,7 +138,12 @@ import APEXFIZ from '@/assets/images/APEXFIZ.png'
 import type { Organization } from '@frontier/platform-web-sdk'
 import { onMounted } from 'vue'
 import { track } from '@frontier/lib'
-import { TRACKER_PREFIX } from '@frontier/constants'
+import {
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_PREFIX,
+} from '@frontier/constants'
+
+const TRACKER_ID = 'Upload Assets'
 
 const { t } = useI18n()
 const store = useStore()
@@ -163,6 +168,10 @@ const { printBackSideLabel } = usePrint()
 const openModalSmartUpload = () => {
   track({
     eventName: `${TRACKER_PREFIX.CHOOSE} Upload an Existing Image`,
+    properties: {
+      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+        assetsStore.viewMode,
+    },
   })
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-smart-upload',
@@ -198,6 +207,10 @@ const alternativeUploadOptions = [
     action: () => {
       track({
         eventName: `${TRACKER_PREFIX.CHOOSE} Create Asset`,
+        properties: {
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+            assetsStore.viewMode,
+        },
       })
       goToAssetsMaterialCreate()
     },
@@ -211,6 +224,10 @@ const alternativeUploadOptions = [
     action: () => {
       track({
         eventName: `${TRACKER_PREFIX.CHOOSE} Mass Upload`,
+        properties: {
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+            assetsStore.viewMode,
+        },
       })
       goToAssetMaterialSpreadSheet()
     },
@@ -238,7 +255,11 @@ const locationList = computed(() => {
 
 onMounted(() => {
   track({
-    eventName: `${TRACKER_PREFIX.START_FLOW} Upload Assets`,
+    eventName: [TRACKER_PREFIX.START_FLOW, TRACKER_ID].join(' '),
+    properties: {
+      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+        assetsStore.viewMode,
+    },
   })
 })
 </script>

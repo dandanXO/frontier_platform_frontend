@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import type {
@@ -16,7 +16,11 @@ import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import useNavigation from '@/composables/useNavigation'
 import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
-import { TRACKER_PREFIX, TRACKER_POSTFIX, track } from '@frontier/lib'
+import {
+  CREATE_MATERIAL_MODE,
+  TRACKER_ADDITIONAL_PROPERTIES,
+  track,
+} from '@frontier/lib'
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
@@ -28,8 +32,26 @@ export const useAssetsStore = defineStore('assets', () => {
   const spreadsheetInitialMaterial = ref<Material[]>([])
   const useNewAssetsView = ref<boolean>(true)
   const spreadsheetInputFile = ref<File | null>(null)
+  const onlyUseOldUiOrg = computed(
+    () => store.getters['permission/onlyUseOldUiOrg']
+  )
+  const isNewUserOrgId = computed(
+    () => store.getters['permission/isNewUserOrgId']
+  )
 
   const materialList = ref<Material[]>([])
+
+  const viewMode = computed(() => {
+    if (onlyUseOldUiOrg.value) {
+      return CREATE_MATERIAL_MODE.OLD
+    }
+    if (isNewUserOrgId.value) {
+      return CREATE_MATERIAL_MODE.ADVANCED
+    }
+
+    return CREATE_MATERIAL_MODE.BOTH
+  })
+
   const getAssetsMaterialList = async (payload: {
     pagination: PaginationReq
     search: Search | null
@@ -161,6 +183,7 @@ export const useAssetsStore = defineStore('assets', () => {
         tag: useNewAssetsView.value
           ? 'switch_to_new_page'
           : 'switch_to_old_page',
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode.value,
       },
     })
   }
@@ -179,5 +202,6 @@ export const useAssetsStore = defineStore('assets', () => {
     addSpreadsheetInputFile,
     useNewAssetsView,
     spreadsheetInputFile,
+    viewMode,
   }
 })

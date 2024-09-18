@@ -142,29 +142,28 @@ f-scrollbar-container(class="w-full h-full")
 
 <script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useAssetsStore } from '@/stores/assets'
-// import usePrint from '@/composables/material/usePrint'
-import type { Organization } from '@frontier/platform-web-sdk'
 import { onMounted, nextTick } from 'vue'
 import { track, bytesToSize } from '@frontier/lib'
-import { TRACKER_PREFIX, fileOptionId } from '@frontier/constants'
+import {
+  TRACKER_ADDITIONAL_PROPERTIES,
+  TRACKER_POSTFIX,
+  TRACKER_PREFIX,
+  fileOptionId,
+} from '@frontier/constants'
 import uploadArea from '@/components/assets/UploadArea.vue'
 
 type option = '2d_file' | '3d_file' | 'Spreadsheet'
+
+const TRACKER_ID = 'Advanced View Upload Assets'
 const { t } = useI18n()
 const assetsStore = useAssetsStore()
 const store = useStore()
 
-const {
-  goToAssets,
-  goToMaterialUpload,
-  goToAssetsMaterialCreate,
-  goToAssetMaterialSpreadSheet,
-} = useNavigation()
-
+const { goToAssets, goToMaterialUpload } = useNavigation()
 const onlyUseOldUiOrg = computed(
   () => store.getters['permission/onlyUseOldUiOrg']
 )
@@ -173,19 +172,12 @@ if (onlyUseOldUiOrg.value) {
 } else if (!assetsStore.useNewAssetsView) {
   goToMaterialUpload()
 }
-const fileInput = ref(null)
+
 const currentSelectedOption = ref<option>('2d_file')
 const fileSizeMaxLimit = computed(
   () => store.getters['organization/materialAttachmentUploadSizeLimit']
 )
-const openModalSmartUpload = () => {
-  track({
-    eventName: `${TRACKER_PREFIX.CHOOSE} Upload an Existing Image`,
-  })
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-smart-upload',
-  })
-}
+
 const isNewOrgId = computed(() => store.getters['permission/isNewUserOrgId'])
 
 const openModalUploadSettings = () => {
@@ -195,47 +187,6 @@ const openModalUploadSettings = () => {
     { root: true }
   )
 }
-
-const org = computed<Organization>(
-  () => store.getters['organization/organization']
-)
-
-const alternativeUploadOptions = [
-  {
-    id: 'smart-upload',
-    icon: 'image_file',
-    title: t('DD0088'),
-    content: t('DD0089'),
-    action: openModalSmartUpload,
-    testId: 'smart-upload',
-  },
-  {
-    id: 'manual-upload',
-    icon: 'add_box_outline',
-    title: t('DD0116'),
-    content: t('DD0117'),
-    action: () => {
-      track({
-        eventName: `${TRACKER_PREFIX.CHOOSE} Create Asset`,
-      })
-      goToAssetsMaterialCreate()
-    },
-    testId: 'manual-upload',
-  },
-  {
-    id: 'mass-upload',
-    icon: 'multiple_file',
-    title: t('DD0092'),
-    content: t('DD0093'),
-    action: () => {
-      track({
-        eventName: `${TRACKER_PREFIX.CHOOSE} Mass Upload`,
-      })
-      goToAssetMaterialSpreadSheet()
-    },
-    testId: 'mass-upload',
-  },
-]
 
 const locationList = computed(() => {
   return [
@@ -267,6 +218,23 @@ const changeViewSwitch = (e: boolean) => {
 }
 const clickFileOption = async (type: option) => {
   currentSelectedOption.value = fileOptionId[type]
+  const prefixTrackerId = `Advanced View`
+  const trackerId: Partial<Record<option, string>> = {
+    '2d_file': 'Upload 2D Material',
+    '3d_file': 'Upload 3D Material',
+  }
+
+  if (trackerId[type]) {
+    track({
+      eventName: [TRACKER_PREFIX.CHOOSE, prefixTrackerId, trackerId[type]].join(
+        ' '
+      ),
+      properties: {
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+          assetsStore.viewMode,
+      },
+    })
+  }
   showUploadArea.value = false
   await nextTick()
   showUploadArea.value = true
@@ -297,7 +265,11 @@ const openWelcomeModal = (type: 'old' | 'new') => {
 onMounted(() => {
   checkAndShowWelcomeModal()
   track({
-    eventName: `${TRACKER_PREFIX.START_FLOW} Upload Create NEW`,
+    eventName: [TRACKER_PREFIX.START_FLOW, TRACKER_ID].join(' '),
+    properties: {
+      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]:
+        assetsStore.viewMode,
+    },
   })
 })
 </script>

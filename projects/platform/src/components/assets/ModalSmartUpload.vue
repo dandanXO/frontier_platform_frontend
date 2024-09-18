@@ -163,6 +163,7 @@ import {
   track,
   bytesToSize,
   UPLOAD_ERROR_CODE,
+  TRACKER_ADDITIONAL_PROPERTIES,
 } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
 import { uploadFileToS3 } from '@/utils/fileUpload'
@@ -178,7 +179,7 @@ const TRACKER_ID = 'Upload an Existing Image'
 const store = useStore()
 const { t } = useI18n()
 
-const { ogBaseAssetsApi } = useAssetsStore()
+const { ogBaseAssetsApi, viewMode } = useAssetsStore()
 const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const { goToProgress } = useNavigation()
 const isUploading = ref(false)
@@ -395,6 +396,12 @@ const startUpload = () => {
           TRACKER_ID,
           TRACKER_POSTFIX.SUCCESS,
         ].join(' '),
+        properties: {
+          totalImages: materialImageList.value.length,
+          totalValidImages: validImages.value.length,
+          totalInvalidImages: invalidImages.value.length,
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+        },
       })
       isFinish.value = true
       isUploading.value = false
@@ -407,7 +414,13 @@ const startUpload = () => {
           TRACKER_ID,
           TRACKER_POSTFIX.ERROR,
         ].join(' '),
-        properties: { error },
+        properties: {
+          error,
+          totalImages: materialImageList.value.length,
+          totalValidImages: validImages.value.length,
+          totalInvalidImages: invalidImages.value.length,
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+        },
       })
     })
 }

@@ -91,7 +91,7 @@ import {
 const TRACKER_ID = 'Create Asset'
 const { t } = useI18n()
 const store = useStore()
-const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
+const { uploadCustomU3m, ogBaseAssetsApi, viewMode } = useAssetsStore()
 const {
   goToAssets,
   goToMaterialUpload,
@@ -205,6 +205,7 @@ const submit = handleSubmit(
         error,
         [TRACKER_ADDITIONAL_PROPERTIES.ERROR_LOCATION]:
           TRACKER_ERROR_LOCATION.FE,
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
       },
     })
   }
@@ -341,6 +342,9 @@ const createMaterial = async (payload: {
       TRACKER_ID,
       TRACKER_POSTFIX.SUCCESS,
     ].join(' '),
+    properties: {
+      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+    },
   })
   isConfirmedToLeave.value = true
   store.dispatch('helper/openModalBehavior', {

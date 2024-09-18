@@ -109,7 +109,10 @@ import { useStore } from 'vuex'
 import { TRACKER_PREFIX, TRACKER_POSTFIX, track } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
+import {
+  TRACKER_ADDITIONAL_PROPERTIES,
+  type UPLOAD_ERROR_CODE,
+} from '@frontier/constants'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { useAssetsStore } from '@/stores/assets'
 import { type S3UploadedObject, Extension } from '@frontier/platform-web-sdk'
@@ -131,10 +134,10 @@ const props = defineProps<{
   materialImageListNew: any[]
 }>()
 
-const TRACKER_ID = 'Upload an Existing Image'
+const TRACKER_ID = 'Advanced View Upload 2D Material'
 
 const store = useStore()
-const { ogBaseAssetsApi } = useAssetsStore()
+const { ogBaseAssetsApi, viewMode } = useAssetsStore()
 const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const { goToProgress, goToAssetMaterialEdit, ogType } = useNavigation()
 const isUploading = ref(false)
@@ -238,6 +241,12 @@ const startUpload = () => {
           TRACKER_ID,
           TRACKER_POSTFIX.SUCCESS,
         ].join(' '),
+        properties: {
+          totalImages: materialImageList.value.length,
+          totalValidImages: validImages.value.length,
+          totalInvalidImages: invalidImages.value.length,
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+        },
       })
       isFinish.value = true
       isUploading.value = false
@@ -254,7 +263,13 @@ const startUpload = () => {
           TRACKER_ID,
           TRACKER_POSTFIX.ERROR,
         ].join(' '),
-        properties: { error },
+        properties: {
+          error,
+          totalImages: materialImageList.value.length,
+          totalValidImages: validImages.value.length,
+          totalInvalidImages: invalidImages.value.length,
+          [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+        },
       })
     })
 }

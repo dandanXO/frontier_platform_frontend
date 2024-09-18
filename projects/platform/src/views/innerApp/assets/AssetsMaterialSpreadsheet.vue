@@ -46,6 +46,8 @@ const {
   spreadsheetInitialMaterial,
   cleanUpSpreadSheet,
   addSpreadsheetInputFile,
+  spreadsheetInputFile,
+  viewMode,
 } = useAssetsStore()
 const { goToAssets, goToProgress, goToAssetMaterialSpreadSheet } =
   useNavigation()
@@ -100,48 +102,40 @@ const handleSubmit = async (payload: SubmitPayload) => {
     MassCreateUpdateDeleteAssetsMaterialListRequest,
     'ogType' | 'orgId' | 'ogId'
   > = { s3UploadId, fileName }
+  const trackerId = spreadsheetInputFile
+    ? `${TRACKER_ID} with File Input`
+    : TRACKER_ID
+
   try {
     await ogBaseAssetsApi('massCreateUpdateDeleteAssetsMaterialList', req)
     track({
       eventName: [
         TRACKER_PREFIX.SUBMIT_DATA,
-        TRACKER_ID,
+        trackerId,
         TRACKER_POSTFIX.SUCCESS,
       ].join(' '),
+      properties: {
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+      },
     })
     goToProgress({}, PROGRESS_TAB.SPREADSHEET)
   } catch (error) {
-    const { code, message, result } =
+    const { message } =
       error as MassCreateUpdateDeleteAssetsMaterialList200Response
-    const errorList = result!.errorList
 
     track({
       eventName: [
         TRACKER_PREFIX.SUBMIT_DATA,
-        TRACKER_ID,
+        trackerId,
         TRACKER_POSTFIX.ERROR,
       ].join(' '),
       properties: {
         error: { message },
         [TRACKER_ADDITIONAL_PROPERTIES.ERROR_LOCATION]:
           TRACKER_ERROR_LOCATION.BE,
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
       },
     })
-    // switch (code) {
-    //   case 'ERR0036': {
-    //     store.dispatch('helper/openModalBehavior', {
-    //       component: 'modal-workflow-stage-delete-error-list',
-    //       properties: {
-    //         title: message.title,
-    //         workflowStageName,
-    //         errorList: result.errorList,
-    //       },
-    //     })
-    //     return
-    //   }
-    //   default:
-    //     throw error
-    // }
   } finally {
     store.dispatch('helper/clearModalPipeline')
   }
