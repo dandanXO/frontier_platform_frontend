@@ -311,6 +311,12 @@ export default {
     ModalVideoShow: defineAsyncComponent(() =>
       import('@/components/common/ModalvideoShow.vue')
     ),
+    ModalWelcome: defineAsyncComponent(() =>
+      import('@/components/common/ModalWelcome.vue')
+    ),
+    ModalWelcome2: defineAsyncComponent(() =>
+      import('@/components/common/ModalWelcome2.vue')
+    ),
   },
   setup() {
     const store = useStore()

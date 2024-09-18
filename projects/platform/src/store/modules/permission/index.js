@@ -12,9 +12,13 @@ const state = () => ({
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   new3DViewer: [1498, 1892, 1815],
   newUserOrdId: 1930,
+  useOldUiOrgList: [1770], // some customer only use old ui like H&M(1770)
 })
 
 const getters = {
+  onlyUseOldUiOrg: (state, getters, rootState) => {
+    return state.useOldUiOrgList.includes(rootState.organization.orgId)
+  },
   isNewUserOrgId: (state, getters, rootState) => {
     return state.newUserOrdId <= rootState.organization.orgId
   },

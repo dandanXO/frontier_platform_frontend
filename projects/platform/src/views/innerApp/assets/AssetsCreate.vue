@@ -15,7 +15,7 @@ f-scrollbar-container(class="w-full h-full")
           ) {{ $t('DD0138') }}
           div(class="flex flex-row items-center gap-x-4")
             f-input-switch(
-              v-if="!isNewOrgId"
+              v-if="!isNewOrgId && !onlyUseOldUiOrg"
               :inputValue="assetsStore.useNewAssetsView"
               @update:inputValue="changeViewSwitch"
               :label="$t('DD0139')"
@@ -164,7 +164,13 @@ const {
   goToAssetsMaterialCreate,
   goToAssetMaterialSpreadSheet,
 } = useNavigation()
-if (!assetsStore.useNewAssetsView) {
+
+const onlyUseOldUiOrg = computed(
+  () => store.getters['permission/onlyUseOldUiOrg']
+)
+if (onlyUseOldUiOrg.value) {
+  goToMaterialUpload()
+} else if (!assetsStore.useNewAssetsView) {
   goToMaterialUpload()
 }
 const fileInput = ref(null)
@@ -266,7 +272,30 @@ const clickFileOption = async (type: option) => {
   showUploadArea.value = true
 }
 
+const checkAndShowWelcomeModal = () => {
+  if (onlyUseOldUiOrg.value) {
+    return
+  }
+  const hasShownWelcomeModal = localStorage.getItem('hasShownWelcomeModal')
+  if (!hasShownWelcomeModal) {
+    if (isNewOrgId.value) {
+      openWelcomeModal(isNewOrgId.value ? 'new' : 'old')
+    }
+
+    localStorage.setItem('hasShownWelcomeModal', 'true')
+  }
+}
+const openWelcomeModal = (type: 'old' | 'new') => {
+  store.dispatch(
+    'helper/openModalBehavior',
+    {
+      component: type === 'new' ? 'modal-welcome' : 'modal-welcome2',
+    },
+    { root: true }
+  )
+}
 onMounted(() => {
+  checkAndShowWelcomeModal()
   track({
     eventName: `${TRACKER_PREFIX.START_FLOW} Upload Create NEW`,
   })

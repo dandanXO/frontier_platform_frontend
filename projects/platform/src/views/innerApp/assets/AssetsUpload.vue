@@ -15,7 +15,7 @@ f-scrollbar-container(class="w-full h-full")
           ) {{ $t('DD0001') }}
           div(class="flex flex-row items-center gap-x-4")
             f-input-switch(
-              v-if="!isNewOrgId"
+              v-if="!isNewOrgId && !onlyUseOldUiOrg"
               :inputValue="assetsStore.useNewAssetsView"
               @update:inputValue="changeViewSwitch"
               :label="$t('DD0139')"
@@ -151,7 +151,11 @@ const {
   goToAssetMaterialSpreadSheet,
 } = useNavigation()
 const assetsStore = useAssetsStore()
-if (assetsStore.useNewAssetsView) {
+
+const onlyUseOldUiOrg = computed(
+  () => store.getters['permission/onlyUseOldUiOrg']
+)
+if (assetsStore.useNewAssetsView && !onlyUseOldUiOrg.value) {
   goToMaterialCreate()
 }
 const { ogUploadMaterialEmail } = useCurrentUnit()
