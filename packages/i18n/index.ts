@@ -12,6 +12,9 @@ export default createI18n({
     'zh-TW': zhTW,
     'ja-JP': jaJP,
   },
+  missing: () => {
+    return ''
+  },
   globalInjection: true,
   fallbackWarn: false,
   missingWarn: false,
