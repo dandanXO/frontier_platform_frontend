@@ -13,7 +13,7 @@ const state = () => ({
 
   // new upload page display logic control
   useOldUiOrgList: true, //all  user USE old ui ,true mean's all user used
-  useNewUiOrgList: [6], //all user USE new ui ,true mean's all user used
+  useNewUiOrgList: [6], // list of organization id that used the new upload material UI
 })
 
 const getters = {
