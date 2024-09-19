@@ -15,7 +15,7 @@ f-scrollbar-container(class="w-full h-full")
           ) {{ $t('DD0001') }}
           div(class="flex flex-row items-center gap-x-4")
             f-input-switch(
-              v-if="!isNewOrgId && !onlyUseOldUiOrg"
+              v-if="uploadPageUseBothUi"
               :inputValue="assetsStore.useNewAssetsView"
               @update:inputValue="changeViewSwitch"
               :label="$t('DD0139')"
@@ -157,10 +157,10 @@ const {
 } = useNavigation()
 const assetsStore = useAssetsStore()
 
-const onlyUseOldUiOrg = computed(
-  () => store.getters['permission/onlyUseOldUiOrg']
+const uploadPageUseBothUi = computed(
+  () => store.getters['permission/uploadPageUseBothUi']
 )
-if (assetsStore.useNewAssetsView && !onlyUseOldUiOrg.value) {
+if (assetsStore.useNewAssetsView && !uploadPageUseBothUi.value) {
   goToMaterialCreate()
 }
 const { ogUploadMaterialEmail } = useCurrentUnit()
@@ -185,7 +185,9 @@ const openModalUploadSettings = () => {
     { root: true }
   )
 }
-const isNewOrgId = computed(() => store.getters['permission/isNewUserOrgId'])
+const isNewOrgId = computed(
+  () => store.getters['permission/uploadPageUseNewUi']
+)
 const org = computed<Organization>(
   () => store.getters['organization/organization']
 )

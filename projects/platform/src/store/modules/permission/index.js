@@ -10,16 +10,21 @@ const state = () => ({
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   new3DViewer: [1498, 1892, 1815],
-  newUserOrdId: 1930,
-  useOldUiOrgList: [1770], // some customer only use old ui like H&M(1770)
+
+  // new upload page display logic control
+  useOldUiOrgList: true, //all  user USE old ui ,true mean's all user used
+  useNewUiOrgList: [6], //all user USE new ui ,true mean's all user used
 })
 
 const getters = {
-  onlyUseOldUiOrg: (state, getters, rootState) => {
-    return state.useOldUiOrgList.includes(rootState.organization.orgId)
+  uploadPageUseBothUi: (state, getters) => {
+    return getters.uploadPageUseOldUi && getters.uploadPageUseNewUi
   },
-  isNewUserOrgId: (state, getters, rootState) => {
-    return state.newUserOrdId <= rootState.organization.orgId
+  uploadPageUseNewUi: (state, getters, rootState) => {
+    return state.useNewUiOrgList.includes(rootState.organization.orgId)
+  },
+  uploadPageUseOldUi: (state) => {
+    return state.useOldUiOrgList
   },
   isShowNew3DViewer: (state, getters, rootState) => {
     return state.new3DViewer.includes(rootState.organization.orgId)

@@ -30,26 +30,26 @@ export const useAssetsStore = defineStore('assets', () => {
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
   const uploadingU3mMaterialIdList = ref<number[]>([])
   const spreadsheetInitialMaterial = ref<Material[]>([])
-  const useNewAssetsView = ref<boolean>(true)
+  const useNewAssetsView = ref<boolean>(false)
   const spreadsheetInputFile = ref<File | null>(null)
-  const onlyUseOldUiOrg = computed(
-    () => store.getters['permission/onlyUseOldUiOrg']
+  const uploadPageUseBothUi = computed(
+    () => store.getters['permission/uploadPageUseBothUi']
   )
-  const isNewUserOrgId = computed(
-    () => store.getters['permission/isNewUserOrgId']
+  const uploadPageUseNewUi = computed(
+    () => store.getters['permission/uploadPageUseNewUi']
   )
 
   const materialList = ref<Material[]>([])
 
   const viewMode = computed(() => {
-    if (onlyUseOldUiOrg.value) {
-      return CREATE_MATERIAL_MODE.OLD
+    if (uploadPageUseBothUi.value) {
+      return CREATE_MATERIAL_MODE.BOTH
     }
-    if (isNewUserOrgId.value) {
+    if (uploadPageUseNewUi.value) {
       return CREATE_MATERIAL_MODE.ADVANCED
     }
 
-    return CREATE_MATERIAL_MODE.BOTH
+    return CREATE_MATERIAL_MODE.OLD
   })
 
   const getAssetsMaterialList = async (payload: {

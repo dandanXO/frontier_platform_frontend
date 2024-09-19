@@ -15,7 +15,7 @@ f-scrollbar-container(class="w-full h-full")
           ) {{ $t('DD0138') }}
           div(class="flex flex-row items-center gap-x-4")
             f-input-switch(
-              v-if="!isNewOrgId && !onlyUseOldUiOrg"
+              v-if="uploadPageUseBothUi"
               :inputValue="assetsStore.useNewAssetsView"
               @update:inputValue="changeViewSwitch"
               :label="$t('DD0139')"
@@ -164,12 +164,10 @@ const assetsStore = useAssetsStore()
 const store = useStore()
 
 const { goToAssets, goToMaterialUpload } = useNavigation()
-const onlyUseOldUiOrg = computed(
-  () => store.getters['permission/onlyUseOldUiOrg']
+const uploadPageUseBothUi = computed(
+  () => store.getters['permission/uploadPageUseBothUi']
 )
-if (onlyUseOldUiOrg.value) {
-  goToMaterialUpload()
-} else if (!assetsStore.useNewAssetsView) {
+if (!assetsStore.useNewAssetsView) {
   goToMaterialUpload()
 }
 
@@ -178,7 +176,9 @@ const fileSizeMaxLimit = computed(
   () => store.getters['organization/materialAttachmentUploadSizeLimit']
 )
 
-const isNewOrgId = computed(() => store.getters['permission/isNewUserOrgId'])
+const isNewOrgId = computed(
+  () => store.getters['permission/uploadPageUseNewUi']
+)
 
 const openModalUploadSettings = () => {
   store.dispatch(
@@ -241,7 +241,7 @@ const clickFileOption = async (type: option) => {
 }
 
 const checkAndShowWelcomeModal = () => {
-  if (onlyUseOldUiOrg.value) {
+  if (uploadPageUseBothUi.value) {
     return
   }
   const hasShownWelcomeModal = localStorage.getItem('hasShownWelcomeModal')
