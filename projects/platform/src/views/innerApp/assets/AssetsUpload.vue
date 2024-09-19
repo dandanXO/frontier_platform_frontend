@@ -160,7 +160,7 @@ const assetsStore = useAssetsStore()
 const uploadPageUseBothUi = computed(
   () => store.getters['permission/uploadPageUseBothUi']
 )
-if (assetsStore.useNewAssetsView && !uploadPageUseBothUi.value) {
+if (assetsStore.useNewAssetsView && uploadPageUseBothUi.value) {
   goToMaterialCreate()
 }
 const { ogUploadMaterialEmail } = useCurrentUnit()
