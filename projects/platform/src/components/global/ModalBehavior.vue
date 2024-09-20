@@ -6,7 +6,7 @@ div(
   div(
     class="absolute w-min rounded card-show shadow-32"
     :data-cy="testId"
-    :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', needFullScreen ? 'w-screen h-screen' : '', closable ? 'pt-5' : '', animation ? 'modal-animation' : '']"
+    :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', needFullScreen ? 'w-screen h-screen' : '', displayHeader ? 'pt-5' : '', animation ? 'modal-animation' : '']"
   )
     div(
       v-if="displayHeader"
