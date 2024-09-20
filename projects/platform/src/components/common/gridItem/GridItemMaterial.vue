@@ -13,10 +13,14 @@ grid-item-wrapper(
       :class="{ border: hasNoCoverImage }"
     )
       img(
+        v-if="showImage"
         v-defaultImg
         :src="material.coverImage?.thumbnailUrl"
         class="w-full h-full object-contain"
+        @error="imageOnerror($event)"
       )
+      div(v-else class="w-full h-full flex items-center justify-center bg-grey-100")
+        img(class="w-full h-full object-contain" :src="imgDefaultMaterial")
   template(#hover-content)
     div(
       class="text-grey-0 p-2 md:px-7.5 md:py-10 w-full h-full flex flex-col items-center justify-center text-center"
@@ -43,13 +47,14 @@ grid-item-wrapper(
 
 <script setup lang="ts">
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import { useStore } from 'vuex'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
+import imgDefaultMaterial from '@/assets/images/default_material.png'
 
 const props = withDefaults(
   defineProps<{
@@ -121,5 +126,9 @@ const preventClickWhenSelectText = (e: Event) => {
   }
 
   return true
+}
+const showImage = ref(true)
+const imageOnerror = () => {
+  showImage.value = false
 }
 </script>

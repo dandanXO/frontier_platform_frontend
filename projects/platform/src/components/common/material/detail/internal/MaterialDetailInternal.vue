@@ -41,11 +41,17 @@ div
             @click:menu="collapsePopper"
             data-cy="f-contextual-menu"
           )
-      f-button(
-        prependIcon="create"
-        size="md"
-        @click="editMaterial.func(material)"
-      ) {{ $t('RR0054') }}
+      f-tooltip-standard(
+        :tooltipMessage="$t('RR0380')"
+        :disabledTooltip="editable"
+      )
+        template(#slot:tooltip-trigger)
+          f-button(
+            :disabled="!editable"
+            prependIcon="create"
+            size="md"
+            @click="editMaterial.func(material)"
+          ) {{ $t('RR0054') }}
   //- Upper Content
   material-detail-upper-content(
     :material="material"
@@ -362,7 +368,7 @@ const menuTree = computed<MenuTree>(() => {
         title: option.name(props.material),
         clickHandler: () => option.func(material),
         disabled: option.disabled ? option.disabled(props.material) : false,
-        testId: option.testId
+        testId: option.testId,
       })),
     })),
   }
@@ -522,4 +528,14 @@ const inventoryToItem = (
     location: inventory.location,
   }
 }
+
+const editable = computed(() => {
+  if (
+    !props.material.faceSide?.sideImage?.dpi &&
+    !props.material.backSide?.sideImage?.dpi
+  ) {
+    return false
+  }
+  return true
+})
 </script>

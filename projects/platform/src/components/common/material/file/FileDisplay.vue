@@ -7,10 +7,11 @@ div(
     v-if="[...IMAGE_FILE_ACCEPT_TYPE, PDF, GIF].includes(extension?.toLowerCase())"
   )
     img(
-      v-if="displayUrl"
+      v-if="displayUrl && showImage"
       :src="displayUrl"
       class="w-full h-full object-contain"
       v-default-img
+      @error="imageOnerror($event)"
     )
     div(v-else class="w-full h-full flex items-center justify-center bg-grey-100")
       p(class="text-h4 font-bold text-grey-250") {{ $t('RR0103') }}
@@ -29,7 +30,7 @@ div(
 <script setup lang="ts">
 import VideoView from '@/components/common/material/file/viewMode/VideoView.vue'
 import { Extension } from '@frontier/platform-web-sdk'
-
+import { ref } from 'vue'
 const { GIF, MOV, MP4, ZIP, PDF } = Extension
 
 import {
@@ -42,6 +43,9 @@ export interface PropsFileThumbnail {
   originalUrl: string | null
   extension: Extension
 }
-
+const showImage = ref(true)
+const imageOnerror = () => {
+  showImage.value = false
+}
 defineProps<PropsFileThumbnail>()
 </script>
