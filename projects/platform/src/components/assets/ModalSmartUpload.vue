@@ -147,10 +147,6 @@ modal-behavior(
       ) {{ primaryBtnTextCustomFooter }}
 </template>
 
-<script lang="ts">
-export const MIN_DIMENSION = 800
-</script>
-
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
@@ -163,6 +159,7 @@ import {
   track,
   bytesToSize,
   TRACKER_ADDITIONAL_PROPERTIES,
+  UPLOAD_ERROR_CODE,
 } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
 import { uploadFileToS3 } from '@/utils/fileUpload'
@@ -171,7 +168,10 @@ import { type S3UploadedObject, Extension } from '@frontier/platform-web-sdk'
 import Accordion, {
   type ImageItem,
 } from '@/components/assets/modalSmartUpload/Accordion.vue'
-import { INVALID_IMAGE_CODE } from '@/utils/constants'
+import {
+  INVALID_IMAGE_CODE,
+  MIN_DIMENSION_2D_MATERIAL,
+} from '@/utils/constants'
 import { readImageFile } from '@/utils/readImageFile'
 const TRACKER_ID = 'Upload an Existing Image'
 
@@ -313,20 +313,19 @@ fileOperator.on('finish', async (file: File) => {
 
   await onReadImageAsset(file, item)
 
-  const invalidDataExists = !!materialImageList.value.find(
-    (image) => !!image.invalidCode.length
-  )
-
   if (materialImageList.value.length === totalFiles.value) {
     isCheckingFiles.value = false
-    !invalidDataExists && startUpload()
-  }
+    isDisplayingCheckResult.value = !!invalidImages.value.length
 
-  isDisplayingCheckResult.value = invalidDataExists
+    !invalidImages.value.length && startUpload()
+  }
 })
 
 function validateImage(item: ImageItem, imageInfo: any) {
-  if (imageInfo.width < MIN_DIMENSION || imageInfo.height < MIN_DIMENSION) {
+  if (
+    imageInfo.width < MIN_DIMENSION_2D_MATERIAL ||
+    imageInfo.height < MIN_DIMENSION_2D_MATERIAL
+  ) {
     item.invalidCode.push(INVALID_IMAGE_CODE.INVALID_DIMENSION)
     item.isRemoved = true
   }

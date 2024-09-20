@@ -32,12 +32,14 @@ div(
 </template>
 
 <script setup lang="ts">
-import { INVALID_IMAGE_CODE } from '@/utils/constants'
+import {
+  INVALID_IMAGE_CODE,
+  MIN_DIMENSION_2D_MATERIAL,
+} from '@/utils/constants'
 import { bytesToSize } from '@frontier/lib'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { MIN_DIMENSION } from '../ModalSmartUpload.vue'
 
 type InvalidCode = (typeof INVALID_IMAGE_CODE)[keyof typeof INVALID_IMAGE_CODE]
 
@@ -74,7 +76,7 @@ function getErrorMessage(invalidCode: number) {
     case INVALID_IMAGE_CODE.INVALID_RESOLUTION:
       return t('WW0170')
     case INVALID_IMAGE_CODE.INVALID_DIMENSION:
-      return `${MIN_DIMENSION} x ${MIN_DIMENSION}`
+      return `${MIN_DIMENSION_2D_MATERIAL} x ${MIN_DIMENSION_2D_MATERIAL}`
     case INVALID_IMAGE_CODE.INVALID_FILE_SIZE:
       return `> ${maxSize.value}`
     default:

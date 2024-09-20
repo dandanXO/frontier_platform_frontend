@@ -568,3 +568,5 @@ export const PrintLabelSettingBasicInfo = {
   ],
   dataKey: 'materialInfoOptions',
 }
+
+export const MIN_DIMENSION_2D_MATERIAL = 800

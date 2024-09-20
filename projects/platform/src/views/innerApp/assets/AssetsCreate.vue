@@ -142,7 +142,7 @@ f-scrollbar-container(class="w-full h-full")
 
 <script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useAssetsStore } from '@/stores/assets'
@@ -150,11 +150,10 @@ import { onMounted, nextTick } from 'vue'
 import { track, bytesToSize } from '@frontier/lib'
 import {
   TRACKER_ADDITIONAL_PROPERTIES,
-  TRACKER_POSTFIX,
   TRACKER_PREFIX,
   fileOptionId,
 } from '@frontier/constants'
-import uploadArea from '@/components/assets/UploadArea.vue'
+import UploadArea from '@/components/assets/UploadArea.vue'
 
 type option = '2d_file' | '3d_file' | 'Spreadsheet'
 

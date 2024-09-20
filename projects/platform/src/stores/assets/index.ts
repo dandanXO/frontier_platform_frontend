@@ -170,6 +170,7 @@ export const useAssetsStore = defineStore('assets', () => {
   const addSpreadsheetInputFile = (file: File | null) => {
     spreadsheetInputFile.value = file
   }
+
   const switchCreateAssetsView = () => {
     useNewAssetsView.value = !useNewAssetsView.value
     track({
