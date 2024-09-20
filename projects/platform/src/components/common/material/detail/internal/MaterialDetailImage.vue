@@ -8,7 +8,11 @@ div(class="flex flex-col gap-y-4")
       :extension="localFileList[currentDisplayIndex]?.extension"
     )
     div(class="absolute top-2 right-2 flex gap-x-5")
-      low-dpi-label
+      low-dpi-label(
+        :material="material"
+        :materialOptions="materialOptions"
+        v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+      )
     div(class="absolute bottom-5 left-5 right-5 flex gap-x-5")
       button(
         v-if="!props.hideMagnifier"
@@ -195,6 +199,9 @@ const hideDDWarning = () => {
 }
 
 const { ogBaseAssetsApi } = useAssetsStore()
+
+const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
+const materialOptions = materialOptionsRes.data.result
 
 const isDDMenuOpen = ref(false)
 const dDMenuTree: Ref<MenuTree> = computed(() => {

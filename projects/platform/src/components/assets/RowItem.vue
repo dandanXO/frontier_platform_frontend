@@ -2,6 +2,7 @@
 div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50")
   row-item-content(
     :material="material"
+    :materialOptions="materialOptions"
     :selectedList="selectedList"
     @update:selectedList="emit('update:selectedList', $event)"
     canEdit
@@ -18,11 +19,12 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
 import RowItemSidebar from '@/components/assets/RowItemSidebar.vue'
 import RowItemContent from '@/components/common/rowItem/RowItemContent.vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
-import type { Material } from '@frontier/platform-web-sdk'
+import type { Material, MaterialOptions } from '@frontier/platform-web-sdk'
 
 defineProps<{
   selectedList: Material[]
   material: Material
+  materialOptions?: MaterialOptions
 }>()
 
 const emit = defineEmits<{

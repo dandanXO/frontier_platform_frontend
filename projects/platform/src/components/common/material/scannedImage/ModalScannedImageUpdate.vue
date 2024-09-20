@@ -32,11 +32,15 @@ modal-behavior(
             @click="openModalHowToScan"
           ) {{ ' ' + $t('UU0032') }}
   div(class="min-w-196 p-5 flex flex-col gap-y-4")
-    div(class="w-full h-full rounded flex items-center justify-center gap-x-2")
+    div(
+      class="w-full h-full rounded grid items-center justify-center gap-x-2"
+      :class="[isDoubleSide ? 'grid-cols-2' : 'grid-cols-1']"
+    )
       side-image-row(
         v-if="isDoubleSide || sideType === MaterialSideType.FACE_SIDE"
         :title="$t('MI0007')"
         :originalThumbnailUrl="faceSideImage?.thumbnailUrl"
+        :data="material.faceSide"
         :newImagePreviewUrl="faceSideChosenFilePreviewUrl"
         @upload="chooseFile(MaterialSideType.FACE_SIDE)"
         @delete="deleteChosenFile(MaterialSideType.FACE_SIDE)"
@@ -45,6 +49,7 @@ modal-behavior(
         v-if="isDoubleSide || sideType === MaterialSideType.BACK_SIDE"
         :title="$t('MI0009')"
         :originalThumbnailUrl="backSideImage?.thumbnailUrl"
+        :data="material.backSide"
         :newImagePreviewUrl="backSideChosenFilePreviewUrl"
         @upload="chooseFile(MaterialSideType.BACK_SIDE)"
         @delete="deleteChosenFile(MaterialSideType.BACK_SIDE)"

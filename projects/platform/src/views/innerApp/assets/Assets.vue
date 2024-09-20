@@ -53,6 +53,7 @@ search-table(
         row-item(
           :material="item"
           v-model:selectedList="selectedMaterialList"
+          :materialOptions="materialOptions"
           data-cy="assets-item-list"
         )
         div(
@@ -79,7 +80,10 @@ search-table(
             #title-right-icon
             v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
           )
-            low-dpi-label
+            low-dpi-label(
+              :material="material"
+              :materialOptions="materialOptions"
+            )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
         div(
@@ -106,10 +110,7 @@ import {
   SEARCH_TYPE,
   ASSET_LIST_DISPLAY_MODE,
   NOTIFY_TYPE,
-  THEME,
-  TOOLTIP_PLACEMENT,
 } from '@/utils/constants'
-import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
@@ -146,6 +147,11 @@ const clickMaterialItemHandler = (materialId: number) => {
     })
   }
 }
+
+const materialOptionsRes = await assetsStore.ogBaseAssetsApi(
+  'getMaterialOptions'
+)
+const materialOptions = materialOptionsRes.data.result
 
 const selectedMaterialList = ref<Material[]>([])
 const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.GRID)

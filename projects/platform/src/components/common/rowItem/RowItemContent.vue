@@ -44,7 +44,12 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
         class="text-grey-900"
       )
       slot(name="slot:action" :isHover="isHover")
-    low-dpi-label
+
+      low-dpi-label(
+        :material="material"
+        :materialOptions="materialOptions"
+        v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+      )
 
 div(class="grid gap-x-14 grid-cols-2 col-span-8")
   div(class="min-w-75 max-w-115")
@@ -164,7 +169,11 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Extension, type Material } from '@frontier/platform-web-sdk'
+import {
+  Extension,
+  type Material,
+  type MaterialOptions,
+} from '@frontier/platform-web-sdk'
 import useMaterial from '@/composables/material/useMaterial'
 import useNavigation from '@/composables/useNavigation'
 import {
@@ -176,8 +185,6 @@ import {
 import listViewMask from '@/assets/images/list_view_mask.png'
 import BlockSpecification from '@/components/common/material/detail/internal/BlockSpecification.vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
-import assetsApi from '@/apis/assets'
-import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
 import { useI18n } from 'vue-i18n'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
@@ -186,6 +193,7 @@ const props = defineProps<{
   canEdit: boolean
   selectedList: Material[]
   material: Material
+  materialOptions?: MaterialOptions
 }>()
 
 const emit = defineEmits<{
@@ -196,7 +204,6 @@ const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const { goToAssetMaterialDetail } = useNavigation()
-const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,
@@ -288,12 +295,12 @@ const made2flowSubscribed = computed(
 )
 
 const openModalMaterialEditSimple = async (type: string) => {
-  const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
-  const materialOptions = materialOptionsRes.data.result!
-
   store.dispatch('helper/openModalBehavior', {
     component: `modal-material-edit-simple-${type}`,
-    properties: { material: props.material, materialOptions },
+    properties: {
+      material: props.material,
+      materialOptions: props.materialOptions,
+    },
   })
 }
 

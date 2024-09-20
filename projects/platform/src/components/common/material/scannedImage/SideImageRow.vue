@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
+div(class="flex flex-col flex-wrap h-full items-center pt-5 pb-10 rounded bg-grey-50")
   span(class="text-body2 text-grey-900 font-bold") {{ title }}
   div(class="mt-3 w-30 h-30")
     img(
@@ -22,32 +22,40 @@ div(class="flex-1 flex flex-col items-center pt-5 pb-10 rounded bg-grey-50")
       )
     div(class="mt-3 w-30 h-30")
       img(class="w-full h-full rounded object-contain" :src="newImagePreviewUrl")
-  div(v-if="!newImagePreviewUrl" class="flex flex-col gap-y-1")
-    f-button(
-      class="mt-16"
-      type="primary"
-      size="sm"
-      prependIcon="add"
-      @click="emits('upload')"
-    ) {{ $t('UU0136') }}
-    div(class="text-caption2 text-grey-600 leading-1.3")
-      p {{ $t('RR0243') }} jpg, jpeg, png
-      p {{ $t('RR0145') }}
-        i18n-t(keypath="DD0101" tag="p" class="inline-block") 
-          template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
-      p {{ $t('RR0244') }} 800 x 800 px
-      p {{ $t('DD0075') }}
+  div(
+    v-if="!newImagePreviewUrl"
+    class="flex flex-col gap-16 items-center justify-between"
+    :class="[data?.isLowDpi ? 'gap-16 mt-2' : 'mt-25']"
+  )
+    low-dpi-label(v-if="data?.isLowDpi")
+    div(class="gap-1 flex flex-col")
+      f-button(
+        type="primary"
+        size="sm"
+        prependIcon="add"
+        @click="emits('upload')"
+      ) {{ $t('UU0136') }}
+      div(class="text-caption2 text-grey-600 leading-1.3")
+        p {{ $t('RR0243') }} jpg, jpeg, png
+        p {{ $t('RR0145') }}
+          i18n-t(keypath="DD0101" tag="p" class="inline-block") 
+            template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
+        p {{ $t('RR0244') }} 800 x 800 px
+        p {{ $t('DD0075') }}
 </template>
 
 <script setup lang="ts">
 import { bytesToSize } from '@frontier/lib'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
+import type { MaterialSide } from '@frontier/platform-web-sdk'
 
 const store = useStore()
 defineProps<{
   title: string
   originalThumbnailUrl?: string | null
+  data: MaterialSide | null
   newImagePreviewUrl: string | null
 }>()
 
