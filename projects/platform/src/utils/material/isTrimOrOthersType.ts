@@ -6,7 +6,7 @@ const EXCLUDED_TYPES: readonly MaterialType[] = [
   MaterialType.TRIM,
 ]
 
-function isExcludedMaterialType(
+export function isExcludedMaterialType(
   materialType: MaterialType | undefined
 ): boolean {
   return materialType !== undefined && EXCLUDED_TYPES.includes(materialType)

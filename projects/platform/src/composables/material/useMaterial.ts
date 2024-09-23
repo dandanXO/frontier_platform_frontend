@@ -15,6 +15,7 @@ import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
 import isTrimOrOthersType from '@/utils/material/isTrimOrOthersType'
+import { isExcludedMaterialType } from '@/utils/material/isTrimOrOthersType'
 import { useStore } from 'vuex'
 
 export type MaterialSpecificationInfoBasicProperty = {
@@ -202,26 +203,33 @@ export default function useMaterial(
     }
 
     // Digital Drape
-    if (
-      !isTrimOrOthersType(material.value) &&
-      store.getters['permission/isDigitalDrapeTrialRule']
-    ) {
-      const selectedDigitalDrape = customDigitalDrape?.isSelected
-        ? customDigitalDrape
-        : digitalDrape
-      list.push({
-        id: 'digitalDrape',
-        fileId: null,
-        displayUrl: selectedDigitalDrape?.displayUrl ?? null,
-        originalUrl: selectedDigitalDrape?.originalUrl ?? null,
-        thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
-        displayName: `${t('MI0136')}${
-          customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
-        }`,
-        displayNameShort: t('MI0136'),
-        caption: null,
-        extension: Extension.JPG,
-      })
+    if (store.getters['permission/isDigitalDrapeTrialRule']) {
+      const sideWithDD = [
+        material.value.faceSide?.materialType,
+        material.value.backSide?.materialType,
+      ].find((side) => !isExcludedMaterialType(side))
+
+      if (
+        (isDoubleSide && !!sideWithDD) ||
+        !isTrimOrOthersType(material.value)
+      ) {
+        const selectedDigitalDrape = customDigitalDrape?.isSelected
+          ? customDigitalDrape
+          : digitalDrape
+        list.push({
+          id: 'digitalDrape',
+          fileId: null,
+          displayUrl: selectedDigitalDrape?.displayUrl ?? null,
+          originalUrl: selectedDigitalDrape?.originalUrl ?? null,
+          thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
+          displayName: `${t('MI0136')}${
+            customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
+          }`,
+          displayNameShort: t('MI0136'),
+          caption: null,
+          extension: Extension.JPG,
+        })
+      }
     }
 
     multimediaList.length > 0 &&
