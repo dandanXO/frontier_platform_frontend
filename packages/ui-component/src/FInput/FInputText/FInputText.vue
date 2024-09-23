@@ -69,6 +69,8 @@ f-input-container(
       :disabled="disabled"
       :config="flatPickrConfig"
       placeholder="yyyy/mm/dd"
+      @compositionstart="onCompositionStart"
+      @compositionend="onCompositionEnd"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
@@ -83,6 +85,8 @@ f-input-container(
       :placeholder="placeholder"
       :class="classInput"
       :readonly="disabled"
+      @compositionstart="onCompositionStart"
+      @compositionend="onCompositionEnd"
       @input="onBigNumberInput"
       @focus="onFocus"
       @blur="onBlur"
@@ -100,6 +104,8 @@ f-input-container(
       :min="min"
       :max="max"
       :step="step"
+      @compositionstart="onCompositionStart"
+      @compositionend="onCompositionEnd"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
@@ -410,6 +416,7 @@ defineExpose({
     refInput.value.focus()
   },
 })
+const isComposing = ref(false)
 
 const hasLeftDropdown = computed(() => slots['slot:left-dropdown-trigger'])
 const innerLeftSelectValue = computed({
@@ -476,7 +483,19 @@ const flatPickrConfig = {
   dateFormat: 'Y/m/d',
 }
 
+const onCompositionStart = () => {
+  isComposing.value = true
+}
+
+const onCompositionEnd = () => {
+  isComposing.value = false
+  onInput()
+}
+
 const onInput = async () => {
+  if (isComposing.value) {
+    return
+  }
   if (props.onInputValidations.length) {
     let text = handleEmptyValue(props.textValue)
     props.onInputValidations.forEach((rule) => {
