@@ -55,7 +55,7 @@ const usePriceInfoCol = (
       return `priceInfo.${field}`
     }
 
-    const isParentHasValue = (
+    const getParentData = (
       params: CellClassParams<MaterialRow>,
       namePath: string[]
     ) => {
@@ -68,7 +68,15 @@ const usePriceInfoCol = (
 
       const parentPath = getParentPath()
       const parent = path(parentPath, params.data) || {}
-      const parentHasValue = Object.values(parent).some(Boolean)
+
+      return parent
+    }
+
+    const isNumber = (num: number) => typeof num === 'number'
+
+    const isParentHasValue = (parent: Object | null) => {
+      const parentHasValue = parent && Object.values(parent).some(Boolean)
+
       return parentHasValue
     }
 
@@ -173,10 +181,11 @@ const usePriceInfoCol = (
             ...getNumberCellProps(minimumQtySchema, t('MI0056')),
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(
+                const parent = getParentData(
                   params,
                   minimumOrderPath
-                )
+                ) as MaterialRow['priceInfo']['minimumOrder']
+                const parentHasValue = isParentHasValue(parent)
                 if (parentHasValue) {
                   return minimumQtySchema.unwrap().safeParse(params.value)
                     .success
@@ -198,18 +207,26 @@ const usePriceInfoCol = (
             ...materialQuantityUnitCellProps.value,
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(
+                const parent = getParentData(
                   params,
                   minimumOrderPath
-                )
+                ) as MaterialRow['priceInfo']['minimumOrder']
+                const parentHasValue = isParentHasValue(parent)
+
                 if (parentHasValue) {
                   return materialQuantityUnitSchema.safeParse(params.value)
                     .success
                 }
+
+                if (parent && isNumber(parent.qty)) {
+                  return !!params.value
+                }
+
                 return materialQuantityUnitSchema
                   .nullable()
                   .safeParse(params.value).success
               }
+
               return getCellStyle({
                 valid: isValid(),
                 editable: params.column.isCellEditable(params.node),
@@ -230,10 +247,11 @@ const usePriceInfoCol = (
             ...getNumberCellProps(minimumQtySchema, t('MI0056')),
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(
+                const parent = getParentData(
                   params,
                   minimumColorPath
-                )
+                ) as MaterialRow['priceInfo']['minimumColor']
+                const parentHasValue = isParentHasValue(parent)
                 if (parentHasValue) {
                   return minimumQtySchema.unwrap().safeParse(params.value)
                     .success
@@ -254,14 +272,20 @@ const usePriceInfoCol = (
             ...materialQuantityUnitCellProps.value,
             cellStyle: (params: CellClassParams<MaterialRow, number>) => {
               const isValid = () => {
-                const parentHasValue = isParentHasValue(
+                const parent = getParentData(
                   params,
                   minimumColorPath
-                )
+                ) as MaterialRow['priceInfo']['minimumColor']
+                const parentHasValue = isParentHasValue(parent)
                 if (parentHasValue) {
                   return materialQuantityUnitSchema.safeParse(params.value)
                     .success
                 }
+
+                if (parent && isNumber(parent.qty)) {
+                  return !!params.value
+                }
+
                 return materialQuantityUnitSchema
                   .nullable()
                   .safeParse(params.value).success
