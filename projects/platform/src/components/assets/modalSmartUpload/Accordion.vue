@@ -76,7 +76,7 @@ function getErrorMessage(invalidCode: number) {
     case INVALID_IMAGE_CODE.INVALID_RESOLUTION:
       return t('WW0170')
     case INVALID_IMAGE_CODE.INVALID_DIMENSION:
-      return `${MIN_DIMENSION_2D_MATERIAL} x ${MIN_DIMENSION_2D_MATERIAL}`
+      return t('WW0178', { size: MIN_DIMENSION_2D_MATERIAL })
     case INVALID_IMAGE_CODE.INVALID_FILE_SIZE:
       return `> ${maxSize.value}`
     default:
