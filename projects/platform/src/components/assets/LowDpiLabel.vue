@@ -71,7 +71,7 @@ div(
   v-bind="$attrs"
   data-cy="f-popper"
 )
-  f-badge(type="warning" class="cursor-help") &lt; 300 DPI
+  f-badge(type="warning" class="cursor-help") &lt; {{MIN_DPI_2D_MATERIAL}} DPI
   div(
     ref="refPopper"
     role="popper"
@@ -90,6 +90,7 @@ div(
 <script lang="ts" setup>
 import useMaterialForm from '@/composables/material/useMaterialForm'
 import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
+import { MIN_DPI_2D_MATERIAL } from '@/utils/constants'
 import { TOOLTIP_PLACEMENT } from '@frontier/constants'
 import type {
   Material,

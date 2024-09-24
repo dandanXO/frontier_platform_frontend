@@ -1,7 +1,11 @@
 import { computed, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { CROP_FILE_ACCEPT_TYPE, THEME } from '@/utils/constants'
+import {
+  CROP_FILE_ACCEPT_TYPE,
+  MIN_DPI_2D_MATERIAL,
+  THEME,
+} from '@/utils/constants'
 import {
   NOTIFY_TYPE,
   downloadDataURLFile,
@@ -514,10 +518,14 @@ const useMultimediaUpdate = (
     if (material.value.faceSide) {
       material.value.faceSide.sideImage = faceSide?.sideImage || null
       material.value.faceSide.u3mImage = faceSide?.u3mImage || null
+      material.value.faceSide.isLowDpi =
+        (faceSide?.sideImage?.dpi ?? 0) < MIN_DPI_2D_MATERIAL
     }
     if (material.value.backSide) {
       material.value.backSide.sideImage = backSide?.sideImage || null
       material.value.backSide.u3mImage = backSide?.u3mImage || null
+      material.value.backSide.isLowDpi =
+        (backSide?.sideImage?.dpi ?? 0) < MIN_DPI_2D_MATERIAL
     }
     material.value.u3m.status = u3mStatus
     material.value.u3m.isNotifyReCreate = isNotifyReCreateU3m

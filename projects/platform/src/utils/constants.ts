@@ -570,3 +570,5 @@ export const PrintLabelSettingBasicInfo = {
 }
 
 export const MIN_DIMENSION_2D_MATERIAL = 800
+
+export const MIN_DPI_2D_MATERIAL = 300
