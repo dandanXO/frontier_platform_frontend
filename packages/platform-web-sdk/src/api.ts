@@ -5058,6 +5058,7 @@ export interface GenerateAssetsMaterialU3mRequest {
     'isReplaceFaceAndBackSide'?: boolean;
 }
 
+
 /**
  * 
  * @export
@@ -11930,6 +11931,12 @@ export interface MaterialPublicMetaData {
      * @memberof MaterialPublicMetaData
      */
     'materialOwnerOGId': number | null;
+    /**
+     * flag for if material fully processed in V2
+     * @type {boolean}
+     * @memberof MaterialPublicMetaData
+     */
+    'isProcessingComplete': boolean;
 }
 
 

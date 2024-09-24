@@ -133,10 +133,7 @@ const editable = computed(() => {
   if (isDoubleSide.value) {
     return faceSideImage.value || backSideImage.value
   }
-  if (
-    !material.value.faceSide?.sideImage?.dpi &&
-    !material.value.backSide?.sideImage?.dpi
-  ) {
+  if (!material.value.metaData.isProcessingComplete) {
     return false
   }
   return sideType.value === MaterialSideType.FACE_SIDE

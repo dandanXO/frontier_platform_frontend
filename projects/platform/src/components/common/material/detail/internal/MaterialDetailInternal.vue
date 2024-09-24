@@ -530,10 +530,7 @@ const inventoryToItem = (
 }
 
 const editable = computed(() => {
-  if (
-    !props.material.faceSide?.sideImage?.dpi &&
-    !props.material.backSide?.sideImage?.dpi
-  ) {
+  if (!props.material.metaData.isProcessingComplete) {
     return false
   }
   return true
