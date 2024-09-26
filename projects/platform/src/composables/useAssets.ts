@@ -88,7 +88,6 @@ export interface QrCodePrintLabelSetting {
     isPrintFeature: boolean
     isPrintContent: boolean
     isPrintWidth: boolean
-    isPrintWeight: boolean
     isPrintFinish: boolean
     isPrintColor: boolean
     isPrintPattern: boolean
@@ -147,10 +146,11 @@ export const DefaultPrintLabelSetting: QrCodePrintLabelSetting = {
     isPrintMaterialDescription: true,
   },
   materialInfoOptions: {
+    isPrintFrontierNo: false,
+    isPrintOrgName: false,
     isPrintFeature: true,
     isPrintContent: true,
     isPrintWidth: true,
-    isPrintWeight: true,
     isPrintFinish: true,
     isPrintColor: true,
     isPrintPattern: true,

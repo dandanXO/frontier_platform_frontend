@@ -541,9 +541,8 @@ export const PrintLabelSettingMaterialType = [
 export const PrintLabelSettingMaterialInformation = {
   options: [
     { label: i18n.global.t('MI0014'), value: 'isPrintFeature' },
-    { label: i18n.global.t('RR0088'), value: 'isPrintWidth' },
+    { label: i18n.global.t('RR0381'), value: 'isPrintWidth' },
     { label: i18n.global.t('RR0021'), value: 'isPrintContent' },
-    { label: i18n.global.t('RR0015'), value: 'isPrintWeight' },
     { label: i18n.global.t('RR0022'), value: 'isPrintFinish' },
     { label: i18n.global.t('RR0026'), value: 'isPrintColor' },
     { label: i18n.global.t('RR0025'), value: 'isPrintPattern' },

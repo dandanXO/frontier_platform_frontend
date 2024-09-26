@@ -432,18 +432,39 @@ const usePrint = () => {
     store.dispatch('helper/closeModalLoading')
   }
 
+  const generateDimensionDisplayText = (
+    item: { material: Material },
+    setting: QrCodePrintLabelSetting
+  ) => {
+    const result = []
+    const { material } = item
+
+    const { weight, weightForDisplay, weightDisplaySetting, width } = material
+    if (!setting.materialInfoOptions.isPrintWidth) {
+      return
+    }
+    if (width) {
+      result.push(materialInfoForDisplay.width(width).value)
+    }
+    if (weight && weightForDisplay && weightDisplaySetting) {
+      result.push(
+        materialInfoForDisplay.weight(
+          weight,
+          weightForDisplay,
+          weightDisplaySetting
+        ).value
+      )
+    }
+
+    return result.join(', ')
+  }
+
   const getPrintLabelItems = (
     item: { sideType: MaterialSideType; material: Material },
     setting: QrCodePrintLabelSetting
   ): string[] => {
     const { sideType, material } = item
-    const {
-      isComposite,
-      width,
-      weight,
-      weightForDisplay,
-      weightDisplaySetting,
-    } = material
+    const { isComposite } = material
     const currentSide = getMaterialBySide(material, sideType)
     const {
       descriptionList,
@@ -464,6 +485,9 @@ const usePrint = () => {
         setting as QrCodePrintLabelSetting
       ).value,
     ]
+
+    const dimension = generateDimensionDisplayText(item, setting)
+    dimension && infoList.push(dimension)
 
     switch (materialType) {
       case MaterialType.WOVEN: {
@@ -490,10 +514,6 @@ const usePrint = () => {
           }
         }
 
-        if (width && setting.materialInfoOptions.isPrintWidth) {
-          infoList.push(materialInfoForDisplay.width(width).value)
-        }
-
         break
       }
       case MaterialType.KNIT: {
@@ -516,10 +536,6 @@ const usePrint = () => {
 
         if (coursesPerInch && setting.knitOptions.isPrintCourses) {
           str.push(`${coursesPerInch}"`)
-        }
-
-        if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`)
         }
 
         infoList.push(str.join(' '))
@@ -550,9 +566,6 @@ const usePrint = () => {
           str.push(`${thicknessPerMm} mm`)
         }
 
-        if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`)
-        }
         infoList.push(str.join(' '))
         break
       }
@@ -569,9 +582,6 @@ const usePrint = () => {
           str.push(`${thicknessPerMm} mm`)
         }
 
-        if (width && setting.materialInfoOptions.isPrintWidth) {
-          str.push(`${materialInfoForDisplay.width(width).value}`)
-        }
         infoList.push(str.join(' '))
         break
       }
@@ -603,20 +613,6 @@ const usePrint = () => {
     }
     if (contentList && setting.materialInfoOptions.isPrintContent) {
       infoList.push(materialInfoForDisplay.contentList(contentList).value)
-    }
-    if (
-      weight &&
-      weightForDisplay &&
-      weightDisplaySetting &&
-      setting.materialInfoOptions.isPrintWeight
-    ) {
-      infoList.push(
-        materialInfoForDisplay.weight(
-          weight,
-          weightForDisplay,
-          weightDisplaySetting
-        ).value
-      )
     }
     if (finishList && setting.materialInfoOptions.isPrintFinish) {
       infoList.push(materialInfoForDisplay.finishList(finishList).value)
