@@ -219,6 +219,7 @@ export interface MaterialFile {
   thumbnailUrl: string | null
   displayName: string
   displayNameShort: string
+  isLowDpi?: boolean
   caption: string | null
   extension: Extension
 }

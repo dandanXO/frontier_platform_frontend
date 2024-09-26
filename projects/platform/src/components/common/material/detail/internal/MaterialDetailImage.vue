@@ -11,7 +11,7 @@ div(class="flex flex-col gap-y-4")
       low-dpi-label(
         :material="material"
         :materialOptions="materialOptions"
-        v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+        v-if="localFileList[currentDisplayIndex]?.isLowDpi"
       )
     div(class="absolute bottom-5 left-5 right-5 flex gap-x-5")
       button(
