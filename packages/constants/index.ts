@@ -136,3 +136,5 @@ export enum fileOptionId {
   '3d_file' = '3d_file',
   'Spreadsheet' = 'Spreadsheet',
 }
+
+export const MIN_DPI_2D_MATERIAL = 300

@@ -90,8 +90,7 @@ div(
 <script lang="ts" setup>
 import useMaterialForm from '@/composables/material/useMaterialForm'
 import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
-import { MIN_DPI_2D_MATERIAL } from '@/utils/constants'
-import { TOOLTIP_PLACEMENT } from '@frontier/constants'
+import { MIN_DPI_2D_MATERIAL, TOOLTIP_PLACEMENT } from '@frontier/constants'
 import type {
   Material,
   MaterialOptions,
