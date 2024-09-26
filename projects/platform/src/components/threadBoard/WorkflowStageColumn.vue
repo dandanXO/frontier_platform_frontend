@@ -66,7 +66,10 @@ div
           class="h-full"
           @scrollInfoChange="handleScroll"
         )
-          slot(:scrollContainer="scrollContainer" :disabled="!isHoverDragArea")
+          slot(
+            :scrollContainer="scrollContainer"
+            :disabled="!isHoverDragArea && !isFirefox"
+          )
         div(
           v-if="showUpperBound && !(isEditingName && active)"
           class="absolute top-0 left-0 h-[1px] w-full bg-grey-200"
@@ -114,6 +117,7 @@ import useThreadBoardStore from '@/stores/threadBoard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useNameEditor from '@/composables/useNameEditor'
 import { getBoldInterpolationMessageComponent } from '@/utils/render'
+import { isFirefox } from '@/utils/browser'
 
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
