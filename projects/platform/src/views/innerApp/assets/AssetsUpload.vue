@@ -26,7 +26,7 @@ f-scrollbar-container(class="w-full h-full")
               @click="openModalUploadSettings"
               type="secondary"
               prependIcon="setting"
-            ) {{ $t('DD0135') }}
+            ) {{ $t('DD0141') }}
 
         div(class="flex justify-between items-end")
           div(class="text-grey-900 text-body1 leading-1.6")

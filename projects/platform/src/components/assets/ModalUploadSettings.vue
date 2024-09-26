@@ -1,5 +1,5 @@
 <template lang="pug">
-modal-behavior(:header="$t('DD0135')") 
+modal-behavior(:header="$t('DD0141')") 
   div(
     v-if="isLoading"
     class="h-full flex justify-center items-center w-160"
