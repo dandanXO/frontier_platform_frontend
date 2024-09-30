@@ -200,7 +200,7 @@ const materialFormService: MaterialFormService = useMaterialForm({
   pantoneList: pantoneList.value,
 })
 
-const u3mSelectService: MaterialU3mSelectService = useU3mSelect()
+const u3mSelectService: MaterialU3mSelectService = useU3mSelect(material.value)
 const multimediaUpdateService: MaterialMultimediaUpdateService =
   useMultimediaUpdate(material, materialFormService.updatePantoneList)
 const attachmentUpdateService: MaterialAttachmentUpdateService =

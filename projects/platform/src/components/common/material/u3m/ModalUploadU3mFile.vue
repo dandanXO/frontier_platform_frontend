@@ -60,11 +60,12 @@ import { NOTIFY_TYPE } from '@/utils/constants'
 import type { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { bytesToSize } from '@frontier/lib'
-import { Extension } from '@frontier/platform-web-sdk'
+import { Extension, type Material } from '@frontier/platform-web-sdk'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 const props = defineProps<{
   isShimaseiki: boolean
+  material: Material
   uploadedHandler: (payload: {
     u3mFile: File
     hasPhysicalData: boolean
@@ -148,6 +149,16 @@ fileOperator.on('finish', async (file: File) => {
           }
         }
       })
+    }
+    // check u3m zip if is doubleSide json need has tow side if not only one side
+    if (props.material.isDoubleSide) {
+      if (!u3mJSON.material.front && !u3mJSON.material.back) {
+        throw t('WW0135')
+      }
+    } else {
+      if (u3mJSON.material.front && u3mJSON.material.back) {
+        throw t('WW0135')
+      }
     }
     loopObject(u3mJSON.material)
 

@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { type Material } from '@frontier/platform-web-sdk'
 
-const useU3mSelect = () => {
+const useU3mSelect = (material: Material | undefined = undefined) => {
   const hasPhysicalDataInitialValue = false
   const needToGeneratePhysicalInitialValue = true
 
@@ -19,6 +20,7 @@ const useU3mSelect = () => {
       component: 'modal-upload-u3m-file',
       properties: {
         isShimaseiki,
+        material: material,
         uploadedHandler: (payload: {
           u3mFile: File
           hasPhysicalData: boolean
