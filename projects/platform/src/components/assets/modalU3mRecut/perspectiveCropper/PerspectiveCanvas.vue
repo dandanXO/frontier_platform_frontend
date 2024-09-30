@@ -122,7 +122,7 @@ import {
   getFitScale,
   getCenter,
 } from '@/utils/perspectiveCropper'
-import { cmToPixel, toDP1 } from '@/utils/cropper'
+import { cmToPixel, toDP1, pixelToCm } from '@/utils/cropper'
 import type {
   Coord,
   EditStatus,
@@ -207,7 +207,16 @@ const cropGroupConfig = {
 }
 
 const getDefaultPositions = () => {
-  const offset = cmToPixel(DEFAULT_CROP_CM, props.dpi).toNumber()
+  let offset = cmToPixel(DEFAULT_CROP_CM, props.dpi).toNumber()
+  if (props.sourceImage.width < offset || props.sourceImage.height < offset) {
+    if (props.sourceImage.width < props.sourceImage.height) {
+      const cm = pixelToCm(props.sourceImage.width, props.dpi).toNumber()
+      offset = cmToPixel(cm, props.dpi).toNumber()
+    } else {
+      const cm = pixelToCm(props.sourceImage.height, props.dpi).toNumber()
+      offset = cmToPixel(cm, props.dpi).toNumber()
+    }
+  }
   return {
     leftTop: {
       x: (props.sourceImage.width - offset) / 2,
