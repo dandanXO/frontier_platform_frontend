@@ -360,6 +360,11 @@ const getCurrentSetting = (): QrCodePrintLabelSetting => {
       ),
     }
   }
+  // need set isPrintWeight because backend api will not change logic
+  materialInfoObject = {
+    ...materialInfoObject,
+    isPrintWeight: true,
+  }
 
   let ecoImpactorObject = {}
   for (const configKey of PrintLabelSettingEcoImpactor.options) {
