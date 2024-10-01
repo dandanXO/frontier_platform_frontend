@@ -6,6 +6,8 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
     :currentSideName="currentSideName"
     :faceSideUrl="faceSideU3mImage?.original"
     :backSideUrl="backSideU3mImage?.original"
+    :isShowModalReplaceSides="isShowModalReplaceSides"
+    @update:replaceSides="handleToggleReplaceSides"
     @back="handleGoBack"
     @next="handleGoNext"
     @confirm="handleConfirm"
@@ -20,21 +22,13 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
     div(ref="previewRect")
   div(class="flex-1 bg-grey-800")
     template(v-for="side in sideList" :key="side.sideName")
-      template(v-if="side.cropMode === CROP_MODE.PERSPECTIVE")
-        perspective-cropper(
-          v-if="side.sideName === currentSideName"
-          :side="side"
-          :ref="(el) => handlePerspectiveCropAreaRefUpdate(side.sideName, el)"
-          @update:editStatus="handlePerspectiveEditStatusChange"
-        )
-      template(v-if="side.cropMode === CROP_MODE.SQUARE")
-        perspective-cropper(
-          v-if="side.sideName === currentSideName"
-          isSquare
-          :side="side"
-          :ref="(el) => handleCropAreaRefUpdate(side.sideName, el)"
-          @update:editStatus="handlePerspectiveEditStatusChange"
-        )
+      perspective-cropper(
+        v-if="side.sideName === currentSideName"
+        :side="side"
+        :isSquare="side.cropMode === CROP_MODE.SQUARE"
+        :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
+        @update:editStatus="handlePerspectiveEditStatusChange"
+      )
 </template>
 
 <script setup lang="ts">
@@ -43,9 +37,6 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
 import useNavigation from '@/composables/useNavigation'
-import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
-import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
-import type ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import ModalU3mRecutHeader from '@/components/assets/modalU3mRecut/ModalU3mRecutHeader.vue'
 import ModalU3mRecutSwitchControlBar from '@/components/assets/modalU3mRecut/ModalU3mRecutSwitchControlBar.vue'
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
@@ -102,9 +93,14 @@ const backSideU3mImage = computed(
 
 const previewRect = ref<HTMLDivElement | null>(null)
 const refFaceSideCropLayout = ref<any | null>(null)
+const isShowModalReplaceSides = ref(true)
 const refBackSideCropLayout = ref<any | null>(null)
-const refFaceSideCropArea = ref<InstanceType<typeof ImageCropArea> | null>(null)
-const refBackSideCropArea = ref<InstanceType<typeof ImageCropArea> | null>(null)
+const refFaceSideCropArea = ref<InstanceType<typeof PerspectiveCropper> | null>(
+  null
+)
+const refBackSideCropArea = ref<InstanceType<typeof PerspectiveCropper> | null>(
+  null
+)
 const refFaceSidePerspectiveCropArea = ref<InstanceType<
   typeof PerspectiveCropper
 > | null>(null)
@@ -289,7 +285,11 @@ const handleGoNext = async () => {
   store.dispatch('helper/closeModalLoading')
 }
 
-const handleConfirm = async () => {
+const handleToggleReplaceSides = (val: boolean) => {
+  isShowModalReplaceSides.value = val
+}
+
+const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
   try {
     if (!currentSide.value) {
       throw new Error('refTargetSide not existed.')
@@ -413,7 +413,7 @@ const handleConfirm = async () => {
       faceSide: faceSideReq,
       backSide: backSideReq,
       isAutoRepeat: false,
-      isReplaceFaceAndBackSide: true,
+      isReplaceFaceAndBackSide,
       hasHole: hasHole.value,
       holeColor: holeColor.value,
     })
@@ -436,17 +436,38 @@ const handleConfirm = async () => {
   }
 }
 
+const handleConfirm = async () => {
+  const onGenereteMaterial = (isReplaceFaceAndBackSide: boolean) => () => {
+    setTimeout(() => {
+      generateAssetsMaterialU3m(isReplaceFaceAndBackSide)
+    }, 500)
+  }
+  isShowModalReplaceSides.value
+    ? store.dispatch('helper/pushModalConfirm', {
+        type: NOTIFY_TYPE.INFO,
+        theme: THEME.LIGHT,
+        header: t('EE0202'),
+        contentText: t('EE0203'),
+        primaryBtnText: t('EE0205'),
+        secondaryBtnText: t('EE0204'),
+        primaryBtnHandler: onGenereteMaterial(true),
+        secondaryBtnHandler: onGenereteMaterial(false),
+      })
+    : generateAssetsMaterialU3m(false)
+}
+
 const handleClose = () => {
   store.dispatch('helper/closeModal')
 }
 
 const handleCropAreaRefUpdate = (
   sideName: U3M_CUT_SIDE,
-  el: InstanceType<typeof ImageCropArea>
+  el: InstanceType<typeof PerspectiveCropper> | null
 ) => {
   if (sideName === U3M_CUT_SIDE.FACE_SIDE) {
     refFaceSideCropArea.value = el
   }
+
   if (sideName === U3M_CUT_SIDE.BACK_SIDE) {
     refBackSideCropArea.value = el
   }

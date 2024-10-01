@@ -699,6 +699,7 @@
   "WW0176": "Understood and Upload",
   "WW0177": "{total} Files Checked",
   "WW0178": "< {size} x {size} pixels",
+  "WW0179": "Confirmation popup when making changes.",
   "AA0001": "LOG IN",
   "AA0002": "Email",
   "AA0003": "Password",

@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     FInputText: typeof import('./src/FInput/FInputText/FInputText.vue').default
     FInputCheckbox: typeof import('./src/FInput/FInputCheckbox/FInputCheckbox.vue').default
     FInputSlider: typeof import('./src/FInput/FInputSlider/FInputSlider.vue').default
+    FInputToggle: typeof import('./src/FInput/FInputToggle/FInputToggle.vue').default
     FInputTap: typeof import('./src/FInput/FInputTap/FInputTap.vue').default
     FTooltipStandard: typeof import('./src/FTooltip/FTooltipStandard/FTooltipStandard.vue').default
     FTooltipMedia: typeof import('./src/FTooltip/FTooltipMedia/FTooltipMedia.vue').default

@@ -4,6 +4,7 @@
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.vue",
+    "src/**/**/*.vue",
     "components.d.ts",
     "vitest.config.ts"
   ],

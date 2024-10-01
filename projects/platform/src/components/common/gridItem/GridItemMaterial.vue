@@ -22,16 +22,26 @@ grid-item-wrapper(
       div(v-else class="w-full h-full flex items-center justify-center bg-grey-100")
         img(class="w-full h-full object-contain" :src="imgDefaultMaterial")
   template(#hover-content)
-    div(
-      class="text-grey-0 p-2 md:px-7.5 md:py-10 w-full h-full flex flex-col items-center justify-center text-center"
-      @click="preventClickWhenSelectText($event)"
+    f-popper(
+      v-if="optionList && optionList.length > 0"
+      placement="right-start"
+      class="cursor-pointer h-full w-full"
+      :class="['visible']"
     )
-      p(
-        v-for="(info, index) in materialInfo"
-        :key="index"
-        :class="{ 'font-bold': index === 0 }"
-        class="text-body2 line-clamp-1"
-      ) {{ info }}
+      template(#trigger)
+        div(
+          class="text-grey-0 p-2 md:px-7.5 md:py-10 w-full h-full flex flex-col items-center justify-center text-center"
+          @click="preventClickWhenSelectText($event)"
+        )
+          div(
+            v-for="(info, index) in materialInfo"
+            :key="index"
+            :class="{ 'font-bold': index === 0 }"
+            class="text-body2 line-clamp-1"
+          ) {{ info }}
+      template(#content="{ collapsePopper }")
+        f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
+
   template(#corner-top-right)
     digital-thread-entrance(
       :material="material"
@@ -55,6 +65,7 @@ import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
 import imgDefaultMaterial from '@/assets/images/default_material.png'
+import type { MenuTree } from '@frontier/ui-component'
 
 const props = withDefaults(
   defineProps<{
@@ -131,4 +142,16 @@ const showImage = ref(true)
 const imageOnerror = () => {
   showImage.value = false
 }
+
+const menuTree = computed<MenuTree>(() => ({
+  blockList:
+    props.optionList?.map((block) => ({
+      menuList: block.map((option) => ({
+        title: option.name(props.selectValue),
+        clickHandler: () => option.func(props.selectValue),
+        disabled: option.disabled ? option.disabled(props.selectValue) : false,
+        testId: option.testId,
+      })),
+    })) ?? [],
+}))
 </script>

@@ -52,7 +52,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
         f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
     slot(name="content")
     div(
-      v-if="isHover"
+      v-show="isHover"
       class="absolute inset-0 w-full h-full bg-grey-900/70 rounded-md flex justify-center items-center"
     )
       slot(name="hover-content")
@@ -122,7 +122,7 @@ const menuTree = computed<MenuTree>(() => ({
         title: option.name(props.selectValue),
         clickHandler: () => option.func(props.selectValue),
         disabled: option.disabled ? option.disabled(props.selectValue) : false,
-        testId: option.testId
+        testId: option.testId,
       })),
     })) ?? [],
 }))

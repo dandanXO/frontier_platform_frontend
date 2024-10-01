@@ -3,6 +3,7 @@ div(
   ref="refTrigger"
   aria-describedby="popper"
   @click="expandPopper"
+  @contextmenu.prevent="expandPopper"
   v-bind="$attrs"
   data-cy="f-popper"
 )
@@ -12,9 +13,10 @@ teleport(v-if="isExpand" to="body")
     div(
       class="fixed w-screen h-screen top-0 left-0"
       @click="collapsePopper"
+      @contextmenu.prevent="expandPopper"
       @wheel.prevent
     )
-    div(ref="refPopper" role="popper" @click.stop)
+    div(ref="refPopper" role="popper" @click.stop class="popper-content-animation")
       slot(
         name="content"
         :isExpand="isExpand"
@@ -95,3 +97,23 @@ defineExpose({
   expandPopper,
 })
 </script>
+
+<style lang="scss" scoped>
+.popper-content-animation {
+  overflow-y: scroll;
+  animation: slideDown 0.35s ease-out;
+  transform-origin: top center;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0px;
+    min-height: 0px;
+    opacity: 0;
+  }
+  to {
+    min-height: 400px;
+    opacity: 1;
+  }
+}
+</style>
