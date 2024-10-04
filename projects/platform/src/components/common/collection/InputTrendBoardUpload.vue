@@ -8,14 +8,13 @@ div
       class="ml-1.5"
       @click="previewFile(trendBoard)"
     ) {{ $t('UU0060') }}
-  f-input-file(
+  input-file(
     class="w-full pb-9"
     v-model:fileName="fileName"
-    :text="$t('UU0025')"
-    :placeholder="$t('QQ0009')"
     :acceptType="acceptType"
     :maximumSize="fileSizeMaxLimit"
-    data-cy= "add-your-banner-image"
+    data-cy="add-your-banner-image"
+    :chooseFileTxt="$t('QQ0091')"
     @finish="uploadedFromLocale"
     @clear="removeTrendBoard"
     @error="errorCode = $event"
@@ -29,13 +28,10 @@ import type { UPLOAD_ERROR_CODE } from '@frontier/constants'
 import { defineExpose } from 'vue'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import { type TrendBoard, Extension } from '@frontier/platform-web-sdk'
+import InputFile from './InputFile.vue'
 
 const props = defineProps<{
   defaultTrendBoard?: TrendBoard | null
-}>()
-
-const emit = defineEmits<{
-  (e: 'remove'): void
 }>()
 
 const isDeleteTrendBoard = ref(false)
@@ -44,9 +40,7 @@ const acceptType = [Extension.PDF]
 const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 
-const fileName = ref(
-  props.defaultTrendBoard ? props.defaultTrendBoard.displayName : null
-)
+const fileName = ref(props.defaultTrendBoard?.displayName)
 const trendBoard = ref<File | string | null>(
   props.defaultTrendBoard ? props.defaultTrendBoard.originalUrl : null
 )
@@ -58,7 +52,6 @@ const uploadedFromLocale = (file: File) => {
 const removeTrendBoard = () => {
   isDeleteTrendBoard.value = true
   trendBoard.value = null
-  emit('remove')
 }
 
 const getTrendBoardS3Object = async () => {

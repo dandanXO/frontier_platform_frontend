@@ -5,6 +5,7 @@ const baseArgs = {
   size: SIZE.LG,
   type: 'primary',
   theme: THEME.LIGHT,
+  isFullWidth: false,
 }
 
 export default {
@@ -28,6 +29,10 @@ export default {
     type: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'text'],
+    },
+    isFullWidth: {
+      control: { type: 'radio' },
+      options: [false, true],
     },
   },
 }

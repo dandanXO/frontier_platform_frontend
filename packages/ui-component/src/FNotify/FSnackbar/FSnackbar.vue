@@ -105,8 +105,8 @@ export interface NotifySnackbarProps {
    */
   delay?: number
   // cusomerClass
-  bgColor: string
-  textColor: string
+  bgColor?: string
+  textColor?: string
 }
 
 const emit = defineEmits<{

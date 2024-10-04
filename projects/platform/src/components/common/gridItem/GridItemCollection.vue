@@ -8,6 +8,12 @@ grid-item-wrapper(
   template(#title) {{ collection.name }}
   template(#content)
     div(
+      v-if="collection.coverImg.originalUrl"
+      class="flex justify-center items-center h-full bg-grey-150 rounded-md"
+    )
+      img(:src="collection.coverImg.originalUrl" class="object-contain w-full h-full")
+    div(
+      v-else
       class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden"
     )
       div(class="row-span-2 bg-grey-150")

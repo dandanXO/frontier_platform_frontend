@@ -1,7 +1,7 @@
 <template lang="pug">
 button(
   class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
-  :class="[btnSize, btnType]"
+  :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )
   f-svg-icon(v-if="prependIcon !== ''" :iconName="prependIcon")
@@ -24,6 +24,7 @@ const props = withDefaults(
     prependIcon?: string
     disabled?: boolean
     parentIsFlex?: boolean
+    isFullWidth?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
@@ -32,6 +33,7 @@ const props = withDefaults(
     prependIcon: '',
     disabled: false,
     parentIsFlex: false,
+    isFullWidth: false,
   }
 )
 
@@ -127,4 +129,8 @@ const btnType = computed(() => {
     throw new Error('invalid theme, only accept "light" or "dark"')
   }
 })
+
+const isFullWidth = computed(() => ({
+  'w-full': props.isFullWidth,
+}))
 </script>

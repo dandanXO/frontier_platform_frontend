@@ -1847,6 +1847,12 @@ export interface Collection {
     'coverImgList': Array<string>;
     /**
      * 
+     * @type {CollectionCoverImg}
+     * @memberof Collection
+     */
+    'coverImg': CollectionCoverImg;
+    /**
+     * 
      * @type {number}
      * @memberof Collection
      */
@@ -1863,6 +1869,31 @@ export interface Collection {
      * @memberof Collection
      */
     'trendBoard': TrendBoard | null;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionCoverImg
+ */
+export interface CollectionCoverImg {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionCoverImg
+     */
+    'displayName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionCoverImg
+     */
+    'thumbnailUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionCoverImg
+     */
+    'originalUrl'?: string;
 }
 /**
  * 
@@ -2572,9 +2603,40 @@ export interface CreateWorkspaceCollectionRequest {
      * @memberof CreateWorkspaceCollectionRequest
      */
     'trendBoard': S3UploadedObject | null;
+    /**
+     * 
+     * @type {CreateWorkspaceCollectionRequestAllOfCoverImg}
+     * @memberof CreateWorkspaceCollectionRequest
+     */
+    'coverImg': CreateWorkspaceCollectionRequestAllOfCoverImg | null;
 }
 
 
+/**
+ * 
+ * @export
+ * @interface CreateWorkspaceCollectionRequestAllOfCoverImg
+ */
+export interface CreateWorkspaceCollectionRequestAllOfCoverImg {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    'fileName': string;
+    /**
+     * always false in create
+     * @type {boolean}
+     * @memberof CreateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    'isDeleted'?: boolean;
+}
 /**
  * 
  * @export
@@ -22206,9 +22268,40 @@ export interface UpdateWorkspaceCollectionRequest {
      * @memberof UpdateWorkspaceCollectionRequest
      */
     'trendBoard': S3UploadedObject | null;
+    /**
+     * 
+     * @type {UpdateWorkspaceCollectionRequestAllOfCoverImg}
+     * @memberof UpdateWorkspaceCollectionRequest
+     */
+    'coverImg': UpdateWorkspaceCollectionRequestAllOfCoverImg | null;
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UpdateWorkspaceCollectionRequestAllOfCoverImg
+ */
+export interface UpdateWorkspaceCollectionRequestAllOfCoverImg {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    'fileName': string;
+    /**
+     * set true if you want to delete
+     * @type {boolean}
+     * @memberof UpdateWorkspaceCollectionRequestAllOfCoverImg
+     */
+    'isDeleted'?: boolean;
+}
 /**
  * 
  * @export
