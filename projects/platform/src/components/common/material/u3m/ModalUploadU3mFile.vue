@@ -60,7 +60,11 @@ import { NOTIFY_TYPE } from '@/utils/constants'
 import type { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { bytesToSize } from '@frontier/lib'
-import { Extension, type Material } from '@frontier/platform-web-sdk'
+import {
+  Extension,
+  type Material,
+  MaterialSideType,
+} from '@frontier/platform-web-sdk'
 import APEXFIZ from '@/assets/images/APEXFIZ.png'
 
 const props = defineProps<{
@@ -152,12 +156,20 @@ fileOperator.on('finish', async (file: File) => {
     }
     // check u3m zip if is doubleSide json need has tow side if not only one side
     if (props.material.isDoubleSide) {
-      if (!u3mJSON.material.front && !u3mJSON.material.back) {
-        throw t('WW0135')
+      if (!u3mJSON.material.front || !u3mJSON.material.back) {
+        throw t('WW0135') + '(face and back side error)'
       }
     } else {
-      if (u3mJSON.material.front && u3mJSON.material.back) {
-        throw t('WW0135')
+      if (
+        props.material.sideType === MaterialSideType.FACE_SIDE &&
+        (!u3mJSON.material.front || u3mJSON.material.back)
+      ) {
+        throw t('WW0135') + '(face side error)'
+      } else if (
+        props.material.sideType === MaterialSideType.BACK_SIDE &&
+        (!u3mJSON.material.back || u3mJSON.material.front)
+      ) {
+        throw t('WW0135') + '(bake side error)'
       }
     }
     loopObject(u3mJSON.material)

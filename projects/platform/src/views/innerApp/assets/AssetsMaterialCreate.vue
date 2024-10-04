@@ -79,7 +79,7 @@ import {
   convertInventoryFormToReq,
   convertPriceInfoFormToReq,
 } from '@/utils/material'
-import type { Organization } from '@frontier/platform-web-sdk'
+import type { Material, Organization } from '@frontier/platform-web-sdk'
 import {
   TRACKER_POSTFIX,
   TRACKER_PREFIX,
@@ -123,7 +123,20 @@ const materialOptions = materialOptionsRes.data.result!
 const materialFormService: MaterialFormService = useMaterialForm({
   materialOptions,
 })
-const u3mSelectService: MaterialU3mSelectService = useU3mSelect()
+const {
+  submitCount,
+  meta,
+  isSpecificationTabValid,
+  isTagTabValid,
+  isPricingTabValid,
+  isInventoryTabValid,
+  handleSubmit,
+  values,
+} = materialFormService
+console.log(values, 'dan2')
+const u3mSelectService: MaterialU3mSelectService = useU3mSelect(
+  values as Material
+)
 const multimediaCreateService: MaterialMultimediaCreateService =
   useMultimediaCreate()
 const attachmentCreateService: MaterialAttachmentCreateService =
@@ -133,16 +146,6 @@ provide(materialFormServiceKey, materialFormService)
 provide(materialU3mSelectServiceKey, u3mSelectService)
 provide(materialMultimediaCreateServiceKey, multimediaCreateService)
 provide(materialAttachmentCreateServiceKey, attachmentCreateService)
-
-const {
-  submitCount,
-  meta,
-  isSpecificationTabValid,
-  isTagTabValid,
-  isPricingTabValid,
-  isInventoryTabValid,
-  handleSubmit,
-} = materialFormService
 
 const TAB = {
   SPECIFICATION: 0,
