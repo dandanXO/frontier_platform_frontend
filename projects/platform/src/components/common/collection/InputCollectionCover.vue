@@ -48,6 +48,7 @@ const coverImage = ref<File | string | null>(
 const uploadedFromLocale = (file: File) => {
   errorCode.value = null
   coverImage.value = file
+  isDeleteCoverImage.value = false
 }
 const removeCoverImage = () => {
   isDeleteCoverImage.value = true
@@ -64,11 +65,11 @@ const getCoverImageS3Object = async () => {
       s3UploadId,
       fileName,
     }
-  } else {
-    return {
-      s3UploadId: '',
-      fileName: '',
-    }
+  }
+
+  return {
+    s3UploadId: '',
+    fileName: '',
   }
 }
 

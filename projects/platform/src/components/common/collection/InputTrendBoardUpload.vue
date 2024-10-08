@@ -48,6 +48,7 @@ const trendBoard = ref<File | string | null>(
 const uploadedFromLocale = (file: File) => {
   errorCode.value = null
   trendBoard.value = file
+  isDeleteTrendBoard.value = false
 }
 const removeTrendBoard = () => {
   isDeleteTrendBoard.value = true

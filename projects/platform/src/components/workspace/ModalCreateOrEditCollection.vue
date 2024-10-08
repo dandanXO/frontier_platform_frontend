@@ -125,7 +125,7 @@ const primaryHandler = async () => {
       ? await refInputTrendBoardUpload.value.getTrendBoardS3Object()
       : null
 
-    if (!trendBoard) {
+    if (refInputTrendBoardUpload.value?.isDeleteTrendBoard) {
       await removeTrendBoardHandler()
     }
 
@@ -136,9 +136,7 @@ const primaryHandler = async () => {
       coverImgS3
         ? {
             ...coverImgS3,
-            isDeleted:
-              !coverImgS3?.s3UploadId &&
-              !!collection.value.coverImg.displayName,
+            isDeleted: refInputCollectionCover.value?.isDeleteCoverImage,
           }
         : null
 
