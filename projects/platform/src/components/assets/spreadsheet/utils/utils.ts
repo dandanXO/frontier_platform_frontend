@@ -69,13 +69,17 @@ export function populateGrid(
   // iterate over the worksheet pulling out the columns we're expecting
   while (worksheet['A' + rowIndex]) {
     let row: Record<string, string> = {}
+
     columnKeys.forEach((column) => {
       if (!worksheet[column + 2]?.w?.trim()) {
         return
       }
 
       row[worksheet[column + 2].w.trim()] = worksheet[column + rowIndex]
-        ? worksheet[column + rowIndex].w.trim()
+        ? (
+            worksheet[column + rowIndex].w ??
+            String(worksheet[column + rowIndex].v)
+          ).trim()
         : ''
     })
 
