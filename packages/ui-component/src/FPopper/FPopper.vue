@@ -101,11 +101,11 @@ defineExpose({
 <style lang="scss" scoped>
 .popper-content-animation {
   overflow-y: scroll;
-  animation: slideDown 0.35s ease-out;
+  /* animation: slideDown 0.35s ease-out; */
   transform-origin: top center;
 }
 
-@keyframes slideDown {
+/* @keyframes slideDown {
   from {
     height: 0px;
     min-height: 0px;
@@ -115,5 +115,5 @@ defineExpose({
     min-height: 400px;
     opacity: 1;
   }
-}
+} */
 </style>
