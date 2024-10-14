@@ -25,6 +25,7 @@ modal-behavior(
     f-input-textarea(
       v-model:textValue="formData.comment"
       :label="$t('MM0009')"
+      :placeholder="$t('MM0050')"
       required
       class="pb-2"
       minHeight="min-h-30"
@@ -72,9 +73,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 interface Props {
   title: string
+  category: number
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()
@@ -82,7 +84,7 @@ const store = useStore()
 const notify = useNotifyStore()
 const tempFeedbackId = uuidv4()
 const formData = reactive({
-  category: null,
+  category: props.category ?? null,
   comment: '',
 })
 const feedbackAttachmentList = ref([])

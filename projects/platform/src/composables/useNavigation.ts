@@ -2,7 +2,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { MOODBOARD_TAB, SIGNUP_SOURCE, PROGRESS_TAB } from '@/utils/constants'
-import { OgType, type Organization } from '@frontier/platform-web-sdk'
+import {
+  OgType,
+  type Organization,
+  type Plan,
+} from '@frontier/platform-web-sdk'
+import ModalMaterialQuotaExceeded from '@/components/assets/ModalMaterialQuotaExceeded.vue'
 
 export interface NavigationReq {
   orgNo?: string
@@ -17,6 +22,8 @@ export default function useNavigation() {
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
   )
+  const plan = computed<Plan>(() => store.getters['polling/plan'])
+  const materialQuota = computed(() => plan.value.quota.material)
   const ogKey = computed(() =>
     router.currentRoute.value.params.ogKey
       ? (router.currentRoute.value.params.ogKey as string)
@@ -135,6 +142,16 @@ export default function useNavigation() {
 
   const goToMaterialUpload = async (navReq: NavigationReq = {}) => {
     await store.dispatch('sticker/closeStickerDrawer')
+    if (
+      !materialQuota.value.isUnlimited &&
+      materialQuota.value.used >= materialQuota.value.max
+    ) {
+      store.dispatch('helper/openModalCommon', {
+        body: ModalMaterialQuotaExceeded,
+        classModal: 'w-128',
+      })
+      return
+    }
     router.push(parsePath(`${prefixPath}/assets/upload`, navReq))
   }
   const goToMaterialCreate = async (navReq: NavigationReq = {}) => {

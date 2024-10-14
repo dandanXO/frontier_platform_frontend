@@ -1332,6 +1332,7 @@
   "MM0047": "Label setting saved as default",
   "MM0048": "Please {UU0078} if your organization requires further customization options.",
   "MM0049": "Default saved",
+  "MM0050": "Write comments",
   "II0002": "Published by {displayName}",
   "II0003": "Unable to Download This 3D Material",
   "II0004": "You don't have permission to download this 3D material ",
@@ -2238,5 +2239,7 @@
   "MI0157": "Custom Tabs",
   "RW0001": "3D Material Quota Exceeded",
   "RW0002": "You can't create new 3D materials because you have exceeded your quota. Please contact our customer care team for help.",
-  "RW0003": "Contact Customer Care"
+  "RW0003": "Contact Customer Care",
+  "RW0004": "Digital Fabric Quota Exceeded",
+  "RW0005": "You have {quota} assets available, and you've used {maxQuota}. You have exceeded your asset quota. To continue, please contact our customer care team for assistance"
 }

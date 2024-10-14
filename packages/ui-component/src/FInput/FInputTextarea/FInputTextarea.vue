@@ -5,20 +5,16 @@ f-input-container(
   :hintSupporting="hintSupporting"
   :hintError="ruleErrorMsg || hintError"
 )
-  div(
-    ref="refInput"
-    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900 whitespace-pre-wrap"
+  textarea(
+    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900 whitespace-pre-wrap resize-none w-full"
     :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-250']"
-    :contenteditable="!disabled"
+    :placeholder="placeholder"
+    :value="innerTextValue"
+    :disabled="disabled"
     @input="onInput"
     @focus="onFocus"
     @blur="onBlur"
-    @keydown.enter.prevent="newLineHandler"
   )
-    span(
-      v-if="!innerTextValue && !isFocus"
-      class="text-body2 leading-1.6 text-grey-250"
-    ) {{ placeholder }}
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
@@ -32,7 +28,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, toRefs, useSlots, onMounted, onUpdated } from 'vue'
+import { computed, toRefs, useSlots } from 'vue'
 import useInput from '../useInput'
 
 const slots = useSlots()
@@ -112,14 +108,12 @@ const { isFocus, isError, ruleErrorMsg } = useInput({
   disabled,
 })
 
-const refInput = ref(null)
-
 defineExpose({
   isError,
 })
 
-const onInput = () => {
-  innerTextValue.value = refInput.value.textContent
+const onInput = (event) => {
+  innerTextValue.value = event.target.value
   emit('input')
 }
 const onFocus = () => {
@@ -130,12 +124,4 @@ const onBlur = () => {
   isFocus.value = false
   emit('blur')
 }
-
-const newLineHandler = () => {
-  document.execCommand('insertLineBreak')
-}
-
-onMounted(() => {
-  refInput.value.textContent = innerTextValue.value
-})
 </script>
