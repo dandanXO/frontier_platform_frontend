@@ -321,6 +321,19 @@ const routes = [
             path: 'moodboard',
             name: 'Moodboard',
             component: () => import('@/views/innerApp/moodboard/Moodboard.vue'),
+            beforeEnter: async (to, from, next) => {
+              const organization = await store.getters[
+                'organization/organization'
+              ]
+
+              console.log('dan', store.getters['permission/enablemoodboardOrg'])
+              if (!store.getters['permission/enablemoodboardOrg']) {
+                return next(
+                  `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/assets`
+                )
+              }
+              next()
+            },
           },
           {
             path: 'moodboard/:moodboardId/:tab(offer|members|picked|comment)',
@@ -341,6 +354,18 @@ const routes = [
             name: 'ThreadBoard',
             props: true,
             component: () => import('@/views/innerApp/ThreadBoard.vue'),
+            beforeEnter: async (to, from, next) => {
+              const organization = await store.getters[
+                'organization/organization'
+              ]
+
+              if (!store.getters['permission/enablethreadboardOrg']) {
+                return next(
+                  `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/assets`
+                )
+              }
+              next()
+            },
           },
         ],
       },

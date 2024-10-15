@@ -79,6 +79,10 @@ div(
                 :data-cy="`child-sidebar-org-${og.ogType}-${og.ogId}-${menu.testId}`"
               )
                 p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
+                f-badge(
+                  v-if="menu.id === 'Moodboard' || menu.id === 'ThreadBoard'"
+                  type="information"
+                ) Beta
                 template(v-if="menu.id === 'Assets'")
                   f-tooltip-standard(class="mr-3" :tooltipMessage="$t('RR0012')")
                     template(#slot:tooltip-trigger)
@@ -174,7 +178,7 @@ const ogSideItemList = (ogType: OgType, ogId: number, nodeId: number) => {
     orgNo: organization.value.orgNo,
     ogKey: `${ogType}-${ogId}`,
   }
-  return [
+  const sideItems = [
     {
       id: 'Assets',
       title: t('RR0008'),
@@ -187,19 +191,25 @@ const ogSideItemList = (ogType: OgType, ogId: number, nodeId: number) => {
       goTo: goToWorkspace.bind(null, navReq, nodeId),
       testId: 'workspace',
     },
-    {
+  ]
+
+  if (store.getters['permission/enablemoodboardOrg']) {
+    sideItems.push({
       id: 'Moodboard',
       title: t('QQ0001'),
       goTo: goToMoodboard.bind(null, navReq),
       testId: 'mood-board',
-    },
-    {
+    })
+  }
+  if (store.getters['permission/enablethreadboardOrg']) {
+    sideItems.push({
       id: 'ThreadBoard',
       title: t('TT0132'),
       goTo: goToThreadBoard.bind(null, navReq),
       testId: 'thread-board',
-    },
-  ]
+    })
+  }
+  return sideItems
 }
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')

@@ -11,12 +11,20 @@ const state = () => ({
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   new3DViewer: [1498, 1892, 1815],
 
+  moodboardOrg: [6, 1935],
+  threadboardOrg: [6, 1935],
   // new upload page display logic control
   useOldUiOrgList: true, //all  user USE old ui ,true mean's all user used
   useNewUiOrgList: [6], // list of organization id that used the new upload material UI
 })
 
 const getters = {
+  enablemoodboardOrg: (state, getters, rootState) => {
+    return state.moodboardOrg.includes(rootState.organization.orgId)
+  },
+  enablethreadboardOrg: (state, getters, rootState) => {
+    return state.threadboardOrg.includes(rootState.organization.orgId)
+  },
   uploadPageUseBothUi: (state, getters) => {
     return getters.uploadPageUseOldUi && getters.uploadPageUseNewUi
   },
