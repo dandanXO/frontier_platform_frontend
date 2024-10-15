@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-195")
+div(class="w-195 pb-2")
   p(class="text-body1 text-grey-900 mt-18.5 mb-5 flex") {{ $t('OO0008') }}
     span(v-if="!planType.ENT && planStatus.BUFFER" class="flex items-center pl-5")
       f-svg-icon(iconName="warning_amber_round" size="20" class="text-red-400")

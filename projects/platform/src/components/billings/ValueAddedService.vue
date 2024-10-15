@@ -44,6 +44,7 @@ div(v-else class="w-full pt-3")
         template(v-for="service in serviceList")
           div(
             v-if="!service.bannerImage"
+            :key="service.id"
             class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-grey-250 cursor-pointer hover:bg-grey-100"
             @click="goTo(service.id)"
           )
