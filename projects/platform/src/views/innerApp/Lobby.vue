@@ -9,6 +9,7 @@ div(class="w-full relative")
       h3(class="text-grey-900 font-bold text-h3 mb-6") {{ $t('AA0014') }}
       p(class="text-grey-900 text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t('AA0015') }}
       div(
+        v-if="canCreateNewOrg"
         class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
         @click="openModalCreateOrg"
         data-cy="open-create-org-modal"
@@ -24,6 +25,7 @@ div(class="w-full relative")
           class="w-58 h-55 rounded-md border border-grey-250 bg-grey-50 flex flex-col items-center justify-between py-5 cursor-pointer"
           @click="goToPublicLibrary(org.orgNo)"
           data-cy="org"
+          :key="org.orgName"
         )
           f-avatar(type="org" :imageUrl="org.logo" size="xl")
           p(class="text-body1 text-grey-900 text-center font-bold line-clamp-1") {{ org.orgName }}
@@ -54,9 +56,14 @@ const router = useRouter()
 const route = useRoute()
 const user = computed(() => store.getters['user/user'])
 const orgList = computed(() => store.getters['user/organizationList'])
-const canCreateNewOrg = computed(
-  () => store.getters['permission/noLittleKingInOrgList']
-)
+const canCreateNewOrg = computed(() => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@frontier\.cool$/
+
+  return (
+    emailRegex.test(user.value.email) &&
+    store.getters['permission/noLittleKingInOrgList']
+  )
+})
 const goToPublicLibrary = (orgNo) => {
   if (!user.value.isVerify) {
     remindVerifyEmail()
