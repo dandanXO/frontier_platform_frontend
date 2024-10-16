@@ -100,8 +100,8 @@ defineExpose({
 
 <style lang="scss" scoped>
 .popper-content-animation {
-  overflow-y: scroll;
-  /* animation: slideDown 0.35s ease-out; */
+  /* overflow-y: scroll;
+   animation: slideDown 0.35s ease-out; */
   transform-origin: top center;
 }
 

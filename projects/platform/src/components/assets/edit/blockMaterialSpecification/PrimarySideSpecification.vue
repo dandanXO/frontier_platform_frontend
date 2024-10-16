@@ -564,13 +564,30 @@ div(class="flex flex-col gap-y-7.5")
             class="w-50"
             :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
           )
+          div(
+            
+          class="flex items-center gap-x-3 pt-7 "
+          )
+            f-tooltip-media(
+              v-if="isPantoneValue(field.value?.value)"
+              placement="top-start"
+              :pantone="{ r: isPantoneValue(field.value?.value)?.r, g: isPantoneValue(field.value?.value)?.g, b: isPantoneValue(field.value?.value)?.b }"
+              :tooltipTitle="isPantoneValue(field.value?.value)?.name"
+              :tooltipMessage="isPantoneValue(field.value?.value)?.colorName"
+            )
+              template(#slot:tooltip-trigger)
+                
+                  div(
+                    class="rounded w-5 h-5"
+                    :style="{ backgroundColor: field.value.value ? `rgb(${isPantoneValue(field.value.value)?.r}, ${isPantoneValue(field.value.value)?.g}, ${isPantoneValue(field.value.value)?.b})` : 'transparent' }"
+                  )
           f-input-text(
             :disabled="disableBackSideFields"
             v-model:textValue="field.value.value"
             :hintError="displayErrors[`${primarySideType}.colorInfo.customPropertyList[${index}].value`]"
             label="value"
             :placeholder="$t('MI0044')"
-            class="w-50"
+            :class="[isPantoneValue(field.value?.value)?'w-45':'w-50']"
           )
           f-input-switch(
             :disabled="disableBackSideFields || !field.value.name || !field.value.value"
@@ -1061,6 +1078,10 @@ const pantoneValueDisplayList = computed(() => {
     }) || []
   )
 })
+const isPantoneValue = (stringValue: string) => {
+  const result = pantoneList?.find((p) => p.name === stringValue)
+  return result
+}
 
 const handleMaterialTypeChange = (v: MaterialType) => {
   clearMaterialTypeConstructionFields(props.primarySideType)

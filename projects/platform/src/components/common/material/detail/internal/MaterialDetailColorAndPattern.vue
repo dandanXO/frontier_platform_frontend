@@ -36,6 +36,19 @@ div
           :class="{ 'bg-grey-50 px-3 py-2 rounded !text-grey-600': !color.isPublic }"
         )
           p(class="text-body2/1.6 text-grey-900") {{ color.name }}：
+          f-tooltip-media(
+            v-if="isPantoneValue(color.value)"
+            class="flex items-center"
+            placement="top-start"
+            :pantone="{ r: isPantoneValue(color.value).r, g: isPantoneValue(color.value).g, b: isPantoneValue(color.value).b }"
+            :tooltipTitle="isPantoneValue(color.value).name"
+            :tooltipMessage="isPantoneValue(color.value).colorName"
+          )
+            template(#slot:tooltip-trigger)
+              div(
+                class="rounded w-5 h-5 mx-2"
+                :style="{ backgroundColor: `rgb(${isPantoneValue(color.value).r}, ${isPantoneValue(color.value).g}, ${isPantoneValue(color.value).b})` }"
+              )
           p(class="text-body2/1.6 text-grey-900") {{ color.value }}
       //- Pattern
       template(v-if="patternInfo && !isEmpty(patternInfo.value)")
@@ -74,6 +87,10 @@ const props = defineProps<{
   }
 }>()
 
+const isPantoneValue = (stringValue: string) => {
+  const result = props.pantoneList?.find((p) => p.name === stringValue)
+  return result
+}
 const hasExtendedContent = ref(false)
 const checkNeedShowMoreBtn = () => {
   return (
