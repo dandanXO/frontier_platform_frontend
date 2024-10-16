@@ -1,9 +1,9 @@
 <template lang="pug">
 component(v-if="isDetailPage" :is="valueAddedServiceDetailPage")
-div(v-else class="w-full pt-3")
+div(v-else class="w-full pt-3 pb-3")
   div(class="w-195 mx-auto mt-8")
     div(class="mb-12")
-      div(class="text-body1 text-grey-900 pb-5") {{ $t('VV0002') }}
+      div(class="text-sm text-grey-900 pb-5") {{ $t('VV0002') }}
       div(
         class="flex border border-grey-250 rounded h-62 cursor-pointer hover:bg-grey-100"
         @click="goTo(recommendService.id)"
@@ -12,7 +12,7 @@ div(v-else class="w-full pt-3")
           div
             div(class="flex items-center my-2 h-11.5")
               img(:src="recommendService.logo" class="scale-50 origin-left")
-            div(class="text-body1 text-grey-900 leading-1.6 font-bold") {{ recommendService.projectName }}
+            div(class="text-sm text-grey-900 leading-1.6 font-bold") {{ recommendService.projectName }}
             i18n-t(
               keypath="VV0004"
               scope="global"
@@ -51,7 +51,7 @@ div(v-else class="w-full pt-3")
             div
               div(class="flex items-start my-2 h-11.5")
                 img(:src="service.logo" class="scale-50 origin-left")
-              div(class="text-body1 text-grey-900 leading-1.6 font-bold") {{ service.projectName }}
+              div(class="text-sm text-grey-900 leading-1.6 font-bold") {{ service.projectName }}
               i18n-t(
                 keypath="VV0004"
                 scope="global"
@@ -72,6 +72,7 @@ div(v-else class="w-full pt-3")
                 span(class="pl-1 text-primary-400") {{ $t('VV0054') }}
               template(v-else)
                 span(class="text-grey-900") {{ $t('VV0006') }}
+  c-f-calculator-guide
 </template>
 
 <script setup>
@@ -84,6 +85,7 @@ import {
 } from '@/utils/constants'
 import ValueAddedServiceMade2flow from '@/components/billings/ValueAddedServiceMade2flow.vue'
 import valueAddedServiceList from '@/components/billings/valueAddedServiceList.js'
+import CFCalculatorGuide from './CFCalculatorGuide.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -26,7 +26,7 @@ for (let i = 0; i <= 20; i++) {
   strokeWidth[i] = i + 'px'
 }
 
-export default plugin(function () {}, {
+module.exports = plugin(function () {}, {
   darkMode: 'class',
   theme: {
     colors: {

@@ -1,14 +1,14 @@
 <template lang="pug">
-div(data-theme="startrust" class="flex flex-1 gap-3")
+div(data-theme="startrust" class="flex gap-3")
   div(
     class="flex flex-col flex-1 rounded-xl gap-5 border-grey-250 border p-8 bg-cover"
     :style="{ backgroundImage: `url(${startrustBgImg})` }"
   )
-    p(class="text-md font-bold") {{ $t('VV0075') }}
-    p(class="text-sm text-grey-600") {{ $t('VV0076') }}
+    p(class="text-md font-bold") {{ $t('RR0459') }}
+    p(class="text-sm text-grey-600") {{ $t('RR0460') }}
     div(class="flex flex-row gap-5 self-end")
-      f-button(size="md" type="text") {{ $t('VV0074') }}
-      f-button(size="md") {{ $t('UU0064') }}
+      f-button(size="md" type="text" @click="onShowGuide") {{ $t('RR0453') }}
+      f-button(size="md" @click="onUpgrade") {{ $t('OO0045') }}
   div(
     class="flex flex-col flex-1 justify-between rounded-xl gap-5 border-grey-250 border p-8"
   )
@@ -31,9 +31,37 @@ div(data-theme="startrust" class="flex flex-1 gap-3")
 </template>
 
 <script setup lang="ts">
-import startrustBgImg from '@/assets/images/card_promo_startrust_bg_x0.2.png'
 import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
+
+import { useConstants } from '@/utils/constants'
+import startrustBgImg from '@/assets/images/card_promo_startrust_bg_x0.2.png'
 
 const quota = ref(0)
 const maxQuota = ref(300)
+const { FEEDBACK_CATEGORY } = useConstants()
+const store = useStore()
+const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
+
+const onUpgrade = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-send-feedback',
+    properties: {
+      title: t('OO0045'),
+      category: FEEDBACK_CATEGORY.value.PAYMENT.value,
+    },
+  })
+}
+
+const onShowGuide = () => {
+  router.push({
+    name: route.name!,
+    params: { tab: 'value-added-service' },
+    query: { scroll_to: 'cfc-guide' },
+  })
+}
 </script>

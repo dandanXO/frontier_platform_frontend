@@ -1,4 +1,4 @@
-export default function ({ addBase, theme }) {
+module.exports = function ({ addBase, theme }) {
   addBase({
     ':root': {
       '--color-brand-solid': theme('colors.primary.400'),
