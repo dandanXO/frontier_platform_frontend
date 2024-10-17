@@ -72,9 +72,10 @@ import type {
   MaterialColorInfo,
   MaterialPatternInfo,
 } from '@frontier/platform-web-sdk'
-
+import { useStore } from 'vuex'
 import isEmpty from 'lodash/isEmpty'
 
+const store = useStore()
 const props = defineProps<{
   pantoneList?: Array<MaterialSideAllOfPantoneListInner>
   colorInfo?: {
@@ -87,8 +88,10 @@ const props = defineProps<{
   }
 }>()
 
+const allPantoneList = store.getters['code/pantoneList'] as PantoneColor[]
+
 const isPantoneValue = (stringValue: string) => {
-  const result = props.pantoneList?.find((p) => p.name === stringValue)
+  const result = allPantoneList?.find((p) => p.name === stringValue)
   return result
 }
 const hasExtendedContent = ref(false)
