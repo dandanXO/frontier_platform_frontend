@@ -71,6 +71,7 @@ import type {
   MaterialSideAllOfPantoneListInner,
   MaterialColorInfo,
   MaterialPatternInfo,
+  PantoneColor,
 } from '@frontier/platform-web-sdk'
 import { useStore } from 'vuex'
 import isEmpty from 'lodash/isEmpty'
