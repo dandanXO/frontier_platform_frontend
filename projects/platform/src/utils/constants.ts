@@ -297,6 +297,7 @@ export const VALUE_ADDED_SERVICE_STATUS = {
 
 export const VALUE_ADDED_SERVICE_ID = {
   MADE2FLOW: 'made2flow',
+  STARTRUST: 'starTrust',
 }
 
 export const STICKER_ADD_TO = {

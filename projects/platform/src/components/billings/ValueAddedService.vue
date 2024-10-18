@@ -75,7 +75,7 @@ div(v-else class="w-full pt-3 pb-3")
   c-f-calculator-guide
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -86,13 +86,13 @@ import {
 import ValueAddedServiceMade2flow from '@/components/billings/ValueAddedServiceMade2flow.vue'
 import valueAddedServiceList from '@/components/billings/valueAddedServiceList.js'
 import CFCalculatorGuide from './CFCalculatorGuide.vue'
-
+import type { ValueAddedService } from '@frontier/platform-web-sdk'
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const serviceList = valueAddedServiceList()
 
-const valueAddedService = computed(
+const valueAddedService = computed<ValueAddedService>(
   () => store.getters['polling/valueAddedService']
 )
 const valueAddedServiceDetailPage = computed(() => {
