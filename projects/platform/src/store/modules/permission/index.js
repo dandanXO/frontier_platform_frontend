@@ -12,8 +12,8 @@ const state = () => ({
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   new3DViewer: [1498, 1892, 1815],
 
-  moodboardOrg: [6, 1935],
-  threadboardOrg: [6, 1935],
+  moodboardOrg: [6, 1935, 1701],
+  threadboardOrg: [6, 1935, 1701],
   // new upload page display logic control
   useOldUiOrgList: true, //all  user USE old ui ,true mean's all user used
   useNewUiOrgList: [6], // list of organization id that used the new upload material UI
