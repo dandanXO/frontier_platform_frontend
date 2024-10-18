@@ -683,11 +683,43 @@ function convertStringToList(
   value: string,
   callback: (val: string) => any
 ): any[] {
-  return value
-    .split('/')
-    .map((item) => item.trim())
-    .filter((item) => item != null)
-    .map(callback)
+  const result: string[] = []
+  let current = ''
+  let inBraces = false
+
+  for (let i = 0; i < value.length; i++) {
+    const char = value[i]
+
+    if (char === '/' && !inBraces) {
+      if (current) {
+        // Remove outermost braces if present
+        if (current.startsWith('{') && current.endsWith('}')) {
+          current = current.slice(1, -1)
+        }
+        result.push(callback(current))
+        current = ''
+      }
+    } else if (char === '{') {
+      inBraces = true
+      current += char
+    } else if (char === '}') {
+      inBraces = false
+      current += char
+    } else {
+      current += char
+    }
+  }
+
+  // handle the last item
+  if (current) {
+    // Remove outermost braces if present
+    if (current.startsWith('{') && current.endsWith('}')) {
+      current = current.slice(1, -1)
+    }
+    result.push(callback(current))
+  }
+
+  return result
 }
 
 const unitMapping: { [key: string]: string } = {
