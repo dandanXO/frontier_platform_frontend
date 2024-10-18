@@ -1,4 +1,5 @@
 import { DIGITAL_DRAPE_LIST } from '@/utils/trialDigitalDrape'
+import { PlanPlatformEnum } from '@frontier/platform-web-sdk'
 
 // 6 is Fabric Pro for testing.
 // Other test org id need to delete before prod.
@@ -48,6 +49,10 @@ const getters = {
   notLittleKingRule: (state, getters, rootState) => {
     // Show sourcing library
     return !state.littleKing.includes(rootState.organization.orgId)
+  },
+  isFabriSelectAccount: (state, getters, rootState) => {
+    // Hide sourcing library
+    return rootState.organization.plan.platform === PlanPlatformEnum.FabriSelect
   },
   isTaiwanTaffetaRule: (state, getters, rootState) => {
     // Convert weight by cuttable width

@@ -274,15 +274,17 @@ const getBarChartBaseOption = (
   },
 })
 
-const isLittleKingRule = computed(
-  () => store.getters['permission/isLittleKingRule']
+const isPublicLibraryRestricted = computed(
+  () =>
+    store.getters['permission/isLittleKingRule'] ||
+    store.getters['permission/isFabriSelectAccount']
 )
 const textureOption = computed(() => {
   if (!textureCounts.value) {
     return
   }
 
-  const littleKingData = Object.assign(
+  const restrictedData = Object.assign(
     getBarChartBaseOption(
       t('BB0124'),
       [],
@@ -347,7 +349,7 @@ const textureOption = computed(() => {
     }
   )
 
-  return isLittleKingRule.value ? littleKingData : normalData
+  return isPublicLibraryRestricted.value ? restrictedData : normalData
 })
 
 enum KEYWORD_DATE {

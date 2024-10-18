@@ -149,7 +149,9 @@ const {
 } = useWorkspace()
 
 const showPublicLibrary = computed(
-  () => store.getters['permission/notLittleKingRule']
+  () =>
+    store.getters['permission/notLittleKingRule'] &&
+    !store.getters['permission/isFabriSelectAccount']
 )
 
 const onClickBreadcrumbItem = (item: any, visit: VoidFunction) => {

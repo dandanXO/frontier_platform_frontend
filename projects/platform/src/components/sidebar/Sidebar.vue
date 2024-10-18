@@ -137,7 +137,9 @@ const organization = computed<Organization>(
   () => store.getters['organization/organization']
 )
 const showPublicLibrary = computed(
-  () => store.getters['permission/notLittleKingRule']
+  () =>
+    store.getters['permission/notLittleKingRule'] &&
+    !store.getters['permission/isFabriSelectAccount']
 )
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
