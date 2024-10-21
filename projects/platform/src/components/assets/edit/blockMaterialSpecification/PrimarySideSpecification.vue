@@ -1084,13 +1084,6 @@ const isPantoneValue = (stringValue: string) => {
 }
 
 const handleMaterialTypeChange = (v: MaterialType) => {
-  clearMaterialTypeConstructionFields(props.primarySideType)
-  materialTypeConstruction.value.onInput({
-    //@ts-expect-error unhandled onInput types by library
-    id: null,
-    isCustom: false,
-    name: '',
-  })
   materialType.value.onInput(v)
 }
 
