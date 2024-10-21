@@ -5440,6 +5440,132 @@ export interface GetAssetsMaterial200ResponseAllOfResult {
 /**
  * 
  * @export
+ * @interface GetAssetsMaterialCarbonFootprint200Response
+ */
+export interface GetAssetsMaterialCarbonFootprint200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAssetsMaterialCarbonFootprint200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetAssetsMaterialCarbonFootprint200ResponseAllOfResult}
+     * @memberof GetAssetsMaterialCarbonFootprint200Response
+     */
+    'result': GetAssetsMaterialCarbonFootprint200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetAssetsMaterialCarbonFootprint200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialCarbonFootprint200ResponseAllOfResult
+ */
+export interface GetAssetsMaterialCarbonFootprint200ResponseAllOfResult {
+    /**
+     * if not the owner of the material, this field will be hidden/not sent
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResult
+     */
+    'stToken'?: string;
+    /**
+     * 
+     * @type {GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResult
+     */
+    'footprintData': GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+ */
+export interface GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'updateAt': number | null;
+    /**
+     * carbon footprint is available or not
+     * @type {boolean}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'isDataAvailable': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'co2RawMaterialStage': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'co2ProcessStage': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'co2DistributionStage': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintData
+     */
+    'co2Total': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialCarbonFootprintRequest
+ */
+export interface GetAssetsMaterialCarbonFootprintRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetAssetsMaterialCarbonFootprintRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetAssetsMaterialCarbonFootprintRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetAssetsMaterialCarbonFootprintRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAssetsMaterialCarbonFootprintRequest
+     */
+    'materialId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetAssetsMaterialRequest
  */
 export interface GetAssetsMaterialRequest {
@@ -24172,6 +24298,12 @@ export interface ValueAddedServiceStarTrust {
     'isActive': boolean;
     /**
      * 
+     * @type {ValueAddedServiceStarTrustStatus}
+     * @memberof ValueAddedServiceStarTrust
+     */
+    'status': ValueAddedServiceStarTrustStatus;
+    /**
+     * 
      * @type {number}
      * @memberof ValueAddedServiceStarTrust
      */
@@ -24183,6 +24315,33 @@ export interface ValueAddedServiceStarTrust {
      */
     'quotaUsed': number;
 }
+/**
+ * 
+ * @export
+ * @interface ValueAddedServiceStarTrustStatus
+ */
+export interface ValueAddedServiceStarTrustStatus {
+    /**
+     * 
+     * @type {number}
+     * @memberof ValueAddedServiceStarTrustStatus
+     */
+    'id': ValueAddedServiceStarTrustStatusIdEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ValueAddedServiceStarTrustStatus
+     */
+    'name': string;
+}
+
+export const ValueAddedServiceStarTrustStatusIdEnum = {
+    Active: 1,
+    Inactive: 2
+} as const;
+
+export type ValueAddedServiceStarTrustStatusIdEnum = typeof ValueAddedServiceStarTrustStatusIdEnum[keyof typeof ValueAddedServiceStarTrustStatusIdEnum];
+
 /**
  * 
  * @export
@@ -24920,6 +25079,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(getAssetsMaterialRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Carbon Footprint of the material. Current 3rd party used is StarTrust
+         * @param {GetAssetsMaterialCarbonFootprintRequest} getAssetsMaterialCarbonFootprintRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsMaterialCarbonFootprint: async (getAssetsMaterialCarbonFootprintRequest: GetAssetsMaterialCarbonFootprintRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getAssetsMaterialCarbonFootprintRequest' is not null or undefined
+            assertParamExists('getAssetsMaterialCarbonFootprint', 'getAssetsMaterialCarbonFootprintRequest', getAssetsMaterialCarbonFootprintRequest)
+            const localVarPath = `/assets/material/carbon-footprint`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAssetsMaterialCarbonFootprintRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -26131,6 +26330,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary Get Carbon Footprint of the material. Current 3rd party used is StarTrust
+         * @param {GetAssetsMaterialCarbonFootprintRequest} getAssetsMaterialCarbonFootprintRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterialCarbonFootprint200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getAssetsMaterialCarbonFootprint']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * **Access roles:** To be clear define
          * @summary 取得布料相關選項資訊
          * @param {OGBaseRequestBody} oGBaseRequestBody 
@@ -26619,6 +26831,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary Get Carbon Footprint of the material. Current 3rd party used is StarTrust
+         * @param {GetAssetsMaterialCarbonFootprintRequest} getAssetsMaterialCarbonFootprintRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAssetsMaterialCarbonFootprint200Response> {
+            return localVarFp.getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * **Access roles:** To be clear define
          * @summary 取得布料相關選項資訊
          * @param {OGBaseRequestBody} oGBaseRequestBody 
@@ -27054,6 +27276,18 @@ export class AssetsApi extends BaseAPI {
      */
     public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Carbon Footprint of the material. Current 3rd party used is StarTrust
+     * @param {GetAssetsMaterialCarbonFootprintRequest} getAssetsMaterialCarbonFootprintRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getAssetsMaterialCarbonFootprint(getAssetsMaterialCarbonFootprintRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -18,7 +18,10 @@ import PlanValueCFCalculator from './PlanValueCFCalculator.vue'
 import valueAddedServiceList from './valueAddedServiceList'
 import { VALUE_ADDED_SERVICE_ID } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import type { ValueAddedService } from '@frontier/platform-web-sdk'
+import {
+  ValueAddedServiceStarTrustStatusIdEnum,
+  type ValueAddedService,
+} from '@frontier/platform-web-sdk'
 
 const store = useStore()
 const { t } = useI18n()
@@ -50,7 +53,10 @@ const tabList = computed(() => {
     path: id,
   }))
 
-  if (valueAddedServices.starTrust?.isActive) {
+  if (
+    valueAddedServices.starTrust?.status.id ===
+    ValueAddedServiceStarTrustStatusIdEnum.Active
+  ) {
     tabs.push({
       name: t('VV0073'),
       path: VALUE_ADDED_SERVICE_ID.STARTRUST,

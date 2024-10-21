@@ -38,7 +38,10 @@ import { useI18n } from 'vue-i18n'
 
 import cfIllustration from '@/assets/images/cf_illustration_x1.5.png'
 import { useConstants } from '@/utils/constants'
-import type { ValueAddedService } from '@frontier/platform-web-sdk'
+import {
+  ValueAddedServiceStarTrustStatusIdEnum,
+  type ValueAddedService,
+} from '@frontier/platform-web-sdk'
 
 const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()
@@ -47,7 +50,10 @@ const valueAddedServices: ValueAddedService =
   store.getters['polling/valueAddedService']
 const route = useRoute()
 
-const isActive = ref(valueAddedServices.starTrust?.isActive)
+const isActive = ref(
+  valueAddedServices.starTrust?.status.id ===
+    ValueAddedServiceStarTrustStatusIdEnum.Active
+)
 const onUpgrade = () => {
   const properties = isActive.value
     ? undefined
