@@ -44,8 +44,8 @@ f-table(
       div(
         class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
-        :style="{ 'background-image': `url(${item.materialMainSideU3mCropUrl})` }"
       )
+        img(class="w-25 h-25" :src="item.materialMainSideU3mCropUrl" @error="handleImageError")
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'sourceType'")
       p {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
@@ -143,6 +143,7 @@ import {
   type ProgressU3mItem,
   ProgressStatus,
 } from '@frontier/platform-web-sdk'
+import imgDefaultMaterial from '@/assets/images/default_material.png'
 import { ProgressU3mSort } from '@frontier/platform-web-sdk'
 import { toStandardFormat } from '@frontier/lib'
 import { U3M_PROVIDER } from '@/utils/constants'
@@ -234,7 +235,11 @@ const clearDate = () => {
 }
 
 let timerId: ReturnType<typeof setTimeout>
-
+const handleImageError = (event: any) => {
+  if (event?.target) {
+    event.target.src = imgDefaultMaterial
+  }
+}
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner

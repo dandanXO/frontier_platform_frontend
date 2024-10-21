@@ -40,8 +40,8 @@ f-table(
       div(
         class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
-        :style="{ 'background-image': `url(${item.materialImageUrl})` }"
       )
+        img(class="h-25" :src="item.materialImageUrl" @error="handleImageError")
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'createdTime'")
       p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
@@ -138,6 +138,7 @@ import {
   MaterialSideType,
   GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum,
 } from '@frontier/platform-web-sdk'
+import imgDefaultMaterial from '@/assets/images/default_material.png'
 
 const props = defineProps<{
   currentStatus: ProgressStatus
@@ -207,7 +208,11 @@ const clearDate = () => {
 }
 
 let timerId: ReturnType<typeof setTimeout>
-
+  const handleImageError = (event: any) => {
+  if (event?.target) {
+    event.target.src = imgDefaultMaterial
+  }
+}
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
