@@ -26,6 +26,7 @@ f-scrollbar-container(class="w-full h-full")
               @click="openModalUploadSettings"
               type="secondary"
               prependIcon="setting"
+              data-cy="text-recognition-setting"
             ) {{ $t('DD0141') }}
 
         div(class="flex justify-between items-end")

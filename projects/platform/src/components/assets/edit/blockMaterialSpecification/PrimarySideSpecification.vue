@@ -79,6 +79,7 @@ div(class="flex flex-col gap-y-7.5")
             :dropdownMenuTree="specOptions.materialTypeConstructionList"
             @addNew="addMaterialTypeConstructionOption"
             :label="$t('MI0150')"
+            data-cy="construction-type"
             :placeholder="$t('MI0152')"
             :hintError="materialTypeConstructionDisplayError"
             class="w-full"
