@@ -19,7 +19,7 @@ stages:
 #     - npm run build --mode=development
 
 platform-build:
-  image: node:18.15.0
+  image: cypress/base:18.15.0
   stage: build
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
