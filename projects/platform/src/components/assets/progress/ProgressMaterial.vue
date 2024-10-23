@@ -38,10 +38,14 @@ f-table(
       class="relative w-25 h-25 py-3 flex justify-center items-center"
     )
       div(
-        class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded"
+        class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded flex justify-center items-center"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
       )
-        img(class="h-25" :src="item.materialImageUrl" @error="handleImageError")
+        img(
+          class="object-contain w-full h-full"
+          :src="item.materialImageUrl"
+          @error="handleImageError"
+        )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'createdTime'")
       p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}

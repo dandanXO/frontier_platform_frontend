@@ -42,10 +42,14 @@ f-table(
       class="relative w-25 h-25 py-3 flex justify-center items-center"
     )
       div(
-        class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded"
+        class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded flex justify-center items-center"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
       )
-        img(class="w-25 h-25" :src="item.materialMainSideU3mCropUrl" @error="handleImageError")
+        img(
+          class="object-contain w-full h-full"
+          :src="item.materialMainSideU3mCropUrl"
+          @error="handleImageError"
+        )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'sourceType'")
       p {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
