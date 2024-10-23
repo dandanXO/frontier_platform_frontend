@@ -1,7 +1,8 @@
 context('Visit All Sidebar Pages', () => {
   beforeEach(() => {
-    cy.restoreLocalStorage()
-    cy.accessPage()
+    // cy.restoreLocalStorage()
+    cy.login()
+    // cy.accessPage()
   })
 
   afterEach(() => {

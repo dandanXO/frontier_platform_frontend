@@ -13,6 +13,7 @@ context('Verify create asset manual by user input', () => {
 
   const { MANDATORY_FIELD } = ERROR_MESSAGES
   let itemNumber = generateRandomString(51)
+  let constructionType = generateRandomString(51)
   let patternInfo = generateRandomString(101)
   let featuresInput = generateRandomString(501)
   let colorInfo = generateRandomString(101)
@@ -226,9 +227,42 @@ context('Verify create asset manual by user input', () => {
       .type('{enter}')
     cy.get('body').click(0, 0)
 
+    //verify construction type
+    constructionType = generateRandomString(51)
+    cy.get(`[data-cy="${selectedSide}"] [data-cy="construction-type"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
+    cy.get(`[data-cy="f-popper-body"] input`)
+      .type(constructionType, { parseSpecialCharSequences: false })
+      .should('have.value', constructionType)
+      .type('{enter}')
+    cy.checkErrorMessages(
+      `[data-cy="${selectedSide}"] [data-cy="construction-type"] [data-cy="hintError"]`,
+      '50 character limit'
+    )
+
+    //empty value on construction type
+    cy.get(`[data-cy="${selectedSide}"] [data-cy="construction-type"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
+    cy.get('[data-cy="f-popper-body"] .ease-out svg').click()
+    cy.get('body').click(0, 0)
+    cy.checkErrorMessages(
+      `[data-cy="${selectedSide}"] [data-cy="construction-type"] [data-cy="hintError"]`,
+      MANDATORY_FIELD
+    )
+
+    //max string length on construction type
+    constructionType = generateRandomString(50)
+    cy.get(`[data-cy="${selectedSide}"] [data-cy="construction-type"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
+    cy.get(`[data-cy="f-popper-body"] input`)
+      .type(constructionType, { parseSpecialCharSequences: false })
+      .should('have.value', constructionType)
+      .type('{enter}')
+
     //test with string length more than 100
     featuresInput = generateRandomString(101)
     cy.get(`[data-cy="${selectedSide}"] [data-cy="content-text"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
     cy.get(`[data-cy="f-popper-body"] input`)
       .type(featuresInput, { parseSpecialCharSequences: false })
       .should('have.value', featuresInput)
@@ -291,6 +325,7 @@ context('Verify create asset manual by user input', () => {
       .type('100 {enter}')
       .should('have.value', '100')
     cy.get(`[data-cy="${selectedSide}"] [data-cy="content-text"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
     cy.get('[data-cy="f-popper-body"] .ease-out svg').click()
     cy.get('body').click()
     cy.checkErrorMessages(
@@ -303,6 +338,7 @@ context('Verify create asset manual by user input', () => {
       `[data-cy="${selectedSide}"] [data-cy="content-text-value"] input`
     ).clear()
     cy.get(`[data-cy="${selectedSide}"] [data-cy="content-text"]`).click()
+    cy.get(`[data-cy="tab-item-1"]`).last().click()
     cy.get('[data-cy="f-popper-body"] input')
       .type(contentText)
       .should('have.value', contentText)
@@ -439,7 +475,6 @@ context('Verify create asset manual by user input', () => {
 
     // Face side - Manual Upload
     cy.get('[data-cy="manual-upload"]').click()
-
     //choose 2 sides
     cy.get('[data-cy="create-material-side-information-selecter"]').click()
     cy.get('[data-cy="2-sides"]').click()
