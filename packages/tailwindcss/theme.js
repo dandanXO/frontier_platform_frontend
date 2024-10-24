@@ -1,4 +1,7 @@
+// we used require because we cannot used import for storybook
+// eslint-disable-next-line no-undef
 const plugin = require('tailwindcss/plugin')
+// eslint-disable-next-line no-undef
 const colors = require('./colors').default
 
 const spacing = {}
@@ -26,6 +29,9 @@ for (let i = 0; i <= 20; i++) {
   strokeWidth[i] = i + 'px'
 }
 
+// expected to used module.export, if using export default
+// it will crash the storybook
+// eslint-disable-next-line no-undef
 module.exports = plugin(function () {}, {
   darkMode: 'class',
   theme: {
@@ -35,21 +41,42 @@ module.exports = plugin(function () {}, {
       pink: colors.pink,
       blue: colors.blue,
       white: colors.white,
+      black: colors.black,
       purple: colors.purple,
       cyan: colors.cyan,
       yellow: colors.yellow,
       red: colors.red,
       green: colors.green,
-      newgreen: colors.newgreen,
       malibu: colors.malibu,
       brand: {
         solid: {
           DEFAULT: 'var(--color-brand-solid)',
+          dark: 'var(--color-dark-brand-solid)',
+
+          hover: {
+            DEFAULT: 'var(--color-brand-solid-hover)',
+            dark: 'var(--color-dark-brand-solid-hover)',
+          },
         },
-        hover: {
-          DEFAULT: 'var(--color-brand-solid-hover)',
-        },
-        DEFAULT: 'var(--color-brand-solid)',
+        border: 'var(--color-brand-border)',
+        DEFAULT: 'var(--color-brand)',
+      },
+      critical: {
+        DEFAULT: 'var(--color-critical)',
+        hover: 'var(--color-critical-hover)',
+        solid: 'var(--color-critical-solid)',
+        border: 'var(--color-critical-border)',
+      },
+      secondary: {
+        border: 'var(--color-secondary-border)',
+        text: 'var(--color-secondary-text)',
+        DEFAULT: 'var(--color-secondary)',
+      },
+      tertiary: {
+        DEFAULT: 'var(--color-tertiary)',
+      },
+      disabled: {
+        DEFAULT: 'var(--color-disabled)',
       },
       link: {
         DEFAULT: 'var(--color-link)',
@@ -61,7 +88,11 @@ module.exports = plugin(function () {}, {
     extend: {
       colors: {
         grey: colors.grey,
-        primary: colors.primary,
+        primary: {
+          ...colors.primary,
+          DEFAULT: 'var(--color-primary)',
+          inverse: 'var(--color-primary-inverse)',
+        },
         brown: colors.brown,
         forestgreen: colors.forestgreen,
         peacock: colors.peacock,

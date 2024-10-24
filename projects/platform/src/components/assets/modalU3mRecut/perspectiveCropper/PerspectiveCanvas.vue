@@ -153,6 +153,7 @@ const emit = defineEmits<{
     cropResult: {
       canvas: HTMLCanvasElement
       record: PerspectiveCropRecord
+      behaviorType: 'move' | 'grab'
     }
   ): void
   (e: 'cropError', err: Error): void
@@ -164,10 +165,12 @@ const emit = defineEmits<{
 
 const DEFAULT_CROP_CM = 4
 const MIN_CROP_CM = 1
-const INVALID_LINE_COLOR = colors.red[400]
-const CIRCLE_HOVER_STROKE = colors.grey[300]
+const INVALID_LINE_COLOR = colors.red[400].DEFAULT
+const CIRCLE_HOVER_STROKE = colors.grey[300].DEFAULT
 const WHEEL_SCALE_BY = 1.03
 const ROTATE_PRESETS = [0, 90, 180, 270]
+
+const previousBehaviarType = ref<'move' | 'grab'>('move')
 
 const size = { width: 56, height: 28 }
 /**
@@ -185,12 +188,12 @@ const textProps: Konva.TextConfig = {
   verticalAlign: 'middle',
   lineHeight: 1.3,
   align: 'center',
-  fill: colors.grey[900],
+  fill: colors.grey[900].DEFAULT,
 }
 const rectProps: Konva.RectConfig = {
   ...size,
   ...offset,
-  fill: colors.grey[100],
+  fill: colors.grey[100].DEFAULT,
   cornerRadius: 4,
   opacity: 0.7,
 }
@@ -206,9 +209,11 @@ const cropGroupConfig = {
   draggable: true,
 }
 
-const getDefaultPositions = () => {
-  let offset = cmToPixel(DEFAULT_CROP_CM, props.dpi).toNumber()
-  if (props.sourceImage.width < offset || props.sourceImage.height < offset) {
+const assignPositionBasedOnSize = (size: number, firstRender?: boolean) => {
+  let offset = cmToPixel(size, props.dpi).toNumber()
+  const offsetMoreThanImage =
+    props.sourceImage.width < offset || props.sourceImage.height < offset
+  if (offsetMoreThanImage && firstRender) {
     if (props.sourceImage.width < props.sourceImage.height) {
       const cm = pixelToCm(props.sourceImage.width, props.dpi).toNumber()
       offset = cmToPixel(cm, props.dpi).toNumber()
@@ -217,6 +222,7 @@ const getDefaultPositions = () => {
       offset = cmToPixel(cm, props.dpi).toNumber()
     }
   }
+
   return {
     leftTop: {
       x: (props.sourceImage.width - offset) / 2,
@@ -236,6 +242,10 @@ const getDefaultPositions = () => {
     },
   }
 }
+
+const getDefaultPositions = () =>
+  assignPositionBasedOnSize(DEFAULT_CROP_CM, true)
+
 const defaultPositions = getDefaultPositions()
 
 const sourceMat = ref<cv.Mat>()
@@ -607,6 +617,11 @@ const handleCropGroupMouseLeave = (e: Konva.KonvaEventObject<'mouseleave'>) => {
   stage.container().style.cursor = isCropGroupPressing.value
     ? 'grabbing'
     : 'move'
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  } else {
+    previousBehaviarType.value = 'move'
+  }
 }
 
 const handleCropGroupMouseDown = (e: Konva.KonvaEventObject<'mousedown'>) => {
@@ -616,6 +631,9 @@ const handleCropGroupMouseDown = (e: Konva.KonvaEventObject<'mousedown'>) => {
   }
   stage.container().style.cursor = 'grabbing'
   isCropGroupPressing.value = true
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  }
 }
 
 const handleCropGroupMouseUp = (e: Konva.KonvaEventObject<'mouseup'>) => {
@@ -711,6 +729,11 @@ const handleCropGroupDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {
     return
   }
   stage.container().style.cursor = isMouseInCropGroup.value ? 'grab' : 'move'
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  } else {
+    previousBehaviarType.value = 'move'
+  }
 }
 
 const handleCircleMouseEnter = (
@@ -741,6 +764,11 @@ const handleCircleMouseLeave = (e: Konva.KonvaEventObject<'mouseleave'>) => {
     return
   }
   stage.container().style.cursor = isMouseInCropGroup.value ? 'grab' : 'move'
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  } else {
+    previousBehaviarType.value = 'move'
+  }
 }
 
 const handleCircleMouseDown = (
@@ -764,6 +792,11 @@ const handleCircleMouseUp = (e: Konva.KonvaEventObject<'mouseup'>) => {
     return
   }
   stage.container().style.cursor = 'move'
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  } else {
+    previousBehaviarType.value = 'move'
+  }
 }
 
 const handleCircleDragMove = (
@@ -852,6 +885,11 @@ const handleCircleDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {
   isCirclesPressing.value = false
   pressedInCircle.value = null
   stage.container().style.cursor = 'move'
+  if (stage.container().style.cursor === 'grabbing') {
+    previousBehaviarType.value = 'grab'
+  } else {
+    previousBehaviarType.value = 'move'
+  }
 }
 
 const crop = async () => {
@@ -956,13 +994,40 @@ const crop = async () => {
       rotateDeg: rotateDeg.value,
     }
 
-    emit('cropSuccess', { canvas: resultCanvas, record: resultRecord })
+    const type = previousBehaviarType.value
+    emit('cropSuccess', {
+      canvas: resultCanvas,
+      record: resultRecord,
+      behaviorType: type,
+    })
   } catch (err) {
     console.timeEnd('Perspective Transform')
     if (err instanceof Error) {
       emit('cropError', err)
     }
   }
+}
+
+const changeCropWidth = async (width: number) => {
+  const { leftBottom, leftTop, rightBottom, rightTop } =
+    assignPositionBasedOnSize(width)
+
+  circleLeftBottomPosition.x = leftBottom.x
+  circleRightBottomPosition.x = rightBottom.x
+  circleRightTopPosition.x = rightTop.x
+  circleLeftTopPosition.x = leftTop.x
+  crop()
+}
+
+const changeCropHeight = async (height: number) => {
+  const { leftBottom, leftTop, rightBottom, rightTop } =
+    assignPositionBasedOnSize(height)
+
+  circleLeftBottomPosition.y = leftBottom.y
+  circleRightBottomPosition.y = rightBottom.y
+  circleRightTopPosition.y = rightTop.y
+  circleLeftTopPosition.y = leftTop.y
+  crop()
 }
 
 onMounted(() => {
@@ -1088,6 +1153,8 @@ defineExpose({
   rotateDeg,
   resetRotation,
   restore,
+  changeCropWidth,
+  changeCropHeight,
 })
 </script>
 

@@ -1,7 +1,6 @@
 export * from '@frontier/constants'
 import i18n from '@frontier/i18n'
 import { computed } from 'vue'
-import colors from '@frontier/tailwindcss/colors'
 import { WeightUnit, Extension, MaterialType } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 
@@ -42,22 +41,6 @@ export enum HOLE_TYPE {
   BLACK = 0,
   WHITE = 1,
 }
-export const CROPPER_GRID_COLORS = [
-  { color: colors.grey[900], invertContent: false },
-  { color: colors.grey[0], invertContent: true },
-  { color: '#F8BEB9', invertContent: false },
-  { color: colors.yellow[100], invertContent: false },
-  { color: '#C5E1A4', invertContent: false },
-  { color: colors.cyan[100], invertContent: false },
-  { color: colors.purple[100], invertContent: false },
-  { color: colors.grey[600], invertContent: false },
-  { color: colors.grey[300], invertContent: false },
-  { color: colors.red[300], invertContent: false },
-  { color: '#FAC187', invertContent: false },
-  { color: colors.forestgreen[400], invertContent: false },
-  { color: colors.blue[400], invertContent: false },
-  { color: colors.purple[400], invertContent: false },
-]
 
 export const MODAL_TYPE = {
   MODAL: 0,
@@ -395,11 +378,45 @@ export const useConstants = () => {
     },
   ])
 
+  const CROPPER_GRID_COLORS = [
+    {
+      color: '#FFFFFF',
+      invertContent: true,
+      text: i18n.global.t('EE0199'),
+    },
+    {
+      color: '#111111',
+      invertContent: false,
+      text: i18n.global.t('EE0200'),
+    },
+    {
+      color: '#FF4F00',
+      invertContent: false,
+      text: i18n.global.t('EE0227'),
+    },
+    {
+      color: '#FCF75E',
+      invertContent: true,
+      text: i18n.global.t('EE0228'),
+    },
+    {
+      color: '#55DD33',
+      invertContent: false,
+      text: i18n.global.t('EE0229'),
+    },
+    {
+      color: '#318CE7',
+      invertContent: false,
+      text: i18n.global.t('EE0230'),
+    },
+  ]
+
   return {
     MADE2FLOW_TAG_LIST,
     FEEDBACK_CATEGORY,
     WEIGHT_UNIT,
     TEMPLATE_LIST,
+    CROPPER_GRID_COLORS,
   }
 }
 

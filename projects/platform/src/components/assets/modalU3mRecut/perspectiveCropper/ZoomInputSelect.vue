@@ -11,7 +11,7 @@ f-input-container(ref="refContainer")
     template(#trigger="{ isExpand }")
       div(
         class="px-2 border rounded flex items-center hover:bg-grey-850 hover:border-grey-600 cursor-pointer"
-        :class="[isExpand ? 'border-primary-300 bg-grey-700 shadow-[0_0_0_2px_#074E54]' : 'border-grey-700 bg-grey-900', 'h-7', 'w-17.5]']"
+        :class="[isExpand ? 'border-primary-300 bg-grey-700 shadow-[0_0_0_2px_#074E54]' : 'border-grey-700 bg-grey-900', 'h-7', 'w-17.5']"
       )
         p(
           class="flex-grow text-caption"

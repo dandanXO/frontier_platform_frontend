@@ -1,26 +1,32 @@
 <template lang="pug">
-div(class="h-full flex flex-col")
-  div(class="flex-1 flex flex-row gap-x-6 items-stretch px-7.5")
-    div(class="dark relative flex-1 flex flex-col" @click="handleAreaClick('edit')")
-      div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
+div(class="h-full flex flex-1 flex-col")
+  div(class="flex-1 flex flex-row relative gap-x-6 items-stretch px-8 py-3")
+    notify-bar(
+      :show="showNotif"
+      :title="notifTitle"
+      :description="notifDescription"
+      :status="notifStatus"
+    )
+    div(class="relative flex-1 flex flex-col")
+      div(class="flex-1 rounded-lg overflow-hidden")
         div(
           ref="sourceCanvasContainer"
-          class="relative w-full h-full bg-grey-900"
+          class="relative w-full h-full rounded-lg bg-primary"
           @mousemove="sourceCanvasContainerHandleMouseMove"
           @mouseleave="sourceCanvasContainerHideLines"
         )
           div(
             ref="refHorizontalLine"
-            class="absolute w-full h-[1px] bg-grey-100 z-30 pointer-events-none"
+            class="absolute w-full h-[1px] bg-white z-30 pointer-events-none"
             :style="{ top: coords.y + 'px', display: coords.show ? 'block' : 'none' }"
           )
           div(
             ref="refVerticalLine"
-            class="absolute h-full w-[1px] bg-grey-100 z-30 pointer-events-none"
+            class="absolute h-full w-[1px] bg-white z-30 pointer-events-none"
             :style="{ left: coords.x + 'px', display: coords.show ? 'block' : 'none' }"
           )
           div(class="flex w-full absolute z-1 pointer-events-none")
-            div(class="w-[50px] h-[50px] bg-grey-800")
+            div(class="w-[50px] h-[50px] bg-primary")
             div(ref="RefRoulerH" class="w-full h-[50px] absolute left-[50px]")
           div(
             class="flex w-full flex-col h-full absolute top-[50px] z-1 pointer-events-none"
@@ -34,113 +40,54 @@ div(class="h-full flex flex-col")
             :sourceImage="sourceImage"
             :downSampleScales="downSampleScales"
             :downSampledCanvases="downSampledCanvases"
-            :dpi="props.side.config.dpi"
-            :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord"
-            :initialRecord="props.side.perspectiveCropRecord"
-            :gridColor="sourceGridColor"
+            :dpi="props.side.config.dpi ?? 0"
+            :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord ?? undefined"
+            :initialRecord="props.side.perspectiveCropRecord ?? undefined"
+            :gridColor="gridColor"
             @rotateDegChange="handleRotateDegChange"
             @scaleChange="handleSourceScaleChange"
             @cropStart="handleCropStart"
             @cropSuccess="handleCropSuccess"
-            @editStatusChange="emit('update:editStatus', $event)"
+            @editStatusChange="changeStatusCrop"
           )
-        canvas-control(
-          :zoom="sourceScale"
-          :zoomBlockList="zoomBlockList"
-          :gridColor="sourceGridColor"
-          @zoomAdd="handleSourceZoomAdd"
-          @zoomMinus="handleSourceZoomMinus"
-          @update:gridColor="handleSourceGridColorChange"
-          @update:zoom="handleSourceZoomUpdate"
-        )
       div(
-        class="box-border absolute left-0 top-0 w-full h-full rounded-lg border-grey-500 pointer-events-none"
-        :class="{ 'border-2': activeArea === 'edit' }"
+        class="flex flex-row justify-between align-middle p-3 gap-4 bg-primary text-primary-inverse border-t border-secondary-border rounded-b-lg"
       )
-      div(
-        v-if="!side.perspectiveEditStatus.isSizeValid || !side.perspectiveEditStatus.isDirectionValid"
-        class="absolute bottom-5 left-1/2 -translate-x-1/2 margin-auto"
-      )
-        notify-bar(v-if="!side.perspectiveEditStatus.isDirectionValid") {{ $t('WW0125') }}
-        notify-bar(v-else-if="!side.perspectiveEditStatus.isSizeValid") {{ $t('WW0124') }}
-    div(class="relative flex-1 flex flex-col" @click="handleAreaClick('preview')")
-      div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
-        div(ref="previewCanvasContainer" class="relative w-full h-full bg-grey-900")
-      template(v-if="previewDisplay")
-        canvas-control(
-          useGridToggle
-          :zoom="previewScale"
-          :zoomBlockList="zoomBlockList"
-          :gridColor="previewGridColor"
-          :gridOpen="gridOpen"
-          @zoomAdd="handlePreviewZoomAdd"
-          @zoomMinus="handlePreviewZoomMinus"
-          @toggleGrid="handleTogglePreviewGrid"
-          @update:gridColor="handlePreviewGridColorChange"
-          @update:zoom="handlePreviewZoomUpdate"
+        div(
+          class="flex flex-row gap-2 align-middle cursor-pointer text-secondary-text"
+          :onClick="restore"
         )
-      div(
-        class="box-border absolute left-0 top-0 w-full h-full rounded-lg border-grey-500 pointer-events-none"
-        :class="{ 'border-2': activeArea === 'preview' }"
-      )
-  div(class="bg-grey-800 flex flex-row items-center justify-center h-17")
-    div(class="flex-1 flex flex-row items-center justify-center gap-4 text-grey-150")
-      div(class="flex flex-row items-center gap-x-4")
-        dimension-info(
-          v-if="sourceDimension"
-          iconName="crop_original"
-          :text="$t('EE0154')"
-          :dimension="sourceDimension"
+          f-svg-icon(iconName="restore_original_state" size="24" class="self-center")
+          p(class="underline") {{ $t('RR0476') }}
+        zoom-input-select(
+          :value="zoomSourceValue"
+          :blockList="zoomBlockList"
+          @select="handleSourceZoomUpdate"
         )
-        info-divider(size="lg")
-        div(class="flex flex-row items-center gap-x-2")
-          dimension-info(
-            v-if="destinationDimension"
-            iconName="crop"
-            :text="$t('EE0150')"
-            :dimension="destinationDimension"
+    div(class="relative flex-1 flex flex-col bg-primary rounded-lg")
+      div(class="flex-1 rounded-lg bg-primary overflow-hidden")
+        div(ref="previewCanvasContainer" class="relative w-full h-full")
+      div(
+        class="flex flex-row justify-between align-middle p-3 gap-4 bg-primary text-primary-inverse border-t border-secondary-border rounded-b-lg"
+      )
+        div(class="flex flex-row gap-2 align-middle")
+          f-input-toggle(
+            :value="gridOpen"
+            @update:value="handleTogglePreviewGrid"
           )
-          f-button-label(
-            :theme="THEME.DARK"
-            :size="SIZE.LG"
-            :disabled="!side.perspectiveEditStatus.isPositionsDirty"
-            @click="handlePositionReset"
-          ) {{ $t('RR0255') }}
-        info-divider(size="lg")
-      div(class="flex flex-row items-center gap-x-3")
-        info-name(iconName="rotate" :text="$t('EE0049')")
-        div(class="flex flex-row items-center gap-2")
-          f-button-label(
-            :theme="THEME.DARK"
-            :size="SIZE.LG"
-            @click="handleRotate(270)"
-          ) {{ $t('EE0155', { degree: '90°' }) }}
-          f-button-label(
-            :theme="THEME.DARK"
-            :size="SIZE.LG"
-            @click="handleRotate(90)"
-          ) {{ $t('EE0156', { degree: '90°' }) }}
-          f-button-label(
-            :theme="THEME.DARK"
-            :size="SIZE.LG"
-            @click="handleRotate(180)"
-          ) 180°
-          f-input-slider(
-            ref="rotateDegSliderRef"
-            :canReset="false"
-            class="w-80"
-            :range="rotateDeg"
-            @update:range="chagneRotateInSlider"
-            v-bind="scaleSetting"
-            :theme="THEME.LIGHT"
-            withInput
-          )
-          f-button-label(
-            :disabled="!side.perspectiveEditStatus.isRotationDirty"
-            :theme="THEME.DARK"
-            :size="SIZE.LG"
-            @click="handleResetRotate"
-          ) {{ $t('RR0255') }}
+          p {{ $t('EE0160') }}
+        zoom-input-select(
+          :value="zoomPreviewValue"
+          :blockList="zoomBlockList"
+          @select="handlePreviewZoomUpdate"
+        )
+  div(class="bg-primary flex flex-row px-8 py-5 h-16")
+    div(class="flex flex-row pt-1 justify-end pr-1 gap-2")
+      f-input-toggle(
+        :value="isShowModalReplaceSides"
+        @update:value="emit('update:replaceSides', $event)"
+      )
+      p(class="text-sm text-primary-inverse") {{ $t(isBackSideOnly ? 'RR0478' : 'RR0477') }}
 </template>
 
 <script setup lang="ts">
@@ -159,30 +106,33 @@ import Decimal from 'decimal.js'
 import usePreview from '@/composables/usePreview'
 import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
 import Ruler from '@scena/ruler'
-import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
-import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
-import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
-import InfoName from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoName.vue'
-import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
+import NotifyBar, {
+  STATUS as NOTIF_STATUS,
+} from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import {
-  CROPPER_GRID_COLORS,
   NOTIFY_TYPE,
   THEME,
-  SIZE,
+  U3M_CUT_SIDE,
+  useConstants,
 } from '@/utils/constants'
-import { toDP2, cmToPixel } from '@/utils/cropper'
+import { cmToPixel } from '@/utils/cropper'
 import { getDimension, preRender } from '@/utils/perspectiveCropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
+import ZoomInputSelect from '@/components/assets/modalU3mRecut/perspectiveCropper/ZoomInputSelect.vue'
 import type {
   U3mSide,
   EditStatus,
   Dimension,
   PerspectiveCropRecord,
 } from '@/types'
+import colors from 'tailwindcss/colors'
+import ModalU3mConfirm from '../../ModalU3mConfirm.vue'
 
 const props = withDefaults(
   defineProps<{
     side: U3mSide
+    isShowModalReplaceSides: boolean
+    isDoubleSideMaterial: boolean
     isSquare: boolean
   }>(),
   {
@@ -192,11 +142,17 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'update:editStatus', editStatus: EditStatus): void
+  (e: 'update:replaceSides', value: boolean): void
 }>()
 
 const downSampleScales = [0.1, 0.15, 0.3, 0.5]
-
+const isBackSideOnly = computed(
+  () =>
+    props.side.sideName === U3M_CUT_SIDE.BACK_SIDE &&
+    !props.isDoubleSideMaterial
+)
 const store = useStore()
+const { CROPPER_GRID_COLORS } = useConstants()
 const { t } = useI18n()
 
 const dpi = toRaw(props.side.config.dpi)
@@ -212,13 +168,6 @@ const hRuler = ref()
 const vRuler = ref()
 const rotateDeg = ref(0)
 const rotateDegSliderRef = ref()
-const scaleSetting = {
-  defaultRange: 0,
-  max: 360,
-  min: 0,
-  step: 0.1,
-  tooltips: false,
-}
 const sourceCanvasContainer = ref<HTMLDivElement>()
 const previewCanvasContainer = ref<HTMLDivElement>()
 const destinationCanvas = ref<HTMLCanvasElement>()
@@ -228,25 +177,22 @@ const refPerspectiveCanvas = ref<InstanceType<typeof PerspectiveCanvas> | null>(
   null
 )
 
-const defaultGridColor = CROPPER_GRID_COLORS[11].color
-const sourceGridColor = ref(defaultGridColor)
-const previewGridColor = ref(defaultGridColor)
+const defaultGridColor = CROPPER_GRID_COLORS[2].color
+const gridColor = ref(defaultGridColor)
 
 const sourceScale = ref(0)
 const previewScale = ref(0)
+const showNotif = ref(false)
+const notifTitle = ref('')
+const notifDescription = ref('')
+const notifStatus = ref<(typeof NOTIF_STATUS)[keyof typeof NOTIF_STATUS]>(
+  NOTIF_STATUS.SUCCESS
+)
 const gridOpen = ref(true)
 const destinationDimension = ref<Dimension>()
-const activeArea = ref<'edit' | 'preview'>('edit')
 
 const sourceImage = ref<HTMLImageElement>()
 const downSampledCanvases = ref<HTMLCanvasElement[]>()
-
-const sourceDimension = computed(() => {
-  if (!sourceImage.value) {
-    return null
-  }
-  return getDimension(sourceImage.value.width, sourceImage.value.height, dpi)
-})
 
 const sourceCanvasContainerHandleMouseMove = (event: any) => {
   const rect = sourceCanvasContainer.value?.getBoundingClientRect()
@@ -271,10 +217,34 @@ const errorHandler = (err: Error) => {
 const { previewDisplay, renderPreviewDisplay } = usePreview(
   destinationCanvas,
   previewCanvasContainer,
-  previewGridColor.value,
+  gridColor.value,
   (v) => (previewScale.value = v),
   errorHandler
 )
+
+const changeStatusCrop = (status: EditStatus) => {
+  emit('update:editStatus', status)
+
+  if (!status.isSizeValid) {
+    notifTitle.value = t('WW0124')
+    notifDescription.value = ''
+    notifStatus.value = NOTIF_STATUS.FAILED
+    showNotif.value = true
+
+    return
+  }
+
+  if (!status.isDirectionValid) {
+    notifTitle.value = t('WW0180')
+    notifDescription.value = t('WW0181')
+    notifStatus.value = NOTIF_STATUS.FAILED
+    showNotif.value = true
+
+    return
+  }
+
+  showNotif.value = false
+}
 
 const ZOOM_TYPES = {
   ZOOM_TO_FIT: t('EE0152'),
@@ -286,6 +256,13 @@ const ZOOM_TYPES = {
   ZOOM_TO_200: t('EE0153', { rate: '200%' }),
   ZOOM_TO_400: t('EE0153', { rate: '400%' }),
 }
+
+const zoomPreviewValue = computed(
+  () => new Decimal(previewScale.value).toDP(2).mul(100).toString() + '%'
+)
+const zoomSourceValue = computed(
+  () => new Decimal(sourceScale.value).toDP(2).mul(100).toString() + '%'
+)
 
 const zoomBlockList = [
   { menuList: [{ title: ZOOM_TYPES.ZOOM_TO_FIT }] },
@@ -337,8 +314,8 @@ const handleRotateDegChange = (v: number) => {
 }
 
 const handleSourceScaleChange = (cm: number) => {
-  hRuler.value.zoom = cmToPixel(cm, dpi)
-  vRuler.value.zoom = cmToPixel(cm, dpi)
+  hRuler.value.zoom = cmToPixel(cm, dpi ?? 0)
+  vRuler.value.zoom = cmToPixel(cm, dpi ?? 0)
 
   return (sourceScale.value = cm)
 }
@@ -350,24 +327,17 @@ const handleCropStart = () => {
 const handleCropSuccess = (result: {
   canvas: HTMLCanvasElement
   record: PerspectiveCropRecord
+  behaviorType: 'move' | 'grab'
 }) => {
   destinationDimension.value = getDimension(
     result.canvas.width,
     result.canvas.height,
-    dpi
+    dpi ?? 0
   )
   destinationCanvas.value = result.canvas
   destinationCropRecord.value = result.record
-  renderPreviewDisplay()
+  renderPreviewDisplay(result.behaviorType)
   store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
-}
-
-const step = 0.01
-const stepAdd = (v: number) => toDP2(new Decimal(v).add(step))
-const stepMinus = (v: number) => toDP2(new Decimal(v).sub(step))
-
-const handleAreaClick = (area: 'edit' | 'preview') => {
-  activeArea.value = area
 }
 
 const handleRotate = (deg: number) => {
@@ -379,38 +349,8 @@ const handleRotate = (deg: number) => {
   )
 }
 
-const handleResetRotate = () => {
-  if (!refPerspectiveCanvas.value) {
-    return
-  }
-  refPerspectiveCanvas.value.resetRotation()
-}
-
-const handlePositionReset = () => {
-  if (!refPerspectiveCanvas.value) {
-    return
-  }
-  refPerspectiveCanvas.value.resetPositions()
-}
-
-const handleSourceGridColorChange = (hex: string) => {
-  sourceGridColor.value = hex
-}
-
-const handleSourceZoomAdd = () => {
-  if (!refPerspectiveCanvas.value) {
-    return
-  }
-  const newScale = stepAdd(sourceScale.value)
-  refPerspectiveCanvas.value.setScale(newScale)
-}
-
-const handleSourceZoomMinus = () => {
-  if (!refPerspectiveCanvas.value || sourceScale.value <= 0.01) {
-    return
-  }
-  const newScale = stepMinus(sourceScale.value)
-  refPerspectiveCanvas.value.setScale(newScale)
+const handleGridColorChange = (hex: string) => {
+  gridColor.value = hex
 }
 
 const handleSourceZoomUpdate = (type: string) => {
@@ -443,26 +383,6 @@ const handleTogglePreviewGrid = () => {
   gridOpen.value = previewDisplay.value?.toggleGrid() || false
 }
 
-const handlePreviewGridColorChange = (hex: string) => {
-  previewGridColor.value = hex
-}
-
-const handlePreviewZoomAdd = () => {
-  if (!previewDisplay.value) {
-    return
-  }
-  const newScale = stepAdd(previewScale.value)
-  previewDisplay.value.setScale(newScale)
-}
-
-const handlePreviewZoomMinus = () => {
-  if (!previewDisplay.value || sourceScale.value <= 0.01) {
-    return
-  }
-  const newScale = stepMinus(previewScale.value)
-  previewDisplay.value.setScale(newScale)
-}
-
 const handlePreviewZoomUpdate = (type: string) => {
   if (!previewDisplay.value) {
     return
@@ -488,7 +408,7 @@ const handlePreviewZoomUpdate = (type: string) => {
       return
   }
 }
-const chagneRotateInSlider = (val) => {
+const chagneRotateInSlider = (val: number) => {
   refPerspectiveCanvas?.value?.rotate(val || 0)
 }
 
@@ -498,8 +418,8 @@ watch(
     rotateDegSliderRef?.value?.setValue(v)
   }
 )
-watch(previewGridColor, () => {
-  previewDisplay.value?.setGridColor(previewGridColor.value)
+watch(gridColor, () => {
+  previewDisplay.value?.setGridColor(gridColor.value)
 })
 
 onMounted(async () => {
@@ -508,18 +428,20 @@ onMounted(async () => {
     zoom: rulerPixelCM,
     unit: 1,
     height: 50,
+    backgroundColor: colors.black,
   })
   vRuler.value = new Ruler(RefRoulerV.value as HTMLDivElement, {
     type: 'vertical',
     zoom: rulerPixelCM,
     unit: 1,
     width: 50,
+    backgroundColor: colors.black,
   })
 })
 onMounted(async () => {
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const result = await getSourceImageWithDownSampled(
-    props.side.config.image.src,
+    props?.side?.config?.image?.src ?? '',
     downSampleScales
   )
   sourceImage.value = result.sourceImage
@@ -566,7 +488,37 @@ const cropImage = async () => {
   return { imageFile, cropRecord: destinationCropRecord.value }
 }
 
-const restore = () => refPerspectiveCanvas.value?.restore()
+const restore = () => {
+  store.dispatch('helper/pushModalCommon', {
+    body: ModalU3mConfirm,
+    classModal: 'w-128',
+    closable: false,
+    theme: 'new-dark',
+    properties: {
+      title: t('EE0219'),
+      description: t('EE0220'),
+      primaryBtnText: t('EE0221'),
+      secondaryBtnText: t('EE0222'),
+      primaryBtnHandler: () => {
+        refPerspectiveCanvas.value?.restore()
+        store.dispatch('helper/closeModal')
+      },
+      secondaryBtnHandler: () => {
+        store.dispatch('helper/closeModal')
+      },
+    },
+  })
+}
 
-defineExpose({ cropImage, restore })
+defineExpose({
+  cropImage,
+  restore,
+  destinationDimension,
+  handleRotate,
+  rotateDeg,
+  chagneRotateInSlider,
+  handleGridColorChange,
+  gridColor,
+  refPerspectiveCanvas,
+})
 </script>

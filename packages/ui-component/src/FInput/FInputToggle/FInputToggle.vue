@@ -26,7 +26,7 @@ import { computed } from 'vue'
 export interface Props {
   value?: boolean
   disabled?: boolean
-  size: 'small' | 'medium'
+  size?: 'small' | 'medium'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,7 +49,7 @@ const toggleSwitch = () => {
 }
 
 const switchClasses = computed(() => ({
-  'bg-primary-400': isOn.value && !props.disabled,
+  'bg-brand-solid': isOn.value && !props.disabled,
   'bg-grey-200': !isOn.value && !props.disabled,
   'bg-grey-400': props.disabled,
   'focus:ring-2 focus:ring-blue-500': !props.disabled,

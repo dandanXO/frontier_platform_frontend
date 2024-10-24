@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overflow-y-auto")
+div(
+  class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-secondary overflow-y-auto"
+  data-theme="new-dark"
+)
   modal-u3m-recut-header(
     :isValid="isValid"
     :isDoubleSideMaterial="material.isDoubleSide"
@@ -7,38 +10,45 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
     :faceSideUrl="faceSideU3mImage?.original"
     :backSideUrl="backSideU3mImage?.original"
     :isShowModalReplaceSides="isShowModalReplaceSides"
-    @update:replaceSides="handleToggleReplaceSides"
     @back="handleGoBack"
     @next="handleGoNext"
     @confirm="handleConfirm"
     @close="handleClose"
   ) 
-  modal-u3m-recut-switch-control-bar(
-    :cropMode="currentSideCropMode || CROP_MODE.SQUARE"
-    @update:cropMode="handleCropModeChange"
-    @restore="handleRestore"
-  )
   div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3 inset-0")
     div(ref="previewRect")
-  div(class="flex-1 bg-grey-800")
-    template(v-for="side in sideList" :key="side.sideName")
-      perspective-cropper(
-        v-if="side.sideName === currentSideName"
-        :side="side"
-        :isSquare="side.cropMode === CROP_MODE.SQUARE"
-        :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
-        @update:editStatus="handlePerspectiveEditStatusChange"
-      )
+  div(class="flex-1 flex")
+    modal-u3m-recut-sidebar(
+      :currentSide="currentSide"
+      :handleCropModeChange="handleCropModeChange"
+      :refFaceSideCropArea="refFaceSideCropArea"
+      :refBackSideCropArea="refBackSideCropArea"
+      :isDoubleSideMaterial="material.isDoubleSide"
+      :faceSideUrl="faceSideU3mImage?.original"
+      :backSideUrl="backSideU3mImage?.original"
+    )
+    div(class="flex flex-1")
+      template(v-for="side in sideList" :key="side.sideName")
+        perspective-cropper(
+          v-if="side.sideName === currentSideName"
+          :side="side"
+          :isDoubleSideMaterial="material.isDoubleSide"
+          :isSquare="side.cropMode === CROP_MODE.SQUARE"
+          :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
+          @update:editStatus="handlePerspectiveEditStatusChange"
+          @update:replaceSides="handleToggleReplaceSides"
+          :isShowModalReplaceSides="isShowModalReplaceSides"
+        )
+      div
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, toRef } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import Decimal from 'decimal.js'
 import useNavigation from '@/composables/useNavigation'
 import ModalU3mRecutHeader from '@/components/assets/modalU3mRecut/ModalU3mRecutHeader.vue'
-import ModalU3mRecutSwitchControlBar from '@/components/assets/modalU3mRecut/ModalU3mRecutSwitchControlBar.vue'
+import ModalU3mRecutSidebar from './ModalU3mRecutSidebar.vue'
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
 import {
   CROP_MODE,
@@ -59,6 +69,7 @@ import type {
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
+import ModalU3mConfirm from '../ModalU3mConfirm.vue'
 
 const props = defineProps<{
   material: Material
@@ -82,19 +93,21 @@ const store = useStore()
 const { goToProgress } = useNavigation()
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 
-const faceSideImage = computed(() => material.value.faceSide?.sideImage || null)
-const faceSideU3mImage = computed(
-  () => material.value.faceSide?.u3mImage || null
+const faceSideImage = computed<MaterialSideImage | null>(
+  () => (material.value.faceSide?.sideImage as MaterialSideImage) || null
 )
-const backSideImage = computed(() => material.value.backSide?.sideImage || null)
-const backSideU3mImage = computed(
-  () => material.value.backSide?.u3mImage || null
+const faceSideU3mImage = computed<MaterialU3mImage | null>(
+  () => (material.value.faceSide?.u3mImage as MaterialU3mImage) || null
+)
+const backSideImage = computed<MaterialSideImage | null>(
+  () => (material.value.backSide?.sideImage as MaterialSideImage) || null
+)
+const backSideU3mImage = computed<MaterialU3mImage | null>(
+  () => (material.value.backSide?.u3mImage as MaterialU3mImage) || null
 )
 
 const previewRect = ref<HTMLDivElement | null>(null)
-const refFaceSideCropLayout = ref<any | null>(null)
 const isShowModalReplaceSides = ref(true)
-const refBackSideCropLayout = ref<any | null>(null)
 const refFaceSideCropArea = ref<InstanceType<typeof PerspectiveCropper> | null>(
   null
 )
@@ -117,24 +130,14 @@ const currentSide = ref<U3mSide>()
 const currentSideName = computed(() => currentSide.value?.sideName)
 const currentSideCropMode = computed(() => currentSide.value?.cropMode)
 
-/**
- * 計算 preview 九宮格其中一格的縮放比例，
- * 因 cropRectSize 和九宮格其中一格的寬度不同，需要相除計算出 ratio。
- **/
-const previewScaleRatio = computed(() =>
-  previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1
-)
-
 const isValid = computed(() => {
   if (!currentSide.value) {
     return false
   }
-  if (currentSide.value.cropMode === CROP_MODE.PERSPECTIVE) {
-    const { isSizeValid, isDirectionValid } =
-      currentSide.value.perspectiveEditStatus
-    return isSizeValid && isDirectionValid
-  }
-  return true
+  const { isSizeValid, isDirectionValid } =
+    currentSide.value.perspectiveEditStatus
+
+  return isSizeValid && isDirectionValid
 })
 
 const handleCropModeChange = async (v: CROP_MODE) => {
@@ -164,69 +167,6 @@ const handleCropModeChange = async (v: CROP_MODE) => {
     }
     backSide.value.perspectiveCropRecord = cropResult.cropRecord
   }
-}
-
-const handleUpdateScaleSize = (side: U3mSide, newScaleSizeInCm: number) => {
-  if (
-    newScaleSizeInCm > scaleOptions.max ||
-    newScaleSizeInCm < scaleOptions.min
-  ) {
-    return
-  }
-
-  const image = side.config.image
-  const widthInPixel = image.width
-  const heightInPixel = image.height
-  const dpi = side.config.dpi
-  const widthInCm = pixelToCm(widthInPixel, dpi)
-  const heightInCm = pixelToCm(heightInPixel, dpi)
-  const mainRulerInCm = Decimal.min(widthInCm, heightInCm)
-  side.config.scaleRatio = mainRulerInCm.div(newScaleSizeInCm).toNumber()
-  side.scaleSizeInCm = newScaleSizeInCm
-}
-
-const handleRestore = () => {
-  store.dispatch('helper/pushModalConfirm', {
-    type: NOTIFY_TYPE.WARNING,
-    theme: THEME.DARK,
-    header: t('EE0145'),
-    contentText: t('EE0146'),
-    primaryBtnText: t('UU0131'),
-    secondaryBtnText: t('UU0130'),
-    secondaryBtnHandler: () => {
-      if (currentSide.value?.cropMode === CROP_MODE.PERSPECTIVE) {
-        if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
-          refFaceSidePerspectiveCropArea.value?.restore()
-        }
-        if (currentSideName.value === U3M_CUT_SIDE.BACK_SIDE) {
-          refBackSidePerspectiveCropArea.value?.restore()
-        }
-      } else {
-        if (currentSideName.value === U3M_CUT_SIDE.FACE_SIDE) {
-          if (!faceSide.value) {
-            return
-          }
-          refFaceSideCropLayout.value.resetScale()
-          refFaceSideCropLayout.value.resetRotate()
-          faceSide.value.config.options.x =
-            faceSide.value.image.u3mCropRecord.squareCropRecord?.x || 0
-          faceSide.value.config.options.y =
-            faceSide.value.image.u3mCropRecord.squareCropRecord?.y || 0
-        }
-        if (currentSideName.value === U3M_CUT_SIDE.BACK_SIDE) {
-          if (!backSide.value) {
-            return
-          }
-          refBackSideCropLayout.value.resetScale()
-          refBackSideCropLayout.value.resetRotate()
-          backSide.value.config.options.x =
-            backSide.value.image.u3mCropRecord.squareCropRecord?.x || 0
-          backSide.value.config.options.y =
-            backSide.value.image.u3mCropRecord.squareCropRecord?.y || 0
-        }
-      }
-    },
-  })
 }
 
 const handleGoBack = async () => {
@@ -420,7 +360,7 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
     material.value.u3m.status = result.data.result!.u3mStatus
 
     store.dispatch('helper/closeModalLoading')
-    handleClose()
+    store.dispatch('helper/closeModal')
 
     store.dispatch('helper/openModalConfirm', {
       type: MODAL_TYPE.LOADING,
@@ -457,7 +397,24 @@ const handleConfirm = async () => {
 }
 
 const handleClose = () => {
-  store.dispatch('helper/closeModal')
+  store.dispatch('helper/pushModalCommon', {
+    body: ModalU3mConfirm,
+    classModal: 'w-128',
+    closable: false,
+    theme: 'new-dark',
+    properties: {
+      title: t('EE0223'),
+      description: t('EE0224'),
+      primaryBtnText: t('EE0226'),
+      secondaryBtnText: t('EE0225'),
+      primaryBtnHandler: () => {
+        store.dispatch('helper/closeModal')
+      },
+      secondaryBtnHandler: () => {
+        store.dispatch('helper/clearModalPipeline')
+      },
+    },
+  })
 }
 
 const handleCropAreaRefUpdate = (

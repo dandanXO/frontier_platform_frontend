@@ -196,7 +196,9 @@ const usePreview = (
 ) => {
   const previewDisplay = ref<PreviewDisplay>()
 
-  const renderPreviewDisplay = async () => {
+  const renderPreviewDisplay = async (
+    behaviorType: 'move' | 'grab' = 'move'
+  ) => {
     try {
       if (!previewCanvasContainer.value) {
         return
@@ -219,7 +221,9 @@ const usePreview = (
         )
         previewDisplay.value.draw()
       }
-      previewDisplay.value.zoomToFit()
+      if (behaviorType !== 'grab') {
+        previewDisplay.value.zoomToFit()
+      }
     } catch (err) {
       if (err instanceof Error) {
         onError(err)

@@ -10,7 +10,6 @@
     "dev:platform": "cd ./projects/platform && npm run serve:dev",
     "feat:platform": "cd ./projects/platform && npm run serve:feat",
     "windows:dev:platform": "cd ./projects/platform && npm run windows:serve:dev",
-    "dev:console": "cd ./projects/console && npm run dev",
     "test:e2e": "cd ./projects/platform && npm run test:e2e --mode=$npm_config_mode",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",

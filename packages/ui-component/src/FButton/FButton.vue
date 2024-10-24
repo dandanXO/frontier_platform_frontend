@@ -20,7 +20,8 @@ const props = withDefaults(
   defineProps<{
     theme?: `${THEME}`
     size?: `${SIZE}` | 'special'
-    type?: 'primary' | 'secondary' | 'text' | 'special'
+    type?: 'primary' | 'secondary' | 'text' | 'special' | 'critical-outline'
+    isIcon?: boolean
     prependIcon?: string
     disabled?: boolean
     parentIsFlex?: boolean
@@ -40,27 +41,35 @@ const props = withDefaults(
 const btnSize = computed(() => {
   switch (props.size) {
     case 'lg':
-      return [
-        'text-body1',
-        'min-w-21.5',
-        'h-11',
-        props.prependIcon === '' ? 'px-6' : 'px-3',
-      ]
+      return props.isIcon
+        ? ['p-3']
+        : [
+            'text-body1',
+            'min-w-21.5',
+            'h-11',
+            props.prependIcon === '' ? 'px-6' : 'px-3',
+          ]
+
     case 'md':
-      return [
-        'text-body1',
-        'min-w-21',
-        'h-10',
-        props.prependIcon === '' ? 'px-4' : 'px-3',
-        props.parentIsFlex ? 'py-4' : '',
-      ]
+      return props.isIcon
+        ? ['p-2']
+        : [
+            'text-body1',
+            'min-w-21',
+            'h-10',
+            props.prependIcon === '' ? 'px-4' : 'px-3',
+            props.parentIsFlex ? 'py-4' : '',
+          ]
+
     case 'sm':
-      return [
-        'text-body2',
-        'min-w-14',
-        'h-8.5',
-        props.prependIcon === '' ? 'px-3.5' : 'px-3',
-      ]
+      return props.isIcon
+        ? ['p-1']
+        : [
+            'text-body2',
+            'min-w-14',
+            'h-8.5',
+            props.prependIcon === '' ? 'px-3.5' : 'px-3',
+          ]
     default:
       return []
   }
@@ -73,18 +82,23 @@ const btnType = computed(() => {
         return [
           'bg-brand-solid',
           'text-grey-0',
-          'hover:bg-brand-hover',
+          'hover:bg-brand-solid-hover',
           'disabled:bg-grey-150',
         ]
-      case 'secondary':
-        return [
-          'bg-grey-0',
-          'text-primary-400',
+      case 'secondary': {
+        const result = [
+          'bg-primary',
+          'text-brand-solid',
           'border',
-          'border-grey-150',
-          'hover:text-primary-500',
           'disabled:text-grey-250',
+          'border-brand-border',
         ]
+        props.isIcon
+          ? result.push('hover:bg-brand', 'disabled:border-grey-250')
+          : result.push('hover:text-brand-solid-hover')
+
+        return result
+      }
       case 'text':
         return [
           'bg-transparent',
@@ -92,6 +106,18 @@ const btnType = computed(() => {
           'hover:text-link-hover',
           'disabled:text-grey-250',
         ]
+      case 'critical-outline': {
+        const result = [
+          'bg-primary',
+          'text-critical-solid',
+          'border',
+          'disabled:text-grey-250',
+          'hover:bg-critical',
+          'border-critical-border',
+        ]
+
+        return result
+      }
       default:
         return []
     }
@@ -99,19 +125,19 @@ const btnType = computed(() => {
     switch (props.type) {
       case 'primary':
         return [
-          'bg-primary-400',
+          'bg-brand-solid',
           'text-grey-0',
           'disabled:bg-grey-700',
           'disabled:text-grey-900',
-          'hover:bg-primary-500',
+          'hover:bg-brand-solid-hover',
         ]
       case 'secondary':
         return [
           'bg-transparent',
-          'text-primary-400',
+          'text-brand-solid',
           'border',
           'border-grey-700',
-          'hover:text-primary-500',
+          'hover:text-brand-solid-hover',
           'hover:border-grey-600',
           'disabled:text-grey-600',
         ]

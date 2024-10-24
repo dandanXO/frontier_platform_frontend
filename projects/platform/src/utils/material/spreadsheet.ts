@@ -365,7 +365,7 @@ export const getCustomPropertyListCellProps = ({
  *  reference: https://blog.ag-grid.com/adding-hyperlinks-to-the-grid/
  */
 export const requiredColumnComponentParams = () => {
-  const requiredIcon = `<span style="color: ${colors.red[400]}; margin-left: 2px;">*</span>`
+  const requiredIcon = `<span style="color: ${colors.red[400].DEFAULT}; margin-left: 2px;">*</span>`
 
   return {
     template:

@@ -372,13 +372,13 @@ const cssProps = computed(() => {
   if (props.theme === THEME.LIGHT) {
     return {
       '--noUi-handle-bg-color': colors.grey[0],
-      '--noUi-handle-bg-active-color': colors.grey[100],
+      '--noUi-handle-bg-active-color': colors.grey[100].DEFAULT,
       '--noUi-horizontal-color': colors.grey[150],
     }
   } else {
     return {
-      '--noUi-handle-bg-color': colors.grey[900],
-      '--noUi-handle-bg-active-color': colors.grey[800],
+      '--noUi-handle-bg-color': colors.grey[900].DEFAULT,
+      '--noUi-handle-bg-active-color': colors.grey[800].DEFAULT,
       '--noUi-horizontal-color': colors.grey[750],
     }
   }

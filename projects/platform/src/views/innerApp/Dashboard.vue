@@ -215,7 +215,7 @@ const getBarChartBaseOption = (
     textStyle: {
       fontWeight: 700,
       fontSize: 16,
-      color: colors.grey[900],
+      color: colors.grey[900].DEFAULT,
       fontFamily: 'Noto Sans TC',
     },
   },
@@ -442,7 +442,7 @@ const ecoOption = computed(() => {
       textStyle: {
         fontSize: 14,
         fontWeight: 400,
-        color: colors.grey[900],
+        color: colors.grey[900].DEFAULT,
       },
     },
     tooltip: {

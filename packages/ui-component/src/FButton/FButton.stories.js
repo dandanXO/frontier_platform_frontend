@@ -1,10 +1,11 @@
 import FButton from './FButton.vue'
-import { SIZE, THEME } from '../constants'
+import { SIZE } from '../constants'
+import { computed } from 'vue'
 
 const baseArgs = {
   size: SIZE.LG,
   type: 'primary',
-  theme: THEME.LIGHT,
+  theme: 'current',
   isFullWidth: false,
 }
 
@@ -15,7 +16,7 @@ export default {
   argTypes: {
     theme: {
       control: { type: 'radio' },
-      options: [THEME.LIGHT, THEME.DARK],
+      options: ['new', 'new-dark', 'current', 'startrust'],
     },
     size: {
       control: { type: 'radio' },
@@ -28,7 +29,7 @@ export default {
     },
     type: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'text'],
+      options: ['primary', 'secondary', 'text', 'critical-outline'],
     },
     isFullWidth: {
       control: { type: 'radio' },
@@ -40,9 +41,17 @@ export default {
 const Template = (args) => ({
   components: { FButton },
   setup() {
-    return { args }
+    const props = computed(() => ({
+      size: args.size,
+      type: args.type,
+      isFullWidth: args.isFullWidth,
+    }))
+
+    const theme = computed(() => args.theme)
+
+    return { props, theme }
   },
-  template: '<f-button v-bind="args"> Button </f-button>',
+  template: '<f-button v-bind="props" :data-theme="theme"> Button </f-button>',
 })
 
 export const Primary = Template.bind({})

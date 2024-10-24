@@ -1,10 +1,11 @@
 <template lang="pug">
 div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+  :data-theme="theme"
 ) 
   div(class="w-screen h-screen" @click="closable && onClose()")
   div(
-    class="absolute flex flex-col bg-grey-0 rounded-xl shadow-32 p-6 gap-6"
+    class="absolute flex flex-col bg-primary rounded-xl shadow-32 p-6 gap-6"
     :class="classModal"
   )
     div(
@@ -44,6 +45,10 @@ const { title, closable } = defineProps({
   },
   properties: {
     type: Object,
+  },
+  theme: {
+    type: String,
+    default: '',
   },
 })
 
