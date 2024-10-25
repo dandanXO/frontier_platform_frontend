@@ -13,7 +13,7 @@ div(class="flex flex-col gap-2")
     :acceptType="acceptType"
     :maximumSize="fileSizeMaxLimit"
     :chooseFileTxt="$t('UU0156')"
-    data-cy="add-your-banner-image"
+    data-cy="add-cover-image"
     @finish="uploadedFromLocale"
     @clear="removeCoverImage"
     @error="errorCode = $event"

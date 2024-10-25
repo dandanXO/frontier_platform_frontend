@@ -42,7 +42,7 @@ platform-build:
     - npm install -g pnpm
     - pnpm i
     - npm run test
-    - if [ "$DEPLOY_ENV" == "pre-production" ]; then npm run e2e --mode=pre-production; fi
+    - if [ "$DEPLOY_ENV" == "pre-production" ]; then npm run test:e2e --mode=pre-production; fi
     # - npm run test:e2e --mode=development
     - cd ./projects/platform
     - npm run build --mode=$DEPLOY_ENV

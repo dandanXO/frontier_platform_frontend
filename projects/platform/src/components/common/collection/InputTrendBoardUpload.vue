@@ -13,7 +13,7 @@ div
     v-model:fileName="fileName"
     :acceptType="acceptType"
     :maximumSize="fileSizeMaxLimit"
-    data-cy="add-your-banner-image"
+    data-cy="add-banner-image"
     :chooseFileTxt="$t('QQ0091')"
     @finish="uploadedFromLocale"
     @clear="removeTrendBoard"

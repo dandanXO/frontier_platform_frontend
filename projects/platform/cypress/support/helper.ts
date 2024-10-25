@@ -56,6 +56,7 @@ export function createOneSide(
   createWidthSection: boolean
 ) {
   const featuresInput = generateRandomString(501)
+  const constructionType = generateRandomString(50)
   const contentText = generateRandomString(100)
   const patternInfo = generateRandomString(100)
   const colorInfo = generateRandomString(100)
@@ -69,8 +70,17 @@ export function createOneSide(
     .type('{enter}')
   cy.get('body').click(0, 0)
 
+  // enter input for construction type
+  cy.get(`[data-cy="${selectedSide}"] [data-cy="construction-type"]`).click()
+  cy.get(`[data-cy="tab-item-1"]`).last().click()
+  cy.get(`[data-cy="f-popper-body"] input`)
+    .type(constructionType, { parseSpecialCharSequences: false })
+    .should('have.value', constructionType)
+    .type('{enter}')
+
   //enter input for content-text
   cy.get(`[data-cy="${selectedSide}"] [data-cy="content-text"]`).click()
+  cy.get(`[data-cy="tab-item-1"]`).last().click()
   cy.get(`[data-cy="f-popper-body"] input`)
     .type(contentText, { parseSpecialCharSequences: false })
     .should('have.value', contentText)
