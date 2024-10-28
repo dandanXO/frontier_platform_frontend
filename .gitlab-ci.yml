@@ -7,7 +7,7 @@ stages:
 
 # Note: Skip main merge build to save Gitlab cloud Compute Minutes
 # platform-merge-build:
-#   image: node:18.15.0
+#   image: node:20.18.0
 #   stage: build
 #   rules:
 #     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
@@ -19,7 +19,7 @@ stages:
 #     - npm run build --mode=development
 
 platform-build:
-  image: cypress/base:18.15.0
+  image: cypress/base:20.18.0
   stage: build
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
@@ -103,7 +103,7 @@ platform-deploy-to-prod:
 
 storybook-build:
   stage: build
-  image: node:18.15.0
+  image: node:20.18.0
   only:
     refs:
       - main
