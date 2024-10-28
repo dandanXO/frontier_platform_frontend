@@ -68,6 +68,8 @@ module.exports = function ({ addBase, theme }) {
     },
 
     '[data-theme="startrust"]': {
+      '--color-text': theme('colors.malibu.700'),
+      '--color-background-solid': theme('colors.malibu.500'),
       '--color-brand': theme('colors.malibu.500'),
       '--color-brand-solid': theme('colors.malibu.500'),
       '--color-brand-solid-hover': theme('colors.malibu.700'),

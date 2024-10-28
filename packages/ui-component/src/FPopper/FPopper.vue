@@ -16,7 +16,12 @@ teleport(v-if="isExpand" to="body")
       @contextmenu.prevent="expandPopper"
       @wheel.prevent
     )
-    div(ref="refPopper" role="popper" @click.stop class="popper-content-animation")
+    div(
+      ref="refPopper"
+      role="popper"
+      @click.stop
+      class="popper-content-animation shadow-md"
+    )
       slot(
         name="content"
         :isExpand="isExpand"

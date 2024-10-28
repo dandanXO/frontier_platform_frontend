@@ -4,7 +4,11 @@ button(
   :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )
-  f-svg-icon(v-if="prependIcon !== ''" :iconName="prependIcon")
+  f-svg-icon(
+    v-if="prependIcon !== ''"
+    :iconName="prependIcon"
+    :class="[animation ? 'animation-circle' : '']"
+  )
   slot
 </template>
 
@@ -26,6 +30,7 @@ const props = withDefaults(
     disabled?: boolean
     parentIsFlex?: boolean
     isFullWidth?: boolean
+    animation?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
@@ -35,6 +40,7 @@ const props = withDefaults(
     disabled: false,
     parentIsFlex: false,
     isFullWidth: false,
+    animation: false,
   }
 )
 
@@ -160,3 +166,18 @@ const isFullWidth = computed(() => ({
   'w-full': props.isFullWidth,
 }))
 </script>
+
+<style scoped>
+.animation-circle {
+  animation: spin 2s linear infinite; /* 添加旋轉動畫 */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+</style>

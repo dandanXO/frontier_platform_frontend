@@ -252,12 +252,80 @@ div
                 p(class="pr-1.5 text-cyan-400 text-caption leading-1.6") {{ $t('EE0127') }}
                 f-svg-icon(iconName="arrow_forward" size="16" class="text-cyan-400")
             material-detail-environmental-indicator(class="mt-3" :material="material")
+        template(v-else-if="currentTab === TAB.STARTRUST")
+          div(class="w-[920px] flex flex-col gap-10 items-start justify-start")
+            //- call-to-action-card(
+            //-   :title="$t('RR0459')"
+            //-   :description="$t('RR0460')"
+            //-   :explainText="$t('RR0453')"
+            //-   :actionText="$t('OO0045')"
+            //-   @explain="() => {}"
+            //-   @action="() => {}"
+            //- )
+
+            //- Show if isActive
+            call-to-action-card(
+              v-if="!isActive"
+              :title="$t('RR0459')"
+              :description="$t('RR0460')"
+              :explainText="$t('RR0453')"
+              :actionText="$t('UU0064')"
+              @explain="onShowGuide"
+              @action="() => {}"
+            )
+
+            //- show if isActive but no data in StarTrust
+            carbon-footprint-summary-card(
+              v-if="isActive && !isCarbonFootprintData"
+              :title="$t('RR0461')"
+              :description="$t('RR0457')"
+              :explainText="$t('RR0453')"
+              :actionText="$t('RR0054')"
+              @explain="onShowGuide"
+              @action="redirectToStarTrust"
+            )
+
+            //- show if isActive and processing
+            carbon-footprint-summary-card(
+              v-if="isActive && isProcessingCarbonFootprintData"
+              :title="$t('RR0461')"
+              :description="$t('RR0458')"
+              :explainText="$t('RR0453')"
+              :actionText="$t('RR0054')"
+              @explain="onShowGuide"
+              @action="redirectToStarTrust"
+              :data="carbonFootprintPendingData"
+            )
+
+            //- show if isActive and data is completed
+            carbon-footprint-summary-card(
+              v-if="isActive && isCarbonFootprintData"
+              :title="$t('RR0461')"
+              :description="$t('RR0066') + '•' + formattedDate"
+              :explainText="$t('RR0453')"
+              :actionText="$t('RR0054')"
+              @explain="onShowGuide"
+              @action="redirectToStarTrust"
+              :data="carbonFootprintData"
+            )
+            //- Temporarily hidden pending sales strategy decision
+            //- quota-exceeded-alert(
+            //-   v-if="maxQuota > 0 && quotaUsed >= maxQuota"
+            //-   :title="$t('RR0462')"
+            //-   :description="$t('RR0463', { quota: maxQuota - quotaUsed, maxQuota: maxQuota })"
+            //-   :actionText="$t('UU0078')"
+            //-   @action="() => {}"
+            //- )
+
+            //- Temporarily hidden Carbon Footprint Chart until further notice
+            //- div(class="flex justify-start")
+            //-   v-chart(class="chart-container flex justify-start" :option="chartOption")
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import MaterialDetailUpperContent from '@/components/common/material/detail/internal/MaterialDetailUpperContent.vue'
@@ -265,10 +333,11 @@ import MaterialDetailInventoryTable from '@/components/common/material/detail/in
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 import useAssets from '@/composables/useAssets'
-import type {
-  Material,
-  MaterialInternalInventoryInfoSampleCardsRemainingListInner,
-  MaterialInternalInventoryInfoYardageRemainingInfoListInner,
+import {
+  GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum,
+  type Material,
+  type MaterialInternalInventoryInfoSampleCardsRemainingListInner,
+  type MaterialInternalInventoryInfoYardageRemainingInfoListInner,
 } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
 import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
@@ -277,6 +346,20 @@ import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import useAttachmentUpdate from '@/composables/material/useAttachmentUpdate'
 import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
+import CallToActionCard from './carbonFootprintCalculator/CallToActionCard.vue'
+import CarbonFootprintSummaryCard from './carbonFootprintCalculator/CarbonFootprintSummaryCard.vue'
+import QuotaExceededAlert from './carbonFootprintCalculator/QuotaExceededAlert.vue'
+import VChart from 'vue-echarts'
+import { use } from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { BarChart } from 'echarts/charts'
+import {
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+} from 'echarts/components'
+import useNavigation from '@/composables/useNavigation'
+import assetsApi from '@/apis/assets'
 
 const props = defineProps<{
   material: Material
@@ -381,6 +464,7 @@ const TAB = {
   INVENTORY: 3,
   ATTACHMENT: 4,
   INDICATOR: 5,
+  STARTRUST: 6,
 }
 const tabList = computed(() => [
   {
@@ -407,6 +491,11 @@ const tabList = computed(() => [
     name: t('RR0219'),
     id: TAB.INDICATOR,
     icon: 'subscribe',
+  },
+  {
+    name: 'Carbon footprint calculator',
+    id: TAB.STARTRUST,
+    new: true,
   },
 ])
 
@@ -535,4 +624,246 @@ const editable = computed(() => {
   }
   return true
 })
+
+const carbonFootprintPendingData = computed(() => {
+  return {
+    rawMaterial: 'pending',
+    process: 'pending',
+    distribution: 'pending',
+    usage: 'pending',
+    disposal: 'pending',
+    total: 'pending',
+  }
+})
+
+const formattedDate = computed(() => {
+  const date = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date())
+
+  const time = new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date())
+
+  return `${date} at ${time}`
+})
+
+use([
+  CanvasRenderer,
+  BarChart,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+])
+
+const chartOption = ref({
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow',
+    },
+  },
+  legend: {
+    orient: 'vertical',
+    right: '24px',
+    bottom: '56px',
+    itemWidth: 24,
+    itemHeight: 12,
+    itemGap: 12,
+    data: [
+      {
+        name: 'Disposal',
+      },
+      {
+        name: 'Usage',
+      },
+      {
+        name: 'Distribution',
+      },
+      {
+        name: 'Production',
+      },
+      {
+        name: 'Raw Material',
+      },
+    ],
+  },
+  grid: {
+    left: '24px',
+    right: 24 + 112 + 12, // Adjust right margin to make space for the legend
+    bottom: '10%', // Adjust bottom margin to make space for the legend
+    containLabel: true,
+  },
+  xAxis: {
+    type: 'category', // Categories on the x-axis for vertical bars
+    data: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ], // 12 months
+  },
+  yAxis: {
+    type: 'value', // Values on the y-axis for vertical bars
+  },
+  series: [
+    {
+      name: 'Raw Material',
+      type: 'bar',
+      stack: 'total',
+      emphasis: {
+        focus: 'series',
+      },
+      data: [
+        820, 832, 901, 934, 1290, 1330, 1320, 1280, 1300, 1350, 1380, 1400,
+      ],
+    },
+    {
+      name: 'Production',
+      type: 'bar',
+      stack: 'total',
+      emphasis: {
+        focus: 'series',
+      },
+      data: [150, 212, 201, 154, 190, 330, 410, 320, 340, 360, 380, 400],
+    },
+    {
+      name: 'Distribution',
+      type: 'bar',
+      stack: 'total',
+      emphasis: {
+        focus: 'series',
+      },
+      data: [220, 182, 191, 234, 290, 330, 310, 300, 320, 340, 360, 380],
+    },
+    {
+      name: 'Usage',
+      type: 'bar',
+      stack: 'total',
+      emphasis: {
+        focus: 'series',
+      },
+      data: [120, 132, 101, 134, 90, 230, 210, 190, 200, 210, 230, 250],
+    },
+    {
+      name: 'Disposal',
+      type: 'bar',
+      stack: 'total',
+      emphasis: {
+        focus: 'series',
+      },
+      data: [320, 302, 301, 334, 390, 330, 320, 290, 310, 330, 350, 380],
+    },
+  ],
+})
+
+// StarTrust Carbon Footprint Calculator
+const valueAddedService = computed(
+  () => store.getters['polling/valueAddedService']
+)
+const {
+  maxQuota = 0,
+  quotaUsed = 0,
+  isActive = false, // Ensure isActive is defined here
+} = valueAddedService.value.starTrust
+
+const orgId = computed<number>(() => store.getters['organization/orgId'])
+const { ogId, ogType } = useNavigation()
+const materialId = props.material.materialId
+const itemNo = props.material.itemNo
+const starTrustUrl = 'https://sustainability.frontier.cool/14067'
+const startTrustToken = ref('')
+const isCarbonFootprintData = ref(false)
+const isProcessingCarbonFootprintData = ref(false)
+const distribution = ref(0)
+const total = ref(0)
+const process = ref(0)
+const rawMaterial = ref(0)
+
+onMounted(async () => {
+  try {
+    const response = await assetsApi.getAssetsMaterialCarbonFootprint({
+      materialId: materialId,
+      ogType: ogType.value,
+      ogId: ogId.value,
+      orgId: orgId.value,
+    })
+
+    const { data } = response
+
+    const { stToken } = data.result
+    const {
+      status,
+      co2DistributionStage,
+      co2ProcessStage,
+      co2RawMaterialStage,
+    } = data.result.footprintData
+
+    startTrustToken.value = stToken ?? ''
+    isCarbonFootprintData.value =
+      status.id ===
+        GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.Complete ??
+      false
+    isProcessingCarbonFootprintData.value =
+      status.id ===
+        GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.InProgress ??
+      false
+    distribution.value = Number(co2DistributionStage) ?? 0
+    process.value = Number(co2ProcessStage) ?? 0
+    rawMaterial.value = Number(co2RawMaterialStage) ?? 0
+    total.value = distribution.value + process.value + rawMaterial.value
+  } catch (error) {
+    console.error('API call failed:', error)
+  }
+})
+
+const carbonFootprintData = computed(() => {
+  return {
+    rawMaterial: rawMaterial.value,
+    process: process.value,
+    distribution: distribution.value,
+    total: total.value,
+    usage: NaN,
+    disposal: NaN,
+  }
+})
+
+const redirectUrl = computed(() => {
+  return `${starTrustUrl}/re?token=${startTrustToken.value}&orgId=${ogType.value}-${orgId.value}&materialId=${materialId}&itemNo=${itemNo}`
+})
+
+const redirectToStarTrust = () => {
+  window.open(redirectUrl.value, '_blank')
+}
+
+const router = useRouter()
+const onShowGuide = () => {
+  router.push({
+    name: 'Billings', // Assuming 'Billings' is the name of the route for the billing page
+    params: { tab: 'value-added-service' }, // Specify the tab you want to navigate to
+    query: { scroll_to: 'cfc-guide' }, // Add any additional query parameters if needed
+  })
+}
 </script>
+
+<style scoped>
+.chart-container {
+  width: 685px;
+  height: 544px; /* Adjust the height as needed */
+  margin: 0 auto; /* Center the chart horizontally */
+  border: 1px solid #c9c9c9;
+  border-radius: 12px;
+}
+</style>
