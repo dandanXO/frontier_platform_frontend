@@ -69,38 +69,44 @@ div(
         :theme="THEME.DARK"
         useLog
       )
-      //- F22-3668 Hide color editor feature
-      //- div(class="w-full my-6")
-      //-   hr(class="w-full text-grey-600")
-      //- h5(class="text-body1 font-bold mb-2") {{ $t('EE0139') }}
-      //- div(class="flex flex-col w-full gap-y-3 mt-3")
-      //-   color-input(
-      //-     :key="index"
-      //-     v-for="(currentColor, index) in currentColors"
-      //-     :index="index"
-      //-     :color="currentColor"
-      //-     :pantoneList="pantoneList"
-      //-     @colorChange="(v, index) => emit('colorChange', v, index)"
-      //-     @colorInput="(v, index) => emit('colorInput', v, index)"
-      //-   )
-      //-   div(class="flex flex-row justify-around items-center gap-x-2")
-      //-     f-button(
-      //-       class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
-      //-       :theme="THEME.DARK"
-      //-       type="text"
-      //-       :size="SIZE.MD"
-      //-       :disabled="!colorRemovable"
-      //-       @click="emit('colorRemove')"
-      //-     ) {{ $t('UU0121') }}
-      //-     f-button(
-      //-       :theme="THEME.DARK"
-      //-       :size="SIZE.MD"
-      //-       prependIcon="add"
-      //-       type="secondary"
-      //-       :disabled="!colorAddable"
-      //-       @click="emit('colorAdd')"
-      //-     ) {{ $t('UU0120') }}
-      div(class="mt-auto")
+
+      div(class="w-full my-6")
+        hr(class="w-full text-grey-600")
+      h5(
+        v-if="store.getters['permission/enable3DViewerColor']"
+        class="text-body1 font-bold mb-2"
+      ) {{ $t('EE0139') }}
+      div(
+        v-if="store.getters['permission/enable3DViewerColor']"
+        class="flex flex-col w-full gap-y-3 mt-3"
+      )
+        ColorInput(
+          :key="index"
+          v-for="(currentColor, index) in currentColors"
+          :index="index"
+          :color="currentColor"
+          :pantoneList="pantoneList"
+          @colorChange="(v, index) => emit('colorChange', v, index)"
+          @colorInput="(v, index) => emit('colorInput', v, index)"
+        )
+        div(class="flex flex-row justify-around items-center gap-x-2")
+          f-button(
+            class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
+            :theme="THEME.DARK"
+            type="text"
+            :size="SIZE.MD"
+            :disabled="!colorRemovable"
+            @click="emit('colorRemove')"
+          ) {{ $t('UU0121') }}
+          f-button(
+            :theme="THEME.DARK"
+            :size="SIZE.MD"
+            prependIcon="add"
+            type="secondary"
+            :disabled="!colorAddable"
+            @click="emit('colorAdd')"
+          ) {{ $t('UU0120') }}
+      div(class="mt-auto" v-if="store.getters['permission/enable3DViewerColor']")
         div(class="w-full my-6")
           hr(class="w-full text-grey-600")
       div(class="flex flex-row items-center justify-center gap-x-2")
@@ -134,7 +140,10 @@ import { MIN_DPI_2D_MATERIAL, NOTIFY_TYPE, useBreakpoints } from '@frontier/lib'
 import type { PantoneItem } from '../../composables/useColors'
 import { THEME, SIZE } from '../../constants'
 import type { U3M } from '@/composables/useU3M'
+import ColorInput from '../ColorInput.vue'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const props = defineProps<{
   originU3m: U3M | undefined
   pantoneList?: { [code: string]: PantoneItem }

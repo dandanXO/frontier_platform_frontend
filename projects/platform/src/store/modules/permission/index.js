@@ -10,6 +10,7 @@ const state = () => ({
   texperts: [1694],
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
+  colorFeatureOf3DViewer: [1918],
   new3DViewer: [1498, 1892, 1815],
 
   moodboardOrg: [6, 1935, 1701],
@@ -20,6 +21,9 @@ const state = () => ({
 })
 
 const getters = {
+  enable3DViewerColor: (state, getters, rootState) => {
+    return state.colorFeatureOf3DViewer.includes(rootState.organization.orgId)
+  },
   enablemoodboardOrg: (state, getters, rootState) => {
     return state.moodboardOrg.includes(rootState.organization.orgId)
   },
