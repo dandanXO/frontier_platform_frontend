@@ -95,15 +95,25 @@ const getters = {
       (key) => !state.valueAddedService[key]
     )
   },
-  planName: (state, getters) => {
+  planName: (state, getters, rootState, rootGetters) => {
     const { BASIC, PRO, ENT, DESIGNER } = PLAN_TYPE
-    const obj = {
+    const planNames = {
       [BASIC]: i18n.global.t('OO0174'),
       [PRO]: i18n.global.t('RR0160'),
       [ENT]: i18n.global.t('RR0161'),
       [DESIGNER]: i18n.global.t('RR0349'),
     }
-    return obj[getters.plan.planType]
+    if (rootGetters['permission/useCustomPlanName']) {
+      const customPlanType =
+        rootState.permission.customerPlanNameMap[rootState.organization.orgId]
+
+      return (
+        planNames[customPlanType] ||
+        customPlanType ||
+        planNames[getters.plan.planType]
+      )
+    }
+    return planNames[getters.plan.planType]
   },
   planStatus: (state, getters) => {
     const planStatus = {}

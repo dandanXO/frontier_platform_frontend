@@ -1,5 +1,6 @@
 import { DIGITAL_DRAPE_LIST } from '@/utils/trialDigitalDrape'
 import { PlanPlatformEnum } from '@frontier/platform-web-sdk'
+import { PLAN_TYPE } from '@/utils/constants'
 
 // 6 is Fabric Pro for testing.
 // Other test org id need to delete before prod.
@@ -11,16 +12,22 @@ const state = () => ({
   littleKing: [1879],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   colorFeatureOf3DViewer: [1918],
-  new3DViewer: [1498, 1892, 1815],
-
-  moodboardOrg: [6, 1935, 1701],
+  new3DViewer: [6, 1498, 1892, 1815],
+  moodboardOrg: [6, 1935, 1701, 248, 1943, 1944],
   threadboardOrg: [6, 1935, 1701],
+  customPlanName: [1935],
+  customerPlanNameMap: {
+    1935: PLAN_TYPE.PRO,
+  },
   // new upload page display logic control
   useOldUiOrgList: true, //all  user USE old ui ,true mean's all user used
   useNewUiOrgList: [6], // list of organization id that used the new upload material UI
 })
 
 const getters = {
+  useCustomPlanName: (state, getters, rootState) => {
+    return state.customPlanName.includes(rootState.organization.orgId)
+  },
   enable3DViewerColor: (state, getters, rootState) => {
     return state.colorFeatureOf3DViewer.includes(rootState.organization.orgId)
   },
