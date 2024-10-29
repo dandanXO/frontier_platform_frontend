@@ -47,6 +47,9 @@ module.exports = plugin(function () {}, {
       yellow: colors.yellow,
       red: colors.red,
       green: colors.green,
+      greenlight: colors.greenlight,
+      overlaymain: colors.overlaymain,
+      overlayinverse: colors.overlayinverse,
       malibu: colors.malibu,
       brand: {
         solid: {
