@@ -776,8 +776,8 @@ const valueAddedService = computed(
 const {
   maxQuota = 0,
   quotaUsed = 0,
-  isActive = false, // Ensure isActive is defined here
-} = valueAddedService.value.starTrust
+  isActive = false,
+} = valueAddedService.value.starTrust || {}
 
 const orgId = computed<number>(() => store.getters['organization/orgId'])
 const { ogId, ogType } = useNavigation()
