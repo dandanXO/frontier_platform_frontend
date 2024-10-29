@@ -35,8 +35,8 @@ const props = defineProps<{
   isValid: boolean
   isDoubleSideMaterial: boolean
   currentSideName?: U3M_CUT_SIDE
-  faceSideUrl: string | null | undefined
-  backSideUrl: string | null | undefined
+  faceSideUrl?: string | null
+  backSideUrl?: string | null
   isShowModalReplaceSides: boolean
 }>()
 

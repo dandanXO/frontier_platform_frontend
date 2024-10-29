@@ -1,7 +1,7 @@
 <template>
   <v-stage ref="stageRef" :config="stageConfig">
+    <v-layer><v-image :config="displayImageConfig" /></v-layer>
     <v-layer ref="layerRef" :config="layerConfig" v-if="isCropReady">
-      <v-image :config="displayImageConfig" />
       <v-group
         :config="cropGroupConfig"
         @mouseenter="handleCropGroupMouseEnter"
@@ -168,7 +168,6 @@ const MIN_CROP_CM = 1
 const INVALID_LINE_COLOR = colors.red[400].DEFAULT
 const CIRCLE_HOVER_STROKE = colors.grey[300].DEFAULT
 const WHEEL_SCALE_BY = 1.03
-const ROTATE_PRESETS = [0, 90, 180, 270]
 
 const previousBehaviarType = ref<'move' | 'grab'>('move')
 
@@ -300,33 +299,9 @@ const displayImageConfig = computed(() => {
   }
 })
 
-const layerConfig = computed(() => {
-  if (!displayImageConfig.value) {
-    return null
-  }
-  const degToRad = Math.PI / 180
-
-  const rotatePoint = ({ x, y }: Coord, deg: number) => {
-    const rcos = Math.cos(deg * degToRad)
-    const rsin = Math.sin(deg * degToRad)
-    return { x: x * rcos - y * rsin, y: y * rcos + x * rsin }
-  }
-
-  // current rotation origin (0, 0) relative to desired origin - center (node.width()/2, node.height()/2)
-  const topLeft = {
-    x: -displayImageConfig.value.width / 2,
-    y: -displayImageConfig.value.height / 2,
-  }
-  const current = rotatePoint(topLeft, displayImageConfig.value.rotation)
-  const rotated = rotatePoint(topLeft, rotateDeg.value)
-  const dx = rotated.x - current.x
-  const dy = rotated.y - current.y
-
-  const x = displayImageConfig.value.x + dx
-  const y = displayImageConfig.value.y + dy
-
-  return { x, y, rotation: rotateDeg.value }
-})
+const layerConfig = computed(() =>
+  !displayImageConfig.value ? { x: 0, y: 0, rotation: 0 } : null
+)
 
 const infosGroupConfig = computed(() => ({
   visible: infoVisible.value,
@@ -408,28 +383,24 @@ const bottomInfoTextConfig = computed(() => ({
 const leftInfoGroupConfig = computed(() => ({
   x: leftSideCenter.value.x - mx.value,
   y: leftSideCenter.value.y,
-  rotation: -rotateDeg.value,
   scaleX: scaleInverse.value,
   scaleY: scaleInverse.value,
 }))
 const topInfoGroupConfig = computed(() => ({
   x: topSideCenter.value.x,
   y: topSideCenter.value.y - my.value,
-  rotation: -rotateDeg.value,
   scaleX: scaleInverse.value,
   scaleY: scaleInverse.value,
 }))
 const rightInfoGroupConfig = computed(() => ({
   x: rightSideCenter.value.x + mx.value,
   y: rightSideCenter.value.y,
-  rotation: -rotateDeg.value,
   scaleX: scaleInverse.value,
   scaleY: scaleInverse.value,
 }))
 const bottomInfoGroupConfig = computed(() => ({
   x: bottomSideCenter.value.x,
   y: bottomSideCenter.value.y + my.value,
-  rotation: -rotateDeg.value,
   scaleX: scaleInverse.value,
   scaleY: scaleInverse.value,
 }))
@@ -442,11 +413,82 @@ const editStatus = computed<EditStatus>(() => {
     bottomSideInCm.value,
   ].every((sideInCm) => sideInCm.gte(MIN_CROP_CM))
 
-  const isDirectionValid =
-    circleLeftTopPosition.y < circleLeftBottomPosition.y &&
-    circleRightTopPosition.y < circleRightBottomPosition.y &&
-    circleLeftTopPosition.x < circleRightTopPosition.x &&
-    circleLeftBottomPosition.x < circleRightBottomPosition.x
+  const hasCrossedLines = (
+    leftTop: Coord,
+    rightTop: Coord,
+    rightBottom: Coord,
+    leftBottom: Coord
+  ) => {
+    const doLinesIntersect = (p1: Coord, p2: Coord, p3: Coord, p4: Coord) => {
+      function orientation(a: Coord, b: Coord, c: Coord): number {
+        const { x: x1, y: y1 } = a
+        const { x: x2, y: y2 } = b
+        const { x: x3, y: y3 } = c
+
+        //cross product of ab x bc
+        const val = (x2 - x1) * (y3 - y2) - (y2 - y1) * (x3 - x2)
+
+        // 0 -> Collinear, you can create stright line with a, b, c coordinates
+        if (val === 0) {
+          return val
+        }
+
+        // 1 -> Clockwise, c beside line a and b, c position will be on the area on clockwise dirrection
+        // 2 -> Counterclockwise, c beside line a and b, c position will be on the area on counter clockwise dirrection
+        return val > 0 ? 1 : 2
+      }
+
+      // Check if 'point' lies on line segment `pLine1-pLine2`
+      function onSegment(pLine1: Coord, pLine2: Coord, point: Coord): boolean {
+        return (
+          Math.min(pLine1.x, pLine2.x) <= point.x &&
+          point.x <= Math.max(pLine1.x, pLine2.x) &&
+          Math.min(pLine1.y, pLine2.y) <= point.y &&
+          point.y <= Math.max(pLine1.y, pLine2.y)
+        )
+      }
+
+      // get orientations for the four combinations of points
+      const o1 = orientation(p1, p2, p3)
+      const o2 = orientation(p1, p2, p4)
+      const o3 = orientation(p3, p4, p1)
+      const o4 = orientation(p3, p4, p2)
+
+      return (
+        //If orientations are different, lines intersect
+        (o1 !== o2 && o3 !== o4) ||
+        //if related points is collinear, and 'point' is between pLineA-pLineB
+        // then there are intersect lines
+        (o1 === 0 && onSegment(p1, p2, p3)) ||
+        (o2 === 0 && onSegment(p1, p2, p4)) ||
+        (o3 === 0 && onSegment(p3, p4, p1)) ||
+        (o4 === 0 && onSegment(p3, p4, p2))
+      )
+    }
+
+    const diagonalIntersect = doLinesIntersect(
+      leftTop,
+      rightTop,
+      rightBottom,
+      leftBottom
+    )
+
+    const oppositeIntersect = doLinesIntersect(
+      leftTop,
+      leftBottom,
+      rightTop,
+      rightBottom
+    )
+
+    return diagonalIntersect || oppositeIntersect
+  }
+
+  const isDirectionValid = !hasCrossedLines(
+    circleLeftTopPosition,
+    circleRightTopPosition,
+    circleRightBottomPosition,
+    circleLeftBottomPosition
+  )
 
   const positionsEqualTo = (target: PerspectiveCropPositions) => {
     return (
@@ -1104,19 +1146,86 @@ watch(editStatus, (newVal, oldVal) => {
   emit('editStatusChange', editStatus.value)
 })
 
-watch(rotateDeg, crop)
-
-const rotate = (deg: number) => {
+const rotate = (deg: number, isReset?: boolean) => {
   const innerDeg = Math.abs(deg)
+  // Store the four points in an array
+  let points = [
+    circleLeftTopPosition,
+    circleRightTopPosition,
+    circleRightBottomPosition,
+    circleLeftBottomPosition,
+  ]
+
+  // Convert degrees to radians
+  function degreesToRadians(degrees: number) {
+    return degrees * (Math.PI / 180)
+  }
+
+  // Calculate the center point of the four points
+  function calculateCenter(points: Coord[]) {
+    let centerX = 0,
+      centerY = 0
+    points.forEach((point) => {
+      centerX += point.x
+      centerY += point.y
+    })
+    return {
+      x: centerX / points.length,
+      y: centerY / points.length,
+    }
+  }
+
+  // Apply the rotation matrix to rotate around the center point
+  function rotatePoint(point: Coord, center: Coord, angleInDegrees: number) {
+    let angle = degreesToRadians(angleInDegrees) // Convert angle to radians
+
+    // Translate to origin
+    let translatedX = point.x - center.x
+    let translatedY = point.y - center.y
+
+    // Apply rotation matrix
+    let rotatedX = translatedX * Math.cos(angle) - translatedY * Math.sin(angle)
+    let rotatedY = translatedX * Math.sin(angle) + translatedY * Math.cos(angle)
+
+    // Translate back to the center point
+    return {
+      x: rotatedX + center.x,
+      y: rotatedY + center.y,
+    }
+  }
+
+  // Rotation function
+  function rotatePoints(points: Coord[], angleInDegrees: number) {
+    // Calculate the center point
+    let center = calculateCenter(points)
+
+    // Rotate all points
+    return points.map((point) => rotatePoint(point, center, angleInDegrees))
+  }
+
+  const needChangeDeg = isReset ? 0 : innerDeg - rotateDegRef.value
+
+  // Rotated points
+  const rotatedPoints = rotatePoints(points, needChangeDeg)
+
+  circleLeftTopPosition.x = rotatedPoints[0].x
+  circleLeftTopPosition.y = rotatedPoints[0].y
+  circleRightTopPosition.x = rotatedPoints[1].x
+  circleRightTopPosition.y = rotatedPoints[1].y
+  circleRightBottomPosition.x = rotatedPoints[2].x
+  circleRightBottomPosition.y = rotatedPoints[2].y
+  circleLeftBottomPosition.x = rotatedPoints[3].x
+  circleLeftBottomPosition.y = rotatedPoints[3].y
+
   rotateDegRef.value = innerDeg
   emit('rotateDegChange', rotateDegRef.value)
+  rotatePresetsIndex.value = 0
 
-  const shiftedDeg = (innerDeg + 45) % 360
-  rotatePresetsIndex.value = Math.floor(shiftedDeg / 90)
+  crop()
 }
 
 const resetRotation = () => {
-  rotate(props.restoreRecord?.rotateDeg || 0)
+  rotate(props.restoreRecord?.rotateDeg || 0, true)
 }
 
 const resetPositions = () => {

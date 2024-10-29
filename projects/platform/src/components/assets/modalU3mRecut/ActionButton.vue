@@ -2,13 +2,14 @@
 div(
   class="flex flex-col flex-1 justify-center align-middle p-2 gap-1 rounded"
   :class="containerClass"
-  :onClick="onClick"
+  @click="disabled || !onClick ? noop() : onClick()"
 )
   f-svg-icon(v-if="iconName" :iconName="iconName" size="24" class="self-center")
   p(class="text-sm text-center") {{ title }}
 </template>
 
 <script setup lang="ts">
+import { noop } from '@vueuse/core'
 import { computed } from 'vue'
 
 interface Props {

@@ -16,6 +16,7 @@ div(
         iconName="crop"
         :active="currentSideCropMode === CROP_MODE.SQUARE"
         :onClick="onChangeCropMode(CROP_MODE.SQUARE)"
+        :disabled="(rotateDeg ?? 0) > 0"
       )
       action-button(
         :title="$t('EE0151')"
@@ -82,7 +83,7 @@ div(
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import ActionButton from './ActionButton.vue'
 import { THEME } from '@frontier/constants'
 import InputGridColor from './perspectiveCropper/InputGridColor.vue'
@@ -121,6 +122,12 @@ const cropSizeWidth = computed(() =>
   dimension.value?.cm.width ? toDP1(dimension.value?.cm.width) : 0
 )
 const rotateDeg = computed(() => sideCropperArea.value?.rotateDeg)
+
+watch(rotateDeg, (currentRotateDeg) =>
+  (currentRotateDeg ?? 0) > 0
+    ? props.handleCropModeChange(CROP_MODE.PERSPECTIVE)
+    : undefined
+)
 
 const cropSizeHeight = computed(() =>
   dimension.value?.cm.height ? toDP1(dimension.value?.cm.height) : 0
