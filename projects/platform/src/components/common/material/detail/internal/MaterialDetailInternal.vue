@@ -791,6 +791,10 @@ const distribution = ref(0)
 const total = ref(0)
 const process = ref(0)
 const rawMaterial = ref(0)
+const NUMBER_OF_DECIMAL_PLACES = 2
+const parseAndFormatNumber = (value: string) => {
+  return Number(parseFloat(value).toFixed(NUMBER_OF_DECIMAL_PLACES))
+}
 
 onMounted(async () => {
   try {
@@ -820,9 +824,9 @@ onMounted(async () => {
       status.id ===
         GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.InProgress ??
       false
-    distribution.value = Number(co2DistributionStage) ?? 0
-    process.value = Number(co2ProcessStage) ?? 0
-    rawMaterial.value = Number(co2RawMaterialStage) ?? 0
+    distribution.value = parseAndFormatNumber(co2DistributionStage) ?? 0
+    process.value = parseAndFormatNumber(co2ProcessStage) ?? 0
+    rawMaterial.value = parseAndFormatNumber(co2RawMaterialStage) ?? 0
     total.value = distribution.value + process.value + rawMaterial.value
   } catch (error) {
     console.error('API call failed:', error)
