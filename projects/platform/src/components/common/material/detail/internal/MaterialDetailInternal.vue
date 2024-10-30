@@ -271,7 +271,7 @@ div
               :explainText="$t('RR0453')"
               :actionText="$t('UU0064')"
               @explain="onShowGuide"
-              @action="() => {}"
+              @action="onUpgrade"
             )
 
             //- show if isActive but no data in StarTrust
@@ -340,7 +340,7 @@ import {
   type MaterialInternalInventoryInfoYardageRemainingInfoListInner,
 } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
-import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
+import { PLATFORM_LOCATION_TYPE, useConstants } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
@@ -860,6 +860,20 @@ const onShowGuide = () => {
     query: { scroll_to: 'cfc-guide' }, // Add any additional query parameters if needed
   })
 }
+
+const { FEEDBACK_CATEGORY } = useConstants()
+const onUpgrade = () => {
+  const properties = isActive.value
+    ? undefined
+    : {
+        title: t('UU0064'),
+        category: FEEDBACK_CATEGORY.value.PAYMENT.value,
+      }
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-send-feedback',
+    properties,
+  })
+}
 </script>
 
 <style scoped>
@@ -867,7 +881,7 @@ const onShowGuide = () => {
   width: 685px;
   height: 544px; /* Adjust the height as needed */
   margin: 0 auto; /* Center the chart horizontally */
-  border: 1px solid #c9c9c9;
   border-radius: 12px;
+  @apply border border-grey-200-v1;
 }
 </style>

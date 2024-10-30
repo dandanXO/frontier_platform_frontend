@@ -1,11 +1,11 @@
 <template>
   <div
-    class="call-to-action-card w-150 h-full border border-[#C9C9C9] rounded-xl py-6 px-5 gap-5 flex flex-col"
+    class="call-to-action-card w-150 h-full border border-grey-200-v1 rounded-xl py-6 px-5 gap-5 flex flex-col"
     data-theme="startrust"
   >
     <div class="flex flex-col gap-2">
       <p class="text-base font-bold text-grey-900-v1">{{ title }}</p>
-      <p class="text-sm text-[#717272]">{{ description }}</p>
+      <p class="text-sm text-grey-600-v1">{{ description }}</p>
     </div>
     <div class="flex self-end gap-5">
       <f-button class="explain-button" @click="$emit('explain')">

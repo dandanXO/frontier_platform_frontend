@@ -1,20 +1,20 @@
 <template lang="pug">
 div(
-  class="w-150 h-full border border-[#C9C9C9] rounded-xl py-6 px-5 gap-8 flex flex-col"
+  class="w-150 h-full border border-grey-200-v1 rounded-xl py-6 px-5 gap-8 flex flex-col"
   data-theme="startrust"
 )
   div(class="flex flex-col gap-1")
     p(class="text-2xl font-bold text-malibu-700") {{ title }}
-    p(class="text-xs text-[#717272]") {{ description }}
+    p(class="text-xs text-grey-600-v1") {{ description }}
   div(v-if="data" class="flex flex-col gap-2")
-    p(class="text-end text-xs text-[#717272]") {{ $t('RR0464') }}
+    p(class="text-end text-xs text-grey-600-v1") {{ $t('RR0464') }}
     DataRow(:label="$t('RR0454')" :value="data.rawMaterial")
     DataRow(:label="$t('RR0448')" :value="data.process")
     DataRow(:label="$t('RR0449')" :value="data.distribution")
     //- DataRow(:label="$t('RR0450')" :value="data.usage")
     //- DataRow(:label="$t('RR0451')" :value="data.disposal")
     div(class="py-1")
-      hr(class="border-[#C9C9C9]") 
+      hr(class="border-grey-200-v1") 
     DataRow(:label="$t('OO0034')" :value="data.total")
   div(class="flex self-end gap-2")
     f-button(class="explain-button" @click="$emit('explain')") {{ explainText }}

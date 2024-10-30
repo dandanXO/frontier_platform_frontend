@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-150 h-full border border-[#C9C9C9] rounded-xl py-6 px-5 gap-6 flex flex-col"
+    class="w-150 h-full border border-grey-200-v1 rounded-xl py-6 px-5 gap-6 flex flex-col"
     data-theme="startrust"
   >
     <div class="flex h-22 justify-center">

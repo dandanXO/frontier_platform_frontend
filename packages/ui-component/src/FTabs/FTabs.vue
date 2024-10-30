@@ -87,9 +87,9 @@ defineExpose({
 
 <style scoped>
 .new-badge {
-  background-color: #e6f9ff;
-  color: #0ea4cb;
-  border: 1px solid #8addf4;
+  @apply bg-cyan-50-v1;
+  @apply text-cyan-500-v1;
+  @apply border border-cyan-200-v1;
   display: flex;
   position: absolute;
   left: 0 rem;
