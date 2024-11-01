@@ -11,7 +11,7 @@
               f-svg-icon(iconName="check_circle_outline" size="16") 
               p {{ $t('VV0054') }}
         div
-          f-button(size="md" @click="onUpgrade") {{ $t(isActive ? 'UU0078' : 'OO0045') }}
+          f-button(size="md" @click="onUpgrade") {{ $t(isActive ? 'UU0078' : 'UU0064') }}
       div(
         :style="{ backgroundImage: `url(${cfIllustration})` }"
         class="h-62 w-137 bg-cover rounded-tr-xl"
@@ -56,9 +56,11 @@ const isActive = ref(
 )
 const onUpgrade = () => {
   const properties = isActive.value
-    ? undefined
+    ? {
+        title: t('UU0078'),
+      }
     : {
-        title: t('OO0045'),
+        title: t('UU0064'),
         category: FEEDBACK_CATEGORY.value.PAYMENT.value,
       }
   store.dispatch('helper/openModalBehavior', {

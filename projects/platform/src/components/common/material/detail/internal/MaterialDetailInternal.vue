@@ -258,7 +258,7 @@ div
             //-   :title="$t('RR0459')"
             //-   :description="$t('RR0460')"
             //-   :explainText="$t('RR0453')"
-            //-   :actionText="$t('OO0045')"
+            //-   :actionText="$t('UU0064')"
             //-   @explain="() => {}"
             //-   @action="() => {}"
             //- )
@@ -340,7 +340,11 @@ import {
   type MaterialInternalInventoryInfoYardageRemainingInfoListInner,
 } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
-import { PLATFORM_LOCATION_TYPE, useConstants } from '@/utils/constants'
+import {
+  PLATFORM_LOCATION_TYPE,
+  useConstants,
+  VALUE_ADDED_SERVICE_STATUS,
+} from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
@@ -776,8 +780,12 @@ const valueAddedService = computed(
 const {
   maxQuota = 0,
   quotaUsed = 0,
-  isActive = false,
+  status,
 } = valueAddedService.value.starTrust || {}
+
+const isActive = computed(
+  () => status.id === VALUE_ADDED_SERVICE_STATUS.ACTIVATE
+)
 
 const orgId = computed<number>(() => store.getters['organization/orgId'])
 const { ogId, ogType } = useNavigation()
