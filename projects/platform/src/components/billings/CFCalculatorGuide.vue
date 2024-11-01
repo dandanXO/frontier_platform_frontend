@@ -51,7 +51,7 @@ const valueAddedServices: ValueAddedService =
 const route = useRoute()
 
 const isActive = ref(
-  valueAddedServices.starTrust?.status.id ===
+  valueAddedServices.starTrust?.status?.id ===
     ValueAddedServiceStarTrustStatusIdEnum.Active
 )
 const onUpgrade = () => {
