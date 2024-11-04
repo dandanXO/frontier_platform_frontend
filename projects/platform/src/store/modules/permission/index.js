@@ -9,7 +9,8 @@ const state = () => ({
   // J&B INT"L
   jbIntL: [113],
   texperts: [1694],
-  littleKing: [1879],
+  // disable public-library and disable create new org
+  littleKing: [1879, 1964],
   trialDigitalDrape: DIGITAL_DRAPE_LIST,
   colorFeatureOf3DViewer: [1918],
   new3DViewer: [6, 1498, 1892, 1815],
