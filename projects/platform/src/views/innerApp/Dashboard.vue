@@ -245,7 +245,7 @@ const getBarChartBaseOption = (
       interval: 0,
       overflow: xAxisLabelOverflow,
       fontSize: 12,
-      color: colors.grey[600],
+      color: colors.grey[600].DEFAULT,
       margin: 12,
     },
     axisLine: {
@@ -269,7 +269,7 @@ const getBarChartBaseOption = (
     },
     axisLabel: {
       fontSize: 10,
-      color: colors.grey[600],
+      color: colors.grey[600].DEFAULT,
     },
   },
 })
@@ -364,15 +364,15 @@ const keywordOption = computed(() => {
 
   const keywordColorList = [
     colors.primary[400],
-    colors.cyan[400],
-    colors.yellow[400],
-    colors.red[300],
-    colors.pink[400],
+    colors.cyan[400].DEFAULT,
+    colors.yellow[400].DEFAULT,
+    colors.red[300].DEFAULT,
+    colors.pink[400].DEFAULT,
     colors.brown[400],
     colors.forestgreen[400],
     colors.peacock[400],
     colors.blue[400],
-    colors.purple[400],
+    colors.purple[400].DEFAULT,
   ]
   return Object.assign(
     getBarChartBaseOption(
@@ -472,7 +472,7 @@ const ecoOption = computed(() => {
       nameLocation: 'middle',
       nameTextStyle: {
         fontSize: 12,
-        color: colors.grey[600],
+        color: colors.grey[600].DEFAULT,
       },
       axisLabel: {
         show: false,
@@ -494,7 +494,7 @@ const ecoOption = computed(() => {
         },
       },
       axisLabel: {
-        color: colors.grey[600],
+        color: colors.grey[600].DEFAULT,
       },
     },
     series: [
@@ -509,7 +509,7 @@ const ecoOption = computed(() => {
         symbol: isShowAssetsStatus.value ? 'circle' : 'none',
         symbolSize: 8,
         itemStyle: {
-          color: colors.cyan[400],
+          color: colors.cyan[400].DEFAULT,
           opacity: 0.8,
         },
       },

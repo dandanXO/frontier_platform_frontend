@@ -43,8 +43,8 @@ export const spreadsheetBgColors = {
   default: 'transparent',
   create: colors.primary[100],
   update: colors.primary[100],
-  invalid: colors.red[300],
-  disabled: toTransparent(colors.grey[200]),
+  invalid: colors.red[300].DEFAULT,
+  disabled: toTransparent(colors.grey[200].DEFAULT),
 }
 
 export const rowStyle = {
