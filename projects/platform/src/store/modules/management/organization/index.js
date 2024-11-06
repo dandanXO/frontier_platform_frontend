@@ -163,6 +163,11 @@ export default {
         rootGetters['user/organizationList'].find((org) => org.orgNo === orgNo)
           ?.orgId || null
       const { data } = await organizationApi.getOrg(orgId)
+      dispatch(
+        'permission/updateFeautreFlag',
+        data.result.organization.featureFlag,
+        { root: true }
+      )
       dispatch('setOrganization', data.result.organization)
     },
     async checkOrgNameExist(_, { orgId, orgName }) {
