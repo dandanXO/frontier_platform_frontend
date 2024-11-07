@@ -759,7 +759,7 @@
   "WW0138": "JSON file not found at URI path",
   "WW0139": "Please try again or contact your file provider.",
   "WW0140": "There may be format conversion issues.{newline} {RR0123} to us for further assistance.",
-  "WW0141": "The image size should be at least 800x800 pixels with a minimum resolution of 300 DPI.",
+  "WW0141": "The image size should be at least 800x800 pixels with a recommended resolution of 600 DPI.",
   "WW0142": "Do not exceed {limitNumber} characters.",
   "WW0143": "Must be at least {minNum}.",
   "WW0144": "Minimum resolution:",
