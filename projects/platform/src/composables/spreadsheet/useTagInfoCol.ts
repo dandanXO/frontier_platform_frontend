@@ -24,7 +24,7 @@ const useTagInfoCol = (
   spreadsheetService: SpreadsheetService
 ): ComputedRef<ColDef<MaterialRow> | ColGroupDef<MaterialRow>> => {
   const { t } = useI18n()
-  const materialSchema = useMaterialSchema(true)
+  const materialSchema = useMaterialSchema()
   const {
     materialOptions,
     menuTreePublicTag,

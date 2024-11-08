@@ -12,7 +12,7 @@ export default {
   setup(props: { params: ICellRendererParams }) {
     const itemNo = ref(props.params.value)
 
-    const materialSchema = useMaterialSchema(true)
+    const materialSchema = useMaterialSchema()
 
     const hintError = computed(() => {
       const result = materialSchema.shape.itemNo.safeParse(itemNo.value)

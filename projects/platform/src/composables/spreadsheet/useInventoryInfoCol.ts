@@ -202,7 +202,7 @@ const useInventoryInfoCol = (): ComputedRef<
   ColDef<MaterialRow> | ColGroupDef<MaterialRow>
 > => {
   const { t } = useI18n()
-  const materialSchema = useMaterialSchema(true)
+  const materialSchema = useMaterialSchema()
 
   return computed(() => {
     return {

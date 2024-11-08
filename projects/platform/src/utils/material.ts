@@ -14,6 +14,7 @@ import {
 } from '@frontier/platform-web-sdk'
 import { CM_PER_INCH, toDP2 } from './cropper'
 import type { MaterialRow } from '@/types'
+import type { Nullable } from '@/components/assets/spreadsheet/Spreadsheet.vue'
 
 const cmToInch = (cm: number) => cm / CM_PER_INCH
 
@@ -238,8 +239,8 @@ export const mapPricing = (
   }
 }
 
-export const generateMaterialRow = (): MaterialRow => {
-  const generateMaterialSideBase = (): MaterialSideBase => {
+export const generateMaterialRow = (): Nullable<MaterialRow> => {
+  const generateMaterialSideBase = (): Nullable<MaterialSideBase> => {
     return {
       materialSideId: null,
       frontierNo: null,
@@ -248,7 +249,7 @@ export const generateMaterialRow = (): MaterialRow => {
     }
   }
 
-  const generateMaterialSide = (): MaterialSide => {
+  const generateMaterialSide = (): Nullable<MaterialSide> => {
     return {
       ...generateMaterialSideBase(),
       isMainSide: false,
@@ -256,6 +257,7 @@ export const generateMaterialRow = (): MaterialRow => {
       u3mImage: null,
       materialType: null,
       descriptionList: [],
+      materialTypeConstruction: null,
       construction: {
         isPublic: false,
         warpDensity: null,
@@ -276,7 +278,7 @@ export const generateMaterialRow = (): MaterialRow => {
     }
   }
 
-  const generateMaterialMiddleSide = (): MaterialMiddleSide => {
+  const generateMaterialMiddleSide = (): Nullable<MaterialMiddleSide> => {
     return {
       ...generateMaterialSideBase(),
       customPropertyList: [],

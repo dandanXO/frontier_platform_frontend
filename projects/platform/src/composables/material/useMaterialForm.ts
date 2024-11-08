@@ -33,7 +33,7 @@ import { getKeys } from '@frontier/lib'
 
 configure({ validateOnInput: true })
 
-type PrimarySideKey = 'faceSide' | 'backSide'
+export type PrimarySideKey = 'faceSide' | 'backSide'
 
 const getMode = (material: Material | undefined | null): CREATE_EDIT => {
   return material !== null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE

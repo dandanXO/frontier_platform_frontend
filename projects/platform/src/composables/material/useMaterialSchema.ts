@@ -344,7 +344,7 @@ export const materialTypeSchema = z
 
 export const MATERIAL_TYPE_CONSTRUCTION_NAME_MAX_LENGTH = 50
 
-const materialTypeConstructionSchema = z
+export const materialTypeConstructionSchema = z
   .object({
     id: z.number().nullable(),
     isCustom: z.boolean(),
@@ -735,12 +735,8 @@ export const useMaterialTagSchema = () => {
 
   return schema
 }
-const useMaterialSchema = (uploadExcel?: boolean) => {
-  const sideSchema = uploadExcel
-    ? materialSideWithoutTypeConstructionSchema
-    : materialSideSchema
-
-  const materialSchema = z.object({
+const useMaterialSchema = () =>
+  z.object({
     itemNo: z
       .string(nonNullParams)
       .nonempty(requiredMessage)
@@ -757,11 +753,15 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
     weight: materialWeightSchema,
     weightDisplaySetting: weightDisplaySettingSchema,
     isAutoSyncFaceToBackSideInfo: z.boolean(nonNullParams).default(false),
-    faceSide: sideSchema.nullable().default(getDefaults(sideSchema)),
+    faceSide: materialSideSchema
+      .nullable()
+      .default(getDefaults(materialSideSchema)),
     middleSide: materialMiddleSideSchema
       .nullable()
       .default(getDefaults(materialMiddleSideSchema)),
-    backSide: sideSchema.nullable().default(getDefaults(sideSchema)),
+    backSide: materialSideSchema
+      .nullable()
+      .default(getDefaults(materialSideSchema)),
     tagInfo: z.object({
       tagList: tagListSchema,
       certificationTagIdList: z.array(z.number().int()).nullable().default([]),
@@ -783,9 +783,6 @@ const useMaterialSchema = (uploadExcel?: boolean) => {
         .default(null),
     }),
   })
-
-  return materialSchema
-}
 
 export type MaterialSchemaWithConstructionType = Omit<
   z.infer<ReturnType<typeof useMaterialSchema>>,

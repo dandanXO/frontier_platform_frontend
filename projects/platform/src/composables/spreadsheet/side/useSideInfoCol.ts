@@ -44,10 +44,12 @@ import useFinishListCol from '@/composables/spreadsheet/side/useFinishListCol'
 import useEnumText from '@/composables/useEnumText'
 import { getDefaultContentList } from '@/utils/material'
 import { descriptionListSchema } from '@/composables/material/useMaterialSchema'
+import useConstructionTypeCol from './useConstructionTypeCol'
+import type { PrimarySideKey } from '@/composables/material/useMaterialForm'
+import { WITH_CONSTRUCTION_TYPE_MATERIALS } from '@/utils/constants'
 
-const sideEditable =
-  (side: 'faceSide' | 'backSide') =>
-  (params: EditableCallbackParams<MaterialRow>) => {
+export const sideEditable =
+  (side: PrimarySideKey) => (params: EditableCallbackParams<MaterialRow>) => {
     if (!params.data) {
       return false
     }
@@ -98,6 +100,8 @@ const useSideInfoCol = (
 ): ComputedRef<ColGroupDef<MaterialRow>> => {
   const { t } = useI18n()
   const { materialTypeText } = useEnumText()
+
+  const constructionTypeCol = useConstructionTypeCol(side)
   const featureListCol = useFeatureListCol(
     side,
     `${side}.featureList`,
@@ -243,6 +247,10 @@ const useSideInfoCol = (
 
             const newRow = e.data
             newRow[side]!.descriptionList = []
+            newRow[side]!.materialTypeConstruction =
+              WITH_CONSTRUCTION_TYPE_MATERIALS.includes(e.newValue)
+                ? null
+                : { id: null, isCustom: false, name: '' }
             if (e.newValue !== MaterialType.WOVEN) {
               newRow[side]!.construction!.warpDensity = null
               newRow[side]!.construction!.weftDensity = null
@@ -275,6 +283,7 @@ const useSideInfoCol = (
             e.api.applyTransaction({ update: [newRow] })
           },
         },
+        constructionTypeCol.value,
         {
           field: `${side}.descriptionList`,
           columnGroupShow: 'open',

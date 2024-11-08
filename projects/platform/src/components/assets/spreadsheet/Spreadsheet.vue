@@ -81,6 +81,8 @@ import {
   type MaterialOptionsContentListDefaultInner,
   type MaterialDescription,
   MaterialSideType,
+  type MaterialOptionsMaterialTypeConstructionList,
+  type IdTextWithCustomData,
 } from '@frontier/platform-web-sdk'
 import type { MaterialRow, SubmitPayload } from '@/types'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
@@ -115,6 +117,7 @@ import {
 } from '@/components/assets/spreadsheet/utils/utils'
 import TemplateDownloadButton from '@/components/assets/spreadsheet/TemplateDownloadButton.vue'
 import { useReadOnly } from '@/components/assets/spreadsheet/utils/hooks'
+import { getKeys } from '@frontier/lib'
 
 const AG_GRID_LICENSE_KEY = atob(
   import.meta.env.VITE_APP_AG_GRID_LICENSE_KEY_BASE64_ENCODED
@@ -123,6 +126,15 @@ LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY)
 
 export type Nullable<T> = { [K in keyof T]: T[K] | null }
 
+export type MaterialTypeConstructionKey =
+  keyof MaterialOptionsMaterialTypeConstructionList
+type MaterialTypeConstructionMenuList = Record<
+  MaterialTypeConstructionKey,
+  {
+    title: string
+    selectValue: IdTextWithCustomData
+  }[]
+>
 const props = withDefaults(
   defineProps<{
     materialList?: Material[]
@@ -178,7 +190,7 @@ const menuTreePrivateTag = computed(() => ({
   blockList: [{ menuList: privateTagMenuList.value }],
 }))
 
-const materialSchema = useMaterialSchema(true)
+const materialSchema = useMaterialSchema()
 
 const newSeasonList = ref<Nullable<MaterialSeasonInfoSeason>[]>([])
 const allSeasonList = computed(() => {
@@ -352,6 +364,17 @@ const newDescriptionList = reactive<{
   others: [],
 })
 
+const newMaterialTypeConstructionList = reactive<
+  Record<MaterialTypeConstructionKey, IdTextWithCustomData[]>
+>({
+  woven: [],
+  knit: [],
+  leather: [],
+  nonWoven: [],
+  trim: [],
+  others: [],
+})
+
 const descriptionMenuDefaultList = computed(() => {
   const materialOptionsDescriptionList = materialOptions.descriptionList
 
@@ -390,6 +413,55 @@ const descriptionMenuCustomList = computed(() => {
   )
 })
 
+const materialTypeConstructionMenuDefaultList =
+  computed<MaterialTypeConstructionMenuList>(() => {
+    const materialTypeConstructioOptionsList =
+      materialOptions.materialTypeConstructionList
+
+    if (!materialTypeConstructioOptionsList) {
+      return {} as MaterialTypeConstructionMenuList
+    }
+
+    return getKeys<MaterialOptionsMaterialTypeConstructionList>(
+      materialTypeConstructioOptionsList
+    ).reduce((acc, materialType) => {
+      const value = materialTypeConstructioOptionsList[
+        materialType
+      ].default.map((data) => ({
+        title: data.name ?? '',
+        selectValue: data,
+      }))
+
+      acc[materialType] = value
+      return acc
+    }, {} as MaterialTypeConstructionMenuList)
+  })
+
+const materialTypeConstructionMenuCustomList =
+  computed<MaterialTypeConstructionMenuList>(() => {
+    const materialTypeConstructioOptionsList =
+      materialOptions.materialTypeConstructionList
+
+    if (!materialTypeConstructioOptionsList) {
+      return {} as MaterialTypeConstructionMenuList
+    }
+
+    return getKeys<MaterialOptionsMaterialTypeConstructionList>(
+      materialTypeConstructioOptionsList
+    ).reduce((acc, materialType) => {
+      const value = [
+        ...newMaterialTypeConstructionList[materialType],
+        ...materialTypeConstructioOptionsList[materialType].custom,
+      ].map((data) => ({
+        title: data.name ?? '',
+        selectValue: data,
+      }))
+
+      acc[materialType] = value
+      return acc
+    }, {} as MaterialTypeConstructionMenuList)
+  })
+
 const addDescriptionOption = (
   materialType: keyof typeof newDescriptionList,
   descriptionName: string
@@ -399,6 +471,39 @@ const addDescriptionOption = (
     name: descriptionName,
   })
 }
+
+const addMaterialTypeConstructionOption = (
+  materialType: MaterialTypeConstructionKey,
+  descriptionName: string
+) => {
+  newMaterialTypeConstructionList[materialType].push({
+    isCustom: true,
+    id: materialTypeConstructionMenuCustomList.value[materialType].length + 1,
+    name: descriptionName,
+  })
+}
+
+const materialTypeConstructionList = computed(() => {
+  const keys: MaterialTypeConstructionKey[] = ['woven', 'knit']
+  return keys.reduce((acc, materialType) => {
+    const value = {
+      scrollAreaMaxHeight: 'max-h-72',
+      blockList: [
+        {
+          blockTitle: t('M2F033'),
+          menuList: materialTypeConstructionMenuDefaultList.value[materialType],
+        },
+        {
+          blockTitle: t('RR0258'),
+          menuList: materialTypeConstructionMenuCustomList.value[materialType],
+        },
+      ],
+    }
+
+    acc[materialType] = value
+    return acc
+  }, {} as Record<MaterialTypeConstructionKey, MenuTree>)
+})
 
 const descriptionList = computed(() => {
   return ['woven', 'nonWoven', 'knit', 'leather', 'trim', 'others'].reduce(
@@ -447,6 +552,10 @@ const spreadsheetService = {
   descriptionMenuDefaultList,
   descriptionMenuCustomList,
   addDescriptionOption,
+  materialTypeConstructionList,
+  materialTypeConstructionMenuDefaultList,
+  materialTypeConstructionMenuCustomList,
+  addMaterialTypeConstructionOption,
 }
 
 const spreadsheetServiceKey = 'spreadsheetService'

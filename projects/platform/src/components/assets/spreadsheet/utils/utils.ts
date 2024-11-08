@@ -8,12 +8,15 @@ import {
   MaterialType,
   WeightUnit,
   type MaterialOptions,
+  type MaterialSideCreateAllOfMaterialTypeConstruction,
 } from '@frontier/platform-web-sdk'
 import type { GridApi } from 'ag-grid-enterprise'
 import type { Ref } from 'vue'
 import { read, type WorkBook } from 'xlsx'
 import BigNumber from 'bignumber.js'
 import Fuse from 'fuse.js'
+import type { PrimarySideKey } from '@/composables/material/useMaterialForm'
+import type { MaterialTypeConstructionKey } from '../Spreadsheet.vue'
 
 export const convertDataToWorkbook = (dataRows: any) => {
   /* convert data to binary string */
@@ -97,18 +100,31 @@ interface ExcelRow {
   [key: string]: string
 }
 
+export const materialTypeMap: Record<
+  MaterialType,
+  MaterialTypeConstructionKey
+> = {
+  [MaterialType.WOVEN]: 'woven',
+  [MaterialType.KNIT]: 'knit',
+  [MaterialType.LEATHER]: 'leather',
+  [MaterialType.NON_WOVEN]: 'nonWoven',
+  [MaterialType.TRIM]: 'trim',
+  [MaterialType.OTHERS]: 'others',
+}
+
 function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
   const materialData = excelData.map((row) => {
-    const sideKey =
+    const sideKey: PrimarySideKey =
       !row['ST1'] ||
       row['ST1'].trim().toLowerCase() === 'Face Side'.trim().toLowerCase()
         ? 'faceSide'
         : 'backSide'
     const isAutoSyncFaceToBackSideInfo = parseYesNoValue(row['ST4'], false)
-    const sideKeys = isAutoSyncFaceToBackSideInfo
+    const sideKeys: PrimarySideKey[] = isAutoSyncFaceToBackSideInfo
       ? ['faceSide', 'backSide']
       : [sideKey]
     const newRow = generateMaterialRow()
+    let materialType: MaterialType
 
     // priceInfo
     let priceInfo = newRow.priceInfo
@@ -266,6 +282,30 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               'name'
             )
             break
+          case 'MI_ConsType':
+            if (!materialType) {
+              break
+            }
+            newRow[sideKey].materialTypeConstruction =
+              materialOptions.materialTypeConstructionList?.[
+                materialTypeMap[materialType]
+              ].default.find(
+                ({ name }) => name === row.MI_ConsType
+              ) as MaterialSideCreateAllOfMaterialTypeConstruction
+            break
+          case 'MI_ConsType_Custom':
+            if (!materialType) {
+              break
+            }
+            newRow[sideKey].materialTypeConstruction ??=
+              (materialOptions.materialTypeConstructionList?.[
+                materialTypeMap[materialType]
+              ].custom.find(({ name }) => name === row.MI_ConsType_Custom) ?? {
+                id: null,
+                isCustom: true,
+                name: row.MI_ConsType_Custom,
+              }) as MaterialSideCreateAllOfMaterialTypeConstruction
+            break
           case 'MI_MatType': {
             const input = row.MI_MatType.trim()
             const materialTypeKey = fuzzySearchMaterialType(input) as
@@ -274,6 +314,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             const materialTypeValue =
               materialTypeKey !== null ? MaterialType[materialTypeKey] : null
             newRow[sideKey]!.materialType = materialTypeValue
+            materialType = materialTypeValue
             break
           }
           case 'MI_PUB_1':
