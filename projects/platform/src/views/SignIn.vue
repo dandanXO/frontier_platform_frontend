@@ -53,18 +53,18 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
         scope="global"
       )
         template(#signUp)
-          span(
-            class="text-grey-900 font-bold ml-3 cursor-pointer"
-            data-cy="sign-up-page"
-            @click="openSignUpRequestModal"
-          ) {{ $t('AA0016') }}
+          //- span(
+          //-   class="text-grey-900 font-bold ml-3 cursor-pointer"
+          //-   data-cy="sign-up-page"
+          //-   @click="openSignUpRequestModal"
+          //- ) {{ $t('AA0016') }}
           //- 考量到競爭對手隨意使用 Frontier Platform，故加上 sign up 審核機制，僅送出申請表單，不能直接註冊。
           //- 但是考量到以後可能會加回來，故僅註解掉。
-          //- router-link(
-          //-   class="text-grey-900 font-bold ml-3"
-          //-   :to="{ path: '/sign-up', query: $route.query }"
-          //-   data-cy="sign-up-page"
-          //- ) {{ $t('AA0016') }}
+          router-link(
+            class="text-grey-900 font-bold ml-3"
+            :to="{ path: '/sign-up', query: $route.query }"
+            data-cy="sign-up-page"
+          ) {{ $t('AA0016') }}
 </template>
 
 <script setup>
