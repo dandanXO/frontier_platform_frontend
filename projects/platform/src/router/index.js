@@ -489,6 +489,13 @@ const routes = [
       },
     ],
   },
+
+  // 404 case
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: import('@/views/NotFound.vue'),
+  },
 ]
 
 const router = createRouter({
