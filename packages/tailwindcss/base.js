@@ -10,7 +10,6 @@ const defaultLightTheme = (theme) => ({
   '--color-secondary-border': theme('colors.grey.100.v1'),
   '--color-secondary-text': theme('colors.grey.700.v1'),
   '--color-tertiary': theme('colors.grey.100.v1'),
-  '--color-info': theme('colors.cyan.50.v1'),
 })
 
 // expected to used module.export, if using export default
@@ -36,21 +35,20 @@ module.exports = function ({ addBase, theme }) {
       '--color-secondary-text': theme('colors.grey.900'),
       '--color-tertiary': theme('colors.grey.100'),
       '--color-disabled': theme('colors.grey.250'),
-      '--color-info': theme('colors.cyan.50.v1'),
     },
 
     '[data-theme="new"]': {
-      '--color-brand': theme('colors.green.100.v1'),
+      '--color-brand': theme('colors.green.100'),
       '--color-brand-border': theme('colors.green.200.v1'),
-      '--color-brand-solid': theme('colors.green.500.v1'),
-      '--color-brand-solid-hover': theme('colors.green.600.v1'),
-      '--color-link': theme('colors.cyan.500.v1'),
-      '--color-link-hover': theme('colors.cyan.600.v1'),
+      '--color-brand-solid': theme('colors.green.500'),
+      '--color-brand-solid-hover': theme('colors.green.600'),
+      '--color-link': theme('colors.cyan.500'),
+      '--color-link-hover': theme('colors.cyan.600'),
       ...defaultLightTheme(theme),
     },
 
     '[data-theme="new-dark"]': {
-      '--color-brand': theme('colors.green.800.v1'),
+      '--color-brand': theme('colors.green.800'),
       '--color-brand-border': theme('colors.green.700.v1'),
       '--color-brand-solid': theme('colors.green.400.v1'),
       '--color-brand-solid-hover': theme('colors.green.300'),
@@ -58,8 +56,8 @@ module.exports = function ({ addBase, theme }) {
       '--color-critical-hover': theme('colors.red.800.v1'),
       '--color-critical-border': theme('colors.red.700.v1'),
       '--color-critical-solid': theme('colors.red.400.v1'),
-      '--color-link': theme('colors.cyan.500.v1'),
-      '--color-link-hover': theme('colors.cyan.600.v1'),
+      '--color-link': theme('colors.cyan.500'),
+      '--color-link-hover': theme('colors.cyan.600'),
       '--color-primary': theme('colors.black'),
       '--color-primary-inverse': theme('colors.white'),
       '--color-secondary': theme('colors.grey.900.v1'),
@@ -67,7 +65,6 @@ module.exports = function ({ addBase, theme }) {
       '--color-secondary-text': theme('colors.grey.300.v1'),
       '--color-tertiary': theme('colors.grey.800.v1'),
       '--color-disabled': theme('colors.grey.500.v1'),
-      '--color-info': theme('colors.cyan.900.v1'),
     },
 
     '[data-theme="startrust"]': {
