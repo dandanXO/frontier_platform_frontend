@@ -61,6 +61,7 @@ const canCreateNewOrg = computed(() => {
 
   return (
     emailRegex.test(user.value.email) &&
+    user.value.isVerify &&
     store.getters['permission/noLittleKingInOrgList']
   )
 })
