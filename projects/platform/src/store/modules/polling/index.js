@@ -96,12 +96,13 @@ const getters = {
     )
   },
   planName: (state, getters, rootState, rootGetters) => {
-    const { BASIC, PRO, ENT, DESIGNER } = PLAN_TYPE
+    const { BASIC, PRO, ENT, DESIGNER, FREE } = PLAN_TYPE
     const planNames = {
       [BASIC]: i18n.global.t('OO0174'),
       [PRO]: i18n.global.t('RR0160'),
       [ENT]: i18n.global.t('RR0161'),
       [DESIGNER]: i18n.global.t('RR0349'),
+      [FREE]: i18n.global.t('OO0174'),
     }
     if (rootGetters['permission/useCustomPlanName']) {
       const customPlanType =
@@ -125,12 +126,13 @@ const getters = {
   },
   planType: (state, getters) => {
     const planType = getters.plan.planType
-    const { BASIC, PRO, ENT, DESIGNER } = PLAN_TYPE
+    const { BASIC, PRO, ENT, DESIGNER, FREE } = PLAN_TYPE
     return {
       BASIC: BASIC === planType,
       PRO: PRO === planType,
       ENT: ENT === planType,
       DESIGNER: DESIGNER === planType,
+      FREE: FREE === planType,
     }
   },
   hasU3mQuota: (state, getters) => {

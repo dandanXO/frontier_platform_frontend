@@ -45,7 +45,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
             div(class="w-19 h-px border-b border-grey-250")
             span(class="w-30.5 text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
             div(class="w-19 h-px border-b border-grey-250")
-          button#google-sign-in
+          button#google-sign-in(class="h-10")
       i18n-t(
         keypath="UU0045"
         tag="p"

@@ -46,7 +46,7 @@ const changeLocale = async () => {
   if (originalLocale !== newLocale.value) {
     store.dispatch('helper/pushModalLoading')
     await store.dispatch('user/changeLocale', { locale: newLocale.value })
-    window.location.reload()
+    // window.location.reload()
   }
   store.dispatch('helper/clearModalPipeline')
 }

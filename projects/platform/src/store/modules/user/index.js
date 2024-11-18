@@ -80,9 +80,12 @@ const actions = {
     return data.result
   },
   async googleSignUp({ dispatch }, params) {
-    const { data } = await userApi.googleSignUp(params)
-    dispatch('setUser', data.result.user)
-    return data.result.isExist
+    const response = await userApi.googleSignUp(params)
+    if (!response.data.result.isExist) {
+      dispatch('setUser', response.data.result.user)
+    }
+
+    return response.data.result.isExist
   },
   async googleSignIn({ dispatch }, params) {
     const { data } = await userApi.googleSignIn(params)

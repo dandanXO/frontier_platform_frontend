@@ -174,6 +174,7 @@ export const PLAN_TYPE = {
   PRO: 2,
   ENT: 3,
   DESIGNER: 4,
+  FREE: 5,
 }
 
 export const PLAN_STATUS = {

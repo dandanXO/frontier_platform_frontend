@@ -4,6 +4,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     dropdown-og-menu(@select="goToManagement({ ogKey: $event })")
     div(class="flex gap-x-6 items-center")
       div(
+        v-if="!(planType.FREE || planType.DESIGNER)"
         v-permission="FUNC_ID.OPEN_CREATE_GROUP"
         class="flex gap-x-1 items-center cursor-pointer"
         @click="openModalCreateGroup"
@@ -12,7 +13,6 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         f-svg-icon(iconName="add_box" size="20" class="text-primary-400")
         p(class="text-body2 text-grey-900") {{ $t('UU0017') }}
       f-button(
-        v-if="!planType.DESIGNER"
         size="sm"
         prependIcon="person_add"
         @click="inviteHandler"
@@ -62,7 +62,6 @@ const store = useStore()
 const { goToManagement, ogType, ogId } = useNavigation()
 const { checkCanInvitedPeople } = usePlanOld()
 const planType = computed(() => store.getters['polling/planType'])
-
 const tabList = reactive([
   {
     name: t('BB0008'),

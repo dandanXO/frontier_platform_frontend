@@ -9,7 +9,8 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
           class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-250"
         ) {{ $t('AA0016') }}
         template(v-if="!isGoogleLoadFail")
-          button#google-sign-up(class="mt-5 mb-3")
+          div(class="h-10")
+            button#google-sign-up(class="mt-5 mb-3") 
           div(class="grid grid-flow-col gap-x-3 items-center justify-center")
             div(class="w-19 h-px border-b border-grey-250")
             span(class="w-30.5 text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
@@ -46,7 +47,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
             :password="formData.password"
             class="mt-1 mb-2"
           )
-        div(class="flex-grow text-caption h-6")
+        div(class="flex-grow text-caption h-8")
           i18n-t(
             v-if="isEmailExist"
             keypath="WW0066"

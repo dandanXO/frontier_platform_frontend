@@ -51,7 +51,8 @@ export default function usePlanOld() {
         primaryBtnText: t('UU0031'),
       })
       return false
-    } else if (planType.value.ENT) {
+    } else {
+      // all plan must check member quota
       const memberQuota = store.getters['polling/plan'].quota.member
       if (memberQuota.max === 0) {
         store.dispatch('helper/openModalConfirm', {
