@@ -84,6 +84,12 @@ instance.interceptors.response.use(
           primaryBtnHandler: () => window.location.reload(),
         })
       }
+
+      //handle case when organization not exists
+      if (code === 'WW0119') {
+        return router.push({ name: 'NotFound' })
+      }
+
       return Promise.reject({ status, code, message, result })
     }
 
