@@ -15,7 +15,8 @@
     "format": "pnpm -r run format",
     "type-check": "pnpm -r run type-check",
     "test": "pnpm -r run test",
-    "test:watch": "pnpm -r run test:watch"
+    "test:watch": "pnpm -r run test:watch",
+    "update-translations": "cd ./packages/i18n/platform-i18n && python update_translations.py"
   },
   "keywords": [],
   "author": "",
