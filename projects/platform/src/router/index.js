@@ -494,7 +494,11 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: import('@/views/NotFound.vue'),
+    beforeEnter: async (_to, _from, next) => {
+      await store.dispatch('user/getUser')
+      next()
+    },
+    component: () => import('@/views/NotFound.vue'),
   },
 ]
 
