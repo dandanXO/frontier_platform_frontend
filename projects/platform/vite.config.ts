@@ -3,7 +3,19 @@ import { fileURLToPath, URL } from 'url'
 import { loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svgSpritePlugin from 'vite-plugin-svg-sprite-component'
+import { execSync } from 'child_process'
 const { resolve } = path
+
+const getGitTag = () => {
+  try {
+    return execSync('git describe --tags $(git rev-list --tags --max-count=1)')
+      .toString()
+      .trim()
+  } catch (error) {
+    console.warn('Failed to get Git tag:', error)
+    return 'unknown'
+  }
+}
 
 // https://github.com/vitejs/vite/issues/3105#issuecomment-939703781
 const htmlPlugin = (env) => {
@@ -39,6 +51,9 @@ export default ({ mode }) => ({
     htmlPluginFormatTemplate({ time: buildTime.toString() }),
     svgSpritePlugin({ symbolId: (name) => name }),
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify(getGitTag()),
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

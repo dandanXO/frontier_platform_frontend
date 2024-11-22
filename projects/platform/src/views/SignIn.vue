@@ -1,5 +1,6 @@
 <template lang="pug">
 div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
+  div(class="fixed top-7.5 left-9 text-grey-600") {{ appVersion }}
   dropdown-locale(class="fixed top-7.5 right-9")
   div(class="h-125 flex items-center")
     div(
@@ -85,7 +86,7 @@ const formData = reactive({
   password: '',
 })
 const errorMsgSignIn = ref('')
-
+const appVersion = __APP_VERSION__ || ''
 const openModalForgotPasswordEmail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-forgot-password-email',

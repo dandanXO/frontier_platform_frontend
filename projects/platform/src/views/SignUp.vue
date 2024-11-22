@@ -22,12 +22,15 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
               v-model:textValue="formData.firstName"
               :placeholder="$t('AA0017') + '*'"
               data-cy="firstName"
+              @blur="validateNameFormat"
             )
             f-input-text(
               v-model:textValue="formData.lastName"
               :placeholder="$t('AA0018') + '*'"
               data-cy="lastName"
+              @blur="validateNameFormat"
             )
+            p(v-if="nameErrorMsg !== ''" class="col-span-2 text-caption text-red-400") {{ nameErrorMsg }}
             f-input-text(
               v-model:textValue="formData.email"
               :placeholder="$t('AA0002') + '*'"
@@ -146,6 +149,7 @@ const formData = reactive({
 })
 const signupSourceType = ref(SIGNUP_SOURCE.NORMAL)
 const errorMsg = ref('')
+const nameErrorMsg = ref('')
 const agreeTermsAndPrivacy = ref(false)
 const isSignUpSuccessfully = ref(false)
 const isEmailExist = ref(false)
@@ -157,11 +161,17 @@ const availableToSignUp = computed(
   () =>
     !!formData.firstName &&
     !!formData.lastName &&
+    !nameErrorMsg.value &&
     isEmailValid.value &&
     isPasswordValid.value &&
     agreeTermsAndPrivacy.value
 )
-
+const validateNameFormat = async () => {
+  nameErrorMsg.value = ''
+  if (formData.firstName.length > 120 || formData.lastName.length > 120) {
+    return (nameErrorMsg.value = t('WW0116', { maxNum: 120 }))
+  }
+}
 const validateEmailFormat = async () => {
   isEmailExist.value = false
   errorMsg.value = ''
@@ -173,7 +183,6 @@ const validateEmailFormat = async () => {
   if (!!formData.email && !isEmailValid.value) {
     return (errorMsg.value = t('WW0019'))
   }
-
   isEmailExist.value = await store.dispatch('user/checkEmailExist', {
     email: formData.email,
   })
