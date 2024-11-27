@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     FInputTap: typeof import('./src/FInput/FInputTap/FInputTap.vue').default
     FTooltipStandard: typeof import('./src/FTooltip/FTooltipStandard/FTooltipStandard.vue').default
     FTooltipMedia: typeof import('./src/FTooltip/FTooltipMedia/FTooltipMedia.vue').default
+    FTooltip: typeof import('./src/FTooltip/FTooltip/FTooltip.vue').default
     FAvatar: typeof import('./src/FAvatar/FAvatar.vue').default
     FTag: typeof import('./src/FTag/FTag.vue').default
   }

@@ -1,8 +1,10 @@
-import type { App } from 'vue'
+import type { App, defineComponent } from 'vue'
 
 export default {
   install(app: App) {
-    const components = import.meta.glob('./src/**/*.vue', { eager: true })
+    const components = import.meta.glob('./src/**/*.vue', {
+      eager: true,
+    }) as Record<string, { default: ReturnType<typeof defineComponent> }>
     for (const path in components) {
       const component = components[path].default
       app.component(component.name, component)
@@ -29,6 +31,7 @@ import FInputTap from './src/FInput/FInputTap/FInputTap.vue'
 import FInputToggle from './src/FInput/FInputToggle/FInputToggle.vue'
 import FTooltipStandard from './src/FTooltip/FTooltipStandard/FTooltipStandard.vue'
 import FTooltipMedia from './src/FTooltip/FTooltipMedia/FTooltipMedia.vue'
+import FTooltip from './src/FTooltip/FTooltip/FTooltip.vue'
 import FAvatar from './src/FAvatar/FAvatar.vue'
 import FTag from './src/FTag/FTag.vue'
 
@@ -52,6 +55,7 @@ export {
   FInputTap,
   FTooltipStandard,
   FTooltipMedia,
+  FTooltip,
   FAvatar,
   FTag,
 }

@@ -10,8 +10,7 @@ div(
   )
     div(
       v-if="displayHeader"
-      class="h-8.5 px-5 pb-5 flex justify-between items-start border-b"
-      :class="[theme === THEME.DARK ? 'border-grey-700' : 'border-grey-100']"
+      class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-primary-border"
       data-cy="modal-how-to-scan-header"
     )
       p(
@@ -29,8 +28,7 @@ div(
       slot(name="default")
     div(
       v-if="footer && !usingCustomFooter"
-      class="p-5 h-18.5 border-content border-t flex items-center"
-      :class="[theme === THEME.DARK ? 'border-grey-700' : 'border-grey-100']"
+      class="p-5 h-18.5 border-content border-t flex items-center border-primary-border"
     )
       div(class="w-full flex justify-between")
         div(class="flex items-center text-caption leading-1.6")

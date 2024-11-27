@@ -98,6 +98,7 @@ module.exports = plugin(function () {}, {
           ...colors.primary,
           DEFAULT: 'var(--color-primary)',
           inverse: 'var(--color-primary-inverse)',
+          border: 'var(--color-primary-border)',
         },
         brown: colors.brown,
         forestgreen: colors.forestgreen,
