@@ -4,13 +4,12 @@ import { loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svgSpritePlugin from 'vite-plugin-svg-sprite-component'
 import { execSync } from 'child_process'
+import packageJson from './package.json'
 const { resolve } = path
 
 const getGitTag = () => {
   try {
-    return execSync('git describe --tags $(git rev-list --tags --max-count=1)')
-      .toString()
-      .trim()
+    return 'v' + packageJson.version
   } catch (error) {
     console.warn('Failed to get Git tag:', error)
     return 'unknown'
