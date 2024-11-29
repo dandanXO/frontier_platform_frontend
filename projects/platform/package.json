@@ -1,6 +1,6 @@
 {
   "name": "@frontier/platform",
-  "version": "2.22.2",
+  "version": "0.0.0",
   "scripts": {
     "serve": "bash ./scripts/fetchEnvVar.sh $npm_config_mode && vite --host --mode $npm_config_mode",
     "serve:dev": "npm run serve --mode=development",

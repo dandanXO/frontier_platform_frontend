@@ -4,7 +4,7 @@ import { loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svgSpritePlugin from 'vite-plugin-svg-sprite-component'
 import { execSync } from 'child_process'
-import packageJson from './package.json'
+import packageJson from '../../package.json'
 const { resolve } = path
 
 const getGitTag = () => {
