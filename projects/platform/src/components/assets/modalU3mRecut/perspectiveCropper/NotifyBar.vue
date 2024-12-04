@@ -1,9 +1,6 @@
 <template lang="pug">
 transition
-  div(
-    v-show="showNotif"
-    class="absolute top-5 left-1/2 -translate-x-1/2 margin-auto z-popper"
-  )
+  div(v-show="show" class="absolute top-5 left-1/2 -translate-x-1/2 margin-auto z-popper")
     div(
       class="w-128 rounded-lg p-3 flex flex-row items-center gap-3 text-primary-inverse"
       :class="contentContainerClass[status]"
@@ -11,44 +8,36 @@ transition
       div(class="p-2 rounded-full" :class="iconContainerClass[status]")
         f-svg-icon(:iconName="iconName[status]" size="24")
       div(class="flex flex-col gap-2 flex-1")
-        p(class="font-bold text-base") {{ title }}
+        p(class="font-bold text-base" v-if="title") {{ title }}
         p(class="text-sm" v-if="description") {{ description }}
-      div(
-        class="self-start cursor-pointer"
-        :onClick="onClose"
-        v-if="status === STATUS.FAILED"
-      )
+      div(class="self-start cursor-pointer" :onClick="onClose" v-if="showBtnClose")
         f-svg-icon(iconName="close" size="24")
 </template>
 
 <script lang="ts">
-const STATUS = {
-  FAILED: 'FAILED',
-  SUCCESS: 'SUCCESS',
-} as const
-export { STATUS }
+export enum STATUS {
+  FAILED = 'FAILED',
+  SUCCESS = 'SUCCESS',
+}
 </script>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
-  status: (typeof STATUS)[keyof typeof STATUS]
+  status: STATUS
   show: boolean
-  title: string
+  title?: string
   description?: string
+  showBtnClose?: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const showNotif = ref(props.show)
+const emit = defineEmits<{
+  (e: 'onNotifChange', v: boolean): void
+}>()
 
-watch(
-  () => props.show,
-  (show) => {
-    showNotif.value = show
-  }
-)
 const iconName = computed(() => ({
   [STATUS.FAILED]: 'cancel_outline',
   [STATUS.SUCCESS]: 'check_circle_outline',
@@ -60,7 +49,7 @@ const iconContainerClass = computed(() => ({
 }))
 
 const onClose = () => {
-  showNotif.value = false
+  emit('onNotifChange', false)
 }
 
 const contentContainerClass = computed(() => ({

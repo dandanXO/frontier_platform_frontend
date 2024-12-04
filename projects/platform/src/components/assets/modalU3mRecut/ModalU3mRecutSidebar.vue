@@ -25,8 +25,27 @@ div(
         :onClick="onChangeCropMode(CROP_MODE.PERSPECTIVE)"
       )
     div(class="flex flex-row gap-3")
-      action-button(:title="$t('EE0216')" iconName="crop_original" disabled)
-      action-button(:title="$t('EE0217')" iconName="quilting" disabled)
+      action-button(
+        :title="$t('EE0216')"
+        iconName="crop_original"
+        :onClick="onFindPattern"
+        :disabled="!refSideCropperArea?.refPerspectiveCanvas?.isChanging"
+        :tooltipTitle="$t('EE0235')"
+        :tooltipDesc="$t('EE0236')"
+      )
+      div(class="flex-1 p-2")
+  div(class="border border-secondary-border")
+  div(class="flex flex-col gap-4 text-primary-inverse")
+    p(class="text-base font-bold") {{ $t('RR0122') }}
+    div(class="flex flex-row gap-2")
+      f-input-toggle(
+        :value="isShowModalReplaceSides"
+        @update:value="emit('update:replaceSides', $event)"
+      )
+      p(class="text-sm text-primary-inverse") {{ $t(isBackSideOnly ? 'RR0478' : 'RR0477') }}
+    div(class="flex flex-row gap-2")
+      f-input-toggle(:value="isQuilting" @update:value="handletoggleQuilting")
+      p(class="text-sm text-primary-inverse") {{ $t('EE0234') }}
   div(class="border border-secondary-border")
   div(class="flex flex-col gap-3 text-primary-inverse")
     p(class="text-base font-bold") {{ $t('EE0215') }}
@@ -37,13 +56,13 @@ div(
         inputType="number"
         :theme="THEME.DARK"
         addOnLeft="W"
-        @update:textValue="sideCropperArea?.refPerspectiveCanvas?.changeCropWidth"
+        @update:textValue="refSideCropperArea?.refPerspectiveCanvas?.changeCropWidth"
         addOnRight="cm"
         :clearable="false"
       )
       f-input-text(
         v-model:textValue="cropSizeHeight"
-        @update:textValue="sideCropperArea?.refPerspectiveCanvas?.changeCropHeight"
+        @update:textValue="refSideCropperArea?.refPerspectiveCanvas?.changeCropHeight"
         size="md"
         inputType="number"
         :theme="THEME.DARK"
@@ -59,7 +78,7 @@ div(
       size="md"
       inputType="number"
       :theme="THEME.DARK"
-      @update:textValue="sideCropperArea?.chagneRotateInSlider"
+      @update:textValue="refSideCropperArea?.chagneRotateInSlider"
       addOnRight="°"
     )
     div(class="flex flex-row gap-3")
@@ -72,44 +91,109 @@ div(
         :onClick="onRotate(90)"
       )
       action-button(title="180°" :onClick="onRotate(180)")
-  div(class="border border-secondary-border")
-  div(class="flex flex-col gap-3 text-primary-inverse")
-    p(class="text-base font-bold") {{ $t('EE0218') }}
-
-    input-grid-color(
-      :labelColor="sideCropperArea?.gridColor"
-      @update:labelColor="sideCropperArea?.handleGridColorChange"
-    )
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import ActionButton from './ActionButton.vue'
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+
+import type { MaterialSide } from '@frontier/platform-web-sdk'
 import { THEME } from '@frontier/constants'
-import InputGridColor from './perspectiveCropper/InputGridColor.vue'
-import U3mRecutStepper from '@/components/assets/modalU3mRecut/U3mRecutStepper.vue'
 import type { U3mSide } from '@/types'
 import { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
-import type PerspectiveCropper from './perspectiveCropper/PerspectiveCropper.vue'
 import { toDP1 } from '@/utils/cropper'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import assetsApi from '@/apis/assets'
+import U3mRecutStepper from '@/components/assets/modalU3mRecut/U3mRecutStepper.vue'
+import type PerspectiveCropper from './perspectiveCropper/PerspectiveCropper.vue'
+import { STATUS as NOTIF_STATUS } from './perspectiveCropper/NotifyBar.vue'
+import ActionButton from './ActionButton.vue'
 
 interface Props {
   currentSide?: U3mSide
+  materialSide: MaterialSide | null
   handleCropModeChange: (v: CROP_MODE) => Promise<void>
-  refFaceSideCropArea: InstanceType<typeof PerspectiveCropper> | null
-  refBackSideCropArea: InstanceType<typeof PerspectiveCropper> | null
+  togglingQuilting: (v: U3mSide['isQuilting']) => void
+  refSideCropperArea: InstanceType<typeof PerspectiveCropper> | null
   isDoubleSideMaterial: boolean
+  isShowModalReplaceSides?: boolean
   faceSideUrl?: string
   backSideUrl?: string
 }
 
-const props = defineProps<Props>()
+const { t } = useI18n()
 
-const sideCropperArea = computed(() =>
-  props.currentSide?.sideName === U3M_CUT_SIDE.FACE_SIDE
-    ? props.refFaceSideCropArea
-    : props.refBackSideCropArea
+const isBackSideOnly = computed(
+  () =>
+    props.currentSide?.sideName === U3M_CUT_SIDE.BACK_SIDE &&
+    !props.isDoubleSideMaterial
 )
+
+const emit = defineEmits<{
+  (e: 'update:replaceSides', value: boolean): void
+}>()
+
+const props = defineProps<Props>()
+const store = useStore()
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+const isQuilting = ref(false)
+
+const onFindPattern = async () => {
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
+  const coordsMap =
+    props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
+
+  if (!coordsMap) {
+    store.dispatch('helper/closeModalLoading')
+    return
+  }
+
+  const { data } = await ogBaseAssetsApi(
+    'getPatternFromSelectedAreaMaterialSide',
+    {
+      selectedArea: {
+        leftBottom: coordsMap.leftBottom,
+        leftTop: coordsMap.leftTop,
+        rightBottom: coordsMap.rightBottom,
+        rightTop: coordsMap.rightTop,
+        rotateDeg: coordsMap.rotateDeg,
+      },
+      frontierNo: props.materialSide?.frontierNo ?? '',
+    }
+  )
+
+  const { isFound, pattern } = data.result
+
+  isFound &&
+    props.refSideCropperArea?.refPerspectiveCanvas?.setCoordsMap(pattern)
+
+  store.dispatch('helper/closeModalLoading')
+  !isFound &&
+    props.refSideCropperArea?.showToast({
+      description: t('WW0186'),
+      status: NOTIF_STATUS.FAILED,
+    })
+}
+
+const handletoggleQuilting = () => {
+  const value = !isQuilting.value
+  isQuilting.value = value
+
+  props.togglingQuilting(value)
+  if (value) {
+    props.refSideCropperArea?.refPerspectiveCanvas?.quilting()
+    return
+  }
+
+  const coordsMap =
+    props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
+
+  if (!coordsMap) {
+    return
+  }
+  props.refSideCropperArea?.refPerspectiveCanvas?.crop()
+}
 
 const onChangeCropMode = (cropMode: CROP_MODE) => () =>
   props.handleCropModeChange(cropMode)
@@ -117,11 +201,11 @@ const onChangeCropMode = (cropMode: CROP_MODE) => () =>
 const currentSideCropMode = computed(
   () => props.currentSide?.cropMode ?? CROP_MODE.SQUARE
 )
-const dimension = computed(() => sideCropperArea.value?.destinationDimension)
+const dimension = computed(() => props.refSideCropperArea?.destinationDimension)
 const cropSizeWidth = computed(() =>
   dimension.value?.cm.width ? toDP1(dimension.value?.cm.width) : 0
 )
-const rotateDeg = computed(() => sideCropperArea.value?.rotateDeg)
+const rotateDeg = computed(() => props.refSideCropperArea?.rotateDeg)
 
 watch(rotateDeg, (currentRotateDeg) =>
   (currentRotateDeg ?? 0) > 0
@@ -134,10 +218,6 @@ const cropSizeHeight = computed(() =>
 )
 
 const onRotate = (deg: number) => () => {
-  if (!sideCropperArea.value) {
-    return
-  }
-
-  sideCropperArea.value.handleRotate(deg)
+  props.refSideCropperArea?.handleRotate(deg)
 }
 </script>

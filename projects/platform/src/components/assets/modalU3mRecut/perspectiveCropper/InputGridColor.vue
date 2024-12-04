@@ -1,9 +1,9 @@
 <template lang="pug">
-f-popper(placement="bottom-start" :offset="[0, -4]")
+f-popper(placement="bottom-start")
   template(#trigger="{ isExpand }")
     div(
-      class="flex items-center gap-x-1 px-3 rounded border hover:bg-grey-850 hover:border-grey-600 cursor-pointer justify-between"
-      :class="['h-7', isExpand ? 'border-primary-300 bg-grey-700 shadow-[0_0_0_2px_#074E54]' : 'border-grey-700 bg-grey-900']"
+      class="flex items-center gap-x-1 px-3 py-2 rounded border bg-primary cursor-pointer justify-between"
+      :class="[isExpand ? 'border-brand-solid shadow-[0_0_0_2px_#074E54]' : 'border-primary-border']"
     )
       div(class="flex flex-row gap-2 justify-center align-middle")
         label(
@@ -19,8 +19,9 @@ f-popper(placement="bottom-start" :offset="[0, -4]")
       )
   template(#content="{ isExpand }")
     div(
-      class="w-max p-2.5 rounded bg-grey-800"
+      class="w-max p-2.5 rounded bg-secondary"
       :style="{ 'box-shadow': isExpand ? '0px 1.5px 3.6px rgba(38, 38, 38, 0.24), 0px 6px 14.4px rgba(38, 38, 38, 0.24)' : '' }"
+      data-theme="new-dark"
     )
       div(class="grid grid-cols-6 grid-rows-1 gap-x-2 gap-y-1.5")
         label(

@@ -50,7 +50,7 @@ const toggleSwitch = () => {
 
 const switchClasses = computed(() => ({
   'bg-brand-solid': isOn.value && !props.disabled,
-  'bg-grey-200': !isOn.value && !props.disabled,
+  'bg-tertiary': !isOn.value && !props.disabled,
   'bg-grey-400': props.disabled,
   'focus:ring-2 focus:ring-blue-500': !props.disabled,
   'h-4 w-7': props.size === 'small',

@@ -21,9 +21,12 @@ div(
     modal-u3m-recut-sidebar(
       :currentSide="currentSide"
       :handleCropModeChange="handleCropModeChange"
-      :refFaceSideCropArea="refFaceSideCropArea"
-      :refBackSideCropArea="refBackSideCropArea"
+      :togglingQuilting="togglingQuilting"
+      :materialSide="materialSide"
+      :refSideCropperArea="refSideCropperArea"
       :isDoubleSideMaterial="material.isDoubleSide"
+      @update:replaceSides="handleToggleReplaceSides"
+      :isShowModalReplaceSides="isShowModalReplaceSides"
       :faceSideUrl="faceSideU3mImage?.original"
       :backSideUrl="backSideU3mImage?.original"
     )
@@ -32,12 +35,10 @@ div(
         perspective-cropper(
           v-if="side.sideName === currentSideName"
           :side="side"
-          :isDoubleSideMaterial="material.isDoubleSide"
           :isSquare="side.cropMode === CROP_MODE.SQUARE"
           :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
           @update:editStatus="handlePerspectiveEditStatusChange"
-          @update:replaceSides="handleToggleReplaceSides"
-          :isShowModalReplaceSides="isShowModalReplaceSides"
+          :handleQuiltingCoordsChange="handleQuiltingCoordsChange"
         )
       div
 </template>
@@ -65,11 +66,14 @@ import type {
   MaterialGenerateU3mSide,
   MaterialU3mImage,
   MaterialSideImage,
+  MaterialSide,
+  PerspectiveCropImageRecord,
 } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import ModalU3mConfirm from '../ModalU3mConfirm.vue'
+import { STATUS as NOTIF_STATUS } from './perspectiveCropper/NotifyBar.vue'
 
 const props = defineProps<{
   material: Material
@@ -105,6 +109,14 @@ const backSideImage = computed<MaterialSideImage | null>(
 const backSideU3mImage = computed<MaterialU3mImage | null>(
   () => (material.value.backSide?.u3mImage as MaterialU3mImage) || null
 )
+const materialSide = computed(() => {
+  const materialSideMap: Record<U3M_CUT_SIDE, MaterialSide | null> = {
+    [U3M_CUT_SIDE.FACE_SIDE]: material.value.faceSide,
+    [U3M_CUT_SIDE.BACK_SIDE]: material.value.faceSide,
+  }
+
+  return materialSideMap[currentSideName.value ?? U3M_CUT_SIDE.FACE_SIDE]
+})
 
 const previewRect = ref<HTMLDivElement | null>(null)
 const isShowModalReplaceSides = ref(true)
@@ -129,6 +141,12 @@ const sideList = computed(() => {
 const currentSide = ref<U3mSide>()
 const currentSideName = computed(() => currentSide.value?.sideName)
 const currentSideCropMode = computed(() => currentSide.value?.cropMode)
+
+const refSideCropperArea = computed(() =>
+  currentSide.value?.sideName === U3M_CUT_SIDE.FACE_SIDE
+    ? refFaceSideCropArea.value
+    : refBackSideCropArea.value
+)
 
 const isValid = computed(() => {
   if (!currentSide.value) {
@@ -167,6 +185,13 @@ const handleCropModeChange = async (v: CROP_MODE) => {
     }
     backSide.value.perspectiveCropRecord = cropResult.cropRecord
   }
+}
+
+const togglingQuilting = async (v: U3mSide['isQuilting']) => {
+  if (!currentSide.value) {
+    throw new Error('current side not existed.')
+  }
+  currentSide.value.isQuilting = v
 }
 
 const handleGoBack = async () => {
@@ -374,6 +399,47 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
     console.error(error)
     store.dispatch('helper/closeModalLoading')
   }
+}
+
+const handleQuiltingCoordsChange = async (
+  coordsMap: PerspectiveCropImageRecord
+) => {
+  const u3mImageMap: Record<U3M_CUT_SIDE, MaterialU3mImage | null> = {
+    [U3M_CUT_SIDE.FACE_SIDE]: faceSideU3mImage.value,
+    [U3M_CUT_SIDE.BACK_SIDE]: backSideU3mImage.value,
+  }
+
+  if (!currentSideName.value) {
+    return
+  }
+
+  const rotateDeg =
+    u3mImageMap[currentSideName.value]?.cropRecord.squareCropRecord?.rotateDeg
+
+  const { data } = await ogBaseAssetsApi(
+    'getQuiltedFromSelectedAreaMaterialSide',
+    {
+      frontierNo: materialSide.value?.frontierNo ?? '',
+      selectedArea: {
+        leftBottom: coordsMap.leftBottom,
+        leftTop: coordsMap.leftTop,
+        rightBottom: coordsMap.rightBottom,
+        rightTop: coordsMap.rightTop,
+        rotateDeg: rotateDeg ?? 0,
+      },
+    }
+  )
+
+  data.result
+    ? await refSideCropperArea.value?.loadImageToCanvas(data.result)
+    : refSideCropperArea.value?.refPerspectiveCanvas?.crop(false, true)
+
+  store.dispatch('helper/closeModalLoading')
+  !data.result &&
+    refSideCropperArea.value?.showToast({
+      description: t('WW0185'),
+      status: NOTIF_STATUS.FAILED,
+    })
 }
 
 const handleConfirm = async () => {

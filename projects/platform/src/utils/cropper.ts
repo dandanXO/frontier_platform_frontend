@@ -31,6 +31,11 @@ export const coordToDP1 = (coord: Coord) => ({
   y: toDP1(coord.y),
 })
 
+export const getIntCoord = (coord: Coord) => ({
+  x: Math.round(coord.x),
+  y: Math.round(coord.y),
+})
+
 export const configToPercentScaleRecord = (
   config: CropperConfig
 ): SquareCropRecord => {

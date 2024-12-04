@@ -114,6 +114,9 @@ import {
   onUnmounted,
 } from 'vue'
 import cv from '@techstark/opencv-js'
+import debounce from 'lodash/debounce'
+
+import type { PerspectiveCropImageRecord } from '@frontier/platform-web-sdk'
 import {
   getDistance,
   setupStage,
@@ -121,8 +124,9 @@ import {
   getDistanceInCm,
   getFitScale,
   getCenter,
+  calculateCenter,
 } from '@/utils/perspectiveCropper'
-import { cmToPixel, toDP1, pixelToCm } from '@/utils/cropper'
+import { cmToPixel, toDP1, pixelToCm, getIntCoord } from '@/utils/cropper'
 import type {
   Coord,
   EditStatus,
@@ -130,7 +134,8 @@ import type {
   PerspectiveCropRecord,
 } from '@/types'
 import colors from '@frontier/tailwindcss/colors'
-import { isEqual } from '@frontier/lib'
+import { THEME, isEqual } from '@frontier/lib'
+import { useStore } from 'vuex'
 
 type CircleId = 'leftTop' | 'rightTop' | 'rightBottom' | 'leftBottom'
 
@@ -144,6 +149,7 @@ const props = defineProps<{
   restoreRecord: PerspectiveCropRecord | undefined
   initialRecord: PerspectiveCropRecord | undefined
   isSquare?: boolean
+  isQuilting?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -156,6 +162,7 @@ const emit = defineEmits<{
       behaviorType: 'move' | 'grab'
     }
   ): void
+  (e: 'quiltingCoordsChange', coords: PerspectiveCropImageRecord): void
   (e: 'cropError', err: Error): void
   (e: 'scaleChange', v: number): void
   (e: 'rotateDegChange', v: number): void
@@ -164,10 +171,11 @@ const emit = defineEmits<{
 }>()
 
 const DEFAULT_CROP_CM = 4
-const MIN_CROP_CM = 1
+const MIN_CROP_CM = 2
 const INVALID_LINE_COLOR = colors.red[400].DEFAULT
 const CIRCLE_HOVER_STROKE = colors.grey[300].DEFAULT
 const WHEEL_SCALE_BY = 1.03
+const store = useStore()
 
 const previousBehaviarType = ref<'move' | 'grab'>('move')
 
@@ -332,6 +340,78 @@ const circleLeftBottomPosition = reactive<Coord>({
   ...defaultPositions.leftBottom,
   ...(props.initialRecord && props.initialRecord.leftBottom),
 })
+
+const quilting = () => {
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
+
+  const xAxis = [
+    circleLeftTopPosition.x,
+    circleRightTopPosition.x,
+    circleRightBottomPosition.x,
+    circleLeftBottomPosition.x,
+  ].sort((a, b) => a - b)
+
+  const yAxis = [
+    circleLeftTopPosition.y,
+    circleRightTopPosition.y,
+    circleRightBottomPosition.y,
+    circleLeftBottomPosition.y,
+  ].sort((a, b) => a - b)
+
+  const biggestXAxis = xAxis[xAxis.length - 1]
+  const biggestYAxis = yAxis[yAxis.length - 1]
+
+  emit('quiltingCoordsChange', {
+    leftTop: getIntCoord({
+      x: xAxis[0],
+      y: yAxis[0],
+    }),
+    rightTop: getIntCoord({
+      x: biggestXAxis,
+      y: yAxis[0],
+    }),
+    rightBottom: getIntCoord({
+      x: biggestXAxis,
+      y: biggestYAxis,
+    }),
+    leftBottom: getIntCoord({
+      x: xAxis[0],
+      y: biggestYAxis,
+    }),
+  })
+}
+
+const getCoordsMap = (): PerspectiveCropImageRecord => {
+  return {
+    leftBottom: getIntCoord(circleLeftBottomPosition),
+    rightBottom: getIntCoord(circleRightBottomPosition),
+    leftTop: getIntCoord(circleLeftTopPosition),
+    rightTop: getIntCoord(circleRightTopPosition),
+    rotateDeg: rotateDeg.value,
+  }
+}
+
+const setCoordsMap = (coordsMap: PerspectiveCropImageRecord) => {
+  const positions: Record<
+    Exclude<keyof PerspectiveCropImageRecord, 'rotateDeg'>,
+    Coord
+  > = {
+    rightTop: circleRightTopPosition,
+    leftTop: circleLeftTopPosition,
+    leftBottom: circleLeftBottomPosition,
+    rightBottom: circleRightBottomPosition,
+  }
+
+  for (const [key, position] of Object.entries(positions)) {
+    position.x = coordsMap[key as keyof typeof positions].x
+    position.y = coordsMap[key as keyof typeof positions].y
+  }
+
+  rotateDegRef.value = coordsMap.rotateDeg
+}
+const isChanging = ref(false)
+
+const debouncedQuilting = debounce(quilting, 1000)
 
 const leftSideCenter = computed(() =>
   getCenter(circleLeftTopPosition, circleLeftBottomPosition)
@@ -934,7 +1014,7 @@ const handleCircleDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {
   }
 }
 
-const crop = async () => {
+const crop = async (init?: boolean, skipQuilting?: boolean) => {
   emit('cropStart')
 
   try {
@@ -1042,6 +1122,8 @@ const crop = async () => {
       record: resultRecord,
       behaviorType: type,
     })
+    isChanging.value = !init
+    !init && props.isQuilting && !skipQuilting && debouncedQuilting()
   } catch (err) {
     console.timeEnd('Perspective Transform')
     if (err instanceof Error) {
@@ -1082,7 +1164,7 @@ onMounted(() => {
       rotate(props.initialRecord.rotateDeg)
     }
     isCropReady.value = true
-    crop()
+    crop(true)
   }
 
   try {
@@ -1161,20 +1243,6 @@ const rotate = (deg: number, isReset?: boolean) => {
     return degrees * (Math.PI / 180)
   }
 
-  // Calculate the center point of the four points
-  function calculateCenter(points: Coord[]) {
-    let centerX = 0,
-      centerY = 0
-    points.forEach((point) => {
-      centerX += point.x
-      centerY += point.y
-    })
-    return {
-      x: centerX / points.length,
-      y: centerY / points.length,
-    }
-  }
-
   // Apply the rotation matrix to rotate around the center point
   function rotatePoint(point: Coord, center: Coord, angleInDegrees: number) {
     let angle = degreesToRadians(angleInDegrees) // Convert angle to radians
@@ -1221,7 +1289,7 @@ const rotate = (deg: number, isReset?: boolean) => {
   emit('rotateDegChange', rotateDegRef.value)
   rotatePresetsIndex.value = 0
 
-  crop()
+  crop(isReset)
 }
 
 const resetRotation = () => {
@@ -1245,16 +1313,18 @@ const resetPositions = () => {
     ...defaultPositions.leftBottom,
     ...(props.restoreRecord && props.restoreRecord.leftBottom),
   })
-  crop()
+  crop(true)
 }
 
 const restore = () => {
   resetPositions()
   resetRotation()
   zoomToFit()
+  isChanging.value = false
 }
 
 defineExpose({
+  crop,
   setScale,
   zoomToFit,
   resetPositions,
@@ -1264,6 +1334,10 @@ defineExpose({
   restore,
   changeCropWidth,
   changeCropHeight,
+  getCoordsMap,
+  setCoordsMap,
+  isChanging,
+  quilting,
 })
 </script>
 

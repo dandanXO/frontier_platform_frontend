@@ -63,6 +63,7 @@ module.exports = function ({ addBase, theme }) {
       '--color-link': theme('colors.cyan.500.v1'),
       '--color-link-hover': theme('colors.cyan.600.v1'),
       '--color-primary': theme('colors.black'),
+      '--color-primary-border': theme('colors.grey.700.v1'),
       '--color-primary-inverse': theme('colors.white'),
       '--color-primary-border': theme('colors.grey.700.v1'),
       '--color-secondary': theme('colors.grey.900.v1'),

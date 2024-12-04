@@ -10,6 +10,7 @@ button(
     :class="[animation ? 'animation-circle' : '']"
   )
   slot
+  f-svg-icon(v-if="postpendIcon !== ''" :iconName="postpendIcon" class="self-center")
 </template>
 
 <script lang="ts">
@@ -27,6 +28,7 @@ const props = withDefaults(
     type?: 'primary' | 'secondary' | 'text' | 'special' | 'critical-outline'
     isIcon?: boolean
     prependIcon?: string
+    postpendIcon?: string
     disabled?: boolean
     parentIsFlex?: boolean
     isFullWidth?: boolean
@@ -37,6 +39,7 @@ const props = withDefaults(
     size: 'special',
     type: 'primary',
     prependIcon: '',
+    postpendIcon: '',
     disabled: false,
     parentIsFlex: false,
     isFullWidth: false,
@@ -53,7 +56,7 @@ const btnSize = computed(() => {
             'text-body1',
             'min-w-21.5',
             'h-11',
-            props.prependIcon === '' ? 'px-6' : 'px-3',
+            props.prependIcon || props.postpendIcon ? 'px-3' : 'px-6',
           ]
 
     case 'md':
@@ -63,7 +66,7 @@ const btnSize = computed(() => {
             'text-body1',
             'min-w-21',
             'h-10',
-            props.prependIcon === '' ? 'px-4' : 'px-3',
+            props.prependIcon && props.postpendIcon ? 'px-3' : 'px-4',
             props.parentIsFlex ? 'py-4' : '',
           ]
 
@@ -74,7 +77,7 @@ const btnSize = computed(() => {
             'text-body2',
             'min-w-14',
             'h-8.5',
-            props.prependIcon === '' ? 'px-3.5' : 'px-3',
+            props.prependIcon && props.postpendIcon ? 'px-3' : 'px-3.5',
           ]
     default:
       return []

@@ -38,6 +38,20 @@ export const getDimension = (
   }
 }
 
+// Calculate the center point of the four points
+export function calculateCenter(points: Coord[]): Coord {
+  let centerX = 0,
+    centerY = 0
+  points.forEach((point) => {
+    centerX += point.x
+    centerY += point.y
+  })
+  return {
+    x: centerX / points.length,
+    y: centerY / points.length,
+  }
+}
+
 export const setScale = (
   stage: Konva.Stage,
   newScale: number,

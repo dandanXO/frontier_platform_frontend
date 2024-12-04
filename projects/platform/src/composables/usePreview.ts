@@ -231,6 +231,44 @@ const usePreview = (
     }
   }
 
+  const loadImageToCanvas = async (imageUrl: string) => {
+    if (!destinationCanvas.value) {
+      console.error(`Destination Canvas not found.`)
+      return
+    }
+    const ctx = destinationCanvas.value.getContext('2d')
+    if (!ctx) {
+      console.error('Canvas context not available.')
+      return
+    }
+
+    const img = new Image()
+    img.crossOrigin = 'anonymous' // Avoid CORS issues for external images
+    const loadImage = () =>
+      new Promise<void>((resolve, reject) => {
+        img.onload = () => {
+          if (!destinationCanvas.value) {
+            console.error(`Destination Canvas not found.`)
+            reject(new Error('Destination Canvas not found.'))
+            return
+          }
+          destinationCanvas.value.width = img.width
+          destinationCanvas.value.height = img.height
+          ctx.drawImage(img, 0, 0)
+          resolve()
+        }
+
+        img.onerror = () => {
+          console.error('Failed to load the image.')
+          reject(new Error('Failed to load the image.'))
+        }
+      })
+
+    img.src = imageUrl
+    await loadImage()
+    await renderPreviewDisplay()
+  }
+
   onUnmounted(() => {
     previewDisplay.value?.cleanUp()
   })
@@ -238,6 +276,7 @@ const usePreview = (
   return {
     previewDisplay,
     renderPreviewDisplay,
+    loadImageToCanvas,
   }
 }
 

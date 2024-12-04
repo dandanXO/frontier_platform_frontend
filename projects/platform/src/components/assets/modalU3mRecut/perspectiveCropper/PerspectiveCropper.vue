@@ -4,8 +4,10 @@ div(class="h-full flex flex-1 flex-col")
     notify-bar(
       :show="showNotif"
       :title="notifTitle"
+      @onNotifChange="onNotifChange"
       :description="notifDescription"
       :status="notifStatus"
+      :showBtnClose="showNotifBtnClose"
     )
     div(class="relative flex-1 flex flex-col")
       div(class="flex-1 rounded-lg overflow-hidden")
@@ -36,6 +38,7 @@ div(class="h-full flex flex-1 flex-col")
             ref="refPerspectiveCanvas"
             v-if="sourceCanvasContainer && sourceImage && downSampledCanvases"
             :isSquare="props.isSquare"
+            :isQuilting="props.side.isQuilting"
             :container="sourceCanvasContainer"
             :sourceImage="sourceImage"
             :downSampleScales="downSampleScales"
@@ -44,6 +47,7 @@ div(class="h-full flex flex-1 flex-col")
             :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord ?? undefined"
             :initialRecord="props.side.perspectiveCropRecord ?? undefined"
             :gridColor="gridColor"
+            @quiltingCoordsChange="handleQuiltingCoordsChange"
             @rotateDegChange="handleRotateDegChange"
             @scaleChange="handleSourceScaleChange"
             @cropStart="handleCropStart"
@@ -81,13 +85,14 @@ div(class="h-full flex flex-1 flex-col")
           :blockList="zoomBlockList"
           @select="handlePreviewZoomUpdate"
         )
-  div(class="bg-primary flex flex-row px-8 py-5 h-16")
-    div(class="flex flex-row pt-1 justify-end pr-1 gap-2")
-      f-input-toggle(
-        :value="isShowModalReplaceSides"
-        @update:value="emit('update:replaceSides', $event)"
+  div(class="bg-primary flex flex-row px-8 py-5")
+    div(class="flex flex-row gap-4 text-primary-inverse align-middle justify-center h-fit")
+      p(class="text-base font-bold self-center") {{ $t('EE0218') }}
+
+      input-grid-color(
+        :labelColor="gridColor"
+        @update:labelColor="handleGridColorChange"
       )
-      p(class="text-sm text-primary-inverse") {{ $t(isBackSideOnly ? 'RR0478' : 'RR0477') }}
 </template>
 
 <script setup lang="ts">
@@ -103,18 +108,15 @@ import {
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
+import Ruler from '@scena/ruler'
+
+import type { PerspectiveCropImageRecord } from '@frontier/platform-web-sdk'
 import usePreview from '@/composables/usePreview'
 import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
-import Ruler from '@scena/ruler'
 import NotifyBar, {
   STATUS as NOTIF_STATUS,
 } from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
-import {
-  NOTIFY_TYPE,
-  THEME,
-  U3M_CUT_SIDE,
-  useConstants,
-} from '@/utils/constants'
+import { NOTIFY_TYPE, THEME, useConstants } from '@/utils/constants'
 import { cmToPixel } from '@/utils/cropper'
 import { getDimension, preRender } from '@/utils/perspectiveCropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
@@ -127,30 +129,30 @@ import type {
 } from '@/types'
 import colors from 'tailwindcss/colors'
 import ModalU3mConfirm from '../../ModalU3mConfirm.vue'
+import InputGridColor from './InputGridColor.vue'
 
-const props = withDefaults(
-  defineProps<{
-    side: U3mSide
-    isShowModalReplaceSides: boolean
-    isDoubleSideMaterial: boolean
-    isSquare: boolean
-  }>(),
-  {
-    isSquare: false,
-  }
-)
+interface Props {
+  side: U3mSide
+  isSquare: boolean
+  handleQuiltingCoordsChange: (coordsMap: PerspectiveCropImageRecord) => void
+}
+
+export interface ToastParams {
+  title?: string
+  description?: string
+  status: NOTIF_STATUS
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isSquare: false,
+})
 
 const emit = defineEmits<{
   (e: 'update:editStatus', editStatus: EditStatus): void
-  (e: 'update:replaceSides', value: boolean): void
 }>()
 
 const downSampleScales = [0.1, 0.15, 0.3, 0.5]
-const isBackSideOnly = computed(
-  () =>
-    props.side.sideName === U3M_CUT_SIDE.BACK_SIDE &&
-    !props.isDoubleSideMaterial
-)
+
 const store = useStore()
 const { CROPPER_GRID_COLORS } = useConstants()
 const { t } = useI18n()
@@ -185,6 +187,7 @@ const previewScale = ref(0)
 const showNotif = ref(false)
 const notifTitle = ref('')
 const notifDescription = ref('')
+const showNotifBtnClose = ref(false)
 const notifStatus = ref<(typeof NOTIF_STATUS)[keyof typeof NOTIF_STATUS]>(
   NOTIF_STATUS.SUCCESS
 )
@@ -214,7 +217,11 @@ const errorHandler = (err: Error) => {
     primaryBtnHandler: () => window.location.reload(),
   })
 }
-const { previewDisplay, renderPreviewDisplay } = usePreview(
+
+const onNotifChange = (v: boolean) => {
+  showNotif.value = v
+}
+const { previewDisplay, renderPreviewDisplay, loadImageToCanvas } = usePreview(
   destinationCanvas,
   previewCanvasContainer,
   gridColor.value,
@@ -224,6 +231,7 @@ const { previewDisplay, renderPreviewDisplay } = usePreview(
 
 const changeStatusCrop = (status: EditStatus) => {
   emit('update:editStatus', status)
+  showNotifBtnClose.value = true
 
   if (!status.isSizeValid) {
     notifTitle.value = t('WW0124')
@@ -321,6 +329,9 @@ const handleSourceScaleChange = (cm: number) => {
 }
 
 const handleCropStart = () => {
+  if (props.side.isQuilting) {
+    return
+  }
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 }
 
@@ -329,6 +340,9 @@ const handleCropSuccess = (result: {
   record: PerspectiveCropRecord
   behaviorType: 'move' | 'grab'
 }) => {
+  if (props.side.isQuilting) {
+    return
+  }
   destinationDimension.value = getDimension(
     result.canvas.width,
     result.canvas.height,
@@ -510,15 +524,29 @@ const restore = () => {
   })
 }
 
+const showToast = ({ description, status, title }: ToastParams) => {
+  notifDescription.value = description ?? ''
+  notifTitle.value = title ?? ''
+  notifStatus.value = status
+  showNotifBtnClose.value = false
+  showNotif.value = true
+
+  setTimeout(() => {
+    showNotif.value = false
+  }, 3000)
+}
+
 defineExpose({
   cropImage,
   restore,
   destinationDimension,
   handleRotate,
   rotateDeg,
+  showToast,
   chagneRotateInSlider,
   handleGridColorChange,
   gridColor,
   refPerspectiveCanvas,
+  loadImageToCanvas,
 })
 </script>

@@ -5,10 +5,24 @@ div(
   @click="disabled || !onClick ? noop() : onClick()"
 )
   f-svg-icon(v-if="iconName" :iconName="iconName" size="24" class="self-center")
-  p(class="text-sm text-center") {{ title }}
+  div(class="flex flex-row gap-2 align-middle justify-center")
+    p(class="text-sm text-center") {{ title }}
+    f-tooltip(
+      v-if="tooltipTitle"
+      :title="tooltipTitle"
+      :desc="tooltipDesc"
+      :placement="TOOLTIP_PLACEMENT.RIGHT"
+      data-theme="new"
+      class="self-center"
+      classContent="w-85"
+      :offset="[-6, 0]"
+    )
+      template(#slot:tooltip-trigger)
+        f-svg-icon(iconName="question" size="16" color="white" class="self-center")
 </template>
 
 <script setup lang="ts">
+import { TOOLTIP_PLACEMENT } from '@frontier/constants'
 import { noop } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -18,6 +32,8 @@ interface Props {
   onClick?: VoidFunction
   title: string
   iconName?: string
+  tooltipTitle?: string
+  tooltipDesc?: string
 }
 const props = defineProps<Props>()
 

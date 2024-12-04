@@ -517,7 +517,7 @@ export interface BaseBookmark {
  */
 export interface BaseProcessDataRequest {
     /**
-     * 
+     * 加工段類型。
      * @type {ProcessType}
      * @memberof BaseProcessDataRequest
      */
@@ -530,6 +530,25 @@ export interface BaseProcessDataRequest {
     'electricityKWh': number | null;
 }
 /**
+ * 基底加工段資料回應模型。
+ * @export
+ * @interface BaseProcessDataResponse
+ */
+export interface BaseProcessDataResponse {
+    /**
+     * 加工段類型。
+     * @type {ProcessType}
+     * @memberof BaseProcessDataResponse
+     */
+    'processType'?: ProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof BaseProcessDataResponse
+     */
+    'electricityKWh'?: number;
+}
+/**
  * @type BookmarkListInner
  * @export
  */
@@ -538,7 +557,7 @@ export type BookmarkListInner = FolderBookmark | OrgBookmark;
 /**
  * 書籤類型
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const BookmarkType = {
@@ -621,6 +640,92 @@ export interface CancelMaterialUploadProgressRequest {
 }
 
 
+/**
+ * 表示單一加工段的碳排放詳細資訊回應模型。
+ * @export
+ * @interface CarbonEmissionDetailResponseModel
+ */
+export interface CarbonEmissionDetailResponseModel {
+    /**
+     * 加工段類型。
+     * @type {ProcessType}
+     * @memberof CarbonEmissionDetailResponseModel
+     */
+    'processType'?: ProcessType;
+    /**
+     * 碳排放（kg-CO₂e/kg）。
+     * @type {number}
+     * @memberof CarbonEmissionDetailResponseModel
+     */
+    'carbonEmissionsKgCO2ePerKg'?: number;
+    /**
+     * 最大碳排放（kg-CO₂e/kg）。
+     * @type {number}
+     * @memberof CarbonEmissionDetailResponseModel
+     */
+    'carbonEmissionsMaxKgCO2ePerKg'?: number;
+    /**
+     * 最小碳排放（kg-CO₂e/kg）。
+     * @type {number}
+     * @memberof CarbonEmissionDetailResponseModel
+     */
+    'carbonEmissionsMinKgCO2ePerKg'?: number;
+    /**
+     * 平均碳排放（kg-CO₂e/kg）。
+     * @type {number}
+     * @memberof CarbonEmissionDetailResponseModel
+     */
+    'carbonEmissionsAvgKgCO2ePerKg'?: number;
+}
+/**
+ * 表示產品各個加工段的碳排放資訊回應模型。
+ * @export
+ * @interface CarbonEmissionsResponseModel
+ */
+export interface CarbonEmissionsResponseModel {
+    /**
+     * 布片 ID。
+     * @type {number}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'materialId'?: number;
+    /**
+     * 原料加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'rawMaterial'?: CarbonEmissionDetailResponseModel;
+    /**
+     * 紗線加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'yarn'?: CarbonEmissionDetailResponseModel;
+    /**
+     * 紗線處理加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'yarnProcessing'?: CarbonEmissionDetailResponseModel;
+    /**
+     * 編織加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'weaving'?: CarbonEmissionDetailResponseModel;
+    /**
+     * 染色加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'dyeing'?: CarbonEmissionDetailResponseModel;
+    /**
+     * 整理加工段的碳排放資訊。
+     * @type {CarbonEmissionDetailResponseModel}
+     * @memberof CarbonEmissionsResponseModel
+     */
+    'finishing'?: CarbonEmissionDetailResponseModel;
+}
 /**
  * 
  * @export
@@ -1706,7 +1811,7 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
      * @type {number}
      * @memberof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner
      */
-    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum;
+    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum | null;
     /**
      * 
      * @type {Array<number>}
@@ -1716,22 +1821,10 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
 }
 
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum];
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum];
@@ -1810,7 +1903,7 @@ export interface CodeRoleListGet200ResponseResultCodeRoleListInner {
      * @type {number}
      * @memberof CodeRoleListGet200ResponseResultCodeRoleListInner
      */
-    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum;
+    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum | null;
 }
 
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
@@ -1824,12 +1917,6 @@ export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum];
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum];
@@ -2000,7 +2087,7 @@ export interface CoverImage {
 /**
  * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面) 4 (Digital Drape)
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const CoverMode = {
@@ -3114,7 +3201,7 @@ export interface DeleteWorkspaceNodeRequest {
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const DigitalDrapeStatus = {
@@ -3127,6 +3214,68 @@ export const DigitalDrapeStatus = {
 export type DigitalDrapeStatus = typeof DigitalDrapeStatus[keyof typeof DigitalDrapeStatus];
 
 
+/**
+ * 
+ * @export
+ * @interface DigitalPlusGetCarbonEmissions200Response
+ */
+export interface DigitalPlusGetCarbonEmissions200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DigitalPlusGetCarbonEmissions200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DigitalPlusGetCarbonEmissions200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CarbonEmissionsResponseModel}
+     * @memberof DigitalPlusGetCarbonEmissions200Response
+     */
+    'result'?: CarbonEmissionsResponseModel;
+    /**
+     * 
+     * @type {object}
+     * @memberof DigitalPlusGetCarbonEmissions200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface DigitalPlusGetProductInfo200Response
+ */
+export interface DigitalPlusGetProductInfo200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DigitalPlusGetProductInfo200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DigitalPlusGetProductInfo200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {ProductInfoResponseModel}
+     * @memberof DigitalPlusGetProductInfo200Response
+     */
+    'result'?: ProductInfoResponseModel;
+    /**
+     * 
+     * @type {object}
+     * @memberof DigitalPlusGetProductInfo200Response
+     */
+    'message'?: object | null;
+}
 /**
  * @type DigitalPlusMaterialType
  * Digital+ 布種列舉。
@@ -3679,19 +3828,19 @@ export interface DigitalThreadCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum;
+    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addTo': DigitalThreadCreatePostRequestAddToEnum;
+    'addTo': DigitalThreadCreatePostRequestAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'type': DigitalThreadCreatePostRequestTypeEnum;
+    'type': DigitalThreadCreatePostRequestTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -3707,21 +3856,14 @@ export interface DigitalThreadCreatePostRequest {
 }
 
 export const DigitalThreadCreatePostRequestAddFromOGTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddFromOGTypeEnum = typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum[keyof typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum];
 export const DigitalThreadCreatePostRequestAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddToEnum = typeof DigitalThreadCreatePostRequestAddToEnum[keyof typeof DigitalThreadCreatePostRequestAddToEnum];
 export const DigitalThreadCreatePostRequestTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadCreatePostRequestTypeEnum = typeof DigitalThreadCreatePostRequestTypeEnum[keyof typeof DigitalThreadCreatePostRequestTypeEnum];
@@ -3856,7 +3998,7 @@ export interface DigitalThreadGetPostRequestFilter {
      * @type {number}
      * @memberof DigitalThreadGetPostRequestFilter
      */
-    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum;
+    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum | null;
     /**
      * 
      * @type {boolean}
@@ -3890,9 +4032,6 @@ export interface DigitalThreadGetPostRequestFilter {
 }
 
 export const DigitalThreadGetPostRequestFilterAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadGetPostRequestFilterAddToEnum = typeof DigitalThreadGetPostRequestFilterAddToEnum[keyof typeof DigitalThreadGetPostRequestFilterAddToEnum];
@@ -3982,13 +4121,13 @@ export interface DigitalThreadStickerCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum;
+    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'type': DigitalThreadStickerCreatePostRequestTypeEnum;
+    'type': DigitalThreadStickerCreatePostRequestTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -4004,15 +4143,10 @@ export interface DigitalThreadStickerCreatePostRequest {
 }
 
 export const DigitalThreadStickerCreatePostRequestAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestAddToEnum = typeof DigitalThreadStickerCreatePostRequestAddToEnum[keyof typeof DigitalThreadStickerCreatePostRequestAddToEnum];
 export const DigitalThreadStickerCreatePostRequestTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestTypeEnum = typeof DigitalThreadStickerCreatePostRequestTypeEnum[keyof typeof DigitalThreadStickerCreatePostRequestTypeEnum];
@@ -4204,6 +4338,73 @@ export const DyeingProcessDataRequestProcessTypeEnum = {
 } as const;
 
 export type DyeingProcessDataRequestProcessTypeEnum = typeof DyeingProcessDataRequestProcessTypeEnum[keyof typeof DyeingProcessDataRequestProcessTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface DyeingProcessDataResponse
+ */
+export interface DyeingProcessDataResponse {
+    /**
+     * 
+     * @type {DyeingProcessDataResponseAllOfProcessType}
+     * @memberof DyeingProcessDataResponse
+     */
+    'processType': DyeingProcessDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'electricityKWh'?: number;
+    /**
+     * 退漿（公斤）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'desizingKg'?: number;
+    /**
+     * 漂白（公斤）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'bleachingKg'?: number;
+    /**
+     * 染色（公斤）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'dyeingKg'?: number;
+    /**
+     * 車縫線（公斤）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'sewingThreadKg'?: number;
+    /**
+     * 紙管（公斤）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'paperTubeKg'?: number;
+    /**
+     * 水（公升）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'waterL'?: number;
+    /**
+     * 熱媒油（公升）。
+     * @type {number}
+     * @memberof DyeingProcessDataResponse
+     */
+    'thermalOilL'?: number;
+}
+/**
+ * @type DyeingProcessDataResponseAllOfProcessType
+ * @export
+ */
+export type DyeingProcessDataResponseAllOfProcessType = number | string;
 
 /**
  * 
@@ -4680,7 +4881,7 @@ export interface ExternalFilterAllOfInventory {
 /**
  * 功能列表Enum
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const FeatureType = {
@@ -5123,6 +5324,49 @@ export const FinishingProcessDataRequestProcessTypeEnum = {
 } as const;
 
 export type FinishingProcessDataRequestProcessTypeEnum = typeof FinishingProcessDataRequestProcessTypeEnum[keyof typeof FinishingProcessDataRequestProcessTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface FinishingProcessDataResponse
+ */
+export interface FinishingProcessDataResponse {
+    /**
+     * 
+     * @type {FinishingProcessDataResponseAllOfProcessType}
+     * @memberof FinishingProcessDataResponse
+     */
+    'processType': FinishingProcessDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof FinishingProcessDataResponse
+     */
+    'electricityKWh'?: number;
+    /**
+     * 藥劑（公斤）。
+     * @type {number}
+     * @memberof FinishingProcessDataResponse
+     */
+    'chemicalAgentsKg'?: number;
+    /**
+     * 紙管（公斤）。
+     * @type {number}
+     * @memberof FinishingProcessDataResponse
+     */
+    'paperTubeKg'?: number;
+    /**
+     * 熱媒油（公升）。
+     * @type {number}
+     * @memberof FinishingProcessDataResponse
+     */
+    'thermalOilL'?: number;
+}
+/**
+ * @type FinishingProcessDataResponseAllOfProcessType
+ * @export
+ */
+export type FinishingProcessDataResponseAllOfProcessType = number | string;
 
 /**
  * 資料夾型態書籤
@@ -7572,6 +7816,95 @@ export interface GetPantoneList200ResponseResultCode {
 /**
  * 
  * @export
+ * @interface GetPatternFromSelectedAreaMaterialSide200Response
+ */
+export interface GetPatternFromSelectedAreaMaterialSide200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200Response
+     */
+    'result': GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult
+ */
+export interface GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult {
+    /**
+     * 
+     * @type {PerspectiveCropImageRecord}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult
+     */
+    'pattern': PerspectiveCropImageRecord;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPatternFromSelectedAreaMaterialSide200ResponseAllOfResult
+     */
+    'isFound': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface GetPatternFromSelectedAreaMaterialSideRequest
+ */
+export interface GetPatternFromSelectedAreaMaterialSideRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetPatternFromSelectedAreaMaterialSideRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetPatternFromSelectedAreaMaterialSideRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetPatternFromSelectedAreaMaterialSideRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPatternFromSelectedAreaMaterialSideRequest
+     */
+    'frontierNo': string;
+    /**
+     * 
+     * @type {PerspectiveCropImageRecord}
+     * @memberof GetPatternFromSelectedAreaMaterialSideRequest
+     */
+    'selectedArea': PerspectiveCropImageRecord;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetPublicLibraryListRequest
  */
 export interface GetPublicLibraryListRequest {
@@ -7636,6 +7969,37 @@ export interface GetPublicLibraryMaterialRequest {
      * @memberof GetPublicLibraryMaterialRequest
      */
     'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetQuiltedFromSelectedAreaMaterialSide200Response
+ */
+export interface GetQuiltedFromSelectedAreaMaterialSide200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'result': string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'message'?: object | null;
 }
 /**
  * 
@@ -9918,7 +10282,7 @@ export interface InvoiceInfoServiceItemListInner {
 /**
  * 長度單位
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const LengthUnit = {
@@ -9932,7 +10296,7 @@ export type LengthUnit = typeof LengthUnit[keyof typeof LengthUnit];
 /**
  * 未有訂閱M2F加值服務時為NULL
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const Made2FlowPlanType = {
@@ -12917,7 +13281,7 @@ export interface MaterialSideImage {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialSideType = {
@@ -12993,7 +13357,7 @@ export interface MaterialTrimConstruction {
 /**
  * 布種
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialType = {
@@ -13178,7 +13542,7 @@ export interface MaterialU3mImageCropRecord {
 /**
  * 1: Frontier產生 2: 客製化上傳
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialU3mSourceType = {
@@ -13192,7 +13556,7 @@ export type MaterialU3mSourceType = typeof MaterialU3mSourceType[keyof typeof Ma
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialU3mStatus = {
@@ -14390,7 +14754,7 @@ export interface MoodboardPropertiesProvider {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MoodboardType = {
@@ -14925,7 +15289,7 @@ export interface NodeMetaLocationListInner {
 /**
  * 節點型態：1:Collection，2:Material
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const NodeType = {
@@ -14997,7 +15361,7 @@ export interface OGBaseRequestBody {
 /**
  * 單位(組織或團隊)型態：1:Org，2:Group
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const OgType = {
@@ -15011,7 +15375,7 @@ export type OgType = typeof OgType[keyof typeof OgType];
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Partially Failed 5: Complete 6: Canceled 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const OnlineSpreadSheetProgressStatus = {
@@ -15215,7 +15579,7 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -15263,20 +15627,14 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum;
+    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum | null;
 }
 
 export const OrgCreatePostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgCreatePostRequestOrgCategoryIdEnum = typeof OrgCreatePostRequestOrgCategoryIdEnum[keyof typeof OrgCreatePostRequestOrgCategoryIdEnum];
 export const OrgCreatePostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgCreatePostRequestSignupSourceTypeEnum = typeof OrgCreatePostRequestSignupSourceTypeEnum[keyof typeof OrgCreatePostRequestSignupSourceTypeEnum];
@@ -16188,7 +16546,7 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner
      */
-    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum;
+    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum | null;
     /**
      * 
      * @type {string}
@@ -16198,8 +16556,6 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum];
@@ -16239,12 +16595,10 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum;
+    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum | null;
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum];
@@ -16278,7 +16632,7 @@ export interface OrgPaymentInvoiceGetListPostRequest {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequest
      */
-    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum;
+    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum | null;
     /**
      * 
      * @type {string}
@@ -16294,9 +16648,6 @@ export interface OrgPaymentInvoiceGetListPostRequest {
 }
 
 export const OrgPaymentInvoiceGetListPostRequestCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestCategoryEnum = typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum];
@@ -16324,12 +16675,10 @@ export interface OrgPaymentInvoiceGetListPostRequestPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequestPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum;
+    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum | null;
 }
 
 export const OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum];
@@ -16793,7 +17142,7 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      * @type {number}
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
      */
-    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum;
+    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -16899,10 +17248,6 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
 }
 
 export const OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum[keyof typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum];
@@ -17055,7 +17400,7 @@ export interface OrgUpdatePostRequest {
      * @type {number}
      * @memberof OrgUpdatePostRequest
      */
-    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -17101,10 +17446,6 @@ export interface OrgUpdatePostRequest {
 }
 
 export const OrgUpdatePostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgUpdatePostRequestOrgCategoryIdEnum = typeof OrgUpdatePostRequestOrgCategoryIdEnum[keyof typeof OrgUpdatePostRequestOrgCategoryIdEnum];
@@ -17479,7 +17820,7 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
      * @type {number}
      * @memberof OrgValueAddedServiceMade2flowScheduleMeetingPostRequest
      */
-    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum | null;
     /**
      * 使用者名稱
      * @type {string}
@@ -17525,10 +17866,6 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
 }
 
 export const OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum[keyof typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum];
@@ -17593,7 +17930,7 @@ export interface Organization {
      * @type {number}
      * @memberof Organization
      */
-    'orgCategoryId': OrganizationOrgCategoryIdEnum;
+    'orgCategoryId': OrganizationOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -17699,10 +18036,6 @@ export interface Organization {
 }
 
 export const OrganizationOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrganizationOrgCategoryIdEnum = typeof OrganizationOrgCategoryIdEnum[keyof typeof OrganizationOrgCategoryIdEnum];
@@ -18187,7 +18520,7 @@ export interface PerspectiveCropImageRecord {
  */
 export interface Plan {
     /**
-     * 
+     * 訂閱方案 1: Basic方案 2: Pro方案 3: 企業方案 4: 設計師方案 5: 免費方案 
      * @type {number}
      * @memberof Plan
      */
@@ -18203,7 +18536,7 @@ export interface Plan {
      * @type {number}
      * @memberof Plan
      */
-    'status'?: PlanStatusEnum;
+    'status'?: PlanStatusEnum | null;
     /**
      * 停用日
      * @type {string}
@@ -18237,9 +18570,11 @@ export interface Plan {
 }
 
 export const PlanPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
+    BASIC: 1,
+    PRO: 2,
+    ENTERPRISE: 3,
+    DESIGNER: 4,
+    FREE: 5
 } as const;
 
 export type PlanPlanTypeEnum = typeof PlanPlanTypeEnum[keyof typeof PlanPlanTypeEnum];
@@ -18250,10 +18585,6 @@ export const PlanPlatformEnum = {
 
 export type PlanPlatformEnum = typeof PlanPlatformEnum[keyof typeof PlanPlatformEnum];
 export const PlanStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
@@ -18627,6 +18958,61 @@ export interface PrivateShareAccessInfo {
 export type ProcessType = number | string;
 
 /**
+ * 產品資訊的回應模型。
+ * @export
+ * @interface ProductInfoResponseModel
+ */
+export interface ProductInfoResponseModel {
+    /**
+     * 布片 ID。
+     * @type {number}
+     * @memberof ProductInfoResponseModel
+     */
+    'materialId'?: number;
+    /**
+     * Digital+ 布種。
+     * @type {DigitalPlusMaterialType}
+     * @memberof ProductInfoResponseModel
+     */
+    'digitalPlusMaterialType'?: DigitalPlusMaterialType;
+    /**
+     * 原料加工段資料。
+     * @type {RawMaterialProcessDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'rawMaterialProcessData'?: RawMaterialProcessDataResponse;
+    /**
+     * 紗線加工段資料。
+     * @type {YarnProcessDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'yarnProcessData'?: YarnProcessDataResponse;
+    /**
+     * 紗線加工資料。
+     * @type {YarnProcessingDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'yarnProcessingData'?: YarnProcessingDataResponse;
+    /**
+     * 織造加工段資料。
+     * @type {WeavingProcessDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'weavingProcessData'?: WeavingProcessDataResponse;
+    /**
+     * 染色加工段資料。
+     * @type {DyeingProcessDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'dyeingProcessData'?: DyeingProcessDataResponse;
+    /**
+     * 整理定型加工段資料。
+     * @type {FinishingProcessDataResponse}
+     * @memberof ProductInfoResponseModel
+     */
+    'finishingProcessData'?: FinishingProcessDataResponse;
+}
+/**
  * 
  * @export
  * @interface ProgressExcelItem
@@ -18788,7 +19174,7 @@ export interface ProgressMaterialUploadItemMappingWith {
 /**
  * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressMaterialUploadUnsuccessfulMsgCode = {
@@ -18868,7 +19254,7 @@ export type ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = typeof Progre
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressStatus = {
@@ -18978,7 +19364,7 @@ export type ProgressU3mItemUnsuccessfulMsgCodeEnum = typeof ProgressU3mItemUnsuc
 /**
  * 排序方式 1: 時間排序由新到舊 2: 時間排序由舊到新 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: sourceType (Frontier -> Customized) 6: sourceType (Customized -> Frontier) 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressU3mSort = {
@@ -19093,6 +19479,55 @@ export const RawMaterialProcessDataRequestProcessTypeEnum = {
 } as const;
 
 export type RawMaterialProcessDataRequestProcessTypeEnum = typeof RawMaterialProcessDataRequestProcessTypeEnum[keyof typeof RawMaterialProcessDataRequestProcessTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface RawMaterialProcessDataResponse
+ */
+export interface RawMaterialProcessDataResponse {
+    /**
+     * 
+     * @type {RawMaterialProcessDataResponseAllOfProcessType}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'processType': RawMaterialProcessDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'electricityKWh'?: number;
+    /**
+     * 油劑（公斤）。
+     * @type {number}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'oilKg'?: number;
+    /**
+     * 包裝袋（公斤）。
+     * @type {number}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'packagingBagsKg'?: number;
+    /**
+     * 水（公升）。
+     * @type {number}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'waterL'?: number;
+    /**
+     * 高壓空氣（立方公尺）。
+     * @type {number}
+     * @memberof RawMaterialProcessDataResponse
+     */
+    'compressedAirM3'?: number;
+}
+/**
+ * @type RawMaterialProcessDataResponseAllOfProcessType
+ * @export
+ */
+export type RawMaterialProcessDataResponseAllOfProcessType = number | string;
 
 /**
  * 
@@ -20374,7 +20809,7 @@ export interface ShareOGTarget {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SharePermission = {
@@ -20505,7 +20940,7 @@ export interface ShareTarget {
 /**
  * 分享對象的種類
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ShareToType = {
@@ -21156,7 +21591,7 @@ export type ShowroomBaseColorEnum = typeof ShowroomBaseColorEnum[keyof typeof Sh
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ShowroomStatus = {
@@ -21260,12 +21695,10 @@ export interface SignInGeneralPostRequest {
      * @type {number}
      * @memberof SignInGeneralPostRequest
      */
-    'platform': SignInGeneralPostRequestPlatformEnum;
+    'platform': SignInGeneralPostRequestPlatformEnum | null;
 }
 
 export const SignInGeneralPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignInGeneralPostRequestPlatformEnum = typeof SignInGeneralPostRequestPlatformEnum[keyof typeof SignInGeneralPostRequestPlatformEnum];
@@ -21343,12 +21776,10 @@ export interface SignInGooglePostRequest {
      * @type {number}
      * @memberof SignInGooglePostRequest
      */
-    'platform': SignInGooglePostRequestPlatformEnum;
+    'platform': SignInGooglePostRequestPlatformEnum | null;
 }
 
 export const SignInGooglePostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignInGooglePostRequestPlatformEnum = typeof SignInGooglePostRequestPlatformEnum[keyof typeof SignInGooglePostRequestPlatformEnum];
@@ -21456,24 +21887,20 @@ export interface SignUpGeneralPostRequest {
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'platform': SignUpGeneralPostRequestPlatformEnum;
+    'platform': SignUpGeneralPostRequestPlatformEnum | null;
     /**
      * 
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum;
+    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum | null;
 }
 
 export const SignUpGeneralPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestPlatformEnum = typeof SignUpGeneralPostRequestPlatformEnum[keyof typeof SignUpGeneralPostRequestPlatformEnum];
 export const SignUpGeneralPostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestSignupSourceTypeEnum = typeof SignUpGeneralPostRequestSignupSourceTypeEnum[keyof typeof SignUpGeneralPostRequestSignupSourceTypeEnum];
@@ -21564,7 +21991,7 @@ export interface SlotContentContentValueInner {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SlotContentType = {
@@ -21827,7 +22254,7 @@ export interface SmartUploadAssetsUpdateConfigRequest {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SocialMedia = {
@@ -21856,13 +22283,13 @@ export interface Sticker {
      * @type {number}
      * @memberof Sticker
      */
-    'addTo': StickerAddToEnum;
+    'addTo': StickerAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof Sticker
      */
-    'type': StickerTypeEnum;
+    'type': StickerTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -21944,15 +22371,10 @@ export interface Sticker {
 }
 
 export const StickerAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerAddToEnum = typeof StickerAddToEnum[keyof typeof StickerAddToEnum];
 export const StickerTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnum];
@@ -21974,13 +22396,13 @@ export interface StickerAllOfChildStickerList {
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'addTo': StickerAllOfChildStickerListAddToEnum;
+    'addTo': StickerAllOfChildStickerListAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'type': StickerAllOfChildStickerListTypeEnum;
+    'type': StickerAllOfChildStickerListTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -22050,15 +22472,10 @@ export interface StickerAllOfChildStickerList {
 }
 
 export const StickerAllOfChildStickerListAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerAllOfChildStickerListAddToEnum = typeof StickerAllOfChildStickerListAddToEnum[keyof typeof StickerAllOfChildStickerListAddToEnum];
 export const StickerAllOfChildStickerListTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerAllOfChildStickerListTypeEnum = typeof StickerAllOfChildStickerListTypeEnum[keyof typeof StickerAllOfChildStickerListTypeEnum];
@@ -22080,13 +22497,13 @@ export interface StickerBase {
      * @type {number}
      * @memberof StickerBase
      */
-    'addTo': StickerBaseAddToEnum;
+    'addTo': StickerBaseAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof StickerBase
      */
-    'type': StickerBaseTypeEnum;
+    'type': StickerBaseTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -22150,15 +22567,10 @@ export interface StickerBase {
 }
 
 export const StickerBaseAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerBaseAddToEnum = typeof StickerBaseAddToEnum[keyof typeof StickerBaseAddToEnum];
 export const StickerBaseTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerBaseTypeEnum = typeof StickerBaseTypeEnum[keyof typeof StickerBaseTypeEnum];
@@ -23439,47 +23851,47 @@ export interface UpsertProductInfoRequest {
      */
     'materialId': number | null;
     /**
-     * 
+     * Digital+ 布種。
      * @type {DigitalPlusMaterialType}
      * @memberof UpsertProductInfoRequest
      */
-    'digitalPlusMaterialType': DigitalPlusMaterialType;
+    'digitalPlusMaterialType': DigitalPlusMaterialType | null;
     /**
-     * 
+     * 原料加工段資料。
      * @type {RawMaterialProcessDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'rawMaterialProcessData': RawMaterialProcessDataRequest;
+    'rawMaterialProcessData': RawMaterialProcessDataRequest | null;
     /**
-     * 
+     * 紗線加工段資料。
      * @type {YarnProcessDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'yarnProcessData': YarnProcessDataRequest;
+    'yarnProcessData': YarnProcessDataRequest | null;
     /**
-     * 
+     * 紗線加工資料。
      * @type {YarnProcessingDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'yarnProcessingData': YarnProcessingDataRequest;
+    'yarnProcessingData': YarnProcessingDataRequest | null;
     /**
-     * 
+     * 織造加工段資料。
      * @type {WeavingProcessDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'weavingProcessData': WeavingProcessDataRequest;
+    'weavingProcessData': WeavingProcessDataRequest | null;
     /**
-     * 
+     * 染色加工段資料。
      * @type {DyeingProcessDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'dyeingProcessData': DyeingProcessDataRequest;
+    'dyeingProcessData': DyeingProcessDataRequest | null;
     /**
-     * 
+     * 整理定型加工段資料。
      * @type {FinishingProcessDataRequest}
      * @memberof UpsertProductInfoRequest
      */
-    'finishingProcessData': FinishingProcessDataRequest;
+    'finishingProcessData': FinishingProcessDataRequest | null;
     /**
      * 組織ID
      * @type {number}
@@ -23624,7 +24036,7 @@ export interface UserFeedbackSendPostRequest {
      * @type {number}
      * @memberof UserFeedbackSendPostRequest
      */
-    'category': UserFeedbackSendPostRequestCategoryEnum;
+    'category': UserFeedbackSendPostRequestCategoryEnum | null;
     /**
      * 
      * @type {string}
@@ -23634,11 +24046,6 @@ export interface UserFeedbackSendPostRequest {
 }
 
 export const UserFeedbackSendPostRequestCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null
 } as const;
 
 export type UserFeedbackSendPostRequestCategoryEnum = typeof UserFeedbackSendPostRequestCategoryEnum[keyof typeof UserFeedbackSendPostRequestCategoryEnum];
@@ -23836,12 +24243,10 @@ export interface UserForgotPasswordSendEmailPostRequest {
      * @type {number}
      * @memberof UserForgotPasswordSendEmailPostRequest
      */
-    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum;
+    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum | null;
 }
 
 export const UserForgotPasswordSendEmailPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserForgotPasswordSendEmailPostRequestPlatformEnum = typeof UserForgotPasswordSendEmailPostRequestPlatformEnum[keyof typeof UserForgotPasswordSendEmailPostRequestPlatformEnum];
@@ -24645,24 +25050,20 @@ export interface UserResendVerifyEmailPostRequest {
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'platform': UserResendVerifyEmailPostRequestPlatformEnum;
+    'platform': UserResendVerifyEmailPostRequestPlatformEnum | null;
     /**
      * 
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum;
+    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum | null;
 }
 
 export const UserResendVerifyEmailPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestPlatformEnum = typeof UserResendVerifyEmailPostRequestPlatformEnum[keyof typeof UserResendVerifyEmailPostRequestPlatformEnum];
 export const UserResendVerifyEmailPostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestSignupSourceTypeEnum = typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum[keyof typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum];
@@ -24792,7 +25193,7 @@ export interface ValueAddedServiceMade2flow {
      * @type {number}
      * @memberof ValueAddedServiceMade2flow
      */
-    'status'?: ValueAddedServiceMade2flowStatusEnum;
+    'status'?: ValueAddedServiceMade2flowStatusEnum | null;
     /**
      * 
      * @type {Made2FlowPlanType}
@@ -24826,10 +25227,6 @@ export interface ValueAddedServiceMade2flow {
 }
 
 export const ValueAddedServiceMade2flowStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type ValueAddedServiceMade2flowStatusEnum = typeof ValueAddedServiceMade2flowStatusEnum[keyof typeof ValueAddedServiceMade2flowStatusEnum];
@@ -24969,7 +25366,80 @@ export type WeavingProcessDataRequestProcessTypeEnum = typeof WeavingProcessData
 /**
  * 
  * @export
- * @enum {string}
+ * @interface WeavingProcessDataResponse
+ */
+export interface WeavingProcessDataResponse {
+    /**
+     * 
+     * @type {WeavingProcessDataResponseAllOfProcessType}
+     * @memberof WeavingProcessDataResponse
+     */
+    'processType': WeavingProcessDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'electricityKWh'?: number;
+    /**
+     * 油劑（公斤）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'oilKg'?: number;
+    /**
+     * 紙管（公斤）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'paperTubeKg'?: number;
+    /**
+     * 整經油劑（公斤）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'warpingOilKg'?: number;
+    /**
+     * 漿紗油劑（公斤）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'sizingOilKg'?: number;
+    /**
+     * 併經油劑（公斤）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'doublingOilKg'?: number;
+    /**
+     * 整經耗電（千瓦．小時）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'warpingElectricityKWh'?: number;
+    /**
+     * 漿紗耗電（千瓦．小時）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'sizingElectricityKWh'?: number;
+    /**
+     * 併經耗電（千瓦．小時）。
+     * @type {number}
+     * @memberof WeavingProcessDataResponse
+     */
+    'doublingElectricityKWh'?: number;
+}
+/**
+ * @type WeavingProcessDataResponseAllOfProcessType
+ * @export
+ */
+export type WeavingProcessDataResponseAllOfProcessType = number | string;
+
+/**
+ * 
+ * @export
+ * @enum {number}
  */
 
 export const WeightUnit = {
@@ -25213,6 +25683,31 @@ export type YarnProcessDataRequestProcessTypeEnum = typeof YarnProcessDataReques
 /**
  * 
  * @export
+ * @interface YarnProcessDataResponse
+ */
+export interface YarnProcessDataResponse {
+    /**
+     * 
+     * @type {YarnProcessDataResponseAllOfProcessType}
+     * @memberof YarnProcessDataResponse
+     */
+    'processType': YarnProcessDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof YarnProcessDataResponse
+     */
+    'electricityKWh'?: number;
+}
+/**
+ * @type YarnProcessDataResponseAllOfProcessType
+ * @export
+ */
+export type YarnProcessDataResponseAllOfProcessType = number | string;
+
+/**
+ * 
+ * @export
  * @interface YarnProcessingDataRequest
  */
 export interface YarnProcessingDataRequest {
@@ -25253,6 +25748,49 @@ export const YarnProcessingDataRequestProcessTypeEnum = {
 } as const;
 
 export type YarnProcessingDataRequestProcessTypeEnum = typeof YarnProcessingDataRequestProcessTypeEnum[keyof typeof YarnProcessingDataRequestProcessTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface YarnProcessingDataResponse
+ */
+export interface YarnProcessingDataResponse {
+    /**
+     * 
+     * @type {YarnProcessingDataResponseAllOfProcessType}
+     * @memberof YarnProcessingDataResponse
+     */
+    'processType': YarnProcessingDataResponseAllOfProcessType;
+    /**
+     * 電力（千瓦．小時）。
+     * @type {number}
+     * @memberof YarnProcessingDataResponse
+     */
+    'electricityKWh'?: number;
+    /**
+     * 加工油劑（公斤）。
+     * @type {number}
+     * @memberof YarnProcessingDataResponse
+     */
+    'processingOilKg'?: number;
+    /**
+     * 紙管（公斤）。
+     * @type {number}
+     * @memberof YarnProcessingDataResponse
+     */
+    'paperTubeKg'?: number;
+    /**
+     * 高壓空氣（立方公尺）。
+     * @type {number}
+     * @memberof YarnProcessingDataResponse
+     */
+    'compressedAirM3'?: number;
+}
+/**
+ * @type YarnProcessingDataResponseAllOfProcessType
+ * @export
+ */
+export type YarnProcessingDataResponseAllOfProcessType = number | string;
 
 
 /**
@@ -25877,6 +26415,86 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get pattern\'s coordinate from selected area of material side image
+         * @summary Get pattern\'s coordinate from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPatternFromSelectedAreaMaterialSide: async (getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getPatternFromSelectedAreaMaterialSideRequest' is not null or undefined
+            assertParamExists('getPatternFromSelectedAreaMaterialSide', 'getPatternFromSelectedAreaMaterialSideRequest', getPatternFromSelectedAreaMaterialSideRequest)
+            const localVarPath = `/assets/material/side-image/get-pattern`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getPatternFromSelectedAreaMaterialSideRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getQuiltedFromSelectedAreaMaterialSide: async (getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getPatternFromSelectedAreaMaterialSideRequest' is not null or undefined
+            assertParamExists('getQuiltedFromSelectedAreaMaterialSide', 'getPatternFromSelectedAreaMaterialSideRequest', getPatternFromSelectedAreaMaterialSideRequest)
+            const localVarPath = `/assets/material/side-image/get-quilted-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getPatternFromSelectedAreaMaterialSideRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27074,6 +27692,32 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Get pattern\'s coordinate from selected area of material side image
+         * @summary Get pattern\'s coordinate from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPatternFromSelectedAreaMaterialSide200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getPatternFromSelectedAreaMaterialSide']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getQuiltedFromSelectedAreaMaterialSide']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
          * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -27569,6 +28213,26 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getMaterialOptions(oGBaseRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get pattern\'s coordinate from selected area of material side image
+         * @summary Get pattern\'s coordinate from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetPatternFromSelectedAreaMaterialSide200Response> {
+            return localVarFp.getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response> {
+            return localVarFp.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
          * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -28018,6 +28682,30 @@ export class AssetsApi extends BaseAPI {
      */
     public getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getMaterialOptions(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get pattern\'s coordinate from selected area of material side image
+     * @summary Get pattern\'s coordinate from selected area of material side image
+     * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get quilted image from selected area of material side image
+     * @summary Get quilted image from selected area of material side image
+     * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -29234,6 +29922,130 @@ export class DashboardApi extends BaseAPI {
 export const DigitalPlusApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
+         * @summary 取得指定產品的各個加工段碳排放資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        digitalPlusGetCarbonEmissions: async (orgId: number, ogType: OgType, ogId: number, materialId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orgId' is not null or undefined
+            assertParamExists('digitalPlusGetCarbonEmissions', 'orgId', orgId)
+            // verify required parameter 'ogType' is not null or undefined
+            assertParamExists('digitalPlusGetCarbonEmissions', 'ogType', ogType)
+            // verify required parameter 'ogId' is not null or undefined
+            assertParamExists('digitalPlusGetCarbonEmissions', 'ogId', ogId)
+            // verify required parameter 'materialId' is not null or undefined
+            assertParamExists('digitalPlusGetCarbonEmissions', 'materialId', materialId)
+            const localVarPath = `/digital-plus/get-carbon-emissions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (orgId !== undefined) {
+                localVarQueryParameter['orgId'] = orgId;
+            }
+
+            if (ogType !== undefined) {
+                localVarQueryParameter['ogType'] = ogType;
+            }
+
+            if (ogId !== undefined) {
+                localVarQueryParameter['ogId'] = ogId;
+            }
+
+            if (materialId !== undefined) {
+                localVarQueryParameter['materialId'] = materialId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
+         * @summary 取得產品資訊與加工段資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        digitalPlusGetProductInfo: async (orgId: number, ogType: OgType, ogId: number, materialId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orgId' is not null or undefined
+            assertParamExists('digitalPlusGetProductInfo', 'orgId', orgId)
+            // verify required parameter 'ogType' is not null or undefined
+            assertParamExists('digitalPlusGetProductInfo', 'ogType', ogType)
+            // verify required parameter 'ogId' is not null or undefined
+            assertParamExists('digitalPlusGetProductInfo', 'ogId', ogId)
+            // verify required parameter 'materialId' is not null or undefined
+            assertParamExists('digitalPlusGetProductInfo', 'materialId', materialId)
+            const localVarPath = `/digital-plus/get-product-info`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (orgId !== undefined) {
+                localVarQueryParameter['orgId'] = orgId;
+            }
+
+            if (ogType !== undefined) {
+                localVarQueryParameter['ogType'] = ogType;
+            }
+
+            if (ogId !== undefined) {
+                localVarQueryParameter['ogId'] = ogId;
+            }
+
+            if (materialId !== undefined) {
+                localVarQueryParameter['materialId'] = materialId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
          * @summary 新增或更新產品資訊。
          * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
@@ -29282,6 +30094,38 @@ export const DigitalPlusApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DigitalPlusApiAxiosParamCreator(configuration)
     return {
         /**
+         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
+         * @summary 取得指定產品的各個加工段碳排放資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalPlusGetCarbonEmissions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalPlusApi.digitalPlusGetCarbonEmissions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
+         * @summary 取得產品資訊與加工段資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalPlusGetProductInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DigitalPlusApi.digitalPlusGetProductInfo']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
          * @summary 新增或更新產品資訊。
          * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
@@ -29305,6 +30149,32 @@ export const DigitalPlusApiFactory = function (configuration?: Configuration, ba
     const localVarFp = DigitalPlusApiFp(configuration)
     return {
         /**
+         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
+         * @summary 取得指定產品的各個加工段碳排放資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): AxiosPromise<DigitalPlusGetCarbonEmissions200Response> {
+            return localVarFp.digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
+         * @summary 取得產品資訊與加工段資訊。
+         * @param {number} orgId 組織 ID。
+         * @param {OgType} ogType 組織類型。
+         * @param {number} ogId 組織群組 ID。
+         * @param {number} materialId 布片 ID。
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): AxiosPromise<DigitalPlusGetProductInfo200Response> {
+            return localVarFp.digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
          * @summary 新增或更新產品資訊。
          * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
@@ -29324,6 +30194,36 @@ export const DigitalPlusApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class DigitalPlusApi extends BaseAPI {
+    /**
+     * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
+     * @summary 取得指定產品的各個加工段碳排放資訊。
+     * @param {number} orgId 組織 ID。
+     * @param {OgType} ogType 組織類型。
+     * @param {number} ogId 組織群組 ID。
+     * @param {number} materialId 布片 ID。
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DigitalPlusApi
+     */
+    public digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig) {
+        return DigitalPlusApiFp(this.configuration).digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
+     * @summary 取得產品資訊與加工段資訊。
+     * @param {number} orgId 組織 ID。
+     * @param {OgType} ogType 組織類型。
+     * @param {number} ogId 組織群組 ID。
+     * @param {number} materialId 布片 ID。
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DigitalPlusApi
+     */
+    public digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig) {
+        return DigitalPlusApiFp(this.configuration).digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
      * @summary 新增或更新產品資訊。

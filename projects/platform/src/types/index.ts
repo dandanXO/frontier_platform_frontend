@@ -49,6 +49,7 @@ export interface Side {
 export interface U3mSide extends Side {
   title: string
   cropMode: CROP_MODE
+  isQuilting?: boolean
   scaleSizeInCm: number
   scaleStartInCm: number
   croppedImage: File | null
