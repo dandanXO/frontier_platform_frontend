@@ -172,7 +172,7 @@ const emit = defineEmits<{
 }>()
 
 const DEFAULT_CROP_CM = 4
-const MIN_CROP_CM = 2
+const MIN_CROP_CM = 1.99
 const INVALID_LINE_COLOR = colors.red[400].DEFAULT
 const CIRCLE_HOVER_STROKE = colors.grey[300].DEFAULT
 const WHEEL_SCALE_BY = 1.03
@@ -281,6 +281,12 @@ const rotateDegRef = ref(0)
 const rotateDeg = computed(() => rotateDegRef.value)
 const scaleInverse = computed(() => 1 / scale.value)
 const infoVisible = computed(() => isCirclesPressing.value)
+const imageWidthCm = computed(() =>
+  pixelToCm(props.sourceImage.width, props.dpi).toNumber()
+)
+const imageHeightCm = computed(() =>
+  pixelToCm(props.sourceImage.height, props.dpi).toNumber()
+)
 
 const displayImageConfig = computed(() => {
   {
@@ -1341,6 +1347,8 @@ defineExpose({
   getCoordsMap,
   setCoordsMap,
   isChanging,
+  imageHeightCm,
+  imageWidthCm,
   quilting,
 })
 </script>

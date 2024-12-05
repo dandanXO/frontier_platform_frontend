@@ -74,6 +74,8 @@ div(
         addOnLeft="W"
         @update:textValue="refSideCropperArea?.refPerspectiveCanvas?.changeCropWidth"
         addOnRight="cm"
+        :step="SIZE_STEP"
+        :max="refSideCropperArea?.refPerspectiveCanvas?.imageWidthCm"
         :clearable="false"
       )
       f-input-text(
@@ -84,6 +86,8 @@ div(
         :theme="THEME.DARK"
         addOnLeft="H"
         addOnRight="cm"
+        :step="SIZE_STEP"
+        :max="refSideCropperArea?.refPerspectiveCanvas?.imageHeightCm"
         :clearable="false"
       )
   div(class="border border-secondary-border")
@@ -138,8 +142,9 @@ interface Props {
   backSideUrl?: string
 }
 
-const { t } = useI18n()
+const SIZE_STEP = 0.1
 
+const { t } = useI18n()
 const isBackSideOnly = computed(
   () =>
     props.currentSide?.sideName === U3M_CUT_SIDE.BACK_SIDE &&
