@@ -599,7 +599,8 @@ export default {
         func: 'exportMaterial',
         params,
       })
-      const { extension, file, fileName } = data?.result
+      const { extension, file, fileName } =
+        data && data.result ? data.result : {}
       downloadBase64File(file, extension, fileName)
     },
     async massExportMaterial({ dispatch }, params) {
