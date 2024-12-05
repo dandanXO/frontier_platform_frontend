@@ -112,6 +112,7 @@ import {
   watch,
   toRaw,
   onUnmounted,
+  toRef,
 } from 'vue'
 import cv from '@techstark/opencv-js'
 import debounce from 'lodash/debounce'
@@ -408,6 +409,7 @@ const setCoordsMap = (coordsMap: PerspectiveCropImageRecord) => {
   }
 
   rotateDegRef.value = coordsMap.rotateDeg
+  crop()
 }
 const isChanging = ref(false)
 
@@ -783,6 +785,7 @@ const handleCropGroupDragMove = (e: Konva.KonvaEventObject<'dragmove'>) => {
     if (!c.value) {
       return
     }
+    //@ts-ignore the value exists
     return c.value.getNode()
   }) as Konva.Circle[]
   const left = circles.reduce(
@@ -828,6 +831,7 @@ const handleCropGroupDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {
       if (!c.value) {
         return
       }
+      //@ts-ignore the value exists
       const circle = c.value.getNode()
       const pos = circle.position()
       const newX = pos.x + dx

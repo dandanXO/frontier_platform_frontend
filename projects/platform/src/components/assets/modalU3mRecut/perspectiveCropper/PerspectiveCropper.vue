@@ -341,6 +341,10 @@ const handleCropSuccess = (result: {
   behaviorType: 'move' | 'grab'
 }) => {
   if (props.side.isQuilting) {
+    if (!destinationCanvas.value) {
+      destinationCanvas.value = result.canvas
+      renderPreviewDisplay(result.behaviorType)
+    }
     return
   }
   destinationDimension.value = getDimension(

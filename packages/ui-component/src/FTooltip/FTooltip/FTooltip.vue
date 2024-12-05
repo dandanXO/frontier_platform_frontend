@@ -12,7 +12,7 @@ div(
   aria-describedby="tooltip"
   data-cy="tooltip"
   @mouseenter="mouseenterHandler"
-  @mouseleave="interactive && mouseleaveHandler()"
+  @mouseleave="interactive && debouncedMouseLeave()"
   :data-theme="theme"
 )
   div(
@@ -25,7 +25,8 @@ div(
       role="popper" 
       :class="[classContainer, customClassContainer]" 
       class="z-tooltip"   
-      :onmouseleave="mouseleaveHandler"
+      :onmouseleave="mouseLeaveContainer"
+      :onmouseenter="mouseEnterContainer"
       :onclick="(e:Event) => e.stopPropagation()"
       v-if="isActive"
       :data-theme="theme"
@@ -53,6 +54,7 @@ export default {
 import { nextTick, ref } from 'vue'
 import { TOOLTIP_PLACEMENT } from '../../constants'
 import { createPopper } from '@popperjs/core'
+import { debounce } from 'debounce'
 // https://popper.js.org/docs/v2/
 
 interface Props {
@@ -68,6 +70,7 @@ interface Props {
 }
 
 const isActive = ref(false)
+const isMouseInsideContainer = ref(false)
 const refTrigger = ref<HTMLElement>()
 const refTooltip = ref<HTMLElement>()
 const customClassContainer = ref('')
@@ -78,6 +81,22 @@ const props = withDefaults(defineProps<Props>(), {
   classContainer: '',
   interactive: false,
 })
+
+const debouncedMouseLeave = debounce(() => {
+  if (isActive.value) {
+    isActive.value = isMouseInsideContainer.value
+  }
+  // the timer is just to make sure the mouse event container finished
+  // before closed the tooltip
+}, 100)
+const mouseEnterContainer = () => {
+  isMouseInsideContainer.value = true
+}
+
+const mouseLeaveContainer = () => {
+  isMouseInsideContainer.value = false
+  isActive.value = false
+}
 
 const mouseenterHandler = async () => {
   if (isActive.value) {

@@ -112,7 +112,7 @@ const backSideU3mImage = computed<MaterialU3mImage | null>(
 const materialSide = computed(() => {
   const materialSideMap: Record<U3M_CUT_SIDE, MaterialSide | null> = {
     [U3M_CUT_SIDE.FACE_SIDE]: material.value.faceSide,
-    [U3M_CUT_SIDE.BACK_SIDE]: material.value.faceSide,
+    [U3M_CUT_SIDE.BACK_SIDE]: material.value.backSide,
   }
 
   return materialSideMap[currentSideName.value ?? U3M_CUT_SIDE.FACE_SIDE]
@@ -188,10 +188,11 @@ const handleCropModeChange = async (v: CROP_MODE) => {
 }
 
 const togglingQuilting = async (v: U3mSide['isQuilting']) => {
-  if (!currentSide.value) {
-    throw new Error('current side not existed.')
-  }
-  currentSide.value.isQuilting = v
+  ;[faceSide, backSide].forEach((side) => {
+    if (side?.value) {
+      side.value.isQuilting = v
+    }
+  })
 }
 
 const handleGoBack = async () => {
@@ -409,7 +410,8 @@ const handleQuiltingCoordsChange = async (
     [U3M_CUT_SIDE.BACK_SIDE]: backSideU3mImage.value,
   }
 
-  if (!currentSideName.value) {
+  if (!currentSideName.value || !materialSide.value) {
+    store.dispatch('helper/closeModalLoading')
     return
   }
 
@@ -419,7 +421,7 @@ const handleQuiltingCoordsChange = async (
   const { data } = await ogBaseAssetsApi(
     'getQuiltedFromSelectedAreaMaterialSide',
     {
-      frontierNo: materialSide.value?.frontierNo ?? '',
+      frontierNo: materialSide.value.frontierNo,
       selectedArea: {
         leftBottom: coordsMap.leftBottom,
         leftTop: coordsMap.leftTop,

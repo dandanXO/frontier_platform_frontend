@@ -96,9 +96,9 @@ module.exports = plugin(function () {}, {
         grey: colors.grey,
         primary: {
           ...colors.primary,
+          border: 'var(--color-primary-border)',
           DEFAULT: 'var(--color-primary)',
           inverse: 'var(--color-primary-inverse)',
-          border: 'var(--color-primary-border)',
         },
         brown: colors.brown,
         forestgreen: colors.forestgreen,

@@ -38,14 +38,30 @@ div(
   div(class="flex flex-col gap-4 text-primary-inverse")
     p(class="text-base font-bold") {{ $t('RR0122') }}
     div(class="flex flex-row gap-2")
+      f-input-toggle(:value="isQuilting" @update:value="handletoggleQuilting")
+      p(class="text-sm text-primary-inverse") {{ $t('EE0234') }}
+      f-tooltip(
+        :title="$t('EE0234')"
+        :desc="$t('EE0237')"
+        :placement="TOOLTIP_PLACEMENT.RIGHT"
+        data-theme="new"
+        classContent="w-80"
+        :offset="[-6, 0]"
+        class="self-center"
+        interactive
+        isDescHTML
+      )
+        template(#slot:tooltip-trigger)
+          f-svg-icon(iconName="question" size="16" color="white" class="self-center")
+        template(#slot:tooltip-content)
+          div(class="underline decoration-link hover:decoration-link-hover")
+            f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+    div(class="flex flex-row gap-2")
       f-input-toggle(
         :value="isShowModalReplaceSides"
         @update:value="emit('update:replaceSides', $event)"
       )
       p(class="text-sm text-primary-inverse") {{ $t(isBackSideOnly ? 'RR0478' : 'RR0477') }}
-    div(class="flex flex-row gap-2")
-      f-input-toggle(:value="isQuilting" @update:value="handletoggleQuilting")
-      p(class="text-sm text-primary-inverse") {{ $t('EE0234') }}
   div(class="border border-secondary-border")
   div(class="flex flex-col gap-3 text-primary-inverse")
     p(class="text-base font-bold") {{ $t('EE0215') }}
@@ -99,7 +115,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
 import type { MaterialSide } from '@frontier/platform-web-sdk'
-import { THEME } from '@frontier/constants'
+import { THEME, TOOLTIP_PLACEMENT } from '@frontier/constants'
 import type { U3mSide } from '@/types'
 import { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import { toDP1 } from '@/utils/cropper'
