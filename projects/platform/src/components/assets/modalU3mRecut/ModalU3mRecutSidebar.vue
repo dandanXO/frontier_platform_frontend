@@ -29,7 +29,7 @@ div(
         :title="$t('EE0216')"
         iconName="crop_original"
         :onClick="onFindPattern"
-        :disabled="!refSideCropperArea?.refPerspectiveCanvas?.isChanging"
+        :disabled="!refSideCropperArea?.refPerspectiveCanvas?.isChanging || (rotateDeg ?? 0) !== 0"
         :tooltipTitle="$t('EE0235')"
         :tooltipDesc="$t('EE0236')"
       )
