@@ -205,7 +205,7 @@ export const setupStage = (
       direction = -direction
     }
     const newScale =
-      direction > 0 ? oldScale * wheelScaleBy : oldScale / wheelScaleBy
+      direction > 0 ? oldScale / wheelScaleBy : oldScale * wheelScaleBy
     stage.scale({ x: newScale, y: newScale })
     const newPos = {
       x: pointer.x - mousePointTo.x * newScale,

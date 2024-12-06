@@ -340,22 +340,24 @@ const handleCropSuccess = (result: {
   record: PerspectiveCropRecord
   behaviorType: 'move' | 'grab'
 }) => {
-  if (props.side.isQuilting) {
-    if (!destinationCanvas.value) {
-      destinationCanvas.value = result.canvas
-      renderPreviewDisplay(result.behaviorType)
-    }
-    return
-  }
   destinationDimension.value = getDimension(
     result.canvas.width,
     result.canvas.height,
     dpi ?? 0
   )
-  destinationCanvas.value = result.canvas
+
+  /**
+   * quilting have their own image result but quilting flow need it's canvas
+   * so on initiation, canvas need to be rendered first before doing quilting
+   */
+  if (!props.side.isQuilting || !destinationCanvas.value) {
+    destinationCanvas.value = result.canvas
+    renderPreviewDisplay(result.behaviorType)
+  }
+
   destinationCropRecord.value = result.record
-  renderPreviewDisplay(result.behaviorType)
-  store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
+  !props.side.isQuilting &&
+    store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
 }
 
 const handleRotate = (deg: number) => {
