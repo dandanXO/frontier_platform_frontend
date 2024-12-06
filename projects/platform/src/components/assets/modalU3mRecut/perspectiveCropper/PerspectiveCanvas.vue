@@ -937,16 +937,40 @@ const handleCircleDragMove = (
   positionType: 'LeftTop' | 'RightTop' | 'RightBottom' | 'LeftBottom'
 ) => {
   e.cancelBubble = true
-  const circle = e.target
-  const handleBoundingLimit = () => {
-    circle.x(Math.min(props.sourceImage.width, Math.max(0, circle.x())))
-    circle.y(Math.min(props.sourceImage.height, Math.max(0, circle.y())))
-  }
-  handleBoundingLimit()
-  position.x = circle.x()
-  position.y = circle.y()
 
   if (props.isSquare) {
+    const circle = e.target
+
+    const points = [
+      circleLeftTopPosition,
+      circleRightTopPosition,
+      circleRightBottomPosition,
+      circleLeftBottomPosition,
+    ]
+
+    const isOutOfBounds = points.some(
+      (point) =>
+        point.x < 0 ||
+        point.x > props.sourceImage.width ||
+        point.y < 0 ||
+        point.y > props.sourceImage.height
+    )
+
+    if (isOutOfBounds) {
+      circle.stopDrag()
+      circle.x(position.x)
+      circle.y(position.y)
+
+      return // Out Of Bounds not move point
+    }
+
+    const handleBoundingLimit = () => {
+      circle.x(Math.min(props.sourceImage.width, Math.max(0, circle.x())))
+      circle.y(Math.min(props.sourceImage.height, Math.max(0, circle.y())))
+    }
+    handleBoundingLimit()
+    position.x = circle.x()
+    position.y = circle.y()
     if (positionType === 'LeftTop') {
       let size = Math.max(
         Math.abs(position.x - circleRightTopPosition.x),
@@ -1003,6 +1027,15 @@ const handleCircleDragMove = (
       circleRightBottomPosition.x = position.x + size
       circleRightBottomPosition.y = position.y
     }
+  } else {
+    const circle = e.target
+    const handleBoundingLimit = () => {
+      circle.x(Math.min(props.sourceImage.width, Math.max(0, circle.x())))
+      circle.y(Math.min(props.sourceImage.height, Math.max(0, circle.y())))
+    }
+    handleBoundingLimit()
+    position.x = circle.x()
+    position.y = circle.y()
   }
 }
 
