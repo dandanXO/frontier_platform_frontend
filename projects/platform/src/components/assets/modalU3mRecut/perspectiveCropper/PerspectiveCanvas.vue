@@ -1079,9 +1079,11 @@ const crop = async (init?: boolean, skipQuilting?: boolean) => {
     const dstPointsArray = rotateLeft(
       [
         { x: 0, y: 0 },
-        { x: destinationWidth, y: 0 },
-        { x: destinationWidth, y: destinationHeight },
         { x: 0, y: destinationHeight },
+
+        { x: destinationWidth, y: destinationHeight },
+
+        { x: destinationWidth, y: 0 },
       ],
       rotatePresetsIndex.value
     ).flatMap((p) => [p.x, p.y])
@@ -1239,7 +1241,7 @@ watch(editStatus, (newVal, oldVal) => {
 })
 
 const rotate = (deg: number, isReset?: boolean) => {
-  const innerDeg = Math.abs(deg)
+  const innerDeg = deg
   // Store the four points in an array
   let points = [
     circleLeftTopPosition,
@@ -1247,7 +1249,6 @@ const rotate = (deg: number, isReset?: boolean) => {
     circleRightBottomPosition,
     circleLeftBottomPosition,
   ]
-
   // Convert degrees to radians
   function degreesToRadians(degrees: number) {
     return degrees * (Math.PI / 180)

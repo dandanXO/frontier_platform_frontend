@@ -16,7 +16,7 @@ div(
         iconName="crop"
         :active="currentSideCropMode === CROP_MODE.SQUARE"
         :onClick="onChangeCropMode(CROP_MODE.SQUARE)"
-        :disabled="(rotateDeg ?? 0) > 0"
+        :disabled="(rotateDeg ?? 0) !== 0"
       )
       action-button(
         :title="$t('EE0151')"
@@ -98,6 +98,7 @@ div(
       size="md"
       inputType="number"
       :theme="THEME.DARK"
+      :max="360"
       @update:textValue="refSideCropperArea?.chagneRotateInSlider"
       addOnRight="°"
     )

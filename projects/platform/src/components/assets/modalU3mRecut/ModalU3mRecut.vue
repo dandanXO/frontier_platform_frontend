@@ -366,8 +366,8 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
       return {
         s3UploadId,
         fileName,
-        squareCropRecord: cropImageRecord.squareCropRecord || null,
-        perspectiveCropRecord: cropImageRecord.perspectiveCropRecord || null,
+        squareCropRecord: cropImageRecord?.squareCropRecord || null,
+        perspectiveCropRecord: cropImageRecord?.perspectiveCropRecord || null,
       }
     }
     const [faceSideReq, backSideReq] = await Promise.all([
