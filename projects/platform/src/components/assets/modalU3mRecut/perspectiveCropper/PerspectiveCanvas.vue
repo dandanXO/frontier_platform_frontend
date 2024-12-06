@@ -1079,11 +1079,10 @@ const crop = async (init?: boolean, skipQuilting?: boolean) => {
     const dstPointsArray = rotateLeft(
       [
         { x: 0, y: 0 },
-        { x: 0, y: destinationHeight },
-
-        { x: destinationWidth, y: destinationHeight },
 
         { x: destinationWidth, y: 0 },
+        { x: destinationWidth, y: destinationHeight },
+        { x: 0, y: destinationHeight },
       ],
       rotatePresetsIndex.value
     ).flatMap((p) => [p.x, p.y])
