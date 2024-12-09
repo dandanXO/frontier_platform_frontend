@@ -1314,7 +1314,7 @@ const rotate = (deg: number, isReset?: boolean) => {
     return points.map((point) => rotatePoint(point, center, angleInDegrees))
   }
 
-  const needChangeDeg = isReset ? 0 : innerDeg - rotateDegRef.value
+  const needChangeDeg = isReset ? innerDeg : innerDeg - rotateDegRef.value
 
   // Rotated points
   const rotatedPoints = rotatePoints(points, needChangeDeg)
