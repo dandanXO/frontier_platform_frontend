@@ -199,13 +199,27 @@ export const setupStage = (
       y: (pointer.y - stage.y()) / oldScale,
     }
     let direction = e.evt.deltaY > 0 ? -1 : 1
-    // when we zoom on trackpad, e.evt.ctrlKey is true
-    // in that case lets revert direction
-    if (e.evt.ctrlKey) {
+
+    /**
+     * deltaY value using mouse scroll will equal to 100 (if zoom in) or -100 (if zoom out), whereas
+     * deltaY value using 2 finger motion will not always equal to 100 (if zoom in) or -100 (if zoom out).
+     * unless user do a very fast zoom action in touchpad
+     * where the deltaY equal to 100 or -100 constantly (which is unlikely to happen)
+     * this condition will make a false negative
+     */
+    const is2FingerMotion = 
+      e.evt.deltaY !== 100 && 
+      e.evt.deltaY !== -100
+    /**
+     * reversed the direction if user scroll with ctrl key
+     * or using two finger motion
+     */
+    if (e.evt.ctrlKey || is2FingerMotion) {
       direction = -direction
     }
+    
     const newScale =
-      direction > 0 ? oldScale / wheelScaleBy : oldScale * wheelScaleBy
+      direction > 0 ?  oldScale * wheelScaleBy : oldScale / wheelScaleBy
     stage.scale({ x: newScale, y: newScale })
     const newPos = {
       x: pointer.x - mousePointTo.x * newScale,
