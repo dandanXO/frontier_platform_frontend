@@ -53,9 +53,10 @@ div(
       )
         template(#slot:tooltip-trigger)
           f-svg-icon(iconName="question" size="16" color="white" class="self-center")
-        template(#slot:tooltip-content)
-          div(class="underline decoration-link hover:decoration-link-hover")
-            f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+        //- will be used later when the link to the video/article tutorial is ready
+        //- template(#slot:tooltip-content)
+        //-   div(class="underline decoration-link hover:decoration-link-hover")
+        //-     f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
         :value="isShowModalReplaceSides"
