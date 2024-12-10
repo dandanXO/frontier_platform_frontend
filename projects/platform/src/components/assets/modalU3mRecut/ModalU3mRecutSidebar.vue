@@ -100,7 +100,7 @@ div(
       inputType="number"
       :theme="THEME.DARK"
       :max="360"
-      @update:textValue="refSideCropperArea?.chagneRotateInSlider"
+      @update:textValue="refSideCropperArea?.changeRotateInSlider"
       addOnRight="°"
     )
     div(class="flex flex-row gap-3")

@@ -143,6 +143,8 @@ export interface ToastParams {
   status: NOTIF_STATUS
 }
 
+const MAX_ROTATION_DEGREE = 360
+
 const props = withDefaults(defineProps<Props>(), {
   isSquare: false,
 })
@@ -365,7 +367,7 @@ const handleRotate = (deg: number) => {
     return
   }
   refPerspectiveCanvas.value.rotate(
-    (refPerspectiveCanvas.value.rotateDeg + deg) % 360
+    (refPerspectiveCanvas.value.rotateDeg + deg) % MAX_ROTATION_DEGREE
   )
 }
 
@@ -428,8 +430,9 @@ const handlePreviewZoomUpdate = (type: string) => {
       return
   }
 }
-const chagneRotateInSlider = (val: number) => {
-  refPerspectiveCanvas?.value?.rotate(val || 0)
+const changeRotateInSlider = (val: number) => {
+  const newValue = Math.abs(val) >= 360 ? val % MAX_ROTATION_DEGREE : val
+  refPerspectiveCanvas?.value?.rotate(newValue)
 }
 
 watch(
@@ -549,7 +552,7 @@ defineExpose({
   handleRotate,
   rotateDeg,
   showToast,
-  chagneRotateInSlider,
+  changeRotateInSlider,
   handleGridColorChange,
   gridColor,
   refPerspectiveCanvas,

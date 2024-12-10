@@ -1204,8 +1204,9 @@ onMounted(() => {
     if (!sourceMat.value) {
       throw new Error('source Matrix undefined')
     }
-    if (props.initialRecord) {
-      rotate(props.initialRecord.rotateDeg)
+    if (props.initialRecord?.rotateDeg) {
+      rotateDegRef.value = props.initialRecord.rotateDeg
+      emit('rotateDegChange', props.initialRecord.rotateDeg)
     }
     isCropReady.value = true
     crop(true)
@@ -1314,7 +1315,7 @@ const rotate = (deg: number, isReset?: boolean) => {
     return points.map((point) => rotatePoint(point, center, angleInDegrees))
   }
 
-  const needChangeDeg = isReset ? innerDeg : innerDeg - rotateDegRef.value
+  const needChangeDeg = isReset ? 0 : innerDeg - rotateDegRef.value
 
   // Rotated points
   const rotatedPoints = rotatePoints(points, needChangeDeg)
