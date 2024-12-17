@@ -67,38 +67,36 @@ section-sidebar(:title="$t('RR0122')")
       useLog
     )
 div(class="border border-secondary-border")
-section-sidebar(
-  :title="$t('RR0026')"
-  v-if="store.getters['permission/enable3DViewerColor']"
-)
-  template(#content)
-    color-input(
-      :key="index"
-      v-for="(currentColor, index) in currentColors"
-      :index="index"
-      :color="currentColor"
-      :pantoneList="pantoneList"
-      @colorChange="(v, index) => emit('colorChange', v, index)"
-      @colorInput="(v, index) => emit('colorInput', v, index)"
-    )
-    div(class="flex flex-row justify-around items-center gap-x-2")
-      f-button(
-        class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
-        :theme="THEME.DARK"
-        type="text"
-        :size="SIZE.MD"
-        :disabled="!colorRemovable"
-        @click="emit('colorRemove')"
-      ) {{ $t('UU0121') }}
-      f-button(
-        :theme="THEME.DARK"
-        :size="SIZE.MD"
-        prependIcon="add"
-        type="secondary"
-        :disabled="!colorAddable"
-        @click="emit('colorAdd')"
-      ) {{ $t('UU0120') }}
-div(class="border border-secondary-border")
+template(v-if="store.getters['permission/enable3DViewerColor']")
+  section-sidebar(:title="$t('RR0026')")
+    template(#content)
+      color-input(
+        :key="index"
+        v-for="(currentColor, index) in currentColors"
+        :index="index"
+        :color="currentColor"
+        :pantoneList="pantoneList"
+        @colorChange="(v, index) => emit('colorChange', v, index)"
+        @colorInput="(v, index) => emit('colorInput', v, index)"
+      )
+      div(class="flex flex-row justify-around items-center gap-x-2")
+        f-button(
+          class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
+          :theme="THEME.DARK"
+          type="text"
+          :size="SIZE.MD"
+          :disabled="!colorRemovable"
+          @click="emit('colorRemove')"
+        ) {{ $t('UU0121') }}
+        f-button(
+          :theme="THEME.DARK"
+          :size="SIZE.MD"
+          prependIcon="add"
+          type="secondary"
+          :disabled="!colorAddable"
+          @click="emit('colorAdd')"
+        ) {{ $t('UU0120') }}
+  div(class="border border-secondary-border")
 </template>
 
 <script setup lang="ts">
