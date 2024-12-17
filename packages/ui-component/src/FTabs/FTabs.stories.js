@@ -1,4 +1,4 @@
-import FTabs from './FTabs.vue'
+import FTabs, { TYPE } from './FTabs.vue'
 
 const tabList = [
   {
@@ -24,10 +24,20 @@ export default {
   component: FTabs,
   args: {
     tabList,
+    type: TYPE.LINE,
+    theme: 'new',
   },
-  argType: {
+  argTypes: {
     initValue: {
       control: { type: 'text' },
+    },
+    type: {
+      options: [TYPE.LINE, TYPE.CONTROL],
+      control: { type: 'radio' },
+    },
+    theme: {
+      control: { type: 'radio' },
+      options: ['new', 'new-dark', 'startrust'],
     },
   },
 }
@@ -40,7 +50,7 @@ const Template = (args) => ({
   template: '<f-tabs v-bind="args"> </f-tabs>',
 })
 
-export const Default = Template.bind({})
+export const Default = Template
 
 export const HasNewUpdate = Template.bind({})
 const hasNewUpdateTabList = JSON.parse(JSON.stringify(tabList))

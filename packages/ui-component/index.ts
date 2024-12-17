@@ -29,6 +29,7 @@ import FInputText from './src/FInput/FInputText/FInputText.vue'
 import FInputSlider from './src/FInput/FInputSlider/FInputSlider.vue'
 import FInputTap from './src/FInput/FInputTap/FInputTap.vue'
 import FInputToggle from './src/FInput/FInputToggle/FInputToggle.vue'
+import FPill from './src/FPill/FPill.vue'
 import FTooltipStandard from './src/FTooltip/FTooltipStandard/FTooltipStandard.vue'
 import FTooltipMedia from './src/FTooltip/FTooltipMedia/FTooltipMedia.vue'
 import FTooltip from './src/FTooltip/FTooltip/FTooltip.vue'
@@ -53,6 +54,7 @@ export {
   FInputCheckbox,
   FInputSlider,
   FInputTap,
+  FPill,
   FTooltipStandard,
   FTooltipMedia,
   FTooltip,

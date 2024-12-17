@@ -7,11 +7,13 @@ const defaultLightTheme = (theme) => ({
   '--color-primary': theme('colors.white'),
   '--color-primary-border': theme('colors.grey.200.v1'),
   '--color-primary-inverse': theme('colors.black'),
+  '--color-primary-hover': theme('colors.grey.50.v1'),
   '--color-secondary': theme('colors.grey.50.v1'),
   '--color-secondary-border': theme('colors.grey.100.v1'),
   '--color-secondary-text': theme('colors.grey.700.v1'),
   '--color-tertiary': theme('colors.grey.100.v1'),
   '--color-info': theme('colors.cyan.50.v1'),
+  '--color-info-border': theme('colors.cyan.200.v1'),
 })
 
 // expected to used module.export, if using export default
@@ -33,12 +35,14 @@ module.exports = function ({ addBase, theme }) {
       '--color-primary': theme('colors.grey.0'),
       '--color-primary-inverse': theme('colors.grey.900.DEFAULT'),
       '--color-primary-border': theme('colors.grey.100.DEFAULT'),
+      '--color-primary-hover': theme('colors.grey.50.DEFAULT'),
       '--color-secondary': theme('colors.grey.900.DEFAULT'),
       '--color-secondary-border': theme('colors.grey.250'),
       '--color-secondary-text': theme('colors.grey.900.DEFAULT'),
       '--color-tertiary': theme('colors.grey.100.DEFAULT'),
       '--color-disabled': theme('colors.grey.250'),
       '--color-info': theme('colors.cyan.50.v1'),
+      '--color-info-border': theme('colors.cyan.200.v1'),
     },
 
     '[data-theme="new"]': {
@@ -65,12 +69,14 @@ module.exports = function ({ addBase, theme }) {
       '--color-primary': theme('colors.black'),
       '--color-primary-border': theme('colors.grey.700.v1'),
       '--color-primary-inverse': theme('colors.white'),
+      '--color-primary-hover': theme('colors.grey.50.v1'),
       '--color-secondary': theme('colors.grey.900.v1'),
       '--color-secondary-border': theme('colors.grey.800.v1'),
       '--color-secondary-text': theme('colors.grey.300.v1'),
       '--color-tertiary': theme('colors.grey.800.v1'),
       '--color-disabled': theme('colors.grey.500.v1'),
       '--color-info': theme('colors.cyan.900.v1'),
+      '--color-info-border': theme('colors.cyan.700.v1'),
     },
 
     '[data-theme="startrust"]': {

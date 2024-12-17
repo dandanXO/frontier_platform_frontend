@@ -4,7 +4,7 @@
 }
 
 .noUi-connect {
-  @apply bg-primary-400;
+  @apply bg-brand-solid;
 }
 
 // handle base css

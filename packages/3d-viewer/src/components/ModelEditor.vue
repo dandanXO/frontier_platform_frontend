@@ -10,10 +10,7 @@ import useScreenshot from '../composables/useScreenshot'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
 import EditorHeader from './EditorHeader.vue'
 import EditorSidebar from './sidebar/EditorSidebar.vue'
-import HiddenSidebar from './sidebar/HiddenSidebar.vue'
 import EditorLoader from './EditorLoader.vue'
-import MobileModelControlBar from './MobileModelControlBar.vue'
-import MobileTextureControlBar from './MobileTextureControlBar.vue'
 import type { Material } from '@frontier/platform-web-sdk'
 
 const props = withDefaults(
@@ -115,26 +112,17 @@ const handleSidebarToggle = () => {
 </script>
 
 <template lang="pug">
-div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex flex-col")
-  editor-header(
-    :textureImages="textureImages"
-    :displayMode="displayMode"
-    :currentModel="currentModel"
-    :textureType="textureType"
-    :models="models"
-    @displayModeChange="handleDisplayModeChange"
-    @modelClick="loadModel"
-    @textureClick="handleTextureClick"
-    @close="handleClose"
-  )
-  div(
-    v-show="displayMode === DISPLAY_MODE.MODEL"
-    class="relative flex flex-col flex-1 min-h-0"
-  )
+div(
+  class="w-screen h-screen fixed z-popper bg-primary left-0 top-0 flex flex-col"
+  data-theme="new-dark"
+)
+  editor-header(@close="handleClose" @screenshot="takeScreenshot")
+  div(class="relative flex flex-col flex-1 min-h-0")
     div(class="relative flex flex-row flex-1 min-h-0 items-stretch")
       template(v-if="!isLoadingU3M && !isLoadingModel")
         editor-sidebar(
-          v-show="sidebarExpanded"
+          :textureImages="textureImages"
+          :textureType="textureType"
           :originU3m="originU3m"
           :pantoneList="pantoneList"
           :currentColors="currentColors"
@@ -145,7 +133,13 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
           :specular="specular"
           :scale="scale"
           :dpi="dpi"
+          :displayMode="displayMode"
+          :models="models"
+          :currentModel="currentModel"
+          @modelClick="loadModel"
+          @displayModeChange="handleDisplayModeChange"
           @toggleExpand="handleSidebarToggle"
+          @textureClick="handleTextureClick"
           @colorAdd="handleColorAdd"
           @colorRemove="handleColorRemove"
           @colorChange="handleColorChange"
@@ -154,35 +148,18 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
           @roughnessChange="handleRoughnessChange"
           @specularChange="handleSpecularChange"
           @scaleChange="handleScaleChange"
-          @screenshot="takeScreenshot"
           @toggleMoireEffectPrevent="moireEffectPreventToggle"
         )
-      hidden-sidebar(
-        v-show="!sidebarExpanded && !isMobile"
-        @toggle-expand="handleSidebarToggle"
-      )
-      div(ref="container" class="flex-1")
+      div(ref="container" class="flex-1" v-show="displayMode === DISPLAY_MODE.MODEL")
         canvas(ref="canvas")
-    mobile-model-control-bar(
-      v-if="isMobile"
-      :expanded="sidebarExpanded"
-      @toggleExpand="handleSidebarToggle"
-      @close="handleClose"
-    )
-  div(
-    v-show="displayMode === DISPLAY_MODE.TEXTURE"
-    class="relative flex-1 w-full flex items-center min-h-0 justify-center"
-  )
-    img(
-      class="rounded"
-      :style="{ maxHeight: '75%', maxWidth: '75%' }"
-      :src="textureImage"
-    )
-    mobile-texture-control-bar(
-      v-if="!!isMobile"
-      :expanded="sidebarExpanded"
-      @toggleExpand="handleSidebarToggle"
-      @close="handleClose"
-    )
+      div(
+        v-show="displayMode === DISPLAY_MODE.TEXTURE"
+        class="flex-1 flex items-center justify-center bg-tertiary bg-opacity-60"
+      )
+        img(
+          class="rounded"
+          :style="{ maxHeight: '75%', maxWidth: '75%' }"
+          :src="textureImage"
+        )
   editor-loader(v-if="isLoadingModel")
 </template>
