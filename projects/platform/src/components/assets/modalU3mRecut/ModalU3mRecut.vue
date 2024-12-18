@@ -21,7 +21,7 @@ div(
     modal-u3m-recut-sidebar(
       :currentSide="currentSide"
       :handleCropModeChange="handleCropModeChange"
-      :togglingQuilting="togglingQuilting"
+      :togglingCustomConfig="togglingCustomConfig"
       :materialSide="materialSide"
       :refSideCropperArea="refSideCropperArea"
       :isDoubleSideMaterial="material.isDoubleSide"
@@ -38,7 +38,7 @@ div(
           :isSquare="side.cropMode === CROP_MODE.SQUARE"
           :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
           @update:editStatus="handlePerspectiveEditStatusChange"
-          :handleQuiltingCoordsChange="handleQuiltingCoordsChange"
+          :handleGenerateCustomResult="handleGenerateCustomResult"
         )
       div
 </template>
@@ -49,7 +49,9 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import ModalU3mRecutHeader from '@/components/assets/modalU3mRecut/ModalU3mRecutHeader.vue'
-import ModalU3mRecutSidebar from './ModalU3mRecutSidebar.vue'
+import ModalU3mRecutSidebar, {
+  type TogglingCustomConfigParams,
+} from './ModalU3mRecutSidebar.vue'
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
 import {
   CROP_MODE,
@@ -67,13 +69,13 @@ import type {
   MaterialU3mImage,
   MaterialSideImage,
   MaterialSide,
-  PerspectiveCropImageRecord,
 } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import ModalU3mConfirm from '../ModalU3mConfirm.vue'
 import { STATUS as NOTIF_STATUS } from './perspectiveCropper/NotifyBar.vue'
+import type { GenerateCustomResultParams } from './perspectiveCropper/PerspectiveCanvas.vue'
 
 const props = defineProps<{
   material: Material
@@ -187,10 +189,14 @@ const handleCropModeChange = async (v: CROP_MODE) => {
   }
 }
 
-const togglingQuilting = async (v: U3mSide['isQuilting']) => {
+const togglingCustomConfig = ({
+  isQuilting,
+  isColorBalancing,
+}: TogglingCustomConfigParams) => {
   ;[faceSide, backSide].forEach((side) => {
     if (side?.value) {
-      side.value.isQuilting = v
+      side.value.isQuilting = isQuilting
+      side.value.isColorBalancing = isColorBalancing
     }
   })
 }
@@ -402,8 +408,8 @@ const generateAssetsMaterialU3m = async (isReplaceFaceAndBackSide: boolean) => {
   }
 }
 
-const handleQuiltingCoordsChange = async (
-  coordsMap: PerspectiveCropImageRecord
+const handleGenerateCustomResult = async (
+  coordsMap: GenerateCustomResultParams
 ) => {
   const u3mImageMap: Record<U3M_CUT_SIDE, MaterialU3mImage | null> = {
     [U3M_CUT_SIDE.FACE_SIDE]: faceSideU3mImage.value,
@@ -429,6 +435,8 @@ const handleQuiltingCoordsChange = async (
         rightTop: coordsMap.rightTop,
         rotateDeg: rotateDeg ?? 0,
       },
+      shouldColorBalance: !!currentSide.value?.isColorBalancing,
+      shouldImageQuilt: !!currentSide.value?.isQuilting,
     }
   )
 

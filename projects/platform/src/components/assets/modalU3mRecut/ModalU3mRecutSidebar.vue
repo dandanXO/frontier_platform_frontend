@@ -38,7 +38,26 @@ div(
   div(class="flex flex-col gap-4 text-primary-inverse")
     p(class="text-base font-bold") {{ $t('RR0122') }}
     div(class="flex flex-row gap-2")
-      f-input-toggle(:value="isQuilting" @update:value="handletoggleQuilting")
+      f-input-toggle(
+        :value="isColorBalancing"
+        @update:value="handleToggleColorBalancing"
+      )
+      p(class="text-sm text-primary-inverse") {{ $t('EE0240') }}
+      f-tooltip(
+        :title="$t('EE0240')"
+        :desc="$t('EE0241')"
+        :placement="TOOLTIP_PLACEMENT.RIGHT"
+        data-theme="new"
+        classContent="w-80"
+        :offset="[-6, 0]"
+        class="self-center"
+        interactive
+        isDescHTML
+      )
+        template(#slot:tooltip-trigger)
+          f-svg-icon(iconName="question" size="16" color="white" class="self-center")
+    div(class="flex flex-row gap-2")
+      f-input-toggle(:value="isQuilting" @update:value="handleToggleQuilting")
       p(class="text-sm text-primary-inverse") {{ $t('EE0234') }}
       f-tooltip(
         :title="$t('EE0234')"
@@ -57,6 +76,25 @@ div(
         //- template(#slot:tooltip-content)
         //-   div(class="underline decoration-link hover:decoration-link-hover")
         //-     f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+    div(class="flex flex-row gap-2")
+      f-input-toggle(
+        :value="isColorBalancing"
+        @update:value="handleToggleColorBalancing"
+      )
+      p(class="text-sm text-primary-inverse") {{ $t('EE0240') }}
+      f-tooltip(
+        :title="$t('EE0240')"
+        :desc="$t('EE0241')"
+        :placement="TOOLTIP_PLACEMENT.RIGHT"
+        data-theme="new"
+        classContent="w-80"
+        :offset="[-6, 0]"
+        class="self-center"
+        interactive
+        isDescHTML
+      )
+        template(#slot:tooltip-trigger)
+          f-svg-icon(iconName="question" size="16" color="white" class="self-center")
     div(class="flex flex-row gap-2")
       f-input-toggle(
         :value="isShowModalReplaceSides"
@@ -132,11 +170,16 @@ import type PerspectiveCropper from './perspectiveCropper/PerspectiveCropper.vue
 import { STATUS as NOTIF_STATUS } from './perspectiveCropper/NotifyBar.vue'
 import ActionButton from './ActionButton.vue'
 
+export interface TogglingCustomConfigParams {
+  isQuilting: U3mSide['isQuilting']
+  isColorBalancing: U3mSide['isColorBalancing']
+}
+
 interface Props {
   currentSide?: U3mSide
   materialSide: MaterialSide | null
   handleCropModeChange: (v: CROP_MODE) => Promise<void>
-  togglingQuilting: (v: U3mSide['isQuilting']) => void
+  togglingCustomConfig: (params: TogglingCustomConfigParams) => void
   refSideCropperArea: InstanceType<typeof PerspectiveCropper> | null
   isDoubleSideMaterial: boolean
   isShowModalReplaceSides?: boolean
@@ -161,6 +204,7 @@ const props = defineProps<Props>()
 const store = useStore()
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 const isQuilting = ref(false)
+const isColorBalancing = ref(false)
 
 const onFindPattern = async () => {
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
@@ -199,13 +243,13 @@ const onFindPattern = async () => {
     })
 }
 
-const handletoggleQuilting = () => {
-  const value = !isQuilting.value
-  isQuilting.value = value
-
-  props.togglingQuilting(value)
-  if (value) {
-    props.refSideCropperArea?.refPerspectiveCanvas?.quilting()
+const generateCustomResult = (
+  isQuilting: boolean,
+  isColorBalancing: boolean
+) => {
+  const isGenerateCustomResult = isQuilting || isColorBalancing
+  if (isGenerateCustomResult) {
+    props.refSideCropperArea?.refPerspectiveCanvas?.generateCustomResult()
     return
   }
 
@@ -215,7 +259,34 @@ const handletoggleQuilting = () => {
   if (!coordsMap) {
     return
   }
-  props.refSideCropperArea?.refPerspectiveCanvas?.crop()
+  props.refSideCropperArea?.refPerspectiveCanvas?.crop(
+    false,
+    !isGenerateCustomResult
+  )
+}
+
+const handleToggleQuilting = () => {
+  const value = !isQuilting.value
+  isQuilting.value = value
+
+  props.togglingCustomConfig({
+    isColorBalancing: isColorBalancing.value,
+    isQuilting: value,
+  })
+
+  generateCustomResult(value, isColorBalancing.value)
+}
+
+const handleToggleColorBalancing = () => {
+  const value = !isColorBalancing.value
+  isColorBalancing.value = value
+
+  props.togglingCustomConfig({
+    isColorBalancing: value,
+    isQuilting: isQuilting.value,
+  })
+
+  generateCustomResult(isQuilting.value, value)
 }
 
 const onChangeCropMode = (cropMode: CROP_MODE) => () =>

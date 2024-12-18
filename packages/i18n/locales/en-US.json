@@ -1333,6 +1333,8 @@
   "EE0237": "Use solid quilting tool to create a seamless tile and <b class=\"text-brand-solid\">it's recommended for solid textures</b>. Adjust the crop area to find the best result",
   "EE0238": "See Tutorial",
   "EE0239": "Choose a hole background color?",
+  "EE0240": "Color balancer",
+  "EE0241": "Use the Color Balancer to normalize uneven colors for single-color textures to achieve a smooth and consistent color tone.",
   "FF0001": "Workspace",
   "FF0002": "Date created",
   "FF0003": "Create New Collection",

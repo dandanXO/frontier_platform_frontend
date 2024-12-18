@@ -1,5 +1,6 @@
 import Decimal from 'decimal.js'
 import type { Image, Coord, CropperConfig, SquareCropRecord } from '@/types'
+import type { Coordinate } from '@frontier/platform-web-sdk'
 
 /**
  * 1 dpi = 0.393701 pixel/cm
@@ -31,7 +32,7 @@ export const coordToDP1 = (coord: Coord) => ({
   y: toDP1(coord.y),
 })
 
-export const getIntCoord = (coord: Coord) => ({
+export const getIntCoord = (coord: Coord): Coordinate => ({
   x: Math.round(coord.x),
   y: Math.round(coord.y),
 })

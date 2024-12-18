@@ -8004,6 +8004,57 @@ export interface GetQuiltedFromSelectedAreaMaterialSide200Response {
 /**
  * 
  * @export
+ * @interface GetQuiltedFromSelectedAreaMaterialSideRequest
+ */
+export interface GetQuiltedFromSelectedAreaMaterialSideRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'frontierNo': string;
+    /**
+     * 
+     * @type {PerspectiveCropImageRecord}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'selectedArea'?: PerspectiveCropImageRecord;
+    /**
+     * if selected area should be quilted, enable this
+     * @type {boolean}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'shouldImageQuilt': boolean;
+    /**
+     * if quilted image requires color balanced, enable this
+     * @type {boolean}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSideRequest
+     */
+    'shouldColorBalance': boolean;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetReceivedShareInfo200Response
  */
 export interface GetReceivedShareInfo200Response {
@@ -26464,13 +26515,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * Get quilted image from selected area of material side image
          * @summary Get quilted image from selected area of material side image
-         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {GetQuiltedFromSelectedAreaMaterialSideRequest} getQuiltedFromSelectedAreaMaterialSideRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getQuiltedFromSelectedAreaMaterialSide: async (getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getPatternFromSelectedAreaMaterialSideRequest' is not null or undefined
-            assertParamExists('getQuiltedFromSelectedAreaMaterialSide', 'getPatternFromSelectedAreaMaterialSideRequest', getPatternFromSelectedAreaMaterialSideRequest)
+        getQuiltedFromSelectedAreaMaterialSide: async (getQuiltedFromSelectedAreaMaterialSideRequest: GetQuiltedFromSelectedAreaMaterialSideRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getQuiltedFromSelectedAreaMaterialSideRequest' is not null or undefined
+            assertParamExists('getQuiltedFromSelectedAreaMaterialSide', 'getQuiltedFromSelectedAreaMaterialSideRequest', getQuiltedFromSelectedAreaMaterialSideRequest)
             const localVarPath = `/assets/material/side-image/get-quilted-image`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26494,7 +26545,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getPatternFromSelectedAreaMaterialSideRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getQuiltedFromSelectedAreaMaterialSideRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27707,12 +27758,12 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * Get quilted image from selected area of material side image
          * @summary Get quilted image from selected area of material side image
-         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {GetQuiltedFromSelectedAreaMaterialSideRequest} getQuiltedFromSelectedAreaMaterialSideRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options);
+        async getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest: GetQuiltedFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetsApi.getQuiltedFromSelectedAreaMaterialSide']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28225,12 +28276,12 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * Get quilted image from selected area of material side image
          * @summary Get quilted image from selected area of material side image
-         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {GetQuiltedFromSelectedAreaMaterialSideRequest} getQuiltedFromSelectedAreaMaterialSideRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response> {
-            return localVarFp.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
+        getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest: GetQuiltedFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response> {
+            return localVarFp.getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
         },
         /**
          *  **Access roles:** To be clear define
@@ -28699,13 +28750,13 @@ export class AssetsApi extends BaseAPI {
     /**
      * Get quilted image from selected area of material side image
      * @summary Get quilted image from selected area of material side image
-     * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+     * @param {GetQuiltedFromSelectedAreaMaterialSideRequest} getQuiltedFromSelectedAreaMaterialSideRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig) {
-        return AssetsApiFp(this.configuration).getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(this.axios, this.basePath));
+    public getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest: GetQuiltedFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getQuiltedFromSelectedAreaMaterialSide(getQuiltedFromSelectedAreaMaterialSideRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

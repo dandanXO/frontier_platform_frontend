@@ -38,7 +38,7 @@ div(class="h-full flex flex-1 flex-col")
             ref="refPerspectiveCanvas"
             v-if="sourceCanvasContainer && sourceImage && downSampledCanvases"
             :isSquare="props.isSquare"
-            :isQuilting="props.side.isQuilting"
+            :isGenerateCustomResult="props.side.isQuilting || props.side.isColorBalancing"
             :container="sourceCanvasContainer"
             :sourceImage="sourceImage"
             :downSampleScales="downSampleScales"
@@ -47,7 +47,7 @@ div(class="h-full flex flex-1 flex-col")
             :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord ?? undefined"
             :initialRecord="props.side.perspectiveCropRecord ?? undefined"
             :gridColor="gridColor"
-            @quiltingCoordsChange="handleQuiltingCoordsChange"
+            @generateCustomResult="handleGenerateCustomResult"
             @rotateDegChange="handleRotateDegChange"
             @scaleChange="handleSourceScaleChange"
             @cropStart="handleCropStart"
@@ -112,7 +112,9 @@ import Ruler from '@scena/ruler'
 
 import type { PerspectiveCropImageRecord } from '@frontier/platform-web-sdk'
 import usePreview from '@/composables/usePreview'
-import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
+import PerspectiveCanvas, {
+  type GenerateCustomResultParams,
+} from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
 import NotifyBar, {
   STATUS as NOTIF_STATUS,
 } from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
@@ -134,7 +136,9 @@ import InputGridColor from './InputGridColor.vue'
 interface Props {
   side: U3mSide
   isSquare: boolean
-  handleQuiltingCoordsChange: (coordsMap: PerspectiveCropImageRecord) => void
+  handleGenerateCustomResult: (
+    coordsMap: GenerateCustomResultParams
+  ) => Promise<void>
 }
 
 export interface ToastParams {
@@ -331,7 +335,7 @@ const handleSourceScaleChange = (cm: number) => {
 }
 
 const handleCropStart = () => {
-  if (props.side.isQuilting) {
+  if (props.side.isQuilting || props.side.isColorBalancing) {
     return
   }
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
@@ -348,17 +352,19 @@ const handleCropSuccess = (result: {
     dpi ?? 0
   )
 
+  const isCustomResult = props.side.isQuilting || props.side.isColorBalancing
+
   /**
-   * quilting have their own image result but quilting flow need it's canvas
-   * so on initiation, canvas need to be rendered first before doing quilting
+   * custom result have their own image result but custom result flow need it's canvas
+   * so on initiation, canvas need to be rendered first before doing custom result
    */
-  if (!props.side.isQuilting || !destinationCanvas.value) {
+  if (!isCustomResult || !destinationCanvas.value) {
     destinationCanvas.value = result.canvas
     renderPreviewDisplay(result.behaviorType)
   }
 
   destinationCropRecord.value = result.record
-  !props.side.isQuilting &&
+  !isCustomResult &&
     store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
 }
 

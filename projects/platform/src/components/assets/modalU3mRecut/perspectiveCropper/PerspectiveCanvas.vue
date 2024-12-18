@@ -140,6 +140,11 @@ import { useStore } from 'vuex'
 
 type CircleId = 'leftTop' | 'rightTop' | 'rightBottom' | 'leftBottom'
 
+export type GenerateCustomResultParams = Omit<
+  PerspectiveCropImageRecord,
+  'rotateDeg'
+>
+
 const props = defineProps<{
   container: HTMLDivElement
   sourceImage: HTMLImageElement
@@ -150,7 +155,7 @@ const props = defineProps<{
   restoreRecord: PerspectiveCropRecord | undefined
   initialRecord: PerspectiveCropRecord | undefined
   isSquare?: boolean
-  isQuilting?: boolean
+  isGenerateCustomResult?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -163,7 +168,7 @@ const emit = defineEmits<{
       behaviorType: 'move' | 'grab'
     }
   ): void
-  (e: 'quiltingCoordsChange', coords: PerspectiveCropImageRecord): void
+  (e: 'generateCustomResult', coords: GenerateCustomResultParams): void
   (e: 'cropError', err: Error): void
   (e: 'scaleChange', v: number): void
   (e: 'rotateDegChange', v: number): void
@@ -348,44 +353,55 @@ const circleLeftBottomPosition = reactive<Coord>({
   ...(props.initialRecord && props.initialRecord.leftBottom),
 })
 
-const quilting = () => {
+const generateCustomResult = () => {
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 
-  const xAxis = [
-    circleLeftTopPosition.x,
-    circleRightTopPosition.x,
-    circleRightBottomPosition.x,
-    circleLeftBottomPosition.x,
-  ].sort((a, b) => a - b)
+  /**
+   * Generate largest square from crop area coordinates
+   */
+  const generateLargestSquare = (): GenerateCustomResultParams => {
+    const xAxis = [
+      circleLeftTopPosition.x,
+      circleRightTopPosition.x,
+      circleRightBottomPosition.x,
+      circleLeftBottomPosition.x,
+    ].sort((a, b) => a - b)
 
-  const yAxis = [
-    circleLeftTopPosition.y,
-    circleRightTopPosition.y,
-    circleRightBottomPosition.y,
-    circleLeftBottomPosition.y,
-  ].sort((a, b) => a - b)
+    const yAxis = [
+      circleLeftTopPosition.y,
+      circleRightTopPosition.y,
+      circleRightBottomPosition.y,
+      circleLeftBottomPosition.y,
+    ].sort((a, b) => a - b)
 
-  const biggestXAxis = xAxis[xAxis.length - 1]
-  const biggestYAxis = yAxis[yAxis.length - 1]
+    const biggestXAxis = xAxis[xAxis.length - 1]
+    const biggestYAxis = yAxis[yAxis.length - 1]
 
-  emit('quiltingCoordsChange', {
-    leftTop: getIntCoord({
-      x: xAxis[0],
-      y: yAxis[0],
-    }),
-    rightTop: getIntCoord({
-      x: biggestXAxis,
-      y: yAxis[0],
-    }),
-    rightBottom: getIntCoord({
-      x: biggestXAxis,
-      y: biggestYAxis,
-    }),
-    leftBottom: getIntCoord({
-      x: xAxis[0],
-      y: biggestYAxis,
-    }),
-  })
+    return {
+      leftTop: getIntCoord({
+        x: xAxis[0],
+        y: yAxis[0],
+      }),
+      rightTop: getIntCoord({
+        x: biggestXAxis,
+        y: yAxis[0],
+      }),
+      rightBottom: getIntCoord({
+        x: biggestXAxis,
+        y: biggestYAxis,
+      }),
+      leftBottom: getIntCoord({
+        x: xAxis[0],
+        y: biggestYAxis,
+      }),
+    }
+  }
+
+  /**
+   * this emits will used the largest square from crop area coordinates
+   * as an input for the quilting or color balancing process.
+   */
+  emit('generateCustomResult', generateLargestSquare())
 }
 
 const getCoordsMap = (): PerspectiveCropImageRecord => {
@@ -419,7 +435,7 @@ const setCoordsMap = (coordsMap: PerspectiveCropImageRecord) => {
 }
 const isChanging = ref(false)
 
-const debouncedQuilting = debounce(quilting, 1000)
+const debouncedGenerateCustomResult = debounce(generateCustomResult, 1000)
 
 const leftSideCenter = computed(() =>
   getCenter(circleLeftTopPosition, circleLeftBottomPosition)
@@ -1057,7 +1073,7 @@ const handleCircleDragEnd = (e: Konva.KonvaEventObject<'dragend'>) => {
   }
 }
 
-const crop = async (init?: boolean, skipQuilting?: boolean) => {
+const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
   emit('cropStart')
 
   try {
@@ -1167,7 +1183,10 @@ const crop = async (init?: boolean, skipQuilting?: boolean) => {
       behaviorType: type,
     })
     isChanging.value = !init
-    !init && props.isQuilting && !skipQuilting && debouncedQuilting()
+    !init &&
+      props.isGenerateCustomResult &&
+      !skipGenerateCustomResult &&
+      debouncedGenerateCustomResult()
   } catch (err) {
     console.timeEnd('Perspective Transform')
     if (err instanceof Error) {
@@ -1383,7 +1402,7 @@ defineExpose({
   isChanging,
   imageHeightCm,
   imageWidthCm,
-  quilting,
+  generateCustomResult,
 })
 </script>
 
