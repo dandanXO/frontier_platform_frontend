@@ -424,21 +424,18 @@ const handleGenerateCustomResult = async (
   const rotateDeg =
     u3mImageMap[currentSideName.value]?.cropRecord.squareCropRecord?.rotateDeg
 
-  const { data } = await ogBaseAssetsApi(
-    'getQuiltedFromSelectedAreaMaterialSide',
-    {
-      frontierNo: materialSide.value.frontierNo,
-      selectedArea: {
-        leftBottom: coordsMap.leftBottom,
-        leftTop: coordsMap.leftTop,
-        rightBottom: coordsMap.rightBottom,
-        rightTop: coordsMap.rightTop,
-        rotateDeg: rotateDeg ?? 0,
-      },
-      shouldColorBalance: !!currentSide.value?.isColorBalancing,
-      shouldImageQuilt: !!currentSide.value?.isQuilting,
-    }
-  )
+  const { data } = await ogBaseAssetsApi('materialGetAiImageProcessor', {
+    frontierNo: materialSide.value.frontierNo,
+    selectedArea: {
+      leftBottom: coordsMap.leftBottom,
+      leftTop: coordsMap.leftTop,
+      rightBottom: coordsMap.rightBottom,
+      rightTop: coordsMap.rightTop,
+      rotateDeg: rotateDeg ?? 0,
+    },
+    shouldColorBalance: !!currentSide.value?.isColorBalancing,
+    shouldImageQuilt: !!currentSide.value?.isQuilting,
+  })
 
   data.result
     ? await refSideCropperArea.value?.loadImageToCanvas(data.result)
