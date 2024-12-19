@@ -78,25 +78,6 @@ div(
         //-     f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
-        :value="isColorBalancing"
-        @update:value="handleToggleColorBalancing"
-      )
-      p(class="text-sm text-primary-inverse") {{ $t('EE0240') }}
-      f-tooltip(
-        :title="$t('EE0240')"
-        :desc="$t('EE0241')"
-        :placement="TOOLTIP_PLACEMENT.RIGHT"
-        data-theme="new"
-        classContent="w-80"
-        :offset="[-6, 0]"
-        class="self-center"
-        interactive
-        isDescHTML
-      )
-        template(#slot:tooltip-trigger)
-          f-svg-icon(iconName="question" size="16" color="white" class="self-center")
-    div(class="flex flex-row gap-2")
-      f-input-toggle(
         :value="isShowModalReplaceSides"
         @update:value="emit('update:replaceSides', $event)"
       )
