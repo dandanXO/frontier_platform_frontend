@@ -19,6 +19,11 @@ class PreviewDisplay {
   gridColor: string
   showGrid = true
   wheelScaleBy = 1.03
+  /**
+   * The reason for adding borderBuffer(1) to the width and height is to ensure that
+   * the image is not clipped at the edges, improving its display quality and integrity.
+   */
+  borderBuffer = 1
   onScaleChange: (v: number) => void
   static downSampleScales = [0.1, 0.15, 0.3, 0.5]
 
@@ -90,7 +95,16 @@ class PreviewDisplay {
     width: number,
     height: number
   ) => {
-    const image = new Konva.Image({ x, y, image: from, width, height })
+    const image = new Konva.Image({
+      x,
+      y,
+      image: from,
+      width: width + this.borderBuffer,
+      height: height + this.borderBuffer,
+      // here fill set to transparent to avoid konva auto fill with a color
+      fill: 'rgba(255, 255, 255, 0)',
+      strokeEnabled: false,
+    })
     this.previewImages.push(image)
     this.layer.add(image)
   }
@@ -98,15 +112,24 @@ class PreviewDisplay {
   drawByCanvas = (from: HTMLCanvasElement) => {
     const width = from.width
     const height = from.height
-    this.drawImage(from, 0, 0, width, height)
-    this.drawImage(from, width, 0, width, height)
-    this.drawImage(from, width * 2, 0, width, height)
-    this.drawImage(from, 0, height, width, height)
-    this.drawImage(from, width, height, width, height)
-    this.drawImage(from, width * 2, height, width, height)
-    this.drawImage(from, 0, height * 2, width, height)
-    this.drawImage(from, width, height * 2, width, height)
-    this.drawImage(from, width * 2, height * 2, width, height)
+
+    // +---+---+---+
+    // | 1 | 2 | 3 |
+    // +---+---+---+
+    // | 4 | 5 | 6 |
+    // +---+---+---+
+    // | 7 | 8 | 9 |
+    // +---+---+---+
+    // layer drwa order must be below
+    this.drawImage(from, 0, height * 2, width, height) // draw number 7 picture
+    this.drawImage(from, width, height * 2, width, height) // draw number 8 picture
+    this.drawImage(from, width * 2, height * 2, width, height) // draw number 9 picture
+    this.drawImage(from, 0, height, width, height) // draw number 4 picture
+    this.drawImage(from, width, height, width, height) //  draw number 5 picture
+    this.drawImage(from, width * 2, height, width, height) // draw number 6 picture
+    this.drawImage(from, 0, 0, width, height) // draw number 1 picture
+    this.drawImage(from, width, 0, width, height) // draw number 2 picture
+    this.drawImage(from, width * 2, 0, width, height) // draw number 3 picture
   }
 
   draw() {
@@ -123,9 +146,13 @@ class PreviewDisplay {
     this.lines = []
     this.layer.destroyChildren()
     this.drawByCanvas(destinationCanvas)
+    /**
+     * The reason for dividing by 3 is that each image above has an additional 1px,
+     * but since they overlap with each other, the actual increase is only 1/3px.
+     */
     this.drawLines(
-      destinationCanvas.width,
-      destinationCanvas.height,
+      destinationCanvas.width + this.borderBuffer / 3,
+      destinationCanvas.height + this.borderBuffer / 3,
       this.gridColor
     )
     this.lines.forEach((line) => line.opacity(this.showGrid ? 1 : 0))
