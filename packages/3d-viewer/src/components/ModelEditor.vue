@@ -11,20 +11,20 @@ import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
 import EditorHeader from './EditorHeader.vue'
 import EditorSidebar from './sidebar/EditorSidebar.vue'
 import EditorLoader from './EditorLoader.vue'
-import type { Material } from '@frontier/platform-web-sdk'
+import type { Material, MaterialU3m } from '@frontier/platform-web-sdk'
 import { useRoute } from 'vue-router'
 
 const props = withDefaults(
   defineProps<{
-    u3mPath: string
-    dpi: number
-    baseImgUrl: string
+    u3mPath: MaterialU3m['u3mSpecUrl']
+    dpi: MaterialU3m['dpi']
+    baseImgUrl: MaterialU3m['baseImgUrl']
     material: Material
-    normalImgUrl: string
-    dispImgUrl: string
-    roughImgUrl: string
-    bumpImgUrl: string
-    alphaImgUrl: string
+    normalImgUrl: MaterialU3m['normalImgUrl']
+    dispImgUrl: MaterialU3m['dispImgUrl']
+    roughImgUrl: MaterialU3m['roughImgUrl']
+    metalImgUrl: MaterialU3m['metalImgUrl']
+    alphaImgUrl: MaterialU3m['alphaImgUrl']
     onClose?: () => void
   }>(),
   {}
@@ -65,12 +65,12 @@ const {
 } = useModels(
   scene,
   u3m,
-  props.dpi,
-  props.baseImgUrl,
-  props.normalImgUrl,
-  props.roughImgUrl,
-  props.dispImgUrl,
-  props.bumpImgUrl || '',
+  props.dpi ?? 0,
+  props.baseImgUrl || '',
+  props.normalImgUrl || '',
+  props.roughImgUrl || '',
+  props.dispImgUrl || '',
+  props.metalImgUrl || '',
   props.alphaImgUrl || ''
 )
 
@@ -100,16 +100,25 @@ useKeyboard(
   handleClose
 )
 
-const textureImages = {
-  [TEXTURE_TYPE.BASE]: props.baseImgUrl,
-  [TEXTURE_TYPE.NORMAL]: props.normalImgUrl,
-  [TEXTURE_TYPE.ROUGHNESS]: props.roughImgUrl,
-  [TEXTURE_TYPE.DISPLACEMENT]: props.dispImgUrl,
-  [TEXTURE_TYPE.METAL]: props.bumpImgUrl,
-  [TEXTURE_TYPE.ALPHA]: props.alphaImgUrl,
-}
+const textureImages = computed(() => {
+  const baseImages = {
+    [TEXTURE_TYPE.BASE]: props.baseImgUrl,
+    [TEXTURE_TYPE.NORMAL]: props.normalImgUrl,
+    [TEXTURE_TYPE.ROUGHNESS]: props.roughImgUrl,
+    [TEXTURE_TYPE.DISPLACEMENT]: props.dispImgUrl,
+  }
 
-const textureImage = computed(() => textureImages[textureType.value])
+  if (props.metalImgUrl) {
+    baseImages[TEXTURE_TYPE.METAL] = props.metalImgUrl
+  }
+  if (props.alphaImgUrl) {
+    baseImages[TEXTURE_TYPE.ALPHA] = props.alphaImgUrl
+  }
+
+  return baseImages
+})
+
+const textureImage = computed(() => textureImages.value[textureType.value])
 
 const { isMobile } = useBreakpoints()
 const sidebarExpanded = ref(!isMobile.value)
@@ -168,6 +177,7 @@ div(
         class="flex-1 flex items-center justify-center bg-tertiary bg-opacity-60"
       )
         img(
+          v-if="textureImage"
           class="rounded"
           :style="{ maxHeight: '75%', maxWidth: '75%' }"
           :src="textureImage"

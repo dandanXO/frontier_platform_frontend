@@ -7973,6 +7973,37 @@ export interface GetPublicLibraryMaterialRequest {
 /**
  * 
  * @export
+ * @interface GetQuiltedFromSelectedAreaMaterialSide200Response
+ */
+export interface GetQuiltedFromSelectedAreaMaterialSide200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'result': string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetQuiltedFromSelectedAreaMaterialSide200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
  * @interface GetReceivedShareInfo200Response
  */
 export interface GetReceivedShareInfo200Response {
@@ -11356,6 +11387,18 @@ export interface MaterialCustomU3m {
      * @type {string}
      * @memberof MaterialCustomU3m
      */
+    'alphaImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'metalImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
     'gltfUrl': string | null;
     /**
      * 
@@ -11541,88 +11584,6 @@ export interface MaterialGenerateU3mSide {
      */
     'perspectiveCropRecord': object | null;
 }
-/**
- * 
- * @export
- * @interface MaterialGetAiImageProcessor200Response
- */
-export interface MaterialGetAiImageProcessor200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MaterialGetAiImageProcessor200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialGetAiImageProcessor200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialGetAiImageProcessor200Response
-     */
-    'result': string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof MaterialGetAiImageProcessor200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface MaterialGetAiImageProcessorRequest
- */
-export interface MaterialGetAiImageProcessorRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'frontierNo': string;
-    /**
-     * 
-     * @type {PerspectiveCropImageRecord}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'selectedArea'?: PerspectiveCropImageRecord;
-    /**
-     * if selected area should be quilted, enable this
-     * @type {boolean}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'shouldImageQuilt': boolean;
-    /**
-     * if quilted image requires color balanced, enable this
-     * @type {boolean}
-     * @memberof MaterialGetAiImageProcessorRequest
-     */
-    'shouldColorBalance': boolean;
-}
-
-
 /**
  * External Page(非Asset或WorkSpace的頁面)時，回應 null
  * @export
@@ -13483,6 +13444,18 @@ export interface MaterialU3m {
      * @memberof MaterialU3m
      */
     'dispImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialU3m
+     */
+    'alphaImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialU3m
+     */
+    'metalImgUrl': string | null;
     /**
      * 
      * @type {string}
@@ -26513,6 +26486,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getQuiltedFromSelectedAreaMaterialSide: async (getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getPatternFromSelectedAreaMaterialSideRequest' is not null or undefined
+            assertParamExists('getQuiltedFromSelectedAreaMaterialSide', 'getPatternFromSelectedAreaMaterialSideRequest', getPatternFromSelectedAreaMaterialSideRequest)
+            const localVarPath = `/assets/material/side-image/get-quilted-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getPatternFromSelectedAreaMaterialSideRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
          * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -26584,46 +26597,6 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(massExportAssetsMaterialExcelRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Process side image with AI, currently available: quilting, color balancer
-         * @summary Process side image with AI, currently available: quilting, color balancer
-         * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        materialGetAiImageProcessor: async (materialGetAiImageProcessorRequest: MaterialGetAiImageProcessorRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'materialGetAiImageProcessorRequest' is not null or undefined
-            assertParamExists('materialGetAiImageProcessor', 'materialGetAiImageProcessorRequest', materialGetAiImageProcessorRequest)
-            const localVarPath = `/assets/material/side-image/get-ai-image-processor`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(materialGetAiImageProcessorRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27756,6 +27729,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.getQuiltedFromSelectedAreaMaterialSide']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
          * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -27779,19 +27765,6 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AssetsApi.massExportAssetsMaterialExcel']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Process side image with AI, currently available: quilting, color balancer
-         * @summary Process side image with AI, currently available: quilting, color balancer
-         * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async materialGetAiImageProcessor(materialGetAiImageProcessorRequest: MaterialGetAiImageProcessorRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MaterialGetAiImageProcessor200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.materialGetAiImageProcessor(materialGetAiImageProcessorRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AssetsApi.materialGetAiImageProcessor']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -28274,6 +28247,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getPatternFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get quilted image from selected area of material side image
+         * @summary Get quilted image from selected area of material side image
+         * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetQuiltedFromSelectedAreaMaterialSide200Response> {
+            return localVarFp.getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          *  **Access roles:** To be clear define
          * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
          * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -28292,16 +28275,6 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
             return localVarFp.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Process side image with AI, currently available: quilting, color balancer
-         * @summary Process side image with AI, currently available: quilting, color balancer
-         * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        materialGetAiImageProcessor(materialGetAiImageProcessorRequest: MaterialGetAiImageProcessorRequest, options?: RawAxiosRequestConfig): AxiosPromise<MaterialGetAiImageProcessor200Response> {
-            return localVarFp.materialGetAiImageProcessor(materialGetAiImageProcessorRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -28748,6 +28721,18 @@ export class AssetsApi extends BaseAPI {
     }
 
     /**
+     * Get quilted image from selected area of material side image
+     * @summary Get quilted image from selected area of material side image
+     * @param {GetPatternFromSelectedAreaMaterialSideRequest} getPatternFromSelectedAreaMaterialSideRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest: GetPatternFromSelectedAreaMaterialSideRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getQuiltedFromSelectedAreaMaterialSide(getPatternFromSelectedAreaMaterialSideRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      *  **Access roles:** To be clear define
      * @summary 透過 Online Spreadsheet 大量建立、更新、刪除布料
      * @param {MassCreateUpdateDeleteAssetsMaterialListRequest} massCreateUpdateDeleteAssetsMaterialListRequest 
@@ -28769,18 +28754,6 @@ export class AssetsApi extends BaseAPI {
      */
     public massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Process side image with AI, currently available: quilting, color balancer
-     * @summary Process side image with AI, currently available: quilting, color balancer
-     * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AssetsApi
-     */
-    public materialGetAiImageProcessor(materialGetAiImageProcessorRequest: MaterialGetAiImageProcessorRequest, options?: RawAxiosRequestConfig) {
-        return AssetsApiFp(this.configuration).materialGetAiImageProcessor(materialGetAiImageProcessorRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

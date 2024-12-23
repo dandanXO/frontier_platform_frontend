@@ -76,6 +76,7 @@ import { DISPLAY_MODE } from '../../constants'
 import type { Model } from '@/constants/models'
 import EditorModel from './EditorModel.vue'
 import EditoreTexture from './EditoreTexture.vue'
+import type { MaterialU3m } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -83,7 +84,7 @@ const props = defineProps<{
   pantoneList?: { [code: string]: PantoneItem }
   displayMode: DISPLAY_MODE
   currentColors: string[]
-  dpi: number
+  dpi: MaterialU3m['dpi']
   models: Model[]
   currentModel: Model
   colorRemovable: boolean
@@ -92,7 +93,7 @@ const props = defineProps<{
   roughness: number
   specular: number
   scale: number
-  textureImages: { [x: number]: string }
+  textureImages: { [x: number]: string | null }
   textureType: number
 }>()
 
@@ -149,7 +150,7 @@ watch(isShowContent, (isExpand) => {
   }
 })
 
-const isLowDpi = props.dpi < MIN_DPI_2D_MATERIAL
+const isLowDpi = (props.dpi ?? 0) < MIN_DPI_2D_MATERIAL
 
 const { isMobile } = useBreakpoints()
 </script>

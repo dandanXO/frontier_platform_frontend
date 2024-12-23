@@ -19,7 +19,7 @@ import { useI18n } from 'vue-i18n'
 import { SIZE, TEXTURE_TYPE } from '../../constants'
 
 interface Props {
-  textureImages: { [x: number]: string }
+  textureImages: { [x: number]: string | null }
   textureType: number
 }
 

@@ -55,7 +55,7 @@ export const loadU3m = async (u3mPath: string): Promise<U3M> => {
   }
 }
 
-export default function useU3M(path: string) {
+export default function useU3M(path: string | null) {
   const isLoading = ref(true)
   const originU3m = ref<U3M>()
   const u3m = ref<U3M>()
@@ -86,6 +86,9 @@ export default function useU3M(path: string) {
   }
 
   onMounted(() => {
+    if (!path) {
+      return
+    }
     loadU3m(path).then((result) => {
       originU3m.value = result
       u3m.value = result

@@ -35,8 +35,8 @@ onMounted(async () => {
     texture: {
       base: props.u3m.baseImgUrl,
       alpha: props.u3m.alphaImgUrl,
-      bump: props.u3m.bumpImgUrl,
-      bumpScale: 0.05,
+      metal: props.u3m.metalImgUrl,
+      metalScale: 0.05,
       dispImgUrl: props.u3m.dispImgUrl,
       roughImgUrl: props.u3m.roughImgUrl,
       normalImgUrl: props.u3m.normalImgUrl,

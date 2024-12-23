@@ -64,9 +64,9 @@ const useMoireEffectPreventSwitch = (
   moireEffectPreventedNormalTexture: Ref<THREE.Texture | undefined>,
   moireEffectPreventedRoughnessTexture: Ref<THREE.Texture | undefined>,
   moireEffectPreventedDisplacementTexture: Ref<THREE.Texture | undefined>,
-  bumpTexture: Ref<THREE.Texture | undefined>,
+  metalTexture: Ref<THREE.Texture | undefined>,
   alphaTexture: Ref<THREE.Texture | undefined>,
-  moireEffectPreventedBumplacementTexture: Ref<THREE.Texture | undefined>,
+  moireEffectPreventedMetallacementTexture: Ref<THREE.Texture | undefined>,
   moireEffectPreventedAlphalacementTexture: Ref<THREE.Texture | undefined>
 ) => {
   /**
@@ -90,7 +90,7 @@ const useMoireEffectPreventSwitch = (
         !moireEffectPreventedNormalTexture.value ||
         !moireEffectPreventedRoughnessTexture.value ||
         !moireEffectPreventedDisplacementTexture.value ||
-        !moireEffectPreventedBumplacementTexture.value ||
+        !moireEffectPreventedMetallacementTexture.value ||
         !moireEffectPreventedAlphalacementTexture.value
       ) {
         return
@@ -100,7 +100,8 @@ const useMoireEffectPreventSwitch = (
       material.value.roughnessMap = moireEffectPreventedRoughnessTexture.value
       material.value.displacementMap =
         moireEffectPreventedDisplacementTexture.value
-      material.value.bumpMap = moireEffectPreventedBumplacementTexture.value
+      material.value.metalnessMap =
+        moireEffectPreventedMetallacementTexture.value
       material.value.alphaMap = moireEffectPreventedAlphalacementTexture.value
     } else {
       if (
@@ -108,7 +109,7 @@ const useMoireEffectPreventSwitch = (
         !normalTexture.value ||
         !roughnessTexture.value ||
         !displacementTexture.value ||
-        !bumpTexture.value ||
+        !metalTexture.value ||
         !alphaTexture.value
       ) {
         return
@@ -117,7 +118,7 @@ const useMoireEffectPreventSwitch = (
       material.value.normalMap = normalTexture.value
       material.value.roughnessMap = roughnessTexture.value
       material.value.displacementMap = displacementTexture.value
-      material.value.bumpMap = bumpTexture.value
+      material.value.metalnessMap = metalTexture.value
       material.value.alphaMap = alphaTexture.value
     }
     material.value.needsUpdate = true
@@ -137,7 +138,7 @@ export default function useModels(
   normalImgUrl: string,
   roughImgUrl: string,
   dispImgUrl: string,
-  bumpImgUrl: string,
+  metalImgUrl: string,
   alphaImgUrl: string
 ) {
   const isLoading = ref(true)
@@ -151,7 +152,7 @@ export default function useModels(
   const roughnessTexture = ref<THREE.Texture>()
   const displacementTexture = ref<THREE.Texture>()
 
-  const bumpTexture = ref<THREE.Texture | undefined>(undefined)
+  const metalTexture = ref<THREE.Texture | undefined>(undefined)
   const alphaTexture = ref<THREE.Texture | undefined>(undefined)
 
   const moireEffectPreventedBaseImage = ref<HTMLImageElement>()
@@ -159,7 +160,7 @@ export default function useModels(
   const moireEffectPreventedNormalTexture = ref<THREE.Texture>()
   const moireEffectPreventedRoughnessTexture = ref<THREE.Texture>()
   const moireEffectPreventedDisplacementTexture = ref<THREE.Texture>()
-  const moireEffectPreventedBumplacementTexture = ref<
+  const moireEffectPreventedmetallacementTexture = ref<
     THREE.Texture | undefined
   >(undefined)
   const moireEffectPreventedAlphalacementTexture = ref<
@@ -199,9 +200,9 @@ export default function useModels(
       moireEffectPreventedNormalTexture,
       moireEffectPreventedRoughnessTexture,
       moireEffectPreventedDisplacementTexture,
-      bumpTexture,
+      metalTexture,
       alphaTexture,
-      moireEffectPreventedBumplacementTexture,
+      moireEffectPreventedmetallacementTexture,
       moireEffectPreventedAlphalacementTexture
     )
 
@@ -244,11 +245,11 @@ export default function useModels(
     moireEffectPreventedRoughnessTexture.value = loadResult[6].texture
     moireEffectPreventedDisplacementTexture.value = loadResult[7].texture
 
-    if (bumpImgUrl) {
-      const result = await loader.loadAsync(bumpImgUrl)
-      const result2 = await getMoireEffectPreventedTexture(bumpImgUrl)
-      bumpTexture.value = result
-      moireEffectPreventedBumplacementTexture.value = result2.texture
+    if (metalImgUrl) {
+      const result = await loader.loadAsync(metalImgUrl)
+      const result2 = await getMoireEffectPreventedTexture(metalImgUrl)
+      metalTexture.value = result
+      moireEffectPreventedmetallacementTexture.value = result2.texture
     }
     if (alphaImgUrl) {
       const result = await loader.loadAsync(alphaImgUrl)
@@ -269,13 +270,13 @@ export default function useModels(
       normalTexture.value,
       roughnessTexture.value,
       displacementTexture.value,
-      bumpTexture.value || null,
+      metalTexture.value || null,
       alphaTexture.value || null,
       moireEffectPreventedBaseTexture.value,
       moireEffectPreventedNormalTexture.value,
       moireEffectPreventedRoughnessTexture.value,
       moireEffectPreventedDisplacementTexture.value,
-      moireEffectPreventedBumplacementTexture.value || null,
+      moireEffectPreventedmetallacementTexture.value || null,
       moireEffectPreventedAlphalacementTexture.value || null,
     ])
 
@@ -301,8 +302,8 @@ export default function useModels(
       displacementScale: DISPLACEMENT_SCALE_BASE / repeatTimesX.value,
       transparent: true,
       metalnessMap: applyMoireEffectPreventedTexture.value
-        ? moireEffectPreventedBumplacementTexture.value
-        : bumpTexture.value,
+        ? moireEffectPreventedmetallacementTexture.value
+        : metalTexture.value,
       alphaMap: applyMoireEffectPreventedTexture.value
         ? moireEffectPreventedAlphalacementTexture.value
         : alphaTexture.value,
@@ -401,13 +402,13 @@ export default function useModels(
       normalTexture.value,
       roughnessTexture.value,
       displacementTexture.value,
-      bumpTexture.value,
+      metalTexture.value,
       alphaTexture.value,
       moireEffectPreventedBaseTexture.value,
       moireEffectPreventedNormalTexture.value,
       moireEffectPreventedRoughnessTexture.value,
       moireEffectPreventedDisplacementTexture.value,
-      moireEffectPreventedBumplacementTexture.value,
+      moireEffectPreventedmetallacementTexture.value,
       moireEffectPreventedAlphalacementTexture.value,
     ].forEach((texture) => {
       texture?.repeat.set(repeatTimesX.value, repeatTimesY.value)
