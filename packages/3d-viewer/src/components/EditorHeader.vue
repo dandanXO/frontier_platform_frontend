@@ -4,6 +4,7 @@ div(
 )
   div(class="flex")
     f-button(
+      v-if="showCloseButton"
       type="secondary"
       @click="emit('close')"
       isIcon
@@ -26,6 +27,10 @@ div(
 
 <script setup lang="ts">
 import { SIZE } from '@frontier/lib'
+
+defineProps<{
+  showCloseButton: boolean
+}>()
 
 const emit = defineEmits<{
   (e: 'close'): void

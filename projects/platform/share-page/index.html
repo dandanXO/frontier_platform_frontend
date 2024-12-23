@@ -39,7 +39,10 @@
     <script>
       const urlParams = new URLSearchParams(window.location.search)
       const sharingKey = urlParams.get('sharingKey')
-      window.location = `${window.location.origin}/received-share/${sharingKey}/navigator`
+      const open3d = urlParams.get('open3d')
+      window.location = `${
+        window.location.origin
+      }/received-share/${sharingKey}/navigator${open3d ? '?open3d=true' : ''}`
     </script>
   </body>
 </html>

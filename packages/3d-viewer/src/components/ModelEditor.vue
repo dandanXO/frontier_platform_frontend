@@ -12,6 +12,7 @@ import EditorHeader from './EditorHeader.vue'
 import EditorSidebar from './sidebar/EditorSidebar.vue'
 import EditorLoader from './EditorLoader.vue'
 import type { Material } from '@frontier/platform-web-sdk'
+import { useRoute } from 'vue-router'
 
 const props = withDefaults(
   defineProps<{
@@ -73,6 +74,10 @@ const {
   props.alphaImgUrl || ''
 )
 
+const route = useRoute()
+const open3d = route.query.open3d
+const allowClose = open3d !== 'true'
+
 const { takeScreenshot } = useScreenshot(camera, canvas, modelObject)
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
@@ -80,8 +85,10 @@ const textureType = ref(TEXTURE_TYPE.BASE)
 const handleDisplayModeChange = (v: number) => (displayMode.value = v)
 const handleTextureClick = (v: number) => (textureType.value = v)
 const handleClose = () => {
-  emit('close')
-  props.onClose?.()
+  if (allowClose) {
+    emit('close')
+    props.onClose?.()
+  }
 }
 
 useKeyboard(
@@ -116,7 +123,11 @@ div(
   class="w-screen h-screen fixed z-popper bg-primary left-0 top-0 flex flex-col"
   data-theme="new-dark"
 )
-  editor-header(@close="handleClose" @screenshot="takeScreenshot")
+  editor-header(
+    @close="handleClose"
+    @screenshot="takeScreenshot"
+    :showCloseButton="allowClose"
+  )
   div(class="relative flex flex-col flex-1 min-h-0")
     div(class="relative flex flex-row flex-1 min-h-0 items-stretch")
       template(v-if="!isLoadingU3M && !isLoadingModel")

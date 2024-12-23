@@ -7,11 +7,13 @@ import { useOuterStore } from '@/stores/outer'
 import { storeToRefs } from 'pinia'
 import { NodeType } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   sharingKey: string
 }>()
 
+const router = useRouter()
 const outerStore = useOuterStore()
 const { getReceivedShareInfo } = outerStore
 const { shareInfo } = storeToRefs(outerStore)
@@ -24,7 +26,13 @@ if (!shareInfo.value) {
 }
 
 if (shareInfo.value.nodeType === NodeType.MATERIAL) {
-  goToReceivedShareMaterial(props.sharingKey, shareInfo.value.nodeId)
+  const open3d = router.currentRoute.value.query.open3d === 'true'
+  goToReceivedShareMaterial(
+    props.sharingKey,
+    shareInfo.value.nodeId,
+    undefined,
+    open3d
+  )
 } else {
   goToReceivedShare(props.sharingKey, shareInfo.value.nodeId)
 }

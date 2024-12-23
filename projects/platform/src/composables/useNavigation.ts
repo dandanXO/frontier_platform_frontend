@@ -317,9 +317,12 @@ export default function useNavigation() {
   const goToReceivedShareMaterial = (
     sharingKey: string,
     nodeId: number,
-    rank?: number
+    rank?: number,
+    open3d?: boolean
   ) => {
-    const basePath = `/received-share/${sharingKey}/material/${nodeId}`
+    const basePath = `/received-share/${sharingKey}/material/${nodeId}${
+      open3d ? '?open3d=true' : ''
+    }`
     const path = rank ? `${basePath}?rank=${rank}` : basePath
     router.push(path)
   }
