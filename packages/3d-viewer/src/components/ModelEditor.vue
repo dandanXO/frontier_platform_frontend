@@ -136,6 +136,7 @@ div(
     @close="handleClose"
     @screenshot="takeScreenshot"
     :showCloseButton="allowClose"
+    :displayMode="displayMode"
   )
   div(class="relative flex flex-col flex-1 min-h-0")
     div(class="relative flex flex-row flex-1 min-h-0 items-stretch")
