@@ -66,16 +66,22 @@ div(
         data-theme="new"
         classContent="w-80"
         :offset="[-6, 0]"
+        :theme="'new'"
         class="self-center"
         interactive
         isDescHTML
       )
         template(#slot:tooltip-trigger)
           f-svg-icon(iconName="question" size="16" color="white" class="self-center")
-        //- will be used later when the link to the video/article tutorial is ready
-        //- template(#slot:tooltip-content)
-        //-   div(class="underline decoration-link hover:decoration-link-hover")
-        //-     f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+        template(#slot:tooltip-content)
+          div(
+            class="underline decoration-link hover:decoration-link-hover color-cyan-400-v1"
+          )
+            a(
+              href="https://www.frontier.cool/a/docs/asset-library/creating-3d-materials#:~:text=%E2%9C%A8NEW%0ASolid%20Quiling%20Tool%3A"
+              target="_blank"
+            )
+              f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
         :value="isShowModalReplaceSides"
