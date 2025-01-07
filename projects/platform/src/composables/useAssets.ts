@@ -181,7 +181,6 @@ export default function useAssets() {
 
   const { t } = useI18n()
   const store = useStore()
-  const orgId = store.getters['organization/orgId']
   const {
     ogBaseAssetsApi,
     startSpreadsheetUpdate: startSpreadsheetUpdateAction,
@@ -190,8 +189,8 @@ export default function useAssets() {
   const {
     goToAssetMaterialEdit,
     goToMaterialUpload,
-    goToProgress,
     goToWorkspace,
+    goToAssets,
   } = useNavigation()
 
   const editMaterial: AssetsFunctionOption = {
@@ -541,11 +540,22 @@ export default function useAssets() {
               materialIdList,
             })
             store.dispatch('helper/closeModalLoading')
-            if (route.path.includes('/workspace/material')) {
+            if (
+              //user in detail material, and access this page from workspace
+              route.path.includes('/workspace/material')
+            ) {
               goToWorkspace({}, m?.routerBackNodeId || ogNodeId.value)
-            } else {
-              store.dispatch('helper/reloadInnerApp')
+              return
+            } else if (
+              //user in detail material, and access this page from assets page
+              route.path.includes('/assets') &&
+              route.params.materialId
+            ) {
+              goToAssets()
+              return
             }
+
+            store.dispatch('helper/reloadInnerApp')
           },
           secondaryBtnText: t('UU0002'),
         })
