@@ -115,6 +115,7 @@ import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { OgType, type Organization } from '@frontier/platform-web-sdk'
+import { FUNC_ID } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()

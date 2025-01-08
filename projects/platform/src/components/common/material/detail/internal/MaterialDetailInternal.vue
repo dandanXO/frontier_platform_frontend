@@ -47,6 +47,7 @@ div
       )
         template(#slot:tooltip-trigger)
           f-button(
+            v-permission="{ FUNC_ID: FUNC_ID.ASSET_EDIT, behavior: 'deleteElement' }"
             :disabled="!editable"
             prependIcon="create"
             size="md"
@@ -333,6 +334,7 @@ import MaterialDetailInventoryTable from '@/components/common/material/detail/in
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 import useAssets from '@/composables/useAssets'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import {
   GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum,
   type Material,
@@ -438,14 +440,51 @@ const openAttachmentExternalViewMode = (index: number) => {
 }
 
 const menuTree = computed<MenuTree>(() => {
-  const optionList = [
-    [editMaterial],
-    [cloneTo, addToWorkspace],
-    // [createU3m, downloadU3m, exportExcel],
-    [createU3m, downloadU3m],
-    [printLabel, printA4Swatch],
-    [deleteMaterial],
-  ]
+  // List placeholders
+  const funcOneList: any[] = []
+  const funTwoList = [downloadU3m]
+  const optionList = [funTwoList, [printLabel, printA4Swatch]]
+
+  // Retrieve the user's role and corresponding permissions
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
+
+  // Map each permission ID to its handler function
+  const permissionHandlerMap = {
+    [FUNC_ID.ASSET_EDIT]: () => {
+      // If user can edit, add [editMaterial] to the front of optionList
+      optionList.unshift([editMaterial])
+    },
+    [FUNC_ID.ASSET_COPY]: () => {
+      // If user can copy, push cloneTo into funcOneList
+      funcOneList.push(cloneTo)
+    },
+    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => {
+      // If user can add to workspace, push addToWorkspace into funcOneList
+      funcOneList.push(addToWorkspace)
+    },
+    [FUNC_ID.ASSETS_3DVIEWER_EDIT]: () => {
+      // If user can edit 3D viewer, add createU3m to the front of funTwoList
+      funTwoList.unshift(createU3m)
+    },
+    [FUNC_ID.ASSET_DELETE]: () => {
+      // If user can delete, push [deleteMaterial] into optionList
+      optionList.push([deleteMaterial])
+    },
+  }
+
+  // Iterate over permissionList and execute the corresponding handlers
+  permissionList.forEach((permission) => {
+    if (permissionHandlerMap[permission]) {
+      permissionHandlerMap[permission]()
+    }
+  })
+
+  // After populating funcOneList, if it has items, add it to the front of optionList
+  if (funcOneList.length > 0) {
+    optionList.unshift(funcOneList)
+  }
+
   // & symbol is used as an intersection type operator to combine multiple types into one that includes all properties from the constituent types.
   const material: Material & { routerBackNodeId?: number } = props.material
   material.routerBackNodeId = Number(route.query.preLayerNodeId) || undefined

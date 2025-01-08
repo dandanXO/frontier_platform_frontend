@@ -23,8 +23,10 @@ enum WORKSPACE_FUNCTION {
   DELETE_NODE = 4,
   SHARE_NODE = 5,
 }
-
-type WorkspaceFunctionOption = FunctionOption<NodeChild, WORKSPACE_FUNCTION>
+export type WorkspaceFunctionOption = FunctionOption<
+  NodeChild,
+  WORKSPACE_FUNCTION
+>
 
 export default function useWorkspace() {
   const toNode = (n: NodeChild | NodeChild[]) => (Array.isArray(n) ? n[0] : n)

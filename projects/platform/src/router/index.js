@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, onBeforeRouteUpdate } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
 import { ROLE_ID, OUTER_TYPE } from '@/utils/constants'
@@ -8,6 +8,7 @@ import { pageview } from 'vue-gtag'
 import { OgType } from '@frontier/platform-web-sdk'
 import { config } from 'vue-gtag'
 import { resetTracker } from '@frontier/lib'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -240,6 +241,17 @@ const routes = [
             path: 'assets/upload',
             name: 'AssetsUpload',
             component: () => import('@/views/innerApp/assets/AssetsUpload.vue'),
+            beforeEnter: async (to, from, next) => {
+              // check permission to access upload page
+              const roleId =
+                store.getters['organization/orgUser/orgUser'].roleID
+              const permissionList = PERMISSION_MAP[roleId]
+              if (!permissionList.includes(FUNC_ID.ROUTER_ASSET_CREATED)) {
+                return next(`/${to.params.orgNo}/${to.params.ogKey}/assets`)
+              } else {
+                next()
+              }
+            },
           },
           {
             path: 'assets/create',
@@ -252,6 +264,17 @@ const routes = [
             name: 'AssetsMaterialCreate',
             component: () =>
               import('@/views/innerApp/assets/AssetsMaterialCreate.vue'),
+            beforeEnter: async (to, from, next) => {
+              // check permission to access
+              const roleId =
+                store.getters['organization/orgUser/orgUser'].roleID
+              const permissionList = PERMISSION_MAP[roleId]
+              if (!permissionList.includes(FUNC_ID.ROUTER_ASSET_CREATED)) {
+                return next(`/${to.params.orgNo}/${to.params.ogKey}/assets`)
+              } else {
+                next()
+              }
+            },
           },
           {
             path: 'assets/:materialId',
@@ -266,6 +289,17 @@ const routes = [
             component: () =>
               import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
             props: true,
+            beforeEnter: async (to, from, next) => {
+              // check permission to access
+              const roleId =
+                store.getters['organization/orgUser/orgUser'].roleID
+              const permissionList = PERMISSION_MAP[roleId]
+              if (!permissionList.includes(FUNC_ID.ROUTER_ASSET_EDIT)) {
+                return next(`/${to.params.orgNo}/${to.params.ogKey}/assets`)
+              } else {
+                next()
+              }
+            },
           },
           {
             path: 'assets/edit/spreadsheet',
@@ -273,6 +307,17 @@ const routes = [
             component: () =>
               import('@/views/innerApp/assets/AssetsMaterialSpreadsheet.vue'),
             props: true,
+            beforeEnter: async (to, from, next) => {
+              // check permission to access
+              const roleId =
+                store.getters['organization/orgUser/orgUser'].roleID
+              const permissionList = PERMISSION_MAP[roleId]
+              if (!permissionList.includes(FUNC_ID.ASSET_SPREADSHEET)) {
+                return next(`/${to.params.orgNo}/${to.params.ogKey}/assets`)
+              } else {
+                next()
+              }
+            },
           },
           // Workspace
           {
@@ -327,7 +372,6 @@ const routes = [
                 'organization/organization'
               ]
 
-              console.log('dan', store.getters['permission/enablemoodboardOrg'])
               if (!store.getters['permission/enablemoodboardOrg']) {
                 return next(
                   `/${organization.orgNo}/${OgType.ORG}-${organization.orgId}/assets`

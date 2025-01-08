@@ -83,6 +83,8 @@ onBeforeRouteUpdate(async (to, from) => {
         groupId: Number(ogId),
       })
       await store.dispatch('group/groupUser/getGroupUser')
+    } else {
+      await store.dispatch('organization/orgUser/getOrgUser')
     }
   }
 })

@@ -143,6 +143,7 @@ import {
   TRACKER_ADDITIONAL_PROPERTIES,
   TRACKER_PREFIX,
 } from '@frontier/constants'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 
 const TRACKER_ID = 'Upload Assets'
 
@@ -257,6 +258,11 @@ const locationList = computed(() => {
 })
 
 onMounted(() => {
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
+  if (!permissionList.includes(FUNC_ID.ROUTER_ASSET_CREATED)) {
+    goToAssets()
+  }
   track({
     eventName: [TRACKER_PREFIX.START_FLOW, TRACKER_ID].join(' '),
     properties: {

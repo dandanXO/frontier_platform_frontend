@@ -42,7 +42,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
               //- ) {{ $t("UU0074") }}
           div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item(
-            v-permission="FUNC_ID.VISIT_BILLING_PAGE"
+            v-permission="{ FUNC_ID: FUNC_ID.VISIT_BILLING_PAGE, behavior: 'deleteElement' }"
             @click="onVisitBillingPage(collapsePopper)"
             class="cursor-pointer"
           )

@@ -37,6 +37,7 @@ search-table(
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
     f-button(
+      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'deleteElement' }"
       size="sm"
       prependIcon="add"
       @click="createCollection"
@@ -97,6 +98,7 @@ import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
+import { type WorkspaceFunctionOption } from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
 import { useWorkspaceStore } from '@/stores/workspace'
@@ -107,6 +109,7 @@ import {
   type NodeMeta,
   type WorkspaceFilter,
 } from '@frontier/platform-web-sdk'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
 import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
@@ -201,15 +204,55 @@ const optionSort = computed(() => {
 })
 const optionMultiSelect = computed(() => [deleteMultipleNode])
 const optionNode = (node: NodeChild) => {
-  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
-    return [
-      [editNodeCollection],
-      [duplicateNode, moveNode, shareNode],
-      [deleteCollection],
-    ]
-  } else {
-    return [[editNodeMaterial], [moveNode, shareNode], [deleteMaterial]]
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
+  const resultFunctionArray: any[] = []
+  const secFuncionArray: any[] = []
+
+  const permissionFlags = [
+    FUNC_ID.WORKSPACE_EDIT_COLLECTION,
+    FUNC_ID.WORKSPACE_DUPLICATE_COLLECTION,
+    FUNC_ID.WORKSPACE_MOVE_COLLECTION,
+    FUNC_ID.WORKSPACE_SHARE_COLLECTION,
+    FUNC_ID.WORKSPACE_DELETE_COLLECTION,
+  ]
+  permissionList.every((permission) => {
+    if (permissionFlags.length === 0) {
+      return false
+    }
+    if (permission === FUNC_ID.WORKSPACE_EDIT_COLLECTION) {
+      resultFunctionArray.push([
+        node.nodeMeta.nodeType === NodeType.COLLECTION
+          ? editNodeCollection
+          : editNodeMaterial,
+      ])
+      permissionFlags.pop()
+    } else if (
+      permission === FUNC_ID.WORKSPACE_DUPLICATE_COLLECTION &&
+      node.nodeMeta.nodeType === NodeType.COLLECTION
+    ) {
+      secFuncionArray.push(duplicateNode)
+      permissionFlags.pop()
+    } else if (permission === FUNC_ID.WORKSPACE_MOVE_COLLECTION) {
+      secFuncionArray.push(moveNode)
+      permissionFlags.pop()
+    } else if (permission === FUNC_ID.WORKSPACE_SHARE_COLLECTION) {
+      secFuncionArray.push(shareNode)
+      permissionFlags.pop()
+    } else if (permission === FUNC_ID.WORKSPACE_DELETE_COLLECTION) {
+      resultFunctionArray.push([
+        node.nodeMeta.nodeType === NodeType.COLLECTION
+          ? deleteCollection
+          : deleteMaterial,
+      ])
+      permissionFlags.pop()
+    }
+    return permissionFlags.length > 0
+  })
+  if (secFuncionArray.length > 0) {
+    resultFunctionArray.splice(1, 0, secFuncionArray)
   }
+  return resultFunctionArray
 }
 
 const getWorkspace = async (

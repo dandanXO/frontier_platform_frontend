@@ -28,6 +28,13 @@ export default {
         { root: true }
       )
       commit('SET_groupUser', data.result.groupUser)
+      commit(
+        'organization/orgUser/SET_roleID',
+        data.result.groupUser.groupRoleId,
+        {
+          root: true,
+        }
+      )
     },
   },
 }

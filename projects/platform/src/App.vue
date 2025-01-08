@@ -5,7 +5,7 @@ f-banner(
   class="flex-shrink-0"
   @close="notify.closeNotifyBanner"
 )
-router-view
+router-view(:key="route.fullPath")
 f-snackbar(
   v-bind="notify.notifySnackbarProps"
   @update:isShowSnackbar="notify.closeNotifySnackbar"
@@ -19,12 +19,13 @@ import ModalPipeline from '@/components/common/modal/ModalPipeline.vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const store = useStore()
 const user = computed(() => store.getters['user/user'])
 store.dispatch('code/fetchCode')
 const notify = useNotifyStore()
-
+const route = useRoute()
 /** GA */
 setOptions({
   config: {

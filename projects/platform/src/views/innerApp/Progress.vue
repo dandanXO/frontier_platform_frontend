@@ -4,6 +4,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('PP0001') }}
     dropdown-og-menu(@select="goToProgress({ ogKey: $event })")
   f-tabs(
+    v-if="PROGRESS_PAGE_PERMISSOIN"
     :tabList="tabList"
     :initValue="tab"
     @switch="goToProgress({}, $event.path)"
@@ -33,15 +34,17 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         v-else-if="currentTab === PROGRESS_TAB.SPREADSHEET"
         :currentStatus="selectedStatus"
       )
+  div(v-else class="flex justify-center items-center h-full") {{ $t('PP0038') }}
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
 import { ProgressStatus } from '@frontier/platform-web-sdk'
-import { PROGRESS_TAB } from '@/utils/constants'
+import { FUNC_ID, PERMISSION_MAP, PROGRESS_TAB } from '@/utils/constants'
 
 const ProgressMaterial = defineAsyncComponent(
   () => import('@/components/assets/progress/ProgressMaterial.vue')
@@ -62,6 +65,14 @@ defineProps<{
 
 const { t } = useI18n()
 const { goToProgress } = useNavigation()
+const store = useStore()
+
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
+const permissionList = PERMISSION_MAP[roleId]
+
+const PROGRESS_PAGE_PERMISSOIN = ref(
+  permissionList.includes(FUNC_ID.PROGRESS_PAGE)
+)
 
 const tabList = reactive([
   {

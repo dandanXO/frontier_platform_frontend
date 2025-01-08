@@ -5,7 +5,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="flex gap-x-6 items-center")
       div(
         v-if="!(planType.FREE || planType.DESIGNER)"
-        v-permission="FUNC_ID.OPEN_CREATE_GROUP"
+        v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_GROUP_CREATE, behavior: 'deleteElement' }"
         class="flex gap-x-1 items-center cursor-pointer"
         @click="openModalCreateGroup"
         data-cy="open-create-group-modal"
@@ -13,6 +13,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         f-svg-icon(iconName="add_box" size="20" class="text-primary-400")
         p(class="text-body2 text-grey-900") {{ $t('UU0017') }}
       f-button(
+        v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_ORG_DELETE, behavior: 'deleteElement' }"
         size="sm"
         prependIcon="person_add"
         @click="inviteHandler"

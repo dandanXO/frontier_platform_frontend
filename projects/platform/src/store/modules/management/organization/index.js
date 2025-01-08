@@ -220,11 +220,10 @@ export default {
       dispatch('setOrganization', data.result.organization)
     },
     async changeOrgMemberRole({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', {
+      await dispatch('callOrgApi', {
         func: 'changeOrgMemberRole',
         params,
       })
-      dispatch('setOrganization', data.result.organization)
     },
     async removeOrgMember({ dispatch }, params) {
       const { data } = await dispatch('callOrgApi', {

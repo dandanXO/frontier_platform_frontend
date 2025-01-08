@@ -19,7 +19,12 @@ search-table(
       :optionList="displayModeOptionList"
       v-model:inputValue="displayMode"
     )
-    f-button(size="sm" prependIcon="texture_add" @click="goToMaterialUpload") {{ $t('UU0020') }}
+    f-button(
+      v-permission="{ FUNC_ID: FUNC_ID.ASSET_CREATE, behavior: 'deleteElement' }"
+      size="sm"
+      prependIcon="texture_add"
+      @click="goToMaterialUpload"
+    ) {{ $t('UU0020') }}
   template(#default)
     template(v-if="materialList.length > 0")
       //- Jira: F22-3010
@@ -106,6 +111,7 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import {
   SEARCH_TYPE,
   ASSET_LIST_DISPLAY_MODE,
@@ -206,26 +212,91 @@ const {
   deleteMaterial,
   startSpreadSheetUpdate,
 } = useAssets()
+const optionList = computed(() => {
+  const funcOneList: any[] = []
+  const funTwoList = [downloadU3m]
+  const optionList = [funTwoList, [printLabel, printA4Swatch]]
 
-const optionList = computed(() => [
-  [editMaterial],
-  [cloneTo, addToWorkspace],
-  [createU3m, downloadU3m],
-  [printLabel, printA4Swatch],
-  [deleteMaterial],
-])
+  // Get the role and retrieve the corresponding permissions
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
 
-const optionMultiSelect = computed(() => [
-  cloneTo,
-  addToWorkspace,
-  printA4Swatch,
-  printLabel,
-  downloadU3m,
-  mergeMaterial,
-  deleteMaterial,
-  startSpreadSheetUpdate,
-  exportExcel,
-])
+  // Map each permission ID to its corresponding handler logic
+  const permissionHandlerMap = {
+    [FUNC_ID.ASSET_EDIT]: () => {
+      // If user can edit materials
+      optionList.unshift([editMaterial])
+    },
+    [FUNC_ID.ASSET_COPY]: () => {
+      // If user can copy assets
+      funcOneList.push(cloneTo)
+    },
+    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => {
+      // If user can add assets to workspace
+      funcOneList.push(addToWorkspace)
+    },
+    [FUNC_ID.ASSETS_3DVIEWER_EDIT]: () => {
+      // If user can edit in 3D viewer
+      funTwoList.unshift(createU3m)
+    },
+    [FUNC_ID.ASSET_DELETE]: () => {
+      // If user can delete assets
+      optionList.push([deleteMaterial])
+    },
+  }
+
+  // Single pass over permissionList to apply the appropriate modifications
+  permissionList.forEach((permission) => {
+    if (permissionHandlerMap[permission]) {
+      permissionHandlerMap[permission]()
+    }
+  })
+
+  // After populating funcOneList, if it has items, add it at the beginning of optionList
+  if (funcOneList.length > 0) {
+    optionList.unshift(funcOneList)
+  }
+
+  return optionList
+})
+
+const optionMultiSelect = computed(() => {
+  // Base list of functions
+  const list = [printA4Swatch, printLabel, downloadU3m, exportExcel]
+
+  // Get the role and permissions
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
+
+  // Map each permission ID to the corresponding operation
+  const permissionHandlerMap = {
+    [FUNC_ID.ASSET_COPY]: () => {
+      list.unshift(cloneTo)
+    },
+    [FUNC_ID.ASSET_MERGE]: () => {
+      list.push(mergeMaterial)
+    },
+    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => {
+      list.push(addToWorkspace)
+    },
+    [FUNC_ID.ASSET_SPREADSHEET]: () => {
+      list.push(startSpreadSheetUpdate)
+    },
+    [FUNC_ID.ASSET_DELETE]: () => {
+      list.push(deleteMaterial)
+    },
+  }
+
+  // Single pass over permissionList to execute the relevant handlers
+  permissionList.forEach((permission) => {
+    if (permissionHandlerMap[permission]) {
+      permissionHandlerMap[permission]()
+    }
+  })
+
+  // Return the updated list
+  return list
+})
 
 const getMaterialList = async (
   payload: SearchPayload<AssetsFilter>,

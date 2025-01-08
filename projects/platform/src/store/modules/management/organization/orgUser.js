@@ -13,6 +13,7 @@ export default {
     lastSignInTime: '',
     email: '',
     isPending: false,
+    roleID: '',
   }),
   getters: {
     orgUser: (state) => state,
@@ -28,6 +29,12 @@ export default {
   mutations: {
     SET_orgUser(state, orgUser) {
       Object.assign(state, orgUser)
+      if (state.orgRoleId) {
+        state.roleID = state.orgRoleId
+      }
+    },
+    SET_roleID(state, roleID) {
+      state.roleID = roleID
     },
   },
   actions: {

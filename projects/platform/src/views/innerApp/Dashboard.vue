@@ -4,6 +4,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('BB0138') }}
     dropdown-og-menu(@select="goToDashboard({ ogKey: $event })")
   div(
+    v-if="DASHBOARD_PAGE_PERMISSOIN"
     ref="refContainer"
     :style="{ width: containerWidth + PADDING_X_FOR_SHADOW + 'px' }"
     class="my-5"
@@ -89,6 +90,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
                     :disabled="!hasSubscribedMade2flow"
                   )
           v-chart(class="w-full" :option="ecoOption")
+  div(v-else class="flex justify-center items-center h-full") {{ $t('PP0038') }}
 </template>
 
 <script setup lang="ts">
@@ -110,6 +112,7 @@ import colors from '@frontier/tailwindcss/colors'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -141,6 +144,12 @@ const refContainer = ref<HTMLElement>()
 const PADDING_X_FOR_SHADOW = 10
 const MAX_WIDTH = 1140
 
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
+const permissionList = PERMISSION_MAP[roleId]
+
+const DASHBOARD_PAGE_PERMISSOIN = ref(
+  permissionList.includes(FUNC_ID.DASHBOARD_PAGE)
+)
 onMounted(async () => {
   const leftDis = refContainer.value!.getBoundingClientRect().left
   const getWidth = () => document.body.clientWidth - leftDis - 36 // 36 is padding-right

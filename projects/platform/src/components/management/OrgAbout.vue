@@ -26,7 +26,7 @@ div(class="pt-16 md:pt-17.5")
             :tooltipMessage="$t('BB0056')"
           )
         p(
-          v-permission="FUNC_ID.DELETE_ORG"
+          v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_GROUP_DELETE, behavior: 'deleteElement' }"
           v-if="!planType.ENT"
           class="pt-2.5 text-caption text-grey-250 cursor-pointer"
           @click="openModalTypeTextToConfirm"
@@ -85,6 +85,7 @@ div(class="pt-16 md:pt-17.5")
           :placeholder="$t('BB0081')"
         )
       f-button(
+        v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_ORG_EDIT, behavior: 'deleteElement' }"
         size="md"
         class="justify-self-end"
         :disabled="!availableToUpdateOrg"

@@ -5,6 +5,7 @@ f-table(
   @update:keyword="resetCurrentPage"
   :headers="headers"
   :items="currentList"
+  :isLoading="isLoading"
   :emptyText="$t('BB0031')"
   :searchPlaceholder="$t('BB0012')"
   rowHeight="60px"
@@ -28,28 +29,17 @@ f-table(
     template(v-if="prop === 'role'")
       p(v-if="item.isPending" class="ml-4 w-4 border-t border-grey-900")
       template(v-else)
-        p {{ getRoleName(item.orgRoleId) }}
-        //- p(v-if="item.orgRoleId === ROLE_ID.OWNER") {{ getRoleName(item.orgRoleId) }}
-        //- p(v-else-if="roleLimitList(item).length === 1") {{ getRoleName(item.orgRoleId) }}
-        //- template(v-else)
-        //-   f-tooltip-standard(
-        //-     class="flex-grow"
-        //-     placement="bottom-start"
-        //-     :manual="true""
-        //-     :offset="[0, 8]"
-        //-   )
-        //-     template(#slot:tooltip-trigger="{ isActive }")
-        //-       div(class="flex items-center cursor-pointer")
-        //-         p {{ getRoleName(currentRoleId(item)) }}
-        //-         f-svg-icon(iconName="keyboard_arrow_right" size="20" class="ml-4 text-grey-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")
-        //-     template(#content)
-        //-       f-list
-        //-         f-list-item(
-        //-           v-for="option in roleLimitList(item)"
-        //-           class="cursor-pointer"
-        //-           :class="{ 'bg-grey-100': option.roleId === currentRoleId(item) }"
-        //-           @click="changeMemberRole(item, option.roleId)"
-        //-         ) {{ getRoleName(option.roleId) }}
+        p(
+          v-if="item.orgRoleId === ROLE_ID.OWNER || roleIdFromUserOrgOrGroup !== ROLE_ID.OWNER"
+        ) {{ getRoleName(item.orgRoleId) }}
+        template(v-else)
+          f-select-dropdown(
+            class="w-full"
+            :selectValue="getRoleId(item)"
+            @update:selectValue="onChangeMemberRole(item, $event)"
+            :dropdownMenuTree="roleListMenuTree(item)"
+            :placeholder="$t('RR0292')"
+          )
     template(v-if="prop === 'remove' && isHover")
       p(
         v-if="item.isPending"
@@ -75,7 +65,10 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const searchInput = ref('')
+    const isLoading = ref(false)
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
+    const roleIdFromUserOrgOrGroup =
+      store.getters['organization/orgUser/orgUser'].roleID
     const memberList = computed(() => {
       const orgMemberList = store.getters['organization/memberList']
       if (routeLocation.value === 'org') {
@@ -187,17 +180,48 @@ export default {
       })
     }
 
-    // const roleLimitList = (member) => {
-    //   const orgRoleLimitList = store.getters['code/orgRoleLimitList']
-    //   const groupRoleLimitList = store.getters['code/getGroupRoleLimitList'](member.orgRoleId)
-    //   return routeLocation.value === 'org' ? orgRoleLimitList : groupRoleLimitList
-    // }
-    // const currentRoleId = (member) => routeLocation.value === 'org' ? member.orgRoleId : member.groupRoleId
-    // const changeMemberRole = async (member, roleId) => {
-    //   routeLocation.value === 'org'
-    //     ? await store.dispatch('organization/changeOrgMemberRole', { orgUserId: member.orgUserId, roleId })
-    //     : await store.dispatch('group/changeGroupMemberRole', { groupUserId: member.groupUserId, roleId })
-    // }
+    const roleLimitList = (member) => {
+      const orgRoleLimitList = store.getters['code/orgRoleLimitList']
+      const groupRoleLimitList = store.getters['code/getGroupRoleLimitList'](
+        member.orgRoleId
+      )
+      return routeLocation.value === 'org'
+        ? orgRoleLimitList
+        : groupRoleLimitList
+    }
+
+    const getRoleId = (member) =>
+      routeLocation.value === 'org' ? member.orgRoleId : member.groupRoleId
+
+    const onChangeMemberRole = async (member, roleId) => {
+      isLoading.value = true
+      routeLocation.value === 'org'
+        ? await store.dispatch('organization/changeOrgMemberRole', {
+            orgUserId: member.orgUserId,
+            roleId,
+          })
+        : await store.dispatch('group/changeGroupMemberRole', {
+            groupUserId: member.groupUserId,
+            roleId,
+          })
+
+      isLoading.value = false
+      return roleId
+    }
+
+    const roleListMenuTree = (item) => {
+      return {
+        width: 'w-75',
+        blockList: [
+          {
+            menuList: roleLimitList(item).map((option) => ({
+              title: getRoleName(option.roleId),
+              selectValue: option.roleId,
+            })),
+          },
+        ],
+      }
+    }
 
     return {
       pagination,
@@ -210,9 +234,12 @@ export default {
       ROLE_ID,
       confirmToCancelInvitation,
       resetCurrentPage,
-      // roleLimitList,
-      // changeMemberRole,
-      // currentRoleId
+      roleLimitList,
+      onChangeMemberRole,
+      getRoleId,
+      roleIdFromUserOrgOrGroup,
+      isLoading,
+      roleListMenuTree,
     }
   },
 }

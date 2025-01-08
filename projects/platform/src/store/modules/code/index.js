@@ -45,21 +45,14 @@ const getters = {
     }
   },
   roleList: (state) => state.roleList,
-  getRoleName: (state) => (roleId) =>
-    state.roleList.find((role) => role.roleId === roleId).name,
+  getRoleName: (state) => (roleId) => {
+    return state.roleList.find((role) => role.roleId === roleId).name
+  },
   roleLimit: (state) => state.roleLimit,
   orgRoleLimitList: (state) =>
     state.roleList.filter((role) => role.roleId !== ROLE_ID.OWNER),
-  getGroupRoleLimitList: (state, getters) => (orgRoleId) => {
-    if (!orgRoleId) {
-      return []
-    }
-    return state.roleLimit
-      .find((item) => item.orgRoleId === orgRoleId)
-      .groupRoleIdList.map((roleId) => ({
-        name: getters.getRoleName(roleId),
-        roleId,
-      }))
+  getGroupRoleLimitList: (state) => (orgRoleId) => {
+    return state.roleList.filter((role) => role.roleId !== ROLE_ID.OWNER)
   },
   orgCategoryList: (state) => state.orgCategoryList,
   pantoneList: (state) => state.pantoneList,

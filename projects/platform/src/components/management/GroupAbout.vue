@@ -8,6 +8,7 @@ div
           i(class="text-red-400 pr-0.5") *
           p(class="text-grey-900") {{ $t('BB0086') }}
           p(
+            v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_MEMBER_DELETE, behavior: 'deleteElement' }"
             class="font-normal text-caption text-grey-250 cursor-pointer pl-1"
             @click="openModalTypeTextToConfirm"
             data-cy="group-about_delete"
@@ -25,7 +26,7 @@ div
         f-input-text(
           v-model:textValue="groupFormData.groupName"
           :placeholder="$t('BB0089')"
-          :hintError="isGroupNameExist ? $t('WW0001') : (!isGroupNameFilled ? $t('WW0002') : '')"
+          :hintError="isGroupNameExist ? $t('WW0001') : !isGroupNameFilled ? $t('WW0002') : ''"
           required
           class="flex-grow"
           data-cy="group-about_name"
@@ -35,7 +36,7 @@ div
         v-model:textValue="groupFormData.address"
         :label="$t('BB0139')"
         :placeholder="$t('BB0140')"
-        :hintError="isAddressMoreThan160Characters ? $t('WW0142', {limitNumber: 160}) : ''"
+        :hintError="isAddressMoreThan160Characters ? $t('WW0142', { limitNumber: 160 }) : ''"
         class="flex-grow mb-7.5"
         data-cy="group-about_address"
       )
@@ -47,6 +48,7 @@ div
       minHeight="min-h-40"
     )
     f-button(
+      v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_MEMBER_EDIT, behavior: 'deleteElement' }"
       size="md"
       class="mx-auto"
       :disabled="!availableToCreateGroup"
@@ -60,7 +62,7 @@ import { useStore } from 'vuex'
 import { computed, reactive, toRaw } from 'vue'
 import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
-import { NOTIFY_TYPE } from '@/utils/constants'
+import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { copyText } from '@frontier/lib'
 
@@ -74,8 +76,14 @@ export default {
     const store = useStore()
     const notify = useNotifyStore()
     const group = computed(() => store.getters['group/group'])
-    const { groupName, address, labelColor, description, groupId, groupNo } = group.value
-    const groupFormData = reactive({ groupName, labelColor, description, address })
+    const { groupName, address, labelColor, description, groupId, groupNo } =
+      group.value
+    const groupFormData = reactive({
+      groupName,
+      labelColor,
+      description,
+      address,
+    })
     const isGroupNameExist = computed(() =>
       store.getters['organization/groupList'].some(
         (group) =>
@@ -83,14 +91,19 @@ export default {
           group.groupName === groupFormData.groupName
       )
     )
-    const isGroupNameFilled = computed(() =>
-      (!!groupFormData.groupName && groupFormData.groupName.length > 0) || groupFormData.groupName === ''
+    const isGroupNameFilled = computed(
+      () =>
+        (!!groupFormData.groupName && groupFormData.groupName.length > 0) ||
+        groupFormData.groupName === ''
     )
     const availableToCreateGroup = computed(
-      () => !!groupFormData.groupName && !isGroupNameExist.value && !isAddressMoreThan160Characters.value
+      () =>
+        !!groupFormData.groupName &&
+        !isGroupNameExist.value &&
+        !isAddressMoreThan160Characters.value
     )
-    const isAddressMoreThan160Characters = computed(() =>
-      !!groupFormData.address && groupFormData.address.length > 160
+    const isAddressMoreThan160Characters = computed(
+      () => !!groupFormData.address && groupFormData.address.length > 160
     )
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
@@ -139,6 +152,7 @@ export default {
       groupNo,
       copyGroupId,
       isGroupNameFilled,
+      FUNC_ID,
       isAddressMoreThan160Characters,
     }
   },

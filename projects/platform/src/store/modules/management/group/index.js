@@ -112,11 +112,10 @@ export default {
       dispatch('setGroup', data.result.group)
     },
     async changeGroupMemberRole({ dispatch }, params) {
-      const { data } = await dispatch('callGroupApi', {
+      await dispatch('callGroupApi', {
         func: 'changeGroupMemberRole',
         params,
       })
-      dispatch('setGroup', data.result.group)
     },
     async removeGroupMember({ dispatch }, params) {
       const { data } = await dispatch('callGroupApi', {
