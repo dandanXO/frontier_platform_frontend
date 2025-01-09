@@ -1,32 +1,43 @@
-<template lang="pug">
-div(class="flex flex-row justify-between items-center")
-  div(class="flex flex-row items-center")
-    div(class="relative w-5.5 h-5.5 overflow-hidden rounded cursor-pointer")
-      //- 不使用 hidden 是因為在 safari 上 color picker 會連帶被隱藏
-      input(
-        class="absolute left-1 bottom-0 w-1 h-1"
-        ref="colorInputDom"
-        type="color"
-        :value="color"
-        @input="handleColorInput($event, index)"
-      )
-      div(
-        class="absolute w-full h-full"
-        :style="{ backgroundColor: color }"
-        @click="handleColorClick"
-      )
-    span(class="flex items-center text-body2 text-grey-250 min-w-12 ml-3") {{ color.toUpperCase() }}
-  div(class="px-4 border border-grey-700 rounded flex items-center h-11 w-40")
-    input(
-      ref="pantoneInputDom"
-      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-grey-100 text-body2 placeholder:text-grey-400 placeholder:overflow-visible"
-      :value="pantoneDisplay"
-      list="pantone-list"
-      :placeholder="$t('EE0140')"
-      @change="handlePantoneCodeChange"
-    )
-  datalist#pantone-list
-    option(:key="pantoneItem.pantoneId" v-for="pantoneItem in pantoneList") {{ pantoneItem.display }}
+<template>
+  <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row items-center">
+      <div class="relative w-5.5 h-5.5 overflow-hidden rounded cursor-pointer">
+        <!-- 不使用 hidden 是因為在 safari 上 color picker 會連帶被隱藏 -->
+        <input
+          class="absolute left-1 bottom-0 w-1 h-1"
+          ref="colorInputDom"
+          type="color"
+          :value="color"
+          @input="handleColorInput($event, index)"
+        />
+        <div
+          class="absolute w-full h-full"
+          :style="{ backgroundColor: color }"
+          @click="handleColorClick"
+        />
+      </div>
+      <span class="flex items-center text-body2 text-grey-250 min-w-12 ml-3">{{
+        color.toUpperCase()
+      }}</span>
+    </div>
+    <div
+      class="px-4 border border-grey-700 rounded flex items-center h-11 w-40"
+    >
+      <input
+        ref="pantoneInputDom"
+        class="w-full flex-grow outline-none bg-transparent overflow-hidden text-grey-100 text-body2 placeholder:text-grey-400 placeholder:overflow-visible"
+        :value="pantoneDisplay"
+        list="pantone-list"
+        :placeholder="$t('EE0140')"
+        @change="handlePantoneCodeChange"
+      />
+    </div>
+    <datalist id="pantone-list">
+      <option :key="pantoneItem.pantoneId" v-for="pantoneItem in pantoneList">
+        {{ pantoneItem.display }}
+      </option>
+    </datalist>
+  </div>
 </template>
 
 <script setup lang="ts">

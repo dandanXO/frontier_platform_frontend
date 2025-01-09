@@ -1,15 +1,19 @@
-<template lang="pug">
-div(class="flex flex-col gap-4")
-  h5(class="text-lg font-bold") {{ $t('UU0170') }}
-  div(class="flex flex-col gap-3")
-    f-pill(
-      v-for="type in filteredTextureTypes"
-      :key="`texture-types-${type}`"
-      @click="emit('textureClick', type)"
-      :size="SIZE.LG"
-      :active="textureType === type"
-      class="w-full"
-    ) {{ textureLabels[type] }}
+<template>
+  <div class="flex flex-col gap-4">
+    <h5 class="text-lg font-bold">{{ $t('UU0170') }}</h5>
+    <div class="flex flex-col gap-3">
+      <f-pill
+        v-for="type in filteredTextureTypes"
+        :key="`texture-types-${type}`"
+        @click="$emit('textureClick', type)"
+        :size="SIZE.LG"
+        :active="textureType === type"
+        class="w-full"
+      >
+        {{ textureLabels[type] }}
+      </f-pill>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +31,7 @@ const { t } = useI18n()
 
 const props = defineProps<Props>()
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'textureClick', textureType: number): void
 }>()
 

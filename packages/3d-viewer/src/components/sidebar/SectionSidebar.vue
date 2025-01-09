@@ -1,19 +1,22 @@
-<template lang="pug">
-div(class="flex flex-col gap-4")
-  div(class="flex flex-row gap-3 justify-between items-center")
-    h5(class="text-lg font-bold") {{ title }}
-    f-svg-icon(
-      :iconName="`chevron_${isShowContent ? 'up' : 'down'}`"
-      size="24"
-      @click="toggleContent"
-      class="cursor-pointer"
-    )
-  div(
-    ref="contentWrapper"
-    class="flex flex-col gap-4 transition-height"
-    :style="{ height: wrapperHeight }"
-  )
-    slot(name="content")
+<template>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-row gap-3 justify-between items-center">
+      <h5 class="text-lg font-bold">{{ title }}</h5>
+      <f-svg-icon
+        :iconName="`chevron_${isShowContent ? 'up' : 'down'}`"
+        size="24"
+        @click="toggleContent"
+        class="cursor-pointer"
+      />
+    </div>
+    <div
+      ref="contentWrapper"
+      class="flex flex-col gap-4 transition-height"
+      :style="{ height: wrapperHeight }"
+    >
+      <slot name="content" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

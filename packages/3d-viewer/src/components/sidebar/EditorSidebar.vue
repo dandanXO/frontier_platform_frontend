@@ -1,65 +1,67 @@
-<template lang="pug">
-div(
-  class="flex flex-col"
-  :class="isMobile ? 'absolute pt-12' : 'relative'"
-  :style="{ height: 'calc(100vh - 80px)' }"
-)
-  f-scrollbar-container(
-    sizeAutoCapable
-    class="flex flex-1 min-h-0 bg-primary border-r border-grey-800 transition-width"
-    :style="{ width: wrapperWidth }"
-  )
-    div(
-      class="flex flex-col items-stretch pt-6 pb-[26px] text-grey-100 gap-6"
-      :class="isMobile ? 'w-77.5 pl-5 pr-3.5' : 'w-85 pl-10 pr-6'"
-      ref="contentWrapper"
-    )
-      f-infobar(
-        class="mb-2 items-center"
-        :notifyType="NOTIFY_TYPE.WARNING"
-        :messageText="$t('EE0214')"
-        v-if="isLowDpi"
-      )
-      f-tabs(
-        ref="refTab"
-        :tabList="tabList"
-        keyField="id"
-        :type="TAB_TYPE.CONTROL"
-        :initValue="displayMode"
-        @switch="switchTab"
-        tabItemContainerStyle="flex-1"
-        tabListContainerStyle="flex-1 flex-row"
-      )
-      editor-model(
-        v-if="displayMode === DISPLAY_MODE.MODEL"
-        :originU3m="originU3m"
-        :pantoneList="pantoneList"
-        :currentColors="currentColors"
-        :colorRemovable="colorRemovable"
-        :colorAddable="colorAddable"
-        :alpha="alpha"
-        :roughness="roughness"
-        :specular="specular"
-        :scale="scale"
-        :models="models"
-        :currentModel="currentModel"
-        @modelClick="emit('modelClick', $event)"
-        @colorAdd="emit('colorAdd')"
-        @colorRemove="emit('colorRemove')"
-        @colorChange="(v, index) => emit('colorChange', v, index)"
-        @colorInput="(v, index) => emit('colorInput', v, index)"
-        @alphaChange="emit('alphaChange', $event)"
-        @roughnessChange="emit('roughnessChange', $event)"
-        @specularChange="emit('specularChange', $event)"
-        @scaleChange="emit('scaleChange', $event)"
-      )
-      editore-texture(
-        v-else
-        @textureClick="emit('textureClick', $event)"
-        :textureImages="textureImages"
-        :textureType="textureType"
-      )
-  toggle-expand-button(:expanded="isShowContent" @click="toggleContent")
+<template>
+  <div
+    :class="[isMobile ? 'absolute pt-12' : 'relative', 'flex flex-col']"
+    :style="{ height: 'calc(100vh - 80px)' }"
+  >
+    <f-scrollbar-container
+      sizeAutoCapable
+      class="flex flex-1 min-h-0 bg-primary border-r border-grey-800 transition-width"
+      :style="{ width: wrapperWidth }"
+    >
+      <div
+        class="flex flex-col items-stretch pt-6 pb-[26px] text-grey-100 gap-6"
+        :class="isMobile ? 'w-77.5 pl-5 pr-3.5' : 'w-85 pl-10 pr-6'"
+        ref="contentWrapper"
+      >
+        <f-infobar
+          class="mb-2 items-center"
+          :notifyType="NOTIFY_TYPE.WARNING"
+          :messageText="$t('EE0214')"
+          v-if="isLowDpi"
+        />
+        <f-tabs
+          ref="refTab"
+          :tabList="tabList"
+          keyField="id"
+          :type="TAB_TYPE.CONTROL"
+          :initValue="displayMode"
+          @switch="switchTab"
+          tabItemContainerStyle="flex-1"
+          tabListContainerStyle="flex-1 flex-row"
+        />
+        <editor-model
+          v-if="displayMode === DISPLAY_MODE.MODEL"
+          :originU3m="originU3m"
+          :pantoneList="pantoneList"
+          :currentColors="currentColors"
+          :colorRemovable="colorRemovable"
+          :colorAddable="colorAddable"
+          :alpha="alpha"
+          :roughness="roughness"
+          :specular="specular"
+          :scale="scale"
+          :models="models"
+          :currentModel="currentModel"
+          @modelClick="emit('modelClick', $event)"
+          @colorAdd="emit('colorAdd')"
+          @colorRemove="emit('colorRemove')"
+          @colorChange="(v, index) => emit('colorChange', v, index)"
+          @colorInput="(v, index) => emit('colorInput', v, index)"
+          @alphaChange="emit('alphaChange', $event)"
+          @roughnessChange="emit('roughnessChange', $event)"
+          @specularChange="emit('specularChange', $event)"
+          @scaleChange="emit('scaleChange', $event)"
+        />
+        <editore-texture
+          v-else
+          @textureClick="emit('textureClick', $event)"
+          :textureImages="textureImages"
+          :textureType="textureType"
+        />
+      </div>
+    </f-scrollbar-container>
+    <toggle-expand-button :expanded="isShowContent" @click="toggleContent" />
+  </div>
 </template>
 
 <script setup lang="ts">

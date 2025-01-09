@@ -51,7 +51,8 @@
 }
 </style>
 
-<template lang="pug">
-div(class="absolute inset-0 bg-black/60 h-full w-full z-10")
-  div(class="loader")
+<template>
+  <div class="absolute inset-0 bg-black/60 h-full w-full z-10">
+    <div class="loader" />
+  </div>
 </template>
