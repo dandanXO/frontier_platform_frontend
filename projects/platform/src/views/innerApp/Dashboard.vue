@@ -151,7 +151,10 @@ const DASHBOARD_PAGE_PERMISSOIN = ref(
   permissionList.includes(FUNC_ID.DASHBOARD_PAGE)
 )
 onMounted(async () => {
-  const leftDis = refContainer.value!.getBoundingClientRect().left
+  let leftDis = 0
+  if (refContainer.value) {
+    leftDis = refContainer.value!.getBoundingClientRect().left
+  }
   const getWidth = () => document.body.clientWidth - leftDis - 36 // 36 is padding-right
   containerWidth.value = getWidth() > MAX_WIDTH ? MAX_WIDTH : getWidth()
   window.addEventListener('resize', () => {

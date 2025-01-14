@@ -48,6 +48,7 @@ app.config.errorHandler = (err, vm, info) => {
       testId: 'modal-confirm-crash',
     })
   } else if (status === 401) {
+    // do not things because no permission
     return
   } else {
     // status exist but not 400, 401, 403, 404, 500

@@ -126,6 +126,9 @@ instance.interceptors.response.use(
       store.dispatch('helper/clearModalPipeline')
       resetTracker()
       router.push({ name: 'SignIn', query })
+    } else if (status === 403) {
+      return
+      // do not things because no permission
     } else {
       // status 999 is Client Side Data Error
       const apiTranslateContent = response.code
@@ -133,10 +136,10 @@ instance.interceptors.response.use(
         : ''
       store.dispatch('helper/openModalConfirm', {
         type: NOTIFY_TYPE.ALERT,
-        header: message.title || i18n.global.t('RR0107'),
+        header: message?.title || i18n.global.t('RR0107'),
         contentText:
           apiTranslateContent ||
-          message.content ||
+          message?.content ||
           i18n.global.t('RR0108', { code: status || 999 }),
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload(),
