@@ -80,6 +80,18 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
+  if (route.query.open3d === 'true') {
+    const currentPage = document.querySelector(
+      `[nodeid="${route.params.nodeId}"]`
+    ) as HTMLElement
+    if (currentPage) {
+      currentPage.style.backgroundColor = 'black'
+      // hide all child
+      Array.from(currentPage.children).forEach((child) => {
+        child.remove()
+      })
+    }
+  }
   if (isStickerDrawerForLoginOpen.value) {
     /**
      * 如果 isStickerDrawerForLoginOpen 為 true，表示之前呼叫過 sticker/openStickerDrawerForLogin
