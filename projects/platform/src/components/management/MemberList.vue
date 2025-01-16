@@ -47,7 +47,7 @@ f-table(
         @click="confirmToCancelInvitation(item)"
       ) {{ $t('UU0002') }}
       p(
-        v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(item.orgRoleId)"
+        v-else-if="[ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup)"
         class="text-body2 text-grey-600 cursor-pointer"
         @click="confirmToRemoveMember(item)"
       ) {{ $t('UU0016') }}
@@ -204,7 +204,7 @@ export default {
             groupUserId: member.groupUserId,
             roleId,
           })
-
+      await fetchMemberList()
       isLoading.value = false
       return roleId
     }
@@ -223,7 +223,19 @@ export default {
       }
     }
 
+    const fetchMemberList = async () => {
+      const routeLocation = store.getters['helper/routeLocation']
+
+      if (routeLocation === 'org') {
+        const orgNo = store.getters['organization/orgNo']
+        await store.dispatch('organization/getOrg', { orgNo })
+      } else {
+        const groupId = store.getters['group/groupId']
+        await store.dispatch('group/getGroup', { groupId })
+      }
+    }
     return {
+      fetchMemberList,
       pagination,
       routeLocation,
       currentList,

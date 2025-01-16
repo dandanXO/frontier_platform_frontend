@@ -1,3 +1,5 @@
+import { ROLE_ID } from '@/utils/constants'
+
 export default {
   namespaced: true,
   state: () => ({
@@ -22,19 +24,29 @@ export default {
   },
   actions: {
     async getGroupUser({ dispatch, commit }) {
-      const { data } = await dispatch(
-        'group/callGroupApi',
-        { func: 'getGroupUser' },
-        { root: true }
-      )
-      commit('SET_groupUser', data.result.groupUser)
-      commit(
-        'organization/orgUser/SET_roleID',
-        data.result.groupUser.groupRoleId,
+      const resOrg = await dispatch(
+        'organization/orgUser/getOrgUser',
+        undefined,
         {
           root: true,
         }
       )
+      // check if is owner not use group role id
+      if (resOrg.orgRoleId !== ROLE_ID.OWNER) {
+        const { data } = await dispatch(
+          'group/callGroupApi',
+          { func: 'getGroupUser' },
+          { root: true }
+        )
+        commit('SET_groupUser', data.result.groupUser)
+        commit(
+          'organization/orgUser/SET_roleID',
+          data.result.groupUser.groupRoleId,
+          {
+            root: true,
+          }
+        )
+      }
     },
   },
 }

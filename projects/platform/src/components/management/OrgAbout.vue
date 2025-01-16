@@ -45,8 +45,12 @@ div(class="pt-16 md:pt-17.5")
             required
             class="w-66"
             data-cy="org-about_name"
+            :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
           )
-          input-label-color(v-model:labelColor="orgFormData.labelColor")
+          input-label-color(
+            v-model:labelColor="orgFormData.labelColor"
+            :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
+          )
         f-input-radio-group(
           v-model:inputValue="orgFormData.orgCategoryId"
           :label="$t('BB0072')"
@@ -54,6 +58,7 @@ div(class="pt-16 md:pt-17.5")
           keyOptionValue="orgCategoryId"
           required
           data-cy="org-about_category"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
         )
         f-select-dropdown(
           v-model:selectValue="orgFormData.countryCode"
@@ -62,6 +67,7 @@ div(class="pt-16 md:pt-17.5")
           class="w-85"
           required
           data-cy="org-about_country"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
         )
         f-input-text(
           v-model:textValue="orgFormData.address"
@@ -69,6 +75,7 @@ div(class="pt-16 md:pt-17.5")
           :hintError="isAddressMoreThan160Characters ? $t('WW0142', { limitNumber: 160 }) : ''"
           class="w-85"
           :placeholder="$t('BB0079')"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
         )
         input-calling-code(
           v-model:textValue="orgFormData.phone"
@@ -76,6 +83,7 @@ div(class="pt-16 md:pt-17.5")
           class="w-85"
           :label="$t('BB0070')"
           :placeholder="$t('BB0071')"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
         )
         input-calling-code(
           v-model:textValue="orgFormData.fax"
@@ -83,6 +91,7 @@ div(class="pt-16 md:pt-17.5")
           class="w-85"
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
         )
       f-button(
         v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_ORG_EDIT, behavior: 'deleteElement' }"
@@ -102,8 +111,9 @@ import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { copyText } from '@frontier/lib'
 import { useRouter } from 'vue-router'
 import usePlanOld from '@/composables/usePlanOld.js'
-import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import { FUNC_ID, NOTIFY_TYPE, PERMISSION_MAP } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
+import { disable } from 'mixpanel-browser'
 
 const store = useStore()
 const notify = useNotifyStore()
@@ -148,6 +158,8 @@ const availableToUpdateOrg = computed(
 const isAddressMoreThan160Characters = computed(
   () => !!orgFormData.address && orgFormData.address.length > 160
 )
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
+const permissionList = ref(PERMISSION_MAP[roleId])
 const openModalUploadLogo = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-upload-thumbnail',

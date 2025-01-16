@@ -32,12 +32,13 @@ search-table(
   template(#header-right)
     f-button(
       v-if="!isFirstLayer"
+      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_EDIT_COLLECTION, behavior: 'displayNone' }"
       size="sm"
       type="secondary"
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
     f-button(
-      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'deleteElement' }"
+      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'displayNone' }"
       size="sm"
       prependIcon="add"
       @click="createCollection"
@@ -68,9 +69,11 @@ search-table(
         :optionList="optionNode(node)"
         @click:node="handleNodeClick(node, visit)"
         :testId="`workspace-item-${index}`"
+        :isSelectable="permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION)"
       )
         template(#corner-bottom-left v-if="showPublicLibrary && isFirstLayer")
           f-svg-icon(
+            v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_PUBLISH_COLLECTION, behavior: 'deleteElement' }"
             :iconName="node.nodeMeta.isPublic ? 'public' : 'internal'"
             :tooltipMessage="node.nodeMeta.isPublic ? $t('FF0072') : $t('FF0073')"
             size="20"
@@ -93,7 +96,7 @@ import { SEARCH_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -203,6 +206,8 @@ const optionSort = computed(() => {
   }
 })
 const optionMultiSelect = computed(() => [deleteMultipleNode])
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
+const permissionList = PERMISSION_MAP[roleId]
 const optionNode = (node: NodeChild) => {
   const roleId = store.getters['organization/orgUser/orgUser'].roleID
   const permissionList = PERMISSION_MAP[roleId]

@@ -45,6 +45,7 @@ export default {
         { root: true }
       )
       commit('SET_orgUser', data.result.orgUser)
+      return data.result.orgUser
     },
     async updateDisplayName({ commit, dispatch }, params) {
       const { data } = await dispatch(
