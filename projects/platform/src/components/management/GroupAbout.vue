@@ -24,6 +24,7 @@ div
               )
       div(class="flex gap-x-2 w-85 mb-7.5")
         f-input-text(
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
           v-model:textValue="groupFormData.groupName"
           :placeholder="$t('BB0089')"
           :hintError="isGroupNameExist ? $t('WW0001') : !isGroupNameFilled ? $t('WW0002') : ''"
@@ -31,7 +32,10 @@ div
           class="flex-grow"
           data-cy="group-about_name"
         )
-        input-label-color(v-model:labelColor="groupFormData.labelColor")
+        input-label-color(
+          v-model:labelColor="groupFormData.labelColor"
+          :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
+        )
       f-input-text(
         v-model:textValue="groupFormData.address"
         :label="$t('BB0139')"
@@ -39,6 +43,7 @@ div
         :hintError="isAddressMoreThan160Characters ? $t('WW0142', { limitNumber: 160 }) : ''"
         class="flex-grow mb-7.5"
         data-cy="group-about_address"
+        :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
       )
     f-input-textarea(
       v-model:textValue="groupFormData.description"
@@ -46,6 +51,7 @@ div
       :placeholder="$t('BB0088')"
       class="w-85 mb-7.5"
       minHeight="min-h-40"
+      :disabled="!permissionList.includes(FUNC_ID.MANAGEMENT_ORG_EDIT)"
     )
     f-button(
       v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_MEMBER_EDIT, behavior: 'deleteElement' }"
@@ -59,10 +65,10 @@ div
 
 <script>
 import { useStore } from 'vuex'
-import { computed, reactive, toRaw } from 'vue'
+import { computed, reactive, toRaw, ref } from 'vue'
 import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
-import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import { FUNC_ID, NOTIFY_TYPE, PERMISSION_MAP } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { copyText } from '@frontier/lib'
 
@@ -84,6 +90,8 @@ export default {
       description,
       address,
     })
+    const roleId = store.getters['organization/orgUser/orgUser'].roleID
+    const permissionList = ref(PERMISSION_MAP[roleId])
     const isGroupNameExist = computed(() =>
       store.getters['organization/groupList'].some(
         (group) =>
@@ -143,6 +151,7 @@ export default {
     }
 
     return {
+      permissionList,
       groupFormData,
       isGroupNameExist,
       availableToCreateGroup,

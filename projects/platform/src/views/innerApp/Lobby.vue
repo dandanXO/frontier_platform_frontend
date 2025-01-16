@@ -23,7 +23,7 @@ div(class="w-full relative")
         div(
           v-for="org in orgList"
           class="w-58 h-55 rounded-md border border-grey-250 bg-grey-50 flex flex-col items-center justify-between py-5 cursor-pointer"
-          @click="goToPublicLibrary(org.orgNo)"
+          @click="goToAssets(org)"
           data-cy="org"
           :key="org.orgName"
         )
@@ -65,13 +65,16 @@ const canCreateNewOrg = computed(() => {
     store.getters['permission/noLittleKingInOrgList']
   )
 })
-const goToPublicLibrary = (orgNo) => {
+const goToAssets = (org) => {
   if (!user.value.isVerify) {
     remindVerifyEmail()
     return
   }
 
-  router.push({ name: 'PublicLibrary', params: { orgNo } })
+  router.push({
+    name: 'Assets',
+    params: { orgNo: org.orgNo, ogKey: `1-${org.orgId}` },
+  })
 }
 
 const openModalCreateOrg = () => {

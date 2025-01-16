@@ -1,6 +1,7 @@
 <template lang="pug">
 f-popper(
   placement="bottom-end"
+  :disabled="disabled"
   @expand="isFocus = true"
   @collapse="isFocus = false"
 )
@@ -36,7 +37,7 @@ f-popper(
 </template>
 
 <script setup>
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, toRefs } from 'vue'
 import { COLOR } from '@/utils/constants'
 import useInput from '@frontier/ui-component/src/FInput/useInput'
 
@@ -50,7 +51,12 @@ const props = defineProps({
     type: String,
     default: 'lg',
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
+const { disabled } = toRefs(props)
 const labelColorList = computed(() =>
   Object.values(COLOR).map((color) => ({ labelColor: color }))
 )
@@ -61,10 +67,10 @@ const innerLabelColor = computed({
 })
 
 const slots = useSlots()
-
 const { state, STATE, classTransition, isFocus, isHover } = useInput({
   slots,
   inputValue: innerLabelColor,
+  disabled: disabled,
 })
 
 const classMain = computed(() => {
@@ -84,7 +90,6 @@ const classMain = computed(() => {
       classList.push('h-11', 'px-4', 'gap-x-2')
       break
   }
-
   switch (state.value) {
     case STATE.DEFAULT:
       classList.push('border-grey-200', 'bg-grey-0')

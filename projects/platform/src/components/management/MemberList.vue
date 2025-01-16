@@ -58,6 +58,7 @@ import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { ROLE_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'MemberList',
@@ -66,6 +67,7 @@ export default {
     const store = useStore()
     const searchInput = ref('')
     const isLoading = ref(false)
+    const { ogId, ogType } = useNavigation()
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const roleIdFromUserOrgOrGroup =
       store.getters['organization/orgUser/orgUser'].roleID
@@ -199,10 +201,13 @@ export default {
         ? await store.dispatch('organization/changeOrgMemberRole', {
             orgUserId: member.orgUserId,
             roleId,
+            ogType: ogType.value,
           })
         : await store.dispatch('group/changeGroupMemberRole', {
             groupUserId: member.groupUserId,
             roleId,
+            ogId: ogId.value,
+            ogType: ogType.value,
           })
       await fetchMemberList()
       isLoading.value = false

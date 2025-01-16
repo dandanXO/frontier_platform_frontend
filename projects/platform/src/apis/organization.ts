@@ -1,5 +1,4 @@
 import axios from '@/apis'
-
 const orgApiWrapper = (
   path = '',
   orgId: string | null | undefined = null,
@@ -101,6 +100,7 @@ export default {
   /**
    * @param {object} params
    * @param {number} params.orgUserId
+   * @param {number} params.roleId
    */
   removeOrgMember: (orgId?: string, params?: {}) =>
     orgApiWrapper('/org/member/delete', orgId, params),
