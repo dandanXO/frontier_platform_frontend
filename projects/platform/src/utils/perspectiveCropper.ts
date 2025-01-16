@@ -39,7 +39,7 @@ export const getDimension = (
 }
 
 // Calculate the center point of the four points
-export function calculateCenter(points: Coord[]): Coord {
+function calculateCenter(points: Coord[]): Coord {
   let centerX = 0,
     centerY = 0
   points.forEach((point) => {
@@ -50,6 +50,39 @@ export function calculateCenter(points: Coord[]): Coord {
     x: centerX / points.length,
     y: centerY / points.length,
   }
+}
+
+// Convert degrees to radians
+function degreesToRadians(degrees: number) {
+  return degrees * (Math.PI / 180)
+}
+
+// Apply the rotation matrix to rotate around the center point
+function rotatePoint(point: Coord, center: Coord, angleInDegrees: number) {
+  const angle = degreesToRadians(angleInDegrees) // Convert angle to radians
+
+  // Translate to origin
+  const translatedX = point.x - center.x
+  const translatedY = point.y - center.y
+
+  // Apply rotation matrix
+  const rotatedX = translatedX * Math.cos(angle) - translatedY * Math.sin(angle)
+  const rotatedY = translatedX * Math.sin(angle) + translatedY * Math.cos(angle)
+
+  // Translate back to the center point
+  return {
+    x: rotatedX + center.x,
+    y: rotatedY + center.y,
+  }
+}
+
+// Rotation function
+export function rotatePoints(points: Coord[], angleInDegrees: number) {
+  // Calculate the center point
+  const center = calculateCenter(points)
+
+  // Rotate all points
+  return points.map((point) => rotatePoint(point, center, angleInDegrees))
 }
 
 export const setScale = (
@@ -207,9 +240,7 @@ export const setupStage = (
      * where the deltaY equal to 100 or -100 constantly (which is unlikely to happen)
      * this condition will make a false negative
      */
-    const is2FingerMotion = 
-      e.evt.deltaY !== 100 && 
-      e.evt.deltaY !== -100
+    const is2FingerMotion = e.evt.deltaY !== 100 && e.evt.deltaY !== -100
     /**
      * reversed the direction if user scroll with ctrl key
      * or using two finger motion
@@ -217,9 +248,8 @@ export const setupStage = (
     if (e.evt.ctrlKey || is2FingerMotion) {
       direction = -direction
     }
-    
     const newScale =
-      direction > 0 ?  oldScale * wheelScaleBy : oldScale / wheelScaleBy
+      direction > 0 ? oldScale * wheelScaleBy : oldScale / wheelScaleBy
     stage.scale({ x: newScale, y: newScale })
     const newPos = {
       x: pointer.x - mousePointTo.x * newScale,

@@ -125,7 +125,7 @@ import {
   getDistanceInCm,
   getFitScale,
   getCenter,
-  calculateCenter,
+  rotatePoints,
 } from '@/utils/perspectiveCropper'
 import { cmToPixel, toDP1, pixelToCm, getIntCoord } from '@/utils/cropper'
 import type {
@@ -263,7 +263,6 @@ const defaultPositions = getDefaultPositions()
 
 const sourceMat = ref<cv.Mat>()
 const scale = ref<number>(1)
-const rotatePresetsIndex = ref(0)
 const isMouseInCircles = ref(false)
 const isMouseInCropGroup = ref(false)
 const hoverInCircle = ref<CircleId | null>(null)
@@ -327,14 +326,8 @@ const infosGroupConfig = computed(() => ({
   visible: infoVisible.value,
 }))
 
-const defaultMx = computed(() => (12.5 + 28) * scaleInverse.value)
-const defaultMy = computed(() => (12.5 + 14) * scaleInverse.value)
-const mx = computed(() => {
-  return rotatePresetsIndex.value % 2 === 0 ? defaultMx.value : defaultMy.value
-})
-const my = computed(() => {
-  return rotatePresetsIndex.value % 2 === 0 ? defaultMy.value : defaultMx.value
-})
+const mx = computed(() => (12.5 + 28) * scaleInverse.value)
+const my = computed(() => (12.5 + 14) * scaleInverse.value)
 
 const circleLeftTopPosition = reactive<Coord>({
   ...defaultPositions.leftTop,
@@ -895,13 +888,7 @@ const handleCircleMouseEnter = (
   if (!stage) {
     return
   }
-  const getCursorType = () => {
-    if (rotatePresetsIndex.value % 2 === 1) {
-      return defaultCursorType === 'nwse-resize' ? 'nesw-resize' : 'nwse-resize'
-    }
-    return defaultCursorType
-  }
-  stage.container().style.cursor = getCursorType()
+  stage.container().style.cursor = defaultCursorType
 }
 
 const handleCircleMouseLeave = (e: Konva.KonvaEventObject<'mouseleave'>) => {
@@ -1091,30 +1078,6 @@ const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
       return Math.floor((leftHeight + rightHeight) / 2)
     }
 
-    const rotateLeft = (src: Coord[], n: number) => {
-      const dst = src.slice()
-      for (let i = 0; i < n; i++) {
-        const point = dst.shift()
-        if (!point) {
-          throw new Error('rotate empty array')
-        }
-        dst.push(point)
-      }
-      return dst
-    }
-
-    const rotateRight = (src: Coord[], n: number) => {
-      const dst = src.slice()
-      for (let i = 0; i < n; i++) {
-        const point = dst.pop()
-        if (!point) {
-          throw new Error('rotate empty array')
-        }
-        dst.unshift(point)
-      }
-      return dst
-    }
-
     const circlePoints = [
       circleLeftTopPosition,
       circleRightTopPosition,
@@ -1122,18 +1085,24 @@ const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
       circleLeftBottomPosition,
     ]
     const pointsArray = circlePoints.flatMap((p) => [p.x, p.y])
-    const rotatedPoints = rotateRight(circlePoints, rotatePresetsIndex.value)
-    const destinationWidth = getDestinationWidth(rotatedPoints)
-    const destinationHeight = getDestinationHeight(rotatedPoints)
-    const dstPointsArray = rotateLeft(
+
+    const destinationWidth = getDestinationWidth(circlePoints)
+    const destinationHeight = getDestinationHeight(circlePoints)
+    const dstPointsArray = rotatePoints(
       [
         { x: 0, y: 0 },
-
         { x: destinationWidth, y: 0 },
         { x: destinationWidth, y: destinationHeight },
         { x: 0, y: destinationHeight },
       ],
-      rotatePresetsIndex.value
+      /**
+       * We perform the rotation twice because:
+       * - The first rotation aligns the result with the rotation of the cropping area
+       *   (since the image output doesn't account for the cropping area's 'x' degree rotation).
+       * - The second rotation ensures the image appears rotated by 'x' degrees,
+       *   creating the correct perspective.
+       */
+      rotateDeg.value * 2
     ).flatMap((p) => [p.x, p.y])
 
     console.time('Perspective Transform')
@@ -1301,38 +1270,6 @@ const rotate = (deg: number, isReset?: boolean) => {
     circleRightBottomPosition,
     circleLeftBottomPosition,
   ]
-  // Convert degrees to radians
-  function degreesToRadians(degrees: number) {
-    return degrees * (Math.PI / 180)
-  }
-
-  // Apply the rotation matrix to rotate around the center point
-  function rotatePoint(point: Coord, center: Coord, angleInDegrees: number) {
-    let angle = degreesToRadians(angleInDegrees) // Convert angle to radians
-
-    // Translate to origin
-    let translatedX = point.x - center.x
-    let translatedY = point.y - center.y
-
-    // Apply rotation matrix
-    let rotatedX = translatedX * Math.cos(angle) - translatedY * Math.sin(angle)
-    let rotatedY = translatedX * Math.sin(angle) + translatedY * Math.cos(angle)
-
-    // Translate back to the center point
-    return {
-      x: rotatedX + center.x,
-      y: rotatedY + center.y,
-    }
-  }
-
-  // Rotation function
-  function rotatePoints(points: Coord[], angleInDegrees: number) {
-    // Calculate the center point
-    let center = calculateCenter(points)
-
-    // Rotate all points
-    return points.map((point) => rotatePoint(point, center, angleInDegrees))
-  }
 
   const needChangeDeg = isReset ? 0 : innerDeg - rotateDegRef.value
 
@@ -1350,7 +1287,6 @@ const rotate = (deg: number, isReset?: boolean) => {
 
   rotateDegRef.value = innerDeg
   emit('rotateDegChange', rotateDegRef.value)
-  rotatePresetsIndex.value = 0
 
   crop(isReset)
 }
