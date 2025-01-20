@@ -47,7 +47,7 @@ f-table(
         @click="confirmToCancelInvitation(item)"
       ) {{ $t('UU0002') }}
       p(
-        v-else-if="[ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup)"
+        v-else-if="[ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup) && !(item.orgRoleId === ROLE_ID.OWNER)"
         class="text-body2 text-grey-600 cursor-pointer"
         @click="confirmToRemoveMember(item)"
       ) {{ $t('UU0016') }}
@@ -206,7 +206,8 @@ export default {
         : await store.dispatch('group/changeGroupMemberRole', {
             groupUserId: member.groupUserId,
             roleId,
-            ogId: ogId.value,
+            ogId: ogId.value, // ogId = group id
+            orgId: store.state.organization.orgId, // orgId = org id
             ogType: ogType.value,
           })
       await fetchMemberList()

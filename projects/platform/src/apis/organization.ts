@@ -7,6 +7,7 @@ const orgApiWrapper = (
   const data = {}
   if (orgId) {
     data['orgId'] = orgId
+    data['ogId'] = orgId
   }
   Object.assign(data, params)
   return axios(path, { method: 'POST', data })

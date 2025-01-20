@@ -7,7 +7,7 @@ search-table(
   :optionMultiSelect="optionMultiSelect"
   :itemList="nodeList"
   testId="workspace-name-header"
-  :canSelectAll="!permissionList.includes(FUNC_ID.WORKSPACE_EDIT_COLLECTION)"
+  :canSelectAll="permissionList.includes(FUNC_ID.WORKSPACE_EDIT_COLLECTION)"
   v-model:selectedItemList="selectedNodeList"
 )
   template(#box-above)

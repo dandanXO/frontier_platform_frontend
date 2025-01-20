@@ -11,7 +11,7 @@ div(class="pt-16 md:pt-17.5")
           )
             div(
               class="flex justify-center items-center w-6.5 h-6.5 rounded-full bg-grey-0 shadow-2"
-              v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_ORG_EDIT, behavior: 'displayNone' }"
+              v-permission="{ FUNC_ID: FUNC_ID.MANAGEMENT_ORG_EDIT, behavior: 'delete' }"
             )
               f-svg-icon(
                 iconName="camera"
