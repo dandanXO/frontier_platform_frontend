@@ -205,35 +205,33 @@ export default function useMaterial(
         }
       )
     }
+    const sideWithDD = [
+      material.value.faceSide?.materialType,
+      material.value.backSide?.materialType,
+    ].find((side) => !isExcludedMaterialType(side))
 
-    // Digital Drape
-    if (store.getters['permission/isDigitalDrapeTrialRule']) {
-      const sideWithDD = [
-        material.value.faceSide?.materialType,
-        material.value.backSide?.materialType,
-      ].find((side) => !isExcludedMaterialType(side))
-
-      if (
-        (isDoubleSide && !!sideWithDD) ||
-        !isTrimOrOthersType(material.value)
-      ) {
-        const selectedDigitalDrape = customDigitalDrape?.isSelected
-          ? customDigitalDrape
-          : digitalDrape
-        list.push({
-          id: 'digitalDrape',
-          fileId: null,
-          displayUrl: selectedDigitalDrape?.displayUrl ?? null,
-          originalUrl: selectedDigitalDrape?.originalUrl ?? null,
-          thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
-          displayName: `${t('MI0136')}${
-            customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
-          }`,
-          displayNameShort: t('MI0136'),
-          caption: null,
-          extension: Extension.JPG,
-        })
-      }
+    /**
+     * If the material is double-sided and has a digital drape, or
+     * the material is not a trim or others type,
+     * show the digital drape image.
+     */
+    if ((isDoubleSide && !!sideWithDD) || !isTrimOrOthersType(material.value)) {
+      const selectedDigitalDrape = customDigitalDrape?.isSelected
+        ? customDigitalDrape
+        : digitalDrape
+      list.push({
+        id: 'digitalDrape',
+        fileId: null,
+        displayUrl: selectedDigitalDrape?.displayUrl ?? null,
+        originalUrl: selectedDigitalDrape?.originalUrl ?? null,
+        thumbnailUrl: selectedDigitalDrape?.thumbnailUrl ?? null,
+        displayName: `${t('MI0136')}${
+          customDigitalDrape?.isSelected ? '' : `(${t('MI0137')})`
+        }`,
+        displayNameShort: t('MI0136'),
+        caption: null,
+        extension: Extension.JPG,
+      })
     }
 
     multimediaList.length > 0 &&
