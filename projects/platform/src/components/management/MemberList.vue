@@ -42,7 +42,7 @@ f-table(
           )
     template(v-if="prop === 'remove' && isHover")
       p(
-        v-if="item.isPending"
+        v-if="item.isPending && item.orgRoleId === ROLE_ID.OWNER"
         class="text-body2 text-grey-600 cursor-pointer"
         @click="confirmToCancelInvitation(item)"
       ) {{ $t('UU0002') }}
