@@ -42,12 +42,12 @@ f-table(
           )
     template(v-if="prop === 'remove' && isHover")
       p(
-        v-if="item.isPending && item.orgRoleId === ROLE_ID.OWNER"
+        v-if="item.isPending && [ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup)"
         class="text-body2 text-grey-600 cursor-pointer"
         @click="confirmToCancelInvitation(item)"
       ) {{ $t('UU0002') }}
       p(
-        v-else-if="[ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup) && !(item.orgRoleId === ROLE_ID.OWNER)"
+        v-else-if="!item.isPending && [ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup) && !(item.orgRoleId === ROLE_ID.OWNER)"
         class="text-body2 text-grey-600 cursor-pointer"
         @click="confirmToRemoveMember(item)"
       ) {{ $t('UU0016') }}
