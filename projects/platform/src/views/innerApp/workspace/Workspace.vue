@@ -52,6 +52,7 @@ search-table(
     ) {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
   template(#default="{ inSearch, visit }")
     div(
+      v-if="nodeList.length > 0"
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       div(
@@ -87,6 +88,11 @@ search-table(
             v-if="inSearch"
             :locationList="node.nodeMeta.locationList"
           )
+    tmeplate(
+      v-else-if="!permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION) && nodeList.length <= 0"
+    )
+      div(class="flex h-full flex-col justify-center items-center")
+        p(class="text-body1 text-grey-600 mx-7.5") {{ $t('HH0013') }}
 </template>
 
 <script setup lang="ts">
