@@ -55,6 +55,7 @@ search-table(
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       div(
+        v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'displayNone' }"
         class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
         data-cy="add-asset-inside-workspace"
         @click="openModalAssetsList"

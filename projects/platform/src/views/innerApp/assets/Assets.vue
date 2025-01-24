@@ -92,11 +92,16 @@ search-table(
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
         div(
+          v-if="permissionList.includes(FUNC_ID.ASSET_CREATE)"
           class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
           @click="goToMaterialUpload()"
         )
           f-svg-icon(iconName="texture_add" size="24" class="text-grey-900")
-        p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
+        p(
+          v-if="permissionList.includes(FUNC_ID.ASSET_CREATE)"
+          class="text-body2 text-grey-900 pt-3"
+        ) {{ $t('EE0079') }}
+        div(v-else class="text-body2 text-grey-900") {{ $t('HH0013') }}
 </template>
 
 <script setup lang="ts">
@@ -136,7 +141,8 @@ const router = useRouter()
 const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
-
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
+const permissionList = PERMISSION_MAP[roleId]
 const clickMaterialItemHandler = (materialId: number) => {
   if (selectedMaterialList.value.length === 0) {
     goToAssetMaterialDetail({}, materialId)
