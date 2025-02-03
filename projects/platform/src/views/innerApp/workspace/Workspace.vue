@@ -52,7 +52,7 @@ search-table(
     ) {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
   template(#default="{ inSearch, visit }")
     div(
-      v-if="nodeList.length > 0"
+      v-if="nodeList.length > 0 || (nodeList.length <= 0 && permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION))"
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       div(
