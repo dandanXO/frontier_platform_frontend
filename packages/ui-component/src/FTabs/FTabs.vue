@@ -27,6 +27,7 @@ export default {
 export enum TYPE {
   CONTROL = 'control',
   LINE = 'line',
+  PILLS = 'pills',
 }
 export enum STATUS_TAB {
   ACTIVE = 'active',
@@ -79,9 +80,10 @@ const switchTab = (tab: TabItem) => {
 const ListContainerStyle = computed(() => {
   const styleMap: Record<TYPE, string> = {
     //Line still using the old design system style
-    line: 'border-b border-grey-250 h-10',
+    [TYPE.LINE]: 'border-b border-grey-250 h-10',
 
-    control: 'bg-secondary p-1 rounded-lg',
+    [TYPE.CONTROL]: 'bg-secondary p-1 rounded-lg',
+    [TYPE.PILLS]: 'p-1 rounded-lg',
   }
   return styleMap[props.type]
 })
@@ -91,12 +93,16 @@ const itemContainerStyle = (tab: TabItem) => {
     'justify-center items-center text-primary-inverse font-bold rounded'
   const styleMap: Record<TYPE, Record<STATUS_TAB, string>> = {
     //LINE still using the old design system style
-    line: {
+    [TYPE.LINE]: {
       active: 'border-b-2 border-primary-400 text-grey-900 font-bold',
       inactive: 'text-grey-600 hover:text-grey-900',
     },
 
-    control: {
+    [TYPE.CONTROL]: {
+      active: `bg-brand-solid ${baseStyle} text-white`,
+      inactive: `bg-secondary ${baseStyle} text-primary-inverse`,
+    },
+    [TYPE.PILLS]: {
       active: `bg-brand-solid ${baseStyle} text-white`,
       inactive: `bg-secondary ${baseStyle} text-primary-inverse`,
     },

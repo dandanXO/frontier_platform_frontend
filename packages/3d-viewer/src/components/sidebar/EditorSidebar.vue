@@ -1,16 +1,12 @@
 <template>
-  <div
-    :class="[isMobile ? 'absolute pt-12' : 'relative', 'flex flex-col']"
-    :style="{ height: 'calc(100vh - 80px)' }"
-  >
+  <div class="relative flex flex-col" :style="{ height: 'calc(100vh - 80px)' }">
     <f-scrollbar-container
       sizeAutoCapable
       class="flex flex-1 min-h-0 bg-primary border-r border-grey-800 transition-width"
       :style="{ width: wrapperWidth }"
     >
       <div
-        class="flex flex-col items-stretch pt-6 pb-[26px] text-grey-100 gap-6"
-        :class="isMobile ? 'w-77.5 pl-5 pr-3.5' : 'w-85 pl-10 pr-6'"
+        class="flex flex-col items-stretch pt-6 pb-[26px] text-grey-100 gap-6 w-85 pl-10 pr-6"
         ref="contentWrapper"
       >
         <f-infobar
@@ -52,7 +48,7 @@
           @specularChange="emit('specularChange', $event)"
           @scaleChange="emit('scaleChange', $event)"
         />
-        <editore-texture
+        <texture-list
           v-else
           @textureClick="emit('textureClick', $event)"
           :textureImages="textureImages"
@@ -70,15 +66,17 @@ import { useI18n } from 'vue-i18n'
 
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import type { TabItem } from '@frontier/ui-component/src/FTabs/FTabs.vue'
-import { MIN_DPI_2D_MATERIAL, NOTIFY_TYPE, useBreakpoints } from '@frontier/lib'
-import ToggleExpandButton from './ToggleExpandButton.vue'
+import { MIN_DPI_2D_MATERIAL, NOTIFY_TYPE } from '@frontier/lib'
 import type { U3M } from '@/composables/useU3M'
 import type { PantoneItem } from '../../composables/useColors'
 import { DISPLAY_MODE } from '../../constants'
-import type { Model } from '@/constants/models'
+import TextureList from '../TextureList.vue'
 import EditorModel from './EditorModel.vue'
-import EditoreTexture from './EditoreTexture.vue'
-import type { MaterialU3m } from '@frontier/platform-web-sdk'
+import ToggleExpandButton from './ToggleExpandButton.vue'
+import type {
+  MaterialU3m,
+  Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner,
+} from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -87,8 +85,8 @@ const props = defineProps<{
   displayMode: DISPLAY_MODE
   currentColors: string[]
   dpi: MaterialU3m['dpi']
-  models: Model[]
-  currentModel: Model
+  models: Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner[]
+  currentModel: Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
   colorRemovable: boolean
   colorAddable: boolean
   alpha: number
@@ -153,8 +151,6 @@ watch(isShowContent, (isExpand) => {
 })
 
 const isLowDpi = (props.dpi ?? 0) < MIN_DPI_2D_MATERIAL
-
-const { isMobile } = useBreakpoints()
 </script>
 
 <style scoped>

@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
     FBanner: typeof import('./src/FNotify/FBanner/FBanner.vue').default
     FSnackbar: typeof import('./src/FNotify/FSnackbar/FSnackbar.vue').default
     FInfobar: typeof import('./src/FNotify/FInfobar/FInfobar.vue').default
+    FAlert: typeof import('./src/FNotify/FAlert/FAlert.vue').default
     FPopper: typeof import('./src/FPopper/FPopper.vue').default
     FContextualMenu: typeof import('./src/FContextualMenu/FContextualMenu.vue').default
     FTabs: typeof import('./src/FTabs/FTabs.vue').default

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-screen h-20 shrink-0 border-b border-primary-border bg-primary flex items-center justify-between desktop:px-10 px-4"
+    class="w-screen shrink-0 border-b border-primary-border bg-primary flex flex-initial items-center justify-between desktop:px-8 p-4"
   >
     <div class="flex flex-1">
       <f-button
@@ -35,7 +35,7 @@
         class="self-center"
       >
         {{ isDesktop ? $t('UU0125') : undefined }}
-        <f-svg-icon v-if="!isDesktop" iconName="camera" size="18" />
+        <f-svg-icon v-if="!isDesktop" iconName="photo_camera" size="18" />
       </f-button>
     </div>
   </div>

@@ -1,23 +1,23 @@
 <template>
   <section-sidebar :title="$t('UU0171')">
     <template #content>
-      <div class="flex flex-row flex-wrap gap-2 justify-start">
-        <div
-          v-for="(model, index) in models"
-          :key="model.name"
-          class="h-[60px] w-[60px] hover:opacity-70 border border-grey-700 rounded shrink-0 cursor-pointer"
-          :class="{ '!border-brand-solid': currentModel.name === model.name }"
-          @click="$emit('modelClick', index)"
-        >
-          <img
-            :src="model.coverImg"
-            class="rounded h-full w-full object-cover"
-          />
-        </div>
-      </div>
+      <model-list
+        @modelClick="$emit('modelClick', $event)"
+        :models="activeModels"
+        :currentModel="currentModel"
+        :itemSize="15"
+        classContainer="flex flex-row flex-wrap gap-2 justify-start"
+      />
+      <model-list
+        @modelClick="$emit('modelClick', $event)"
+        :models="lockedModels"
+        :currentModel="currentModel"
+        :itemSize="15"
+        classContainer="flex flex-row flex-wrap gap-2 justify-start"
+      />
     </template>
   </section-sidebar>
-  <div class="border border-secondary-border" />
+  <div class="border border-primary-border" />
   <section-sidebar :title="$t('RR0122')">
     <template #content>
       <f-input-slider
@@ -75,7 +75,7 @@
       />
     </template>
   </section-sidebar>
-  <div class="border border-secondary-border"></div>
+  <div class="border border-primary-border" />
   <template v-if="store.getters['permission/enable3DViewerColor']">
     <section-sidebar :title="$t('RR0026')">
       <template #content>
@@ -100,7 +100,6 @@
             {{ $t('UU0121') }}
           </f-button>
           <f-button
-            :theme="THEME.DARK"
             :size="SIZE.MD"
             prependIcon="add"
             type="secondary"
@@ -112,26 +111,28 @@
         </div>
       </template>
     </section-sidebar>
-    <div class="border border-secondary-border" />
+    <div class="border border-primary-border" />
   </template>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 import type { PantoneItem } from '@/composables/useColors'
 import type { U3M } from '@/composables/useU3M'
-import type { Model } from '@/constants/models'
 import { THEME, SIZE } from '../../constants'
 import ColorInput from '../ColorInput.vue'
 import SectionSidebar from './SectionSidebar.vue'
+import ModelList from '../ModelList.vue'
+import type { Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner } from '@frontier/platform-web-sdk'
 
-defineProps<{
+const props = defineProps<{
   originU3m: U3M | undefined
   pantoneList?: { [code: string]: PantoneItem }
   currentColors: string[]
-  models: Model[]
-  currentModel: Model
+  models: Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner[]
+  currentModel: Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
   colorRemovable: boolean
   colorAddable: boolean
   alpha: number
@@ -151,5 +152,13 @@ defineEmits<{
   (e: 'specularChange', v: number): void
   (e: 'scaleChange', v: number): void
 }>()
+
+const activeModels = computed(() => {
+  return props.models.filter((model) => !model.isLocked)
+})
+
+const lockedModels = computed(() => {
+  return props.models.filter((model) => model.isLocked)
+})
 const store = useStore()
 </script>

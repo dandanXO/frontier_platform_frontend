@@ -9,7 +9,7 @@ import useKeyboard from '../composables/useKeyboard'
 import useScreenshot from '../composables/useScreenshot'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
 import EditorHeader from './EditorHeader.vue'
-import EditorSidebar from './sidebar/EditorSidebar.vue'
+import EditorBar from './EditorBar.vue'
 import EditorLoader from './EditorLoader.vue'
 import type { Material, MaterialU3m } from '@frontier/platform-web-sdk'
 import { useRoute } from 'vue-router'
@@ -71,7 +71,8 @@ const {
   props.roughImgUrl || '',
   props.dispImgUrl || '',
   props.metalImgUrl || '',
-  props.alphaImgUrl || ''
+  props.alphaImgUrl || '',
+  props.material.metaData.materialOwnerOGId
 )
 
 const route = useRoute()
@@ -120,8 +121,8 @@ const textureImages = computed(() => {
 
 const textureImage = computed(() => textureImages.value[textureType.value])
 
-const { isMobile } = useBreakpoints()
-const sidebarExpanded = ref(!isMobile.value)
+const { isDesktop } = useBreakpoints()
+const sidebarExpanded = ref(true)
 const handleSidebarToggle = () => {
   sidebarExpanded.value = !sidebarExpanded.value
 }
@@ -129,7 +130,7 @@ const handleSidebarToggle = () => {
 
 <template>
   <div
-    class="w-screen h-screen fixed z-popper bg-primary left-0 top-0 flex flex-col"
+    class="w-screen h-full fixed z-popper bg-primary left-0 top-0 flex flex-col"
     data-theme="new-dark"
   >
     <editor-header
@@ -138,58 +139,60 @@ const handleSidebarToggle = () => {
       :showCloseButton="allowClose"
       :displayMode="displayMode"
     />
-    <div class="relative flex flex-col flex-1 min-h-0">
-      <div class="relative flex flex-row flex-1 min-h-0 items-stretch">
-        <template v-if="!isLoadingU3M && !isLoadingModel">
-          <editor-sidebar
-            :textureImages="textureImages"
-            :textureType="textureType"
-            :originU3m="originU3m"
-            :pantoneList="pantoneList"
-            :currentColors="currentColors"
-            :colorRemovable="colorRemovable"
-            :colorAddable="colorAddable"
-            :alpha="alpha"
-            :roughness="roughness"
-            :specular="specular"
-            :scale="scale"
-            :dpi="dpi"
-            :displayMode="displayMode"
-            :models="models"
-            :currentModel="currentModel"
-            @modelClick="loadModel"
-            @displayModeChange="handleDisplayModeChange"
-            @toggleExpand="handleSidebarToggle"
-            @textureClick="handleTextureClick"
-            @colorAdd="handleColorAdd"
-            @colorRemove="handleColorRemove"
-            @colorChange="handleColorChange"
-            @colorInput="handleColorInput"
-            @alphaChange="handleAlphaChange"
-            @roughnessChange="handleRoughnessChange"
-            @specularChange="handleSpecularChange"
-            @scaleChange="handleScaleChange"
-            @toggleMoireEffectPrevent="moireEffectPreventToggle"
-          />
-        </template>
-        <div
-          ref="container"
-          class="flex-1"
-          v-show="displayMode === DISPLAY_MODE.MODEL"
-        >
-          <canvas ref="canvas" />
-        </div>
-        <div
-          v-show="displayMode === DISPLAY_MODE.TEXTURE"
-          class="flex-1 flex items-center justify-center bg-tertiary bg-opacity-60"
-        >
-          <img
-            v-if="textureImage"
-            class="rounded"
-            :style="{ maxHeight: '75%', maxWidth: '75%' }"
-            :src="textureImage"
-          />
-        </div>
+    <div
+      class="relative flex flex-auto overflow-hidden"
+      :class="[
+        isDesktop ? 'flex-row min-h-0 items-stretch' : 'flex-col-reverse',
+      ]"
+    >
+      <editor-bar
+        :textureImages="textureImages"
+        :textureType="textureType"
+        :originU3m="originU3m"
+        :pantoneList="pantoneList"
+        :currentColors="currentColors"
+        :colorRemovable="colorRemovable"
+        :colorAddable="colorAddable"
+        :alpha="alpha"
+        :roughness="roughness"
+        :specular="specular"
+        :scale="scale"
+        :dpi="dpi"
+        :displayMode="displayMode"
+        :models="models"
+        :currentModel="currentModel"
+        @modelClick="loadModel"
+        @displayModeChange="handleDisplayModeChange"
+        @toggleExpand="handleSidebarToggle"
+        @textureClick="handleTextureClick"
+        @colorAdd="handleColorAdd"
+        @colorRemove="handleColorRemove"
+        @colorChange="handleColorChange"
+        @colorInput="handleColorInput"
+        @alphaChange="handleAlphaChange"
+        @roughnessChange="handleRoughnessChange"
+        @specularChange="handleSpecularChange"
+        @scaleChange="handleScaleChange"
+        @toggleMoireEffectPrevent="moireEffectPreventToggle"
+        v-show="!isLoadingU3M && !isLoadingModel"
+      />
+      <div
+        ref="container"
+        class="flex-auto overflow-hidden"
+        v-show="displayMode === DISPLAY_MODE.MODEL"
+      >
+        <canvas ref="canvas" />
+      </div>
+      <div
+        v-show="displayMode === DISPLAY_MODE.TEXTURE"
+        class="flex-1 flex items-center justify-center bg-tertiary bg-opacity-60"
+      >
+        <img
+          v-if="textureImage"
+          class="rounded"
+          :style="{ maxHeight: '75%', maxWidth: '75%' }"
+          :src="textureImage"
+        />
       </div>
     </div>
     <editor-loader v-if="isLoadingModel" />

@@ -24,7 +24,7 @@ import { THEME, SIZE } from '../constants'
 const props = withDefaults(
   defineProps<{
     theme?: `${THEME}`
-    size?: `${SIZE}` | 'special'
+    size?: `${SIZE}` | 'special' | 'xsm'
     type?: 'primary' | 'secondary' | 'text' | 'special' | 'critical-outline'
     isIcon?: boolean
     prependIcon?: string
@@ -79,6 +79,11 @@ const btnSize = computed(() => {
             'h-8.5',
             props.prependIcon && props.postpendIcon ? 'px-3' : 'px-3.5',
           ]
+    case 'xsm':
+      return [
+        'text-caption',
+        props.prependIcon && props.postpendIcon ? 'px-1' : 'px-1.5',
+      ]
     default:
       return []
   }

@@ -32,7 +32,7 @@ export default {
       control: { type: 'text' },
     },
     type: {
-      options: [TYPE.LINE, TYPE.CONTROL],
+      options: [TYPE.LINE, TYPE.CONTROL, TYPE.PILLS],
       control: { type: 'radio' },
     },
     theme: {

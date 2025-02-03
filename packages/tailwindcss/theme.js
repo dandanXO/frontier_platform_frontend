@@ -66,6 +66,7 @@ module.exports = plugin(function () {}, {
       },
       info: {
         DEFAULT: 'var(--color-info)',
+        solid: 'var(--color-info-solid)',
       },
       critical: {
         DEFAULT: 'var(--color-critical)',

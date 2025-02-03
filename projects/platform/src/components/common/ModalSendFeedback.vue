@@ -6,6 +6,7 @@ modal-behavior(
   @click:primary="actionHandler"
   :secondaryBtnText="$t('UU0026')"
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
+  class="z-popper"
 )
   template(#note)
     file-upload-error-note(
@@ -72,8 +73,8 @@ import { useNotifyStore } from '@/stores/notify'
 import { v4 as uuidv4 } from 'uuid'
 
 interface Props {
-  title: string
-  category: number
+  title?: string
+  category?: number
 }
 
 const props = defineProps<Props>()

@@ -21,6 +21,7 @@ import FScrollbarContainer from './src/FScrollbarContainer/FScrollbarContainer.v
 import FBanner from './src/FNotify/FBanner/FBanner.vue'
 import FSnackbar from './src/FNotify/FSnackbar/FSnackbar.vue'
 import FInfobar from './src/FNotify/FInfobar/FInfobar.vue'
+import FAlert from './src/FNotify/FAlert/FAlert.vue'
 import FPopper from './src/FPopper/FPopper.vue'
 import FContextualMenu from './src/FContextualMenu/FContextualMenu.vue'
 import FTabs from './src/FTabs/FTabs.vue'
@@ -46,6 +47,7 @@ export {
   FBanner,
   FSnackbar,
   FInfobar,
+  FAlert,
   FPopper,
   FContextualMenu,
   FTabs,

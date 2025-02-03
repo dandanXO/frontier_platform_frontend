@@ -13,3 +13,9 @@ export const TEXTURE_TYPE = {
   METAL: 4,
   ALPHA: 5,
 }
+
+export enum BOTTOMBAR_SECTION {
+  MODEL = 0,
+  SETTINGS = 1,
+  COLOR = 2,
+}

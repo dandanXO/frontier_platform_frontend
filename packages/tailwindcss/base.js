@@ -14,6 +14,7 @@ const defaultLightTheme = (theme) => ({
   '--color-tertiary': theme('colors.grey.100.v1'),
   '--color-info': theme('colors.cyan.50.v1'),
   '--color-info-border': theme('colors.cyan.200.v1'),
+  '--color-info-solid': theme('colors.cyan.500.v1'),
 })
 
 // expected to used module.export, if using export default
@@ -43,6 +44,7 @@ module.exports = function ({ addBase, theme }) {
       '--color-disabled': theme('colors.grey.250'),
       '--color-info': theme('colors.cyan.50.v1'),
       '--color-info-border': theme('colors.cyan.200.v1'),
+      '--color-info-solid': theme('colors.cyan.500.v1'),
     },
 
     '[data-theme="new"]': {
@@ -77,6 +79,7 @@ module.exports = function ({ addBase, theme }) {
       '--color-disabled': theme('colors.grey.500.v1'),
       '--color-info': theme('colors.cyan.900.v1'),
       '--color-info-border': theme('colors.cyan.700.v1'),
+      '--color-info-solid': theme('colors.cyan.400.v1'),
     },
 
     '[data-theme="startrust"]': {

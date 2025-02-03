@@ -1,16 +1,21 @@
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Pica from 'pica'
 import { image2Object } from '../utils/cropper'
-import MODELS from '../constants/models'
 import useColors from './useColors'
 import type { Ref } from 'vue'
 import type { U3M } from './useU3M'
+import modelsApi from '../apis/models'
+import type {
+  Material,
+  Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner,
+} from '@frontier/platform-web-sdk'
 
 THREE.ColorManagement.enabled = true
 
 const DISPLACEMENT_SCALE_BASE = 0.005
+const DEFAULT_PATTERN_SIZE = 20
 const pica = Pica()
 
 /**
@@ -139,11 +144,14 @@ export default function useModels(
   roughImgUrl: string,
   dispImgUrl: string,
   metalImgUrl: string,
-  alphaImgUrl: string
+  alphaImgUrl: string,
+  orgId: Material['metaData']['materialOwnerOGId']
 ) {
   const isLoading = ref(true)
 
-  const models = [...MODELS]
+  const models = ref<
+    Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner[]
+  >([])
   const modelIndex = ref<number>(0)
   const modelObject = ref<THREE.Group>()
   const material = ref<THREE.MeshPhysicalMaterial>()
@@ -171,7 +179,7 @@ export default function useModels(
   const textureRatio = ref(1)
   const repeatTimesX = computed(() => originRepeatTimesX.value / scale.value)
   const repeatTimesY = computed(() => repeatTimesX.value * textureRatio.value)
-  const currentModel = computed(() => models[modelIndex.value])
+  const currentModel = computed(() => models.value[modelIndex.value])
 
   const {
     pantoneList,
@@ -316,11 +324,12 @@ export default function useModels(
     }
 
     modelIndex.value = index
-    const model = models[index]
+    const model = models.value[index]
 
     const { width: widthInPx } = await image2Object(baseImgUrl)
     const widthInCm = (widthInPx / dpi) * 2.54
-    originRepeatTimesX.value = model.size / widthInCm
+    originRepeatTimesX.value =
+      (model.patternSize ?? DEFAULT_PATTERN_SIZE) / widthInCm
 
     scene.value.children.forEach((item) => {
       if (!scene.value) {
@@ -339,8 +348,12 @@ export default function useModels(
       isLoading.value = false
     }
 
-    const modelPath = model.filePath
+    const {
+      data: { result: modelPath },
+    } = await modelsApi.getModel(orgId!, model.id!)
+
     const loader = new GLTFLoader(manager)
+
     loader.load(modelPath, (gltf) => {
       if (!u3m.value || !scene.value) {
         throw new Error('error')
@@ -381,14 +394,17 @@ export default function useModels(
           })
         }
       })
+
       scene.value.add(modelObject.value)
     })
     updateMaterialRepeatTimes()
   }
 
-  const updateMaterial = () => {
+  const updateMaterial = async () => {
     if (!material.value || !u3m.value) {
-      throw new Error('error')
+      await initMaterial()
+      loadModel(0)
+      return
     }
     material.value.opacity = u3m.value.alpha
     material.value.roughness = u3m.value.roughness
@@ -422,18 +438,29 @@ export default function useModels(
 
   const handleScaleChange = (v: number) => (scale.value = v)
 
-  watch(u3m, async (newU3m, oldU3m) => {
-    if (!newU3m) {
+  watch([u3m, models], async ([newU3m, newModels], [oldU3m]) => {
+    if (!newU3m || newModels.length === 0) {
       return
     }
     if (oldU3m) {
       return updateMaterial()
     }
-    await initMaterial()
-    loadModel(0)
   })
-  watch(scale, updateMaterialRepeatTimes)
 
+  onMounted(async () => {
+    if (!orgId) {
+      return
+    }
+    const {
+      data: {
+        result: { modelList },
+      },
+    } = await modelsApi.getAllModels(orgId)
+    if (!modelList?.length) {
+      return
+    }
+    models.value = modelList
+  })
   return {
     isLoading,
     models,

@@ -10778,6 +10778,150 @@ export interface Material {
 /**
  * 
  * @export
+ * @interface Material3DViewerGetModel200Response
+ */
+export interface Material3DViewerGetModel200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Material3DViewerGetModel200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerGetModel200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerGetModel200Response
+     */
+    'result': string;
+    /**
+     * 
+     * @type {object}
+     * @memberof Material3DViewerGetModel200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface Material3DViewerGetModelRequest
+ */
+export interface Material3DViewerGetModelRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerGetModelRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerGetModelRequest
+     */
+    'modelId': number;
+}
+/**
+ * 
+ * @export
+ * @interface Material3DViewerOrgGetAllModels200Response
+ */
+export interface Material3DViewerOrgGetAllModels200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Material3DViewerOrgGetAllModels200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerOrgGetAllModels200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {Material3DViewerOrgGetAllModels200ResponseAllOfResult}
+     * @memberof Material3DViewerOrgGetAllModels200Response
+     */
+    'result': Material3DViewerOrgGetAllModels200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof Material3DViewerOrgGetAllModels200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface Material3DViewerOrgGetAllModels200ResponseAllOfResult
+ */
+export interface Material3DViewerOrgGetAllModels200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner>}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResult
+     */
+    'modelList'?: Array<Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+ */
+export interface Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+     */
+    'patternSize'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+     */
+    'thumbnail'?: string;
+    /**
+     * is model locked or not
+     * @type {boolean}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+     */
+    'isLocked'?: boolean;
+    /**
+     * is model custom or not
+     * @type {boolean}
+     * @memberof Material3DViewerOrgGetAllModels200ResponseAllOfResultModelListInner
+     */
+    'isCustom'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface Material3DViewerOrgGetAllModelsRequest
+ */
+export interface Material3DViewerOrgGetAllModelsRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerOrgGetAllModelsRequest
+     */
+    'orgId': number;
+}
+/**
+ * 
+ * @export
  * @interface MaterialCarbonEmission
  */
 export interface MaterialCarbonEmission {
@@ -26755,6 +26899,86 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * 
+         * @summary Get 3D viewer model file url
+         * @param {Material3DViewerGetModelRequest} material3DViewerGetModelRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        material3DViewerGetModel: async (material3DViewerGetModelRequest: Material3DViewerGetModelRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'material3DViewerGetModelRequest' is not null or undefined
+            assertParamExists('material3DViewerGetModel', 'material3DViewerGetModelRequest', material3DViewerGetModelRequest)
+            const localVarPath = `/assets/material/3d-viewer/model`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(material3DViewerGetModelRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get org\'s all 3d viewer models
+         * @param {Material3DViewerOrgGetAllModelsRequest} material3DViewerOrgGetAllModelsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        material3DViewerOrgGetAllModels: async (material3DViewerOrgGetAllModelsRequest: Material3DViewerOrgGetAllModelsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'material3DViewerOrgGetAllModelsRequest' is not null or undefined
+            assertParamExists('material3DViewerOrgGetAllModels', 'material3DViewerOrgGetAllModelsRequest', material3DViewerOrgGetAllModelsRequest)
+            const localVarPath = `/assets/material/3d-viewer/all-models`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(material3DViewerOrgGetAllModelsRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -27946,6 +28170,32 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary Get 3D viewer model file url
+         * @param {Material3DViewerGetModelRequest} material3DViewerGetModelRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async material3DViewerGetModel(material3DViewerGetModelRequest: Material3DViewerGetModelRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Material3DViewerGetModel200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.material3DViewerGetModel(material3DViewerGetModelRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.material3DViewerGetModel']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get org\'s all 3d viewer models
+         * @param {Material3DViewerOrgGetAllModelsRequest} material3DViewerOrgGetAllModelsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest: Material3DViewerOrgGetAllModelsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Material3DViewerOrgGetAllModels200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.material3DViewerOrgGetAllModels']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -28458,6 +28708,26 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary Get 3D viewer model file url
+         * @param {Material3DViewerGetModelRequest} material3DViewerGetModelRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        material3DViewerGetModel(material3DViewerGetModelRequest: Material3DViewerGetModelRequest, options?: RawAxiosRequestConfig): AxiosPromise<Material3DViewerGetModel200Response> {
+            return localVarFp.material3DViewerGetModel(material3DViewerGetModelRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get org\'s all 3d viewer models
+         * @param {Material3DViewerOrgGetAllModelsRequest} material3DViewerOrgGetAllModelsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest: Material3DViewerOrgGetAllModelsRequest, options?: RawAxiosRequestConfig): AxiosPromise<Material3DViewerOrgGetAllModels200Response> {
+            return localVarFp.material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -28933,6 +29203,30 @@ export class AssetsApi extends BaseAPI {
      */
     public massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get 3D viewer model file url
+     * @param {Material3DViewerGetModelRequest} material3DViewerGetModelRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public material3DViewerGetModel(material3DViewerGetModelRequest: Material3DViewerGetModelRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).material3DViewerGetModel(material3DViewerGetModelRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get org\'s all 3d viewer models
+     * @param {Material3DViewerOrgGetAllModelsRequest} material3DViewerOrgGetAllModelsRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest: Material3DViewerOrgGetAllModelsRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
