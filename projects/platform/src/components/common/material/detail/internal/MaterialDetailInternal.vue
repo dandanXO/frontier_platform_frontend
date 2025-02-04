@@ -72,7 +72,11 @@ div
             div(class="text-body2 text-grey-900 grid grid-cols-11")
               p(class="col-span-3") {{ $t('RR0310') }}
               p(v-if="material.metaData.updateDate" class="col-span-8") {{ toStandardFormat(material.metaData.updateDate) }}
-          div(v-if="material.internalInfo" class="rounded-md bg-grey-50 p-7.5")
+          div(
+            v-if="material.internalInfo"
+            class="rounded-md bg-grey-50 p-7.5"
+            v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'deleteElement' }"
+          )
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 grid gap-y-8")
               div(class="grid gap-y-3")
@@ -139,7 +143,10 @@ div
                   :key="tag.certificateId"
                 ) {{ tag.name }}
           //- Internal
-          div(class="rounded-md bg-grey-50 p-7.5")
+          div(
+            class="rounded-md bg-grey-50 p-7.5"
+            v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'deleteElement' }"
+          )
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0028') }}
@@ -159,7 +166,10 @@ div
               p(class="col-span-3") {{ property.name }}
               p(class="col-span-8") {{ property.value }}
           //- Internal
-          div(class="rounded-md bg-grey-50 p-7.5")
+          div(
+            class="rounded-md bg-grey-50 p-7.5"
+            v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'deleteElement' }"
+          )
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5")
               div(class="grid gap-y-5")
@@ -174,7 +184,10 @@ div
           div(class="text-body2 text-grey-900 grid grid-cols-12")
             p(class="col-span-4") {{ t('RR0034') }}
             p(class="col-span-8") {{ material.inventoryTotalQtyInYard }} {{ material.inventoryUnit }}
-          div(class="rounded-md bg-grey-50 p-7.5")
+          div(
+            class="rounded-md bg-grey-50 p-7.5"
+            v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'deleteElement' }"
+          )
             h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="grid gap-y-15 pt-7.5")
               //- Native Code
@@ -206,30 +219,42 @@ div
                   classGridCols="grid-cols-7"
                 )
         template(v-else-if="currentTab === TAB.ATTACHMENT")
-          div(class="pt-7.5 flex flex-wrap gap-5")
-            material-file-card(
-              v-for="(attachment, index) in multimediaList"
-              :key="attachment.fileId"
-              :thumbnailUrl="attachment.thumbnailUrl"
-              :originalUrl="attachment.originalUrl"
-              :extension="attachment.extension"
-              :displayFileName="attachment.displayFileName"
-              :menuTree="getMultimediaMenuTree(attachment.fileId)"
-              @click="openAttachmentExternalViewMode(index)"
-            )
-          div(class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
+          template(
+            v-if="!multimediaList?.length && !material.internalInfo?.attachmentList?.length"
+          )
+            div(class="h-full w-full flex justify-center items-center") {{ $t('HH0014') }}
+          template(
+            v-else-if="ROLE_ID.GUEST === roleId && !multimediaList?.length"
+          ) 
+            div(class="h-full w-full flex justify-center items-center") {{ $t('HH0014') }}
+          template(v-else)
             div(class="pt-7.5 flex flex-wrap gap-5")
               material-file-card(
-                v-for="(attachment, index) in material.internalInfo?.attachmentList"
+                v-for="(attachment, index) in multimediaList"
                 :key="attachment.fileId"
                 :thumbnailUrl="attachment.thumbnailUrl"
                 :originalUrl="attachment.originalUrl"
                 :extension="attachment.extension"
                 :displayFileName="attachment.displayFileName"
-                :menuTree="getAttachmentMenuTree(attachment.fileId)"
-                @click="openAttachmentViewMode(index)"
+                :menuTree="getMultimediaMenuTree(attachment.fileId)"
+                @click="openAttachmentExternalViewMode(index)"
               )
+            div(
+              class="rounded-md bg-grey-50 p-7.5"
+              v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'deleteElement' }"
+            )
+              h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
+              div(class="pt-7.5 flex flex-wrap gap-5")
+                material-file-card(
+                  v-for="(attachment, index) in material.internalInfo?.attachmentList"
+                  :key="attachment.fileId"
+                  :thumbnailUrl="attachment.thumbnailUrl"
+                  :originalUrl="attachment.originalUrl"
+                  :extension="attachment.extension"
+                  :displayFileName="attachment.displayFileName"
+                  :menuTree="getAttachmentMenuTree(attachment.fileId)"
+                  @click="openAttachmentViewMode(index)"
+                )
         template(v-else-if="currentTab === TAB.INDICATOR")
           div(class="-mt-10")
             div(
@@ -334,7 +359,7 @@ import MaterialDetailInventoryTable from '@/components/common/material/detail/in
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 import useAssets from '@/composables/useAssets'
-import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
+import { FUNC_ID, PERMISSION_MAP, ROLE_ID } from '@/utils/constants'
 import {
   GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum,
   type Material,
@@ -438,7 +463,7 @@ const openAttachmentExternalViewMode = (index: number) => {
     },
   })
 }
-
+const roleId = store.getters['organization/orgUser/orgUser'].roleID
 const menuTree = computed<MenuTree>(() => {
   // List placeholders
   const funcOneList: any[] = []
@@ -446,7 +471,7 @@ const menuTree = computed<MenuTree>(() => {
   const optionList = [funTwoList, [printLabel, printA4Swatch]]
 
   // Retrieve the user's role and corresponding permissions
-  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  
   const permissionList = PERMISSION_MAP[roleId]
 
   // Map each permission ID to its handler function
