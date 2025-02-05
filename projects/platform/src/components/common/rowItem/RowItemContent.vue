@@ -117,6 +117,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
         ) {{ $t('TT0054') }}
       div(class="grid gap-3")
         p(
+          v-permission="{ FUNC_ID: FUNC_ID.ASSET_VIEW_INTTERNAL, behavior: 'displayNone' }"
           class="text-body2/1.6 !break-word"
           :class="[{ 'line-clamp-1': showMoreButtons['privateTagList'] }]"
         ) {{ $t('RR0028') }}： {{ privateTagList }}
@@ -169,6 +170,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { FUNC_ID } from '@/utils/constants'
 import {
   Extension,
   type Material,
