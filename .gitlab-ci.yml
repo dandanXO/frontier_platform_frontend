@@ -2,6 +2,7 @@ variables:
   NODE_OPTIONS: '--max_old_space_size=4096'
 
 stages:
+  - dependency_scan
   - build
   - deploy
 
@@ -17,6 +18,29 @@ stages:
 #     - npm run test
 #     - cd ./projects/platform
 #     - npm run build --mode=development
+
+dependency_scanning:
+  image: node:20
+  stage: dependency_scan
+  variables:
+    # 若需要排除 node_modules 或其他目錄，可以設定 DS_EXCLUDED_PATHS
+    DS_EXCLUDED_PATHS: 'node_modules'
+  before_script:
+    - npm install -g pnpm
+  script:
+    - echo "Running pnpm audit..."
+    - pnpm audit --json > pnpm-audit.json || true
+    # 此處您可以加入自訂腳本解析 pnpm-audit.json，轉換成 GitLab 所需格式，
+    # 或直接上傳此報告供後續參考
+    - cat pnpm-audit.json
+  allow_failure: true
+  artifacts:
+    paths:
+      - pnpm-audit.json
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      when: always
+    - when: never
 
 platform-build:
   image: cypress/base:20.18.0
