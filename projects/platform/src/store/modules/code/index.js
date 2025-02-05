@@ -1,5 +1,6 @@
 import codeApi from '@/apis/code'
 import { ROLE_ID } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
 
 const state = () => ({
   countryList: [],
@@ -46,7 +47,15 @@ const getters = {
   },
   roleList: (state) => state.roleList,
   getRoleName: (state) => (roleId) => {
-    return state.roleList.find((role) => role.roleId === roleId).name
+    const { t } = useI18n()
+    const roleNameMap = {
+      [ROLE_ID.OWNER]: t('BB0017'),
+      [ROLE_ID.MEMBER1]: t('BB0019'),
+      [ROLE_ID.GUEST]: t('BB0143'),
+    }
+    // const _roleId = state.roleList.find((role) => role.roleId === roleId).roleId
+
+    return roleNameMap[roleId]
   },
   roleLimit: (state) => state.roleLimit,
   orgRoleLimitList: (state) =>
