@@ -14,7 +14,6 @@ export const useUserStore = defineStore('user', () => {
       hasLogin.value = false
       return
     }
-
     const { data } = await generalApi.checkTokenStatus({
       accessToken,
     })

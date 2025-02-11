@@ -88,8 +88,7 @@ if (!shareInfo.value) {
  * 所以如果直接取用 props.nodeId 會誤將 nodeKey(NodeLocation-NodeId) 當作 nodeId，
  * 造成無法正確取得資料，故取用 sharingKey 所取得的 shareInfo 中的 nodeId。
  */
-const currentNodeId = ref<number>(shareInfo.value.nodeId)
-
+const currentNodeId = ref<number>(route.params.nodeId || shareInfo.value.nodeId)
 const optionSort = computed(() => {
   const {
     ITEM_NO_A_Z_C_M,
