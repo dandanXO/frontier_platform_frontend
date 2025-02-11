@@ -237,12 +237,9 @@ const store = useStore()
 const logSender = useLogSender()
 const route = useRoute()
 
-const {
-  specificationInfo,
-  carbonEmissionInfo,
-  scanImageStatus,
-  publicFileList,
-} = useMaterial(ref(props.material))
+const { specificationInfo, carbonEmissionInfo, scanImageStatus } = useMaterial(
+  ref(props.material)
+)
 const { multimediaList, getExternalMultimediaMenuTree, material } =
   useMultimediaUpdate(ref(props.material), () => {})
 const priceInfo = computed(() => {

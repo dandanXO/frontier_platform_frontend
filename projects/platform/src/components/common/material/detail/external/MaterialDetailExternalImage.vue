@@ -88,8 +88,10 @@ const { isMobile } = useBreakpoints()
 const { publicFileList } = useMaterial(ref(props.material))
 const currentIndex = ref(0)
 const availablePublicFileList = computed(() =>
-  publicFileList.value.filter((item) =>
-    ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+  publicFileList.value.filter(
+    (item) =>
+      ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension) &&
+      (item.id !== 'digitalDrape' || item.originalUrl)
   )
 )
 const totalImages = availablePublicFileList.value.length

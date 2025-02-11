@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="flex items-start gap-x-10")
-  //- Left Side: Image
+  //- Left Side: Image 
   material-detail-image(
     :availableFileList="availableFileList"
     :currentSideType="currentSideType"
@@ -36,6 +36,7 @@ div(class="flex items-start gap-x-10")
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 import MaterialDetailImage from '@/components/common/material/detail/internal/MaterialDetailImage.vue'
 import MaterialDetailSpecification from '@/components/common/material/detail/internal/MaterialDetailSpecification.vue'
 import MaterialDetailColorAndPattern from '@/components/common/material/detail/internal/MaterialDetailColorAndPattern.vue'
@@ -53,7 +54,7 @@ const props = defineProps<{
   material: Material
   platformLocationType: PLATFORM_LOCATION_TYPE
 }>()
-
+const store = useStore()
 const {
   publicFileList,
   currentSideType,
@@ -65,7 +66,14 @@ const {
   patternInfo,
 } = useMaterial(ref(props.material))
 
-const availableFileList = publicFileList.value.filter((item: MaterialFile) =>
-  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
-)
+const availableFileList = publicFileList.value.filter((item: MaterialFile) => {
+  if (store.getters['permission/isDigitalDrapeTrialRule']) {
+    return ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+  } else {
+    return (
+      ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension) &&
+      item.id !== 'digitalDrape'
+    )
+  }
+})
 </script>

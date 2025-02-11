@@ -1105,7 +1105,7 @@ const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
       rotateDeg.value * 2
     ).flatMap((p) => [p.x, p.y])
 
-    console.time('Perspective Transform')
+    // console.time('Perspective Transform')
     const src = toRaw(sourceMat.value)
     if (!src) {
       throw new Error('sourceMat undefined')
@@ -1135,7 +1135,7 @@ const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
     M.delete()
     srcTri.delete()
     dstTri.delete()
-    console.timeEnd('Perspective Transform')
+    // console.timeEnd('Perspective Transform')
 
     const resultRecord = {
       leftTop: circleLeftTopPosition,
@@ -1157,7 +1157,7 @@ const crop = async (init?: boolean, skipGenerateCustomResult?: boolean) => {
       !skipGenerateCustomResult &&
       debouncedGenerateCustomResult()
   } catch (err) {
-    console.timeEnd('Perspective Transform')
+    // console.timeEnd('Perspective Transform')
     if (err instanceof Error) {
       emit('cropError', err)
     }

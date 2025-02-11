@@ -264,9 +264,16 @@ const coverId = computed(() => {
 })
 
 const { primarySideImage, publicFileList } = useMaterial(material)
-const availableFileList = publicFileList.value.filter((item: MaterialFile) =>
-  ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
-)
+const availableFileList = publicFileList.value.filter((item: MaterialFile) => {
+  if (store.getters['permission/isDigitalDrapeTrialRule']) {
+    return ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension)
+  } else {
+    return (
+      ATTACHMENT_FILE_ACCEPT_TYPE.includes(item.extension) &&
+      item.id !== 'digitalDrape'
+    )
+  }
+})
 
 const { currentCoverIndex, setCurrentCoverIndex } = useCurrentCoverIndex()
 setCurrentCoverIndex(0)

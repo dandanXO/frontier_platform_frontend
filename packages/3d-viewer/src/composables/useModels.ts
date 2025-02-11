@@ -232,7 +232,7 @@ export default function useModels(
     }
 
     const loader = new THREE.TextureLoader()
-    console.time('texture image network loading time')
+    // console.time('texture image network loading time')
     const loadResult = await Promise.all([
       loader.loadAsync(baseImgUrl),
       loader.loadAsync(normalImgUrl),

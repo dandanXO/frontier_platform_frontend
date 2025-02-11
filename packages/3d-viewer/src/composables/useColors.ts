@@ -58,7 +58,7 @@ export default function useColors(
     }
 
     const timerName = 'analyze image colors'
-    console.time(timerName)
+    // console.time(timerName)
 
     const analyzeCanvas = document.createElement('canvas')
     analyzeCanvas.width = baseTextureCanvas.value.width
@@ -85,7 +85,7 @@ export default function useColors(
     currentColors.value = originColors.value
 
     reducerOut.value = q.reduce(analyzeCanvas, 1)
-    console.timeEnd(timerName)
+    // console.timeEnd(timerName)
   }
 
   const setMaterialTexture = (canvas: HTMLCanvasElement) => {
@@ -154,7 +154,7 @@ export default function useColors(
     const reduceOutPixelsValue = reducerOut.value
 
     const changeColorTimerName = 'change color'
-    console.time(changeColorTimerName)
+    // console.time(changeColorTimerName)
     const processedImageDataContent = new Uint8ClampedArray(
       currentImageData.value.data.length
     )
@@ -187,7 +187,7 @@ export default function useColors(
         processedImageDataContent[i + 3] = currentImageData.value.data[i + 3]
       }
     }
-    console.timeEnd(changeColorTimerName)
+    // console.timeEnd(changeColorTimerName)
 
     const changedColorCanvas = document.createElement('canvas')
     changedColorCanvas.width = baseImage.value.naturalWidth
