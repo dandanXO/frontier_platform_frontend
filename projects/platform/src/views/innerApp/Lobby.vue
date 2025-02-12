@@ -66,15 +66,24 @@ const canCreateNewOrg = computed(() => {
   )
 })
 const goToAssets = (org) => {
+  store.dispatch('helper/openModalLoading')
+
   if (!user.value.isVerify) {
     remindVerifyEmail()
+    store.dispatch('helper/closeModalLoading')
     return
   }
 
-  router.push({
-    name: 'Assets',
-    params: { orgNo: org.orgNo, ogKey: `1-${org.orgId}` },
-  })
+  router
+    .push({
+      name: 'Assets',
+      params: { orgNo: org.orgNo, ogKey: `1-${org.orgId}` },
+    })
+    .then(() => store.dispatch('helper/closeModalLoading'))
+    .catch((error) => {
+      console.error('Navigation error:', error)
+      store.dispatch('helper/closeModalLoading')
+    })
 }
 
 const openModalCreateOrg = () => {
