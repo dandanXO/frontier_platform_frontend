@@ -12,7 +12,7 @@ search-table(
       div(class="flex items-end pl-2.5")
         global-breadcrumb-list(
           :breadcrumbList="locationList"
-          @click:item="currentNodeId = $event.nodeId; visit()"
+          @click:item="currentNodeId = $event.nodeId visit()"
         )
         p(class="flex text-caption text-grey-600 pl-1")
           span (
@@ -88,7 +88,17 @@ if (!shareInfo.value) {
  * 所以如果直接取用 props.nodeId 會誤將 nodeKey(NodeLocation-NodeId) 當作 nodeId，
  * 造成無法正確取得資料，故取用 sharingKey 所取得的 shareInfo 中的 nodeId。
  */
-const currentNodeId = ref<number>(route.params.nodeId || shareInfo.value.nodeId)
+
+// 以下是為了兼容舊版 分享頁面的 nodeKey
+const checkoldNodeId = () => {
+  if (String(route.params.nodeId).includes('-')) {
+    return shareInfo.value.nodeId
+  } else {
+    return route.params.nodeId || shareInfo.value.nodeId
+  }
+}
+
+const currentNodeId = ref<number>(checkoldNodeId())
 const optionSort = computed(() => {
   const {
     ITEM_NO_A_Z_C_M,
