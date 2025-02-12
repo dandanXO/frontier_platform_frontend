@@ -50,6 +50,8 @@ div(
           :key="og.ogId"
           :class="[{ 'pointer-events-none': og.disabled }]"
           :data-cy="`sidebar-org-${og.ogType}-${og.ogId}`"
+          :isExpand="expandedState[og.ogId]"
+          @click="toggleExpand(og.ogId)"
         )
           template(#trigger="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-100")
@@ -76,6 +78,7 @@ div(
                 v-bind="menu"
                 class="relative flex justify-between"
                 :style="{ zIndex: 20 - index }"
+                @click.stop
                 :data-cy="`child-sidebar-org-${og.ogType}-${og.ogId}-${menu.testId}`"
               )
                 p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
@@ -108,7 +111,7 @@ div(
 
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { computed, onUnmounted } from 'vue'
+import { computed, onUnmounted, ref, reactive } from 'vue'
 import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
@@ -131,6 +134,8 @@ const {
   goToMaterialUpload,
 } = useNavigation()
 
+const expandedState = ref({})
+
 const isPromotingNewFeature = computed(
   () => store.getters['user/isPromotingNewFeature']
 )
@@ -143,7 +148,8 @@ const showPublicLibrary = computed(
     !store.getters['permission/isFabriSelectAccount']
 )
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
-const planStatus = computed(() => store.getters['polling/planStatus'])
+const planStatus =
+  computed(() => store.getters['polling/planStatus']) || reactive({})
 const ogList = computed(() => {
   const { orgId, orgName, labelColor, nodeId } = organization.value
 
@@ -213,6 +219,17 @@ const ogSideItemList = (ogType: OgType, ogId: number, nodeId: number) => {
     })
   }
   return sideItems
+}
+// Load the expanded state from sessionStorage
+const savedState = sessionStorage.getItem('expandedState')
+if (savedState) {
+  expandedState.value = JSON.parse(savedState)
+}
+
+const toggleExpand = (ogId) => {
+  expandedState.value[ogId] = !expandedState.value[ogId]
+  // Save the expanded state to sessionStorage
+  sessionStorage.setItem('expandedState', JSON.stringify(expandedState.value))
 }
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')
