@@ -12,7 +12,7 @@ search-table(
       div(class="flex items-end pl-2.5")
         global-breadcrumb-list(
           :breadcrumbList="locationList"
-          @click:item="currentNodeId = $event.nodeId visit()"
+          @click:item="currentNodeId = $event.nodeId;visit()"
         )
         p(class="flex text-caption text-grey-600 pl-1")
           span (
