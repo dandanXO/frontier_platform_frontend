@@ -1,5 +1,6 @@
 <template lang="pug">
 f-tooltip-standard(
+  v-if="enablethreadboard"
   @click.stop="store.dispatch('sticker/preOpenStickerDrawer', { material, drawerOpenFromLocationList })"
   :tooltipMessage="$t('TT0001')"
 )
@@ -30,5 +31,9 @@ const store = useStore()
 
 const currentMaterialId = computed(
   () => store.getters['sticker/currentMaterialId']
+)
+
+const enablethreadboard = computed(
+  () => store.getters['permission/enablethreadboardOrg']
 )
 </script>
