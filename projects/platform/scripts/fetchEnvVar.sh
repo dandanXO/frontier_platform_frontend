@@ -82,17 +82,6 @@ elif [ $1 = "production" ]; then
   STRIPE_KEY="STRIPE_KEY_PROD"
   GA_MEASUREMENT_ID="GA_MEASUREMENT_ID_PROD"
 
-  # Check if STRIPE_KEY_PROD is set (only in production)
-  if [ -z "$STRIPE_KEY_PROD" ]; then
-    echo "Error: STRIPE_KEY_PROD environment variable is not set."
-    kill -s TERM $$
-  fi
-
-  # Check if GA_MEASUREMENT_ID_PROD is set (only in production)
-  if [ -z "$GA_MEASUREMENT_ID_PROD" ]; then
-    echo "Error: GA_MEASUREMENT_ID_PROD environment variable is not set."
-    kill -s TERM $$
-  fi
 fi
 
 rm .env.$1.local

@@ -9,6 +9,7 @@
     "generate-sdk": "cd ./packages/platform-web-sdk && npm run generate-sdk",
     "dev:platform": "cd ./projects/platform && npm run serve:dev",
     "feat:platform": "cd ./projects/platform && npm run serve:feat",
+    "production:platform": "cd ./projects/platform && npm run serve:production",
     "windows:dev:platform": "cd ./projects/platform && npm run windows:serve:dev",
     "test:e2e": "cd ./projects/platform && npm run test:e2e --mode=$npm_config_mode",
     "lint": "pnpm -r run lint",
