@@ -125,8 +125,14 @@ export const useOuterStore = defineStore('outer', () => {
       }
     }
   }
-
+  const get3dViewShareInfo = async (shareCode: string) => {
+    const { data } = await assetsApi.materialExternalPageGet3DViewShare({
+      shareCode,
+    })
+    return data.result
+  }
   return {
+    get3dViewShareInfo,
     ogBaseReceivedShareApi,
     getReceivedShareInfo,
     ogBaseEmbedApi,

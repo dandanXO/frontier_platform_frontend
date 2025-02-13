@@ -78,6 +78,12 @@ const routes = [
     component: () => import('@/views/outerApp/embed3DViewer/Embed3DViewer.vue'),
   },
   {
+    path: '/shared-3d-viewer/:paramsHash',
+    name: 'Share3DViewer',
+    component: () =>
+      import('@/views/outerApp/embed3DViewer/Embed3dViewer-v2.vue'),
+  },
+  {
     path: '/',
     name: 'AppRoot',
     component: () => import('@/views/PassThrough.vue'),
