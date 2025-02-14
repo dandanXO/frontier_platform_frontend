@@ -2,7 +2,7 @@
 model-editor(
   v-if="!!infoResult"
   :closeAble="false"
-  :dpi="infoResult?.dpi || 300"
+  :dpi="infoResult?.dpi || 600"
   :u3mPath="infoResult?.u3mSpecUrl"
   :baseImgUrl="infoResult?.baseImgUrl"
   :normalImgUrl="infoResult?.normalImgUrl"
