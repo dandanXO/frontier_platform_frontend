@@ -8,7 +8,8 @@ import { resetTracker } from '@frontier/lib'
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
 const options = {
-  baseURL: VITE_APP_API_ENDPOINT,
+  // baseURL: VITE_APP_API_ENDPOINT,
+  baseURL: `https://textile-webapi-stg.frontier.cool/`,
   headers: {
     'Content-Type': 'application/json',
   },

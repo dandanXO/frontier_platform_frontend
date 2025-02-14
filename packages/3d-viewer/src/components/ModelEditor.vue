@@ -25,9 +25,10 @@ const props = withDefaults(
     roughImgUrl: MaterialU3m['roughImgUrl']
     metalImgUrl: MaterialU3m['metalImgUrl']
     alphaImgUrl: MaterialU3m['alphaImgUrl']
+    closeAble: boolean
     onClose?: () => void
   }>(),
-  {}
+  { closeAble: true }
 )
 
 const emit = defineEmits<{ (e: 'close'): void }>()

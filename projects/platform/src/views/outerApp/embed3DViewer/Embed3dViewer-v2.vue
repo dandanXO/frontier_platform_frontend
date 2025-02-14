@@ -1,6 +1,7 @@
 <template lang="pug">
 model-editor(
   v-if="!!infoResult"
+  :closeAble="false"
   :dpi="infoResult?.dpi || 300"
   :u3mPath="infoResult?.u3mSpecUrl"
   :baseImgUrl="infoResult?.baseImgUrl"
@@ -16,18 +17,18 @@ model-editor(
 import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useOuterStore } from '@/stores/outer'
 import { useRoute } from 'vue-router'
-import { type Material3DViewShare } from '@frontier/platform-web-sdk/src/api'
+import { type Material3DViewerShare } from '@frontier/platform-web-sdk/src/api'
 
 const outerStore = useOuterStore()
 const route = useRoute()
 
 const paramsHash = ref(route.params?.paramsHash)
 
-const infoResult = ref<Material3DViewShare | null>(null)
+const infoResult = ref<Material3DViewerShare | null>(null)
 outerStore
   .get3dViewShareInfo(paramsHash.value as string)
   .then((res) => {
-    infoResult.value = res as unknown as Material3DViewShare
+    infoResult.value = res as unknown as Material3DViewerShare
   })
   .catch((error) => {
     console.error('Error fetching 3D view share info:', error)

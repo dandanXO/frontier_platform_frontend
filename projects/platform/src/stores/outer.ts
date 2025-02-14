@@ -126,7 +126,7 @@ export const useOuterStore = defineStore('outer', () => {
     }
   }
   const get3dViewShareInfo = async (shareCode: string) => {
-    const { data } = await assetsApi.materialExternalPageGet3DViewShare({
+    const { data } = await assetsApi.materialExternalPageGet3DViewerShare({
       shareCode,
     })
     return data.result
