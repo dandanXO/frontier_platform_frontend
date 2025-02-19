@@ -12,7 +12,7 @@ export default {
     ),
   getModel: (orgId: number, modelId: number) =>
     axios.post<Material3DViewerGetModel200Response>(
-      '/assets/material/3d-viewer/model',
+      '/assets/material/3d-viewer/get-model-url',
       { orgId, modelId }
     ),
 }
