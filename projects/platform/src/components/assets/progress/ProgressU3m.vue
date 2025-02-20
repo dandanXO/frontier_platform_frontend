@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <template lang="pug">
 f-table(
   v-model:pagination="pagination"
@@ -43,7 +44,8 @@ f-table(
     )
       div(
         class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded flex justify-center items-center"
-        :class="{ 'opacity-20': item.isMaterialDeleted }"
+        :class="{ 'opacity-20': item.isMaterialDeleted, 'cursor-pointer': item.status === ProgressStatus.COMPLETE }"
+        @click="item.status === ProgressStatus.COMPLETE ? handleViewMaterial(item) : null"
       )
         img(
           class="object-contain w-full h-full"
@@ -201,7 +203,7 @@ const headers = [
   },
   {
     prop: 'createdTime',
-    label: t('RR0189'),
+    label: t('RR0482'),
     colSpan: 'col-span-1',
     sortBy: [ProgressU3mSort.NEWEST_FIRST, ProgressU3mSort.OLDEST_FIRST],
   },

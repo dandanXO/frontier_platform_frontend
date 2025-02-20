@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <template lang="pug">
 f-table(
   v-model:pagination="pagination"
@@ -38,8 +39,9 @@ f-table(
       class="relative w-25 h-25 py-3 flex justify-center items-center"
     )
       div(
-        class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded flex justify-center items-center"
-        :class="{ 'opacity-20': item.isMaterialDeleted }"
+        class="absolute inset-0 w-25 h-25 bg-contain bg-no-repeat bg-center rounded flex justify-center items-center "
+        :class="{ 'opacity-20': item.isMaterialDeleted, 'cursor-pointer': item.status === ProgressStatus.COMPLETE }"
+        @click="item.status === ProgressStatus.COMPLETE ? handleViewMaterial(item) : null"
       )
         img(
           class="object-contain w-full h-full"
@@ -121,7 +123,7 @@ f-table(
               size="24"
               class="text-grey-600 group-hover:text-primary-400"
               :tooltipMessage="$t('RR0260')"
-            )
+            )   
         template(#content="{ collapsePopper }")
           f-list
             f-list-item(@click="handleCancel(item); collapsePopper()") {{ $t('UU0002') }}
@@ -212,7 +214,7 @@ const clearDate = () => {
 }
 
 let timerId: ReturnType<typeof setTimeout>
-  const handleImageError = (event: any) => {
+const handleImageError = (event: any) => {
   if (event?.target) {
     event.target.src = imgDefaultMaterial
   }
