@@ -191,18 +191,6 @@ const deleteChosenFile = (targetSide: MaterialSideType) => {
 }
 
 const closeModal = () => {
-  if (faceSideChosenFile.value || backSideChosenFile.value) {
-    store.dispatch('helper/pushModalConfirm', {
-      type: NOTIFY_TYPE.WARNING,
-      header: t('TT0235'),
-      contentText: t('RR0306'),
-      primaryBtnText: t('Keep Editing'),
-      secondaryBtnText: t('Leave Away'),
-      secondaryBtnHandler: () => store.dispatch('helper/clearModalPipeline'),
-    })
-
-    return
-  }
 
   store.dispatch('helper/closeModalBehavior')
 }

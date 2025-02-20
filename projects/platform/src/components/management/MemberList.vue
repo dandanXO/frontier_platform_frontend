@@ -31,7 +31,7 @@ f-table(
       template(v-else)
         p(
           v-if="item.orgRoleId === ROLE_ID.OWNER || roleIdFromUserOrgOrGroup !== ROLE_ID.OWNER"
-        ) {{ getRoleName(item.orgRoleId) }}
+        ) {{ getRoleName(getRoleId(item)) }}
         template(v-else)
           f-select-dropdown(
             class="w-full"
