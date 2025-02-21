@@ -8,12 +8,16 @@ model-editor(
   :dispImgUrl="u3m.dispImgUrl"
   :metalImgUrl="u3m.metalImgUrl"
   :material="material"
+  :withColorSetting="$store.getters['permission/enable3DViewerColor']"
   :alphaImgUrl="u3m.alphaImgUrl"
+  :orgId="orgId"
   @close="$store.dispatch('helper/closeModalBehavior')"
 )
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import type {
   Material,
   MaterialCustomU3m,
@@ -26,6 +30,10 @@ const props = defineProps<{
   material: Material
   u3m: Required<MaterialCustomU3m | MaterialU3m>
 }>()
+
+const store = useStore()
+
+const orgId = computed(() => store.getters['organization/orgId'] as number)
 
 const logSender = useLogSender()
 

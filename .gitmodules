@@ -5,3 +5,6 @@
 [submodule "packages/i18n/platform-i18n"]
 	path = packages/i18n/platform-i18n
 	url = https://gitlab.com/Frontier.cool/Frontier/Platform/platform-i18n.git
+[submodule "packages/3d-viewer"]
+	path = packages/3d-viewer
+	url = https://gitlab.com/Frontier.cool/Frontier/Platform/Frontier3dViewer.git

@@ -10889,6 +10889,79 @@ export interface Material3DViewerOrgGetAllModelsRequest {
 /**
  * 
  * @export
+ * @interface Material3DViewerShare
+ */
+export interface Material3DViewerShare {
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerShare
+     */
+    'ownerOrgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Material3DViewerShare
+     */
+    'dpi': number | null;
+    /**
+     * 是否有物理資料
+     * @type {boolean}
+     * @memberof Material3DViewerShare
+     */
+    'hasPhysicalData': boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'baseImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'normalImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'roughImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'dispImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'alphaImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'metalImgUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'u3mSpecUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Material3DViewerShare
+     */
+    'u3mPhysicSpecUrl': string | null;
+}
+/**
+ * 
+ * @export
  * @interface MaterialCarbonEmission
  */
 export interface MaterialCarbonEmission {
@@ -11646,6 +11719,63 @@ export interface MaterialDigitalThreadInfo {
      * @memberof MaterialDigitalThreadInfo
      */
     'hasUnreadThread': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialExternalPageGet3DViewerShare200Response
+ */
+export interface MaterialExternalPageGet3DViewerShare200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialExternalPageGet3DViewerShare200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialExternalPageGet3DViewerShare200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {MaterialExternalPageGet3DViewerShare200ResponseAllOfResult}
+     * @memberof MaterialExternalPageGet3DViewerShare200Response
+     */
+    'result': MaterialExternalPageGet3DViewerShare200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof MaterialExternalPageGet3DViewerShare200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialExternalPageGet3DViewerShare200ResponseAllOfResult
+ */
+export interface MaterialExternalPageGet3DViewerShare200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Material3DViewerShare}
+     * @memberof MaterialExternalPageGet3DViewerShare200ResponseAllOfResult
+     */
+    'material': Material3DViewerShare;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialExternalPageGet3DViewerShareRequest
+ */
+export interface MaterialExternalPageGet3DViewerShareRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialExternalPageGet3DViewerShareRequest
+     */
+    'shareCode': string;
 }
 /**
  * 後處理
@@ -12882,6 +13012,12 @@ export interface MaterialPublicMetaData {
      * @memberof MaterialPublicMetaData
      */
     'isMaterialOwnerSide': boolean;
+    /**
+     * Org id of material
+     * @type {number}
+     * @memberof MaterialPublicMetaData
+     */
+    'materialOwnerOrgId': number;
     /**
      * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
      * @type {OgType}
@@ -26873,6 +27009,42 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * 
+         * @summary Get 3D Viewer Share data
+         * @param {MaterialExternalPageGet3DViewerShareRequest} materialExternalPageGet3DViewerShareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        materialExternalPageGet3DViewerShare: async (materialExternalPageGet3DViewerShareRequest: MaterialExternalPageGet3DViewerShareRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'materialExternalPageGet3DViewerShareRequest' is not null or undefined
+            assertParamExists('materialExternalPageGet3DViewerShare', 'materialExternalPageGet3DViewerShareRequest', materialExternalPageGet3DViewerShareRequest)
+            const localVarPath = `/assets/material/external-page/get-3d-viewer-share`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(materialExternalPageGet3DViewerShareRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -28090,6 +28262,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary Get 3D Viewer Share data
+         * @param {MaterialExternalPageGet3DViewerShareRequest} materialExternalPageGet3DViewerShareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest: MaterialExternalPageGet3DViewerShareRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MaterialExternalPageGet3DViewerShare200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.materialExternalPageGet3DViewerShare']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -28622,6 +28807,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary Get 3D Viewer Share data
+         * @param {MaterialExternalPageGet3DViewerShareRequest} materialExternalPageGet3DViewerShareRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest: MaterialExternalPageGet3DViewerShareRequest, options?: RawAxiosRequestConfig): AxiosPromise<MaterialExternalPageGet3DViewerShare200Response> {
+            return localVarFp.materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Process side image with AI, currently available: quilting, color balancer
          * @summary Process side image with AI, currently available: quilting, color balancer
          * @param {MaterialGetAiImageProcessorRequest} materialGetAiImageProcessorRequest 
@@ -29121,6 +29316,18 @@ export class AssetsApi extends BaseAPI {
      */
     public material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest: Material3DViewerOrgGetAllModelsRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).material3DViewerOrgGetAllModels(material3DViewerOrgGetAllModelsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get 3D Viewer Share data
+     * @param {MaterialExternalPageGet3DViewerShareRequest} materialExternalPageGet3DViewerShareRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest: MaterialExternalPageGet3DViewerShareRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).materialExternalPageGet3DViewerShare(materialExternalPageGet3DViewerShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
