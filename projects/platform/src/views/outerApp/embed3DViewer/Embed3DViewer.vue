@@ -7,6 +7,7 @@ model-editor(
   :normalImgUrl="material.u3m.normalImgUrl"
   :roughImgUrl="material.u3m.roughImgUrl"
   :dispImgUrl="material.u3m.dispImgUrl"
+  :material="material"
   @close="handleClose"
 )
 </template>

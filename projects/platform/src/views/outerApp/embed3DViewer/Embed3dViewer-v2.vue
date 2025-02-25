@@ -10,6 +10,7 @@ model-editor(
   :dispImgUrl="infoResult?.dispImgUrl"
   :metalImgUrl="infoResult.metalImgUrl"
   :alphaImgUrl="infoResult.alphaImgUrl"
+  :frontierNo="infoResult.frontierNo"
 )
 </template>
 
