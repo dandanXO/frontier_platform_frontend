@@ -142,9 +142,9 @@ const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const formData = reactive({
-  lastName: '',
-  firstName: '',
-  email: '',
+  lastName: route.query.family_name ?? '',
+  firstName: route.query.given_name ?? '',
+  email: route.query.email ?? '',
   password: '',
 })
 const signupSourceType = ref(SIGNUP_SOURCE.NORMAL)

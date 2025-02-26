@@ -72,6 +72,8 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
 import { reactive, ref, toRaw, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 import SignInWithGoogle from '@/utils/signInWithGoogle.js'
 import { inputValidator } from '@frontier/lib'
 import useNavigation from '@/composables/useNavigation'
@@ -80,6 +82,8 @@ import DropdownLocale from '@/components/common/DropdownLocale.vue'
 
 const { t } = useI18n()
 const store = useStore()
+const router = useRouter()
+
 const { nextAfterSignIn } = useNavigation()
 const formData = reactive({
   email: '',
@@ -137,12 +141,29 @@ onMounted(() => {
     const googleSignIn = new SignInWithGoogle({
       elementId: 'google-sign-in',
       callback: async (response) => {
-        store.dispatch('helper/openModalLoading')
-        await store.dispatch('user/googleSignIn', {
-          idToken: response.credential,
-        })
-        await nextAfterSignIn()
-        store.dispatch('helper/closeModalLoading')
+        try {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('user/googleSignIn', {
+            idToken: response.credential,
+          })
+
+          await nextAfterSignIn()
+        } catch (error) {
+          const isAccountNotFound = error.code === 'WW0064'
+
+          if (isAccountNotFound) {
+            const { email, given_name, family_name } = JSON.parse(
+              atob(response.credential.split('.')[1])
+            )
+
+            router.push({
+              name: 'SignUp',
+              query: { email, given_name, family_name },
+            })
+          }
+        } finally {
+          store.dispatch('helper/closeModalLoading')
+        }
       },
     })
     isGoogleLoadFail.value = !googleSignIn.google
