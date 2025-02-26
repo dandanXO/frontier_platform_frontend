@@ -1,7 +1,6 @@
 <template lang="pug">
 model-editor(
   v-if="!!infoResult"
-  :closeAble="false"
   :dpi="infoResult?.dpi || 600"
   :u3mPath="infoResult?.u3mSpecUrl"
   :baseImgUrl="infoResult?.baseImgUrl"
@@ -11,6 +10,7 @@ model-editor(
   :metalImgUrl="infoResult.metalImgUrl"
   :alphaImgUrl="infoResult.alphaImgUrl"
   :frontierNo="infoResult.frontierNo"
+  :withClose="false"
 )
 </template>
 
