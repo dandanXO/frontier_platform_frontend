@@ -1,10 +1,11 @@
 <template lang="pug">
 div(
-  v-if="collection.description || collection.trendBoard"
+  v-if="props.collection.description || props.collection.trendBoard"
   class="px-7.5 pb-4 md:pb-8 pt-1.5"
 )
   f-expansion-panel(
     class="shadow-2 rounded border border-grey-150 overflow-hidden bg-transparent"
+    isExpand
   )
     template(#trigger="{ isExpand }")
       div(
@@ -56,7 +57,7 @@ import CollectionTrendBoard from '@/components/common/collection/CollectionTrend
 import type { Collection } from '@frontier/platform-web-sdk'
 import { useBreakpoints } from '@frontier/lib'
 
-defineProps<{
+const props = defineProps<{
   collection: Collection
 }>()
 
