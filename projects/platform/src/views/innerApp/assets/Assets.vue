@@ -306,12 +306,16 @@ const optionMultiSelect = computed(() => {
 
 const getMaterialList = async (
   payload: SearchPayload<AssetsFilter>,
-  query: RouteQuery
+  query: Record<string, string>
 ) => {
-  router.push({
-    name: route.name,
-    query,
+  const url = new URL(window.location.href)
+  Object.keys(query).forEach((key) => {
+    if (query[key]) {
+      url.searchParams.set(key, query[key])
+    }
   })
+  window.history.replaceState(null, '', url.toString())
+
   await assetsStore.getAssetsMaterialList(payload)
 }
 
