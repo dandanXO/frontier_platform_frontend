@@ -237,18 +237,15 @@ const onClickItem = (orgId: number, visit: VoidFunction) => {
 
 const getPublicList = async (
   payload: SearchPayload<InnerExternalFilter>,
-  query: RouteQuery
+  query: Record<string, string>
 ) => {
-  router.push({
-    name: route.name as string,
-    params: {
-      nodeId: currentNodeId.value,
-    },
-    query: {
-      searchOrgId: searchOrgId.value,
-      ...query,
-    },
+  const url = new URL(window.location.href)
+  Object.keys(query).forEach((key) => {
+    if (query[key]) {
+      url.searchParams.set(key, query[key])
+    }
   })
+  window.history.replaceState(null, '', url.toString())
   const {
     data: { result },
   } = await ogBasePublicLibraryApi('getPublicLibraryList', {
