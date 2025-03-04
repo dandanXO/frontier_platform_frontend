@@ -30,7 +30,9 @@ app.config.globalProperties.$dayjs = dayjs
 app.config.errorHandler = (err, vm, info) => {
   const { status, message } = err
   const apiTranslateContent = err.code ? i18n.global.t(err.code) : ''
-  if (!status) {
+  if ('ERR_CANCELED' === err.code) {
+    return
+  } else if (!status) {
     store.dispatch('trackError', {
       info: `${info}`,
       errorMsg: message || 'No message',

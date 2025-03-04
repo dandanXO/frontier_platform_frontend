@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import axios, { type CancelTokenSource } from 'axios'
 import type {
   Material,
   PaginationReq,
@@ -24,6 +25,7 @@ import {
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
+  let cancelTokenSource: CancelTokenSource | null = null
   const { goToAssetMaterialSpreadSheet } = useNavigation()
   const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
@@ -57,7 +59,13 @@ export const useAssetsStore = defineStore('assets', () => {
     search: Search | null
     filter: AssetsFilter | null
   }) => {
-    const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload)
+    if (cancelTokenSource) {
+      cancelTokenSource.cancel('Operation canceled due to new request')
+    }
+    cancelTokenSource = axios.CancelToken.source()
+    const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload, {
+      cancelToken: cancelTokenSource.token,
+    })
 
     materialList.value = data.result.materialList.map((item) => {
       return assignCarbonEmissionValue(item)
