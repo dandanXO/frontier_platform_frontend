@@ -13,12 +13,12 @@ div(
       class="flex flex-row justify-between gap-2 pb-6"
       :class="title ? 'border-b border-grey-250' : ''"
     )
-      p(class="text-h5 font-bold text-grey-900") {{ title }}
+      p(class="text-h5 font-bold text-primary-inverse") {{ title }}
       f-svg-icon(
         v-if="closable"
         iconName="clear"
         size="24"
-        class="justify-self-end cursor-pointer text-grey-900"
+        class="justify-self-end cursor-pointer text-primary-inverse"
         @click="onClose"
       )
     component(:is="body" v-bind="properties")

@@ -186,14 +186,19 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from 'vuex'
+import { ref, computed, watch, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRoute, useRouter } from 'vue-router'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import { useI18n } from 'vue-i18n'
+
 import SearchTable, {
-  type RouteQuery,
+  RouteQuery,
   type SearchPayload,
   type SortOption,
 } from '@/components/common/SearchTable.vue'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
-import { useStore } from 'vuex'
-import { ref, computed, watch, onMounted } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
@@ -203,12 +208,8 @@ import {
   NOTIFY_TYPE,
   SCROLL_POSITION_KEY,
 } from '@/utils/constants'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
-import { storeToRefs } from 'pinia'
 import type {
   AssetsFilter,
   ExternalFilter,
@@ -248,11 +249,11 @@ defineOptions({
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()
+const route = useRoute()
+const router = useRouter()
 const { materialList, slimMaterialList } = storeToRefs(assetsStore)
 
 const { t } = useI18n()
-const router = useRouter()
-const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
   useNavigation()

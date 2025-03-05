@@ -50,7 +50,7 @@ module.exports = function ({ addBase, theme }) {
     },
 
     '[data-theme="new"]': {
-      '--color-brand': theme('colors.green.100.v1'),
+      '--color-brand': theme('colors.green.50.v1'),
       '--color-brand-border': theme('colors.green.200.v1'),
       '--color-brand-solid': theme('colors.green.500.v1'),
       '--color-brand-solid-hover': theme('colors.green.600.v1'),
