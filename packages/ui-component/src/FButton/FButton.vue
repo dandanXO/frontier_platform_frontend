@@ -1,7 +1,6 @@
 <template lang="pug">
 button(
-  class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
-  :type="htmlType"
+  class="rounded font-bold flex gap-x-1 items-center justify-center whitespace-nowrap"
   :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )
@@ -105,7 +104,7 @@ const btnType = computed(() => {
         ]
       case 'secondary': {
         const result = [
-          'bg-primary',
+          'bg-transparent',
           'text-brand-solid',
           'border',
           'disabled:text-disabled',
