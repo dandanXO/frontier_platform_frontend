@@ -22,6 +22,7 @@ declare module '@vue/runtime-core' {
     FTooltipStandard: typeof import('./src/FTooltip/FTooltipStandard/FTooltipStandard.vue').default
     FTooltipMedia: typeof import('./src/FTooltip/FTooltipMedia/FTooltipMedia.vue').default
     FTooltip: typeof import('./src/FTooltip/FTooltip/FTooltip.vue').default
+    FSearchBar: typeof import('./src/FSearchBar/FSearchBar.vue').default
     FAvatar: typeof import('./src/FAvatar/FAvatar.vue').default
     FTag: typeof import('./src/FTag/FTag.vue').default
   }

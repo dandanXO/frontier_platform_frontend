@@ -34,6 +34,7 @@ import FPill from './src/FPill/FPill.vue'
 import FTooltipStandard from './src/FTooltip/FTooltipStandard/FTooltipStandard.vue'
 import FTooltipMedia from './src/FTooltip/FTooltipMedia/FTooltipMedia.vue'
 import FTooltip from './src/FTooltip/FTooltip/FTooltip.vue'
+import FSearchBar from './src/FSearchBar/FSearchBar.vue'
 import FAvatar from './src/FAvatar/FAvatar.vue'
 import FTag from './src/FTag/FTag.vue'
 
@@ -62,6 +63,7 @@ export {
   FTooltip,
   FAvatar,
   FTag,
+  FSearchBar,
 }
 
 import type { NotifyBannerProps } from './src/FNotify/FBanner/FBanner.vue'
