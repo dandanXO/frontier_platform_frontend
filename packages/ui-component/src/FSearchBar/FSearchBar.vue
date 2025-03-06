@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   class="justify-self-center h-10 bg-primary border border-primary-border rounded flex items-center"
-  :class="[minWidth, maxWidth]"
+  :class="dynamicWidth"
 )
   div(
     class="flex-grow flex items-center pl-3 pr-2 gap-2 text-primary-inverse border-r border-primary-border h-full"
@@ -23,7 +23,7 @@ div(
       class="cursor-pointer"
       @click="onClear"
     )
-  div(class="flex items-center px-2 py-1")
+  div(class="flex items-center px-4 py-2")
     f-svg-icon(
       size="24"
       v-if="rightIcon"
@@ -45,12 +45,8 @@ import { useBreakpoints } from '@frontier/lib'
 import { computed } from 'vue'
 const { isDesktop } = useBreakpoints()
 
-const minWidth = computed(() => {
-  return isDesktop.value ? 'min-w-112' : 'min-w-80'
-})
-
-const maxWidth = computed(() => {
-  return isDesktop.value ? 'max-w-192' : 'max-w-[370px]'
+const dynamicWidth = computed(() => {
+  return isDesktop.value ? 'max-w-192 min-w-112' : 'max-w-[370px] min-w-80'
 })
 
 defineProps<{

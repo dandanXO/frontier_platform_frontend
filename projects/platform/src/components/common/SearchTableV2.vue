@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full h-full flex flex-col px-8 pt-8" v-bind="$attrs")
+div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
   div(class="flex items-center justify-center" data-cy="search-box")
     f-search-bar(
@@ -9,81 +9,85 @@ div(class="w-full h-full flex flex-col px-8 pt-8" v-bind="$attrs")
       :onClear="() => searchStore.setKeyword('')"
       :rightIcon="rightIconSearch"
       :onClickRightIcon="onClickRightIconSearch"
+      class="w-160"
     )
-  slot(name="header-above" :visit="visit")
-  div(
-    data-tooltip-boundary-reference="search-table-header"
-    :data-cy="testId ?? 'search-table'"
-    class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
-  )
-    div
-      slot(
-        name="header-left"
-        :visit="visit"
-        :totalCount="pagination?.totalCount ?? 0"
-      )
-    div(class="flex items-center gap-x-5")
-      f-input-checkbox(
-        v-if="isKeywordDirty"
-        :inputValue="isShowMatch"
-        @update:inputValue="handleCheckboxInput"
-        :label="$t('RR0069')"
-        binary
-        iconSize="20"
-      )
-      f-button-label(v-if="canSelectAll" size="lg" @click="selectAll") {{ $t('RR0052') }}
-      f-popper(placement="bottom-end")
-        template(#trigger="{ isExpand }")
-          f-svg-icon(
-            iconName="sortby"
-            size="24"
-            class="transform cursor-pointer text-grey-600 hover:text-primary-400"
-            :class="{ 'text-primary-400': isExpand }"
-            :tooltipMessage="$t('RR0272')"
-          )
-        template(#content)
-          f-contextual-menu(
-            :inputSelectValue="sort"
-            @update:inputSelectValue="searchStore.setSort"
-            :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-            :menuTree="sortMenuTree"
-            @click:menu="search()"
-          )
-      slot(name="header-right")
-  slot(name="sub-header")
-  div(v-if="pagination" class="md:overflow-y-auto flex-grow flex flex-col")
+  div(class="flex flex-col gap-5 max-h-[90%]")
+    slot(name="header-above" :visit="visit")
     div(
-      v-if="isSearching || (inSearch && pagination.totalCount === 0)"
-      class="flex-grow flex flex-col justify-center items-center"
+      data-tooltip-boundary-reference="search-table-header"
+      :data-cy="testId ?? 'search-table'"
+      class="flex justify-between items-center"
     )
-      f-svg-icon(
-        v-if="isSearching"
-        iconName="loading"
-        size="92"
-        class="text-primary-400"
-        testId="loading-indicator"
+      div
+        slot(
+          name="header-left"
+          :visit="visit"
+          :totalCount="pagination?.totalCount ?? 0"
+        )
+      div(class="flex items-center gap-x-5")
+        f-input-checkbox(
+          v-if="isKeywordDirty"
+          :inputValue="isShowMatch"
+          @update:inputValue="handleCheckboxInput"
+          :label="$t('RR0069')"
+          binary
+          iconSize="20"
+        )
+        f-pill(v-if="canSelectAll" :size="SIZE.LG" @click="selectAll") 
+          f-svg-icon(iconName="checklist" size="24")
+          p {{ $t('RR0209') }}
+        f-popper(placement="bottom-end")
+          template(#trigger)
+            f-pill(:size="SIZE.LG") 
+              f-svg-icon(iconName="sortby" size="24" class="transform cursor-pointer")
+              p {{ $t('RR0272') }}
+
+          template(#content)
+            f-contextual-menu(
+              :inputSelectValue="sort"
+              @update:inputSelectValue="searchStore.setSort"
+              :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
+              :menuTree="sortMenuTree"
+              @click:menu="search()"
+            )
+        f-pill(:size="SIZE.LG") 
+          f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
+          p {{ $t('RR0085') }}
+        slot(name="header-right")
+    slot(name="sub-header")
+    div(v-if="pagination" class="md:overflow-y-auto flex-grow flex flex-col")
+      div(
+        v-if="isSearching || (inSearch && pagination.totalCount === 0)"
+        class="flex-grow flex flex-col justify-center items-center"
       )
-      p(
-        v-else-if="inSearch && pagination.totalCount === 0"
-        class="text-center text-body2 text-grey-900"
-      ) {{ $t('RR0105') }}
-    div(v-else class="flex-grow")
-      slot(
-        :inSearch="inSearch"
-        :currentPage="pagination.currentPage"
-        name="banner"
+        f-svg-icon(
+          v-if="isSearching"
+          iconName="loading"
+          size="92"
+          class="text-primary-400"
+          testId="loading-indicator"
+        )
+        p(
+          v-else-if="inSearch && pagination.totalCount === 0"
+          class="text-center text-body2 text-grey-900"
+        ) {{ $t('RR0105') }}
+      div(v-else class="flex-grow")
+        slot(
+          :inSearch="inSearch"
+          :currentPage="pagination.currentPage"
+          name="banner"
+        )
+        slot(:inSearch="inSearch" :visit="visit")
+      #pagination-container(
+        v-if="!isSearching && pagination.totalCount > 0"
+        class="py-9.5 self-center"
       )
-      slot(:inSearch="inSearch" :visit="visit")
-    #pagination-container(
-      v-if="!isSearching && pagination.totalCount > 0"
-      class="py-9.5 self-center"
-    )
-      f-paginator(
-        showQuickJumper
-        v-model:currentPage="pagination.currentPage"
-        :totalPage="pagination.totalPage"
-        @goTo="search($event)"
-      )
+        f-paginator(
+          showQuickJumper
+          v-model:currentPage="pagination.currentPage"
+          :totalPage="pagination.totalPage"
+          @goTo="search($event)"
+        )
 multi-select-menu(
   v-if="optionMultiSelect && optionMultiSelect.length > 0 && innerSelectedItemList"
   :optionMultiSelect="optionMultiSelect"
@@ -94,11 +98,10 @@ multi-select-menu(
 </template>
 
 <script setup lang="ts">
-import SearchBox from '@/components/common/SearchBox.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import { ref, computed, defineOptions } from 'vue'
 import { useRoute } from 'vue-router'
-import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE, SIZE } from '@/utils/constants'
 import type { FunctionOption } from '@/types'
 import type {
   Material,

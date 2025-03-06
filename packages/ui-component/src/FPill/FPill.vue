@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex justify-center items-center rounded cursor-pointer select-none"
+  class="flex justify-center items-center rounded cursor-pointer select-none gap-1"
   :class="[backgroundStyle, borderStyle, textStyle, mapperSizeStyle[size]]"
   :data-theme="theme"
 )
@@ -68,8 +68,8 @@ const textStyle = computed(() => {
 })
 
 const mapperSizeStyle: Record<SIZE, string> = {
-  [SIZE.LG]: 'p-3',
-  [SIZE.MD]: 'p-2',
-  [SIZE.SM]: 'py-1 px-2',
+  [SIZE.LG]: 'p-3 text-base',
+  [SIZE.MD]: 'p-2 text-sm',
+  [SIZE.SM]: 'py-1 px-2 text-xs',
 }
 </script>

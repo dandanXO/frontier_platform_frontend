@@ -201,7 +201,7 @@ import SearchTable, {
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
+import { FUNC_ID, PERMISSION_MAP, SIZE } from '@/utils/constants'
 import {
   SEARCH_TYPE,
   ASSET_LIST_DISPLAY_MODE,

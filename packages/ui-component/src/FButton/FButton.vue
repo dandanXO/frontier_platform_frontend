@@ -54,12 +54,7 @@ const btnSize = computed(() => {
     case 'lg':
       return props.isIcon
         ? ['p-3']
-        : [
-            'text-body1',
-            'min-w-21.5',
-            'h-11',
-            props.prependIcon || props.postpendIcon ? 'px-3' : 'px-6',
-          ]
+        : ['text-body1', 'min-w-21.5', 'h-12', 'p-3']
 
     case 'md':
       return props.isIcon
