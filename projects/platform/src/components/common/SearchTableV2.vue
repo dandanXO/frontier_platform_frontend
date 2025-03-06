@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
-  div(class="flex items-center justify-center" data-cy="search-box")
+  div(class="flex flex-col items-center justify-center" data-cy="search-box")
     f-search-bar(
       :keyword="keyword"
       :typing="typing"
@@ -11,7 +11,13 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
       :onClickRightIcon="onClickRightIconSearch"
       class="w-160"
     )
-  div(class="flex flex-col gap-5 max-h-[90%]")
+    filter-panel(
+      v-if="isOpenFilterPanel"
+      :searchType="searchType"
+      @search="handleSearch"
+      @resetFilter="resetFilterHandler"
+    )
+  div(class="flex flex-col gap-5 min-h-0 flex-1")
     slot(name="header-above" :visit="visit")
     div(
       data-tooltip-boundary-reference="search-table-header"
@@ -37,8 +43,8 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           f-svg-icon(iconName="checklist" size="24")
           p {{ $t('RR0209') }}
         f-popper(placement="bottom-end")
-          template(#trigger)
-            f-pill(:size="SIZE.LG") 
+          template(#trigger="{ isExpand }")
+            f-pill(:size="SIZE.LG" :active="isExpand") 
               f-svg-icon(iconName="sortby" size="24" class="transform cursor-pointer")
               p {{ $t('RR0272') }}
 
@@ -50,12 +56,16 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
               :menuTree="sortMenuTree"
               @click:menu="search()"
             )
-        f-pill(:size="SIZE.LG") 
+        f-pill(
+          :size="SIZE.LG"
+          @click="isOpenFilterPanel = !isOpenFilterPanel"
+          :active="isOpenFilterPanel"
+        ) 
           f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
           p {{ $t('RR0085') }}
         slot(name="header-right")
     slot(name="sub-header")
-    div(v-if="pagination" class="md:overflow-y-auto flex-grow flex flex-col")
+    div(v-if="pagination" class="overflow-auto flex flex-1 flex-col")
       div(
         v-if="isSearching || (inSearch && pagination.totalCount === 0)"
         class="flex-grow flex flex-col justify-center items-center"
@@ -98,9 +108,11 @@ multi-select-menu(
 </template>
 
 <script setup lang="ts">
-import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import { ref, computed, defineOptions } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { debounce } from 'debounce'
+
 import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE, SIZE } from '@/utils/constants'
 import type { FunctionOption } from '@/types'
 import type {
@@ -117,9 +129,8 @@ import type {
 } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
-import { storeToRefs } from 'pinia'
-import { debounce } from 'debounce'
-import { noop } from '@vueuse/core'
+import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
+import FilterPanel from '@/components/common/FilterPanel.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -194,6 +205,7 @@ const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
 const isSearching = ref(false)
 const inSearch = ref(false)
+const isOpenFilterPanel = ref(false)
 const isKeywordDirty = ref(false)
 const defaultSort = computed(() => props.optionSort.base[0].value)
 const searchDirty = computed(() => {
@@ -246,6 +258,13 @@ const selectAll = () => {
     ...new Set(stringifySelectedItemList.concat(stringifyItemList)),
   ].map((item) => JSON.parse(item))
   emit('update:selectedItemList', nonDuplicateList)
+}
+
+const resetFilterHandler = () => {
+  if (isFilterDirty.value) {
+    filterStore.resetFilterState()
+    handleSearch()
+  }
 }
 
 const debounceSearchAITag = debounce(searchStore.getAITags, 300)
