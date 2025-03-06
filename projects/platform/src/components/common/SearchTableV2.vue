@@ -8,6 +8,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8" v-bind="$attrs")
       :handleSearch="handleSearch"
       :onClear="() => searchStore.setKeyword('')"
       :rightIcon="rightIconSearch"
+      :onClickRightIcon="onClickRightIconSearch"
     )
   slot(name="header-above" :visit="visit")
   div(
@@ -167,6 +168,7 @@ const props = withDefaults(
     canSelectAll?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
     rightIconSearch?: string
+    onClickRightIconSearch?: () => void
   }>(),
   {
     canSelectAll: true,
