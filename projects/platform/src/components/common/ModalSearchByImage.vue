@@ -1,10 +1,14 @@
 <template lang="pug">
 div(
-  class="flex flex-col items-center justify-center gap-4 bg-brand px-10 py-11 rounded-lg border-dashed border border-brand-solid"
+  class="flex flex-col items-center justify-center gap-4 px-10 py-11 rounded-lg border-dashed border border-brand-solid bg-brand hover:bg-brand-hover cursor-pointer"
+  @click="chooseFile"
+  @drop.stop.prevent="onDrop($event)"
+  @dragover.prevent
+  @dragenter.prevent
 )
   f-svg-icon(iconName="upload" size="42" class="text-brand-solid")
   p(class="text-base text-primary-inverse") {{ $t('RR0484') }}
-  f-button(size="md" type="secondary" @click="chooseFile") {{ $t('DD0038') }}
+  f-button(size="md" type="secondary") {{ $t('DD0038') }}
 ul(class="list-disc pl-5")
   li {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
   li {{ $t('RR0485') }} {{ acceptTypes.join(', ') }}
@@ -37,5 +41,10 @@ const chooseFile = () => fileOperator.upload(false)
 fileOperator.on('finish', (file: File) => {
   binaryFile.value = file
   fileName.value = file.name
+  alert('finish')
 })
+
+const onDrop = (evt: DragEvent) => {
+  fileOperator.onDrop(evt)
+}
 </script>

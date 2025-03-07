@@ -25,6 +25,7 @@ module.exports = function ({ addBase, theme }) {
   addBase({
     ':root': {
       '--color-brand': theme('colors.primary.400'),
+      '--color-brand-hover': theme('colors.green.100.v1'),
       '--color-brand-border': theme('colors.grey.150'),
       '--color-brand-solid': theme('colors.primary.400'),
       '--color-brand-solid-hover': theme('colors.primary.500'),
@@ -51,6 +52,7 @@ module.exports = function ({ addBase, theme }) {
 
     '[data-theme="new"]': {
       '--color-brand': theme('colors.green.50.v1'),
+      '--color-brand-hover': theme('colors.green.100.v1'),
       '--color-brand-border': theme('colors.green.200.v1'),
       '--color-brand-solid': theme('colors.green.500.v1'),
       '--color-brand-solid-hover': theme('colors.green.600.v1'),
@@ -61,6 +63,7 @@ module.exports = function ({ addBase, theme }) {
 
     '[data-theme="new-dark"]': {
       '--color-brand': theme('colors.green.800.v1'),
+      '--color-brand-hover': theme('colors.green.100.v1'),
       '--color-brand-border': theme('colors.green.700.v1'),
       '--color-brand-solid': theme('colors.green.400.v1'),
       '--color-brand-solid-hover': theme('colors.green.300'),
@@ -89,6 +92,7 @@ module.exports = function ({ addBase, theme }) {
       '--color-text': theme('colors.malibu.700'),
       '--color-background-solid': theme('colors.malibu.500'),
       '--color-brand': theme('colors.malibu.500'),
+      '--color-brand-hover': theme('colors.malibu.100'),
       '--color-brand-solid': theme('colors.malibu.500'),
       '--color-brand-solid-hover': theme('colors.malibu.700'),
       '--color-link': theme('colors.malibu.700'),

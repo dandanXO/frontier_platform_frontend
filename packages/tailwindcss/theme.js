@@ -62,6 +62,7 @@ module.exports = plugin(function () {}, {
           },
         },
         border: 'var(--color-brand-border)',
+        hover: 'var(--color-brand-hover)',
         DEFAULT: 'var(--color-brand)',
       },
       info: {
