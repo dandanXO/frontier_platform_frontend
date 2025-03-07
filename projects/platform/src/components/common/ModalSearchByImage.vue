@@ -9,9 +9,10 @@ div(
   f-svg-icon(iconName="upload" size="42" class="text-brand-solid")
   p(class="text-base text-primary-inverse") {{ $t('RR0484') }}
   f-button(size="md" type="secondary") {{ $t('DD0038') }}
-ul(class="list-disc pl-5")
+ul(class="list-disc pl-5 text-sm font-normal")
   li {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
-  li {{ $t('RR0485') }} {{ acceptTypes.join(', ') }}
+  li {{ $t('WW0144') }} {{ MIN_DIMENSION_IMAGE }} x {{ MIN_DIMENSION_IMAGE }} px
+  li {{ $t('RR0485') }} {{ ACCEPT_TYPES.join(', ') }}
 </template>
 
 <script setup lang="ts">
@@ -30,11 +31,13 @@ interface Props {
 }
 defineProps<Props>()
 
-const acceptTypes: Extension[] = [Extension.JPG, Extension.PNG, Extension.JPEG]
+const ACCEPT_TYPES: Extension[] = [Extension.JPG, Extension.PNG, Extension.JPEG]
+const MIN_DIMENSION_IMAGE = 400
+
 const fileName = ref('')
 const binaryFile = ref<File>()
 const fileSizeMaxLimit = 10 * 1024 * 1024 // 10MB
-const fileOperator = new FileOperator(acceptTypes, fileSizeMaxLimit)
+const fileOperator = new FileOperator(ACCEPT_TYPES, fileSizeMaxLimit)
 
 const chooseFile = () => fileOperator.upload(false)
 

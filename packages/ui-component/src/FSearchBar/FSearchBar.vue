@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="justify-self-center h-10 bg-primary border border-primary-border rounded flex items-center"
+  class="justify-self-center h-10 bg-primary border border-primary-border rounded flex items-center overflow-hidden"
   :class="dynamicWidth"
 )
   div(
@@ -23,7 +23,7 @@ div(
       class="cursor-pointer"
       @click="onClear"
     )
-  div(class="flex items-center px-4 py-2")
+  div(class="flex items-center px-4 py-2 hover:bg-primary-hover")
     f-svg-icon(
       size="24"
       v-if="rightIcon"
