@@ -7,7 +7,7 @@ export default {
   argTypes: {
     type: {
       control: { type: 'radio' },
-      options: [TYPE.CRITICAL, TYPE.INFO, TYPE.SUCCESS, TYPE.WARNING],
+      options: [TYPE.ERROR, TYPE.INFO, TYPE.SUCCESS, TYPE.WARNING],
     },
     'data-theme': {
       control: { type: 'radio' },

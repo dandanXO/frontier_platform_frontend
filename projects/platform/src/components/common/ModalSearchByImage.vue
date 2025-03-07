@@ -20,6 +20,10 @@ import { ref } from 'vue'
 
 import { bytesToSize, FileOperator } from '@frontier/lib'
 import { Extension } from '@frontier/platform-web-sdk'
+import { useNotifyStore } from '@/stores/notify'
+import { useI18n } from 'vue-i18n'
+import { TYPE as ALERT_TYPE } from '@frontier/ui-component/src/FNotify/FAlert/FAlert.vue'
+import useModalCommon from '@/composables/useModalCommon'
 
 interface Props {
   title: string
@@ -33,18 +37,22 @@ defineProps<Props>()
 
 const ACCEPT_TYPES: Extension[] = [Extension.JPG, Extension.PNG, Extension.JPEG]
 const MIN_DIMENSION_IMAGE = 400
-
+const notify = useNotifyStore()
+const { t } = useI18n()
 const fileName = ref('')
 const binaryFile = ref<File>()
 const fileSizeMaxLimit = 10 * 1024 * 1024 // 10MB
 const fileOperator = new FileOperator(ACCEPT_TYPES, fileSizeMaxLimit)
 
 const chooseFile = () => fileOperator.upload(false)
-
+const { showAlert } = useModalCommon()
 fileOperator.on('finish', (file: File) => {
   binaryFile.value = file
   fileName.value = file.name
-  alert('finish')
+  showAlert({
+    title: t('WW0209'),
+    type: ALERT_TYPE.ERROR,
+  })
 })
 
 const onDrop = (evt: DragEvent) => {

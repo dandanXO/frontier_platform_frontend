@@ -35,10 +35,10 @@ const Template = (args) => ({
   template: `
     <f-search-bar
       v-bind="args"
-      :typing="(e) => console.log('typing:', e.target.value)"
-      :handleSearch="() => console.log('search')"
-      :onClear="() => console.log('clear')"
-      :onClickRightIcon="() => console.log('right icon clicked')"
+      @typing="(e) => console.log('typing:', e.target.value)"
+      @search="() => console.log('search')"
+      @clear="() => console.log('clear')"
+      @clickRightIcon="() => console.log('right icon clicked')"
     />
   `,
 })

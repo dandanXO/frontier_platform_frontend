@@ -4,11 +4,11 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
   div(class="flex flex-col items-center justify-center" data-cy="search-box")
     f-search-bar(
       :keyword="keyword"
-      :typing="typing"
-      :handleSearch="handleSearch"
-      :onClear="() => searchStore.setKeyword('')"
+      @typing="typing"
+      @search="handleSearch"
+      @clear="() => searchStore.setKeyword('')"
       :rightIcon="rightIconSearch"
-      :onClickRightIcon="onClickRightIconSearch"
+      @clickRightIcon="$emit('clickRightIconSearch')"
       class="w-160"
     )
     filter-panel(
@@ -182,14 +182,28 @@ const props = withDefaults(
     canSelectAll?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
     rightIconSearch?: string
-    onClickRightIconSearch?: () => void
   }>(),
   {
     canSelectAll: true,
   }
 )
 
-const emit = defineEmits(['update:selectedItemList'])
+const emit = defineEmits<{
+  (e: 'clickRightIconSearch'): void
+  (
+    e: 'update:selectedItemList',
+    value: Material[] | NodeChild[] | ShareNodeChild[]
+  ): void
+  (
+    e: 'search',
+    payload:
+      | SearchPayload<AssetsFilter>
+      | SearchPayload<WorkspaceFilter>
+      | SearchPayload<InnerExternalFilter>
+      | SearchPayload<ExternalFilter>,
+    query: RouteQuery
+  ): void
+}>()
 
 const route = useRoute()
 const searchStore = useSearchStore()

@@ -12,8 +12,8 @@ div(
       type="text"
       :value="keyword"
       :placeholder="placeholder ?? $t('RR0053')"
-      @input="typing"
-      @keydown.enter="handleSearch"
+      @input="$emit('typing', $event)"
+      @keydown.enter="$emit('search')"
       class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
     )
     f-svg-icon(
@@ -21,15 +21,17 @@ div(
       size="24"
       iconName="clear"
       class="cursor-pointer"
-      @click="onClear"
+      @click="$emit('clear')"
     )
-  div(class="flex items-center px-4 py-2 hover:bg-primary-hover")
+  div(
+    class="flex items-center px-4 py-2 hover:bg-primary-hover cursor-pointer"
+    @click="$emit('clickRightIcon')"
+  )
     f-svg-icon(
       size="24"
       v-if="rightIcon"
       :iconName="rightIcon"
-      class="cursor-pointer self-center"
-      @click="onClickRightIcon"
+      class="self-center"
       :tooltipMessage="rightIconTooltipMessage"
     )
 </template>
@@ -51,12 +53,15 @@ const dynamicWidth = computed(() => {
 
 defineProps<{
   keyword: string | null
-  typing: (e: Event) => void
-  handleSearch: () => void
-  onClear: () => void
-  onClickRightIcon?: () => void
   rightIcon?: string
   rightIconTooltipMessage?: string
   placeholder?: string
+}>()
+
+defineEmits<{
+  (e: 'clickRightIcon'): void
+  (e: 'clear'): void
+  (e: 'typing', value: Event): void
+  (e: 'search'): void
 }>()
 </script>
