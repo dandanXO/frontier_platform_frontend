@@ -474,6 +474,7 @@ const handleClose = () => {
     body: ModalU3mConfirm,
     classModal: 'w-128',
     closable: false,
+    withCloseButton: false,
     theme: 'new-dark',
     properties: {
       title: t('EE0223'),

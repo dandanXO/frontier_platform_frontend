@@ -27,7 +27,7 @@ div(
 <script setup lang="ts">
 import { useStore } from 'vuex'
 const store = useStore()
-const { title, closable } = defineProps({
+const { title, closable, withCloseButton } = defineProps({
   body: {
     type: Object,
     required: true,
@@ -36,6 +36,10 @@ const { title, closable } = defineProps({
     type: String,
   },
   closable: {
+    type: Boolean,
+    default: true,
+  },
+  withCloseButton: {
     type: Boolean,
     default: true,
   },
@@ -60,5 +64,5 @@ const onClose = () => {
   store.dispatch('helper/closeModal')
 }
 
-const usingHeader = !!title || closable
+const usingHeader = !!title || withCloseButton
 </script>
