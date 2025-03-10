@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
-  class="flex justify-center items-center rounded cursor-pointer select-none gap-1"
-  :class="[backgroundStyle, borderStyle, textStyle, mapperSizeStyle[size]]"
+  class="flex justify-center items-center rounded select-none gap-1"
+  :class="[backgroundStyle, borderStyle, textStyle, mapperSizeStyle[size], disabled ? '' : 'cursor-pointer']"
   :data-theme="theme"
 )
   slot
@@ -31,7 +31,7 @@ const props = withDefaults(
 
 const backgroundStyle = computed(() => {
   if (!props.active) {
-    return 'bg-primary hover:bg-primary-hover'
+    return `bg-primary ${props.disabled ? '' : 'hover:bg-primary-hover'}`
   }
 
   return props.disabled

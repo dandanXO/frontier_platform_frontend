@@ -71,7 +71,7 @@ div(
   v-bind="$attrs"
   data-cy="f-popper"
 )
-  f-badge(type="warning" class="cursor-help") &lt; {{MIN_DPI_2D_MATERIAL}} DPI
+  f-badge(type="warning" class="cursor-help whitespace-nowrap overflow-auto") &lt; {{MIN_DPI_2D_MATERIAL}} DPI
   div(
     ref="refPopper"
     role="popper"

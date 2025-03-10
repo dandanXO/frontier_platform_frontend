@@ -39,7 +39,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           binary
           iconSize="20"
         )
-        f-pill(v-if="canSelectAll" :size="SIZE.LG" @click="selectAll") 
+        f-pill(:size="SIZE.LG" @click="selectAll" :disabled="!canSelectAll") 
           f-svg-icon(iconName="checklist" size="24")
           p {{ $t('RR0209') }}
         f-popper(placement="bottom-end" v-if="!props.optionSort.disabled")
@@ -58,8 +58,9 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
             )
         f-pill(
           :size="SIZE.LG"
-          @click="isOpenFilterPanel = !isOpenFilterPanel"
+          @click="canFilter && (isOpenFilterPanel = !isOpenFilterPanel)"
           :active="isOpenFilterPanel"
+          :disabled="!canFilter"
         ) 
           f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
           p {{ $t('RR0085') }}
@@ -181,11 +182,13 @@ const props = withDefaults(
     itemList: Material[] | NodeChild[] | ShareNodeChild[]
     testId?: string
     canSelectAll?: boolean
+    canFilter?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
     rightIconSearch?: string
   }>(),
   {
     canSelectAll: true,
+    canFilter: true,
   }
 )
 
