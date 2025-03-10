@@ -68,7 +68,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
     slot(name="sub-header")
     div(v-if="pagination" class="overflow-auto flex flex-1 flex-col")
       div(
-        v-if="isSearching || (inSearch && pagination.totalCount === 0)"
+        v-if="showLoading && (isSearching || (inSearch && pagination.totalCount === 0))"
         class="flex-grow flex flex-col justify-center items-center"
       )
         f-svg-icon(
@@ -185,10 +185,12 @@ const props = withDefaults(
     canFilter?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
     rightIconSearch?: string
+    showLoading?: boolean
   }>(),
   {
     canSelectAll: true,
     canFilter: true,
+    showLoading: true,
   }
 )
 

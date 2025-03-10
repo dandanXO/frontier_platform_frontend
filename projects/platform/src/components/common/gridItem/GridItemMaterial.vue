@@ -1,5 +1,9 @@
 <template lang="pug">
+div(v-if="isLoading" class="flex flex-col gap-2")
+  skeleton-base(class="w-[194px] h-[194px] rounded-md")
+  skeleton-base(class="w-[194px] h-[24px] rounded-md")
 grid-item-wrapper(
+  v-else
   v-model:selectedValue="innerSelectedValue"
   :isSelectable="isSelectable"
   :selectValue="selectValue"
@@ -63,10 +67,12 @@ grid-item-wrapper(
 </template>
 
 <script setup lang="ts">
-import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { computed, ref } from 'vue'
-import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import { useStore } from 'vuex'
+import SkeletonBase from '@/components/common/SkeletonBase.vue'
+
+import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
+import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
