@@ -131,6 +131,7 @@ export enum U3M_DOWNLOAD_PROP {
   U3M = 'zipUrl',
   U3MA = 'u3maUrl',
   GLTF = 'gltfUrl',
+  ZFAB = 'zfabUrl',
 }
 export const OG_TYPE = {
   ORG: 1,

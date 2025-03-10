@@ -28,6 +28,7 @@ modal-behavior(
       class="my-3"
       :isMultiple="isMultiple"
       :hasPhysicalData="hasPhysicalData"
+      :hasZfab="materialU3mDownloadItemList[0].u3m.zfab?.status === ZfabStatus.COMPLETED"
       :status="status"
       @download="downloadHandler"
     )
@@ -42,7 +43,7 @@ import { ref, computed } from 'vue'
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
-import { MaterialU3mStatus } from '@frontier/platform-web-sdk'
+import { MaterialU3mStatus, ZfabStatus } from '@frontier/platform-web-sdk'
 import { U3M_PROVIDER, U3M_STATUS, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { downloadDataURLFile } from '@frontier/lib'
 import useLogSender from '@/composables/useLogSender'
@@ -171,7 +172,10 @@ const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
   selectedU3mFormat.value = format
   if (!isMultiple.value) {
     const { materialId, u3m } = materialU3mDownloadItemList.value[0]
-    const url = u3m[format]!
+    const url = format === U3M_DOWNLOAD_PROP.ZFAB ? u3m.zfab?.url : u3m[format]!
+    if (!url) {
+      return console.error(`url for ${materialId} and ${format} is not found`)
+    }
     const fileName = url.split('/')[url.split('/').length - 1]
     downloadDataURLFile(url, fileName)
     logSender.createDownloadLog(materialId, format)

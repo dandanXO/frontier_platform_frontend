@@ -34,6 +34,7 @@ const props = defineProps<{
   isMultiple: boolean
   status: MaterialU3mStatus
   hasPhysicalData: boolean
+  hasZfab?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -48,7 +49,7 @@ const menuTree = computed<MenuTree>(() => ({
   blockList: [
     {
       menuList: (() => {
-        return [
+        const menuList = [
           {
             title: t('UU0005'),
             format: U3M_DOWNLOAD_PROP.U3M,
@@ -61,7 +62,16 @@ const menuTree = computed<MenuTree>(() => ({
             title: t('UU0129'),
             format: U3M_DOWNLOAD_PROP.GLTF,
           },
-        ].map((item) => ({
+        ]
+
+        if (props.hasZfab) {
+          menuList.push({
+            title: t('UU0189'),
+            format: U3M_DOWNLOAD_PROP.ZFAB,
+          })
+        }
+
+        return menuList.map((item) => ({
           title: item.title,
           display: 'block',
           description: (() => {

@@ -43,6 +43,7 @@ div
         :isMultiple="false"
         :status="selectedU3m.status"
         :hasPhysicalData="selectedU3m?.hasPhysicalData ?? false"
+        :hasZfab="selectedU3m.zfab?.status === ZfabStatus.COMPLETED"
         @download="downloadHandler"
       )
     material-u3m-status-block(v-if="showStatusBlock" :u3m="selectedU3m")
@@ -56,6 +57,7 @@ import type {
   MaterialCustomU3m,
   MaterialU3m,
 } from '@frontier/platform-web-sdk'
+import { ZfabStatus } from '@frontier/platform-web-sdk'
 import { FTabs } from '@frontier/ui-component'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
@@ -89,7 +91,15 @@ const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() =>
 )
 
 const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
-  const url = selectedU3m.value[format]!
+  const url =
+    format === U3M_DOWNLOAD_PROP.ZFAB
+      ? selectedU3m.value.zfab?.url
+      : selectedU3m.value[format]!
+  if (!url) {
+    return console.error(
+      `url for ${props.material.materialId} and ${format} is not found`
+    )
+  }
   const fileName = url.split('/')[url.split('/').length - 1]
   downloadDataURLFile(url, fileName)
   logSender.createDownloadLog(props.material.materialId, format)
