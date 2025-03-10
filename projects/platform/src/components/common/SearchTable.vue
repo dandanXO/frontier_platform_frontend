@@ -209,7 +209,9 @@ const sortMenuTree = computed(() => {
 })
 
 const visit = () => {
-  searchStore.setSort(defaultSort.value)
+  if (props.searchType !== SEARCH_TYPE.WORKSPACE) {
+    searchStore.setSort(defaultSort.value)
+  }
   search()
 }
 
@@ -384,6 +386,5 @@ searchStore.setSelectedTagList(
 )
 
 filterStore.setFilterStateByQueryString(qFilter ? (qFilter as string) : '{}')
-
 search(currentPage ? Number(currentPage) : 1)
 </script>

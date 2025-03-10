@@ -272,22 +272,36 @@ const getWorkspace = async (
   payload: SearchPayload<WorkspaceFilter>,
   query: RouteQuery
 ) => {
-  router.push({
+  router.replace({
     name: route.name as string,
     params: {
       nodeId: currentNodeId.value,
     },
-    query,
+    query: query as unknown as Record<string, string>,
   })
+
   const {
     data: { result },
   } = await ogBaseWorkspaceApi('getWorkspaceList', {
-    nodeId: currentNodeId.value,
+    nodeId: currentNodeId.value as number,
     ...payload,
   })
-
   workspaceNodeCollection.value = result.workspaceNodeCollection
   searchStore.setPaginationRes(result.pagination)
+
+  if (isFirstLayer.value) {
+    const url = new URL(window.location.href)
+
+    // Assuming there is a placeholder like ':nodeId' in the path
+    url.pathname = route.path.replace(/\/[^/]+$/, `/${currentNodeId.value}`) // Use regex to replace the last segment
+    Object.keys(query).forEach((key) => {
+      const queryKey = key as keyof RouteQuery
+      if (query[queryKey]) {
+        url.searchParams.set(key, query[queryKey] as string)
+      }
+    })
+    window.history.pushState({ key: currentNodeId.value }, '', url.toString())
+  }
 }
 
 const createCollection = () => {
