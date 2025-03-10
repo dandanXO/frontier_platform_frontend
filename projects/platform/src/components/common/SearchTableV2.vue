@@ -42,7 +42,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
         f-pill(v-if="canSelectAll" :size="SIZE.LG" @click="selectAll") 
           f-svg-icon(iconName="checklist" size="24")
           p {{ $t('RR0209') }}
-        f-popper(placement="bottom-end")
+        f-popper(placement="bottom-end" v-if="!props.optionSort.disabled")
           template(#trigger="{ isExpand }")
             f-pill(:size="SIZE.LG" :active="isExpand") 
               f-svg-icon(iconName="sortby" size="24" class="transform cursor-pointer")
@@ -164,6 +164,7 @@ const props = withDefaults(
     optionSort: {
       base: SortOption[]
       keywordSearch: SortOption[]
+      disabled?: boolean
     }
     optionMultiSelect?:
       | FunctionOption<Material>[]
