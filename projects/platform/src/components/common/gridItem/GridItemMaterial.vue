@@ -1,9 +1,5 @@
 <template lang="pug">
-div(v-if="isLoading" class="flex flex-col gap-2")
-  skeleton-base(class="w-[194px] h-[194px] rounded-md")
-  skeleton-base(class="w-[194px] h-[24px] rounded-md")
 grid-item-wrapper(
-  v-else
   v-model:selectedValue="innerSelectedValue"
   :isSelectable="isSelectable"
   :selectValue="selectValue"
@@ -69,16 +65,15 @@ grid-item-wrapper(
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import SkeletonBase from '@/components/common/SkeletonBase.vue'
 
+import type { FunctionOption } from '@/types'
+import type { Material } from '@frontier/platform-web-sdk'
+import type { MenuTree } from '@frontier/ui-component'
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
-import type { Material } from '@frontier/platform-web-sdk'
-import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 import { getMaterialMainSide } from '@/utils/material/getMaterialMainSide'
 import imgDefaultMaterial from '@/assets/images/default_material.png'
-import type { MenuTree } from '@frontier/ui-component'
 
 const props = withDefaults(
   defineProps<{

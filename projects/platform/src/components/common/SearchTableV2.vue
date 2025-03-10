@@ -307,7 +307,7 @@ const handleSearch = () => {
 }
 
 const search = async (targetPage = 1) => {
-  isSearching.value = true
+  isSearching.value = props.showLoading
 
   /**
    * when first time using keyword search (no keyword -> with keyword),
