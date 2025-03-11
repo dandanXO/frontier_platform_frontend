@@ -19,7 +19,7 @@ div(class="justify-self-center bg-primary flex items-center" :class="[dynamicWid
     f-svg-icon(
       v-if="!!keyword"
       size="24"
-      iconName="clear"
+      iconName="cancel"
       class="cursor-pointer"
       @click="$emit('clear')"
     )
