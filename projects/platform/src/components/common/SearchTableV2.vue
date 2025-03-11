@@ -35,6 +35,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           v-if="isKeywordDirty"
           :inputValue="isShowMatch"
           @update:inputValue="handleCheckboxInput"
+          :disabled="isSearching"
           :label="$t('RR0069')"
           binary
           iconSize="20"
@@ -48,7 +49,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           p {{ $t('RR0209') }}
         f-popper(placement="bottom-end" v-if="!props.optionSort.disabled")
           template(#trigger="{ isExpand }")
-            f-pill(:size="SIZE.LG" :active="isExpand") 
+            f-pill(:size="SIZE.LG" :active="isExpand" :disabled="isSearching") 
               f-svg-icon(iconName="sortby" size="24" class="transform cursor-pointer")
               p {{ $t('RR0272') }}
 
