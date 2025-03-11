@@ -39,7 +39,11 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           binary
           iconSize="20"
         )
-        f-pill(:size="SIZE.LG" @click="selectAll" :disabled="!canSelectAll") 
+        f-pill(
+          :size="SIZE.LG"
+          @click="selectAll"
+          :disabled="!canSelectAll || isSearching"
+        ) 
           f-svg-icon(iconName="checklist" size="24")
           p {{ $t('RR0209') }}
         f-popper(placement="bottom-end" v-if="!props.optionSort.disabled")
@@ -60,7 +64,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           :size="SIZE.LG"
           @click="canFilter && (isOpenFilterPanel = !isOpenFilterPanel)"
           :active="isOpenFilterPanel"
-          :disabled="!canFilter"
+          :disabled="!canFilter || isSearching"
         ) 
           f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
           p {{ $t('RR0085') }}
@@ -75,7 +79,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           v-if="isSearching"
           iconName="loading"
           size="92"
-          class="text-primary-400"
+          class="text-green-600-v1"
           testId="loading-indicator"
         )
         p(
@@ -88,7 +92,7 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           :currentPage="pagination.currentPage"
           name="banner"
         )
-        slot(:inSearch="inSearch" :visit="visit")
+        slot(:inSearch="inSearch" :visit="visit" :isSearching="isSearching")
       #pagination-container(
         v-if="!isSearching && pagination.totalCount > 0"
         class="py-9.5 self-center"
@@ -307,7 +311,7 @@ const handleSearch = () => {
 }
 
 const search = async (targetPage = 1) => {
-  isSearching.value = props.showLoading
+  isSearching.value = true
 
   /**
    * when first time using keyword search (no keyword -> with keyword),
