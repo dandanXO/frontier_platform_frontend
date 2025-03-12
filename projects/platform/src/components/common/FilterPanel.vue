@@ -56,7 +56,7 @@ defineProps<{
   searchType: SEARCH_TYPE
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'search'): void
   (e: 'resetFilter'): void
 }>()
