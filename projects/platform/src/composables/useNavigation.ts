@@ -184,8 +184,12 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath}/assets/upload/manual`))
   }
 
-  const goToWorkspace = (navReq: NavigationReq = {}, nodeId: number) => {
-    router.push(parsePath(`${prefixPath}/workspace/${nodeId}`, navReq))
+  const goToWorkspace = (
+    navReq: NavigationReq = {},
+    nodeId: number,
+    query?: string
+  ) => {
+    router.push(parsePath(`${prefixPath}/workspace/${nodeId}?${query}`, navReq))
   }
 
   const goToAssetMaterialSpreadSheet = () => {

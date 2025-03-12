@@ -140,7 +140,7 @@ const { ogBaseWorkspaceApi } = useWorkspaceStore()
 const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
-const { goToWorkspaceMaterialDetail } = useNavigation()
+const { goToWorkspaceMaterialDetail, goToWorkspace } = useNavigation()
 const { tabList } = useWorkspaceCommon()
 const {
   currentNodeId,
@@ -272,14 +272,16 @@ const getWorkspace = async (
   payload: SearchPayload<WorkspaceFilter>,
   query: RouteQuery
 ) => {
-  router.replace({
-    name: route.name as string,
-    params: {
-      nodeId: currentNodeId.value,
-    },
-    query: query as unknown as Record<string, string>,
-  })
-
+  let _queryString = ''
+  for (const key in query) {
+    const queryKey = key as keyof RouteQuery
+    if (query[queryKey]) {
+      _queryString += `${key}=${query[queryKey]}&`
+    }
+  }
+  if (currentNodeId.value !== null) {
+    goToWorkspace({}, currentNodeId.value, _queryString)
+  }
   const {
     data: { result },
   } = await ogBaseWorkspaceApi('getWorkspaceList', {
