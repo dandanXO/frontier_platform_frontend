@@ -136,8 +136,8 @@ export default function useNavigation() {
     router.push(parsePath('/:orgNo/billings/payment', navReq))
   }
 
-  const goToAssets = async (navReq: NavigationReq = {}) => {
-    await router.push(parsePath(`${prefixPath}/assets`, navReq))
+  const goToAssets = async (navReq: NavigationReq = {}, query: string) => {
+    await router.push(parsePath(`${prefixPath}/assets?${query}`, navReq))
   }
 
   const goToMaterialUpload = async (navReq: NavigationReq = {}) => {

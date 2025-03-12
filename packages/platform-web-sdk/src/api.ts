@@ -557,7 +557,7 @@ export type BookmarkListInner = FolderBookmark | OrgBookmark;
 /**
  * 書籤類型
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const BookmarkType = {
@@ -1811,7 +1811,7 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
      * @type {number}
      * @memberof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner
      */
-    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum | null;
+    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum;
     /**
      * 
      * @type {Array<number>}
@@ -1821,10 +1821,22 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
 }
 
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum];
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum];
@@ -1903,7 +1915,7 @@ export interface CodeRoleListGet200ResponseResultCodeRoleListInner {
      * @type {number}
      * @memberof CodeRoleListGet200ResponseResultCodeRoleListInner
      */
-    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum | null;
+    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum;
 }
 
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
@@ -1917,6 +1929,12 @@ export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum];
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null,
+    NUMBER_null6: null
 } as const;
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum];
@@ -2087,7 +2105,7 @@ export interface CoverImage {
 /**
  * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面) 4 (Digital Drape)
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const CoverMode = {
@@ -3201,7 +3219,7 @@ export interface DeleteWorkspaceNodeRequest {
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const DigitalDrapeStatus = {
@@ -3283,44 +3301,6 @@ export interface DigitalPlusGetProductInfo200Response {
  */
 export type DigitalPlusMaterialType = number | string;
 
-/**
- * 
- * @export
- * @interface DigitalPlusUpsertProductInfo423Response
- */
-export interface DigitalPlusUpsertProductInfo423Response {
-    /**
-     * 
-     * @type {DigitalPlusUpsertProductInfo423ResponseMessage}
-     * @memberof DigitalPlusUpsertProductInfo423Response
-     */
-    'message'?: DigitalPlusUpsertProductInfo423ResponseMessage | null;
-}
-/**
- * 
- * @export
- * @interface DigitalPlusUpsertProductInfo423ResponseMessage
- */
-export interface DigitalPlusUpsertProductInfo423ResponseMessage {
-    /**
-     * 
-     * @type {number}
-     * @memberof DigitalPlusUpsertProductInfo423ResponseMessage
-     */
-    'type'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalPlusUpsertProductInfo423ResponseMessage
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalPlusUpsertProductInfo423ResponseMessage
-     */
-    'content'?: string;
-}
 /**
  * 
  * @export
@@ -3828,19 +3808,19 @@ export interface DigitalThreadCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum | null;
+    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addTo': DigitalThreadCreatePostRequestAddToEnum | null;
+    'addTo': DigitalThreadCreatePostRequestAddToEnum;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'type': DigitalThreadCreatePostRequestTypeEnum | null;
+    'type': DigitalThreadCreatePostRequestTypeEnum;
     /**
      * 
      * @type {string}
@@ -3856,14 +3836,21 @@ export interface DigitalThreadCreatePostRequest {
 }
 
 export const DigitalThreadCreatePostRequestAddFromOGTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddFromOGTypeEnum = typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum[keyof typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum];
 export const DigitalThreadCreatePostRequestAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddToEnum = typeof DigitalThreadCreatePostRequestAddToEnum[keyof typeof DigitalThreadCreatePostRequestAddToEnum];
 export const DigitalThreadCreatePostRequestTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadCreatePostRequestTypeEnum = typeof DigitalThreadCreatePostRequestTypeEnum[keyof typeof DigitalThreadCreatePostRequestTypeEnum];
@@ -3998,7 +3985,7 @@ export interface DigitalThreadGetPostRequestFilter {
      * @type {number}
      * @memberof DigitalThreadGetPostRequestFilter
      */
-    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum | null;
+    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum;
     /**
      * 
      * @type {boolean}
@@ -4032,6 +4019,9 @@ export interface DigitalThreadGetPostRequestFilter {
 }
 
 export const DigitalThreadGetPostRequestFilterAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadGetPostRequestFilterAddToEnum = typeof DigitalThreadGetPostRequestFilterAddToEnum[keyof typeof DigitalThreadGetPostRequestFilterAddToEnum];
@@ -4121,13 +4111,13 @@ export interface DigitalThreadStickerCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum | null;
+    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'type': DigitalThreadStickerCreatePostRequestTypeEnum | null;
+    'type': DigitalThreadStickerCreatePostRequestTypeEnum;
     /**
      * 
      * @type {string}
@@ -4143,10 +4133,15 @@ export interface DigitalThreadStickerCreatePostRequest {
 }
 
 export const DigitalThreadStickerCreatePostRequestAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestAddToEnum = typeof DigitalThreadStickerCreatePostRequestAddToEnum[keyof typeof DigitalThreadStickerCreatePostRequestAddToEnum];
 export const DigitalThreadStickerCreatePostRequestTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestTypeEnum = typeof DigitalThreadStickerCreatePostRequestTypeEnum[keyof typeof DigitalThreadStickerCreatePostRequestTypeEnum];
@@ -4881,7 +4876,7 @@ export interface ExternalFilterAllOfInventory {
 /**
  * 功能列表Enum
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const FeatureType = {
@@ -10301,7 +10296,7 @@ export interface InvoiceInfoServiceItemListInner {
 /**
  * 長度單位
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const LengthUnit = {
@@ -10315,7 +10310,7 @@ export type LengthUnit = typeof LengthUnit[keyof typeof LengthUnit];
 /**
  * 未有訂閱M2F加值服務時為NULL
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const Made2FlowPlanType = {
@@ -13680,7 +13675,7 @@ export interface MaterialSideImage {
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const MaterialSideType = {
@@ -13787,7 +13782,7 @@ export interface MaterialTrimConstruction {
 /**
  * 布種
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const MaterialType = {
@@ -13990,7 +13985,7 @@ export interface MaterialU3mImageCropRecord {
 /**
  * 1: Frontier產生 2: 客製化上傳
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const MaterialU3mSourceType = {
@@ -14004,7 +13999,7 @@ export type MaterialU3mSourceType = typeof MaterialU3mSourceType[keyof typeof Ma
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const MaterialU3mStatus = {
@@ -15223,7 +15218,7 @@ export interface MoodboardPropertiesProvider {
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const MoodboardType = {
@@ -15758,7 +15753,7 @@ export interface NodeMetaLocationListInner {
 /**
  * 節點型態：1:Collection，2:Material
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const NodeType = {
@@ -15830,7 +15825,7 @@ export interface OGBaseRequestBody {
 /**
  * 單位(組織或團隊)型態：1:Org，2:Group
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const OgType = {
@@ -15842,9 +15837,80 @@ export type OgType = typeof OgType[keyof typeof OgType];
 
 
 /**
+ * 
+ * @export
+ * @interface OneTimePasswordStatus
+ */
+export interface OneTimePasswordStatus {
+    /**
+     * should input OTP if true
+     * @type {boolean}
+     * @memberof OneTimePasswordStatus
+     */
+    'mustPass2Fa'?: boolean;
+    /**
+     * flag for inputted OTP
+     * @type {boolean}
+     * @memberof OneTimePasswordStatus
+     */
+    'isValid'?: boolean | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'maxAttemptCount'?: number;
+    /**
+     * start from 0
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'currentAttemptCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'maxResendCount'?: number;
+    /**
+     * start from 1
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'currentResendCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'maxResendWaitInHour'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OneTimePasswordStatus
+     */
+    'isBlocked'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof OneTimePasswordStatus
+     */
+    'blockReason'?: OneTimePasswordStatusBlockReasonEnum | null;
+}
+
+export const OneTimePasswordStatusBlockReasonEnum = {
+    VERIFIED_OR_NOT_FOUND: 0,
+    OTP_EXPIRED: 1,
+    MAX_INPUT_ATTEMPT: 2,
+    MAX_RESEND_ATTEMPT: 3
+} as const;
+
+export type OneTimePasswordStatusBlockReasonEnum = typeof OneTimePasswordStatusBlockReasonEnum[keyof typeof OneTimePasswordStatusBlockReasonEnum];
+
+/**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Partially Failed 5: Complete 6: Canceled 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const OnlineSpreadSheetProgressStatus = {
@@ -16048,7 +16114,7 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum | null;
+    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum;
     /**
      * 國家代碼
      * @type {string}
@@ -16096,14 +16162,20 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum | null;
+    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum;
 }
 
 export const OrgCreatePostRequestOrgCategoryIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgCreatePostRequestOrgCategoryIdEnum = typeof OrgCreatePostRequestOrgCategoryIdEnum[keyof typeof OrgCreatePostRequestOrgCategoryIdEnum];
 export const OrgCreatePostRequestSignupSourceTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type OrgCreatePostRequestSignupSourceTypeEnum = typeof OrgCreatePostRequestSignupSourceTypeEnum[keyof typeof OrgCreatePostRequestSignupSourceTypeEnum];
@@ -17049,7 +17121,7 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner
      */
-    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum | null;
+    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum;
     /**
      * 
      * @type {string}
@@ -17059,6 +17131,8 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum];
@@ -17098,10 +17172,12 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum | null;
+    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum;
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum];
@@ -17135,7 +17211,7 @@ export interface OrgPaymentInvoiceGetListPostRequest {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequest
      */
-    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum | null;
+    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum;
     /**
      * 
      * @type {string}
@@ -17151,6 +17227,9 @@ export interface OrgPaymentInvoiceGetListPostRequest {
 }
 
 export const OrgPaymentInvoiceGetListPostRequestCategoryEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestCategoryEnum = typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum];
@@ -17178,10 +17257,12 @@ export interface OrgPaymentInvoiceGetListPostRequestPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequestPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum | null;
+    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum;
 }
 
 export const OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum];
@@ -17645,7 +17726,7 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      * @type {number}
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
      */
-    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum | null;
+    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum;
     /**
      * 國家代碼
      * @type {string}
@@ -17751,6 +17832,10 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
 }
 
 export const OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum[keyof typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum];
@@ -17903,7 +17988,7 @@ export interface OrgUpdatePostRequest {
      * @type {number}
      * @memberof OrgUpdatePostRequest
      */
-    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum | null;
+    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum;
     /**
      * 國家代碼
      * @type {string}
@@ -17949,6 +18034,10 @@ export interface OrgUpdatePostRequest {
 }
 
 export const OrgUpdatePostRequestOrgCategoryIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgUpdatePostRequestOrgCategoryIdEnum = typeof OrgUpdatePostRequestOrgCategoryIdEnum[keyof typeof OrgUpdatePostRequestOrgCategoryIdEnum];
@@ -18323,7 +18412,7 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
      * @type {number}
      * @memberof OrgValueAddedServiceMade2flowScheduleMeetingPostRequest
      */
-    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum | null;
+    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum;
     /**
      * 使用者名稱
      * @type {string}
@@ -18369,6 +18458,10 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
 }
 
 export const OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum[keyof typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum];
@@ -18433,7 +18526,7 @@ export interface Organization {
      * @type {number}
      * @memberof Organization
      */
-    'orgCategoryId': OrganizationOrgCategoryIdEnum | null;
+    'orgCategoryId': OrganizationOrgCategoryIdEnum;
     /**
      * 國家代碼
      * @type {string}
@@ -18539,6 +18632,10 @@ export interface Organization {
 }
 
 export const OrganizationOrgCategoryIdEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type OrganizationOrgCategoryIdEnum = typeof OrganizationOrgCategoryIdEnum[keyof typeof OrganizationOrgCategoryIdEnum];
@@ -19051,7 +19148,7 @@ export interface Plan {
      * @type {number}
      * @memberof Plan
      */
-    'status'?: PlanStatusEnum | null;
+    'status'?: PlanStatusEnum;
     /**
      * 停用日
      * @type {string}
@@ -19100,6 +19197,10 @@ export const PlanPlatformEnum = {
 
 export type PlanPlatformEnum = typeof PlanPlatformEnum[keyof typeof PlanPlatformEnum];
 export const PlanStatusEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
@@ -19689,7 +19790,7 @@ export interface ProgressMaterialUploadItemMappingWith {
 /**
  * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ProgressMaterialUploadUnsuccessfulMsgCode = {
@@ -19769,7 +19870,7 @@ export type ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = typeof Progre
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ProgressStatus = {
@@ -19879,7 +19980,7 @@ export type ProgressU3mItemUnsuccessfulMsgCodeEnum = typeof ProgressU3mItemUnsuc
 /**
  * 排序方式 1: 時間排序由新到舊 2: 時間排序由舊到新 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: sourceType (Frontier -> Customized) 6: sourceType (Customized -> Frontier) 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ProgressU3mSort = {
@@ -21324,7 +21425,7 @@ export interface ShareOGTarget {
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const SharePermission = {
@@ -21455,7 +21556,7 @@ export interface ShareTarget {
 /**
  * 分享對象的種類
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ShareToType = {
@@ -22106,7 +22207,7 @@ export type ShowroomBaseColorEnum = typeof ShowroomBaseColorEnum[keyof typeof Sh
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ShowroomStatus = {
@@ -22210,10 +22311,12 @@ export interface SignInGeneralPostRequest {
      * @type {number}
      * @memberof SignInGeneralPostRequest
      */
-    'platform': SignInGeneralPostRequestPlatformEnum | null;
+    'platform': SignInGeneralPostRequestPlatformEnum;
 }
 
 export const SignInGeneralPostRequestPlatformEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type SignInGeneralPostRequestPlatformEnum = typeof SignInGeneralPostRequestPlatformEnum[keyof typeof SignInGeneralPostRequestPlatformEnum];
@@ -22291,10 +22394,12 @@ export interface SignInGooglePostRequest {
      * @type {number}
      * @memberof SignInGooglePostRequest
      */
-    'platform': SignInGooglePostRequestPlatformEnum | null;
+    'platform': SignInGooglePostRequestPlatformEnum;
 }
 
 export const SignInGooglePostRequestPlatformEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type SignInGooglePostRequestPlatformEnum = typeof SignInGooglePostRequestPlatformEnum[keyof typeof SignInGooglePostRequestPlatformEnum];
@@ -22402,20 +22507,24 @@ export interface SignUpGeneralPostRequest {
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'platform': SignUpGeneralPostRequestPlatformEnum | null;
+    'platform': SignUpGeneralPostRequestPlatformEnum;
     /**
      * 
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum | null;
+    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum;
 }
 
 export const SignUpGeneralPostRequestPlatformEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestPlatformEnum = typeof SignUpGeneralPostRequestPlatformEnum[keyof typeof SignUpGeneralPostRequestPlatformEnum];
 export const SignUpGeneralPostRequestSignupSourceTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestSignupSourceTypeEnum = typeof SignUpGeneralPostRequestSignupSourceTypeEnum[keyof typeof SignUpGeneralPostRequestSignupSourceTypeEnum];
@@ -22506,7 +22615,7 @@ export interface SlotContentContentValueInner {
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const SlotContentType = {
@@ -22769,7 +22878,7 @@ export interface SmartUploadAssetsUpdateConfigRequest {
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const SocialMedia = {
@@ -22798,13 +22907,13 @@ export interface Sticker {
      * @type {number}
      * @memberof Sticker
      */
-    'addTo': StickerAddToEnum | null;
+    'addTo': StickerAddToEnum;
     /**
      * 
      * @type {number}
      * @memberof Sticker
      */
-    'type': StickerTypeEnum | null;
+    'type': StickerTypeEnum;
     /**
      * 
      * @type {string}
@@ -22886,10 +22995,15 @@ export interface Sticker {
 }
 
 export const StickerAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type StickerAddToEnum = typeof StickerAddToEnum[keyof typeof StickerAddToEnum];
 export const StickerTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnum];
@@ -22911,13 +23025,13 @@ export interface StickerAllOfChildStickerList {
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'addTo': StickerAllOfChildStickerListAddToEnum | null;
+    'addTo': StickerAllOfChildStickerListAddToEnum;
     /**
      * 
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'type': StickerAllOfChildStickerListTypeEnum | null;
+    'type': StickerAllOfChildStickerListTypeEnum;
     /**
      * 
      * @type {string}
@@ -22987,10 +23101,15 @@ export interface StickerAllOfChildStickerList {
 }
 
 export const StickerAllOfChildStickerListAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type StickerAllOfChildStickerListAddToEnum = typeof StickerAllOfChildStickerListAddToEnum[keyof typeof StickerAllOfChildStickerListAddToEnum];
 export const StickerAllOfChildStickerListTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type StickerAllOfChildStickerListTypeEnum = typeof StickerAllOfChildStickerListTypeEnum[keyof typeof StickerAllOfChildStickerListTypeEnum];
@@ -23012,13 +23131,13 @@ export interface StickerBase {
      * @type {number}
      * @memberof StickerBase
      */
-    'addTo': StickerBaseAddToEnum | null;
+    'addTo': StickerBaseAddToEnum;
     /**
      * 
      * @type {number}
      * @memberof StickerBase
      */
-    'type': StickerBaseTypeEnum | null;
+    'type': StickerBaseTypeEnum;
     /**
      * 
      * @type {string}
@@ -23082,10 +23201,15 @@ export interface StickerBase {
 }
 
 export const StickerBaseAddToEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type StickerBaseAddToEnum = typeof StickerBaseAddToEnum[keyof typeof StickerBaseAddToEnum];
 export const StickerBaseTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null
 } as const;
 
 export type StickerBaseTypeEnum = typeof StickerBaseTypeEnum[keyof typeof StickerBaseTypeEnum];
@@ -24486,6 +24610,148 @@ export interface User {
 /**
  * 
  * @export
+ * @interface User1
+ */
+export interface User1 {
+    /**
+     * 
+     * @type {string}
+     * @memberof User1
+     */
+    'lastName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1
+     */
+    'firstName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User1
+     */
+    'isVerify'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User1
+     */
+    'is2FaEnabled'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1
+     */
+    'locale'?: string;
+    /**
+     * 
+     * @type {Array<User1OrganizationListInner>}
+     * @memberof User1
+     */
+    'organizationList'?: Array<User1OrganizationListInner>;
+    /**
+     * 是否顯示公告
+     * @type {boolean}
+     * @memberof User1
+     */
+    'isShowAnnouncement'?: boolean;
+    /**
+     * 是否顯示New Feature Launch的Button
+     * @type {boolean}
+     * @memberof User1
+     */
+    'isPromotingNewFeature'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface User1OrganizationListInner
+ */
+export interface User1OrganizationListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof User1OrganizationListInner
+     */
+    'orgId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInner
+     */
+    'logo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInner
+     */
+    'orgName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInner
+     */
+    'orgNo'?: string;
+    /**
+     * 
+     * @type {Array<User1OrganizationListInnerMemberListInner>}
+     * @memberof User1OrganizationListInner
+     */
+    'memberList'?: Array<User1OrganizationListInnerMemberListInner>;
+    /**
+     * 
+     * @type {Array<User1OrganizationListInnerGroupListInner>}
+     * @memberof User1OrganizationListInner
+     */
+    'groupList'?: Array<User1OrganizationListInnerGroupListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface User1OrganizationListInnerGroupListInner
+ */
+export interface User1OrganizationListInnerGroupListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof User1OrganizationListInnerGroupListInner
+     */
+    'groupId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInnerGroupListInner
+     */
+    'groupName'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface User1OrganizationListInnerMemberListInner
+ */
+export interface User1OrganizationListInnerMemberListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInnerMemberListInner
+     */
+    'displayName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User1OrganizationListInnerMemberListInner
+     */
+    'avatar'?: string;
+}
+/**
+ * 
+ * @export
  * @interface UserChangeLanguagePostRequest
  */
 export interface UserChangeLanguagePostRequest {
@@ -24551,7 +24817,7 @@ export interface UserFeedbackSendPostRequest {
      * @type {number}
      * @memberof UserFeedbackSendPostRequest
      */
-    'category': UserFeedbackSendPostRequestCategoryEnum | null;
+    'category': UserFeedbackSendPostRequestCategoryEnum;
     /**
      * 
      * @type {string}
@@ -24561,6 +24827,11 @@ export interface UserFeedbackSendPostRequest {
 }
 
 export const UserFeedbackSendPostRequestCategoryEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null,
+    NUMBER_null5: null
 } as const;
 
 export type UserFeedbackSendPostRequestCategoryEnum = typeof UserFeedbackSendPostRequestCategoryEnum[keyof typeof UserFeedbackSendPostRequestCategoryEnum];
@@ -24758,10 +25029,12 @@ export interface UserForgotPasswordSendEmailPostRequest {
      * @type {number}
      * @memberof UserForgotPasswordSendEmailPostRequest
      */
-    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum | null;
+    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum;
 }
 
 export const UserForgotPasswordSendEmailPostRequestPlatformEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type UserForgotPasswordSendEmailPostRequestPlatformEnum = typeof UserForgotPasswordSendEmailPostRequestPlatformEnum[keyof typeof UserForgotPasswordSendEmailPostRequestPlatformEnum];
@@ -24822,50 +25095,6 @@ export interface UserForgotPasswordVerifyPostRequest {
      * @memberof UserForgotPasswordVerifyPostRequest
      */
     'verifyCode': string;
-}
-/**
- * 
- * @export
- * @interface UserGet200Response
- */
-export interface UserGet200Response {
-    /**
-     * 
-     * @type {UserGet200ResponseResult}
-     * @memberof UserGet200Response
-     */
-    'result'?: UserGet200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserGet200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGet200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof UserGet200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface UserGet200ResponseResult
- */
-export interface UserGet200ResponseResult {
-    /**
-     * 
-     * @type {User}
-     * @memberof UserGet200ResponseResult
-     */
-    'user'?: User;
 }
 /**
  * 
@@ -24973,6 +25202,88 @@ export interface UserGetOrgListPost200ResponseResultUserOrganizationListInnerMem
      * @memberof UserGetOrgListPost200ResponseResultUserOrganizationListInnerMemberListInner
      */
     'avatar'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface UserGetPersonalSetting200Response
+ */
+export interface UserGetPersonalSetting200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserGetPersonalSetting200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserGetPersonalSetting200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {UserGetPersonalSetting200ResponseAllOfResult}
+     * @memberof UserGetPersonalSetting200Response
+     */
+    'result'?: UserGetPersonalSetting200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof UserGetPersonalSetting200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserGetPersonalSetting200ResponseAllOfResult
+ */
+export interface UserGetPersonalSetting200ResponseAllOfResult {
+    /**
+     * 
+     * @type {User1}
+     * @memberof UserGetPersonalSetting200ResponseAllOfResult
+     */
+    'user'?: User1;
+}
+/**
+ * 
+ * @export
+ * @interface UserGetPersonalSetting423Response
+ */
+export interface UserGetPersonalSetting423Response {
+    /**
+     * 
+     * @type {UserGetPersonalSetting423ResponseMessage}
+     * @memberof UserGetPersonalSetting423Response
+     */
+    'message'?: UserGetPersonalSetting423ResponseMessage | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserGetPersonalSetting423ResponseMessage
+ */
+export interface UserGetPersonalSetting423ResponseMessage {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserGetPersonalSetting423ResponseMessage
+     */
+    'type'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserGetPersonalSetting423ResponseMessage
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserGetPersonalSetting423ResponseMessage
+     */
+    'content'?: string;
 }
 /**
  * 
@@ -25565,24 +25876,179 @@ export interface UserResendVerifyEmailPostRequest {
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'platform': UserResendVerifyEmailPostRequestPlatformEnum | null;
+    'platform': UserResendVerifyEmailPostRequestPlatformEnum;
     /**
      * 
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum | null;
+    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum;
 }
 
 export const UserResendVerifyEmailPostRequestPlatformEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestPlatformEnum = typeof UserResendVerifyEmailPostRequestPlatformEnum[keyof typeof UserResendVerifyEmailPostRequestPlatformEnum];
 export const UserResendVerifyEmailPostRequestSignupSourceTypeEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestSignupSourceTypeEnum = typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum[keyof typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum];
 
+/**
+ * 
+ * @export
+ * @interface UserSetting2FaLoginDisable200Response
+ */
+export interface UserSetting2FaLoginDisable200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserSetting2FaLoginDisable200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSetting2FaLoginDisable200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {UserSetting2FaLoginDisable200ResponseAllOfResult}
+     * @memberof UserSetting2FaLoginDisable200Response
+     */
+    'result'?: UserSetting2FaLoginDisable200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof UserSetting2FaLoginDisable200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserSetting2FaLoginDisable200ResponseAllOfResult
+ */
+export interface UserSetting2FaLoginDisable200ResponseAllOfResult {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserSetting2FaLoginDisable200ResponseAllOfResult
+     */
+    'data'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface UserSetting2FaLoginEnable200Response
+ */
+export interface UserSetting2FaLoginEnable200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserSetting2FaLoginEnable200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSetting2FaLoginEnable200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {UserSetting2FaLoginEnable200ResponseAllOfResult}
+     * @memberof UserSetting2FaLoginEnable200Response
+     */
+    'result'?: UserSetting2FaLoginEnable200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof UserSetting2FaLoginEnable200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserSetting2FaLoginEnable200ResponseAllOfResult
+ */
+export interface UserSetting2FaLoginEnable200ResponseAllOfResult {
+    /**
+     * 
+     * @type {OneTimePasswordStatus}
+     * @memberof UserSetting2FaLoginEnable200ResponseAllOfResult
+     */
+    'otpStatus'?: OneTimePasswordStatus;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserSetting2FaLoginEnable200ResponseAllOfResult
+     */
+    'data'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface UserSetting2FaLoginEnableRequest
+ */
+export interface UserSetting2FaLoginEnableRequest {
+    /**
+     * if otp is null, then it is treated like the first time requesting to enable 2FA. Subsequent flow (aka inputting the OTP) this must not be null 
+     * @type {string}
+     * @memberof UserSetting2FaLoginEnableRequest
+     */
+    'otp': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserUpdatePost200Response
+ */
+export interface UserUpdatePost200Response {
+    /**
+     * 
+     * @type {UserUpdatePost200ResponseResult}
+     * @memberof UserUpdatePost200Response
+     */
+    'result'?: UserUpdatePost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserUpdatePost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserUpdatePost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof UserUpdatePost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserUpdatePost200ResponseResult
+ */
+export interface UserUpdatePost200ResponseResult {
+    /**
+     * 
+     * @type {User}
+     * @memberof UserUpdatePost200ResponseResult
+     */
+    'user'?: User;
+}
 /**
  * 
  * @export
@@ -25708,7 +26174,7 @@ export interface ValueAddedServiceMade2flow {
      * @type {number}
      * @memberof ValueAddedServiceMade2flow
      */
-    'status'?: ValueAddedServiceMade2flowStatusEnum | null;
+    'status'?: ValueAddedServiceMade2flowStatusEnum;
     /**
      * 
      * @type {Made2FlowPlanType}
@@ -25742,6 +26208,10 @@ export interface ValueAddedServiceMade2flow {
 }
 
 export const ValueAddedServiceMade2flowStatusEnum = {
+    NUMBER_null: null,
+    NUMBER_null2: null,
+    NUMBER_null3: null,
+    NUMBER_null4: null
 } as const;
 
 export type ValueAddedServiceMade2flowStatusEnum = typeof ValueAddedServiceMade2flowStatusEnum[keyof typeof ValueAddedServiceMade2flowStatusEnum];
@@ -25954,7 +26424,7 @@ export type WeavingProcessDataResponseAllOfProcessType = number | string;
 /**
  * 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const WeightUnit = {
@@ -26310,7 +26780,7 @@ export type YarnProcessingDataResponseAllOfProcessType = number | string;
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
- * @enum {number}
+ * @enum {string}
  */
 
 export const ZfabStatus = {
@@ -44915,40 +45385,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary 取得使用者資料
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 取得使用者已加入的組織清單
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -44965,6 +45401,40 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得使用者資料
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userGetPersonalSetting: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -45278,7 +45748,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
+        async userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userChangeLanguagePost(userChangeLanguagePostRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.userChangeLanguagePost']?.[localVarOperationServerIndex]?.url;
@@ -45390,18 +45860,6 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 取得使用者資料
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async userGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UserApi.userGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 取得使用者已加入的組織清單
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -45410,6 +45868,18 @@ export const UserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGetOrgListPost(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.userGetOrgListPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 取得使用者資料
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userGetPersonalSetting(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetPersonalSetting200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userGetPersonalSetting(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userGetPersonalSetting']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -45482,7 +45952,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGet200Response>> {
+        async userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdatePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userUpdatePost(userUpdatePostRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.userUpdatePost']?.[localVarOperationServerIndex]?.url;
@@ -45531,7 +46001,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserGet200Response> {
+        userChangeLanguagePost(userChangeLanguagePostRequest?: UserChangeLanguagePostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserUpdatePost200Response> {
             return localVarFp.userChangeLanguagePost(userChangeLanguagePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -45616,21 +46086,21 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary 取得使用者資料
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userGet(options?: RawAxiosRequestConfig): AxiosPromise<UserGet200Response> {
-            return localVarFp.userGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 取得使用者已加入的組織清單
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         userGetOrgListPost(options?: RawAxiosRequestConfig): AxiosPromise<UserGetOrgListPost200Response> {
             return localVarFp.userGetOrgListPost(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得使用者資料
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userGetPersonalSetting(options?: RawAxiosRequestConfig): AxiosPromise<UserGetPersonalSetting200Response> {
+            return localVarFp.userGetPersonalSetting(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -45687,7 +46157,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserGet200Response> {
+        userUpdatePost(userUpdatePostRequest?: UserUpdatePostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserUpdatePost200Response> {
             return localVarFp.userUpdatePost(userUpdatePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -45830,17 +46300,6 @@ export class UserApi extends BaseAPI {
 
     /**
      * 
-     * @summary 取得使用者資料
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public userGet(options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).userGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 取得使用者已加入的組織清單
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -45848,6 +46307,17 @@ export class UserApi extends BaseAPI {
      */
     public userGetOrgListPost(options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userGetOrgListPost(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得使用者資料
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public userGetPersonalSetting(options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).userGetPersonalSetting(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -45942,6 +46412,250 @@ export class UserApi extends BaseAPI {
      */
     public userVerifyPost(userVerifyPostRequest?: UserVerifyPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userVerifyPost(userVerifyPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UserSettingApi - axios parameter creator
+ * @export
+ */
+export const UserSettingApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Disable 2FA for login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginDisable: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/settings/login-2fa/disable`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Enable 2FA for login
+         * @param {UserSetting2FaLoginEnableRequest} [userSetting2FaLoginEnableRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginEnable: async (userSetting2FaLoginEnableRequest?: UserSetting2FaLoginEnableRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/settings/login-2fa/enable`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userSetting2FaLoginEnableRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Resend otp for 2FA login setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginResendOtp: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/settings/login-2fa/resend-otp`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UserSettingApi - functional programming interface
+ * @export
+ */
+export const UserSettingApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = UserSettingApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Disable 2FA for login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSetting2FaLoginDisable(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSetting2FaLoginDisable200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSetting2FaLoginDisable(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserSettingApi.userSetting2FaLoginDisable']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Enable 2FA for login
+         * @param {UserSetting2FaLoginEnableRequest} [userSetting2FaLoginEnableRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest?: UserSetting2FaLoginEnableRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSetting2FaLoginEnable200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserSettingApi.userSetting2FaLoginEnable']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Resend otp for 2FA login setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSetting2FaLoginResendOtp(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSetting2FaLoginEnable200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSetting2FaLoginResendOtp(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserSettingApi.userSetting2FaLoginResendOtp']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * UserSettingApi - factory interface
+ * @export
+ */
+export const UserSettingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = UserSettingApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Disable 2FA for login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginDisable(options?: RawAxiosRequestConfig): AxiosPromise<UserSetting2FaLoginDisable200Response> {
+            return localVarFp.userSetting2FaLoginDisable(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Enable 2FA for login
+         * @param {UserSetting2FaLoginEnableRequest} [userSetting2FaLoginEnableRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest?: UserSetting2FaLoginEnableRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserSetting2FaLoginEnable200Response> {
+            return localVarFp.userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Resend otp for 2FA login setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSetting2FaLoginResendOtp(options?: RawAxiosRequestConfig): AxiosPromise<UserSetting2FaLoginEnable200Response> {
+            return localVarFp.userSetting2FaLoginResendOtp(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * UserSettingApi - object-oriented interface
+ * @export
+ * @class UserSettingApi
+ * @extends {BaseAPI}
+ */
+export class UserSettingApi extends BaseAPI {
+    /**
+     * 
+     * @summary Disable 2FA for login
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserSettingApi
+     */
+    public userSetting2FaLoginDisable(options?: RawAxiosRequestConfig) {
+        return UserSettingApiFp(this.configuration).userSetting2FaLoginDisable(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Enable 2FA for login
+     * @param {UserSetting2FaLoginEnableRequest} [userSetting2FaLoginEnableRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserSettingApi
+     */
+    public userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest?: UserSetting2FaLoginEnableRequest, options?: RawAxiosRequestConfig) {
+        return UserSettingApiFp(this.configuration).userSetting2FaLoginEnable(userSetting2FaLoginEnableRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Resend otp for 2FA login setting
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserSettingApi
+     */
+    public userSetting2FaLoginResendOtp(options?: RawAxiosRequestConfig) {
+        return UserSettingApiFp(this.configuration).userSetting2FaLoginResendOtp(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

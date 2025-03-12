@@ -14,35 +14,46 @@
 
 <template lang="pug">
 div(class="flex")
-  v-pagination(
-    v-model="innerCurrentPage"
-    :pages="totalPage"
-    :range-size="1"
-    @update:modelValue="updateHandler"
-  )
-  template(v-if="showQuickJumperProp") 
-    div(class="mx-4 my-auto") Go to
-    f-input-text(
-      v-if="showQuickJumperProp"
-      @keyup.enter="handleQuickJump"
-      v-model:textValue="jumpPage"
-      :placeholder="$t('OO0128')"
-      size="md"
-      class="w-18"
+  div(class="flex min-w-72 max-w-140 justify-between items-center")
+    div(
+      class="bg-grey-50-v1 rounded-sm w-8 h-8 flex items-center justify-center cursor-pointer"
+      @click="updateHandler(currentPage - 1)"
     )
+      f-svg-icon(
+        size="16"
+        iconName="left_arrow_page"
+        :class="{ 'text-grey-400-v1': currentPage === 1 }"
+      )
+    div(class="flex flex-nowrap gap-x-2")
+      f-input-text(
+        v-if="showQuickJumperProp"
+        @keyup.enter="handleQuickJump"
+        v-model:textValue="jumpPage"
+        :placeholder="currentPage"
+        size="md"
+        class="w-12 font-bold"
+        :clearable="false"
+      ) 
+      div(class="flex justify-center items-center gap-x-2 font-bold") 
+        div(class="font-normal") of
+        div {{ totalPage }}
+    div(
+      class="bg-grey-50-v1 rounded-sm w-8 h-8 flex items-center justify-center cursor-pointer"
+      @click="updateHandler(currentPage + 1)"
+    )
+      f-svg-icon(
+        size="16"
+        iconName="right_arrow_page"
+        :class="{ 'text-grey-400-v1': currentPage === totalPage }"
+      )
 </template>
 
 <script>
-// https://www.npmjs.com/package/@hennge/vue3-pagination
-import VPagination from '@hennge/vue3-pagination'
-import '@hennge/vue3-pagination/dist/vue3-pagination.css'
-import { computed, ref, toRefs } from 'vue'
+import { computed, ref, toRefs, onMounted, onUnmounted } from 'vue'
 
 export default {
   name: 'FPaginator',
-  components: {
-    VPagination,
-  },
+
   props: {
     showQuickJumper: {
       type: Boolean,
@@ -61,11 +72,19 @@ export default {
   setup(props, { emit }) {
     const innerCurrentPage = computed({
       get: () => props.currentPage,
-      set: (v) => emit('update:currentPage', v),
+      set: (v) => {
+        emit('update:currentPage', v)
+        jumpPage.value = v
+      },
     })
     const { showQuickJumper: showQuickJumperProp } = toRefs(props)
 
     const updateHandler = (page) => {
+      if (page < 1 || page > props.totalPage) {
+        return
+      }
+      jumpPage.value = page
+      emit('update:currentPage', page)
       emit('goTo', page)
     }
     const jumpPage = ref(null)
@@ -82,8 +101,27 @@ export default {
         jumpPage.value = null
       }
     }
+    const handleKeydown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        updateHandler(props.currentPage - 1)
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        updateHandler(props.currentPage + 1)
+      }
+    }
+    onMounted(() => {
+      jumpPage.value = props.currentPage
+      window.addEventListener('keydown', handleKeydown)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('keydown', handleKeydown)
+    })
 
     return {
+      handleKeydown,
       jumpPage,
       handleQuickJump,
       showQuickJumperProp,

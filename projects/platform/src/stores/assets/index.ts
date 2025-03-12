@@ -70,7 +70,6 @@ export const useAssetsStore = defineStore('assets', () => {
     materialList.value = data.result.materialList.map((item) => {
       return assignCarbonEmissionValue(item)
     })
-
     searchStore.setPaginationRes(data.result.pagination)
   }
 

@@ -43,7 +43,11 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
           )
       slot(name="header-right")
   slot(name="sub-header")
-  div(v-if="pagination" class="md:overflow-y-auto flex-grow flex flex-col")
+  div(
+    v-if="pagination"
+    class="md:overflow-y-auto flex-grow flex flex-col"
+    ref="scrollContainer"
+  )
     div(
       v-if="isSearching || (inSearch && pagination.totalCount === 0)"
       class="flex-grow flex flex-col justify-center items-center"
@@ -88,7 +92,14 @@ multi-select-menu(
 <script setup lang="ts">
 import SearchBox from '@/components/common/SearchBox.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
-import { ref, computed, defineOptions } from 'vue'
+import {
+  nextTick,
+  ref,
+  computed,
+  defineOptions,
+  watch,
+  onBeforeUnmount,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 import type { FunctionOption } from '@/types'
@@ -176,6 +187,9 @@ const {
   paginationRes: pagination,
 } = storeToRefs(searchStore)
 const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
+
+const scrollContainer = ref<HTMLElement | null>(null)
+const SCROLL_POSITION_KEY = 'searchTableScrollPosition'
 
 const isSearching = ref(false)
 const inSearch = ref(false)
@@ -387,4 +401,54 @@ searchStore.setSelectedTagList(
 
 filterStore.setFilterStateByQueryString(qFilter ? (qFilter as string) : '{}')
 search(currentPage ? Number(currentPage) : 1)
+
+watch(
+  () => isSearching.value,
+  (newVal) => {
+    nextTick(() => {
+      if (!newVal) {
+        const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY)
+        if (scrollContainer.value && savedPosition) {
+          smoothScrollTo(scrollContainer.value, parseInt(savedPosition, 10))
+          // scrollContainer.value.scrollTop = parseInt(savedPosition, 10)
+        }
+      }
+    })
+  }
+)
+
+onBeforeUnmount(() => {
+  if (scrollContainer.value) {
+    sessionStorage.setItem(
+      SCROLL_POSITION_KEY,
+      scrollContainer.value.scrollTop.toString()
+    )
+  }
+})
+
+const smoothScrollTo = (
+  element: HTMLElement,
+  target: number,
+  duration: number = 500
+) => {
+  const start = element.scrollTop
+  const change = target - start
+  const startTime = performance.now()
+
+  function animateScroll(currentTime: number) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1) // 进度 0~1
+    element.scrollTop = start + change * easeInOutQuad(progress)
+
+    if (progress < 1) {
+      requestAnimationFrame(animateScroll)
+    }
+  }
+
+  function easeInOutQuad(t: number) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+  }
+
+  requestAnimationFrame(animateScroll)
+}
 </script>

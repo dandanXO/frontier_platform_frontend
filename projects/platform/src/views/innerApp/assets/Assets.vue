@@ -140,7 +140,8 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
-const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
+const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
+  useNavigation()
 const roleId = store.getters['organization/orgUser/orgUser'].roleID
 const permissionList = PERMISSION_MAP[roleId]
 const clickMaterialItemHandler = (materialId: number) => {
@@ -308,14 +309,19 @@ const getMaterialList = async (
   payload: SearchPayload<AssetsFilter>,
   query: Record<string, string>
 ) => {
-  const url = new URL(window.location.href)
-  Object.keys(query).forEach((key) => {
-    if (query[key]) {
-      url.searchParams.set(key, query[key])
+  let _queryString = ''
+  const queryKeys = Object.keys(query)
+  queryKeys.forEach((key, index) => {
+    const queryKey = key as keyof RouteQuery
+    if (query[queryKey]) {
+      _queryString += `${key}=${query[queryKey]}`
+      if (index < queryKeys.length - 1) {
+        _queryString += '&'
+      }
     }
   })
-  window.history.replaceState(null, '', url.toString())
 
+  goToAssets({}, _queryString)
   await assetsStore.getAssetsMaterialList(payload)
 }
 

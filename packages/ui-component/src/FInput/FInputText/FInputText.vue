@@ -601,8 +601,8 @@ const classMain = computed(() => {
         classList.push(
           isError.value
             ? 'shadow-[0_0_0_4px_#FDE7DA]'
-            : 'shadow-[0_0_0_4px_#E9F8F3]',
-          'border-primary-300',
+            : 'shadow-[0_0_0_2px_#8ADDF4]',
+          'border-grey-200',
           'bg-grey-0',
           'relative',
           'z-1'
@@ -627,7 +627,7 @@ const classMain = computed(() => {
         classList.push(
           isError.value
             ? 'shadow-[0_0_0_4px_#FDE7DA]'
-            : 'shadow-[0_0_0_4px_#03393E]',
+            : 'shadow-[0_0_0_2px_#8ADDF4]',
           'border-primary-500',
           'bg-grey-900',
           'relative',
