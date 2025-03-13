@@ -1,6 +1,6 @@
 <template lang="pug">
 button(
-  class="rounded font-bold flex gap-x-1 items-center justify-center whitespace-nowrap"
+  class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
   :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )

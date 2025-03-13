@@ -8,7 +8,7 @@ div(
 )
   f-svg-icon(iconName="upload" size="42" class="text-brand-solid")
   p(class="text-base text-primary-inverse") {{ $t('RR0484') }}
-  f-button(size="md" type="secondary") {{ $t('DD0038') }}
+  f-button(size="md" type="secondary" class="font-bold") {{ $t('DD0038') }}
 ul(class="list-disc pl-5 text-sm font-normal")
   li {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
   li {{ $t('WW0144') }} {{ MIN_DIMENSION_IMAGE }} x {{ MIN_DIMENSION_IMAGE }} px
