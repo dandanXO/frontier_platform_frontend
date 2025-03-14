@@ -16,7 +16,7 @@
 div(class="flex")
   div(class="flex min-w-72 max-w-140 justify-between items-center")
     div(
-      class="bg-grey-50-v1 rounded-sm w-8 h-8 flex items-center justify-center cursor-pointer"
+      class="bg-grey-50-v1 rounded-sm w-12 h-12 flex items-center justify-center cursor-pointer"
       @click="updateHandler(currentPage - 1)"
     )
       f-svg-icon(
@@ -24,21 +24,22 @@ div(class="flex")
         iconName="left_arrow_page"
         :class="{ 'text-grey-400-v1': currentPage === 1 }"
       )
-    div(class="flex flex-nowrap gap-x-2")
-      f-input-text(
-        v-if="showQuickJumperProp"
-        @keyup.enter="handleQuickJump"
-        v-model:textValue="jumpPage"
-        :placeholder="currentPage"
-        size="md"
-        class="w-12 font-bold"
-        :clearable="false"
-      ) 
-      div(class="flex justify-center items-center gap-x-2 font-bold") 
+    div(class="flex h-12 justify-center flex-nowrap gap-x-2")
+      div
+        f-input-text(
+          v-if="showQuickJumperProp"
+          @keyup.enter="handleQuickJump"
+          v-model:textValue="jumpPage"
+          :placeholder="currentPage"
+          size="xl"
+          class="w-12 font-bold"
+          :clearable="false"
+        ) 
+      div(class="flex justify-center items-center gap-x-2 font-bold text-grey-900-v1") 
         div(class="font-normal") of
         div {{ totalPage }}
     div(
-      class="bg-grey-50-v1 rounded-sm w-8 h-8 flex items-center justify-center cursor-pointer"
+      class="bg-grey-50-v1 rounded-sm w-12 h-12 flex items-center justify-center cursor-pointer"
       @click="updateHandler(currentPage + 1)"
     )
       f-svg-icon(

@@ -25,7 +25,8 @@ import {
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
-  let cancelTokenSource: CancelTokenSource | null = null
+  let cancelTokenSourceMaterial: CancelTokenSource | null = null
+  let cancelTokenSourceSlim: CancelTokenSource | null = null
   const { goToAssetMaterialSpreadSheet } = useNavigation()
   const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
@@ -42,6 +43,7 @@ export const useAssetsStore = defineStore('assets', () => {
   )
 
   const materialList = ref<Material[]>([])
+  const slimMaterialList = ref<Material[]>([])
 
   const viewMode = computed(() => {
     if (uploadPageUseBothUi.value) {
@@ -59,17 +61,38 @@ export const useAssetsStore = defineStore('assets', () => {
     search: Search | null
     filter: AssetsFilter | null
   }) => {
-    if (cancelTokenSource) {
-      cancelTokenSource.cancel('Operation canceled due to new request')
+    if (cancelTokenSourceMaterial) {
+      cancelTokenSourceMaterial.cancel('Operation canceled due to new request')
     }
-    cancelTokenSource = axios.CancelToken.source()
+    cancelTokenSourceMaterial = axios.CancelToken.source()
     const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload, {
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSourceMaterial.token,
     })
 
     materialList.value = data.result.materialList.map((item) => {
       return assignCarbonEmissionValue(item)
     })
+    searchStore.setPaginationRes(data.result.pagination)
+  }
+
+  const getAssetsMaterialSlimList = async (payload: {
+    pagination: PaginationReq
+    search: Search | null
+    filter: AssetsFilter | null
+  }) => {
+    if (cancelTokenSourceSlim) {
+      cancelTokenSourceSlim.cancel('Operation canceled due to new request')
+    }
+    cancelTokenSourceSlim = axios.CancelToken.source()
+    const { data } = await ogBaseAssetsApi(
+      'getAssetMaterialSlimList',
+      payload,
+      {
+        cancelToken: cancelTokenSourceSlim.token,
+      }
+    )
+
+    slimMaterialList.value = data.result.materialList
     searchStore.setPaginationRes(data.result.pagination)
   }
 
@@ -200,7 +223,9 @@ export const useAssetsStore = defineStore('assets', () => {
     switchCreateAssetsView,
     materialList,
     spreadsheetInitialMaterial,
+    slimMaterialList,
     getAssetsMaterialList,
+    getAssetsMaterialSlimList,
     uploadingU3mMaterialIdList,
     uploadCustomU3m,
     uploadCustomU3mV2,

@@ -23,7 +23,10 @@ div(class="h-full flex overflow-x-hidden")
     )
       suspense
         component(:is="Component")
-        template(#fallback)
+        template(
+          #fallback
+          v-if="!$route.matched.some((r) => r.name === 'Assets')"
+        )
           div(class="h-full flex justify-center items-center" data-cy="loading-indicator")
             f-svg-icon(iconName="loading" size="92" class="text-primary-500")
     notify-bar-buffer(

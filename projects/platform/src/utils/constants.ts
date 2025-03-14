@@ -669,3 +669,5 @@ export const PrintLabelSettingBasicInfo = {
 }
 
 export const MIN_DIMENSION_2D_MATERIAL = 800
+
+export const SCROLL_POSITION_KEY = 'searchTableScrollPosition'

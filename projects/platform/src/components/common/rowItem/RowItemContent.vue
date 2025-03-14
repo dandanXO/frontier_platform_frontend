@@ -13,8 +13,14 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
       :extension="Extension.JPG"
       class="w-full h-full"
     )
+    // Loading animation overlay
     div(
-      v-if="isHover"
+      v-if="isLoading && isHover"
+      class="absolute z-10 inset-0 w-full h-full rounded bg-grey-900/70 flex flex-col items-center justify-center cursor-wait text-center"
+    )
+      div(class="text-grey-0 text-caption mt-2") Loading...
+    div(
+      v-else-if="isHover"
       class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
       @click.stop="canEdit && clickMaterialItemHandler(material.materialId)"
     )
@@ -196,6 +202,7 @@ const props = defineProps<{
   selectedList: Material[]
   material: Material
   materialOptions?: MaterialOptions
+  isLoading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -235,7 +242,7 @@ const tempPrivateTagList = props.material.internalInfo?.tagList.join(', ') ?? ''
 const privateTagList = ref(tempPrivateTagList)
 
 const handleShowMore = (key: string) => {
-  showMoreButtons[key] = false
+  showMoreButtons[key as keyof typeof showMoreButtons] = false
 }
 
 const hasExtendedContent = (str: string, limit: number = 30) => {
@@ -277,10 +284,10 @@ const innerSwitchSideType = (sideType: SideType) => {
 
     if (currentSideType.value === MATERIAL_SIDE_TYPE.FACE) {
       currentCoverImage.value =
-        props.material.faceSide?.sideImage?.thumbnailUrl ?? null
+        (props.material.faceSide?.sideImage?.thumbnailUrl as string) ?? null
     } else if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
       currentCoverImage.value =
-        props.material.backSide?.sideImage?.thumbnailUrl ?? null
+        (props.material.backSide?.sideImage?.thumbnailUrl as string) ?? null
     }
   } else {
     isShowOriginalCoverImage.value = true

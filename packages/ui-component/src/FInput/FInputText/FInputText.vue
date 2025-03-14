@@ -584,13 +584,16 @@ const classMain = computed(() => {
     case 'lg':
       classList.push('h-11', 'px-3', 'gap-x-2')
       break
+    case 'xl':
+      classList.push('h-12', 'px-3', 'gap-x-2')
+      break
   }
 
   if (props.theme === THEME.LIGHT) {
     switch (state.value) {
       case STATE.DEFAULT:
         classList.push(
-          'border-grey-200',
+          'border-grey-200-v1',
           isError.value ? 'bg-grey-50' : 'bg-grey-0'
         )
         break
@@ -602,7 +605,7 @@ const classMain = computed(() => {
           isError.value
             ? 'shadow-[0_0_0_4px_#FDE7DA]'
             : 'shadow-[0_0_0_2px_#8ADDF4]',
-          'border-grey-200',
+          'border-grey-200-v1',
           'bg-grey-0',
           'relative',
           'z-1'

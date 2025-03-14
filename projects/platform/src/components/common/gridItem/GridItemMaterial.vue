@@ -15,15 +15,15 @@ grid-item-wrapper(
       img(
         v-if="showImage"
         v-defaultImg
-        :src="material.coverImage?.thumbnailUrl"
+        :src="material.coverImage?.thumbnailUrl || undefined"
         class="w-full h-full object-contain"
-        @error="imageOnerror($event)"
+        @error="imageOnerror"
       )
       div(v-else class="w-full h-full flex items-center justify-center bg-grey-100")
         img(class="w-full h-full object-contain" :src="imgDefaultMaterial")
   template(#hover-content)
     f-popper(
-      v-if="optionList && optionList.length > 0"
+      v-if="optionList && optionList.length > 0 && !isLoading"
       placement="right-start"
       class="cursor-pointer h-full w-full"
       :class="['visible']"
@@ -41,6 +41,13 @@ grid-item-wrapper(
           ) {{ info }}
       template(#content="{ collapsePopper }")
         f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
+
+    // Loading animation on hover
+    div(
+      v-if="isLoading"
+      class="cursor-wait h-full w-full flex flex-col items-center justify-center bg-grey-900 bg-opacity-70 text-center"
+    )
+      div(class="text-grey-0 text-caption mt-2") Loading...
 
   template(#corner-top-right)
     digital-thread-entrance(
@@ -75,9 +82,11 @@ const props = withDefaults(
     selectedValue?: Array<any>
     optionList?: FunctionOption<any>[][]
     drawerOpenFromLocationList: string[]
+    isLoading?: boolean
   }>(),
   {
     isSelectable: true,
+    isLoading: false,
   }
 )
 

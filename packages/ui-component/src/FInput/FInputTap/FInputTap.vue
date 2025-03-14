@@ -2,8 +2,8 @@
 div(class="flex items-center")
   template(v-for="(option, index) in optionList" :key="option.text")
     div(
-      :class="[getClasses(index, option.selectValue), { 'rounded-l': index === 0, 'rounded-r': index === optionList.length - 1 }]"
-      @click="$emit('update:inputValue', option.selectValue)"
+      :class="[getClasses(index, option), { 'rounded-l': index === 0, 'rounded-r': index === optionList.length - 1 }]"
+      @click="!option.disabled && $emit('update:inputValue', option.selectValue)"
     )
       f-svg-icon(v-if="option.icon" :iconName="getIcon(option)" size="24")
       span(v-if="option.label" class="text-body2 font-bold") {{ option.label }}
@@ -18,6 +18,7 @@ interface Option {
   selectValue: any
   icon?: string
   selectedIcon?: string
+  disabled?: boolean
 }
 
 const props = withDefaults(
@@ -41,7 +42,7 @@ const selectedIndex = computed(() =>
   )
 )
 
-const getClasses = (index: number, selectValue: Option['selectValue']) => {
+const getClasses = (index: number, option: Option) => {
   const classes = [
     'flex',
     'flex-row',
@@ -51,8 +52,9 @@ const getClasses = (index: number, selectValue: Option['selectValue']) => {
     'px-1.5',
     'border-y',
     'min-h-7.5',
-    'cursor-pointer',
   ]
+
+  classes.push(option.disabled ? 'cursor-not-allowed' : 'cursor-pointer')
 
   if (index === 0) {
     classes.push('border-x')
@@ -73,14 +75,26 @@ const getClasses = (index: number, selectValue: Option['selectValue']) => {
     classes.push('!border-r-0')
   }
 
-  if (props.theme === THEME.LIGHT) {
-    props.inputValue === selectValue
-      ? classes.push('border-primary-400', 'text-primary-400', 'bg-primary-50')
-      : classes.push('border-grey-250', 'text-grey-600', 'bg-grey-0')
+  if (option.disabled) {
+    classes.push('border-grey-250', 'text-grey-400', 'bg-grey-100')
   } else {
-    props.inputValue === selectValue
-      ? classes.push('border-primary-400', 'text-primary-400', 'bg-primary-900')
-      : classes.push('border-grey-600', 'text-grey-250', 'bg-grey-800')
+    if (props.theme === THEME.LIGHT) {
+      props.inputValue === option.selectValue
+        ? classes.push(
+            'border-primary-400',
+            'text-primary-400',
+            'bg-primary-50'
+          )
+        : classes.push('border-grey-250', 'text-grey-600', 'bg-grey-0')
+    } else {
+      props.inputValue === option.selectValue
+        ? classes.push(
+            'border-primary-400',
+            'text-primary-400',
+            'bg-primary-900'
+          )
+        : classes.push('border-grey-600', 'text-grey-250', 'bg-grey-800')
+    }
   }
 
   return classes

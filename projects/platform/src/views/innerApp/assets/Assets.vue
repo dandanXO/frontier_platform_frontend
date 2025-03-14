@@ -1,107 +1,206 @@
-<template lang="pug">
-search-table(
-  :searchType="SEARCH_TYPE.ASSETS"
-  :searchCallback="getMaterialList"
-  :optionSort="optionSort"
-  :optionMultiSelect="optionMultiSelect"
-  :itemList="materialList"
-  v-model:selectedItemList="selectedMaterialList"
-)
-  template(#header-left="{ totalCount }")
-    h5(class="text-h5 font-bold text-grey-900") {{ $t('RR0008') }}
-      span(class="text-caption text-grey-600 pl-1")
-        span (
-        i18n-t(keypath="RR0068" tag="span" scope="global")
-          template(#number) {{ totalCount }}
-        span )
-  template(#header-right)
-    f-input-tap(
-      :optionList="displayModeOptionList"
-      v-model:inputValue="displayMode"
-    )
-    f-button(
-      v-permission="{ FUNC_ID: FUNC_ID.ASSET_CREATE, behavior: 'deleteElement' }"
-      size="sm"
-      prependIcon="texture_add"
-      @click="goToMaterialUpload"
-    ) {{ $t('UU0020') }}
-  template(#default)
-    template(v-if="materialList.length > 0")
-      //- Jira: F22-3010
-      //- 因為 rowItem 加入 color, pattern 呈現後，每個 rowItem 的高度會不一致，所以無法使用 recycle-scroller
-      //- 先改回 v-for 去 render，但是會犧牲部分效能
-      //- recycle-scroller(
-      //-   v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
-      //-   :items="materialList"
-      //-   :itemSize="currentItemSize"
-      //-   key-field="materialId"
-      //-   pageMode
-      //-   v-slot="{ item, index }"
-      //-   @resize="resize"
-      //-   :buffer="currentItemSize * 3"
-      //- )
-      //-   row-item(
-      //-     :key="item.materialId"
-      //-     :material="item"
-      //-     v-model:selectedList="selectedMaterialList"
-      //-     data-cy="assets"
-      //-   )
-      //-   div(
-      //-     v-if="index !== materialList.length - 1"
-      //-     class="border-b border-grey-250 mx-7.5 my-5"
-      //-   )
-      div(
-        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
-        v-for="(item, index) in materialList"
-        :key="item.materialId"
-      )
-        row-item(
-          :material="item"
-          v-model:selectedList="selectedMaterialList"
-          :materialOptions="materialOptions"
-          data-cy="assets-item-list"
-        )
-        div(
-          v-if="index !== materialList.length - 1"
-          class="border-b border-grey-250 mx-7.5 my-5"
-        )
-      div(
-        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-        class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
-      )
-        grid-item-material(
-          v-for="material in materialList"
-          :key="material.materialId"
-          :material="material"
-          :selectValue="material"
-          v-model:selectedValue="selectedMaterialList"
-          :optionList="optionList"
-          @click.stop="clickMaterialItemHandler(material.materialId)"
-          :drawerOpenFromLocationList="[]"
-          data-cy="assets-item-grid"
-          :data-tooltip-boundary-reference="`material-${material.materialId}`"
-        )
-          template(
-            #title-right-icon
-            v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
-          )
-            low-dpi-label(
-              :material="material"
-              :materialOptions="materialOptions"
-            )
-    div(v-else class="flex h-full justify-center items-center")
-      div(class="flex flex-col justify-center items-center")
-        div(
-          v-if="permissionList.includes(FUNC_ID.ASSET_CREATE)"
-          class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
-          @click="goToMaterialUpload()"
-        )
-          f-svg-icon(iconName="texture_add" size="24" class="text-grey-900")
-        p(
-          v-if="permissionList.includes(FUNC_ID.ASSET_CREATE)"
-          class="text-body2 text-grey-900 pt-3"
-        ) {{ $t('EE0079') }}
-        div(v-else class="text-body2 text-grey-900") {{ $t('HH0013') }}
+<template>
+  <search-table
+    :display-mode="displayMode"
+    :search-type="SEARCH_TYPE.ASSETS"
+    :search-callback="getMaterialList"
+    :option-sort="sortOptions"
+    :option-multi-select="multiSelectOptions"
+    :item-list="displayedMaterialList"
+    v-model:selected-item-list="selectedMaterialList"
+    :is-asset-slim-list-loading="isSlimMaterialsLoading"
+    assets
+  >
+    <template #header-left="{ totalCount }">
+      <h5 class="text-h5 font-bold text-grey-900">
+        {{ $t('RR0008') }}
+        <span class="text-caption text-grey-600 pl-1">
+          <span>(</span>
+          <i18n-t keypath="RR0068" tag="span" scope="global">
+            <template #number>{{ totalCount }}</template>
+          </i18n-t>
+          <span>)</span>
+        </span>
+      </h5>
+    </template>
+
+    <template #header-right>
+      <div class="flex items-center space-x-3">
+        <f-input-tap
+          :option-list="displayModeOptions"
+          v-model:input-value="displayMode"
+        />
+        <f-button
+          v-permission="{
+            FUNC_ID: FUNC_ID.ASSET_CREATE,
+            behavior: 'deleteElement',
+          }"
+          size="sm"
+          prepend-icon="texture_add"
+          @click="goToMaterialUpload"
+        >
+          {{ $t('UU0020') }}
+        </f-button>
+      </div>
+    </template>
+
+    <template #default>
+      <template v-if="displayedMaterialList.length > 0">
+        <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
+          <div
+            v-for="(item, index) in displayedMaterialList"
+            :key="`${item.materialId}-${new Date().getTime()}`"
+          >
+            <RowItem
+              :material="item"
+              v-model:selected-list="selectedMaterialList"
+              :material-options="materialOptions"
+              data-cy="assets-item-list"
+              :disabled="isLoading"
+            />
+            <div
+              v-if="index !== displayedMaterialList.length - 1"
+              class="border-b border-grey-250 mx-7.5 my-5"
+            />
+          </div>
+        </div>
+
+        <div
+          v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
+          class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+        >
+          <GridItemMaterial
+            v-for="material in displayedMaterialList"
+            :key="material.materialId + '-' + new Date().getTime()"
+            :material="material"
+            :select-value="material"
+            v-model:selected-value="selectedMaterialList"
+            :option-list="optionList"
+            :is-selectable="!isLoading"
+            :is-loading="isLoading"
+            @click.stop="handleMaterialClick(material.materialId)"
+            :drawer-open-from-location-list="[]"
+            data-cy="assets-item-grid"
+            :data-tooltip-boundary-reference="`material-${material.materialId}`"
+          >
+            <template
+              #title-right-icon
+              v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+            >
+              <LowDpiLabel
+                :material="material"
+                :material-options="materialOptions"
+              />
+            </template>
+          </GridItemMaterial>
+        </div>
+      </template>
+      <template v-else-if="isSlimMaterialsLoading">
+        <!-- Skeleton loading for LIST view -->
+        <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
+          <div v-for="i in 40" :key="`skeleton-list-${i}`">
+            <div
+              class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+            >
+              <!-- Item content - using col-span-11 like the real component -->
+              <div class="col-span-11 grid grid-cols-12">
+                <!-- Left part: image + item details (matches RowItemContent structure) -->
+                <div class="w-full min-w-42.5 max-w-67.5 col-span-3">
+                  <!-- Item number -->
+                  <SkeletonBase class="h-5 w-3/4 mb-2.5" />
+
+                  <!-- Image placeholder -->
+                  <div class="w-full relative aspect-square">
+                    <SkeletonBase class="w-full h-full" />
+                  </div>
+
+                  <!-- Item specs -->
+                  <div class="my-2">
+                    <SkeletonBase class="h-4 w-full mb-1" />
+                    <SkeletonBase class="h-4 w-3/4" />
+                  </div>
+
+                  <!-- Icons row -->
+                  <div class="flex gap-3">
+                    <SkeletonBase class="h-6 w-6 rounded-full" />
+                    <SkeletonBase class="h-6 w-6 rounded-full" />
+                  </div>
+                </div>
+
+                <!-- Material details - other columns -->
+                <div class="col-span-9 pl-5">
+                  <!-- Material properties -->
+                  <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                    <SkeletonBase class="h-4 w-3/4" />
+                    <SkeletonBase class="h-4 w-2/3" />
+                    <SkeletonBase class="h-4 w-1/2" />
+                    <SkeletonBase class="h-4 w-2/3" />
+                    <SkeletonBase class="h-4 w-3/4" />
+                    <SkeletonBase class="h-4 w-3/5" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item sidebar - col-span-1 -->
+              <div class="col-span-1 flex flex-col gap-3.5 items-center">
+                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+              </div>
+            </div>
+            <div class="border-b border-grey-250 mx-7.5 my-5" />
+          </div>
+        </div>
+
+        <!-- Skeleton loading for GRID view -->
+        <div
+          v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
+          class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+        >
+          <div v-for="i in 40" :key="`skeleton-grid-${i}`" class="relative">
+            <!-- Main wrapper -->
+            <div class="relative">
+              <!-- Square aspect ratio container -->
+              <div class="w-full aspect-square relative">
+                <!-- Top selection bar area -->
+                <div class="absolute z-10 top-0 left-0 w-full h-11">
+                  <SkeletonBase class="w-full h-full rounded-t-md opacity-10" />
+                </div>
+
+                <!-- Main image content -->
+                <SkeletonBase
+                  class="absolute top-0 left-0 w-full h-full rounded-md"
+                />
+              </div>
+
+              <!-- Caption area -->
+              <SkeletonBase class="h-3 w-1/2 mt-1" />
+            </div>
+          </div>
+        </div>
+      </template>
+      <div v-else class="flex h-full justify-center items-center">
+        <div class="flex flex-col justify-center items-center">
+          <div
+            v-if="hasCreatePermission"
+            class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
+            @click="goToMaterialUpload()"
+          >
+            <f-svg-icon
+              icon-name="texture_add"
+              size="24"
+              class="text-grey-900"
+            />
+          </div>
+          <p v-if="hasCreatePermission" class="text-body2 text-grey-900 pt-3">
+            {{ $t('EE0079') }}
+          </p>
+          <div v-else class="text-body2 text-grey-900">
+            {{ $t('HH0013') }}
+          </div>
+        </div>
+      </div>
+    </template>
+  </search-table>
 </template>
 
 <script setup lang="ts">
@@ -110,8 +209,7 @@ import SearchTable, {
   type SearchPayload,
   type SortOption,
 } from '@/components/common/SearchTable.vue'
-import RowItem from '@/components/assets/RowItem.vue'
-import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
@@ -121,20 +219,48 @@ import {
   SEARCH_TYPE,
   ASSET_LIST_DISPLAY_MODE,
   NOTIFY_TYPE,
+  SCROLL_POSITION_KEY,
 } from '@/utils/constants'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
-// https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
-import type { AssetsFilter, Material } from '@frontier/platform-web-sdk'
-import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
+import type {
+  AssetsFilter,
+  ExternalFilter,
+  InnerExternalFilter,
+  Material,
+  MaterialOptions,
+  WorkspaceFilter,
+} from '@frontier/platform-web-sdk'
+import RowItem from '@/components/assets/RowItem.vue'
+import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
+import SkeletonBase from '@/components/common/SkeletonBase.vue'
+
+// Permission hook
+interface PermissionsAPI {
+  hasPermission: (permissionId: string | number) => boolean
+}
+const usePermissions = (): PermissionsAPI => {
+  const store = useStore()
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId] || []
+  return {
+    hasPermission: (permissionId: string | number): boolean => {
+      return permissionList.includes(permissionId)
+    },
+  }
+}
+
+defineOptions({
+  name: 'AssetsMaterialList',
+})
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()
-const { materialList } = storeToRefs(assetsStore)
+const { materialList, slimMaterialList } = storeToRefs(assetsStore)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -142,6 +268,7 @@ const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
   useNavigation()
+const { hasPermission } = usePermissions()
 const roleId = store.getters['organization/orgUser/orgUser'].roleID
 const permissionList = PERMISSION_MAP[roleId]
 const clickMaterialItemHandler = (materialId: number) => {
@@ -161,50 +288,161 @@ const clickMaterialItemHandler = (materialId: number) => {
   }
 }
 
+const isLoading = ref(false)
+const isSlimMaterialsLoading = ref(false)
+const selectedMaterialList = ref<Material[]>([])
+const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(
+  Number(route.query.displayMode) === ASSET_LIST_DISPLAY_MODE.LIST
+    ? ASSET_LIST_DISPLAY_MODE.LIST
+    : ASSET_LIST_DISPLAY_MODE.GRID
+)
+
 const materialOptionsRes = await assetsStore.ogBaseAssetsApi(
   'getMaterialOptions'
 )
 const materialOptions = materialOptionsRes.data.result
 
-const selectedMaterialList = ref<Material[]>([])
-const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.GRID)
-const optionSort = computed(() => {
-  const {
-    CREATE_DATE,
-    LAST_UPDATE,
-    ITEM_NO_A_Z,
-    GHG_LOW_TO_HIGH,
-    WATER_LOW_TO_HIGH,
-    LAND_LOW_TO_HIGH,
-    RELEVANCE,
-  } = searchStore.sortOption
-  const made2flowPlanStatus = computed(
-    () => store.getters['polling/valueAddedService'].made2flow.planStatus
-  )
-  return {
-    base: [
-      CREATE_DATE,
-      LAST_UPDATE,
-      ITEM_NO_A_Z,
-      {
-        ...GHG_LOW_TO_HIGH,
-        disabled: !made2flowPlanStatus.value.ACTIVATE,
-        tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
-      },
-      {
-        ...WATER_LOW_TO_HIGH,
-        disabled: !made2flowPlanStatus.value.ACTIVATE,
-        tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
-      },
-      {
-        ...LAND_LOW_TO_HIGH,
-        disabled: !made2flowPlanStatus.value.ACTIVATE,
-        tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
-      },
-    ] as SortOption[],
-    keywordSearch: [RELEVANCE] as SortOption[],
-  }
+const hasCreatePermission = computed(() => hasPermission(FUNC_ID.ASSET_CREATE))
+
+const displayModeOptions = computed(() => {
+  return [
+    {
+      selectValue: ASSET_LIST_DISPLAY_MODE.GRID,
+      icon: 'apps',
+    },
+    {
+      selectValue: ASSET_LIST_DISPLAY_MODE.LIST,
+      icon: 'format_list_bulleted',
+    },
+  ]
 })
+
+const handleMaterialClick = (materialId: number) => {
+  if (displayMode.value === ASSET_LIST_DISPLAY_MODE.GRID) {
+    const scrollContainer = document.querySelector('.md\\:overflow-y-auto')
+    if (scrollContainer) {
+      sessionStorage.setItem(
+        SCROLL_POSITION_KEY,
+        JSON.stringify({
+          position: scrollContainer.scrollTop,
+          page: searchStore.paginationRes?.currentPage,
+        })
+      )
+    }
+  }
+
+  if (selectedMaterialList.value.length === 0) {
+    goToAssetMaterialDetail({}, materialId)
+    return
+  }
+
+  store.dispatch('helper/openModalConfirm', {
+    type: NOTIFY_TYPE.WARNING,
+    header: t('EE0178'),
+    contentText: t('EE0179'),
+    primaryBtnText: t('UU0001'),
+    primaryBtnHandler: () => goToAssetMaterialDetail({}, materialId),
+    secondaryBtnText: t('UU0002'),
+  })
+}
+
+const parseSlimMaterial = (material: any): Material => ({
+  ...material,
+  weightDisplaySetting: material.weightDisplaySetting || {
+    isShowWeightGsm: false,
+  },
+  u3m: material.u3m || { status: -1 },
+  customU3m: material.customU3m || { status: -1 },
+  sideType: material.sideType || 1,
+  faceSide: {
+    descriptionList: material.faceSide?.descriptionList || [],
+    constructionCustomPropertyList:
+      material.faceSide?.constructionCustomPropertyList || [],
+    contentList: material.faceSide?.contentList || [],
+    finishList: material.faceSide?.finishList || [],
+  },
+  tagInfo: {
+    tagList: material.tagInfo?.tagList || [],
+  },
+  digitalThreadInfo: {
+    threadQty: material.digitalThreadInfo?.threadQty || 0,
+    hasUnreadThread: material.digitalThreadInfo?.hasUnreadThread || false,
+  },
+})
+
+const displayedMaterialList = computed(() => {
+  const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
+  if (!isAnyLoading) {
+    return materialList.value
+  }
+  if (slimMaterialList.value.length > 0) {
+    return slimMaterialList.value.map(parseSlimMaterial)
+  }
+  return materialList.value.length > 0 ? materialList.value : []
+})
+
+const getMaterialList = async (
+  payload: SearchPayload<
+    AssetsFilter | WorkspaceFilter | InnerExternalFilter | ExternalFilter
+  >,
+  query: RouteQuery
+) => {
+  // Reset slim and full material list when starting a new search to avoid showing stale data
+  slimMaterialList.value = []
+  materialList.value = []
+
+  isLoading.value = true
+  isSlimMaterialsLoading.value = true
+
+  const requestInfo = {
+    fullMaterialCanceled: false,
+    slimMaterialCanceled: false,
+  }
+
+  updateUrlWithSearchParams(query)
+
+  await Promise.allSettled([
+    assetsStore
+      .getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
+      .catch((error: any) => {
+        if (error?.name === 'CanceledError') {
+          requestInfo.fullMaterialCanceled = true
+        }
+        throw error
+      }),
+    assetsStore
+      .getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
+      .then((response) => {
+        if (!requestInfo.slimMaterialCanceled) {
+          isSlimMaterialsLoading.value = false
+        }
+        return response
+      })
+      .catch((error: any) => {
+        if (error?.name === 'CanceledError') {
+          requestInfo.slimMaterialCanceled = true
+        }
+        throw error
+      }),
+  ])
+
+  if (!requestInfo.fullMaterialCanceled) {
+    isLoading.value = false
+  }
+}
+
+const updateUrlWithSearchParams = (query: RouteQuery) => {
+  const queryParams = new URLSearchParams()
+  queryParams.set('displayMode', displayMode.value.toString())
+
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      queryParams.set(key, value.toString())
+    }
+  })
+
+  goToAssets({}, queryParams.toString())
+}
 
 const {
   editMaterial,
@@ -219,137 +457,102 @@ const {
   deleteMaterial,
   startSpreadSheetUpdate,
 } = useAssets()
+
+const sortOptions = computed(() => {
+  const {
+    CREATE_DATE,
+    LAST_UPDATE,
+    ITEM_NO_A_Z,
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
+    RELEVANCE,
+  } = searchStore.sortOption
+
+  const made2flowPlanStatus = computed(
+    () => store.getters['polling/valueAddedService'].made2flow.planStatus
+  )
+  const isM2fActive = made2flowPlanStatus.value.ACTIVATE
+  const m2fTooltip = !isM2fActive ? t('VV0047') : ''
+
+  return {
+    base: [
+      CREATE_DATE,
+      LAST_UPDATE,
+      ITEM_NO_A_Z,
+      {
+        ...GHG_LOW_TO_HIGH,
+        disabled: !isM2fActive,
+        tooltipMessage: m2fTooltip,
+      },
+      {
+        ...WATER_LOW_TO_HIGH,
+        disabled: !isM2fActive,
+        tooltipMessage: m2fTooltip,
+      },
+      {
+        ...LAND_LOW_TO_HIGH,
+        disabled: !isM2fActive,
+        tooltipMessage: m2fTooltip,
+      },
+    ] as SortOption[],
+    keywordSearch: [RELEVANCE] as SortOption[],
+  }
+})
+
 const optionList = computed(() => {
-  const funcOneList: any[] = []
-  const funTwoList = [downloadU3m]
-  const optionList = [funTwoList, [printLabel, printA4Swatch]]
-
-  // Get the role and retrieve the corresponding permissions
-  const roleId = store.getters['organization/orgUser/orgUser'].roleID
-  const permissionList = PERMISSION_MAP[roleId]
-
-  // Map each permission ID to its corresponding handler logic
-  const permissionHandlerMap = {
-    [FUNC_ID.ASSET_EDIT]: () => {
-      // If user can edit materials
-      optionList.unshift([editMaterial])
-    },
-    [FUNC_ID.ASSET_COPY]: () => {
-      // If user can copy assets
-      funcOneList.push(cloneTo)
-    },
-    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => {
-      // If user can add assets to workspace
-      funcOneList.push(addToWorkspace)
-    },
-    [FUNC_ID.ASSETS_3DVIEWER_EDIT]: () => {
-      // If user can edit in 3D viewer
-      funTwoList.unshift(createU3m)
-    },
-    [FUNC_ID.ASSET_DELETE]: () => {
-      // If user can delete assets
-      optionList.push([deleteMaterial])
-    },
+  if (isLoading.value) {
+    return []
   }
 
-  // Single pass over permissionList to apply the appropriate modifications
+  // Define option groups with proper grouping for GridItemMaterial operations
+  type FunctionOption = any
+  const primaryOptions: FunctionOption[] = []
+  const secondaryOptions: FunctionOption[] = [downloadU3m]
+  const optionGroups: FunctionOption[][] = [
+    secondaryOptions,
+    [printLabel, printA4Swatch],
+  ]
+
+  const permissionOptionsMap = {
+    [FUNC_ID.ASSET_EDIT]: () => optionGroups.unshift([editMaterial]),
+    [FUNC_ID.ASSET_COPY]: () => primaryOptions.push(cloneTo),
+    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () =>
+      primaryOptions.push(addToWorkspace),
+    [FUNC_ID.ASSETS_3DVIEWER_EDIT]: () => secondaryOptions.unshift(createU3m),
+    [FUNC_ID.ASSET_DELETE]: () => optionGroups.push([deleteMaterial]),
+  }
+
   permissionList.forEach((permission) => {
-    if (permissionHandlerMap[permission]) {
-      permissionHandlerMap[permission]()
+    if (permissionOptionsMap[permission]) {
+      permissionOptionsMap[permission]()
     }
   })
 
-  // After populating funcOneList, if it has items, add it at the beginning of optionList
-  if (funcOneList.length > 0) {
-    optionList.unshift(funcOneList)
+  if (primaryOptions.length > 0) {
+    optionGroups.unshift(primaryOptions)
   }
 
-  return optionList
+  return optionGroups
 })
 
-const optionMultiSelect = computed(() => {
-  // Base list of functions
-  const list = [printA4Swatch, printLabel, downloadU3m, exportExcel]
+const multiSelectOptions = computed(() => {
+  const options = [printA4Swatch, printLabel, downloadU3m, exportExcel]
 
-  // Get the role and permissions
-  const roleId = store.getters['organization/orgUser/orgUser'].roleID
-  const permissionList = PERMISSION_MAP[roleId]
-
-  // Map each permission ID to the corresponding operation
-  const permissionHandlerMap = {
-    [FUNC_ID.ASSET_COPY]: () => {
-      list.unshift(cloneTo)
-    },
-    [FUNC_ID.ASSET_MERGE]: () => {
-      list.push(mergeMaterial)
-    },
-    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => {
-      list.push(addToWorkspace)
-    },
-    [FUNC_ID.ASSET_SPREADSHEET]: () => {
-      list.push(startSpreadSheetUpdate)
-    },
-    [FUNC_ID.ASSET_DELETE]: () => {
-      list.push(deleteMaterial)
-    },
+  const permissionOptionsMap = {
+    [FUNC_ID.ASSET_COPY]: () => options.unshift(cloneTo),
+    [FUNC_ID.ASSET_MERGE]: () => options.push(mergeMaterial),
+    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => options.push(addToWorkspace),
+    [FUNC_ID.ASSET_SPREADSHEET]: () => options.push(startSpreadSheetUpdate),
+    [FUNC_ID.ASSET_DELETE]: () => options.push(deleteMaterial),
   }
 
-  // Single pass over permissionList to execute the relevant handlers
   permissionList.forEach((permission) => {
-    if (permissionHandlerMap[permission]) {
-      permissionHandlerMap[permission]()
+    if (permissionOptionsMap[permission]) {
+      permissionOptionsMap[permission]()
     }
   })
 
-  // Return the updated list
-  return list
+  return options
 })
-
-const getMaterialList = async (
-  payload: SearchPayload<AssetsFilter>,
-  query: Record<string, string>
-) => {
-  let _queryString = ''
-  const queryKeys = Object.keys(query)
-  queryKeys.forEach((key, index) => {
-    const queryKey = key as keyof RouteQuery
-    if (query[queryKey]) {
-      _queryString += `${key}=${query[queryKey]}`
-      if (index < queryKeys.length - 1) {
-        _queryString += '&'
-      }
-    }
-  })
-
-  goToAssets({}, _queryString)
-  await assetsStore.getAssetsMaterialList(payload)
-}
-
-const displayModeOptionList = [
-  {
-    selectValue: ASSET_LIST_DISPLAY_MODE.GRID,
-    icon: 'apps',
-  },
-  {
-    selectValue: ASSET_LIST_DISPLAY_MODE.LIST,
-    icon: 'format_list_bulleted',
-  },
-]
-
-// Jira: F22-3010
-// 因為 rowItem 加入 color, pattern 呈現後，每個 rowItem 的高度會不一致，所以無法使用 recycle-scroller
-// 先改回 v-for 去 render，但是會犧牲部分效能
-// const currentItemSize = ref(379)
-// const resize = () => {
-//   /**
-//    * @Todo figure out what happen in Safari
-//    */
-//   if (document.querySelector('.vue-recycle-scroller__item-view')) {
-//     currentItemSize.value =
-//       document?.querySelector('.vue-recycle-scroller__item-view')
-//         ?.clientHeight ?? 379
-//   } else {
-//     currentItemSize.value = 379
-//   }
-// }
 </script>

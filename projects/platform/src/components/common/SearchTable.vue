@@ -1,92 +1,121 @@
-<template lang="pug">
-div(class="w-full h-full flex flex-col" v-bind="$attrs")
-  slot(name="box-above")
-  search-box(:searchType="searchType" @search="search()")
-  slot(name="header-above" :visit="visit")
-  div(
-    data-tooltip-boundary-reference="search-table-header"
-    :data-cy="testId ?? 'search-table'"
-    class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
-  )
-    div
-      slot(
-        name="header-left"
-        :visit="visit"
-        :totalCount="pagination?.totalCount ?? 0"
-      )
-    div(class="flex items-center gap-x-5")
-      f-input-checkbox(
-        v-if="isKeywordDirty"
-        :inputValue="isShowMatch"
-        @update:inputValue="handleCheckboxInput"
-        :label="$t('RR0069')"
-        binary
-        iconSize="20"
-      )
-      f-button-label(v-if="canSelectAll" size="lg" @click="selectAll") {{ $t('RR0052') }}
-      f-popper(placement="bottom-end")
-        template(#trigger="{ isExpand }")
-          f-svg-icon(
-            iconName="sortby"
-            size="24"
-            class="transform cursor-pointer text-grey-600 hover:text-primary-400"
-            :class="{ 'text-primary-400': isExpand }"
-            :tooltipMessage="$t('RR0272')"
-          )
-        template(#content)
-          f-contextual-menu(
-            :inputSelectValue="sort"
-            @update:inputSelectValue="searchStore.setSort"
-            :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-            :menuTree="sortMenuTree"
-            @click:menu="search()"
-          )
-      slot(name="header-right")
-  slot(name="sub-header")
-  div(
-    v-if="pagination"
-    class="md:overflow-y-auto flex-grow flex flex-col"
-    ref="scrollContainer"
-  )
-    div(
-      v-if="isSearching || (inSearch && pagination.totalCount === 0)"
-      class="flex-grow flex flex-col justify-center items-center"
-    )
-      f-svg-icon(
-        v-if="isSearching"
-        iconName="loading"
-        size="92"
-        class="text-primary-400"
-        testId="loading-indicator"
-      )
-      p(
-        v-else-if="inSearch && pagination.totalCount === 0"
-        class="text-center text-body2 text-grey-900"
-      ) {{ $t('RR0105') }}
-    div(v-else class="flex-grow")
-      slot(
-        :inSearch="inSearch"
-        :currentPage="pagination.currentPage"
-        name="banner"
-      )
-      slot(:inSearch="inSearch" :visit="visit")
-    #pagination-container(
-      v-if="!isSearching && pagination.totalCount > 0"
-      class="py-9.5 self-center"
-    )
-      f-paginator(
-        showQuickJumper
-        v-model:currentPage="pagination.currentPage"
-        :totalPage="pagination.totalPage"
-        @goTo="search($event)"
-      )
-multi-select-menu(
-  v-if="optionMultiSelect && optionMultiSelect.length > 0 && innerSelectedItemList"
-  :optionMultiSelect="optionMultiSelect"
-  v-model:selectedList="innerSelectedItemList"
-)
-  template(#default="{ option }")
-    slot(name="menu-option" :option="option")
+<template>
+  <div class="w-full h-full flex flex-col" v-bind="$attrs">
+    <slot name="box-above"></slot>
+    <search-box :searchType="searchType" @search="search()"></search-box>
+    <slot name="header-above" :visit="visit"></slot>
+
+    <div
+      data-tooltip-boundary-reference="search-table-header"
+      :data-cy="testId ?? 'search-table'"
+      class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
+    >
+      <div>
+        <slot
+          name="header-left"
+          :visit="visit"
+          :totalCount="pagination?.totalCount ?? 0"
+        ></slot>
+      </div>
+      <div class="flex items-center gap-x-5">
+        <f-input-checkbox
+          v-if="isKeywordDirty"
+          :inputValue="isShowMatch"
+          @update:inputValue="handleCheckboxInput"
+          :label="$t('RR0069')"
+          binary
+          iconSize="20"
+        ></f-input-checkbox>
+        <f-button-label v-if="canSelectAll" size="lg" @click="selectAll">{{
+          $t('RR0052')
+        }}</f-button-label>
+
+        <f-popper placement="bottom-end">
+          <template #trigger="{ isExpand }">
+            <f-svg-icon
+              iconName="sortby"
+              size="24"
+              class="transform cursor-pointer text-grey-600 hover:text-primary-400"
+              :class="{ 'text-primary-400': isExpand }"
+              :tooltipMessage="$t('RR0272')"
+            ></f-svg-icon>
+          </template>
+          <template #content>
+            <f-contextual-menu
+              :inputSelectValue="sort"
+              @update:inputSelectValue="searchStore.setSort"
+              :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
+              :menuTree="sortMenuTree"
+              @click:menu="search()"
+            ></f-contextual-menu>
+          </template>
+        </f-popper>
+
+        <slot name="header-right"></slot>
+      </div>
+    </div>
+
+    <slot name="sub-header"></slot>
+
+    <div
+      v-if="pagination"
+      class="md:overflow-y-auto flex-grow flex flex-col"
+      ref="scrollContainer"
+    >
+      <div
+        v-if="isSearching || (inSearch && pagination.totalCount === 0)"
+        class="flex-grow flex flex-col justify-center items-center"
+      >
+        <f-svg-icon
+          v-if="isSearching"
+          iconName="loading"
+          size="92"
+          class="text-primary-400"
+          testId="loading-indicator"
+        ></f-svg-icon>
+        <p
+          v-else-if="inSearch && pagination.totalCount === 0"
+          class="text-center text-body2 text-grey-900"
+        >
+          {{ $t('RR0105') }}
+        </p>
+      </div>
+      <div v-else class="flex-grow">
+        <slot
+          :inSearch="inSearch"
+          :currentPage="pagination.currentPage"
+          name="banner"
+        ></slot>
+        <slot :inSearch="inSearch" :visit="visit"></slot>
+      </div>
+
+      <div
+        id="pagination-container"
+        v-if="!isSearching && pagination.totalCount > 0"
+        class="py-9.5 self-center"
+      >
+        <f-paginator
+          showQuickJumper
+          v-model:currentPage="pagination.currentPage"
+          :totalPage="pagination.totalPage"
+          @goTo="search($event)"
+        ></f-paginator>
+      </div>
+    </div>
+
+    <multi-select-menu
+      v-if="
+        optionMultiSelect &&
+        optionMultiSelect.length > 0 &&
+        innerSelectedItemList
+      "
+      :optionMultiSelect="optionMultiSelect"
+      v-model:selectedList="innerSelectedItemList"
+    >
+      <template #default="{ option }">
+        <slot name="menu-option" :option="option"></slot>
+      </template>
+    </multi-select-menu>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -101,7 +130,12 @@ import {
   onBeforeUnmount,
 } from 'vue'
 import { useRoute } from 'vue-router'
-import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+import {
+  SEARCH_TYPE,
+  CONTEXTUAL_MENU_MODE,
+  ASSET_LIST_DISPLAY_MODE,
+  SCROLL_POSITION_KEY,
+} from '@/utils/constants'
 import type { FunctionOption } from '@/types'
 import type {
   Material,
@@ -168,9 +202,15 @@ const props = withDefaults(
     testId?: string
     canSelectAll?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
+    assets?: boolean
+    isAssetSlimListLoading?: boolean
+    displayMode?: ASSET_LIST_DISPLAY_MODE
   }>(),
   {
     canSelectAll: true,
+    assets: false,
+    isAssetSlimListLoading: false,
+    displayMode: ASSET_LIST_DISPLAY_MODE.GRID,
   }
 )
 
@@ -189,7 +229,6 @@ const {
 const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
 const scrollContainer = ref<HTMLElement | null>(null)
-const SCROLL_POSITION_KEY = 'searchTableScrollPosition'
 
 const isSearching = ref(false)
 const inSearch = ref(false)
@@ -250,14 +289,10 @@ const selectAll = () => {
 }
 
 const search = async (targetPage = 1) => {
-  isSearching.value = true
+  if (!props.assets) {
+    isSearching.value = true
+  }
 
-  /**
-   * when first time using keyword search (no keyword -> with keyword),
-   * sort value will automatically change to optionSort.keywordSearch[0].value,
-   * and when first time searching without keyword (with keyword -> no keyword),
-   * sort value will automatically change to defaultSort.value
-   */
   if (props.optionSort.keywordSearch.length > 0) {
     if (!isKeywordDirty.value && !!keyword.value) {
       searchStore.setSort(props.optionSort.keywordSearch[0].value)
@@ -268,7 +303,6 @@ const search = async (targetPage = 1) => {
 
   isKeywordDirty.value = !!keyword.value
 
-  // only when searchDirty is true, it's considered a search mode
   inSearch.value = searchDirty.value
 
   const { densityAndYarn } = filterState.value
@@ -371,7 +405,9 @@ const search = async (targetPage = 1) => {
     }
   )
 
-  isSearching.value = false
+  if (!props.assets) {
+    isSearching.value = false
+  }
 }
 
 const handleCheckboxInput = (value: any) => {
@@ -379,7 +415,6 @@ const handleCheckboxInput = (value: any) => {
   search()
 }
 
-// Initialize search and filter
 const {
   currentPage,
   sort: qSort,
@@ -403,28 +438,22 @@ filterStore.setFilterStateByQueryString(qFilter ? (qFilter as string) : '{}')
 search(currentPage ? Number(currentPage) : 1)
 
 watch(
-  () => isSearching.value,
+  () => (props.assets ? props.isAssetSlimListLoading : isSearching.value),
   (newVal) => {
     nextTick(() => {
-      if (!newVal) {
-        const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY)
-        if (scrollContainer.value && savedPosition) {
-          smoothScrollTo(scrollContainer.value, parseInt(savedPosition, 10))
-          // scrollContainer.value.scrollTop = parseInt(savedPosition, 10)
+      if (!newVal && props.displayMode === ASSET_LIST_DISPLAY_MODE.GRID) {
+        const savedData = sessionStorage.getItem(SCROLL_POSITION_KEY)
+        if (scrollContainer.value && savedData) {
+          const { position, page } = JSON.parse(savedData)
+          if (page === pagination.value?.currentPage) {
+            smoothScrollTo(scrollContainer.value, position)
+            sessionStorage.removeItem(SCROLL_POSITION_KEY)
+          }
         }
       }
     })
   }
 )
-
-onBeforeUnmount(() => {
-  if (scrollContainer.value) {
-    sessionStorage.setItem(
-      SCROLL_POSITION_KEY,
-      scrollContainer.value.scrollTop.toString()
-    )
-  }
-})
 
 const smoothScrollTo = (
   element: HTMLElement,
@@ -437,7 +466,7 @@ const smoothScrollTo = (
 
   function animateScroll(currentTime: number) {
     const elapsed = currentTime - startTime
-    const progress = Math.min(elapsed / duration, 1) // 进度 0~1
+    const progress = Math.min(elapsed / duration, 1) // progress from 0 to 1
     element.scrollTop = start + change * easeInOutQuad(progress)
 
     if (progress < 1) {

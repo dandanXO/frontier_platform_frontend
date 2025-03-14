@@ -1,18 +1,28 @@
-<template lang="pug">
-div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50")
-  row-item-content(
-    :material="material"
-    :materialOptions="materialOptions"
-    :selectedList="selectedList"
-    @update:selectedList="emit('update:selectedList', $event)"
-    :canEdit="rolePermission"
-  )
-    template(#slot:action)
-      digital-thread-entrance(
-        :material="material"
-        :drawerOpenFromLocationList="[]"
-      )
-  row-item-sidebar(:material="material" class="col-span-1")
+<template>
+  <div
+    class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+  >
+    <row-item-content
+      :material="material"
+      :materialOptions="materialOptions"
+      :selectedList="selectedList"
+      @update:selectedList="emit('update:selectedList', $event)"
+      :canEdit="rolePermission && !disabled"
+      :isLoading="disabled"
+    >
+      <template #slot:action>
+        <digital-thread-entrance
+          :material="material"
+          :drawerOpenFromLocationList="[]"
+        />
+      </template>
+    </row-item-content>
+    <row-item-sidebar
+      :material="material"
+      class="col-span-1"
+      :disabled="disabled"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +38,7 @@ defineProps<{
   selectedList: Material[]
   material: Material
   materialOptions?: MaterialOptions
+  disabled?: boolean
 }>()
 const store = useStore()
 
