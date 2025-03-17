@@ -85,7 +85,10 @@ const menuTree = computed<MenuTree>(() => ({
             if (props.isMultiple) {
               return t('RR0283')
             }
-            return props.hasPhysicalData ? t('RR0282') : t('RR0281')
+            return props.hasPhysicalData &&
+              item.format !== U3M_DOWNLOAD_PROP.ZFAB
+              ? t('RR0282')
+              : t('RR0281')
           })(),
           descriptionLineClamp: 2,
           clickHandler: () => {

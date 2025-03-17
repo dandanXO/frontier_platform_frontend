@@ -172,7 +172,7 @@ const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
   selectedU3mFormat.value = format
   if (!isMultiple.value) {
     const { materialId, u3m } = materialU3mDownloadItemList.value[0]
-    const url = format === U3M_DOWNLOAD_PROP.ZFAB ? u3m.zfab?.url : u3m[format]!
+    const url = format === U3M_DOWNLOAD_PROP.ZFAB ? u3m.zfab?.url : u3m[format]
     if (!url) {
       return console.error(`url for ${materialId} and ${format} is not found`)
     }
