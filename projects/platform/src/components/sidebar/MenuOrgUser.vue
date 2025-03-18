@@ -20,6 +20,8 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { PRAVICY_POLICY_URL } from '@/utils/constants'
+
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
@@ -31,6 +33,10 @@ const openModal = (component, properties = {}) => {
     component,
     properties,
   })
+}
+
+const openExternalLink = (url) => {
+  window.open(url, '_blank')
 }
 
 const menuTree = computed(() => ({
@@ -63,7 +69,7 @@ const menuTree = computed(() => ({
       menuList: [
         {
           title: t('RR0125'),
-          clickHandler: openModal.bind(undefined, 'modal-privacy-policy'),
+          clickHandler: () => openExternalLink(PRAVICY_POLICY_URL),
         },
       ],
     },

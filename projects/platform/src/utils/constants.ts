@@ -4,6 +4,11 @@ import { computed } from 'vue'
 import { WeightUnit, Extension, MaterialType } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 
+export const PRAVICY_POLICY_URL =
+  'https://www.frontier.cool/policies/privacy-policy'
+export const TERMS_SERVICE_URL =
+  'https://www.frontier.cool/policies/terms-of-service'
+
 export const ROLE_ID = {
   OWNER: 1, // in use
   ADMIN: 2,

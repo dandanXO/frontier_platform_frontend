@@ -137,6 +137,7 @@ import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import { inputValidator } from '@frontier/lib'
 import { useRoute } from 'vue-router'
 import { SIGNUP_SOURCE } from '@/utils/constants'
+import { PRAVICY_POLICY_URL, TERMS_SERVICE_URL } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -197,14 +198,8 @@ const signUp = async () => {
   !isEmailExist.value && (isSignUpSuccessfully.value = true)
 }
 
-const openModalTermsOfUse = () =>
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-terms-of-use',
-  })
-const openModalPrivacyPolicy = () =>
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-privacy-policy',
-  })
+const openModalTermsOfUse = () => window.open(TERMS_SERVICE_URL, '_blank')
+const openModalPrivacyPolicy = () => window.open(PRAVICY_POLICY_URL, '_blank')
 
 watch(
   () => formData.email,
