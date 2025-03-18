@@ -369,6 +369,10 @@ const props = defineProps({
   max: {
     type: Number,
   },
+  textAlign: {
+    type: String,
+    default: 'left',
+  },
 })
 const emit = defineEmits([
   'update:textValue',
@@ -585,7 +589,7 @@ const classMain = computed(() => {
       classList.push('h-11', 'px-3', 'gap-x-2')
       break
     case 'xl':
-      classList.push('h-12', 'px-3', 'gap-x-2')
+      classList.push('h-12', 'px-2', 'gap-x-2')
       break
   }
 
@@ -720,6 +724,9 @@ const classInput = computed(() => {
 
   if (state.value === STATE.DISABLED && props.button?.isFile) {
     classList.push('!text-grey-600')
+  }
+  if (props.textAlign === 'center') {
+    classList.push('text-center')
   }
 
   return classList

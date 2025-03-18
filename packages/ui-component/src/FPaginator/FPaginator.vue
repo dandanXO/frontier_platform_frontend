@@ -34,6 +34,7 @@ div(class="flex")
           size="xl"
           class="w-12 font-bold"
           :clearable="false"
+          textAlign="center"
         ) 
       div(class="flex justify-center items-center gap-x-2 font-bold text-grey-900-v1") 
         div(class="font-normal") of
