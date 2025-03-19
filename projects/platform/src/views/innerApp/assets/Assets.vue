@@ -3,13 +3,11 @@
     :display-mode="displayMode"
     :search-type="SEARCH_TYPE.ASSETS"
     :search-callback="getMaterialList"
-    rightIconSearch="image_search"
     :option-sort="sortOptions"
     :option-multi-select="multiSelectOptions"
     :item-list="displayedMaterialList"
     v-model:selected-item-list="selectedMaterialList"
     :is-asset-slim-list-loading="isSlimMaterialsLoading"
-    @clickRightIconSearch="showSearchByImageModal"
     assets
     :canSelectAll="!isLoading"
     data-theme="new"
@@ -29,7 +27,7 @@
 
     <template #header-right>
       <f-pill-group
-        v-if="!isImageSearch"
+        v-if="!imageSearchData"
         :optionList="displayModeOptions"
         v-model:inputValue="displayMode"
         :size="SIZE.LG"
@@ -42,7 +40,8 @@
         :size="SIZE.LG"
         prependIcon="texture_add"
         @click="goToMaterialUpload"
-      />{{ $t('UU0020') }}
+        >{{ $t('UU0020') }}
+      </f-button>
     </template>
 
     <template #default>
@@ -56,7 +55,7 @@
       >
         <div
           class="flex flex-col p-4 gap-4 rounded-2xl bg-secondary h-fit"
-          v-if="isImageSearch"
+          v-if="imageSearchData"
         >
           <div
             class="flex flex-col align-center justify-center rounded-xl gap-2 bg-primary w-62 h-60"
@@ -70,7 +69,7 @@
             ></f-svg-icon>
             <img
               v-else
-              :src="imageFileUrl"
+              :src="imageSearchData"
               class="w-full h-full object-cover rounded-xl"
             />
           </div>
@@ -137,16 +136,16 @@
                   <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
                 </div>
               </div>
-              <div class="border-b border-grey-250 mx-7.5 my-5" />
+              <div class="border-b border-grey-250 my-5" />
             </div>
           </div>
 
           <!-- Skeleton loading for GRID view -->
           <div
             v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-            class="grid gap-y-6 gap-x-5 mx-7.5 w-full"
+            class="grid gap-y-6 gap-x-5 w-full"
             :class="[
-              isImageSearch
+              imageSearchData
                 ? 'grid-cols-4'
                 : 'grid-cols-3 md:grid-cols-4 2xl:grid-cols-5',
             ]"
@@ -172,16 +171,16 @@
               />
               <div
                 v-if="index !== displayedMaterialList.length - 1"
-                class="border-b border-grey-250 mx-7.5 my-5"
+                class="border-b border-grey-250 my-5"
               />
             </div>
           </div>
 
           <div
             v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-            class="grid grid-cols-3 gap-y-6 gap-x-5 mx-7.5"
+            class="grid grid-cols-3 gap-y-6 gap-x-5"
             :class="[
-              isImageSearch
+              imageSearchData
                 ? 'grid-cols-4'
                 : 'grid-cols-3 md:grid-cols-4 2xl:grid-cols-5',
             ]"
@@ -258,6 +257,7 @@ import SkeletonBase from '@/components/common/SkeletonBase.vue'
 import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
 import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
 import GridItemMaterialSkeleton from '@/components/common/gridItem/GridItemMaterialSkeleton.vue'
+import { useFilterStore } from '@/stores/filter'
 
 // Permission hook
 interface PermissionsAPI {
@@ -286,9 +286,11 @@ defineOptions({
 
 const assetsStore = useAssetsStore()
 const searchStore = useSearchStore()
+const filterStore = useFilterStore()
 const route = useRoute()
 const router = useRouter()
 const { materialList, slimMaterialList } = storeToRefs(assetsStore)
+const { imageFileURL: imageSearchData } = storeToRefs(filterStore)
 
 const { t } = useI18n()
 const store = useStore()
@@ -297,8 +299,6 @@ const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
 const { hasPermission, permissionList } = usePermissions()
 
 const isLoading = ref(false)
-const isImageSearch = ref(false)
-const imageFileUrl = ref<string>('')
 const isSlimMaterialsLoading = ref(false)
 const selectedMaterialList = ref<Material[]>([])
 watch(selectedMaterialList, (newVal) => {
@@ -571,17 +571,9 @@ const showSearchByImageModal = () => {
     },
     properties: {
       onFinish: (file: File) => {
-        displayMode.value = ASSET_LIST_DISPLAY_MODE.GRID
+        filterStore.setImageFileURL(URL.createObjectURL(file))
+        searchStore.onSubmit()
         store.dispatch('helper/closeModal')
-        // simulate fetching API
-        isSlimMaterialsLoading.value = true
-        isImageSearch.value = true
-        imageFileUrl.value = URL.createObjectURL(file)
-
-        // simulate fetching API finished
-        setTimeout(() => {
-          isSlimMaterialsLoading.value = false
-        }, 5000)
       },
     },
   })

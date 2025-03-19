@@ -28,7 +28,12 @@ export const useSearchStore = defineStore('search', () => {
     )
   )
   const isShowMatch = ref(false)
+  const isSubmitted = ref(false)
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
+  const onSubmit = () => {
+    isSubmitted.value = true
+    setTimeout(() => (isSubmitted.value = false), 100) // reset submit state
+  }
 
   const getAITags = async () => {
     if (!keyword.value) {
@@ -71,6 +76,7 @@ export const useSearchStore = defineStore('search', () => {
 
   return {
     keyword,
+    isSubmitted,
     setKeyword,
     tagList,
     setTagList,
@@ -85,5 +91,6 @@ export const useSearchStore = defineStore('search', () => {
     getAITags,
     sortOption,
     getSearchLog,
+    onSubmit,
   }
 })

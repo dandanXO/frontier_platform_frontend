@@ -10,6 +10,7 @@ import { resetTracker } from '@frontier/lib'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import { logout, redirectAfterLogout } from '@/utils/auth'
 import { accessToken } from '@/utils/storage'
+import { ROUTE_NAMES } from '@/utils/routes'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -255,7 +256,7 @@ const routes = [
           // Assets
           {
             path: 'assets',
-            name: 'Assets',
+            name: ROUTE_NAMES.ASSETS,
             component: () => import('@/views/innerApp/assets/Assets.vue'),
           },
           {

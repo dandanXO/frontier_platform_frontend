@@ -2,15 +2,6 @@
 div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
   div(class="flex flex-col items-center justify-center" data-cy="search-box")
-    f-search-bar(
-      :keyword="keyword"
-      @typing="typing"
-      @search="handleSearch"
-      @clear="() => searchStore.setKeyword('')"
-      :rightIcon="rightIconSearch"
-      @clickRightIcon="$emit('clickRightIconSearch')"
-      class="w-160"
-    )
     filter-panel(
       v-if="isOpenFilterPanel"
       :searchType="searchType"
@@ -76,7 +67,12 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
       class="md:overflow-y-auto flex-grow flex flex-col"
       ref="scrollContainer"
     )
-      div(class="flex-grow")
+      div(
+        v-if="inSearch && pagination.totalCount === 0"
+        class="flex-grow flex flex-col justify-center items-center"
+      )
+        p(class="text-center text-body2 text-grey-900") {{ $t('RR0105') }}
+      div(class="flex-grow" v-else)
         slot(
           :inSearch="inSearch"
           :currentPage="pagination.currentPage"
@@ -228,6 +224,7 @@ const {
   sort,
   isShowMatch,
   paginationRes: pagination,
+  isSubmitted,
 } = storeToRefs(searchStore)
 const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
@@ -314,6 +311,10 @@ const handleSearch = () => {
   searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
   search()
 }
+
+watch(isSubmitted, (isSubmittedNow) => {
+  isSubmittedNow && handleSearch()
+})
 
 const search = async (targetPage = 1) => {
   if (!props.assets) {

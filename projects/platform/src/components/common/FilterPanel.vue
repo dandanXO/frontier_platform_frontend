@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="px-7.5")
+div
   div(class="bg-grey-50 p-5 rounded")
     div(class="flex items-end pb-4")
       p(class="text-body1 text-grey-900") {{ $t('RR0085') }}
