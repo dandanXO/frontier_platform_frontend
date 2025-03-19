@@ -178,27 +178,7 @@
           </div>
         </div>
       </template>
-      <div v-else class="flex h-full justify-center items-center">
-        <div class="flex flex-col justify-center items-center">
-          <div
-            v-if="hasCreatePermission"
-            class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
-            @click="goToMaterialUpload()"
-          >
-            <f-svg-icon
-              icon-name="texture_add"
-              size="24"
-              class="text-grey-900"
-            />
-          </div>
-          <p v-if="hasCreatePermission" class="text-body2 text-grey-900 pt-3">
-            {{ $t('EE0079') }}
-          </p>
-          <div v-else class="text-body2 text-grey-900">
-            {{ $t('HH0013') }}
-          </div>
-        </div>
-      </div>
+      <empty-state-assets v-else />
     </template>
   </search-table>
 </template>
@@ -232,12 +212,12 @@ import type {
   ExternalFilter,
   InnerExternalFilter,
   Material,
-  MaterialOptions,
   WorkspaceFilter,
 } from '@frontier/platform-web-sdk'
 import RowItem from '@/components/assets/RowItem.vue'
 import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import SkeletonBase from '@/components/common/SkeletonBase.vue'
+import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
 
 // Permission hook
 interface PermissionsAPI {

@@ -81,6 +81,7 @@ module.exports = plugin(function () {}, {
       },
       tertiary: {
         DEFAULT: 'var(--color-tertiary)',
+        text: 'var(--color-tertiary-text)',
       },
       disabled: {
         DEFAULT: 'var(--color-disabled)',
