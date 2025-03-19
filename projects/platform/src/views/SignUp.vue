@@ -113,7 +113,8 @@ div(
     class="w-112 h-92 rounded-md bg-grey-0 shadow-32 pt-22.5 px-14 pb-15 flex flex-col items-center"
   )
     i18n-t(keypath="AA0025" tag="h4" class="text-grey-900 text-h4 mb-3" scope="global")
-      template(#name) {{ formData.firstName }}
+      template(#name) 
+        div(class="break-normal" style="word-break: break-word") {{ formData.firstName }}
     h4(class="text-grey-900 text-h4 mb-9") {{ $t('AA0026') }}
     p(class="text-grey-600 text-body2 text-center mb-10 leading-1.4") {{ $t('AA0027') }}
     f-button(
