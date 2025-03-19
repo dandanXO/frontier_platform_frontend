@@ -379,7 +379,13 @@ const getMaterialList = async (
     slimMaterialCanceled: false,
   }
 
-  updateUrlWithSearchParams(query)
+  // Update URL and check if it was actually changed
+  const updated = updateUrlWithSearchParams(query)
+  if (updated) {
+    isLoading.value = false
+    isSlimMaterialsLoading.value = false
+    return
+  }
 
   await Promise.allSettled([
     assetsStore
@@ -411,7 +417,7 @@ const getMaterialList = async (
   }
 }
 
-const updateUrlWithSearchParams = (query: RouteQuery) => {
+const updateUrlWithSearchParams = (query: RouteQuery): boolean => {
   const queryParams = new URLSearchParams()
   queryParams.set('displayMode', displayMode.value.toString())
 
@@ -421,7 +427,20 @@ const updateUrlWithSearchParams = (query: RouteQuery) => {
     }
   })
 
-  goToAssets({}, queryParams.toString())
+  // Compare with current route query
+  const currentQuery = new URLSearchParams(
+    route.query as Record<string, string>
+  )
+  if (queryParams.toString() === currentQuery.toString()) {
+    return false
+  }
+
+  // Use router.replace to update the URL without triggering a full navigation
+  router.replace({
+    query: Object.fromEntries(queryParams),
+    hash: route.hash,
+  })
+  return true
 }
 
 const {
