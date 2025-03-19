@@ -1,13 +1,6 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
-  div(class="flex flex-col items-center justify-center" data-cy="search-box")
-    filter-panel(
-      v-if="isOpenFilterPanel"
-      :searchType="searchType"
-      @search="handleSearch"
-      @resetFilter="resetFilterHandler"
-    )
   div(class="flex flex-col gap-5 min-h-0 flex-1")
     slot(name="header-above" :visit="visit")
     div(
@@ -61,6 +54,12 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
           p {{ $t('RR0085') }}
         slot(name="header-right")
+    filter-panel(
+      v-if="isOpenFilterPanel"
+      :searchType="searchType"
+      @search="handleSearch"
+      @resetFilter="resetFilterHandler"
+    )
     slot(name="sub-header")
     div(
       v-if="pagination"
