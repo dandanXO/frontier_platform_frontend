@@ -2,7 +2,7 @@
 div(class="justify-self-center bg-primary flex items-center" :class="[dynamicWidth]")
   div(
     class="flex-grow flex items-center pl-3 pr-2 gap-2 text-primary-inverse h-full border border-primary-border rounded-l"
-    :class="{ 'shadow-focus': isFocusedInput }"
+    :class="[{ 'shadow-focus': isFocusedInput }, rightIcon ? 'rounded-l' : 'rounded']"
     data-cy="search-box"
   )
     f-svg-icon(class="pr-1" size="24" iconName="search")
@@ -26,10 +26,10 @@ div(class="justify-self-center bg-primary flex items-center" :class="[dynamicWid
   div(
     class="flex items-center px-4 py-2 hover:bg-primary-hover cursor-pointer border-r border-t border-b border-primary-border rounded-r"
     @click="$emit('clickRightIcon')"
+    v-if="rightIcon"
   )
     f-svg-icon(
       size="24"
-      v-if="rightIcon"
       :iconName="rightIcon"
       class="self-center"
       :tooltipMessage="rightIconTooltipMessage"

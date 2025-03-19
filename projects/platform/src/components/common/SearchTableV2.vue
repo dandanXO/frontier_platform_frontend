@@ -71,23 +71,12 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           p {{ $t('RR0085') }}
         slot(name="header-right")
     slot(name="sub-header")
-    div(v-if="pagination" class="overflow-auto flex flex-1 flex-col")
-      div(
-        v-if="showLoading && (isSearching || (inSearch && pagination.totalCount === 0))"
-        class="flex-grow flex flex-col justify-center items-center"
-      )
-        f-svg-icon(
-          v-if="isSearching"
-          iconName="loading"
-          size="92"
-          class="text-green-600-v1"
-          testId="loading-indicator"
-        )
-        p(
-          v-else-if="inSearch && pagination.totalCount === 0"
-          class="text-center text-body2 text-grey-900"
-        ) {{ $t('RR0105') }}
-      div(v-else class="flex-grow")
+    div(
+      v-if="pagination"
+      class="md:overflow-y-auto flex-grow flex flex-col"
+      ref="scrollContainer"
+    )
+      div(class="flex-grow")
         slot(
           :inSearch="inSearch"
           :currentPage="pagination.currentPage"
@@ -114,12 +103,25 @@ multi-select-menu(
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineOptions } from 'vue'
+import {
+  ref,
+  computed,
+  defineOptions,
+  nextTick,
+  watch,
+  onBeforeUnmount,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { debounce } from 'debounce'
 
-import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE, SIZE } from '@/utils/constants'
+import {
+  SEARCH_TYPE,
+  CONTEXTUAL_MENU_MODE,
+  SIZE,
+  ASSET_LIST_DISPLAY_MODE,
+  SCROLL_POSITION_KEY,
+} from '@/utils/constants'
 import type { FunctionOption } from '@/types'
 import type {
   Material,
@@ -189,13 +191,14 @@ const props = withDefaults(
     canSelectAll?: boolean
     canFilter?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
+    assets?: boolean
+    isAssetSlimListLoading?: boolean
+    displayMode?: ASSET_LIST_DISPLAY_MODE
     rightIconSearch?: string
-    showLoading?: boolean
   }>(),
   {
     canSelectAll: true,
     canFilter: true,
-    showLoading: true,
   }
 )
 
@@ -232,6 +235,7 @@ const isSearching = ref(false)
 const inSearch = ref(false)
 const isOpenFilterPanel = ref(false)
 const isKeywordDirty = ref(false)
+const scrollContainer = ref<HTMLElement | null>(null)
 const defaultSort = computed(() => props.optionSort.base[0].value)
 const searchDirty = computed(() => {
   return isKeywordDirty.value || isFilterDirty.value
@@ -312,14 +316,10 @@ const handleSearch = () => {
 }
 
 const search = async (targetPage = 1) => {
-  isSearching.value = true
+  if (!props.assets) {
+    isSearching.value = true
+  }
 
-  /**
-   * when first time using keyword search (no keyword -> with keyword),
-   * sort value will automatically change to optionSort.keywordSearch[0].value,
-   * and when first time searching without keyword (with keyword -> no keyword),
-   * sort value will automatically change to defaultSort.value
-   */
   if (props.optionSort.keywordSearch.length > 0) {
     if (!isKeywordDirty.value && !!keyword.value) {
       searchStore.setSort(props.optionSort.keywordSearch[0].value)
@@ -330,7 +330,6 @@ const search = async (targetPage = 1) => {
 
   isKeywordDirty.value = !!keyword.value
 
-  // only when searchDirty is true, it's considered a search mode
   inSearch.value = searchDirty.value
 
   const { densityAndYarn } = filterState.value
@@ -433,12 +432,67 @@ const search = async (targetPage = 1) => {
     }
   )
 
-  isSearching.value = false
+  if (!props.assets) {
+    isSearching.value = false
+  }
 }
 
 const handleCheckboxInput = (value: any) => {
   searchStore.setIsShowMatch(value)
   search()
+}
+
+watch(
+  () => (props.assets ? props.isAssetSlimListLoading : isSearching.value),
+  (newVal) => {
+    nextTick(() => {
+      if (!newVal && props.displayMode === ASSET_LIST_DISPLAY_MODE.GRID) {
+        const savedData = sessionStorage.getItem(SCROLL_POSITION_KEY)
+        if (scrollContainer.value && savedData) {
+          const { position, page } = JSON.parse(savedData)
+          if (page === pagination.value?.currentPage) {
+            smoothScrollTo(scrollContainer.value, position)
+            sessionStorage.removeItem(SCROLL_POSITION_KEY)
+          }
+        }
+      }
+    })
+  }
+)
+
+onBeforeUnmount(() => {
+  if (scrollContainer.value) {
+    sessionStorage.setItem(
+      SCROLL_POSITION_KEY,
+      scrollContainer.value.scrollTop.toString()
+    )
+  }
+})
+
+const smoothScrollTo = (
+  element: HTMLElement,
+  target: number,
+  duration: number = 500
+) => {
+  const start = element.scrollTop
+  const change = target - start
+  const startTime = performance.now()
+
+  function animateScroll(currentTime: number) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1) // progress from 0 to 1
+    element.scrollTop = start + change * easeInOutQuad(progress)
+
+    if (progress < 1) {
+      requestAnimationFrame(animateScroll)
+    }
+  }
+
+  function easeInOutQuad(t: number) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+  }
+
+  requestAnimationFrame(animateScroll)
 }
 
 // Initialize search and filter

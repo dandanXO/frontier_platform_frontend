@@ -1,15 +1,18 @@
 <template>
-  <search-table
+  <search-table-v2
     :display-mode="displayMode"
     :search-type="SEARCH_TYPE.ASSETS"
     :search-callback="getMaterialList"
+    rightIconSearch="image_search"
     :option-sort="sortOptions"
     :option-multi-select="multiSelectOptions"
     :item-list="displayedMaterialList"
     v-model:selected-item-list="selectedMaterialList"
     :is-asset-slim-list-loading="isSlimMaterialsLoading"
+    @clickRightIconSearch="showSearchByImageModal"
     assets
     :canSelectAll="!isLoading"
+    data-theme="new"
   >
     <template #header-left="{ totalCount }">
       <h5 class="text-h5 font-bold text-grey-900">
@@ -25,164 +28,196 @@
     </template>
 
     <template #header-right>
-      <div class="flex items-center space-x-3">
-        <f-input-tap
-          :option-list="displayModeOptions"
-          v-model:input-value="displayMode"
-        />
-        <f-button
-          v-permission="{
-            FUNC_ID: FUNC_ID.ASSET_CREATE,
-            behavior: 'deleteElement',
-          }"
-          size="sm"
-          prepend-icon="texture_add"
-          @click="goToMaterialUpload"
-        >
-          {{ $t('UU0020') }}
-        </f-button>
-      </div>
+      <f-pill-group
+        v-if="!isImageSearch"
+        :optionList="displayModeOptions"
+        v-model:inputValue="displayMode"
+        :size="SIZE.LG"
+      />
+      <f-button
+        v-permission="{
+          FUNC_ID: FUNC_ID.ASSET_CREATE,
+          behavior: 'deleteElement',
+        }"
+        :size="SIZE.LG"
+        prependIcon="texture_add"
+        @click="goToMaterialUpload"
+      />{{ $t('UU0020') }}
     </template>
 
     <template #default>
-      <template v-if="displayedMaterialList.length > 0">
-        <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
+      <div
+        class="flex gap-5"
+        :class="[
+          displayMode === ASSET_LIST_DISPLAY_MODE.LIST
+            ? 'flex-col'
+            : 'flex-row',
+        ]"
+      >
+        <div
+          class="flex flex-col p-4 gap-4 rounded-2xl bg-secondary h-fit"
+          v-if="isImageSearch"
+        >
           <div
-            v-for="(item, index) in displayedMaterialList"
-            :key="`${item.materialId}-list`"
+            class="flex flex-col align-center justify-center rounded-xl gap-2 bg-primary w-62 h-60"
           >
-            <RowItem
-              :key="`${item.materialId}-list`"
-              :material="item"
-              v-model:selected-list="selectedMaterialList"
-              :material-options="materialOptions"
-              data-cy="assets-item-list"
-              :disabled="isLoading"
-            />
-            <div
-              v-if="index !== displayedMaterialList.length - 1"
-              class="border-b border-grey-250 mx-7.5 my-5"
+            <f-svg-icon
+              v-if="isSlimMaterialsLoading"
+              iconName="loading"
+              size="140"
+              class="text-green-600-v1 self-center"
+              testId="loading-indicator"
+            ></f-svg-icon>
+            <img
+              v-else
+              :src="imageFileUrl"
+              class="w-full h-full object-cover rounded-xl"
             />
           </div>
-        </div>
-
-        <div
-          v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-          class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
-        >
-          <GridItemMaterial
-            v-for="material in displayedMaterialList"
-            :key="material.materialId + '-grid'"
-            :material="material"
-            :select-value="material"
-            v-model:selected-value="selectedMaterialList"
-            :option-list="optionList"
-            :is-selectable="!isLoading"
-            :is-loading="isLoading"
-            @click.stop="handleMaterialClick(material.materialId)"
-            :drawer-open-from-location-list="[]"
-            data-cy="assets-item-grid"
-            :data-tooltip-boundary-reference="`material-${material.materialId}`"
+          <f-button
+            :size="SIZE.LG"
+            prependIcon="sync"
+            type="text"
+            @click="showSearchByImageModal"
+            class="underline font-semibold"
+            :disabled="isSlimMaterialsLoading"
+            >{{ $t('RR0489') }}</f-button
           >
-            <template
-              #title-right-icon
-              v-if="material.faceSide?.isLowDpi || material.backSide?.isLowDpi"
+        </div>
+        <template v-if="isSlimMaterialsLoading">
+          <!-- Skeleton loading for LIST view -->
+          <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
+            <div v-for="i in 40" :key="`skeleton-list-${i}`">
+              <div
+                class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+              >
+                <!-- Item content - using col-span-11 like the real component -->
+                <div class="col-span-11 grid grid-cols-12">
+                  <!-- Left part: image + item details (matches RowItemContent structure) -->
+                  <div class="w-full min-w-42.5 max-w-67.5 col-span-3">
+                    <!-- Item number -->
+                    <SkeletonBase class="h-5 w-3/4 mb-2.5" />
+
+                    <!-- Image placeholder -->
+                    <div class="w-full relative aspect-square">
+                      <SkeletonBase class="w-full h-full" />
+                    </div>
+
+                    <!-- Item specs -->
+                    <div class="my-2">
+                      <SkeletonBase class="h-4 w-full mb-1" />
+                      <SkeletonBase class="h-4 w-3/4" />
+                    </div>
+
+                    <!-- Icons row -->
+                    <div class="flex gap-3">
+                      <SkeletonBase class="h-6 w-6 rounded-full" />
+                      <SkeletonBase class="h-6 w-6 rounded-full" />
+                    </div>
+                  </div>
+
+                  <!-- Material details - other columns -->
+                  <div class="col-span-9 pl-5">
+                    <!-- Material properties -->
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                      <SkeletonBase class="h-4 w-3/4" />
+                      <SkeletonBase class="h-4 w-2/3" />
+                      <SkeletonBase class="h-4 w-1/2" />
+                      <SkeletonBase class="h-4 w-2/3" />
+                      <SkeletonBase class="h-4 w-3/4" />
+                      <SkeletonBase class="h-4 w-3/5" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Item sidebar - col-span-1 -->
+                <div class="col-span-1 flex flex-col gap-3.5 items-center">
+                  <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+                  <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+                  <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
+                </div>
+              </div>
+              <div class="border-b border-grey-250 mx-7.5 my-5" />
+            </div>
+          </div>
+
+          <!-- Skeleton loading for GRID view -->
+          <div
+            v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
+            class="grid gap-y-6 gap-x-5 mx-7.5 w-full"
+            :class="[
+              isImageSearch
+                ? 'grid-cols-4'
+                : 'grid-cols-3 md:grid-cols-4 2xl:grid-cols-5',
+            ]"
+          >
+            <GridItemMaterialSkeleton
+              v-for="i in 40"
+              :key="`skeleton-grid-${i}`"
+            />
+          </div>
+        </template>
+        <template v-else-if="displayedMaterialList.length > 0">
+          <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
+            <div
+              v-for="(item, index) in displayedMaterialList"
+              :key="`${item.materialId}-${new Date().getTime()}`"
             >
-              <LowDpiLabel
-                :material="material"
+              <RowItem
+                :material="item"
+                v-model:selected-list="selectedMaterialList"
                 :material-options="materialOptions"
+                data-cy="assets-item-list"
+                :disabled="isLoading"
               />
-            </template>
-          </GridItemMaterial>
-        </div>
-      </template>
-      <template v-else-if="isSlimMaterialsLoading">
-        <!-- Skeleton loading for LIST view -->
-        <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
-          <div v-for="i in 40" :key="`skeleton-list-${i}`">
-            <div
-              class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+              <div
+                v-if="index !== displayedMaterialList.length - 1"
+                class="border-b border-grey-250 mx-7.5 my-5"
+              />
+            </div>
+          </div>
+
+          <div
+            v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
+            class="grid grid-cols-3 gap-y-6 gap-x-5 mx-7.5"
+            :class="[
+              isImageSearch
+                ? 'grid-cols-4'
+                : 'grid-cols-3 md:grid-cols-4 2xl:grid-cols-5',
+            ]"
+          >
+            <GridItemMaterial
+              v-for="material in displayedMaterialList"
+              :key="material.materialId + '-' + new Date().getTime()"
+              :material="material"
+              :select-value="material"
+              v-model:selected-value="selectedMaterialList"
+              :option-list="optionList"
+              :is-selectable="!isLoading"
+              :is-loading="isLoading"
+              @click.stop="handleMaterialClick(material.materialId)"
+              :drawer-open-from-location-list="[]"
+              data-cy="assets-item-grid"
+              :data-tooltip-boundary-reference="`material-${material.materialId}`"
             >
-              <!-- Item content - using col-span-11 like the real component -->
-              <div class="col-span-11 grid grid-cols-12">
-                <!-- Left part: image + item details (matches RowItemContent structure) -->
-                <div class="w-full min-w-42.5 max-w-67.5 col-span-3">
-                  <!-- Item number -->
-                  <SkeletonBase class="h-5 w-3/4 mb-2.5" />
-
-                  <!-- Image placeholder -->
-                  <div class="w-full relative aspect-square">
-                    <SkeletonBase class="w-full h-full" />
-                  </div>
-
-                  <!-- Item specs -->
-                  <div class="my-2">
-                    <SkeletonBase class="h-4 w-full mb-1" />
-                    <SkeletonBase class="h-4 w-3/4" />
-                  </div>
-
-                  <!-- Icons row -->
-                  <div class="flex gap-3">
-                    <SkeletonBase class="h-6 w-6 rounded-full" />
-                    <SkeletonBase class="h-6 w-6 rounded-full" />
-                  </div>
-                </div>
-
-                <!-- Material details - other columns -->
-                <div class="col-span-9 pl-5">
-                  <!-- Material properties -->
-                  <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                    <SkeletonBase class="h-4 w-3/4" />
-                    <SkeletonBase class="h-4 w-2/3" />
-                    <SkeletonBase class="h-4 w-1/2" />
-                    <SkeletonBase class="h-4 w-2/3" />
-                    <SkeletonBase class="h-4 w-3/4" />
-                    <SkeletonBase class="h-4 w-3/5" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item sidebar - col-span-1 -->
-              <div class="col-span-1 flex flex-col gap-3.5 items-center">
-                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
-                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
-                <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
-              </div>
-            </div>
-            <div class="border-b border-grey-250 mx-7.5 my-5" />
-          </div>
-        </div>
-
-        <!-- Skeleton loading for GRID view -->
-        <div
-          v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-          class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
-        >
-          <div v-for="i in 40" :key="`skeleton-grid-${i}`" class="relative">
-            <!-- Main wrapper -->
-            <div class="relative">
-              <!-- Square aspect ratio container -->
-              <div class="w-full aspect-square relative">
-                <!-- Top selection bar area -->
-                <div class="absolute z-10 top-0 left-0 w-full h-11">
-                  <SkeletonBase class="w-full h-full rounded-t-md opacity-10" />
-                </div>
-
-                <!-- Main image content -->
-                <SkeletonBase
-                  class="absolute top-0 left-0 w-full h-full rounded-md"
+              <template
+                #title-right-icon
+                v-if="
+                  material.faceSide?.isLowDpi || material.backSide?.isLowDpi
+                "
+              >
+                <LowDpiLabel
+                  :material="material"
+                  :material-options="materialOptions"
                 />
-              </div>
-
-              <!-- Caption area -->
-              <SkeletonBase class="h-3 w-1/2 mt-1" />
-            </div>
+              </template>
+            </GridItemMaterial>
           </div>
-        </div>
-      </template>
-      <empty-state-assets v-else />
+        </template>
+        <EmptyStateAssets v-else />
+      </div>
     </template>
-  </search-table>
+  </search-table-v2>
 </template>
 
 <script setup lang="ts">
@@ -193,11 +228,11 @@ import { useRoute, useRouter } from 'vue-router'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useI18n } from 'vue-i18n'
 
-import SearchTable, {
-  RouteQuery,
+import SearchTableV2, {
+  type RouteQuery,
   type SearchPayload,
   type SortOption,
-} from '@/components/common/SearchTable.vue'
+} from '@/components/common/SearchTableV2.vue'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
@@ -221,6 +256,8 @@ import RowItem from '@/components/assets/RowItem.vue'
 import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import SkeletonBase from '@/components/common/SkeletonBase.vue'
 import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
+import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
+import GridItemMaterialSkeleton from '@/components/common/gridItem/GridItemMaterialSkeleton.vue'
 
 // Permission hook
 interface PermissionsAPI {
@@ -260,6 +297,8 @@ const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
 const { hasPermission, permissionList } = usePermissions()
 
 const isLoading = ref(false)
+const isImageSearch = ref(false)
+const imageFileUrl = ref<string>('')
 const isSlimMaterialsLoading = ref(false)
 const selectedMaterialList = ref<Material[]>([])
 watch(selectedMaterialList, (newVal) => {
@@ -345,10 +384,15 @@ const parseSlimMaterial = (material: any): Material => ({
 })
 
 const displayedMaterialList = computed(() => {
-  // Show slim list while full list is loading, otherwise show full list
-  return isLoading.value
-    ? slimMaterialList.value.map(parseSlimMaterial)
-    : materialList.value
+  const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
+
+  if (!isAnyLoading) {
+    return materialList.value
+  }
+  if (slimMaterialList.value.length > 0) {
+    return slimMaterialList.value.map(parseSlimMaterial)
+  }
+  return materialList.value.length > 0 ? materialList.value : []
 })
 
 const getMaterialList = async (
@@ -515,6 +559,33 @@ const optionList = computed(() => {
 
   return optionGroups
 })
+
+const showSearchByImageModal = () => {
+  store.dispatch('helper/pushModalCommon', {
+    body: ModalSearchByImage,
+    classModal: 'w-128',
+    theme: 'new',
+    title: t('RR0483'),
+    onClose: () => {
+      store.dispatch('helper/closeModal')
+    },
+    properties: {
+      onFinish: (file: File) => {
+        displayMode.value = ASSET_LIST_DISPLAY_MODE.GRID
+        store.dispatch('helper/closeModal')
+        // simulate fetching API
+        isSlimMaterialsLoading.value = true
+        isImageSearch.value = true
+        imageFileUrl.value = URL.createObjectURL(file)
+
+        // simulate fetching API finished
+        setTimeout(() => {
+          isSlimMaterialsLoading.value = false
+        }, 5000)
+      },
+    },
+  })
+}
 
 const multiSelectOptions = computed(() => {
   const options = [printA4Swatch, printLabel, downloadU3m, exportExcel]
