@@ -3,32 +3,34 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import axios, { type CancelTokenSource } from 'axios'
 import type {
+  AssetsFilter,
   Material,
   PaginationReq,
   Search,
-  AssetsFilter,
   SmartUploadAssetsMaterialV2U3MRequestAllOfU3MListInner,
   MaterialOptions,
 } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
-import { useSearchStore } from '@/stores/search'
 import { useNotifyStore } from '@/stores/notify'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 import useNavigation from '@/composables/useNavigation'
-import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
 import {
   CREATE_MATERIAL_MODE,
   TRACKER_ADDITIONAL_PROPERTIES,
   track,
 } from '@frontier/lib'
 import { accessToken } from '@/utils/storage'
+import assignCarbonEmissionValue from '@/utils/material/assignCarbonEmissionValue'
+import { useSearchStore } from '../search'
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
   let cancelTokenSourceMaterial: CancelTokenSource | null = null
   let cancelTokenSourceSlim: CancelTokenSource | null = null
   const selectedMaterialList = ref<Material[]>([])
+  const materialList = ref<Material[]>([])
+  const slimMaterialList = ref<Material[]>([])
   const { goToAssetMaterialSpreadSheet } = useNavigation()
   const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
@@ -47,9 +49,6 @@ export const useAssetsStore = defineStore('assets', () => {
   const uploadPageUseNewUi = computed(
     () => store.getters['permission/uploadPageUseNewUi']
   )
-
-  const materialList = ref<Material[]>([])
-  const slimMaterialList = ref<Material[]>([])
 
   const viewMode = computed(() => {
     if (uploadPageUseBothUi.value) {
@@ -276,7 +275,6 @@ export const useAssetsStore = defineStore('assets', () => {
 
   return {
     switchCreateAssetsView,
-    materialList,
     spreadsheetInitialMaterial,
     slimMaterialList,
     progressLoaded,

@@ -227,14 +227,6 @@ import { useRoute, useRouter } from 'vue-router'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useI18n } from 'vue-i18n'
 
-import SearchTableV2, {
-  type RouteQuery,
-  type SearchPayload,
-  type SortOption,
-} from '@/components/common/SearchTableV2.vue'
-import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
-import useNavigation from '@/composables/useNavigation'
-import useAssets from '@/composables/useAssets'
 import { FUNC_ID, PERMISSION_MAP, SIZE } from '@/utils/constants'
 import {
   SEARCH_TYPE,
@@ -242,8 +234,12 @@ import {
   NOTIFY_TYPE,
   SCROLL_POSITION_KEY,
 } from '@/utils/constants'
+import useNavigation from '@/composables/useNavigation'
+import useAssets from '@/composables/useAssets'
 import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
+import { useFilterStore } from '@/stores/filter'
+import { useAssetsLibraryStore } from '@/stores/assets/library'
 import type {
   AssetsFilter,
   ExternalFilter,
@@ -257,7 +253,12 @@ import SkeletonBase from '@/components/common/SkeletonBase.vue'
 import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
 import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
 import GridItemMaterialSkeleton from '@/components/common/gridItem/GridItemMaterialSkeleton.vue'
-import { useFilterStore } from '@/stores/filter'
+import SearchTableV2, {
+  type RouteQuery,
+  type SearchPayload,
+  type SortOption,
+} from '@/components/common/SearchTableV2.vue'
+import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 
 // Permission hook
 interface PermissionsAPI {
@@ -285,21 +286,24 @@ defineOptions({
 })
 
 const assetsStore = useAssetsStore()
+const assetsLibraryStore = useAssetsLibraryStore()
 const searchStore = useSearchStore()
 const filterStore = useFilterStore()
 const route = useRoute()
 const router = useRouter()
-const { materialList, slimMaterialList } = storeToRefs(assetsStore)
+const {
+  materialList,
+  slimMaterialList,
+  displayedMaterialList,
+  isLoading,
+  isSlimMaterialsLoading,
+} = storeToRefs(assetsLibraryStore)
 const { imageFileURL: imageSearchData } = storeToRefs(filterStore)
 
 const { t } = useI18n()
 const store = useStore()
-const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
-  useNavigation()
-const { hasPermission, permissionList } = usePermissions()
-
-const isLoading = ref(false)
-const isSlimMaterialsLoading = ref(false)
+const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
+const { permissionList } = usePermissions()
 const selectedMaterialList = ref<Material[]>([])
 watch(selectedMaterialList, (newVal) => {
   assetsStore.setSelectedMaterialList(newVal)
@@ -314,8 +318,6 @@ const materialOptionsRes = await assetsStore.ogBaseAssetsApi(
   'getMaterialOptions'
 )
 const materialOptions = materialOptionsRes.data.result
-
-const hasCreatePermission = computed(() => hasPermission(FUNC_ID.ASSET_CREATE))
 
 const displayModeOptions = computed(() => {
   return [
@@ -359,42 +361,6 @@ const handleMaterialClick = (materialId: number) => {
   })
 }
 
-const parseSlimMaterial = (material: any): Material => ({
-  ...material,
-  weightDisplaySetting: material.weightDisplaySetting || {
-    isShowWeightGsm: false,
-  },
-  u3m: material.u3m || { status: -1 },
-  customU3m: material.customU3m || { status: -1 },
-  sideType: material.sideType || 1,
-  faceSide: {
-    descriptionList: material.faceSide?.descriptionList || [],
-    constructionCustomPropertyList:
-      material.faceSide?.constructionCustomPropertyList || [],
-    contentList: material.faceSide?.contentList || [],
-    finishList: material.faceSide?.finishList || [],
-  },
-  tagInfo: {
-    tagList: material.tagInfo?.tagList || [],
-  },
-  digitalThreadInfo: {
-    threadQty: material.digitalThreadInfo?.threadQty || 0,
-    hasUnreadThread: material.digitalThreadInfo?.hasUnreadThread || false,
-  },
-})
-
-const displayedMaterialList = computed(() => {
-  const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
-
-  if (!isAnyLoading) {
-    return materialList.value
-  }
-  if (slimMaterialList.value.length > 0) {
-    return slimMaterialList.value.map(parseSlimMaterial)
-  }
-  return materialList.value.length > 0 ? materialList.value : []
-})
-
 const getMaterialList = async (
   payload: SearchPayload<
     AssetsFilter | WorkspaceFilter | InnerExternalFilter | ExternalFilter
@@ -415,18 +381,30 @@ const getMaterialList = async (
     return
   }
 
-  // Fetch slim list first for quick initial display
-  try {
-    await assetsStore.getAssetsMaterialSlimList(
-      payload as SearchPayload<AssetsFilter>
-    )
-  } catch (error: any) {
-    if (error?.name !== 'CanceledError') {
-      console.error('Error fetching slim material list', error)
-    }
-  } finally {
-    isSlimMaterialsLoading.value = false
-  }
+  await Promise.allSettled([
+    assetsLibraryStore
+      .getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
+      .catch((error: any) => {
+        if (error?.name === 'CanceledError') {
+          requestInfo.fullMaterialCanceled = true
+        }
+        throw error
+      }),
+    assetsLibraryStore
+      .getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
+      .then((response) => {
+        if (!requestInfo.slimMaterialCanceled) {
+          isSlimMaterialsLoading.value = false
+        }
+        return response
+      })
+      .catch((error: any) => {
+        if (error?.name === 'CanceledError') {
+          requestInfo.slimMaterialCanceled = true
+        }
+        throw error
+      }),
+  ])
 
   // Fetch full list and replace slim items when done
   try {
