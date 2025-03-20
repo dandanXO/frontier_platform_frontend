@@ -7,11 +7,15 @@ div(class="flex h-full py-24 px-32" data-theme="new")
       div(class="flex flex-col gap-3")
         p(class="text-3xl font-bold text-[32px]") {{ $t('RR0490') }}
         p(class="text-xl text-tertiary-text") {{ $t('RR0491') }}
-        f-button(
-          type="text"
-          size="lg"
-          class="underline font-semibold w-fit h-fit !p-0"
-        ) {{ $t('RR0492') }}
+        a(
+          href="https://www.frontier.cool/a/docs/asset-library/creating-assets"
+          target="_blank"
+        )
+          f-button(
+            type="text"
+            size="lg"
+            class="underline font-semibold w-fit h-fit !p-0"
+          ) {{ $t('RR0492') }}
     f-button(
       v-permission="{ FUNC_ID: FUNC_ID.ASSET_CREATE, behavior: 'deleteElement' }"
       size="lg"
