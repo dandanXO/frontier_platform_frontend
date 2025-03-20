@@ -117,6 +117,9 @@ fileOperator.on('finish', async (file: File) => {
       throw t('WW0135')
     }
 
+    // Determine schema version (default to 1.0 if missing)
+    const schemaVersion = u3mJSON.schema || '1.0'
+
     const loopObject = (obj: any) => {
       Object.keys(obj).forEach((key: string) => {
         const value = obj[key]
@@ -127,49 +130,59 @@ fileOperator.on('finish', async (file: File) => {
         ) {
           return loopObject(value)
         }
-        // 2. check if basecolor exists
+
+        // Basecolor check remains version-agnostic
         if (key === 'basecolor' && value === null) {
           throw t('WW0136')
         }
 
-        // 3. check if it can find image file  by corresponding URI path
+        // Normalize paths for version compatibility
         if (key === 'path') {
+          const normalizedValue = value.replace(/\\/g, '/') // Handle both slash types
           const isMatched = unzippedU3mFileList.some((item) =>
-            item.file.name.includes(value)
+            item.file.name.includes(normalizedValue)
           )
           if (!isMatched) {
             throw t('WW0137')
           }
         }
 
-        // 4. check if fab has value and can find the JSON file by corresponding URI path
+        // Physics check only for schema 1.1+
         if (key === 'fab' && value !== null) {
-          const isMatched = unzippedU3mFileList.some((item) =>
-            item.file.name.includes(value)
-          )
-          hasPhysicalData = true
-          if (!isMatched) {
-            throw t('WW0138')
+          if (schemaVersion >= '1.1') {
+            const isMatched = unzippedU3mFileList.some((item) =>
+              item.file.name.includes(value)
+            )
+            hasPhysicalData = true
+            if (!isMatched) {
+              throw t('WW0138')
+            }
           }
         }
       })
     }
-    // check u3m zip if is doubleSide json need has tow side if not only one side
+
+    // Modified side validation with version awareness
     if (props.material.isDoubleSide) {
       if (!u3mJSON.material.front || !u3mJSON.material.back) {
         throw t('WW0135') + '(face and back side error)'
       }
     } else {
-      if (
-        props.material.sideType === MaterialSideType.FACE_SIDE &&
-        (!u3mJSON.material.front || u3mJSON.material.back)
-      ) {
-        throw t('WW0135') + '(face side error)'
-      } else if (
-        props.material.sideType === MaterialSideType.BACK_SIDE &&
-        (!u3mJSON.material.back || u3mJSON.material.front)
-      ) {
-        throw t('WW0135') + '(bake side error)'
+      const allowLegacyBack = schemaVersion < '1.1'
+      if (props.material.sideType === MaterialSideType.FACE_SIDE) {
+        if (
+          !u3mJSON.material.front ||
+          (!allowLegacyBack && u3mJSON.material.back)
+        ) {
+          throw t('WW0135') + '(face side error)'
+        }
+      } else if (props.material.sideType === MaterialSideType.BACK_SIDE) {
+        if (
+          !u3mJSON.material.back ||
+          (!allowLegacyBack && u3mJSON.material.front)
+        ) {
+          throw t('WW0135') + '(back side error)'
+        }
       }
     }
     loopObject(u3mJSON.material)

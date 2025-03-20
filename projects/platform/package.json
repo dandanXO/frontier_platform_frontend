@@ -6,6 +6,7 @@
     "serve:dev": "npm run serve --mode=development",
     "serve:production": "npm run serve --mode=production",
     "serve:feat": "npm run serve --mode=feat",
+    "serve:staging": "npm run serve --mode=staging",
     "build": "bash ./scripts/fetchEnvVar.sh $npm_config_mode && vite build --mode $npm_config_mode",
     "build:dev": "npm run build --mode=development",
     "deploy": "npm run build --mode=$npm_config_mode && bash ./scripts/deploy.sh $npm_config_mode",
