@@ -134,17 +134,11 @@ import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import FilterPanel from '@/components/common/FilterPanel.vue'
+import type { SortOption } from '@/stores/assets/library'
 
 defineOptions({
   inheritAttrs: false,
 })
-
-export interface SortOption {
-  text: string
-  value: PaginationReqSortEnum
-  disabled?: boolean
-  tooltipMessage?: string
-}
 
 export interface SearchPayload<FilterType> {
   pagination: PaginationReq

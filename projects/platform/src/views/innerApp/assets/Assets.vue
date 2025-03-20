@@ -244,7 +244,6 @@ import type {
   AssetsFilter,
   ExternalFilter,
   InnerExternalFilter,
-  Material,
   WorkspaceFilter,
 } from '@frontier/platform-web-sdk'
 import RowItem from '@/components/assets/RowItem.vue'
@@ -256,7 +255,6 @@ import GridItemMaterialSkeleton from '@/components/common/gridItem/GridItemMater
 import SearchTableV2, {
   type RouteQuery,
   type SearchPayload,
-  type SortOption,
 } from '@/components/common/SearchTableV2.vue'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 
@@ -292,9 +290,14 @@ const filterStore = useFilterStore()
 const route = useRoute()
 const router = useRouter()
 const {
+  displayMode,
   materialList,
   slimMaterialList,
   displayedMaterialList,
+  selectedMaterialList,
+  displayModeOptions,
+  sortOptions,
+  multiSelectOptions,
   isLoading,
   isSlimMaterialsLoading,
 } = storeToRefs(assetsLibraryStore)
@@ -304,33 +307,14 @@ const { t } = useI18n()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
 const { permissionList } = usePermissions()
-const selectedMaterialList = ref<Material[]>([])
 watch(selectedMaterialList, (newVal) => {
   assetsStore.setSelectedMaterialList(newVal)
 })
-const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(
-  Number(route.query.displayMode) === ASSET_LIST_DISPLAY_MODE.LIST
-    ? ASSET_LIST_DISPLAY_MODE.LIST
-    : ASSET_LIST_DISPLAY_MODE.GRID
-)
 
 const materialOptionsRes = await assetsStore.ogBaseAssetsApi(
   'getMaterialOptions'
 )
 const materialOptions = materialOptionsRes.data.result
-
-const displayModeOptions = computed(() => {
-  return [
-    {
-      selectValue: ASSET_LIST_DISPLAY_MODE.GRID,
-      icon: 'apps',
-    },
-    {
-      selectValue: ASSET_LIST_DISPLAY_MODE.LIST,
-      icon: 'format_list_bulleted',
-    },
-  ]
-})
 
 const handleMaterialClick = (materialId: number) => {
   if (displayMode.value === ASSET_LIST_DISPLAY_MODE.GRID) {
@@ -460,48 +444,6 @@ const {
   startSpreadSheetUpdate,
 } = useAssets()
 
-const sortOptions = computed(() => {
-  const {
-    CREATE_DATE,
-    LAST_UPDATE,
-    ITEM_NO_A_Z,
-    GHG_LOW_TO_HIGH,
-    WATER_LOW_TO_HIGH,
-    LAND_LOW_TO_HIGH,
-    RELEVANCE,
-  } = searchStore.sortOption
-
-  const made2flowPlanStatus = computed(
-    () => store.getters['polling/valueAddedService'].made2flow.planStatus
-  )
-  const isM2fActive = made2flowPlanStatus.value.ACTIVATE
-  const m2fTooltip = !isM2fActive ? t('VV0047') : ''
-
-  return {
-    base: [
-      CREATE_DATE,
-      LAST_UPDATE,
-      ITEM_NO_A_Z,
-      {
-        ...GHG_LOW_TO_HIGH,
-        disabled: !isM2fActive,
-        tooltipMessage: m2fTooltip,
-      },
-      {
-        ...WATER_LOW_TO_HIGH,
-        disabled: !isM2fActive,
-        tooltipMessage: m2fTooltip,
-      },
-      {
-        ...LAND_LOW_TO_HIGH,
-        disabled: !isM2fActive,
-        tooltipMessage: m2fTooltip,
-      },
-    ] as SortOption[],
-    keywordSearch: [RELEVANCE] as SortOption[],
-  }
-})
-
 const optionList = computed(() => {
   if (isLoading.value) {
     return []
@@ -557,25 +499,6 @@ const showSearchByImageModal = () => {
   })
 }
 
-const multiSelectOptions = computed(() => {
-  const options = [printA4Swatch, printLabel, downloadU3m, exportExcel]
-
-  const permissionOptionsMap = {
-    [FUNC_ID.ASSET_COPY]: () => options.unshift(cloneTo),
-    [FUNC_ID.ASSET_MERGE]: () => options.push(mergeMaterial),
-    [FUNC_ID.ASSET_ADD_TO_WORK_SPACE]: () => options.push(addToWorkspace),
-    [FUNC_ID.ASSET_SPREADSHEET]: () => options.push(startSpreadSheetUpdate),
-    [FUNC_ID.ASSET_DELETE]: () => options.push(deleteMaterial),
-  }
-
-  permissionList.forEach((permission) => {
-    if (permissionOptionsMap[permission]) {
-      permissionOptionsMap[permission]()
-    }
-  })
-
-  return options
-})
 onMounted(() => {
   if (assetsStore.selectedMaterialList.length > 0) {
     selectedMaterialList.value = assetsStore.selectedMaterialList
