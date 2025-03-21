@@ -27,7 +27,7 @@ div(class="w-full h-full flex flex-col px-8 gap-8 bg-primary" v-bind="$attrs")
           showQuickJumper
           v-model:currentPage="pagination.currentPage"
           :totalPage="pagination.totalPage"
-          @goTo="search($event)"
+          @goTo="assetsLibraryStore.search($event)"
         )
 </template>
 
@@ -63,7 +63,8 @@ import type {
 } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
-import type { SortOption } from '@/stores/assets/library'
+import { useAssetsLibraryStore, type SortOption } from '@/stores/assets/library'
+import { noop } from '@vueuse/core'
 
 defineOptions({
   inheritAttrs: false,
@@ -107,179 +108,35 @@ const props = withDefaults(
     itemList: Material[] | NodeChild[] | ShareNodeChild[]
     testId?: string
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
-    assets?: boolean
     isAssetSlimListLoading?: boolean
     displayMode?: ASSET_LIST_DISPLAY_MODE
   }>(),
   {}
 )
 
-const emit = defineEmits<{
-  (
-    e: 'update:selectedItemList',
-    value: Material[] | NodeChild[] | ShareNodeChild[]
-  ): void
-  (
-    e: 'search',
-    payload:
-      | SearchPayload<AssetsFilter>
-      | SearchPayload<WorkspaceFilter>
-      | SearchPayload<InnerExternalFilter>
-      | SearchPayload<ExternalFilter>,
-    query: RouteQuery
-  ): void
-}>()
-
 const route = useRoute()
 const searchStore = useSearchStore()
 const filterStore = useFilterStore()
-const {
-  keyword,
-  selectedTagList,
-  sort,
-  isShowMatch,
-  paginationRes: pagination,
-} = storeToRefs(searchStore)
-const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
-
-const isSearching = ref(false)
-const inSearch = ref(false)
-const isKeywordDirty = ref(false)
+const assetsLibraryStore = useAssetsLibraryStore()
+const { isSearching, inSearch } = storeToRefs(assetsLibraryStore)
+const { paginationRes: pagination } = storeToRefs(searchStore)
 const scrollContainer = ref<HTMLElement | null>(null)
 const defaultSort = computed(() => props.optionSort.base[0].value)
-const searchDirty = computed(() => {
-  return isKeywordDirty.value || isFilterDirty.value
-})
+
+const search = computed(() =>
+  props.searchType === SEARCH_TYPE.ASSETS ? assetsLibraryStore.search : noop
+)
 
 const visit = () => {
   searchStore.setSort(defaultSort.value)
-  search()
-}
-
-const search = async (targetPage = 1) => {
-  if (!props.assets) {
-    isSearching.value = true
-  }
-
-  if (props.optionSort.keywordSearch.length > 0) {
-    if (!isKeywordDirty.value && !!keyword.value) {
-      searchStore.setSort(props.optionSort.keywordSearch[0].value)
-    } else if (isKeywordDirty.value && !keyword.value) {
-      searchStore.setSort(defaultSort.value)
-    }
-  }
-
-  isKeywordDirty.value = !!keyword.value
-
-  inSearch.value = searchDirty.value
-
-  const { densityAndYarn } = filterState.value
-  const woven = filterDirty.value.densityAndYarn
-    ? densityAndYarn.knit.knitYarnSize === null
-      ? densityAndYarn.woven
-      : null
-    : null
-  const knit =
-    woven === null && filterDirty.value.densityAndYarn
-      ? {
-          knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
-        }
-      : null
-  await props.searchCallback(
-    {
-      pagination: {
-        sort: sort.value,
-        isShowMatch: isShowMatch.value,
-        targetPage,
-        perPageCount: 40,
-      },
-      search: (() => {
-        return !keyword.value && selectedTagList.value.length === 0
-          ? null
-          : {
-              keyword: keyword.value,
-              tagList: selectedTagList.value,
-            }
-      })(),
-      filter: (() => {
-        if (!isFilterDirty.value) {
-          return null
-        }
-
-        return {
-          ...Object.keys(filterState.value).reduce((acc, key) => {
-            const property = key as keyof typeof filterState.value
-
-            if (props.searchType !== SEARCH_TYPE.ASSETS) {
-              if (property === 'status') {
-                return acc
-              }
-              if (props.searchType !== SEARCH_TYPE.WORKSPACE) {
-                if (property === 'withOutEcoImpactor') {
-                  return acc
-                }
-              }
-            }
-
-            if (props.searchType !== SEARCH_TYPE.INNER_EXTERNAL) {
-              if (property === 'countryList') {
-                return acc
-              }
-            }
-
-            return {
-              ...acc,
-              [property]: filterDirty.value[property]
-                ? filterState.value[property]
-                : null,
-            }
-          }, {}),
-          densityAndYarn: woven || knit ? { woven, knit } : null,
-        } as
-          | AssetsFilter
-          | WorkspaceFilter
-          | InnerExternalFilter
-          | ExternalFilter
-      })(),
-    },
-    {
-      currentPage: targetPage,
-      sort: sort.value,
-      isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
-      keyword: keyword.value ?? undefined,
-      tagList:
-        selectedTagList.value.length > 0
-          ? encodeURI(JSON.stringify(selectedTagList.value))
-          : undefined,
-      filter: (() => {
-        if (!isFilterDirty.value) {
-          return undefined
-        }
-        return encodeURI(
-          JSON.stringify(
-            Object.keys(filterState.value).reduce((acc, key) => {
-              const property = key as keyof typeof filterState.value
-
-              return filterDirty.value[property]
-                ? {
-                    ...acc,
-                    [property]: filterState.value[property],
-                  }
-                : acc
-            }, {})
-          )
-        )
-      })(),
-    }
-  )
-
-  if (!props.assets) {
-    isSearching.value = false
-  }
+  search.value()
 }
 
 watch(
-  () => (props.assets ? props.isAssetSlimListLoading : isSearching.value),
+  () =>
+    props.searchType === SEARCH_TYPE.ASSETS
+      ? props.isAssetSlimListLoading
+      : isSearching.value,
   (newVal) => {
     nextTick(() => {
       if (!newVal && props.displayMode === ASSET_LIST_DISPLAY_MODE.GRID) {
@@ -352,6 +209,5 @@ searchStore.setSelectedTagList(
 )
 
 filterStore.setFilterStateByQueryString(qFilter ? (qFilter as string) : '{}')
-
-search(currentPage ? Number(currentPage) : 1)
+search.value(currentPage ? Number(currentPage) : 1)
 </script>

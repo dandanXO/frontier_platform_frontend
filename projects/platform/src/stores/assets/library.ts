@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import axios, { type CancelTokenSource } from 'axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -22,6 +22,7 @@ import {
   PERMISSION_MAP,
 } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
+import { useFilterStore } from '../filter'
 
 export interface SortOption {
   text: string
@@ -30,10 +31,26 @@ export interface SortOption {
   tooltipMessage?: string
 }
 
+export interface SearchPayload<FilterType> {
+  pagination: PaginationReq
+  search: Search | null
+  filter: FilterType | null
+}
+
+export interface RouteQuery {
+  currentPage: number
+  sort: PaginationReqSortEnum
+  isShowMatch?: boolean
+  keyword?: string
+  tagList?: string
+  filter?: string
+}
+
 export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   let cancelTokenSourceMaterial: CancelTokenSource | null = null
   let cancelTokenSourceSlim: CancelTokenSource | null = null
   const route = useRoute()
+  const router = useRouter()
   const { t } = useI18n()
   const {
     printA4Swatch,
@@ -47,7 +64,11 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     startSpreadSheetUpdate,
   } = useAssets()
   const searchStore = useSearchStore()
+  const filterStore = useFilterStore()
+  const { keyword, sort, isShowMatch, selectedTagList } =
+    storeToRefs(searchStore)
   const store = useStore()
+  const { filterState, isFilterDirty, filterDirty } = storeToRefs(filterStore)
   const roleId = store.getters['organization/orgUser/orgUser'].roleID
   const permissionList = PERMISSION_MAP[roleId]
 
@@ -63,6 +84,14 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   const slimMaterialList = ref<Material[]>([])
   const isLoading = ref(false)
   const isSlimMaterialsLoading = ref(false)
+  const isKeywordDirty = ref(false)
+  const inSearch = ref(false)
+  const defaultSort = computed(() => sortOptions.value.base[0].value)
+  const isSearching = ref(true)
+
+  const searchDirty = computed(() => {
+    return isKeywordDirty.value || isFilterDirty.value
+  })
 
   const displayModeOptions = computed(() => {
     return [
@@ -215,6 +244,195 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     return options
   })
 
+  const updateUrlWithSearchParams = (query: RouteQuery): boolean => {
+    const queryParams = new URLSearchParams()
+    queryParams.set('displayMode', displayMode.value.toString())
+
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        queryParams.set(key, value.toString())
+      }
+    })
+
+    // Compare with current route query
+    const currentQuery = new URLSearchParams(
+      route.query as Record<string, string>
+    )
+    if (queryParams.toString() === currentQuery.toString()) {
+      return false
+    }
+
+    // Use router.replace to update the URL without triggering a full navigation
+    router.replace({
+      query: Object.fromEntries(queryParams),
+      hash: route.hash,
+    })
+    return true
+  }
+
+  const getMaterialList = async (
+    payload: SearchPayload<AssetsFilter>,
+    query: RouteQuery
+  ) => {
+    // Reset slim and full material list when starting a new search to avoid showing stale data
+    slimMaterialList.value = []
+    materialList.value = []
+
+    isLoading.value = true
+    isSlimMaterialsLoading.value = true
+
+    const requestInfo = {
+      fullMaterialCanceled: false,
+      slimMaterialCanceled: false,
+    }
+
+    // Update URL and check if it was actually changed
+    const updated = updateUrlWithSearchParams(query)
+    if (updated) {
+      isLoading.value = false
+      isSlimMaterialsLoading.value = false
+      isSearching.value = false
+
+      return
+    }
+
+    await Promise.allSettled([
+      getAssetsMaterialList(payload as SearchPayload<AssetsFilter>).catch(
+        (error: any) => {
+          if (error?.name === 'CanceledError') {
+            requestInfo.fullMaterialCanceled = true
+          }
+          throw error
+        }
+      ),
+      getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
+        .then((response) => {
+          if (!requestInfo.slimMaterialCanceled) {
+            isSlimMaterialsLoading.value = false
+            isSearching.value = false
+          }
+          return response
+        })
+        .catch((error: any) => {
+          if (error?.name === 'CanceledError') {
+            requestInfo.slimMaterialCanceled = true
+          }
+          throw error
+        }),
+    ])
+
+    if (!requestInfo.fullMaterialCanceled) {
+      isLoading.value = false
+      isSearching.value = false
+    }
+  }
+
+  const search = async (targetPage = 1) => {
+    try {
+      isSearching.value = true
+
+      selectedMaterialList.value = []
+      if (sortOptions.value.keywordSearch.length > 0) {
+        if (!isKeywordDirty.value && !!keyword.value) {
+          searchStore.setSort(sortOptions.value.keywordSearch[0].value)
+        } else if (isKeywordDirty.value && !keyword.value) {
+          searchStore.setSort(defaultSort.value)
+        }
+      }
+
+      isKeywordDirty.value = !!keyword.value
+
+      inSearch.value = searchDirty.value
+
+      const { densityAndYarn } = filterState.value
+      const woven = filterDirty.value.densityAndYarn
+        ? densityAndYarn.knit.knitYarnSize === null
+          ? densityAndYarn.woven
+          : null
+        : null
+      const knit =
+        woven === null && filterDirty.value.densityAndYarn
+          ? {
+              knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
+            }
+          : null
+      await getMaterialList(
+        {
+          pagination: {
+            sort: sort.value,
+            isShowMatch: isShowMatch.value,
+            targetPage,
+            perPageCount: 40,
+          },
+          search: (() => {
+            return !keyword.value && selectedTagList.value.length === 0
+              ? null
+              : {
+                  keyword: keyword.value,
+                  tagList: selectedTagList.value,
+                }
+          })(),
+          filter: (() => {
+            if (!isFilterDirty.value) {
+              return null
+            }
+
+            return {
+              ...Object.keys(filterState.value).reduce((acc, key) => {
+                const property = key as keyof typeof filterState.value
+
+                if (property === 'status') {
+                  return acc
+                }
+
+                return {
+                  ...acc,
+                  [property]: filterDirty.value[property]
+                    ? filterState.value[property]
+                    : null,
+                }
+              }, {}),
+              densityAndYarn: woven || knit ? { woven, knit } : null,
+            } as AssetsFilter
+          })(),
+        },
+        {
+          currentPage: targetPage,
+          sort: sort.value,
+          isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
+          keyword: keyword.value ?? undefined,
+          tagList:
+            selectedTagList.value.length > 0
+              ? encodeURI(JSON.stringify(selectedTagList.value))
+              : undefined,
+          filter: (() => {
+            if (!isFilterDirty.value) {
+              return undefined
+            }
+            return encodeURI(
+              JSON.stringify(
+                Object.keys(filterState.value).reduce((acc, key) => {
+                  const property = key as keyof typeof filterState.value
+
+                  return filterDirty.value[property]
+                    ? {
+                        ...acc,
+                        [property]: filterState.value[property],
+                      }
+                    : acc
+                }, {})
+              )
+            )
+          })(),
+        }
+      )
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isSearching.value = false
+    }
+  }
+
   return {
     displayMode,
     materialList,
@@ -228,5 +446,9 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     isSlimMaterialsLoading,
     getAssetsMaterialList,
     getAssetsMaterialSlimList,
+    search,
+    isKeywordDirty,
+    isSearching,
+    inSearch,
   }
 })

@@ -57,7 +57,7 @@
               @update:inputSelectValue="searchStore.setSort"
               :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
               :menuTree="sortMenuTree"
-              @click:menu="search()"
+              @click:menu="assetsLibraryStore.search()"
             ></f-contextual-menu>
           </template>
         </f-popper>
@@ -78,6 +78,7 @@
           v-if="!imageSearchData"
           :optionList="displayModeOptions"
           v-model:inputValue="displayMode"
+          :disabled="isSearching"
           :size="SIZE.LG"
         />
         <f-button
@@ -118,7 +119,6 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 import { debounce } from 'debounce'
 import { useI18n } from 'vue-i18n'
 
@@ -129,7 +129,6 @@ import { useFilterStore } from '@/stores/filter'
 import useNavigation from '@/composables/useNavigation'
 import { CONTEXTUAL_MENU_MODE, SIZE } from '@frontier/constants'
 import {
-  type AssetsFilter,
   type PaginationReq,
   PaginationReqSortEnum,
   type Search,
@@ -158,8 +157,6 @@ const store = useStore()
 const searchStore = useSearchStore()
 const assetsLibraryStore = useAssetsLibraryStore()
 const filterStore = useFilterStore()
-const route = useRoute()
-const router = useRouter()
 const { goToMaterialUpload } = useNavigation()
 
 const {
@@ -167,27 +164,19 @@ const {
   sort,
   isShowMatch,
   paginationRes: pagination,
-  selectedTagList,
 } = storeToRefs(searchStore)
 const {
   displayedMaterialList,
-  materialList,
-  slimMaterialList,
   selectedMaterialList,
   sortOptions,
   multiSelectOptions,
-  isLoading,
-  isSlimMaterialsLoading,
   displayMode,
   displayModeOptions,
+  isKeywordDirty,
+  isSearching,
 } = storeToRefs(assetsLibraryStore)
-const {
-  filterState,
-  isFilterDirty,
-  filterDirty,
-  imageFileURL: imageSearchData,
-} = storeToRefs(filterStore)
-const defaultSort = computed(() => sortOptions.value.base[0].value)
+const { isFilterDirty, imageFileURL: imageSearchData } =
+  storeToRefs(filterStore)
 const sortMenuTree = computed(() => {
   const { base, keywordSearch } = sortOptions.value
   const temp = [...base]
@@ -211,13 +200,8 @@ const sortMenuTree = computed(() => {
     ],
   }
 })
-const searchDirty = computed(() => {
-  return isKeywordDirty.value || isFilterDirty.value
-})
-const isKeywordDirty = ref(false)
+
 const isOpenFilterPanel = ref(false)
-const isSearching = ref(false)
-const inSearch = ref(false)
 
 const debounceSearchAITag = debounce(searchStore.getAITags, 300)
 
@@ -246,199 +230,14 @@ const selectAll = () => {
   selectedMaterialList.value = nonDuplicateList
 }
 
-const updateUrlWithSearchParams = (query: RouteQuery): boolean => {
-  const queryParams = new URLSearchParams()
-  queryParams.set('displayMode', displayMode.value.toString())
-
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
-      queryParams.set(key, value.toString())
-    }
-  })
-
-  // Compare with current route query
-  const currentQuery = new URLSearchParams(
-    route.query as Record<string, string>
-  )
-  if (queryParams.toString() === currentQuery.toString()) {
-    return false
-  }
-
-  // Use router.replace to update the URL without triggering a full navigation
-  router.replace({
-    query: Object.fromEntries(queryParams),
-    hash: route.hash,
-  })
-  return true
-}
-
-const getMaterialList = async (
-  payload: SearchPayload<AssetsFilter>,
-  query: RouteQuery
-) => {
-  // Reset slim and full material list when starting a new search to avoid showing stale data
-  slimMaterialList.value = []
-  materialList.value = []
-
-  isLoading.value = true
-  isSlimMaterialsLoading.value = true
-
-  const requestInfo = {
-    fullMaterialCanceled: false,
-    slimMaterialCanceled: false,
-  }
-
-  // Update URL and check if it was actually changed
-  const updated = updateUrlWithSearchParams(query)
-  if (updated) {
-    isLoading.value = false
-    isSlimMaterialsLoading.value = false
-    return
-  }
-
-  await Promise.allSettled([
-    assetsLibraryStore
-      .getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.fullMaterialCanceled = true
-        }
-        throw error
-      }),
-    assetsLibraryStore
-      .getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
-      .then((response) => {
-        if (!requestInfo.slimMaterialCanceled) {
-          isSlimMaterialsLoading.value = false
-        }
-        return response
-      })
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.slimMaterialCanceled = true
-        }
-        throw error
-      }),
-  ])
-
-  if (!requestInfo.fullMaterialCanceled) {
-    isLoading.value = false
-  }
-}
-
-const search = async (targetPage = 1) => {
-  try {
-    isSearching.value = true
-    selectedMaterialList.value = []
-    if (sortOptions.value.keywordSearch.length > 0) {
-      if (!isKeywordDirty.value && !!keyword.value) {
-        searchStore.setSort(sortOptions.value.keywordSearch[0].value)
-      } else if (isKeywordDirty.value && !keyword.value) {
-        searchStore.setSort(defaultSort.value)
-      }
-    }
-
-    isKeywordDirty.value = !!keyword.value
-
-    inSearch.value = searchDirty.value
-
-    const { densityAndYarn } = filterState.value
-    const woven = filterDirty.value.densityAndYarn
-      ? densityAndYarn.knit.knitYarnSize === null
-        ? densityAndYarn.woven
-        : null
-      : null
-    const knit =
-      woven === null && filterDirty.value.densityAndYarn
-        ? {
-            knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
-          }
-        : null
-    await getMaterialList(
-      {
-        pagination: {
-          sort: sort.value,
-          isShowMatch: isShowMatch.value,
-          targetPage,
-          perPageCount: 40,
-        },
-        search: (() => {
-          return !keyword.value && selectedTagList.value.length === 0
-            ? null
-            : {
-                keyword: keyword.value,
-                tagList: selectedTagList.value,
-              }
-        })(),
-        filter: (() => {
-          if (!isFilterDirty.value) {
-            return null
-          }
-
-          return {
-            ...Object.keys(filterState.value).reduce((acc, key) => {
-              const property = key as keyof typeof filterState.value
-
-              if (property === 'status') {
-                return acc
-              }
-
-              return {
-                ...acc,
-                [property]: filterDirty.value[property]
-                  ? filterState.value[property]
-                  : null,
-              }
-            }, {}),
-            densityAndYarn: woven || knit ? { woven, knit } : null,
-          } as AssetsFilter
-        })(),
-      },
-      {
-        currentPage: targetPage,
-        sort: sort.value,
-        isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
-        keyword: keyword.value ?? undefined,
-        tagList:
-          selectedTagList.value.length > 0
-            ? encodeURI(JSON.stringify(selectedTagList.value))
-            : undefined,
-        filter: (() => {
-          if (!isFilterDirty.value) {
-            return undefined
-          }
-          return encodeURI(
-            JSON.stringify(
-              Object.keys(filterState.value).reduce((acc, key) => {
-                const property = key as keyof typeof filterState.value
-
-                return filterDirty.value[property]
-                  ? {
-                      ...acc,
-                      [property]: filterState.value[property],
-                    }
-                  : acc
-              }, {})
-            )
-          )
-        })(),
-      }
-    )
-  } catch (error) {
-    console.error(error)
-  } finally {
-    isSearching.value = false
-  }
-}
-
 const handleCheckboxInput = (value: any) => {
   searchStore.setIsShowMatch(value)
-  search()
+  assetsLibraryStore.search()
 }
 
 const handleSearch = () => {
   searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
-  search()
+  assetsLibraryStore.search()
 }
 
 const resetFilterHandler = () => {
