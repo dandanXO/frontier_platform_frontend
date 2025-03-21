@@ -1,103 +1,126 @@
 <template>
-  <div
-    data-tooltip-boundary-reference="search-table-header"
-    :data-cy="'search-table'"
-    class="flex justify-between items-center"
-  >
-    <div>
-      <h5 class="text-h5 font-bold text-grey-900">
-        {{ $t('RR0008') }}
-        <span class="text-caption text-grey-600 pl-1">
-          <span>(</span>
-          <i18n-t keypath="RR0068" tag="span" scope="global">
-            <template #number>{{ pagination.totalCount }}</template>
-          </i18n-t>
-          <span>)</span>
-        </span>
-      </h5>
+  <div class="w-full h-fit flex flex-col px-8 py-8 gap-8 bg-primary">
+    <f-search-bar
+      :keyword="keyword"
+      @typing="typing"
+      @search="handleSearch"
+      @clear="() => searchStore.setKeyword('')"
+      rightIcon="image_search"
+      @clickRightIcon="showSearchByImageModal"
+      class="w-160 self-center min-h-[42px]"
+    />
+    <div
+      data-tooltip-boundary-reference="search-table-header"
+      :data-cy="'search-table'"
+      class="flex justify-between items-center"
+    >
+      <div>
+        <h5 class="text-h5 font-bold text-grey-900">
+          {{ $t('RR0008') }}
+          <span class="text-caption text-grey-600 pl-1">
+            <span>(</span>
+            <i18n-t keypath="RR0068" tag="span" scope="global">
+              <template #number>{{ pagination.totalCount }}</template>
+            </i18n-t>
+            <span>)</span>
+          </span>
+        </h5>
+      </div>
+      <div class="flex items-center gap-x-5">
+        <f-input-checkbox
+          v-if="isKeywordDirty"
+          :inputValue="isShowMatch"
+          @update:inputValue="handleCheckboxInput"
+          :disabled="isSearching"
+          :label="$t('RR0069')"
+          binary
+          iconSize="20"
+        />
+        <f-pill :size="SIZE.LG" @click="selectAll" :disabled="isSearching">
+          <f-svg-icon iconName="checklist" size="24"></f-svg-icon>
+          <p>{{ $t('RR0209') }}</p>
+        </f-pill>
+        <f-popper placement="bottom-end">
+          <template #trigger="{ isExpand }">
+            <f-pill :size="SIZE.LG" :active="isExpand" :disabled="isSearching">
+              <f-svg-icon
+                iconName="sortby"
+                size="24"
+                class="transform cursor-pointer"
+              ></f-svg-icon>
+              <p>{{ $t('RR0272') }}</p>
+            </f-pill>
+          </template>
+          <template #content>
+            <f-contextual-menu
+              :inputSelectValue="sort"
+              @update:inputSelectValue="searchStore.setSort"
+              :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
+              :menuTree="sortMenuTree"
+              @click:menu="search()"
+            ></f-contextual-menu>
+          </template>
+        </f-popper>
+        <f-pill
+          :size="SIZE.LG"
+          @click="isOpenFilterPanel = !isOpenFilterPanel"
+          :active="isOpenFilterPanel || isFilterDirty"
+          :disabled="isSearching"
+        >
+          <f-svg-icon
+            iconName="instant_mix"
+            size="24"
+            class="transform cursor-pointer"
+          ></f-svg-icon>
+          <p>{{ $t('RR0085') }}</p>
+        </f-pill>
+        <f-pill-group
+          v-if="!imageSearchData"
+          :optionList="displayModeOptions"
+          v-model:inputValue="displayMode"
+          :size="SIZE.LG"
+        />
+        <f-button
+          v-permission="{
+            FUNC_ID: FUNC_ID.ASSET_CREATE,
+            behavior: 'deleteElement',
+          }"
+          :size="SIZE.LG"
+          prependIcon="texture_add"
+          @click="goToMaterialUpload"
+          >{{ $t('UU0020') }}
+        </f-button>
+      </div>
     </div>
-    <div class="flex items-center gap-x-5">
-      <f-input-checkbox
-        v-if="isKeywordDirty"
-        :inputValue="isShowMatch"
-        @update:inputValue="handleCheckboxInput"
-        :disabled="isSearching"
-        :label="$t('RR0069')"
-        binary
-        iconSize="20"
-      />
-      <f-pill
-        :size="SIZE.LG"
-        @click="selectAll"
-        :disabled="!canSelectAll || isSearching"
-      >
-        <f-svg-icon iconName="checklist" size="24"></f-svg-icon>
-        <p>{{ $t('RR0209') }}</p>
-      </f-pill>
-      <f-popper placement="bottom-end">
-        <template #trigger="{ isExpand }">
-          <f-pill :size="SIZE.LG" :active="isExpand" :disabled="isSearching">
-            <f-svg-icon
-              iconName="sortby"
-              size="24"
-              class="transform cursor-pointer"
-            ></f-svg-icon>
-            <p>{{ $t('RR0272') }}</p>
-          </f-pill>
-        </template>
-        <template #content>
-          <f-contextual-menu
-            :inputSelectValue="sort"
-            @update:inputSelectValue="searchStore.setSort"
-            :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-            :menuTree="sortMenuTree"
-            @click:menu="search()"
-          ></f-contextual-menu>
-        </template>
-      </f-popper>
-      <f-pill
-        :size="SIZE.LG"
-        @click="canFilter && (isOpenFilterPanel = !isOpenFilterPanel)"
-        :active="isOpenFilterPanel"
-        :disabled="!canFilter || isSearching"
-      >
-        <f-svg-icon
-          iconName="instant_mix"
-          size="24"
-          class="transform cursor-pointer"
-        ></f-svg-icon>
-        <p>{{ $t('RR0085') }}</p>
-      </f-pill>
-      <f-pill-group
-        v-if="!imageSearchData"
-        :optionList="displayModeOptions"
-        v-model:inputValue="displayMode"
-        :size="SIZE.LG"
-      />
-      <f-button
-        v-permission="{
-          FUNC_ID: FUNC_ID.ASSET_CREATE,
-          behavior: 'deleteElement',
-        }"
-        :size="SIZE.LG"
-        prependIcon="texture_add"
-        @click="goToMaterialUpload"
-        >{{ $t('UU0020') }}
-      </f-button>
-    </div>
+    <filter-panel
+      v-if="isOpenFilterPanel || isFilterDirty"
+      :searchType="SEARCH_TYPE.ASSETS"
+      @search="handleSearch"
+      @resetFilter="resetFilterHandler"
+    ></filter-panel>
   </div>
-  <filter-panel
-    v-if="isOpenFilterPanel"
-    :searchType="SEARCH_TYPE.ASSETS"
-    @search="handleSearch"
-    @resetFilter="resetFilterHandler"
-  ></filter-panel>
+  <multi-select-menu
+    v-if="
+      multiSelectOptions &&
+      multiSelectOptions.length > 0 &&
+      selectedMaterialList
+    "
+    :optionMultiSelect="multiSelectOptions"
+    v-model:selectedList="selectedMaterialList"
+  >
+    <template #default="{ option }">
+      <slot name="menu-option" :option="option"></slot>
+    </template>
+  </multi-select-menu>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
+import { debounce } from 'debounce'
+import { useI18n } from 'vue-i18n'
 
 import { FUNC_ID, SEARCH_TYPE } from '@/utils/constants'
 import { useSearchStore } from '@/stores/search'
@@ -111,6 +134,8 @@ import {
   PaginationReqSortEnum,
   type Search,
 } from '@frontier/platform-web-sdk'
+import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
+import MultiSelectMenu from '../common/MultiSelectMenu.vue'
 import FilterPanel from '../common/FilterPanel.vue'
 
 export interface SearchPayload<FilterType> {
@@ -128,6 +153,8 @@ export interface RouteQuery {
   filter?: string
 }
 
+const { t } = useI18n()
+const store = useStore()
 const searchStore = useSearchStore()
 const assetsLibraryStore = useAssetsLibraryStore()
 const filterStore = useFilterStore()
@@ -148,6 +175,7 @@ const {
   slimMaterialList,
   selectedMaterialList,
   sortOptions,
+  multiSelectOptions,
   isLoading,
   isSlimMaterialsLoading,
   displayMode,
@@ -190,14 +218,22 @@ const isKeywordDirty = ref(false)
 const isOpenFilterPanel = ref(false)
 const isSearching = ref(false)
 const inSearch = ref(false)
-const canSelectAll = ref(true)
-const canFilter = ref(true)
 
-const selectAll = () => {
-  if (!canSelectAll.value) {
+const debounceSearchAITag = debounce(searchStore.getAITags, 300)
+
+const typing = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const v = target.value
+  searchStore.setKeyword(v)
+  if (v.trim() === '') {
+    searchStore.setTagList([])
+    searchStore.setSelectedTagList([])
     return
   }
+  debounceSearchAITag()
+}
 
+const selectAll = () => {
   const stringifyItemList = displayedMaterialList.value.map((item) =>
     JSON.stringify(item)
   )
@@ -291,100 +327,108 @@ const getMaterialList = async (
 }
 
 const search = async (targetPage = 1) => {
-  if (sortOptions.value.keywordSearch.length > 0) {
-    if (!isKeywordDirty.value && !!keyword.value) {
-      searchStore.setSort(sortOptions.value.keywordSearch[0].value)
-    } else if (isKeywordDirty.value && !keyword.value) {
-      searchStore.setSort(defaultSort.value)
+  try {
+    isSearching.value = true
+    selectedMaterialList.value = []
+    if (sortOptions.value.keywordSearch.length > 0) {
+      if (!isKeywordDirty.value && !!keyword.value) {
+        searchStore.setSort(sortOptions.value.keywordSearch[0].value)
+      } else if (isKeywordDirty.value && !keyword.value) {
+        searchStore.setSort(defaultSort.value)
+      }
     }
-  }
 
-  isKeywordDirty.value = !!keyword.value
+    isKeywordDirty.value = !!keyword.value
 
-  inSearch.value = searchDirty.value
+    inSearch.value = searchDirty.value
 
-  const { densityAndYarn } = filterState.value
-  const woven = filterDirty.value.densityAndYarn
-    ? densityAndYarn.knit.knitYarnSize === null
-      ? densityAndYarn.woven
+    const { densityAndYarn } = filterState.value
+    const woven = filterDirty.value.densityAndYarn
+      ? densityAndYarn.knit.knitYarnSize === null
+        ? densityAndYarn.woven
+        : null
       : null
-    : null
-  const knit =
-    woven === null && filterDirty.value.densityAndYarn
-      ? {
-          knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
-        }
-      : null
-  await getMaterialList(
-    {
-      pagination: {
-        sort: sort.value,
-        isShowMatch: isShowMatch.value,
-        targetPage,
-        perPageCount: 40,
-      },
-      search: (() => {
-        return !keyword.value && selectedTagList.value.length === 0
-          ? null
-          : {
-              keyword: keyword.value,
-              tagList: selectedTagList.value,
-            }
-      })(),
-      filter: (() => {
-        if (!isFilterDirty.value) {
-          return null
-        }
+    const knit =
+      woven === null && filterDirty.value.densityAndYarn
+        ? {
+            knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
+          }
+        : null
+    await getMaterialList(
+      {
+        pagination: {
+          sort: sort.value,
+          isShowMatch: isShowMatch.value,
+          targetPage,
+          perPageCount: 40,
+        },
+        search: (() => {
+          return !keyword.value && selectedTagList.value.length === 0
+            ? null
+            : {
+                keyword: keyword.value,
+                tagList: selectedTagList.value,
+              }
+        })(),
+        filter: (() => {
+          if (!isFilterDirty.value) {
+            return null
+          }
 
-        return {
-          ...Object.keys(filterState.value).reduce((acc, key) => {
-            const property = key as keyof typeof filterState.value
-
-            if (property === 'status') {
-              return acc
-            }
-
-            return {
-              ...acc,
-              [property]: filterDirty.value[property]
-                ? filterState.value[property]
-                : null,
-            }
-          }, {}),
-          densityAndYarn: woven || knit ? { woven, knit } : null,
-        } as AssetsFilter
-      })(),
-    },
-    {
-      currentPage: targetPage,
-      sort: sort.value,
-      isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
-      keyword: keyword.value ?? undefined,
-      tagList:
-        selectedTagList.value.length > 0
-          ? encodeURI(JSON.stringify(selectedTagList.value))
-          : undefined,
-      filter: (() => {
-        if (!isFilterDirty.value) {
-          return undefined
-        }
-        return encodeURI(
-          JSON.stringify(
-            Object.keys(filterState.value).reduce((acc, key) => {
+          return {
+            ...Object.keys(filterState.value).reduce((acc, key) => {
               const property = key as keyof typeof filterState.value
 
-              return filterDirty.value[property]
-                ? {
-                    ...acc,
-                    [property]: filterState.value[property],
-                  }
-                : acc
-            }, {})
+              if (property === 'status') {
+                return acc
+              }
+
+              return {
+                ...acc,
+                [property]: filterDirty.value[property]
+                  ? filterState.value[property]
+                  : null,
+              }
+            }, {}),
+            densityAndYarn: woven || knit ? { woven, knit } : null,
+          } as AssetsFilter
+        })(),
+      },
+      {
+        currentPage: targetPage,
+        sort: sort.value,
+        isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
+        keyword: keyword.value ?? undefined,
+        tagList:
+          selectedTagList.value.length > 0
+            ? encodeURI(JSON.stringify(selectedTagList.value))
+            : undefined,
+        filter: (() => {
+          if (!isFilterDirty.value) {
+            return undefined
+          }
+          return encodeURI(
+            JSON.stringify(
+              Object.keys(filterState.value).reduce((acc, key) => {
+                const property = key as keyof typeof filterState.value
+
+                return filterDirty.value[property]
+                  ? {
+                      ...acc,
+                      [property]: filterState.value[property],
+                    }
+                  : acc
+              }, {})
+            )
           )
-        )
-      })(),
-    }
-  )
+        })(),
+      }
+    )
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isSearching.value = false
+  }
 }
 
 const handleCheckboxInput = (value: any) => {
@@ -402,5 +446,24 @@ const resetFilterHandler = () => {
     filterStore.resetFilterState()
     handleSearch()
   }
+}
+
+const showSearchByImageModal = () => {
+  store.dispatch('helper/pushModalCommon', {
+    body: ModalSearchByImage,
+    classModal: 'w-128',
+    theme: 'new',
+    title: t('RR0483'),
+    onClose: () => {
+      store.dispatch('helper/closeModal')
+    },
+    properties: {
+      onFinish: (file: File) => {
+        filterStore.setImageFileURL(URL.createObjectURL(file))
+        handleSearch()
+        store.dispatch('helper/closeModal')
+      },
+    },
+  })
 }
 </script>

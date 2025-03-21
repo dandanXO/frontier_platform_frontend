@@ -49,19 +49,15 @@ export default {
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent, watch } from 'vue'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
-import { debounce } from 'debounce'
-import { useI18n } from 'vue-i18n'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import useNavigation from '@/composables/useNavigation'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
+import AssetsHeader from '@/components/assets/AssetsHeader.vue'
 import { useFilterStore } from '@/stores/filter'
 import { OgType } from '@frontier/platform-web-sdk'
-import { useSearchStore } from '@/stores/search'
 import { ROUTE_NAMES } from '@/utils/routes'
-import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
 
 const NotifyBarBuffer = defineAsyncComponent(
   () => import('@/components/billings/NotifyBarBuffer.vue')
@@ -70,11 +66,7 @@ const ModalAnnouncement = defineAsyncComponent(
   () => import('@/components/common/ModalAnnouncement.vue')
 )
 const store = useStore()
-const { t } = useI18n()
-const route = useRoute()
 const filterStore = useFilterStore()
-const searchStore = useSearchStore()
-const { keyword } = storeToRefs(searchStore)
 const { isInInnerApp, ogId, ogType } = useNavigation()
 const isReloadInnerApp = computed(
   () => store.getters['helper/isReloadInnerApp']
@@ -85,19 +77,6 @@ const user = computed(() => store.getters['user/user'])
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
 )
-const debounceSearchAITag = debounce(searchStore.getAITags, 300)
-
-const typing = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const v = target.value
-  searchStore.setKeyword(v)
-  if (v.trim() === '') {
-    searchStore.setTagList([])
-    searchStore.setSelectedTagList([])
-    return
-  }
-  debounceSearchAITag()
-}
 
 onBeforeRouteUpdate(async (to, from) => {
   if (
@@ -116,27 +95,6 @@ onBeforeRouteUpdate(async (to, from) => {
     }
   }
 })
-
-const showSearchByImageModal = () => {
-  store.dispatch('helper/pushModalCommon', {
-    body: ModalSearchByImage,
-    classModal: 'w-128',
-    theme: 'new',
-    title: t('RR0483'),
-    onClose: () => {
-      store.dispatch('helper/closeModal')
-    },
-    properties: {
-      onFinish: (file: File) => {
-        filterStore.setImageFileURL(URL.createObjectURL(file))
-        searchStore.onSubmit()
-        store.dispatch('helper/closeModal')
-      },
-    },
-  })
-}
-
-const isNewSearch = computed(() => route.name === ROUTE_NAMES.ASSETS)
 
 watch(
   () => ogId.value + ogType.value,

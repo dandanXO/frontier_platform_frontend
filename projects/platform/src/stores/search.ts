@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 import searchApi from '@/apis/search'
 import {
   PaginationReqSortEnum,
@@ -8,7 +10,6 @@ import {
 } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 import { SortByText } from '@/utils/enumText'
-import { useRoute } from 'vue-router'
 
 export const useSearchStore = defineStore('search', () => {
   const route = useRoute()
@@ -28,12 +29,7 @@ export const useSearchStore = defineStore('search', () => {
     )
   )
   const isShowMatch = ref(false)
-  const isSubmitted = ref(false)
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
-  const onSubmit = () => {
-    isSubmitted.value = true
-    setTimeout(() => (isSubmitted.value = false), 100) // reset submit state
-  }
 
   const getAITags = async () => {
     if (!keyword.value) {
@@ -76,7 +72,6 @@ export const useSearchStore = defineStore('search', () => {
 
   return {
     keyword,
-    isSubmitted,
     setKeyword,
     tagList,
     setTagList,
@@ -91,6 +86,5 @@ export const useSearchStore = defineStore('search', () => {
     getAITags,
     sortOption,
     getSearchLog,
-    onSubmit,
   }
 })

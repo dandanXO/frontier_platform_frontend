@@ -1,8 +1,7 @@
 <template lang="pug">
-div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
+div(class="w-full h-full flex flex-col px-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
   div(class="flex flex-col gap-5 min-h-0 flex-1")
-    assets-header
     div(
       v-if="pagination"
       class="md:overflow-y-auto flex-grow flex flex-col"
@@ -30,13 +29,6 @@ div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attr
           :totalPage="pagination.totalPage"
           @goTo="search($event)"
         )
-multi-select-menu(
-  v-if="optionMultiSelect && optionMultiSelect.length > 0 && innerSelectedItemList"
-  :optionMultiSelect="optionMultiSelect"
-  v-model:selectedList="innerSelectedItemList"
-)
-  template(#default="{ option }")
-    slot(name="menu-option" :option="option")
 </template>
 
 <script setup lang="ts">
@@ -71,8 +63,6 @@ import type {
 } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
-import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
-import AssetsHeader from '../assets/AssetsHeader.vue'
 import type { SortOption } from '@/stores/assets/library'
 
 defineOptions({
@@ -116,22 +106,15 @@ const props = withDefaults(
     ) => Promise<void>
     itemList: Material[] | NodeChild[] | ShareNodeChild[]
     testId?: string
-    canSelectAll?: boolean
-    canFilter?: boolean
     selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
     assets?: boolean
     isAssetSlimListLoading?: boolean
     displayMode?: ASSET_LIST_DISPLAY_MODE
-    rightIconSearch?: string
   }>(),
-  {
-    canSelectAll: true,
-    canFilter: true,
-  }
+  {}
 )
 
 const emit = defineEmits<{
-  (e: 'clickRightIconSearch'): void
   (
     e: 'update:selectedItemList',
     value: Material[] | NodeChild[] | ShareNodeChild[]
@@ -156,7 +139,6 @@ const {
   sort,
   isShowMatch,
   paginationRes: pagination,
-  isSubmitted,
 } = storeToRefs(searchStore)
 const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
@@ -173,20 +155,6 @@ const visit = () => {
   searchStore.setSort(defaultSort.value)
   search()
 }
-
-const innerSelectedItemList = computed({
-  get: () => props.selectedItemList,
-  set: (v) => emit('update:selectedItemList', v),
-})
-
-const handleSearch = () => {
-  searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
-  search()
-}
-
-watch(isSubmitted, (isSubmittedNow) => {
-  isSubmittedNow && handleSearch()
-})
 
 const search = async (targetPage = 1) => {
   if (!props.assets) {

@@ -438,10 +438,7 @@ const {
   cloneTo,
   addToWorkspace,
   printLabel,
-  mergeMaterial,
-  exportExcel,
   deleteMaterial,
-  startSpreadSheetUpdate,
 } = useAssets()
 
 const optionList = computed(() => {
@@ -492,7 +489,6 @@ const showSearchByImageModal = () => {
     properties: {
       onFinish: (file: File) => {
         filterStore.setImageFileURL(URL.createObjectURL(file))
-        searchStore.onSubmit()
         store.dispatch('helper/closeModal')
       },
     },
