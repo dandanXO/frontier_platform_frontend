@@ -2,65 +2,7 @@
 div(class="w-full h-full flex flex-col px-8 pt-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
   div(class="flex flex-col gap-5 min-h-0 flex-1")
-    slot(name="header-above" :visit="visit")
-    div(
-      data-tooltip-boundary-reference="search-table-header"
-      :data-cy="testId ?? 'search-table'"
-      class="flex justify-between items-center"
-    )
-      div
-        slot(
-          name="header-left"
-          :visit="visit"
-          :totalCount="pagination?.totalCount ?? 0"
-        )
-      div(class="flex items-center gap-x-5")
-        f-input-checkbox(
-          v-if="isKeywordDirty"
-          :inputValue="isShowMatch"
-          @update:inputValue="handleCheckboxInput"
-          :disabled="isSearching"
-          :label="$t('RR0069')"
-          binary
-          iconSize="20"
-        )
-        f-pill(
-          :size="SIZE.LG"
-          @click="selectAll"
-          :disabled="!canSelectAll || isSearching"
-        ) 
-          f-svg-icon(iconName="checklist" size="24")
-          p {{ $t('RR0209') }}
-        f-popper(placement="bottom-end" v-if="!props.optionSort.disabled")
-          template(#trigger="{ isExpand }")
-            f-pill(:size="SIZE.LG" :active="isExpand" :disabled="isSearching") 
-              f-svg-icon(iconName="sortby" size="24" class="transform cursor-pointer")
-              p {{ $t('RR0272') }}
-
-          template(#content)
-            f-contextual-menu(
-              :inputSelectValue="sort"
-              @update:inputSelectValue="searchStore.setSort"
-              :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-              :menuTree="sortMenuTree"
-              @click:menu="search()"
-            )
-        f-pill(
-          :size="SIZE.LG"
-          @click="canFilter && (isOpenFilterPanel = !isOpenFilterPanel)"
-          :active="isOpenFilterPanel"
-          :disabled="!canFilter || isSearching"
-        ) 
-          f-svg-icon(iconName="instant_mix" size="24" class="transform cursor-pointer")
-          p {{ $t('RR0085') }}
-        slot(name="header-right")
-    filter-panel(
-      v-if="isOpenFilterPanel"
-      :searchType="searchType"
-      @search="handleSearch"
-      @resetFilter="resetFilterHandler"
-    )
-    slot(name="sub-header")
+    assets-header
     div(
       v-if="pagination"
       class="md:overflow-y-auto flex-grow flex flex-col"
@@ -108,12 +50,9 @@ import {
 } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { debounce } from 'debounce'
 
 import {
   SEARCH_TYPE,
-  CONTEXTUAL_MENU_MODE,
-  SIZE,
   ASSET_LIST_DISPLAY_MODE,
   SCROLL_POSITION_KEY,
 } from '@/utils/constants'
@@ -133,7 +72,7 @@ import type {
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
-import FilterPanel from '@/components/common/FilterPanel.vue'
+import AssetsHeader from '../assets/AssetsHeader.vue'
 import type { SortOption } from '@/stores/assets/library'
 
 defineOptions({
@@ -223,35 +162,11 @@ const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
 const isSearching = ref(false)
 const inSearch = ref(false)
-const isOpenFilterPanel = ref(false)
 const isKeywordDirty = ref(false)
 const scrollContainer = ref<HTMLElement | null>(null)
 const defaultSort = computed(() => props.optionSort.base[0].value)
 const searchDirty = computed(() => {
   return isKeywordDirty.value || isFilterDirty.value
-})
-const sortMenuTree = computed(() => {
-  const { base, keywordSearch } = props.optionSort
-  const temp = [...base]
-  if (isKeywordDirty.value) {
-    temp.unshift(...keywordSearch)
-  }
-
-  return {
-    blockList: [
-      {
-        menuList: temp.map(
-          ({ text, value, disabled = false, tooltipMessage = '' }) => ({
-            title: text,
-            selectValue: value,
-            disabled,
-            tooltipMessage,
-            tooltipPlacement: 'top',
-          })
-        ),
-      },
-    ],
-  }
 })
 
 const visit = () => {
@@ -263,42 +178,6 @@ const innerSelectedItemList = computed({
   get: () => props.selectedItemList,
   set: (v) => emit('update:selectedItemList', v),
 })
-
-const selectAll = () => {
-  if (!props.canSelectAll || !props.selectedItemList) {
-    return
-  }
-
-  const stringifyItemList = props.itemList.map((item) => JSON.stringify(item))
-  const stringifySelectedItemList = props.selectedItemList.map((item) =>
-    JSON.stringify(item)
-  )
-  const nonDuplicateList = [
-    ...new Set(stringifySelectedItemList.concat(stringifyItemList)),
-  ].map((item) => JSON.parse(item))
-  emit('update:selectedItemList', nonDuplicateList)
-}
-
-const resetFilterHandler = () => {
-  if (isFilterDirty.value) {
-    filterStore.resetFilterState()
-    handleSearch()
-  }
-}
-
-const debounceSearchAITag = debounce(searchStore.getAITags, 300)
-
-const typing = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const v = target.value
-  searchStore.setKeyword(v)
-  if (v.trim() === '') {
-    searchStore.setTagList([])
-    searchStore.setSelectedTagList([])
-    return
-  }
-  debounceSearchAITag()
-}
 
 const handleSearch = () => {
   searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
@@ -429,11 +308,6 @@ const search = async (targetPage = 1) => {
   if (!props.assets) {
     isSearching.value = false
   }
-}
-
-const handleCheckboxInput = (value: any) => {
-  searchStore.setIsShowMatch(value)
-  search()
 }
 
 watch(
