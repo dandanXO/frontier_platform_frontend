@@ -20,14 +20,14 @@ import type { MaterialTypeConstructionKey } from '../Spreadsheet.vue'
 
 export const convertDataToWorkbook = (dataRows: any) => {
   /* convert data to binary string */
-  let data = new Uint8Array(dataRows)
-  let arr = []
+  const data = new Uint8Array(dataRows)
+  const arr = []
 
   for (let i = 0; i !== data.length; ++i) {
     arr[i] = String.fromCharCode(data[i])
   }
 
-  let bstr = arr.join('')
+  const bstr = arr.join('')
 
   return read(bstr, { type: 'binary' })
 }
@@ -41,8 +41,8 @@ export function populateGrid(
 ) {
   materialOptions = MaterialOptions
   // our data is in the first sheet
-  let firstSheetName = workbook.SheetNames[0]
-  let worksheet = workbook.Sheets[firstSheetName]
+  const firstSheetName = workbook.SheetNames[0]
+  const worksheet = workbook.Sheets[firstSheetName]
 
   // we expect the following columns to be present
   const columnKeys = (function generateKeys() {
@@ -64,14 +64,14 @@ export function populateGrid(
     return keys
   })()
 
-  let rowData: Record<string, string>[] = []
+  const rowData: Record<string, string>[] = []
 
   // start at the 11th row - the first 10 rows are the headers and descriptions
   let rowIndex = 11
 
   // iterate over the worksheet pulling out the columns we're expecting
   while (worksheet['A' + rowIndex]) {
-    let row: Record<string, string> = {}
+    const row: Record<string, string> = {}
 
     columnKeys.forEach((column) => {
       if (!worksheet[column + 2]?.w?.trim()) {
@@ -91,7 +91,7 @@ export function populateGrid(
     rowIndex++
   }
   // finally, set the imported rowData into the grid
-  let addIndex = 0
+  const addIndex = 0
   const newMaterialRowData = parseExcelToMaterialFormat(rowData)
   gridApi.value?.applyTransaction({ add: newMaterialRowData, addIndex })
 }
@@ -112,7 +112,7 @@ export const materialTypeMap: Record<
   [MaterialType.OTHERS]: 'others',
 }
 
-function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
+function parseExcelToMaterialFormat(excelData: ExcelRow[]): MaterialRow[] {
   const materialData = excelData.map((row) => {
     const sideKey: PrimarySideKey =
       !row['ST1'] ||
@@ -129,44 +129,43 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
     // priceInfo
     let priceInfo = newRow.priceInfo
     priceInfo = {
-      countryOfOriginal: row.PR_Origin
-        ? row.PR_Origin.trim()
-        : priceInfo.countryOfOriginal,
+      countryOfOriginal:
+        row.PR_Origin?.trim() ?? priceInfo?.countryOfOriginal ?? '',
       pricing: {
         price: row.PR_Price
           ? boundedStringValue(row.PR_Price, '0', '999999999999999999.99')
-          : priceInfo.pricing.price,
+          : priceInfo?.pricing?.price ?? '',
         unit: row.PR_Unit
           ? getMaterialQuantityUnit(row.PR_Unit)
-          : priceInfo.pricing.unit,
+          : priceInfo?.pricing?.unit ?? MaterialQuantityUnit.KG,
         currencyCode: row.PR_Currency
           ? CurrencyCode[
               row.PR_Currency.trim().toUpperCase() as keyof typeof CurrencyCode
             ] || 'USD'
-          : priceInfo.pricing.currencyCode,
+          : priceInfo?.pricing?.currencyCode ?? 'USD',
       },
       minimumColor: {
         qty: row.PR_MCQ
           ? boundedNumber(row.PR_MCQ, 0, 999999)
-          : priceInfo.minimumColor.qty,
+          : priceInfo?.minimumColor?.qty ?? 0,
         unit: row.PR_Unit_MCQ
           ? getMaterialQuantityUnit(row.PR_Unit_MCQ)
-          : priceInfo.minimumColor.unit,
+          : priceInfo?.minimumColor?.unit ?? MaterialQuantityUnit.KG,
       },
       minimumOrder: {
         qty: row.PR_MOQ
           ? boundedNumber(row.PR_MOQ, 0, 999999)
-          : priceInfo.minimumOrder.qty,
+          : priceInfo?.minimumOrder?.qty ?? 0,
         unit: row.PR_Unit_MOQ
           ? getMaterialQuantityUnit(row.PR_Unit_MOQ)
-          : priceInfo.minimumOrder.unit,
+          : priceInfo?.minimumOrder?.unit ?? MaterialQuantityUnit.KG,
       },
       productionLeadTimeInDays: row.PR_Prod_Leadtime
         ? row.PR_Prod_Leadtime.trim()
-        : priceInfo.productionLeadTimeInDays,
+        : priceInfo?.productionLeadTimeInDays ?? '',
       sampleLeadTimeInDays: row.PR_Sample_Leadtime
         ? row.PR_Sample_Leadtime.trim()
-        : priceInfo.sampleLeadTimeInDays,
+        : priceInfo?.sampleLeadTimeInDays ?? '',
     }
 
     const isPricePublic =
@@ -174,10 +173,10 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
     if (isPricePublic) {
       newRow.priceInfo = priceInfo
-      newRow.internalInfo.priceInfo.pricing = null
+      newRow.internalInfo!.priceInfo!.pricing = null
     } else {
-      newRow.internalInfo.priceInfo = priceInfo
-      newRow.priceInfo.pricing = null
+      newRow.internalInfo!.priceInfo = priceInfo
+      newRow.priceInfo!.pricing = null
     }
 
     // Determine if inventoryInfo is publicly accessible
@@ -215,7 +214,7 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
           // Content
           case 'CON_1':
-          case 'CON_2':
+          case 'CON_2': {
             const contentNameList = convertStringToList(
               row.CON_1,
               (contentName) => contentName.trim()
@@ -243,20 +242,22 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               'name'
             )
             break
+          }
           case 'Column ID [DO NOT DELETE]':
             newRow.itemNo = row['Column ID [DO NOT DELETE]'].trim()
             break
 
           // Features
-          case 'FE1':
+          case 'FE1': {
             const featureList = convertStringToList(row.FE1, (feature) =>
               feature.toString().trim()
             )
             newRow[sideKey]!.featureList = getUniqueItemsByField(featureList)
             break
+          }
 
           // Finish
-          case 'FIN_1':
+          case 'FIN_1': {
             const finishList = convertStringToList(row.FIN_1, (name) => {
               return { name: name.toString().trim(), finishId: null }
             })
@@ -265,9 +266,10 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               'name'
             )
             break
+          }
 
           // Material Info
-          case 'MI_MatDesc':
+          case 'MI_MatDesc': {
             const materialDescriptionList = convertStringToList(
               row.MI_MatDesc,
               (description) => {
@@ -282,29 +284,39 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               'name'
             )
             break
+          }
           case 'MI_ConsType':
             if (!materialType) {
               break
             }
-            newRow[sideKey].materialTypeConstruction =
-              materialOptions.materialTypeConstructionList?.[
-                materialTypeMap[materialType]
-              ].default.find(
-                ({ name }) => name === row.MI_ConsType
-              ) as MaterialSideCreateAllOfMaterialTypeConstruction
+            if (newRow[sideKey]) {
+              newRow[sideKey].materialTypeConstruction =
+                materialOptions.materialTypeConstructionList?.[
+                  materialTypeMap[materialType]
+                ]?.default.find(
+                  ({ name }) =>
+                    name?.toLowerCase() === row.MI_ConsType.trim().toLowerCase()
+                ) as MaterialSideCreateAllOfMaterialTypeConstruction
+            }
             break
           case 'MI_ConsType_Custom':
             if (!materialType) {
               break
             }
-            newRow[sideKey].materialTypeConstruction ??=
-              (materialOptions.materialTypeConstructionList?.[
-                materialTypeMap[materialType]
-              ].custom.find(({ name }) => name === row.MI_ConsType_Custom) ?? {
-                id: null,
-                isCustom: true,
-                name: row.MI_ConsType_Custom,
-              }) as MaterialSideCreateAllOfMaterialTypeConstruction
+            if (newRow[sideKey]) {
+              newRow[sideKey].materialTypeConstruction ??=
+                (materialOptions.materialTypeConstructionList?.[
+                  materialTypeMap[materialType]
+                ]?.custom.find(
+                  ({ name }) =>
+                    name?.toLowerCase() ===
+                    row.MI_ConsType_Custom.trim().toLowerCase()
+                ) ?? {
+                  id: null,
+                  isCustom: true,
+                  name: row.MI_ConsType_Custom,
+                }) as MaterialSideCreateAllOfMaterialTypeConstruction
+            }
             break
           case 'MI_MatType': {
             const input = row.MI_MatType.trim()
@@ -312,7 +324,9 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
               | keyof typeof MaterialType
               | null
             const materialTypeValue =
-              materialTypeKey !== null ? MaterialType[materialTypeKey] : null
+              materialTypeKey !== null
+                ? MaterialType[materialTypeKey]
+                : MaterialType.OTHERS
             newRow[sideKey]!.materialType = materialTypeValue
             materialType = materialTypeValue
             break
@@ -340,102 +354,127 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
 
           // Material Type: Woven
           case 'MIW_Cons_1':
-            newRow[sideKey]!.construction.warpDensity =
-              row.MIW_Cons_1.trim().slice(0, 100)
+            if (materialType === MaterialType.WOVEN) {
+              ;(newRow[sideKey]!.construction as any).warpDensity =
+                row.MIW_Cons_1.trim().slice(0, 100)
+            }
             break
           case 'MIW_Cons_2':
-            newRow[sideKey]!.construction.weftDensity =
-              row.MIW_Cons_2.trim().slice(0, 100)
+            if (materialType === MaterialType.WOVEN) {
+              ;(newRow[sideKey]!.construction as any).weftDensity =
+                row.MIW_Cons_2.trim().slice(0, 100)
+            }
             break
           case 'MIW_Cons_3':
-            newRow[sideKey]!.construction.warpYarnSize =
-              row.MIW_Cons_3.trim().slice(0, 100)
+            if (materialType === MaterialType.WOVEN) {
+              ;(newRow[sideKey]!.construction as any).warpYarnSize =
+                row.MIW_Cons_3.trim().slice(0, 100)
+            }
             break
           case 'MIW_Cons_4':
-            newRow[sideKey]!.construction.weftYarnSize =
-              row.MIW_Cons_4.trim().slice(0, 100)
+            if (materialType === MaterialType.WOVEN) {
+              ;(newRow[sideKey]!.construction as any).weftYarnSize =
+                row.MIW_Cons_4.trim().slice(0, 100)
+            }
             break
 
           // Material Type: Knit
           case 'MIK_Cons_1':
-            newRow[sideKey]!.construction.machineType = row.MIK_Cons_1.trim()
+            if (materialType === MaterialType.KNIT) {
+              ;(newRow[sideKey]!.construction as any).machineType =
+                row.MIK_Cons_1.trim()
+            }
             break
           case 'MIK_Cons_2':
-            newRow[sideKey]!.construction.walesPerInch = boundedNumber(
-              row.MIK_Cons_2,
-              0,
-              999
-            )
+            if (materialType === MaterialType.KNIT) {
+              ;(newRow[sideKey]!.construction as any).walesPerInch =
+                boundedNumber(row.MIK_Cons_2, 0, 999)
+            }
             break
           case 'MIK_Cons_3':
-            newRow[sideKey]!.construction.coursesPerInch = boundedNumber(
-              row.MIK_Cons_3,
-              0,
-              999
-            )
+            if (materialType === MaterialType.KNIT) {
+              ;(newRow[sideKey]!.construction as any).coursesPerInch =
+                boundedNumber(row.MIK_Cons_3, 0, 999)
+            }
             break
           case 'MIK_Cons_4':
-            newRow[sideKey]!.construction.yarnSize = row.MIK_Cons_4.trim()
+            if (materialType === MaterialType.KNIT) {
+              ;(newRow[sideKey]!.construction as any).yarnSize =
+                row.MIK_Cons_4.trim()
+            }
             break
           case 'MIK_Cons_5':
-            newRow[sideKey]!.construction.machineGaugeInGg = boundedNumber(
-              row.MIK_Cons_5,
-              0,
-              999
-            )
+            if (materialType === MaterialType.KNIT) {
+              ;(newRow[sideKey]!.construction as any).machineGaugeInGg =
+                boundedNumber(row.MIK_Cons_5, 0, 999)
+            }
             break
 
           // Material Type: Leather
           case 'MIL_Average':
-            newRow[sideKey]!.construction.averageSkinPerMeterSquare =
-              row.MIL_Average.trim()
+            if (materialType === MaterialType.LEATHER) {
+              ;(
+                newRow[sideKey]!.construction as any
+              ).averageSkinPerMeterSquare = row.MIL_Average.trim()
+            }
             break
           case 'MIL_Grade':
-            newRow[sideKey]!.construction.grade = row.MIL_Grade.trim()
+            if (materialType === MaterialType.LEATHER) {
+              ;(newRow[sideKey]!.construction as any).grade =
+                row.MIL_Grade.trim()
+            }
             break
           case 'MIL_Tannage':
-            newRow[sideKey]!.construction.tannage = row.MIL_Tannage.trim()
+            if (materialType === MaterialType.LEATHER) {
+              ;(newRow[sideKey]!.construction as any).tannage =
+                row.MIL_Tannage.trim()
+            }
             break
           case 'MIL_Thickness':
-            newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
-              row.MIL_Thickness,
-              0,
-              999
-            )
+            if (materialType === MaterialType.LEATHER) {
+              ;(newRow[sideKey]!.construction as any).thicknessPerMm =
+                boundedNumber(row.MIL_Thickness, 0, 999)
+            }
             break
 
           // Material Type: Non-Woven
           case 'MIN_Bond':
-            newRow[sideKey]!.construction.bondingMethod = row.MIN_Bond.trim()
+            if (materialType === MaterialType.NON_WOVEN) {
+              ;(newRow[sideKey]!.construction as any).bondingMethod =
+                row.MIN_Bond.trim()
+            }
             break
           case 'MIN_Thick':
-            newRow[sideKey]!.construction.thicknessPerMm = boundedNumber(
-              row.MIN_Thick,
-              0,
-              999
-            )
+            if (materialType === MaterialType.NON_WOVEN) {
+              ;(newRow[sideKey]!.construction as any).thicknessPerMm =
+                boundedNumber(row.MIN_Thick, 0, 999)
+            }
             break
 
           // Material Type: Trim
           case 'MIT_Diameter':
-            newRow[sideKey]!.construction.outerDiameter =
-              row.MIT_Diameter.trim().slice(0, 50)
+            if (materialType === MaterialType.TRIM) {
+              ;(newRow[sideKey]!.construction as any).outerDiameter =
+                row.MIT_Diameter.trim().slice(0, 50)
+            }
             break
           case 'MIT_Length':
-            newRow[sideKey]!.construction.length = row.MIT_Length.trim().slice(
-              0,
-              50
-            )
+            if (materialType === MaterialType.TRIM) {
+              ;(newRow[sideKey]!.construction as any).length =
+                row.MIT_Length.trim().slice(0, 50)
+            }
             break
           case 'MIT_Thickness':
-            newRow[sideKey]!.construction.thickness =
-              row.MIT_Thickness.trim().slice(0, 50)
+            if (materialType === MaterialType.TRIM) {
+              ;(newRow[sideKey]!.construction as any).thickness =
+                row.MIT_Thickness.trim().slice(0, 50)
+            }
             break
           case 'MIT_Width':
-            newRow[sideKey]!.construction.width = row.MIT_Width.trim().slice(
-              0,
-              50
-            )
+            if (materialType === MaterialType.TRIM) {
+              ;(newRow[sideKey]!.construction as any).width =
+                row.MIT_Width.trim().slice(0, 50)
+            }
             break
 
           // Pattern
@@ -592,18 +631,20 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
             (certificateId) => Number(certificateId)
           )
           break
-        case 'TAG_Priv_1':
+        case 'TAG_Priv_1': {
           const privateTagList = convertStringToList(row.TAG_Priv_1, (tag) =>
             tag.toString().trim()
           )
           newRow.internalInfo!.tagList = getUniqueItemsByField(privateTagList)
           break
-        case 'TAG_PubTags_1':
+        }
+        case 'TAG_PubTags_1': {
           const publicTagList = convertStringToList(row.TAG_PubTags_1, (tag) =>
             tag.toString().trim()
           )
           newRow.tagInfo!.tagList = getUniqueItemsByField(publicTagList)
           break
+        }
         case 'TAG_Rem_1':
           newRow.internalInfo!.remark = row.TAG_Rem_1.trim()
           break
@@ -612,12 +653,13 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
         case 'WD_1':
           newRow.width!.cuttable = boundedNumber(row.WD_1, 1, 999)
           break
-        case 'WD_2':
+        case 'WD_2': {
           const lengthUnitKey = row.WD_2.trim().toUpperCase()
           const lengthUnitValue =
             LengthUnit[lengthUnitKey as keyof typeof LengthUnit]
           newRow.width!.unit = lengthUnitValue
           break
+        }
         case 'WD_3':
           newRow.width!.full = boundedNumber(row.WD_3, 1, 999)
           break
@@ -641,28 +683,34 @@ function parseExcelToMaterialFormat(excelData: ExcelRow[]) {
           )
           break
         case 'WE_D_GSM':
-          newRow.weightDisplaySetting.isShowWeightGsm = parseYesNoValue(
-            row.WE_D_GSM.trim(),
-            true
-          )
+          if (newRow.weightDisplaySetting) {
+            newRow.weightDisplaySetting.isShowWeightGsm = parseYesNoValue(
+              row.WE_D_GSM.trim(),
+              true
+            )
+          }
           break
         case 'WE_D_GY':
-          newRow.weightDisplaySetting.isShowWeightGy = parseYesNoValue(
-            row.WE_D_GY.trim(),
-            true
-          )
+          if (newRow.weightDisplaySetting) {
+            newRow.weightDisplaySetting.isShowWeightGy = parseYesNoValue(
+              row.WE_D_GY.trim(),
+              true
+            )
+          }
           break
         case 'WE_D_OZ':
-          newRow.weightDisplaySetting.isShowWeightOz = parseYesNoValue(
-            row.WE_D_OZ.trim(),
-            true
-          )
+          if (newRow.weightDisplaySetting) {
+            newRow.weightDisplaySetting.isShowWeightOz = parseYesNoValue(
+              row.WE_D_OZ.trim(),
+              true
+            )
+          }
           break
       }
     }
     return newRow
   })
-  return materialData
+  return materialData.filter((row) => row !== null) as MaterialRow[]
 }
 
 function boundedNumber(
@@ -787,11 +835,17 @@ type AgGridCellValueType =
   | undefined
 
 export function hasInvalidAgGridCellValue(value: AgGridCellValueType): boolean {
-  if (value === null || value === undefined || value === 'null') return true
+  if (value === null || value === undefined || value === 'null') {
+    return true
+  }
 
-  if (typeof value === 'string' && value.trim() === '') return true
+  if (typeof value === 'string' && value.trim() === '') {
+    return true
+  }
 
-  if (Array.isArray(value) && value.length === 0) return true
+  if (Array.isArray(value) && value.length === 0) {
+    return true
+  }
 
   if (
     typeof value === 'object' &&
