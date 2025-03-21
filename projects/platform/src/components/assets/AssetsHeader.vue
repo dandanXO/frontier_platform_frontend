@@ -64,7 +64,7 @@
         <f-pill
           :size="SIZE.LG"
           @click="isOpenFilterPanel = !isOpenFilterPanel"
-          :active="isOpenFilterPanel || isFilterDirty"
+          :active="isOpenFilterPanel"
           :disabled="isSearching"
         >
           <f-svg-icon
@@ -94,7 +94,7 @@
       </div>
     </div>
     <filter-panel
-      v-if="isOpenFilterPanel || isFilterDirty"
+      v-if="isOpenFilterPanel"
       :searchType="SEARCH_TYPE.ASSETS"
       @search="handleSearch"
       @resetFilter="resetFilterHandler"
@@ -174,6 +174,7 @@ const {
   displayModeOptions,
   isKeywordDirty,
   isSearching,
+  isOpenFilterPanel,
 } = storeToRefs(assetsLibraryStore)
 const { isFilterDirty, imageFileURL: imageSearchData } =
   storeToRefs(filterStore)
@@ -200,8 +201,6 @@ const sortMenuTree = computed(() => {
     ],
   }
 })
-
-const isOpenFilterPanel = ref(false)
 
 const debounceSearchAITag = debounce(searchStore.getAITags, 300)
 

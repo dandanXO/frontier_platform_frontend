@@ -85,6 +85,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   const isLoading = ref(false)
   const isSlimMaterialsLoading = ref(false)
   const isKeywordDirty = ref(false)
+  const isOpenFilterPanel = ref(false)
   const inSearch = ref(false)
   const defaultSort = computed(() => sortOptions.value.base[0].value)
   const isSearching = ref(true)
@@ -449,6 +450,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     search,
     isKeywordDirty,
     isSearching,
+    isOpenFilterPanel,
     inSearch,
   }
 })
