@@ -5,8 +5,8 @@ div(
 ) 
   div(class="w-screen h-screen" @click="closable && onClose()")
   div(
-    class="absolute flex flex-col bg-primary rounded-xl shadow-32 p-6 gap-6"
-    :class="classModal"
+    class="absolute flex flex-col bg-primary rounded-xl shadow-32 gap-6"
+    :class="[classModal, noPadding ? '' : 'p-6']"
   )
     div(
       v-if="usingHeader"
@@ -49,6 +49,10 @@ const { title, closable } = defineProps({
   theme: {
     type: String,
     default: '',
+  },
+  noPadding: {
+    type: Boolean,
+    default: false,
   },
 })
 

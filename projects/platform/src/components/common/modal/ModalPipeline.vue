@@ -33,6 +33,7 @@ import Modal from '@/components/common/modal/Modal.vue'
 import ModalConfirm from '@/components/common/modal/ModalConfirm.vue'
 import ModalCommon from '@/components/common/modal/ModalCommon.vue'
 import ModalLoading from '@/components/common/modal/ModalLoading.vue'
+import ModalUploadProgress from '@/components/common/modal/ModalUploadProgress.vue'
 import { MODAL_TYPE } from '@/utils/constants'
 import { defineAsyncComponent } from 'vue'
 
@@ -42,6 +43,7 @@ export default {
     Modal,
     ModalConfirm,
     ModalLoading,
+    ModalUploadProgress,
     ModalCommon,
     ModalCreateOrEditMoodboard: defineAsyncComponent(() =>
       import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')

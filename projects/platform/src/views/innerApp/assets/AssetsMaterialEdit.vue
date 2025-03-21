@@ -105,7 +105,11 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { onBeforeRouteLeave } from 'vue-router'
-import { ATTACHMENT_FILE_ACCEPT_TYPE, NOTIFY_TYPE } from '@/utils/constants'
+import {
+  ATTACHMENT_FILE_ACCEPT_TYPE,
+  NOTIFY_TYPE,
+  THEME,
+} from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { useAssetsStore } from '@/stores/assets'
 import {
@@ -149,6 +153,7 @@ import {
   convertPriceInfoFormToReq,
 } from '@/utils/material'
 import { useCurrentCoverIndex } from '@/composables/material/useMaterialDetailImage'
+import ModalUploadProgress from '@/components/common/modal/ModalUploadProgress.vue'
 
 const props = defineProps<{
   materialId: string
@@ -160,7 +165,7 @@ const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
 const notify = useNotifyStore()
 const { goToAssets, goToAssetMaterialDetail, goToAssetMaterialEdit } =
   useNavigation()
-
+const assetsStore = useAssetsStore()
 const materialId = computed(() => Number(props.materialId))
 const [materialOptionsRes, materialRes] = await Promise.all([
   ogBaseAssetsApi('getMaterialOptions'),
@@ -379,8 +384,38 @@ const updateMaterial = async (payload: {
     hasUploadedU3mFile: boolean
   } | null
 }) => {
-  store.dispatch('helper/pushModalLoading')
+  function handleBeforeUnload(event) {
+    event.returnValue = 'leave?'
+    return 'leave?'
+  }
+
+  //beforeunload event
+  window.addEventListener('beforeunload', handleBeforeUnload)
+
   const { form, u3m } = payload
+  if (u3m) {
+    store.dispatch('helper/pushModalUploadProgress', {
+      body: ModalUploadProgress,
+      classModal: 'w-116',
+      closable: false,
+      properties: {
+        theme: THEME.LIGHT,
+        hasUpload: true,
+        onHandleCancel: () => {
+          store.dispatch('helper/closeModal')
+          assetsStore.updateabortController()
+          store.commit('assets/SET_progressLoaded', 0)
+          store.commit('assets/SET_progressTotal', 0)
+        },
+      },
+      // theme: THEME.LIGHT,
+      // hasUpload: !!u3m,
+    })
+  } else {
+    store.dispatch('helper/pushModalLoading', {
+      theme: THEME.LIGHT,
+    })
+  }
   const getReq = () => {
     let req: Omit<UpdateAssetsMaterialRequest, 'orgId' | 'ogType' | 'ogId'> = {
       ...form,
@@ -404,20 +439,31 @@ const updateMaterial = async (payload: {
     return req
   }
 
-  await ogBaseAssetsApi('updateAssetsMaterial', getReq())
-
   if (u3m) {
-    uploadCustomU3m({
+    await uploadCustomU3m({
       materialId: material.value.materialId,
       u3mFile: u3m.u3mFile,
       needToGeneratePhysical: u3m.needToGeneratePhysical,
+      callBackUrlTarget: 'updateAssetsMaterial',
+      callBackUrlTargetQuery: getReq(),
     })
+      .then(() => {
+        store.dispatch('helper/closeModalLoading')
+        window.removeEventListener('beforeunload', handleBeforeUnload)
+        isConfirmedToLeave.value = true
+        goToAssetMaterialDetail({}, materialId.value)
+        notify.showNotifySnackbar({ messageText: t('EE0164') })
+      })
+      .catch(() => {
+        window.removeEventListener('beforeunload', handleBeforeUnload)
+      })
+  } else {
+    store.dispatch('helper/closeModalLoading')
+    window.removeEventListener('beforeunload', handleBeforeUnload)
+    isConfirmedToLeave.value = true
+    goToAssetMaterialDetail({}, materialId.value)
+    notify.showNotifySnackbar({ messageText: t('EE0164') })
   }
-
-  store.dispatch('helper/closeModalLoading')
-  isConfirmedToLeave.value = true
-  goToAssetMaterialDetail({}, materialId.value)
-  notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
 
 const cancel = async () => {

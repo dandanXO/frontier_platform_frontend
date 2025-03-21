@@ -17,6 +17,8 @@ export default {
     material: Material,
   },
   state: {
+    progressLoaded: 0,
+    progressTotal: 1,
     materialList: [],
     uploadingU3mMaterialIdList: [],
     code: {
@@ -32,6 +34,12 @@ export default {
     uploadingU3mMaterialIdList: (state) => state.uploadingU3mMaterialIdList,
   },
   mutations: {
+    SET_progressLoaded(state, progressLoaded) {
+      state.progressLoaded = progressLoaded
+    },
+    SET_progressTotal(state, progressTotal) {
+      state.progressTotal = progressTotal
+    },
     SET_materialList(state, materialList) {
       state.materialList = materialList
     },

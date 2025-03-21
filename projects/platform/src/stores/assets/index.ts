@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useI18n } from 'vue-i18n'
 import axios, { type CancelTokenSource } from 'axios'
 import type {
   Material,
@@ -31,6 +30,9 @@ export const useAssetsStore = defineStore('assets', () => {
   const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+  const progressLoaded = ref<number>(0)
+  const progressTotal = ref<number>(0)
+  const abortController = ref(new AbortController()) // AbortController for canceling uploads
   const uploadingU3mMaterialIdList = ref<number[]>([])
   const spreadsheetInitialMaterial = ref<Material[]>([])
   const useNewAssetsView = ref<boolean>(false)
@@ -95,13 +97,24 @@ export const useAssetsStore = defineStore('assets', () => {
     slimMaterialList.value = data.result.materialList
     searchStore.setPaginationRes(data.result.pagination)
   }
-
+  const updateabortController = () => {
+    abortController.value.abort()
+    abortController.value = new AbortController()
+  }
   const uploadCustomU3m = async (payload: {
     materialId: number
     u3mFile: File
     needToGeneratePhysical: boolean
+    callBackUrlTarget: any
+    callBackUrlTargetQuery: {}
   }) => {
-    const { materialId, u3mFile, needToGeneratePhysical } = payload
+    const {
+      materialId,
+      u3mFile,
+      needToGeneratePhysical,
+      callBackUrlTarget,
+      callBackUrlTargetQuery,
+    } = payload
 
     const cancelCustomU3mUpload = () =>
       cancelCustomU3mUploadByMaterialId(materialId)
@@ -110,21 +123,42 @@ export const useAssetsStore = defineStore('assets', () => {
     }
 
     uploadingU3mMaterialIdList.value.push(materialId)
-    const { s3UploadId, fileName } = await uploadFileToS3(u3mFile, u3mFile.name)
-    await ogBaseAssetsApi('uploadAssetsMaterialCustomU3m', {
-      materialId,
-      s3UploadId,
-      fileName,
-      needToGeneratePhysical,
-    })
 
-    uploadingU3mMaterialIdList.value = uploadingU3mMaterialIdList.value.filter(
-      (mId) => mId !== materialId
-    )
+    try {
+      const { s3UploadId, fileName } = await uploadFileToS3(
+        u3mFile,
+        u3mFile.name,
+        (progress, loaded, total) => {
+          store.commit('assets/SET_progressLoaded', loaded)
+          store.commit('assets/SET_progressTotal', total)
+          progressLoaded.value = loaded
+          progressTotal.value = total
+        },
+        abortController.value.signal // 傳遞取消信號
+      )
 
-    if (uploadingU3mMaterialIdList.value.length === 0) {
-      closeNotifyBanner()
-      window.removeEventListener('unload', cancelCustomU3mUpload)
+      await ogBaseAssetsApi(callBackUrlTarget, callBackUrlTargetQuery)
+      await ogBaseAssetsApi('uploadAssetsMaterialCustomU3m', {
+        materialId,
+        s3UploadId,
+        fileName,
+        needToGeneratePhysical,
+      })
+    } catch (error) {
+      // Handle upload abortion or other errors
+      if (error instanceof Error && error.message === 'Upload aborted') {
+        console.log('Upload was canceled by user')
+      } else {
+        console.error('Upload failed:', error)
+      }
+    } finally {
+      uploadingU3mMaterialIdList.value =
+        uploadingU3mMaterialIdList.value.filter((id) => id !== materialId)
+
+      if (uploadingU3mMaterialIdList.value.length === 0) {
+        closeNotifyBanner()
+        window.removeEventListener('unload', cancelCustomU3mUpload)
+      }
     }
   }
 
@@ -141,7 +175,9 @@ export const useAssetsStore = defineStore('assets', () => {
 
           const { s3UploadId, fileName } = await uploadFileToS3(
             u3mFile,
-            u3mFile.name
+            u3mFile.name,
+            () => {},
+            abortController.value.signal // 傳遞取消信號
           )
 
           return {
@@ -224,6 +260,10 @@ export const useAssetsStore = defineStore('assets', () => {
     materialList,
     spreadsheetInitialMaterial,
     slimMaterialList,
+    progressLoaded,
+    progressTotal,
+    abortController,
+    updateabortController,
     getAssetsMaterialList,
     getAssetsMaterialSlimList,
     uploadingU3mMaterialIdList,

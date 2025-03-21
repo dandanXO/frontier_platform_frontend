@@ -107,6 +107,9 @@ const actions = {
   pushModalLoading({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING, options })
   },
+  pushModalUploadProgress({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.COMMON, options })
+  },
   closeModalLoading({ commit }) {
     commit('CLOSE_modalPipeline')
   },
