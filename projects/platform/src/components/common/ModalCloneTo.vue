@@ -66,7 +66,7 @@ modal-behavior(
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { NOTIFY_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE, ROLE_ID } from '@/utils/constants'
 import type {
   CloneEstimateQuota,
   CloneOption,
@@ -122,26 +122,40 @@ const orgIdMenuTree = computed(() => ({
 const ogMenuTree = computed(() => {
   const organization = store.getters[
     'organization/organization'
-  ] as Organization
+  ] as Organization & { orgUser?: { orgRoleId?: number } }
+
+  const currentOrg = store.getters['user/user'].organizationList.find(
+    (org: Organization) => org?.orgId === organization.orgId
+  )
+  let _groupList = []
+  // handele org
+  if (organization.orgUser?.orgRoleId != ROLE_ID.GUEST) {
+    _groupList.push({
+      title: organization.orgName,
+      selectValue: {
+        ogId: organization.orgId,
+        ogType: OgType.ORG,
+      },
+    })
+  }
+  // handle group
+  currentOrg?.groupList.forEach(
+    (group: { groupRoleId: number; groupName: string; groupId: number }) => {
+      if (group.groupRoleId != ROLE_ID.GUEST) {
+        _groupList.push({
+          title: group.groupName,
+          selectValue: {
+            ogId: group.groupId,
+            ogType: OgType.GROUP,
+          },
+        })
+      }
+    }
+  )
   return {
     blockList: [
       {
-        menuList: [
-          {
-            title: organization.orgName,
-            selectValue: {
-              ogId: organization.orgId,
-              ogType: OgType.ORG,
-            },
-          },
-          ...organization.groupList.map((group) => ({
-            title: group.groupName,
-            selectValue: {
-              ogId: group.groupId,
-              ogType: OgType.GROUP,
-            },
-          })),
-        ],
+        menuList: _groupList,
       },
     ],
   }
