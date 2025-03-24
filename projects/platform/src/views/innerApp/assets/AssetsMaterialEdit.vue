@@ -458,6 +458,7 @@ const updateMaterial = async (payload: {
         window.removeEventListener('beforeunload', handleBeforeUnload)
       })
   } else {
+    await ogBaseAssetsApi('updateAssetsMaterial', getReq())
     store.dispatch('helper/closeModalLoading')
     window.removeEventListener('beforeunload', handleBeforeUnload)
     isConfirmedToLeave.value = true
