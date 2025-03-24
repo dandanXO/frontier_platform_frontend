@@ -118,6 +118,8 @@ module.exports = plugin(function () {}, {
         body2: ['14px', '1'],
         caption: ['12px', '1'], // 因為牽扯到的程式碼範圍太廣，暫時為了避免衝突所以不將 caption 改名為 caption1，等日後再調整
         caption2: ['10px', '1'],
+        xl: ['1.25rem', '2rem'],
+        '3xl': ['2rem', '3rem'],
       },
       zIndex: {
         ...zIndex,

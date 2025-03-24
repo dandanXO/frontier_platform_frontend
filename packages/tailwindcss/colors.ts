@@ -88,7 +88,7 @@ export interface Colors {
     }
   }
   white: '#FAFCFC'
-  black: '#131414'
+  black: '#2B2C2C'
   cyan: {
     900: {
       DEFAULT: '#001C49'
@@ -480,7 +480,7 @@ const colors: Colors = {
     },
   },
   white: '#FAFCFC',
-  black: '#131414',
+  black: '#2B2C2C',
   cyan: {
     900: {
       DEFAULT: '#001C49',

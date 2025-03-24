@@ -95,7 +95,7 @@ const btnType = computed(() => {
       case 'primary':
         return [
           'bg-brand-solid',
-          'text-grey-0',
+          'text-white',
           'hover:bg-brand-solid-hover',
           'disabled:bg-grey-150',
         ]
