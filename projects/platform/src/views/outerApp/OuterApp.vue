@@ -12,7 +12,8 @@
 </style>
 
 <template lang="pug">
-private-view-layer(v-if="isPrivate && !hasVerified")
+assets-unavailable(v-if="isExpiredOrg" data-theme="new")
+private-view-layer(v-else-if="isPrivate && !hasVerified")
 main(v-else class="flex flex-col h-full")
   div(class="rwd-app-padding-x shrink-0")
     router-view(v-if="isReady" name="header")
@@ -51,13 +52,15 @@ import { useOuterStore } from '@/stores/outer'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { OUTER_TYPE } from '@/utils/constants'
+import AssetsUnavailable from './AssetsUnavailable.vue'
 
 const route = useRoute()
 const store = useStore()
 const { getExternalFilterOption } = useFilterStore()
 const userStore = useUserStore()
 const outerStore = useOuterStore()
-const { isPrivate, hasVerified, outerType } = storeToRefs(outerStore)
+const { isPrivate, hasVerified, outerType, isExpiredOrg } =
+  storeToRefs(outerStore)
 const isReady = ref(false)
 
 const isStickerDrawerOpen = computed<boolean>(

@@ -8,6 +8,7 @@ import type {
   Material,
   NodeMeta,
   PrivateShareAccessInfo,
+  ResSuccessTrue,
 } from '@frontier/platform-web-sdk'
 import { ref } from 'vue'
 import { useSearchStore } from '@/stores/search'
@@ -15,6 +16,10 @@ import useNavigation from '@/composables/useNavigation'
 import { useNotifyStore } from '@/stores/notify'
 import { NOTIFY_TYPE } from '@frontier/constants'
 import { OUTER_TYPE } from '@/utils/constants'
+
+const RESPONSE_CODE = {
+  EXPIRED_ORG: 'WW0039',
+}
 
 export const useOuterStore = defineStore('outer', () => {
   const ogBaseReceivedShareApi = useOgBaseApiWrapper(receivedShareApi)
@@ -29,6 +34,7 @@ export const useOuterStore = defineStore('outer', () => {
   const shareInfo = ref<ShareInfo>()
   const isPrivate = ref(false)
   const hasVerified = ref(false)
+  const isExpiredOrg = ref(false)
   const privateInfo = ref<PrivateShareAccessInfo>({
     email: '',
     accessCode: '',
@@ -92,10 +98,18 @@ export const useOuterStore = defineStore('outer', () => {
     (hasSelectedStickerAddFromOG.value = bool)
 
   const getAssetsExternalMaterial = async (frontierNo: string) => {
-    const { data } = await assetsApi.getAssetsExternalMaterial({
-      frontierNo,
-    })
-    material.value = data.result.material
+    try {
+      const { data } = await assetsApi.getAssetsExternalMaterial({
+        frontierNo,
+      })
+
+      material.value = data.result.material
+    } catch (error) {
+      const errorApi = error as ResSuccessTrue
+      if (errorApi.code) {
+        isExpiredOrg.value = errorApi.code === RESPONSE_CODE.EXPIRED_ORG
+      }
+    }
   }
 
   const checkIsMaterialOwner = async (
@@ -153,5 +167,6 @@ export const useOuterStore = defineStore('outer', () => {
     setOuterType,
     outerType,
     contactEmail,
+    isExpiredOrg,
   }
 })
