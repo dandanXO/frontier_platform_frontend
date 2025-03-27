@@ -146,7 +146,20 @@ storybook-build:
       - main
     changes:
       - packages/ui-component/**/*
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com".insteadOf "https://gitlab.com"
   script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+    - rm -rf node_modules/.vite
+    - rm -rf node_modules/.cache
     - npm install -g pnpm
     - pnpm i
     - cd ./packages/ui-component
