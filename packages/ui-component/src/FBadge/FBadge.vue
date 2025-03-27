@@ -46,6 +46,4 @@ const typeStyle = computed(() => {
 
   return mapper[props.type]
 })
-
-///testing
 </script>
