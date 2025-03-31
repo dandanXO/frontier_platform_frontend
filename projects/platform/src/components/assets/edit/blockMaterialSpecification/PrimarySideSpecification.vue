@@ -1,670 +1,891 @@
-<template lang="pug">
-div(class="flex flex-col gap-y-7.5")
-  div(class="flex flex-col gap-y-4")
-    div(v-if="showCopyAndSyncBtn" class="flex flex-row items-center gap-x-3")
-      f-input-switch(
-        :inputValue="isAutoSyncFaceToBackSideInfo.value"
-        @update:inputValue="isAutoSyncFaceToBackSideInfo.onInput"
-        :label="$t('MI0047')"
-      )
-      div(class="flex flex-row items-center gap-x-1")
-        f-button-label(size="lg" @click="copyFaceSideToBackSide") {{ $t('MI0048') }}
-        f-tooltip-standard(
-          :tooltipMessage="$t('Will cover the content of all forms')"
-        )
-          template(#slot:tooltip-trigger)
-            f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
-    f-infobar(
-      v-if="showInfoBar"
-      class="w-full"
-      :notifyType="NOTIFY_TYPE.TIPS"
-      :display="DISPLAY.BLOCK"
-      :title="$t('MI0045')"
-      :messageText="$t('MI0046')"
-    )
-  f-select-input(
-    :disabled="disableBackSideFields"
-    :selectValue="featureList.value"
-    @update:selectValue="featureList.onInput"
-    :dropdownMenuTree="specOptions.featureList"
-    @addNew="addFeatureOption($event)"
-    :label="$t('MI0014')"
-    :placeholder="$t('MI0015')"
-    :hintError="displayErrors[`${props.primarySideType}.featureList`]"
-    multiple
-    :multipleTagInputValidations="[inputValidate, lengthValidate]"
-    data-cy="features-input"
-  )
-  f-input-container(v-if="!hideBackSideFields" :label="$t('MI0016')")
-    div(class="flex flex-row gap-x-4.5 pt-2")
-      div(class="w-1.5 bg-grey-100")
-      div(class="flex flex-col gap-y-8 pl-4")
-        div(class="flex flex-col")
-          div(class="flex text-body2 font-bold")
-            p(class="text-grey-900") {{ $t('MI0003') }}
-            i(class="text-red-400 pl-0.5") *
-          span(class="mt-2 text-grey-600 text-caption") {{ $t('MI0017') }}
-          f-input-radio-group(
-            :disabled="disableBackSideFields"
-            :inputValue="materialType.value"
-            @update:inputValue="handleMaterialTypeChange"
-            radioSize="24"
-            :optionList="materialTypeOptionList"
-            class="mt-4"
-          )
-        div(
-          v-if="!!materialTypeValue && !WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)"
-          class="flex flex-col gap-y-4"
-        )
-          f-infobar(
-            class="w-130"
-            :notifyType="NOTIFY_TYPE.INFO"
-            :display="DISPLAY.BLOCK"
-            :messageText="$t('MI0083')"
-            :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
-          )
-          f-infobar(
-            v-if="materialTypeValue === MaterialType.OTHERS"
-            class="w-130"
-            :notifyType="NOTIFY_TYPE.INFO"
-            :display="DISPLAY.BLOCK"
-            :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
-          )
-            p {{ $t('MI0084') }}
-        template(v-if="materialTypeValue != null")
-          f-select-input(
-            :disabled="disableBackSideFields"
-            :selectValue="materialTypeConstruction.value?.name"
-            @update:selectValue="selectMaterialTypeConstruction"
-            :dropdownMenuTree="specOptions.materialTypeConstructionList"
-            @addNew="addMaterialTypeConstructionOption"
-            :label="$t('MI0150')"
-            data-cy="construction-type"
-            :placeholder="$t('MI0152')"
-            :hintError="materialTypeConstructionDisplayError"
-            class="w-full"
-            required
-            v-if="WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)"
-          )
-            template(#custom-not-found)
-              custom-not-found
-          f-select-input(
-            :disabled="disableBackSideFields"
-            :selectValue="descriptionList.value"
-            @update:selectValue="descriptionList.onInput"
-            :dropdownMenuTree="specOptions.descriptionList"
-            @addNew="addDescriptionOption($event)"
-            :label="$t('MI0023')"
-            :placeholder="$t('MI0151')"
-            :hintError="displayErrors[`${primarySideType}.descriptionList`]"
-            multiple
-            :multipleTagInputValidations="[inputValidate, lengthValidate]"
-            class="w-full"
-          )
-            template(#custom-not-found)
-              custom-not-found
-          f-infobar(
-            :display="DISPLAY.BLOCK"
-            :notifyType="NOTIFY_TYPE.INFO"
-            :messageText="$t('MI0155')"
-            :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
-          )
-          f-input-container(:label="$t('MI0026')")
-            template(#slot:suffix)
-              f-input-switch(
+<template>
+  <div class="flex flex-col gap-y-7.5">
+    <div class="flex flex-col gap-y-4">
+      <div v-if="showCopyAndSyncBtn" class="flex flex-row items-center gap-x-3">
+        <f-input-switch
+          :inputValue="isAutoSyncFaceToBackSideInfo.value"
+          @update:inputValue="isAutoSyncFaceToBackSideInfo.onInput"
+          :label="$t('MI0047')"
+        />
+        <div class="flex flex-row items-center gap-x-1">
+          <f-button-label size="lg" @click="copyFaceSideToBackSide">{{
+            $t('MI0048')
+          }}</f-button-label>
+          <f-tooltip-standard
+            :tooltipMessage="$t('Will cover the content of all forms')"
+          >
+            <template #slot:tooltip-trigger>
+              <f-svg-icon
+                iconName="info_outline"
+                class="cursor-pointer"
+                size="14"
+              />
+            </template>
+          </f-tooltip-standard>
+        </div>
+      </div>
+      <f-infobar
+        v-if="showInfoBar"
+        class="w-full"
+        :notifyType="NOTIFY_TYPE.TIPS"
+        :display="DISPLAY.BLOCK"
+        :title="$t('MI0045')"
+        :messageText="$t('MI0046')"
+      />
+    </div>
+    <f-select-input
+      :disabled="disableBackSideFields"
+      :selectValue="featureList.value"
+      @update:selectValue="featureList.onInput"
+      :dropdownMenuTree="specOptions.featureList"
+      @addNew="addFeatureOption($event)"
+      :label="$t('MI0014')"
+      :placeholder="$t('MI0015')"
+      :hintError="displayErrors[`${props.primarySideType}.featureList`]"
+      multiple
+      :multipleTagInputValidations="[inputValidate, lengthValidate]"
+      data-cy="features-input"
+    />
+    <f-input-container v-if="!hideBackSideFields" :label="$t('MI0016')">
+      <div class="flex flex-row gap-x-4.5 pt-2">
+        <div class="w-1.5 bg-grey-100"></div>
+        <div class="flex flex-col gap-y-8 pl-4">
+          <div class="flex flex-col">
+            <div class="flex text-body2 font-bold">
+              <p class="text-grey-900">{{ $t('MI0003') }}</p>
+              <i class="text-red-400 pl-0.5">*</i>
+            </div>
+            <span class="mt-2 text-grey-600 text-caption">{{
+              $t('MI0017')
+            }}</span>
+            <f-input-radio-group
+              :disabled="disableBackSideFields"
+              :inputValue="materialType.value"
+              @update:inputValue="handleMaterialTypeChange"
+              radioSize="24"
+              :optionList="materialTypeOptionList"
+              class="mt-4"
+            />
+          </div>
+          <div
+            v-if="
+              !!materialTypeValue &&
+              !WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)
+            "
+            class="flex flex-col gap-y-4"
+          >
+            <f-infobar
+              class="w-130"
+              :notifyType="NOTIFY_TYPE.INFO"
+              :display="DISPLAY.BLOCK"
+              :messageText="$t('MI0083')"
+              :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
+            />
+            <f-infobar
+              v-if="materialTypeValue === MaterialType.OTHERS"
+              class="w-130"
+              :notifyType="NOTIFY_TYPE.INFO"
+              :display="DISPLAY.BLOCK"
+              :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
+            >
+              <p>{{ $t('MI0084') }}</p>
+            </f-infobar>
+          </div>
+          <template v-if="materialTypeValue != null">
+            <f-select-input
+              :disabled="disableBackSideFields"
+              :selectValue="materialTypeConstruction.value?.name"
+              @update:selectValue="selectMaterialTypeConstruction"
+              :dropdownMenuTree="specOptions.materialTypeConstructionList"
+              @addNew="addMaterialTypeConstructionOption"
+              :label="$t('MI0150')"
+              data-cy="construction-type"
+              :placeholder="$t('MI0152')"
+              :hintError="materialTypeConstructionDisplayError"
+              class="w-full"
+              required
+              v-if="
+                WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialTypeValue)
+              "
+            >
+              <template #custom-not-found>
+                <custom-not-found />
+              </template>
+            </f-select-input>
+            <f-select-input
+              :disabled="disableBackSideFields"
+              :selectValue="descriptionList.value"
+              @update:selectValue="descriptionList.onInput"
+              :dropdownMenuTree="specOptions.descriptionList"
+              @addNew="addDescriptionOption($event)"
+              :label="$t('MI0023')"
+              :placeholder="$t('MI0151')"
+              :hintError="displayErrors[`${primarySideType}.descriptionList`]"
+              multiple
+              :multipleTagInputValidations="[inputValidate, lengthValidate]"
+              class="w-full"
+            >
+              <template #custom-not-found>
+                <custom-not-found />
+              </template>
+            </f-select-input>
+            <f-infobar
+              :display="DISPLAY.BLOCK"
+              :notifyType="NOTIFY_TYPE.INFO"
+              :messageText="$t('MI0155')"
+              :action="{ text: $t('RR0123'), handler: openModalSendFeedback }"
+            />
+            <f-input-container :label="$t('MI0026')">
+              <template #slot:suffix>
+                <f-input-switch
+                  :disabled="disableBackSideFields"
+                  :inputValue="constructionIsPublic.value"
+                  @update:inputValue="constructionIsPublic.onInput"
+                  :label="$t('MI0025')"
+                  class="w-50"
+                />
+              </template>
+            </f-input-container>
+          </template>
+          <div
+            v-if="materialTypeValue === MaterialType.WOVEN"
+            class="flex flex-col gap-y-4"
+          >
+            <f-input-container
+              :label="`${$t('MI0027')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
+            >
+              <div class="flex flex-row items-center gap-x-3">
+                <f-input-text
+                  :disabled="disableBackSideFields"
+                  :textValue="wovenConstructionWarpDensity.value"
+                  @update:textValue="wovenConstructionWarpDensity.onInput"
+                  :hintError="
+                    displayErrors[`${primarySideType}.construction.warpDensity`]
+                  "
+                  :placeholder="$t('MI0030')"
+                  class="w-64"
+                />
+                <span>x</span>
+                <f-input-text
+                  :disabled="disableBackSideFields"
+                  :textValue="wovenConstructionWeftDensity.value"
+                  @update:textValue="wovenConstructionWeftDensity.onInput"
+                  :hintError="
+                    displayErrors[`${primarySideType}.construction.weftDensity`]
+                  "
+                  :placeholder="$t('MI0030')"
+                  class="w-64"
+                />
+              </div>
+            </f-input-container>
+            <f-input-container
+              :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
+            >
+              <div class="flex fle-row items-center gap-x-3">
+                <f-input-text
+                  :disabled="disableBackSideFields"
+                  :textValue="wovenConstructionWarpYarnSize.value"
+                  @update:textValue="wovenConstructionWarpYarnSize.onInput"
+                  :hintError="
+                    displayErrors[
+                      `${primarySideType}.construction.warpYarnSize`
+                    ]
+                  "
+                  :placeholder="$t('MI0030')"
+                  class="w-64"
+                />
+                <span>x</span>
+                <f-input-text
+                  :disabled="disableBackSideFields"
+                  :textValue="wovenConstructionWeftYarnSize.value"
+                  @update:textValue="wovenConstructionWeftYarnSize.onInput"
+                  :hintError="
+                    displayErrors[
+                      `${primarySideType}.construction.weftYarnSize`
+                    ]
+                  "
+                  :placeholder="$t('MI0030')"
+                  class="w-64"
+                />
+              </div>
+            </f-input-container>
+          </div>
+          <div
+            v-if="materialTypeValue === MaterialType.KNIT"
+            class="flex flex-col gap-y-4"
+          >
+            <div class="pb-5">
+              <f-input-text
                 :disabled="disableBackSideFields"
-                :inputValue="constructionIsPublic.value"
-                @update:inputValue="constructionIsPublic.onInput"
+                :textValue="knitConstructionMachineType.value"
+                @update:textValue="knitConstructionMachineType.onInput"
+                :hintError="
+                  displayErrors[`${primarySideType}.construction.machineType`]
+                "
+                :label="$t('MI0031')"
+                :placeholder="$t('MI0030')"
+                :hintSupport="$t('MI0069')"
+                class="w-70"
+              />
+            </div>
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="knitConstructionWalesPerInch.value"
+              @update:textValue="knitConstructionWalesPerInch.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.walesPerInch`]
+              "
+              :label="$t('MI0032')"
+              :placeholder="$t('MI0030')"
+              inputType="number"
+              :addOnRight="$t('RR0020')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="knitConstructionCoursesPerInch.value"
+              @update:textValue="knitConstructionCoursesPerInch.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.coursesPerInch`]
+              "
+              :label="$t('MI0033')"
+              :placeholder="$t('MI0030')"
+              inputType="number"
+              :addOnRight="$t('RR0020')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="knitConstructionYarnSize.value"
+              @update:textValue="knitConstructionYarnSize.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.yarnSize`]
+              "
+              :label="$t('RR0023')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="knitConstructionMachineGaugeInGg.value"
+              @update:textValue="knitConstructionMachineGaugeInGg.onInput"
+              :hintError="
+                displayErrors[
+                  `${primarySideType}.construction.machineGaugeInGg`
+                ]
+              "
+              inputType="number"
+              :label="$t('MI0068')"
+              :placeholder="$t('MI0030')"
+              :addOnRight="$t('MI0070')"
+              class="w-70"
+            />
+          </div>
+          <div
+            v-if="materialTypeValue === MaterialType.LEATHER"
+            class="flex flex-col gap-y-2"
+          >
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="leatherConstructionAverageSkinPerMeterSquare.value"
+              @update:textValue="
+                leatherConstructionAverageSkinPerMeterSquare.onInput
+              "
+              :hintError="
+                displayErrors[
+                  `${primarySideType}.construction.averageSkinPerMeterSquare`
+                ]
+              "
+              :label="$t('MI0071')"
+              :placeholder="$t('MI0030')"
+              :addOnRight="$t('MI0075')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="leatherConstructionGrade.value"
+              @update:textValue="leatherConstructionGrade.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.grade`]
+              "
+              :label="$t('MI0072')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <div class="pb-5">
+              <f-input-text
+                :disabled="disableBackSideFields"
+                :textValue="leatherConstructionTannage.value"
+                @update:textValue="leatherConstructionTannage.onInput"
+                :hintError="
+                  displayErrors[`${primarySideType}.construction.tannage`]
+                "
+                :label="$t('MI0073')"
+                :placeholder="$t('MI0030')"
+                :hintSupport="$t('MI0076')"
+                class="w-70"
+              />
+            </div>
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="leatherConstructionThicknessPerMm.value"
+              @update:textValue="leatherConstructionThicknessPerMm.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.thicknessPerMm`]
+              "
+              :label="$t('MI0074')"
+              :placeholder="$t('MI0030')"
+              inputType="number"
+              :addOnRight="$t('MI0077')"
+              class="w-70"
+            />
+          </div>
+          <div
+            v-if="materialTypeValue === MaterialType.NON_WOVEN"
+            class="flex flex-col gap-y-2"
+          >
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="nonWovenConstructionBondingMethod.value"
+              @update:textValue="nonWovenConstructionBondingMethod.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.bondingMethod`]
+              "
+              :label="$t('MI0078')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="nonWovenConstructionThicknessPerMm.value"
+              @update:textValue="nonWovenConstructionThicknessPerMm.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.thicknessPerMm`]
+              "
+              :label="$t('MI0074')"
+              :placeholder="$t('MI0030')"
+              inputType="number"
+              :addOnRight="$t('MI0077')"
+              class="w-70"
+            />
+          </div>
+          <div
+            v-if="materialTypeValue === MaterialType.TRIM"
+            class="flex flex-col gap-y-2"
+          >
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="trimConstructionOuterDiameter.value"
+              @update:textValue="trimConstructionOuterDiameter.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.outerDiameter`]
+              "
+              :label="$t('MI0079')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="trimConstructionLength.value"
+              @update:textValue="trimConstructionLength.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.length`]
+              "
+              :label="$t('MI0080')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="trimConstructionThickness.value"
+              @update:textValue="trimConstructionThickness.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.thickness`]
+              "
+              :label="$t('MI0081')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              :textValue="trimConstructionWidth.value"
+              @update:textValue="trimConstructionWidth.onInput"
+              :hintError="
+                displayErrors[`${primarySideType}.construction.width`]
+              "
+              :label="$t('MI0082')"
+              :placeholder="$t('MI0030')"
+              class="w-70"
+            />
+          </div>
+          <div v-if="materialTypeValue != null" class="flex flex-col gap-y-2">
+            <div
+              class="flex items-center gap-x-3"
+              v-for="(field, index) in constructionCustomPropertyFields"
+              :key="field.key"
+              :class="[{ 'mt-4': index > 0 }]"
+            >
+              <f-input-text
+                :disabled="disableBackSideFields"
+                v-model:textValue="field.value.name"
+                :hintError="
+                  displayErrors[
+                    `${primarySideType}.constructionCustomPropertyList[${index}].name`
+                  ]
+                "
+                :placeholder="$t('MI0030')"
+                label="Custom Name"
+                :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
+                class="w-50"
+              />
+              <f-input-text
+                :disabled="disableBackSideFields"
+                v-model:textValue="field.value.value"
+                :hintError="
+                  displayErrors[
+                    `${primarySideType}.constructionCustomPropertyList[${index}].value`
+                  ]
+                "
+                :placeholder="$t('MI0044')"
+                label="Custom Value"
+                class="w-50"
+              />
+              <f-input-switch
+                :disabled="
+                  disableBackSideFields ||
+                  !field.value.name ||
+                  !field.value.value
+                "
+                v-model:inputValue="field.value.isPublic"
                 :label="$t('MI0025')"
                 class="w-50"
-              )
-        div(v-if="materialTypeValue === MaterialType.WOVEN" class="flex flex-col gap-y-4")
-          f-input-container(
-            :label="`${$t('MI0027')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-          )
-            div(class="flex flex-row items-center gap-x-3")
-              f-input-text(
+              />
+              <icon-button
+                iconName="delete"
+                @click="() => removeConstructionCustomPropertyField(index)"
                 :disabled="disableBackSideFields"
-                :textValue="wovenConstructionWarpDensity.value"
-                @update:textValue="wovenConstructionWarpDensity.onInput"
-                :hintError="displayErrors[`${primarySideType}.construction.warpDensity`]"
-                :placeholder="$t('MI0030')"
-                class="w-64"
-              )
-              span x
-              f-input-text(
-                :disabled="disableBackSideFields"
-                :textValue="wovenConstructionWeftDensity.value"
-                @update:textValue="wovenConstructionWeftDensity.onInput"
-                :hintError="displayErrors[`${primarySideType}.construction.weftDensity`]"
-                :placeholder="$t('MI0030')"
-                class="w-64"
-              )
-          f-input-container(
-            :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-          )
-            div(class="flex fle-row items-center gap-x-3")
-              f-input-text(
-                :disabled="disableBackSideFields"
-                :textValue="wovenConstructionWarpYarnSize.value"
-                @update:textValue="wovenConstructionWarpYarnSize.onInput"
-                :hintError="displayErrors[`${primarySideType}.construction.warpYarnSize`]"
-                :placeholder="$t('MI0030')"
-                class="w-64"
-              )
-              span x
-              f-input-text(
-                :disabled="disableBackSideFields"
-                :textValue="wovenConstructionWeftYarnSize.value"
-                @update:textValue="wovenConstructionWeftYarnSize.onInput"
-                :hintError="displayErrors[`${primarySideType}.construction.weftYarnSize`]"
-                :placeholder="$t('MI0030')"
-                class="w-64"
-              )
-        div(v-if="materialTypeValue === MaterialType.KNIT" class="flex flex-col gap-y-4")
-          div(class="pb-5")
-            f-input-text(
+              />
+            </div>
+            <f-button
               :disabled="disableBackSideFields"
-              :textValue="knitConstructionMachineType.value"
-              @update:textValue="knitConstructionMachineType.onInput"
-              :hintError="displayErrors[`${primarySideType}.construction.machineType`]"
-              :label="$t('MI0031')"
-              :placeholder="$t('MI0030')"
-              :hintSupport="$t('MI0069')"
-              class="w-70"
-            )
-          f-input-text(
+              type="text"
+              size="sm"
+              prependIcon="add"
+              @click="
+                () =>
+                  pushConstructionCustomPropertyField({
+                    isPublic: false,
+                    name: 'Untitled',
+                    value: '',
+                  })
+              "
+              >{{ $t('MI0034') }}</f-button
+            >
+          </div>
+        </div>
+      </div>
+    </f-input-container>
+    <f-input-container
+      v-if="!hideBackSideFields"
+      :label="$t('RR0021')"
+      data-cy="content-box"
+      required
+      :hintError="contentDisplayError"
+    >
+      <div class="flex flex-col gap-y-3">
+        <div
+          v-for="(field, index) in contentFields"
+          :key="contentFields[index].key"
+          class="flex flex-row items-center gap-x-3"
+        >
+          <f-select-input
             :disabled="disableBackSideFields"
-            :textValue="knitConstructionWalesPerInch.value"
-            @update:textValue="knitConstructionWalesPerInch.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.walesPerInch`]"
-            :label="$t('MI0032')"
-            :placeholder="$t('MI0030')"
+            :selectValue="field.value.name"
+            @update:selectValue="(name:string) => selectContent(name, index, field.value)"
+            :dropdownMenuTree="specOptions.contentList"
+            @addNew="addContentOption($event)"
+            :placeholder="$t('MI0035')"
+            :hintError="
+              Boolean(
+                displayErrors[`${primarySideType}.contentList[${index}].name`]
+              )
+            "
+            class="w-100"
+            :multipleTagInputValidations="[inputValidate, lengthValidate]"
+            data-cy="content-text"
+          >
+            <template #custom-not-found>
+              <custom-not-found />
+            </template>
+          </f-select-input>
+          <f-input-text
+            :disabled="disableBackSideFields"
+            v-model:textValue="field.value.percentage"
             inputType="number"
-            :addOnRight="$t('RR0020')"
-            class="w-70"
-          )
-          f-input-text(
+            :placeholder="$t('MI0043')"
+            addOnRight="%"
+            :hintError="
+              Boolean(
+                displayErrors[
+                  `${primarySideType}.contentList[${index}].percentage`
+                ]
+              )
+            "
+            class="w-40"
+            data-cy="content-text-value"
+          />
+          <f-svg-icon
+            v-if="index === 0"
+            class="text-grey-600 cursor-pointer"
+            size="24"
+            iconName="add_box"
             :disabled="disableBackSideFields"
-            :textValue="knitConstructionCoursesPerInch.value"
-            @update:textValue="knitConstructionCoursesPerInch.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.coursesPerInch`]"
-            :label="$t('MI0033')"
-            :placeholder="$t('MI0030')"
-            inputType="number"
-            :addOnRight="$t('RR0020')"
-            class="w-70"
-          )
-          f-input-text(
+            @click="
+              pushContentField({
+                contentId: null,
+                name: null,
+                percentage: null,
+              })
+            "
+          />
+          <f-svg-icon
+            v-else
+            class="text-grey-600 cursor-pointer"
+            size="20"
+            iconName="delete"
             :disabled="disableBackSideFields"
-            :textValue="knitConstructionYarnSize.value"
-            @update:textValue="knitConstructionYarnSize.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.yarnSize`]"
-            :label="$t('RR0023')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="knitConstructionMachineGaugeInGg.value"
-            @update:textValue="knitConstructionMachineGaugeInGg.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.machineGaugeInGg`]"
-            inputType="number"
-            :label="$t('MI0068')"
-            :placeholder="$t('MI0030')"
-            :addOnRight="$t('MI0070')"
-            class="w-70"
-          )
-        div(
-          v-if="materialTypeValue === MaterialType.LEATHER"
-          class="flex flex-col gap-y-2"
-        )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="leatherConstructionAverageSkinPerMeterSquare.value"
-            @update:textValue="leatherConstructionAverageSkinPerMeterSquare.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.averageSkinPerMeterSquare`]"
-            :label="$t('MI0071')"
-            :placeholder="$t('MI0030')"
-            :addOnRight="$t('MI0075')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="leatherConstructionGrade.value"
-            @update:textValue="leatherConstructionGrade.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.grade`]"
-            :label="$t('MI0072')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          div(class="pb-5")
-            f-input-text(
-              :disabled="disableBackSideFields"
-              :textValue="leatherConstructionTannage.value"
-              @update:textValue="leatherConstructionTannage.onInput"
-              :hintError="displayErrors[`${primarySideType}.construction.tannage`]"
-              :label="$t('MI0073')"
-              :placeholder="$t('MI0030')"
-              :hintSupport="$t('MI0076')"
-              class="w-70"
-            )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="leatherConstructionThicknessPerMm.value"
-            @update:textValue="leatherConstructionThicknessPerMm.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.thicknessPerMm`]"
-            :label="$t('MI0074')"
-            :placeholder="$t('MI0030')"
-            inputType="number"
-            :addOnRight="$t('MI0077')"
-            class="w-70"
-          )
-        div(
-          v-if="materialTypeValue === MaterialType.NON_WOVEN"
-          class="flex flex-col gap-y-2"
-        )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="nonWovenConstructionBondingMethod.value"
-            @update:textValue="nonWovenConstructionBondingMethod.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.bondingMethod`]"
-            :label="$t('MI0078')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="nonWovenConstructionThicknessPerMm.value"
-            @update:textValue="nonWovenConstructionThicknessPerMm.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.thicknessPerMm`]"
-            :label="$t('MI0074')"
-            :placeholder="$t('MI0030')"
-            inputType="number"
-            :addOnRight="$t('MI0077')"
-            class="w-70"
-          )
-        div(v-if="materialTypeValue === MaterialType.TRIM" class="flex flex-col gap-y-2")
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="trimConstructionOuterDiameter.value"
-            @update:textValue="trimConstructionOuterDiameter.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.outerDiameter`]"
-            :label="$t('MI0079')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="trimConstructionLength.value"
-            @update:textValue="trimConstructionLength.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.length`]"
-            :label="$t('MI0080')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="trimConstructionThickness.value"
-            @update:textValue="trimConstructionThickness.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.thickness`]"
-            :label="$t('MI0081')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            :textValue="trimConstructionWidth.value"
-            @update:textValue="trimConstructionWidth.onInput"
-            :hintError="displayErrors[`${primarySideType}.construction.width`]"
-            :label="$t('MI0082')"
-            :placeholder="$t('MI0030')"
-            class="w-70"
-          )
-        div(v-if="materialTypeValue != null" class="flex flex-col gap-y-2")
-          div(
+            @click="() => removeContentField(index)"
+          />
+        </div>
+      </div>
+    </f-input-container>
+    <f-input-container v-if="showWidthAndWeight" :label="$t('RR0088')" required>
+      <div class="flex flex-row gap-3">
+        <f-input-text
+          :textValue="cuttableWidth.value"
+          @update:textValue="cuttableWidth.onInput"
+          :hintError="displayErrors['width.cuttable']"
+          :placeholder="$t('MI0037')"
+          inputType="number"
+          :label="$t('RR0019')"
+          class="w-72"
+          :rightSelectValue="widthUnit.value"
+          @update:rightSelectValue="widthUnit.onInput"
+          :rightDropdownOption="widthUnitList"
+          data-cy="cuttable-width-text"
+        >
+          <template #slot:right-dropdown-trigger="{ selectedMenu }">
+            <p>{{ selectedMenu?.title }}</p>
+          </template>
+        </f-input-text>
+        <f-input-text
+          :disabled="disableBackSideFields"
+          :textValue="fullWidth.value"
+          @update:textValue="fullWidth.onInput"
+          :hintError="displayErrors['width.full']"
+          :placeholder="$t('MI0038')"
+          inputType="number"
+          :label="$t('MI0036')"
+          class="w-72"
+          :rightSelectValue="widthUnit.value"
+          @update:rightSelectValue="widthUnit.onInput"
+          :rightDropdownOption="widthUnitList"
+          data-cy="full-width-text"
+        >
+          <template #slot:right-dropdown-trigger="{ selectedMenu }">
+            <p>{{ selectedMenu?.title }}</p>
+          </template>
+        </f-input-text>
+      </div>
+    </f-input-container>
+    <f-input-container v-if="showWidthAndWeight" required :label="$t('RR0015')">
+      <template #slot:suffix>
+        <f-tooltip-standard class="flex-start">
+          <template #slot:tooltip-content>
+            <i18n-t keypath="MI0142">
+              <template #newline>
+                <br />
+              </template>
+            </i18n-t>
+          </template>
+          <template #slot:tooltip-trigger>
+            <f-svg-icon
+              iconName="info_outline"
+              class="cursor-pointer text-grey-600"
+              size="14"
+            />
+          </template>
+        </f-tooltip-standard>
+      </template>
+      <div class="flex flex-col gap-y-2.5">
+        <f-input-text
+          :textValue="weightValue.value"
+          @update:textValue="weightValue.onInput"
+          :hintError="displayErrors['weight.value']"
+          :placeholder="$t('MI0039')"
+          inputType="number"
+          class="w-72"
+          required
+          :rightSelectValue="weightUnit.value"
+          @update:rightSelectValue="weightUnit.onInput"
+          :rightDropdownOption="weightUnitList"
+          data-cy="weight-text"
+        >
+          <template #slot:right-dropdown-trigger="{ selectedMenu }">
+            <p>{{ selectedMenu?.title }}</p>
+          </template>
+        </f-input-text>
+        <div class="flex flex-row items-center gap-x-4 mt-4">
+          <f-input-checkbox
+            v-for="weightItem in weightCheckboxItems"
+            :key="weightItem.unit"
+            :class="{ 'order-first': weightUnit.value === weightItem.unit }"
+            binary
+            :disabled="weightUnit.value === weightItem.unit"
+            :label="weightItem.label"
+            :inputValue="weightItem.field.value"
+            @update:inputValue="weightItem.field.onInput"
+          />
+        </div>
+      </div>
+    </f-input-container>
+    <f-select-input
+      :disabled="disableBackSideFields"
+      :selectValue="finishList.value"
+      @update:selectValue="finishList.onInput"
+      :dropdownMenuTree="specOptions.finishList"
+      @addNew="addFinishOption($event)"
+      :label="$t('RR0022')"
+      :placeholder="$t('MI0040')"
+      :hintError="displayErrors[`${primarySideType}.finishList`]"
+      multiple
+      :multipleTagInputValidations="[inputValidate, lengthValidate]"
+      data-cy="finish-info"
+    />
+    <f-input-container v-if="mode === CREATE_EDIT.EDIT" :label="$t('EE0040')">
+      <div class="flex flex-col gap-y-4">
+        <f-input-text
+          class="w-72"
+          v-model:textValue="pantoneColor"
+          :placeholder="$t('MI0067')"
+          :button="{ type: 'primary', icon: 'add', isFile: false }"
+          @click:button="handleAddPantone"
+        />
+        <div class="grid gap-y-3">
+          <div
+            v-for="pantone in pantoneValueDisplayList"
+            :key="pantone.name"
             class="flex items-center gap-x-3"
-            v-for="(field, index) in constructionCustomPropertyFields"
+          >
+            <f-tooltip-media
+              placement="right-end"
+              :pantone="{ r: pantone.r, g: pantone.g, b: pantone.b }"
+              :tooltipTitle="pantone.name"
+              :tooltipMessage="pantone.colorName"
+            >
+              <template #slot:tooltip-trigger>
+                <div
+                  class="rounded w-5.5 h-5.5"
+                  :style="{
+                    backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})`,
+                  }"
+                ></div>
+              </template>
+            </f-tooltip-media>
+            <p class="text-body2 text-grey-900">{{ pantone.name }}</p>
+            <f-svg-icon
+              iconName="clear"
+              size="20"
+              class="text-grey-250 cursor-pointer"
+              @click="removePantone(pantone.name, props.primarySideType)"
+            />
+          </div>
+        </div>
+      </div>
+    </f-input-container>
+    <f-input-container :label="$t('RR0026')">
+      <div class="flex flex-row gap-x-4.5">
+        <div class="w-1.5 bg-grey-100"></div>
+        <div class="flex flex-col gap-y-2">
+          <f-input-text
+            :disabled="disableBackSideFields"
+            :textValue="color.value"
+            @update:textValue="color.onInput"
+            @change="color.onChange"
+            @blur="color.onBlur"
+            :hintError="displayErrors[`${primarySideType}.colorInfo.color`]"
+            :placeholder="$t('MI0041')"
+            class="w-50"
+            data-cy="color-info"
+          />
+          <div
+            class="flex items-center gap-x-3"
+            v-for="(field, index) in colorInfoCustomPropertyFields"
             :key="field.key"
-            :class="[{'mt-4': index>0}]"
-          ) 
-            f-input-text(
+            :class="[{ 'mt-4': index > 0 }]"
+          >
+            <f-input-text
               :disabled="disableBackSideFields"
               v-model:textValue="field.value.name"
-              :hintError="displayErrors[`${primarySideType}.constructionCustomPropertyList[${index}].name`]"
+              :hintError="
+                displayErrors[
+                  `${primarySideType}.colorInfo.customPropertyList[${index}].name`
+                ]
+              "
+              label="name"
               :placeholder="$t('MI0030')"
-              label="Custom Name"
-              :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
               class="w-50"
-            )
-            f-input-text(
+              :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
+            />
+            <div class="flex items-center gap-x-3 pt-7">
+              <f-tooltip-media
+                v-if="isPantoneValue(field.value?.value)"
+                placement="top-start"
+                :pantone="{
+                  r: isPantoneValue(field.value?.value)?.r,
+                  g: isPantoneValue(field.value?.value)?.g,
+                  b: isPantoneValue(field.value?.value)?.b,
+                }"
+                :tooltipTitle="isPantoneValue(field.value?.value)?.name"
+                :tooltipMessage="isPantoneValue(field.value?.value)?.colorName"
+              >
+                <template #slot:tooltip-trigger>
+                  <div
+                    class="rounded w-5 h-5"
+                    :style="{
+                      backgroundColor: field.value.value
+                        ? `rgb(${isPantoneValue(field.value.value)?.r}, ${
+                            isPantoneValue(field.value.value)?.g
+                          }, ${isPantoneValue(field.value.value)?.b})`
+                        : 'transparent',
+                    }"
+                  ></div>
+                </template>
+              </f-tooltip-media>
+            </div>
+            <f-input-text
               :disabled="disableBackSideFields"
               v-model:textValue="field.value.value"
-              :hintError="displayErrors[`${primarySideType}.constructionCustomPropertyList[${index}].value`]"
+              :hintError="
+                displayErrors[
+                  `${primarySideType}.colorInfo.customPropertyList[${index}].value`
+                ]
+              "
+              label="value"
               :placeholder="$t('MI0044')"
-              label="Custom Value"
-              class="w-50"
-            )
-            f-input-switch(
-              :disabled="disableBackSideFields || !field.value.name || !field.value.value"
+              :class="[isPantoneValue(field.value?.value) ? 'w-45' : 'w-50']"
+            />
+            <f-input-switch
+              :disabled="
+                disableBackSideFields || !field.value.name || !field.value.value
+              "
               v-model:inputValue="field.value.isPublic"
               :label="$t('MI0025')"
               class="w-50"
-            )
-            icon-button(
+            />
+            <icon-button
               iconName="delete"
-              @click="() => removeConstructionCustomPropertyField(index)"
               :disabled="disableBackSideFields"
-            )
-          f-button(
+              @click="() => removeColorInfoCustomPropertyField(index)"
+            />
+          </div>
+          <f-button
             :disabled="disableBackSideFields"
             type="text"
             size="sm"
             prependIcon="add"
-            @click="() => pushConstructionCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-          ) {{ $t('MI0034') }}
-  f-input-container(
-    v-if="!hideBackSideFields"
-    :label="$t('RR0021')"
-    data-cy="content-box"
-    required
-    :hintError="contentDisplayError"
-  )
-    div(class="flex flex-col gap-y-3")
-      div(
-        v-for="(field, index) in contentFields"
-        :key="contentFields[index].key"
-        class="flex flex-row items-center gap-x-3"
-      )
-        f-select-input(
-          :disabled="disableBackSideFields"
-          :selectValue="field.value.name"
-          @update:selectValue="(name:string) => selectContent(name, index, field.value)"
-          :dropdownMenuTree="specOptions.contentList"
-          @addNew="addContentOption($event)"
-          :placeholder="$t('MI0035')"
-          :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].name`])"
-          class="w-100"
-          :multipleTagInputValidations="[inputValidate, lengthValidate]"
-          data-cy="content-text"
-        )
-          template(#custom-not-found)
-            custom-not-found
-        f-input-text(
-          :disabled="disableBackSideFields"
-          v-model:textValue="field.value.percentage"
-          inputType="number"
-          :placeholder="$t('MI0043')"
-          addOnRight="%"
-          :hintError="Boolean(displayErrors[`${primarySideType}.contentList[${index}].percentage`])"
-          class="w-40"
-          data-cy="content-text-value"
-        )
-        f-svg-icon(
-          v-if="index === 0"
-          class="text-grey-600 cursor-pointer"
-          size="24"
-          iconName="add_box"
-          :disabled="disableBackSideFields"
-          @click="pushContentField({ contentId: null, name: null, percentage: null })"
-        )
-        f-svg-icon(
-          v-else
-          class="text-grey-600 cursor-pointer"
-          size="20"
-          iconName="delete"
-          :disabled="disableBackSideFields"
-          @click="() => removeContentField(index)"
-        )
-  f-input-container(v-if="showWidthAndWeight" :label="$t('RR0088')" required)
-    div(class="flex flex-row gap-3")
-      f-input-text(
-        :textValue="cuttableWidth.value"
-        @update:textValue="cuttableWidth.onInput"
-        :hintError="displayErrors['width.cuttable']"
-        :placeholder="$t('MI0037')"
-        inputType="number"
-        :label="$t('RR0019')"
-        class="w-72"
-        :rightSelectValue="widthUnit.value"
-        @update:rightSelectValue="widthUnit.onInput"
-        :rightDropdownOption="widthUnitList"
-        data-cy="cuttable-width-text"
-      )
-        template(#slot:right-dropdown-trigger="{ selectedMenu }")
-          p {{ selectedMenu?.title }}
-      f-input-text(
-        :disabled="disableBackSideFields"
-        :textValue="fullWidth.value"
-        @update:textValue="fullWidth.onInput"
-        :hintError="displayErrors['width.full']"
-        :placeholder="$t('MI0038')"
-        inputType="number"
-        :label="$t('MI0036')"
-        class="w-72"
-        :rightSelectValue="widthUnit.value"
-        @update:rightSelectValue="widthUnit.onInput"
-        :rightDropdownOption="widthUnitList"
-        data-cy="full-width-text"
-      )
-        template(#slot:right-dropdown-trigger="{ selectedMenu }")
-          p {{ selectedMenu?.title }}
-  f-input-container(v-if="showWidthAndWeight" required :label="$t('RR0015')")
-    template(#slot:suffix)
-      f-tooltip-standard(class="flex-start")
-        template(#slot:tooltip-content)
-          i18n-t(keypath="MI0142")
-            template(#newline)
-              br
-        template(#slot:tooltip-trigger)
-          f-svg-icon(
-            iconName="info_outline"
-            class="cursor-pointer text-grey-600"
-            size="14"
-          )
-    div(class="flex flex-col gap-y-2.5")
-      f-input-text(
-        :textValue="weightValue.value"
-        @update:textValue="weightValue.onInput"
-        :hintError="displayErrors['weight.value']"
-        :placeholder="$t('MI0039')"
-        inputType="number"
-        class="w-72"
-        required
-        :rightSelectValue="weightUnit.value"
-        @update:rightSelectValue="weightUnit.onInput"
-        :rightDropdownOption="weightUnitList"
-        data-cy="weight-text"
-      )
-        template(#slot:right-dropdown-trigger="{ selectedMenu }")
-          p {{ selectedMenu?.title }}
-      div(class="flex flex-row items-center gap-x-4 mt-4")
-        f-input-checkbox(
-          v-for="weightItem in weightCheckboxItems"
-          :key="weightItem.unit"
-          :class="{ 'order-first': weightUnit.value === weightItem.unit }"
-          binary
-          :disabled="weightUnit.value === weightItem.unit"
-          :label="weightItem.label"
-          :inputValue="weightItem.field.value"
-          @update:inputValue="weightItem.field.onInput"
-        )
-  f-select-input(
-    :disabled="disableBackSideFields"
-    :selectValue="finishList.value"
-    @update:selectValue="finishList.onInput"
-    :dropdownMenuTree="specOptions.finishList"
-    @addNew="addFinishOption($event)"
-    :label="$t('RR0022')"
-    :placeholder="$t('MI0040')"
-    :hintError="displayErrors[`${primarySideType}.finishList`]"
-    multiple
-    :multipleTagInputValidations="[inputValidate, lengthValidate]"
-    data-cy="finish-info"
-  )
-  f-input-container(v-if="mode === CREATE_EDIT.EDIT" :label="$t('EE0040')")
-    div(class="flex flex-col gap-y-4")
-      f-input-text(
-        class="w-72"
-        v-model:textValue="pantoneColor"
-        :placeholder="$t('MI0067')"
-        :button="{ type: 'primary', icon: 'add', isFile: false }"
-        @click:button="handleAddPantone"
-      )
-      div(class="grid gap-y-3")
-        div(
-          v-for="pantone in pantoneValueDisplayList"
-          :key="pantone.name"
-          class="flex items-center gap-x-3"
-        )
-          f-tooltip-media(
-            placement="right-end"
-            :pantone="{ r: pantone.r, g: pantone.g, b: pantone.b }"
-            :tooltipTitle="pantone.name"
-            :tooltipMessage="pantone.colorName"
-          )
-            template(#slot:tooltip-trigger)
-              div(
-                class="rounded w-5.5 h-5.5"
-                :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
-              )
-          p(class="text-body2 text-grey-900") {{ pantone.name }}
-          f-svg-icon(
-            iconName="clear"
-            size="20"
-            class="text-grey-250 cursor-pointer"
-            @click="removePantone(pantone.name, props.primarySideType)"
-          )
-  f-input-container(:label="$t('RR0026')")
-    div(class="flex flex-row gap-x-4.5")
-      div(class="w-1.5 bg-grey-100")
-      div(class="flex flex-col gap-y-2")
-        f-input-text(
-          :disabled="disableBackSideFields"
-          :textValue="color.value"
-          @update:textValue="color.onInput"
-          @change="color.onChange"
-          @blur="color.onBlur"
-          :hintError="displayErrors[`${primarySideType}.colorInfo.color`]"
-          :placeholder="$t('MI0041')"
-          class="w-50"
-          data-cy="color-info"
-        )
-        div(
-          class="flex items-center gap-x-3"
-          v-for="(field, index) in colorInfoCustomPropertyFields"
-          :key="field.key"
-          :class="[{'mt-4': index > 0}]"
-        )
-          f-input-text(
+            @click="
+              () =>
+                pushColorInfoCustomPropertyField({
+                  isPublic: false,
+                  name: 'Untitled',
+                  value: '',
+                })
+            "
+            >{{ $t('MI0034') }}</f-button
+          >
+        </div>
+      </div>
+    </f-input-container>
+    <f-input-container :label="$t('RR0025')">
+      <div class="flex flex-row gap-x-4.5">
+        <div class="w-1.5 bg-grey-100"></div>
+        <div class="flex flex-col gap-y-2">
+          <f-input-text
             :disabled="disableBackSideFields"
-            v-model:textValue="field.value.name"
-            :hintError="displayErrors[`${primarySideType}.colorInfo.customPropertyList[${index}].name`]"
-            label="name"
-            :placeholder="$t('MI0030')"
+            :textValue="pattern.value"
+            @update:textValue="pattern.onInput"
+            @change="pattern.onChange"
+            @blur="pattern.onBlur"
+            :hintError="displayErrors[`${primarySideType}.patternInfo.pattern`]"
+            :placeholder="$t('MI0042')"
             class="w-50"
-            :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
-          )
-          div(
-            
-          class="flex items-center gap-x-3 pt-7 "
-          )
-            f-tooltip-media(
-              v-if="isPantoneValue(field.value?.value)"
-              placement="top-start"
-              :pantone="{ r: isPantoneValue(field.value?.value)?.r, g: isPantoneValue(field.value?.value)?.g, b: isPantoneValue(field.value?.value)?.b }"
-              :tooltipTitle="isPantoneValue(field.value?.value)?.name"
-              :tooltipMessage="isPantoneValue(field.value?.value)?.colorName"
-            )
-              template(#slot:tooltip-trigger)
-                
-                  div(
-                    class="rounded w-5 h-5"
-                    :style="{ backgroundColor: field.value.value ? `rgb(${isPantoneValue(field.value.value)?.r}, ${isPantoneValue(field.value.value)?.g}, ${isPantoneValue(field.value.value)?.b})` : 'transparent' }"
-                  )
-          f-input-text(
+            data-cy="pattern-info"
+          />
+          <div
+            class="flex items-center gap-x-3"
+            v-for="(field, index) in patternInfoCustomPropertyFields"
+            :key="field.key"
+            :class="[{ 'mt-4': index > 0 }]"
+          >
+            <f-input-text
+              :disabled="disableBackSideFields"
+              v-model:textValue="field.value.name"
+              :hintError="
+                displayErrors[
+                  `${props.primarySideType}.patternInfo.customPropertyList[${index}].name`
+                ]
+              "
+              :placeholder="$t('MI0030')"
+              label="name"
+              class="w-50"
+              :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
+            />
+            <f-input-text
+              :disabled="disableBackSideFields"
+              v-model:textValue="field.value.value"
+              :hintError="
+                displayErrors[
+                  `${props.primarySideType}.patternInfo.customPropertyList[${index}].value`
+                ]
+              "
+              label="value"
+              :placeholder="$t('MI0044')"
+              class="w-50"
+            />
+            <f-input-switch
+              :disabled="
+                disableBackSideFields || !field.value.name || !field.value.value
+              "
+              v-model:inputValue="field.value.isPublic"
+              :label="$t('MI0025')"
+              class="w-50"
+            />
+            <icon-button
+              iconName="delete"
+              :disabled="disableBackSideFields"
+              @click="() => removePatternInfoCustomPropertyField(index)"
+            />
+          </div>
+          <f-button
             :disabled="disableBackSideFields"
-            v-model:textValue="field.value.value"
-            :hintError="displayErrors[`${primarySideType}.colorInfo.customPropertyList[${index}].value`]"
-            label="value"
-            :placeholder="$t('MI0044')"
-            :class="[isPantoneValue(field.value?.value)?'w-45':'w-50']"
-          )
-          f-input-switch(
-            :disabled="disableBackSideFields || !field.value.name || !field.value.value"
-            v-model:inputValue="field.value.isPublic"
-            :label="$t('MI0025')"
-            class="w-50"
-          )
-          icon-button(
-            iconName="delete"
-            :disabled="disableBackSideFields"
-            @click="() => removeColorInfoCustomPropertyField(index)"
-          )
-        f-button(
-          :disabled="disableBackSideFields"
-          type="text"
-          size="sm"
-          prependIcon="add"
-          @click="() => pushColorInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-        ) {{ $t('MI0034') }}
-
-  f-input-container(:label="$t('RR0025')")
-    div(class="flex flex-row gap-x-4.5")
-      div(class="w-1.5 bg-grey-100")
-      div(class="flex flex-col gap-y-2")
-        f-input-text(
-          :disabled="disableBackSideFields"
-          :textValue="pattern.value"
-          @update:textValue="pattern.onInput"
-          @change="pattern.onChange"
-          @blur="pattern.onBlur"
-          :hintError="displayErrors[`${primarySideType}.patternInfo.pattern`]"
-          :placeholder="$t('MI0042')"
-          class="w-50"
-          data-cy="pattern-info"
-        )
-        div(
-          class="flex items-center gap-x-3"
-          v-for="(field, index) in patternInfoCustomPropertyFields"
-          :key="field.key"
-          :class="[{'mt-4': index > 0}]"
-        )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            v-model:textValue="field.value.name"
-            :hintError="displayErrors[`${props.primarySideType}.patternInfo.customPropertyList[${index}].name`]"
-            :placeholder="$t('MI0030')"
-            label="name"
-            class="w-50"
-            :onInputValidations="[inputValidate, (str: string) => str.slice(0, 15)]"
-          )
-          f-input-text(
-            :disabled="disableBackSideFields"
-            v-model:textValue="field.value.value"
-            :hintError="displayErrors[`${props.primarySideType}.patternInfo.customPropertyList[${index}].value`]"
-            label="value"
-            :placeholder="$t('MI0044')"
-            class="w-50"
-          )
-          f-input-switch(
-            :disabled="disableBackSideFields || !field.value.name || !field.value.value"
-            v-model:inputValue="field.value.isPublic"
-            :label="$t('MI0025')"
-            class="w-50"
-          )
-          icon-button(
-            iconName="delete"
-            :disabled="disableBackSideFields"
-            @click="() => removePatternInfoCustomPropertyField(index)"
-          )
-        f-button(
-          :disabled="disableBackSideFields"
-          type="text"
-          size="sm"
-          prependIcon="add"
-          @click="() => pushPatternInfoCustomPropertyField({ isPublic: false, name: 'Untitled', value: '' })"
-        ) {{ $t('MI0034') }}
+            type="text"
+            size="sm"
+            prependIcon="add"
+            @click="
+              () =>
+                pushPatternInfoCustomPropertyField({
+                  isPublic: false,
+                  name: 'Untitled',
+                  value: '',
+                })
+            "
+            >{{ $t('MI0034') }}</f-button
+          >
+        </div>
+      </div>
+    </f-input-container>
+  </div>
 </template>
 
 <script setup lang="ts">

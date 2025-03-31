@@ -1,128 +1,138 @@
-<template lang="pug">
-div(
-  class="py-2 bg-grey-0 rounded shadow-16"
-  :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
-)
-  //- Root Title
-  template(v-if="innerMenuTree.rootTitle")
-    div(class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold") {{ innerMenuTree.rootTitle }}
-    div(
-      class="w-full h-px my-1 bg-grey-150"
-      :class="{ 'bg-grey-850': theme === THEME.DARK }"
-    )
-  //- Button if position is top
-  contextual-menu-button(
-    v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
-    v-bind="innerMenuTree.button"
-  )
-  f-tabs(
-    v-if="innerMenuTree.type === CONTEXTUAL_MENU_TYPE.TAB"
-    ref="refTab"
-    :tabList="tabList"
-    @switch="switchTab($event.id)"
-    tabListContainerStyle="flex flex-row justify-center flex-1"
-    tabItemContainerStyle="flex-1 flex-row justify-center"
-    keyField="id"
-  )
-  //- Search Input
-  template(v-if="innerMenuTree.searchEnable")
-    div(class="h-8 flex items-center px-4")
-      f-svg-icon(iconName="search" size="20" class="text-grey-600 mr-2")
-      input(
-        v-model="searchInput"
-        placeholder="Search"
-        class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-250"
-      )
-    div(class="w-full h-px my-1 bg-grey-150")
-  //- Add New Menu
-  template(v-if="!disabledAddNew")
-    template(v-if="!!searchInput && !menuIsExist")
-      div(class="px-4 min-h-6 flex items-center")
-        p(class="text-caption text-grey-600 break-all")
-          span Press
-          span(class="font-bold") &nbspEnter&nbsp
-          span to create "{{ searchInput }}"
-      div(v-if="!isEmpty" class="w-full h-px my-1 bg-grey-150")
-    div(v-else-if="isEmpty" class="px-4 min-h-6 flex items-center")
-      i18n-t(
-        keypath="RR0256"
-        tag="p"
-        class="text-caption text-grey-600 break-all"
-        scope="global"
-      )
-        template(#Enter)
-          span(class="font-bold") Enter
-  div(
-    v-if="isItemsExist[innerMenuTree.type ?? CONTEXTUAL_MENU_TYPE.LIST]"
-    :class="innerMenuTree.scrollAreaMaxHeight"
-    class="overflow-y-auto overflow-x-hidden overscroll-contain"
-    data-cy="f-context-menu"
-  )
-    contextual-menu-node(
-      v-for="menu in filteredBlockTabItems"
-      :key="menu.title"
-      :theme="theme"
-      :menu="menu"
-      @click:menu="clickMenuHandler($event)"
-      :selectMode="selectMode"
-      :inputSelectValue="inputSelectValue"
-    )
-    template(
-      v-for="(block, index) in filteredBlockListItems"
-      :key="`block-${index}`"
-    )
-      //- Block Title
-      div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
-      //- 使用 vue-virtual-scroller 會導致 popper.js 在判斷 content 展開的位置出錯，故先不使用，等有解決方案後再考慮加回。
-      //- 原因參考： https://codesandbox.io/s/vue-virtual-scroller-forked-q20xw0?file=/src/VirtualList.vue:410-556
-      //- recycle-scroller 元件第一時間的 height 為 0，之後才會根據 itemSize 跟 items 計算出真正高度，
-      //- 這會導致 popper.js 計算 content 位置時用 height: 0 計算，導致 placement 是在上方的情況下會跑版。
-      //-
-      //- recycle-scroller(
-      //-   v-if="depthOfMenuTree === 1"
-      //-   :class="innerMenuTree.width"
-      //-   :items="block.menuList"
-      //-   :itemSize="36"
-      //-   key-field="title"
-      //-   pageMode
-      //-   v-slot="{ item }"
-      //-   :buffer="108"
-      //- )
-        contextual-menu-node(
-          :theme="theme"
-          :class="innerMenuTree.width"
-          :menu="item"
-          @click:menu="clickMenuHandler($event)"
-          :selectMode="selectMode"
-          :inputSelectValue="inputSelectValue"
-        )
-      contextual-menu-node(
-        v-for="menu in block.menuList"
-        :key="menu.title"
+<template>
+  <div
+    class="py-2 bg-grey-0 rounded shadow-16"
+    :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
+  >
+    <!-- Root Title -->
+    <template v-if="innerMenuTree.rootTitle">
+      <div class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold">
+        {{ innerMenuTree.rootTitle }}
+      </div>
+      <div
+        class="w-full h-px my-1 bg-grey-150"
+        :class="{ 'bg-grey-850': theme === THEME.DARK }"
+      ></div>
+    </template>
+
+    <!-- Button if position is top -->
+    <contextual-menu-button
+      v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
+      v-bind="innerMenuTree.button"
+    />
+
+    <f-tabs
+      v-if="innerMenuTree.type === CONTEXTUAL_MENU_TYPE.TAB"
+      ref="refTab"
+      :tabList="tabList"
+      @switch="switchTab($event.id)"
+      tabListContainerStyle="flex flex-row justify-center flex-1"
+      tabItemContainerStyle="flex-1 flex-row justify-center"
+      keyField="id"
+    />
+
+    <!-- Search Input -->
+    <template v-if="innerMenuTree.searchEnable">
+      <div class="h-8 flex items-center px-4">
+        <f-svg-icon iconName="search" size="20" class="text-grey-600 mr-2" />
+        <input
+          v-model="searchInput"
+          placeholder="Search"
+          class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-250"
+        />
+      </div>
+      <div class="w-full h-px my-1 bg-grey-150"></div>
+    </template>
+
+    <!-- Add New Menu -->
+    <template v-if="!disabledAddNew">
+      <template v-if="!!searchInput && !menuIsExist">
+        <div class="px-4 min-h-6 flex items-center">
+          <p class="text-caption text-grey-600 break-all">
+            Press <span class="font-bold">Enter</span> to create "{{
+              searchInput
+            }}"
+          </p>
+        </div>
+        <div v-if="!isEmpty" class="w-full h-px my-1 bg-grey-150"></div>
+      </template>
+      <div v-else-if="isEmpty" class="px-4 min-h-6 flex items-center">
+        <i18n-t
+          keypath="RR0256"
+          tag="p"
+          class="text-caption text-grey-600 break-all"
+          scope="global"
+        >
+          <template #Enter>
+            <span class="font-bold">Enter</span>
+          </template>
+        </i18n-t>
+      </div>
+    </template>
+
+    <div
+      v-if="isItemsExist[innerMenuTree.type ?? CONTEXTUAL_MENU_TYPE.LIST]"
+      :class="innerMenuTree.scrollAreaMaxHeight"
+      class="overflow-y-auto overflow-x-hidden overscroll-contain"
+      data-cy="f-context-menu"
+    >
+      <contextual-menu-node
+        v-for="menu in filteredBlockTabItems"
+        :key="menu.title + new Date().getTime()"
         :theme="theme"
         :menu="menu"
         @click:menu="clickMenuHandler($event)"
         :selectMode="selectMode"
         :inputSelectValue="inputSelectValue"
-      )
-      div(
-        v-if="index !== filteredBlockListItems.length - 1"
-        class="w-full h-px my-1 bg-grey-150"
-        :class="{ 'bg-grey-750': theme === THEME.DARK }"
-      )
-  div(
-    v-else-if="disabledAddNew && !usingCustomNotFound"
-    class="h-6 py-1.5 px-4 text-caption text-grey-600"
-  ) No Results Found
-  slot(
-    v-else-if="disabledAddNew && usingCustomNotFound"
-    name="custom-not-found"
-  )
-  //- Button if position is bottom
-  contextual-menu-button(
-    v-if="innerMenuTree.button && innerMenuTree.button.position === 'bottom'"
-    v-bind="innerMenuTree.button"
-  )
+      />
+
+      <template
+        v-for="(block, index) in filteredBlockListItems"
+        :key="`block-${index}`"
+      >
+        <!-- Block Title -->
+        <div
+          v-if="block.blockTitle"
+          class="h-6 py-1.5 px-4 text-caption text-grey-600"
+        >
+          {{ block.blockTitle }}
+        </div>
+
+        <contextual-menu-node
+          v-for="menu in block.menuList"
+          :key="menu.title"
+          :theme="theme"
+          :menu="menu"
+          @click:menu="clickMenuHandler($event)"
+          :selectMode="selectMode"
+          :inputSelectValue="inputSelectValue"
+        />
+
+        <div
+          v-if="index !== filteredBlockListItems.length - 1"
+          class="w-full h-px my-1 bg-grey-150"
+          :class="{ 'bg-grey-750': theme === THEME.DARK }"
+        ></div>
+      </template>
+    </div>
+
+    <div
+      v-else-if="disabledAddNew && !usingCustomNotFound"
+      class="h-6 py-1.5 px-4 text-caption text-grey-600"
+    >
+      No Results Found
+    </div>
+
+    <slot
+      v-else-if="disabledAddNew && usingCustomNotFound"
+      name="custom-not-found"
+    />
+
+    <!-- Button if position is bottom -->
+    <contextual-menu-button
+      v-if="innerMenuTree.button && innerMenuTree.button.position === 'bottom'"
+      v-bind="innerMenuTree.button"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -138,6 +148,7 @@ import { CONTEXTUAL_MENU_MODE, CONTEXTUAL_MENU_TYPE, THEME } from '../constants'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { isEqual } from '@frontier/lib'
 import type { MenuBlock, MenuItem, MenuTree } from '../types'
+import Fuse from 'fuse.js'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -355,9 +366,69 @@ const filteredBlockTabItems = computed(() => {
     return []
   }
 
-  return innerMenuTree.value.blockList[activeTab.value].menuList.filter(
-    (menu) => menu.title.toLowerCase().includes(searchInput.value.toLowerCase())
-  )
+  const menuList = innerMenuTree.value.blockList[activeTab.value].menuList
+
+  const fuse = new Fuse(menuList, {
+    keys: ['title'],
+    threshold: 0.5,
+    ignoreLocation: true,
+    minMatchCharLength: 1,
+    shouldSort: true,
+    includeScore: true,
+    includeMatches: true,
+    isCaseSensitive: false,
+    useExtendedSearch: true,
+    sortFn: (a, b) => {
+      const scoreA = a.score || 0
+      const scoreB = b.score || 0
+      const lengthWeight = Number.EPSILON // ~2.22e-16 (smallest positive number)
+      const missingCharsWeight = Number.EPSILON
+
+      const queryLength = searchInput.value.length
+
+      // Calculate total matched characters
+      const totalMatchedA =
+        a.matches?.[0]?.indices?.reduce(
+          (sum, [s, e]) => sum + (e - s + 1),
+          0
+        ) || 0
+      const totalMatchedB =
+        b.matches?.[0]?.indices?.reduce(
+          (sum, [s, e]) => sum + (e - s + 1),
+          0
+        ) || 0
+
+      const missingCharsA = Math.max(queryLength - totalMatchedA, 0)
+      const missingCharsB = Math.max(queryLength - totalMatchedB, 0)
+
+      // Access item properties safely
+      const itemValueA = a.matches?.[0]?.value || ''
+      const itemValueB = b.matches?.[0]?.value || ''
+
+      const aLengthDiff = Math.abs(queryLength - itemValueA.length)
+      const bLengthDiff = Math.abs(queryLength - itemValueB.length)
+
+      // Calculate penalties
+      const combinedScoreA =
+        scoreA + aLengthDiff * lengthWeight + missingCharsA * missingCharsWeight
+
+      const combinedScoreB =
+        scoreB + bLengthDiff * lengthWeight + missingCharsB * missingCharsWeight
+
+      return combinedScoreA - combinedScoreB
+    },
+  })
+
+  return searchInput.value
+    ? fuse
+        .search(searchInput.value)
+        .map((result) => result.item)
+        // Deduplicate items using a Set based on unique identifier
+        .filter(
+          (item, index, self) =>
+            index === self.findIndex((t) => t.title === item.title)
+        )
+    : menuList
 })
 
 const isItemsExist = computed(() => ({
