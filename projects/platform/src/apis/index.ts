@@ -7,6 +7,12 @@ import { resetTracker } from '@frontier/lib'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
+const RESPONSE_CODE = {
+  EXPIRED_ORG: 'WW0039',
+  ORG_NOT_EXISTS: 'WW0119',
+  WORKSPACE_NOT_EXISTS: 'WW0052',
+} as const
+
 const options = {
   baseURL: VITE_APP_API_ENDPOINT,
   headers: {
@@ -86,8 +92,17 @@ instance.interceptors.response.use(
       }
 
       //handle case when organization not exists
-      if (code === 'WW0119') {
+      if (code === RESPONSE_CODE.ORG_NOT_EXISTS) {
         return router.push({ name: 'NotFound' })
+      }
+
+      if (
+        [
+          RESPONSE_CODE.EXPIRED_ORG,
+          RESPONSE_CODE.WORKSPACE_NOT_EXISTS,
+        ].includes(code)
+      ) {
+        return router.push({ name: 'NotAvailable' })
       }
 
       return Promise.reject({ status, code, message, result })
@@ -113,6 +128,10 @@ instance.interceptors.response.use(
       status,
       data: { code, message },
     } = response
+
+    if (status === 423) {
+      return router.push({ name: 'NotAvailable' })
+    }
 
     if (status === 401) {
       localStorage.removeItem('accessToken')

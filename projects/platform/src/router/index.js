@@ -539,6 +539,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/not-available',
+    name: 'NotAvailable',
+    component: () => import('@/views/NotAvailable.vue'),
+  },
 
   // 404 case
   {

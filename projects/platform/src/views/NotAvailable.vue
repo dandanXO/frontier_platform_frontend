@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="bg-brand-solid flex justify-center items-center w-full h-full text-primary")
+div(
+  class="bg-brand-solid flex justify-center items-center w-full h-full text-primary"
+  data-theme="new"
+)
   div(class="max-w-[41rem] flex flex-col gap-5 h-full flex-1 justify-center my-5 mx-10")
     f-svg-icon(iconName="frontier" size="48" class="text-grey-0")
     p(class="text-2xl") {{ $t('UU0194') }}
