@@ -98,13 +98,22 @@ export default {
       ),
       perPageCount: 8,
     })
-    const filteredMemberList = computed(() =>
-      memberList.value.filter(
-        (member) =>
-          member.displayName?.includes(searchInput.value) ||
-          member.email.includes(searchInput.value)
-      )
+    const membersData = computed(() =>
+      memberList.value.map((member) => ({
+        ...member,
+        nameLowerCase: member.displayName?.toLowerCase(),
+        emailLowerCase: member.email.toLowerCase(),
+      }))
     )
+    const filteredMemberList = computed(() => {
+      const searchInputLowerCase = searchInput.value.toLowerCase()
+
+      return membersData.value.filter(
+        (member) =>
+          member.nameLowerCase?.includes(searchInputLowerCase) ||
+          member.emailLowerCase.includes(searchInputLowerCase)
+      )
+    })
     const currentList = computed(() => {
       const { currentPage, perPageCount } = pagination
       return filteredMemberList.value.slice(
