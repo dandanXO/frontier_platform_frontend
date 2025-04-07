@@ -55,7 +55,7 @@ export interface Props {
   initValue?: any
   tabListContainerStyle?: string
   tabItemContainerStyle?: string
-  type: TYPE
+  type?: TYPE
 }
 </script>
 

@@ -14,14 +14,17 @@ import type { PropsModalCreateOrEditCollection } from '@/components/workspace/Mo
 import type { PropsModalWorkspaceNodeList } from '@/components/workspace/ModalWorkspaceNodeList.vue'
 import type { PropsModalShare } from '@/components/workspace/ModalShare.vue'
 import { useWorkspaceStore } from '@/stores/workspace'
+import { downloadFile } from '@frontier/lib'
+import { useAssetsStore } from '@/stores/assets'
 
-enum WORKSPACE_FUNCTION {
+export enum WORKSPACE_FUNCTION {
   EDIT_COLLECTION = 0,
   EDIT_MATERIAL = 1,
   DUPLICATE_NODE = 2,
   MOVE_NODE = 3,
   DELETE_NODE = 4,
   SHARE_NODE = 5,
+  EXPORT_EXCEL = 6,
 }
 export type WorkspaceFunctionOption = FunctionOption<
   NodeChild,
@@ -36,6 +39,7 @@ export default function useWorkspace() {
   const { t } = useI18n()
   const store = useStore()
   const notify = useNotifyStore()
+  const { ogBaseAssetsApi } = useAssetsStore()
   const { ogBaseWorkspaceApi } = useWorkspaceStore()
   const { goToAssetMaterialEdit } = useNavigation()
 
@@ -245,6 +249,39 @@ export default function useWorkspace() {
     },
   }
 
+  const exportExcel: WorkspaceFunctionOption = {
+    id: WORKSPACE_FUNCTION.EXPORT_EXCEL,
+    name: () => t('RR0060'),
+    func: async (n: NodeChild | NodeChild[]) => {
+      try {
+        const nodes = Array.isArray(n) ? n : [n]
+        const workspaceNodeIdList = nodes.map((node) => node.nodeMeta.nodeId)
+
+        if (workspaceNodeIdList.length === 0) {
+          throw new Error(t('EE0181'))
+        }
+
+        store.dispatch('helper/openModalLoading')
+
+        const {
+          data: { result },
+        } = await ogBaseAssetsApi('exportAssetsMaterialExcel', {
+          workspaceNodeIdList,
+        })
+
+        if (result?.excelUrl) {
+          downloadFile(result.excelUrl)
+        } else {
+          throw new Error(t('EE0182'))
+        }
+      } catch (error) {
+        console.error('Export failed:', error)
+      } finally {
+        store.dispatch('helper/closeModalLoading')
+      }
+    },
+  }
+
   return {
     editNodeCollection,
     editNodeMaterial,
@@ -255,5 +292,6 @@ export default function useWorkspace() {
     deleteCollection,
     deleteMaterial,
     openModalCreateOrEditCollection,
+    exportExcel,
   }
 }

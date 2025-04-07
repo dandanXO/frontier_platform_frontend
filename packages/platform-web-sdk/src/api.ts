@@ -4611,7 +4611,13 @@ export interface ExportAssetsMaterialExcelRequest {
      * @type {Array<number>}
      * @memberof ExportAssetsMaterialExcelRequest
      */
-    'materialIdList': Array<number>;
+    'materialIdList'?: Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'workspaceNodeIdList'?: Array<number>;
 }
 
 
@@ -24557,6 +24563,12 @@ export interface User1OrganizationListInnerGroupListInner {
      * @memberof User1OrganizationListInnerGroupListInner
      */
     'groupName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof User1OrganizationListInnerGroupListInner
+     */
+    'groupRoleId'?: number;
 }
 /**
  * 

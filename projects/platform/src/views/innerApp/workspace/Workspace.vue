@@ -1,98 +1,159 @@
-<template lang="pug">
-search-table(
-  class="flex-grow"
-  :searchType="SEARCH_TYPE.WORKSPACE"
-  :searchCallback="getWorkspace"
-  :optionSort="optionSort"
-  :optionMultiSelect="optionMultiSelect"
-  :itemList="nodeList"
-  testId="workspace-name-header"
-  :canSelectAll="permissionList.includes(FUNC_ID.WORKSPACE_EDIT_COLLECTION)"
-  v-model:selectedItemList="selectedNodeList"
-)
-  template(#box-above)
-    f-tabs(
-      :tabList="tabList"
-      class="py-4 px-7.5"
-      :initValue="tabList[0].id"
-      keyField="id"
-      @switch="$event.goTo()"
-    )
-  template(#header-left="{ visit, totalCount }")
-    div(class="flex items-end")
-      global-breadcrumb-list(
-        :breadcrumbList="locationList"
-        @click:item="(item: any) => onClickBreadcrumbItem(item, visit)"
-        fontSize="text-h6"
-      )
-      p(class="flex text-caption text-grey-600 pl-1")
-        span (
-        i18n-t(keypath="RR0068" tag="span" scope="global")
-          template(#number) {{ totalCount }}
-        span )
-  template(#header-right)
-    f-button(
-      v-if="!isFirstLayer"
-      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_EDIT_COLLECTION, behavior: 'displayNone' }"
-      size="sm"
-      type="secondary"
-      @click="openModalCollectionDetail"
-    ) {{ $t('UU0057') }}
-    f-button(
-      v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'displayNone' }"
-      size="sm"
-      prependIcon="add"
-      @click="createCollection"
-      data-cy="create-new-collection"
-    ) {{ $t('FF0003') }}
-  template(v-if="!isFirstLayer" #sub-header)
-    p(
-      v-if="workspaceNodeCollection?.nodeMeta.createDate"
-      class="mx-7.5 mb-7.5 text-caption text-grey-600"
-    ) {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
-  template(#default="{ inSearch, visit }")
-    div(
-      v-if="nodeList.length > 0 || (nodeList.length <= 0 && permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION))"
-      class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
-    )
-      div(
-        v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION, behavior: 'displayNone' }"
-        class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
-        data-cy="add-asset-inside-workspace"
-        @click="openModalAssetsList"
-      )
-        div(class="flex flex-col justify-center items-center")
-          f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
-          span(class="text-body1 text-grey-900") {{ $t('UU0055') }}
-      grid-item-node(
-        v-for="(node, index) in nodeList"
-        :key="node.nodeMeta.nodeId"
-        v-model:selectedValue="selectedNodeList"
-        :node="node"
-        :optionList="optionNode(node)"
-        @click:node="handleNodeClick(node, visit)"
-        :testId="`workspace-item-${index}`"
-        :isSelectable="permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION)"
-      )
-        template(#corner-bottom-left v-if="showPublicLibrary && isFirstLayer")
-          f-svg-icon(
-            v-permission="{ FUNC_ID: FUNC_ID.WORKSPACE_PUBLISH_COLLECTION, behavior: 'deleteElement' }"
-            :iconName="node.nodeMeta.isPublic ? 'public' : 'internal'"
-            :tooltipMessage="node.nodeMeta.isPublic ? $t('FF0072') : $t('FF0073')"
-            size="20"
-            class="cursor-pointer text-grey-250"
-            @click.stop="openModalPublish(node.nodeMeta)"
-          )
-        template(#title-right-icon)
-          tooltip-location(
-            v-if="inSearch"
-            :locationList="node.nodeMeta.locationList"
-          )
-    tmeplate(
-      v-else-if="!permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION) && nodeList.length <= 0"
-    )
-      div(class="flex h-full flex-col justify-center items-center")
-        p(class="text-body1 text-grey-600 mx-7.5") {{ $t('HH0013') }}
+<template>
+  <search-table
+    class="flex-grow"
+    :search-type="SEARCH_TYPE.WORKSPACE"
+    :search-callback="getWorkspace"
+    :option-sort="optionSort"
+    :option-multi-select="optionMultiSelect"
+    :item-list="nodeList"
+    test-id="workspace-name-header"
+    :can-select-all="permissionList.includes(FUNC_ID.WORKSPACE_EDIT_COLLECTION)"
+    v-model:selected-item-list="selectedNodeList"
+  >
+    <template v-slot:box-above>
+      <f-tabs
+        :tab-list="tabList"
+        class="py-4 px-7.5"
+        :init-value="tabList[0].id"
+        key-field="id"
+        @switch="$event.goTo()"
+      />
+    </template>
+
+    <template v-slot:header-left="{ visit, totalCount }">
+      <div class="flex items-end">
+        <global-breadcrumb-list
+          :breadcrumb-list="locationList"
+          @click:item="(item: any) => onClickBreadcrumbItem(item, visit)"
+          font-size="text-h6"
+        />
+        <p class="flex text-caption text-grey-600 pl-1">
+          <span>(</span>
+          <i18n-t keypath="RR0068" tag="span" scope="global">
+            <template #number>{{ totalCount }}</template>
+          </i18n-t>
+          <span>)</span>
+        </p>
+      </div>
+    </template>
+
+    <template v-slot:header-right>
+      <f-button
+        v-if="!isFirstLayer"
+        v-permission="{
+          FUNC_ID: FUNC_ID.WORKSPACE_EDIT_COLLECTION,
+          behavior: 'displayNone',
+        }"
+        size="sm"
+        type="secondary"
+        @click="openModalCollectionDetail"
+      >
+        {{ $t('UU0057') }}
+      </f-button>
+      <f-button
+        v-permission="{
+          FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION,
+          behavior: 'displayNone',
+        }"
+        size="sm"
+        prepend-icon="add"
+        @click="createCollection"
+        data-cy="create-new-collection"
+      >
+        {{ $t('FF0003') }}
+      </f-button>
+    </template>
+
+    <template v-if="!isFirstLayer" v-slot:sub-header>
+      <p
+        v-if="workspaceNodeCollection?.nodeMeta.createDate"
+        class="mx-7.5 mb-7.5 text-caption text-grey-600"
+      >
+        {{ $t('FF0002') }}:
+        {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
+      </p>
+    </template>
+
+    <template v-slot:default="{ inSearch, visit }">
+      <div
+        v-if="
+          nodeList.length > 0 ||
+          (nodeList.length <= 0 &&
+            permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION))
+        "
+        class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+      >
+        <div
+          v-permission="{
+            FUNC_ID: FUNC_ID.WORKSPACE_CREATE_COLLECTION,
+            behavior: 'displayNone',
+          }"
+          class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+          data-cy="add-asset-inside-workspace"
+          @click="openModalAssetsList"
+        >
+          <div class="flex flex-col justify-center items-center">
+            <f-svg-icon
+              icon-name="add"
+              size="24"
+              class="text-grey-900 mb-3.5"
+            />
+            <span class="text-body1 text-grey-900">{{ $t('UU0055') }}</span>
+          </div>
+        </div>
+
+        <grid-item-node
+          v-for="(node, index) in nodeList"
+          :key="node.nodeMeta.nodeId"
+          v-model:selected-value="selectedNodeList"
+          :node="node"
+          :option-list="optionNode(node)"
+          @click:node="handleNodeClick(node, visit)"
+          :test-id="`workspace-item-${index}`"
+          :is-selectable="
+            permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION)
+          "
+        >
+          <template
+            v-slot:corner-bottom-left
+            v-if="showPublicLibrary && isFirstLayer"
+          >
+            <f-svg-icon
+              v-permission="{
+                FUNC_ID: FUNC_ID.WORKSPACE_PUBLISH_COLLECTION,
+                behavior: 'deleteElement',
+              }"
+              :icon-name="node.nodeMeta.isPublic ? 'public' : 'internal'"
+              :tooltip-message="
+                node.nodeMeta.isPublic ? $t('FF0072') : $t('FF0073')
+              "
+              size="20"
+              class="cursor-pointer text-grey-250"
+              @click.stop="openModalPublish(node.nodeMeta)"
+            />
+          </template>
+
+          <template v-slot:title-right-icon>
+            <tooltip-location
+              v-if="inSearch"
+              :location-list="node.nodeMeta.locationList"
+            />
+          </template>
+        </grid-item-node>
+      </div>
+
+      <template
+        v-else-if="
+          !permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION) &&
+          nodeList.length <= 0
+        "
+      >
+        <div class="flex h-full flex-col justify-center items-center">
+          <p class="text-body1 text-grey-600 mx-7.5">{{ $t('HH0013') }}</p>
+        </div>
+      </template>
+    </template>
+  </search-table>
 </template>
 
 <script setup lang="ts">
@@ -103,13 +164,11 @@ import SearchTable, {
 import { SEARCH_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useNotifyStore } from '@/stores/notify'
-import { computed, reactive, ref } from 'vue'
+import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
-import { type WorkspaceFunctionOption } from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
 import { useWorkspaceStore } from '@/stores/workspace'
@@ -119,11 +178,13 @@ import {
   type NodeChild,
   type NodeMeta,
   type WorkspaceFilter,
+  type AssetsFilter,
+  type InnerExternalFilter,
+  type ExternalFilter,
 } from '@frontier/platform-web-sdk'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
-import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
 import { useAssetsStore } from '@/stores/assets'
 import useWorkspaceCommon from '@/composables/workspace/useWorkspaceCommon'
 import useNode from '@/composables/useNode'
@@ -137,8 +198,6 @@ const store = useStore()
 const searchStore = useSearchStore()
 const { ogBaseAssetsApi } = useAssetsStore()
 const { ogBaseWorkspaceApi } = useWorkspaceStore()
-const notify = useNotifyStore()
-const router = useRouter()
 const route = useRoute()
 const { goToWorkspaceMaterialDetail, goToWorkspace } = useNavigation()
 const { tabList } = useWorkspaceCommon()
@@ -160,6 +219,7 @@ const {
   deleteMaterial,
   deleteMultipleNode,
   openModalCreateOrEditCollection,
+  exportExcel,
 } = useWorkspace()
 
 const showPublicLibrary = computed(
@@ -213,7 +273,12 @@ const optionSort = computed(() => {
     keywordSearch: [RELEVANCE_C_M, RELEVANCE_M_C],
   }
 })
-const optionMultiSelect = computed(() => [deleteMultipleNode])
+
+const optionMultiSelect = computed(() => {
+  const options = [deleteMultipleNode, exportExcel]
+  return options
+})
+
 const roleId = store.getters['organization/orgUser/orgUser'].roleID
 const permissionList = PERMISSION_MAP[roleId]
 const optionNode = (node: NodeChild) => {
@@ -269,7 +334,9 @@ const optionNode = (node: NodeChild) => {
 }
 
 const getWorkspace = async (
-  payload: SearchPayload<WorkspaceFilter>,
+  payload: SearchPayload<
+    WorkspaceFilter | AssetsFilter | InnerExternalFilter | ExternalFilter
+  >,
   query: RouteQuery
 ) => {
   let _queryString = ''
@@ -286,7 +353,7 @@ const getWorkspace = async (
     data: { result },
   } = await ogBaseWorkspaceApi('getWorkspaceList', {
     nodeId: currentNodeId.value as number,
-    ...payload,
+    ...(payload as SearchPayload<WorkspaceFilter>),
   })
   workspaceNodeCollection.value = result.workspaceNodeCollection
   searchStore.setPaginationRes(result.pagination)
@@ -333,40 +400,11 @@ const openModalAssetsList = () => {
       modalTitle: t('RR0008'),
       actionText: t('UU0035'),
       actionCallback: async (materialIdList) => {
-        const {
-          data: {
-            result: { failMaterialItemNoList },
-          },
-        } = await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
+        await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
           materialIdList,
           targetNodeIdList: [currentNodeId.value],
+          orgId: store.getters['organization/org'].id,
         })
-
-        if (failMaterialItemNoList && failMaterialItemNoList.length > 0) {
-          store.dispatch('helper/openModalBehavior', {
-            component: 'modal-item-no-list',
-            properties: {
-              header: t('EE0063', { number: failMaterialItemNoList.length }),
-              primaryBtnText: t('UU0031'),
-              primaryBtnHandler: () => {
-                store.dispatch('helper/closeModalBehavior')
-              },
-              content: t('EE0064'),
-              itemNoList: failMaterialItemNoList,
-            } as PropsModalItemNoList,
-          })
-        } else {
-          store.dispatch('helper/closeModal')
-        }
-
-        store.dispatch('helper/reloadInnerApp')
-
-        if (
-          !failMaterialItemNoList ||
-          failMaterialItemNoList.length !== materialIdList.length
-        ) {
-          notify.showNotifySnackbar({ messageText: t('FF0018') })
-        }
       },
     } as PropsModalAssetsList,
   })
