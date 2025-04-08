@@ -578,6 +578,10 @@ export enum OUTER_TYPE {
   ASSETS = 3,
 }
 
+export enum FEATURE_FLAG_KEY {
+  ENABLE_META_FABRIC = 'EnableMetaFabric',
+}
+
 const PrintLabelSettingMaterialTypeCommonOptions = [
   { label: i18n.global.t('MI0003'), value: 'isPrintMaterialType' },
   { label: i18n.global.t('MI0023'), value: 'isPrintMaterialDescription' },

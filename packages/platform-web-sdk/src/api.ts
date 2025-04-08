@@ -5409,6 +5409,151 @@ export interface FolderBookmarkAllOfOrgList {
 /**
  * 
  * @export
+ * @interface GeneralSignIn200Response
+ */
+export interface GeneralSignIn200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GeneralSignIn200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralSignIn200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GeneralSignIn200ResponseAllOfResult}
+     * @memberof GeneralSignIn200Response
+     */
+    'result'?: GeneralSignIn200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GeneralSignIn200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralSignIn200ResponseAllOfResult
+ */
+export interface GeneralSignIn200ResponseAllOfResult {
+    /**
+     * is user from old platform and not change password
+     * @type {boolean}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'isOldUser'?: boolean;
+    /**
+     * Old platform users use this token to reset their passwords
+     * @type {string}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'oldUserVerifyToken'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'accessToken'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'refreshToken'?: string;
+    /**
+     * 
+     * @type {User1}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'user'?: User1;
+    /**
+     * 
+     * @type {OneTimePasswordStatus}
+     * @memberof GeneralSignIn200ResponseAllOfResult
+     */
+    'otpStatus'?: OneTimePasswordStatus;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralSignIn423Response
+ */
+export interface GeneralSignIn423Response {
+    /**
+     * 
+     * @type {GeneralSignIn423ResponseMessage}
+     * @memberof GeneralSignIn423Response
+     */
+    'message'?: GeneralSignIn423ResponseMessage | null;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralSignIn423ResponseMessage
+ */
+export interface GeneralSignIn423ResponseMessage {
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralSignIn423ResponseMessage
+     */
+    'type'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralSignIn423ResponseMessage
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralSignIn423ResponseMessage
+     */
+    'content'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralSignInRequest
+ */
+export interface GeneralSignInRequest {
+    /**
+     * Email
+     * @type {string}
+     * @memberof GeneralSignInRequest
+     */
+    'email': string;
+    /**
+     * Password
+     * @type {string}
+     * @memberof GeneralSignInRequest
+     */
+    'password': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GeneralSignInRequest
+     */
+    'platform': GeneralSignInRequestPlatformEnum;
+}
+
+export const GeneralSignInRequestPlatformEnum = {
+    Frontier: 1,
+    Metafabric: 2
+} as const;
+
+export type GeneralSignInRequestPlatformEnum = typeof GeneralSignInRequestPlatformEnum[keyof typeof GeneralSignInRequestPlatformEnum];
+
+/**
+ * 
+ * @export
  * @interface GenerateAssetsMaterialU3m200Response
  */
 export interface GenerateAssetsMaterialU3m200Response {
@@ -15735,6 +15880,12 @@ export type OgType = typeof OgType[keyof typeof OgType];
  */
 export interface OneTimePasswordStatus {
     /**
+     * email where the OTP is sent to
+     * @type {string}
+     * @memberof OneTimePasswordStatus
+     */
+    'email'?: string;
+    /**
      * should input OTP if true
      * @type {boolean}
      * @memberof OneTimePasswordStatus
@@ -17706,6 +17857,12 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
      */
     'featureFlag': OrganizationFeatureFlag;
+    /**
+     * Feature Flag list if exist in this list means enabled.
+     * @type {Array<string>}
+     * @memberof OrgRemoveLogoPost200ResponseResultOrganization
+     */
+    'featureFlagList': Array<string>;
 }
 
 export const OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = {
@@ -18494,6 +18651,12 @@ export interface Organization {
      * @memberof Organization
      */
     'featureFlag': OrganizationFeatureFlag;
+    /**
+     * Feature Flag list if exist in this list means enabled.
+     * @type {Array<string>}
+     * @memberof Organization
+     */
+    'featureFlagList': Array<string>;
 }
 
 export const OrganizationOrgCategoryIdEnum = {
@@ -18502,7 +18665,7 @@ export const OrganizationOrgCategoryIdEnum = {
 export type OrganizationOrgCategoryIdEnum = typeof OrganizationOrgCategoryIdEnum[keyof typeof OrganizationOrgCategoryIdEnum];
 
 /**
- * 
+ * Would replace by featureFlagList soon
  * @export
  * @interface OrganizationFeatureFlag
  */
@@ -22080,116 +22243,11 @@ export type ShowroomStatus = typeof ShowroomStatus[keyof typeof ShowroomStatus];
 /**
  * 
  * @export
- * @interface SignInGeneralPost200Response
- */
-export interface SignInGeneralPost200Response {
-    /**
-     * 
-     * @type {SignInGeneralPost200ResponseResult}
-     * @memberof SignInGeneralPost200Response
-     */
-    'result'?: SignInGeneralPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SignInGeneralPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignInGeneralPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof SignInGeneralPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface SignInGeneralPost200ResponseResult
- */
-export interface SignInGeneralPost200ResponseResult {
-    /**
-     * is user from old platform and not change password
-     * @type {boolean}
-     * @memberof SignInGeneralPost200ResponseResult
-     */
-    'isOldUser'?: boolean;
-    /**
-     * Old platform users use this token to reset their passwords
-     * @type {string}
-     * @memberof SignInGeneralPost200ResponseResult
-     */
-    'oldUserVerifyToken'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignInGeneralPost200ResponseResult
-     */
-    'accessToken'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SignInGeneralPost200ResponseResult
-     */
-    'refreshToken'?: string;
-    /**
-     * 
-     * @type {User}
-     * @memberof SignInGeneralPost200ResponseResult
-     */
-    'user'?: User;
-}
-/**
- * 
- * @export
- * @interface SignInGeneralPostRequest
- */
-export interface SignInGeneralPostRequest {
-    /**
-     * Email
-     * @type {string}
-     * @memberof SignInGeneralPostRequest
-     */
-    'email': string;
-    /**
-     * Password
-     * @type {string}
-     * @memberof SignInGeneralPostRequest
-     */
-    'password': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof SignInGeneralPostRequest
-     */
-    'platform': SignInGeneralPostRequestPlatformEnum | null;
-}
-
-export const SignInGeneralPostRequestPlatformEnum = {
-} as const;
-
-export type SignInGeneralPostRequestPlatformEnum = typeof SignInGeneralPostRequestPlatformEnum[keyof typeof SignInGeneralPostRequestPlatformEnum];
-
-/**
- * 
- * @export
  * @interface SignInGooglePost200Response
  */
 export interface SignInGooglePost200Response {
     /**
      * 
-     * @type {SignInGooglePost200ResponseResult}
-     * @memberof SignInGooglePost200Response
-     */
-    'result'?: SignInGooglePost200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof SignInGooglePost200Response
      */
@@ -22202,6 +22260,12 @@ export interface SignInGooglePost200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {SignInGooglePost200ResponseAllOfResult}
+     * @memberof SignInGooglePost200Response
+     */
+    'result'?: SignInGooglePost200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof SignInGooglePost200Response
      */
@@ -22210,27 +22274,33 @@ export interface SignInGooglePost200Response {
 /**
  * 
  * @export
- * @interface SignInGooglePost200ResponseResult
+ * @interface SignInGooglePost200ResponseAllOfResult
  */
-export interface SignInGooglePost200ResponseResult {
+export interface SignInGooglePost200ResponseAllOfResult {
     /**
-     * accessToken
+     * access token
      * @type {string}
-     * @memberof SignInGooglePost200ResponseResult
+     * @memberof SignInGooglePost200ResponseAllOfResult
      */
     'accessToken'?: string;
     /**
      * refreshToken
      * @type {string}
-     * @memberof SignInGooglePost200ResponseResult
+     * @memberof SignInGooglePost200ResponseAllOfResult
      */
     'refreshToken'?: string;
     /**
      * 
-     * @type {User}
-     * @memberof SignInGooglePost200ResponseResult
+     * @type {User1}
+     * @memberof SignInGooglePost200ResponseAllOfResult
      */
-    'user'?: User;
+    'user'?: User1;
+    /**
+     * 
+     * @type {OneTimePasswordStatus}
+     * @memberof SignInGooglePost200ResponseAllOfResult
+     */
+    'otpStatus'?: OneTimePasswordStatus;
 }
 /**
  * 
@@ -22249,14 +22319,98 @@ export interface SignInGooglePostRequest {
      * @type {number}
      * @memberof SignInGooglePostRequest
      */
-    'platform': SignInGooglePostRequestPlatformEnum | null;
+    'platform': SignInGooglePostRequestPlatformEnum;
 }
 
 export const SignInGooglePostRequestPlatformEnum = {
+    Frontier: 1,
+    Metafabric: 2
 } as const;
 
 export type SignInGooglePostRequestPlatformEnum = typeof SignInGooglePostRequestPlatformEnum[keyof typeof SignInGooglePostRequestPlatformEnum];
 
+/**
+ * 
+ * @export
+ * @interface SignInResendOtpPost200Response
+ */
+export interface SignInResendOtpPost200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SignInResendOtpPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignInResendOtpPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {SignInResendOtpPost200ResponseAllOfResult}
+     * @memberof SignInResendOtpPost200Response
+     */
+    'result'?: SignInResendOtpPost200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof SignInResendOtpPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface SignInResendOtpPost200ResponseAllOfResult
+ */
+export interface SignInResendOtpPost200ResponseAllOfResult {
+    /**
+     * 
+     * @type {OneTimePasswordStatus}
+     * @memberof SignInResendOtpPost200ResponseAllOfResult
+     */
+    'otpStatus'?: OneTimePasswordStatus;
+}
+/**
+ * 
+ * @export
+ * @interface SignInResendOtpPostRequest
+ */
+export interface SignInResendOtpPostRequest {
+    /**
+     * email of the user trying to login
+     * @type {string}
+     * @memberof SignInResendOtpPostRequest
+     */
+    'email': string;
+}
+/**
+ * 
+ * @export
+ * @interface SignInVerifyOtpPostRequest
+ */
+export interface SignInVerifyOtpPostRequest {
+    /**
+     * email of the user trying to login
+     * @type {string}
+     * @memberof SignInVerifyOtpPostRequest
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignInVerifyOtpPostRequest
+     */
+    'otp': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SignInVerifyOtpPostRequest
+     */
+    'isFromGoogle': boolean;
+}
 /**
  * 
  * @export
@@ -24831,19 +24985,19 @@ export interface UserFeedbackUploadAttachmentPostRequest {
 /**
  * 
  * @export
- * @interface UserForgotPasswordResetPasswordPostRequest
+ * @interface UserForgotPasswordResetPasswordRequest
  */
-export interface UserForgotPasswordResetPasswordPostRequest {
+export interface UserForgotPasswordResetPasswordRequest {
     /**
      * 
      * @type {string}
-     * @memberof UserForgotPasswordResetPasswordPostRequest
+     * @memberof UserForgotPasswordResetPasswordRequest
      */
     'password': string;
     /**
      * 
      * @type {string}
-     * @memberof UserForgotPasswordResetPasswordPostRequest
+     * @memberof UserForgotPasswordResetPasswordRequest
      */
     'verifyToken': string;
 }
@@ -25083,107 +25237,75 @@ export interface UserGetPersonalSetting200ResponseAllOfResult {
 /**
  * 
  * @export
- * @interface UserGetPersonalSetting423Response
+ * @interface UserOldUserResetPassword200Response
  */
-export interface UserGetPersonalSetting423Response {
+export interface UserOldUserResetPassword200Response {
     /**
      * 
-     * @type {UserGetPersonalSetting423ResponseMessage}
-     * @memberof UserGetPersonalSetting423Response
+     * @type {UserOldUserResetPassword200ResponseResult}
+     * @memberof UserOldUserResetPassword200Response
      */
-    'message'?: UserGetPersonalSetting423ResponseMessage | null;
-}
-/**
- * 
- * @export
- * @interface UserGetPersonalSetting423ResponseMessage
- */
-export interface UserGetPersonalSetting423ResponseMessage {
-    /**
-     * 
-     * @type {number}
-     * @memberof UserGetPersonalSetting423ResponseMessage
-     */
-    'type'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGetPersonalSetting423ResponseMessage
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGetPersonalSetting423ResponseMessage
-     */
-    'content'?: string;
-}
-/**
- * 
- * @export
- * @interface UserOldUserResetPasswordPost200Response
- */
-export interface UserOldUserResetPasswordPost200Response {
-    /**
-     * 
-     * @type {UserOldUserResetPasswordPost200ResponseResult}
-     * @memberof UserOldUserResetPasswordPost200Response
-     */
-    'result'?: UserOldUserResetPasswordPost200ResponseResult;
+    'result'?: UserOldUserResetPassword200ResponseResult;
     /**
      * 
      * @type {boolean}
-     * @memberof UserOldUserResetPasswordPost200Response
+     * @memberof UserOldUserResetPassword200Response
      */
     'success': boolean;
     /**
      * 
      * @type {string}
-     * @memberof UserOldUserResetPasswordPost200Response
+     * @memberof UserOldUserResetPassword200Response
      */
     'code'?: string | null;
     /**
      * 
      * @type {object}
-     * @memberof UserOldUserResetPasswordPost200Response
+     * @memberof UserOldUserResetPassword200Response
      */
     'message'?: object | null;
 }
 /**
  * 
  * @export
- * @interface UserOldUserResetPasswordPost200ResponseResult
+ * @interface UserOldUserResetPassword200ResponseResult
  */
-export interface UserOldUserResetPasswordPost200ResponseResult {
+export interface UserOldUserResetPassword200ResponseResult {
     /**
      * accessToken
      * @type {string}
-     * @memberof UserOldUserResetPasswordPost200ResponseResult
+     * @memberof UserOldUserResetPassword200ResponseResult
      */
     'accessToken'?: string;
     /**
      * refreshToken
      * @type {string}
-     * @memberof UserOldUserResetPasswordPost200ResponseResult
+     * @memberof UserOldUserResetPassword200ResponseResult
      */
     'refreshToken'?: string;
+    /**
+     * 
+     * @type {OneTimePasswordStatus}
+     * @memberof UserOldUserResetPassword200ResponseResult
+     */
+    'otpStatus'?: OneTimePasswordStatus;
 }
 /**
  * 
  * @export
- * @interface UserOldUserResetPasswordPostRequest
+ * @interface UserOldUserResetPasswordRequest
  */
-export interface UserOldUserResetPasswordPostRequest {
+export interface UserOldUserResetPasswordRequest {
     /**
      * 
      * @type {string}
-     * @memberof UserOldUserResetPasswordPostRequest
+     * @memberof UserOldUserResetPasswordRequest
      */
     'password': string;
     /**
-     * Old platform users use this token to reset their passwords
+     * 
      * @type {string}
-     * @memberof UserOldUserResetPasswordPostRequest
+     * @memberof UserOldUserResetPasswordRequest
      */
     'oldUserVerifyToken': string;
 }
@@ -42736,11 +42858,11 @@ export const SignInApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary Sign-In and retrieve user\'s AccessToken & RefreshToken.
-         * @param {SignInGeneralPostRequest} [signInGeneralPostRequest] 
+         * @param {GeneralSignInRequest} [generalSignInRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signInGeneralPost: async (signInGeneralPostRequest?: SignInGeneralPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        generalSignIn: async (generalSignInRequest?: GeneralSignInRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/sign-in/general`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42760,7 +42882,7 @@ export const SignInApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(signInGeneralPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(generalSignInRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -42801,6 +42923,74 @@ export const SignInApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Sign in - Resend 2FA OTP
+         * @param {SignInResendOtpPostRequest} [signInResendOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInResendOtpPost: async (signInResendOtpPostRequest?: SignInResendOtpPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sign-in/resend-otp`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(signInResendOtpPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Sign in - Verify 2FA OTP
+         * @param {SignInVerifyOtpPostRequest} [signInVerifyOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInVerifyOtpPost: async (signInVerifyOtpPostRequest?: SignInVerifyOtpPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sign-in/verify-otp`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(signInVerifyOtpPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -42814,14 +43004,14 @@ export const SignInApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Sign-In and retrieve user\'s AccessToken & RefreshToken.
-         * @param {SignInGeneralPostRequest} [signInGeneralPostRequest] 
+         * @param {GeneralSignInRequest} [generalSignInRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGeneralPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.signInGeneralPost(signInGeneralPostRequest, options);
+        async generalSignIn(generalSignInRequest?: GeneralSignInRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralSignIn200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.generalSignIn(generalSignInRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SignInApi.signInGeneralPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['SignInApi.generalSignIn']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -42837,6 +43027,32 @@ export const SignInApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['SignInApi.signInGooglePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary Sign in - Resend 2FA OTP
+         * @param {SignInResendOtpPostRequest} [signInResendOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async signInResendOtpPost(signInResendOtpPostRequest?: SignInResendOtpPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInResendOtpPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.signInResendOtpPost(signInResendOtpPostRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SignInApi.signInResendOtpPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Sign in - Verify 2FA OTP
+         * @param {SignInVerifyOtpPostRequest} [signInVerifyOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async signInVerifyOtpPost(signInVerifyOtpPostRequest?: SignInVerifyOtpPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInGooglePost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.signInVerifyOtpPost(signInVerifyOtpPostRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SignInApi.signInVerifyOtpPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -42850,12 +43066,12 @@ export const SignInApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary Sign-In and retrieve user\'s AccessToken & RefreshToken.
-         * @param {SignInGeneralPostRequest} [signInGeneralPostRequest] 
+         * @param {GeneralSignInRequest} [generalSignInRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SignInGeneralPost200Response> {
-            return localVarFp.signInGeneralPost(signInGeneralPostRequest, options).then((request) => request(axios, basePath));
+        generalSignIn(generalSignInRequest?: GeneralSignInRequest, options?: RawAxiosRequestConfig): AxiosPromise<GeneralSignIn200Response> {
+            return localVarFp.generalSignIn(generalSignInRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -42866,6 +43082,26 @@ export const SignInApiFactory = function (configuration?: Configuration, basePat
          */
         signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SignInGooglePost200Response> {
             return localVarFp.signInGooglePost(signInGooglePostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Sign in - Resend 2FA OTP
+         * @param {SignInResendOtpPostRequest} [signInResendOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInResendOtpPost(signInResendOtpPostRequest?: SignInResendOtpPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SignInResendOtpPost200Response> {
+            return localVarFp.signInResendOtpPost(signInResendOtpPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Sign in - Verify 2FA OTP
+         * @param {SignInVerifyOtpPostRequest} [signInVerifyOtpPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        signInVerifyOtpPost(signInVerifyOtpPostRequest?: SignInVerifyOtpPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<SignInGooglePost200Response> {
+            return localVarFp.signInVerifyOtpPost(signInVerifyOtpPostRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -42880,13 +43116,13 @@ export class SignInApi extends BaseAPI {
     /**
      * 
      * @summary Sign-In and retrieve user\'s AccessToken & RefreshToken.
-     * @param {SignInGeneralPostRequest} [signInGeneralPostRequest] 
+     * @param {GeneralSignInRequest} [generalSignInRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SignInApi
      */
-    public signInGeneralPost(signInGeneralPostRequest?: SignInGeneralPostRequest, options?: RawAxiosRequestConfig) {
-        return SignInApiFp(this.configuration).signInGeneralPost(signInGeneralPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public generalSignIn(generalSignInRequest?: GeneralSignInRequest, options?: RawAxiosRequestConfig) {
+        return SignInApiFp(this.configuration).generalSignIn(generalSignInRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -42899,6 +43135,30 @@ export class SignInApi extends BaseAPI {
      */
     public signInGooglePost(signInGooglePostRequest?: SignInGooglePostRequest, options?: RawAxiosRequestConfig) {
         return SignInApiFp(this.configuration).signInGooglePost(signInGooglePostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Sign in - Resend 2FA OTP
+     * @param {SignInResendOtpPostRequest} [signInResendOtpPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SignInApi
+     */
+    public signInResendOtpPost(signInResendOtpPostRequest?: SignInResendOtpPostRequest, options?: RawAxiosRequestConfig) {
+        return SignInApiFp(this.configuration).signInResendOtpPost(signInResendOtpPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Sign in - Verify 2FA OTP
+     * @param {SignInVerifyOtpPostRequest} [signInVerifyOtpPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SignInApi
+     */
+    public signInVerifyOtpPost(signInVerifyOtpPostRequest?: SignInVerifyOtpPostRequest, options?: RawAxiosRequestConfig) {
+        return SignInApiFp(this.configuration).signInVerifyOtpPost(signInVerifyOtpPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -45108,12 +45368,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary 使用者忘記密碼時重設密碼
-         * @param {UserForgotPasswordResetPasswordPostRequest} [userForgotPasswordResetPasswordPostRequest] 
+         * @summary Execute reset password, then automatically login (may need to verify 2FA)
+         * @param {UserForgotPasswordResetPasswordRequest} [userForgotPasswordResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userForgotPasswordResetPasswordPost: async (userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userForgotPasswordResetPassword: async (userForgotPasswordResetPasswordRequest?: UserForgotPasswordResetPasswordRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/forgot-password/reset-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -45133,7 +45393,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userForgotPasswordResetPasswordPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(userForgotPasswordResetPasswordRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -45274,12 +45534,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary 舊使用者第一次登入新平台重設密碼
-         * @param {UserOldUserResetPasswordPostRequest} [userOldUserResetPasswordPostRequest] 
+         * @summary Execute reset password for old user, then automatically login (may need to verify 2FA)
+         * @param {UserOldUserResetPasswordRequest} [userOldUserResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userOldUserResetPasswordPost: async (userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userOldUserResetPassword: async (userOldUserResetPasswordRequest?: UserOldUserResetPasswordRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/old-user/reset-password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -45299,7 +45559,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userOldUserResetPasswordPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(userOldUserResetPasswordRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -45646,15 +45906,15 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 使用者忘記密碼時重設密碼
-         * @param {UserForgotPasswordResetPasswordPostRequest} [userForgotPasswordResetPasswordPostRequest] 
+         * @summary Execute reset password, then automatically login (may need to verify 2FA)
+         * @param {UserForgotPasswordResetPasswordRequest} [userForgotPasswordResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options);
+        async userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest?: UserForgotPasswordResetPasswordRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPassword200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UserApi.userForgotPasswordResetPasswordPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userForgotPasswordResetPassword']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -45709,15 +45969,15 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 舊使用者第一次登入新平台重設密碼
-         * @param {UserOldUserResetPasswordPostRequest} [userOldUserResetPasswordPostRequest] 
+         * @summary Execute reset password for old user, then automatically login (may need to verify 2FA)
+         * @param {UserOldUserResetPasswordRequest} [userOldUserResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPasswordPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options);
+        async userOldUserResetPassword(userOldUserResetPasswordRequest?: UserOldUserResetPasswordRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserOldUserResetPassword200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userOldUserResetPassword(userOldUserResetPasswordRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UserApi.userOldUserResetPasswordPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userOldUserResetPassword']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -45881,13 +46141,13 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary 使用者忘記密碼時重設密碼
-         * @param {UserForgotPasswordResetPasswordPostRequest} [userForgotPasswordResetPasswordPostRequest] 
+         * @summary Execute reset password, then automatically login (may need to verify 2FA)
+         * @param {UserForgotPasswordResetPasswordRequest} [userForgotPasswordResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserOldUserResetPasswordPost200Response> {
-            return localVarFp.userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options).then((request) => request(axios, basePath));
+        userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest?: UserForgotPasswordResetPasswordRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserOldUserResetPassword200Response> {
+            return localVarFp.userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -45929,13 +46189,13 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary 舊使用者第一次登入新平台重設密碼
-         * @param {UserOldUserResetPasswordPostRequest} [userOldUserResetPasswordPostRequest] 
+         * @summary Execute reset password for old user, then automatically login (may need to verify 2FA)
+         * @param {UserOldUserResetPasswordRequest} [userOldUserResetPasswordRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserOldUserResetPasswordPost200Response> {
-            return localVarFp.userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options).then((request) => request(axios, basePath));
+        userOldUserResetPassword(userOldUserResetPasswordRequest?: UserOldUserResetPasswordRequest, options?: RawAxiosRequestConfig): AxiosPromise<UserOldUserResetPassword200Response> {
+            return localVarFp.userOldUserResetPassword(userOldUserResetPasswordRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * **Access roles:** To be clear define
@@ -46089,14 +46349,14 @@ export class UserApi extends BaseAPI {
 
     /**
      * 
-     * @summary 使用者忘記密碼時重設密碼
-     * @param {UserForgotPasswordResetPasswordPostRequest} [userForgotPasswordResetPasswordPostRequest] 
+     * @summary Execute reset password, then automatically login (may need to verify 2FA)
+     * @param {UserForgotPasswordResetPasswordRequest} [userForgotPasswordResetPasswordRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest?: UserForgotPasswordResetPasswordPostRequest, options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).userForgotPasswordResetPasswordPost(userForgotPasswordResetPasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest?: UserForgotPasswordResetPasswordRequest, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).userForgotPasswordResetPassword(userForgotPasswordResetPasswordRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -46147,14 +46407,14 @@ export class UserApi extends BaseAPI {
 
     /**
      * 
-     * @summary 舊使用者第一次登入新平台重設密碼
-     * @param {UserOldUserResetPasswordPostRequest} [userOldUserResetPasswordPostRequest] 
+     * @summary Execute reset password for old user, then automatically login (may need to verify 2FA)
+     * @param {UserOldUserResetPasswordRequest} [userOldUserResetPasswordRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest?: UserOldUserResetPasswordPostRequest, options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).userOldUserResetPasswordPost(userOldUserResetPasswordPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public userOldUserResetPassword(userOldUserResetPasswordRequest?: UserOldUserResetPasswordRequest, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).userOldUserResetPassword(userOldUserResetPasswordRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

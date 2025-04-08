@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory, onBeforeRouteUpdate } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
-import { ROLE_ID, OUTER_TYPE } from '@/utils/constants'
+import { ROLE_ID, OUTER_TYPE, FEATURE_FLAG_KEY } from '@/utils/constants'
 import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
@@ -33,6 +33,17 @@ const checkOrgIsInactive = (to, from, next) => {
   } else {
     next()
   }
+}
+
+const checkMetaFabricFeatureFlag = async (to, from, next) => {
+  const featureFlagList =
+    store.getters['organization/organization'].featureFlagList
+
+  if (!featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_META_FABRIC)) {
+    return next({ name: 'NotFound' })
+  }
+
+  next()
 }
 
 const routes = [
@@ -359,6 +370,7 @@ const routes = [
             path: 'meta-fabric/:sharingId?/:nodeId?',
             name: 'MetaFabric',
             props: true,
+            beforeEnter: checkMetaFabricFeatureFlag,
             component: () =>
               import('@/views/innerApp/workspace/MetaFabric.vue'),
           },
@@ -366,6 +378,7 @@ const routes = [
             path: 'meta-fabric/:sharingId/material/:nodeId',
             name: 'MetaFabricMaterialDetail',
             props: true,
+            beforeEnter: checkMetaFabricFeatureFlag,
             component: () =>
               import('@/views/innerApp/workspace/MetaFabricMaterialDetail.vue'),
           },
