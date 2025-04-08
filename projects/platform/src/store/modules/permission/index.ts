@@ -194,16 +194,22 @@ const mutations = {
 }
 
 const actions = {
-  updateFeautreFlag({ commit }: any, featureFlag: OrganizationFeatureFlag) {
-    commit('updateLittleKing', featureFlag?.hideSourcingLibrary)
-    commit('updateTaiwanTaffet', featureFlag?.convertWeightByCuttableWidth)
-    commit('updateJbIntL', featureFlag?.printQRCodeLableUsingJBFormat)
-    commit('updateTexperts', featureFlag?.printQRCodeLableUsingTexpertsFormat)
-    commit('updateTrialDigitalDrape', featureFlag?.digitalDrape)
-    commit('updateColorFeatureOf3DViewer', featureFlag?.changeColorIn3DViewer)
-    commit('updateNew3DViewer', featureFlag?.new3DViewer)
-    commit('updateMoodboardOrg', featureFlag?.moodboard)
-    commit('updateThreadboardOrg', featureFlag?.threadBoard)
+  updateFeatureFlag({ commit }: any, featureFlagList: any[]) {
+    const featureFlagMapping: Record<string, string> = {
+      HideSourcingLibrary: 'updateLittleKing',
+      ConvertWeightByCuttableWidth: 'updateTaiwanTaffet',
+      PrintQRCodeLableUsingJBFormat: 'updateJbIntL',
+      PrintQRCodeLableUsingTexpertsFormat: 'updateTexperts',
+      DigitalDrape: 'updateTrialDigitalDrape',
+      ChangeColorIn3DViewer: 'updateColorFeatureOf3DViewer',
+      New3DViewer: 'updateNew3DViewer',
+      Moodboard: 'updateMoodboardOrg',
+      ThreadBoard: 'updateThreadboardOrg',
+    }
+
+    Object.entries(featureFlagMapping).forEach(([flag, mutation]) => {
+      commit(mutation, featureFlagList.includes(flag))
+    })
   },
 }
 
