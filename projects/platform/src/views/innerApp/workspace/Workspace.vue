@@ -164,6 +164,7 @@ import SearchTable, {
 import { SEARCH_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
@@ -185,6 +186,7 @@ import {
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
+import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
 import { useAssetsStore } from '@/stores/assets'
 import useWorkspaceCommon from '@/composables/workspace/useWorkspaceCommon'
 import useNode from '@/composables/useNode'
@@ -198,6 +200,7 @@ const store = useStore()
 const searchStore = useSearchStore()
 const { ogBaseAssetsApi } = useAssetsStore()
 const { ogBaseWorkspaceApi } = useWorkspaceStore()
+const notify = useNotifyStore()
 const route = useRoute()
 const { goToWorkspaceMaterialDetail, goToWorkspace } = useNavigation()
 const { tabList } = useWorkspaceCommon()
@@ -400,11 +403,40 @@ const openModalAssetsList = () => {
       modalTitle: t('RR0008'),
       actionText: t('UU0035'),
       actionCallback: async (materialIdList) => {
-        await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
+        const {
+          data: {
+            result: { failMaterialItemNoList },
+          },
+        } = await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
           materialIdList,
-          targetNodeIdList: [currentNodeId.value],
-          orgId: store.getters['organization/org'].id,
+          targetNodeIdList: [currentNodeId.value as number],
         })
+
+        if (failMaterialItemNoList && failMaterialItemNoList.length > 0) {
+          store.dispatch('helper/openModalBehavior', {
+            component: 'modal-item-no-list',
+            properties: {
+              header: t('EE0063', { number: failMaterialItemNoList.length }),
+              primaryBtnText: t('UU0031'),
+              primaryBtnHandler: () => {
+                store.dispatch('helper/closeModalBehavior')
+              },
+              content: t('EE0064'),
+              itemNoList: failMaterialItemNoList,
+            } as PropsModalItemNoList,
+          })
+        } else {
+          store.dispatch('helper/closeModal')
+        }
+
+        store.dispatch('helper/reloadInnerApp')
+
+        if (
+          !failMaterialItemNoList ||
+          failMaterialItemNoList.length !== materialIdList.length
+        ) {
+          notify.showNotifySnackbar({ messageText: t('FF0018') })
+        }
       },
     } as PropsModalAssetsList,
   })
