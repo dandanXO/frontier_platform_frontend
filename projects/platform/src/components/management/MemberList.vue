@@ -101,12 +101,16 @@ export default {
     const membersData = computed(() =>
       memberList.value.map((member) => ({
         ...member,
-        nameLowerCase: member.displayName?.toLowerCase(),
-        emailLowerCase: member.email.toLowerCase(),
+        nameLowerCase: member.displayName
+          ? member.displayName?.toLowerCase()
+          : '',
+        emailLowerCase: member.email ? member.email.toLowerCase() : '',
       }))
     )
     const filteredMemberList = computed(() => {
-      const searchInputLowerCase = searchInput.value.toLowerCase()
+      const searchInputLowerCase = searchInput.value
+        ? searchInput.value.toLowerCase()
+        : ''
 
       return membersData.value.filter(
         (member) =>

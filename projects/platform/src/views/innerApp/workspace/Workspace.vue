@@ -7,7 +7,7 @@
     :option-multi-select="optionMultiSelect"
     :item-list="nodeList"
     test-id="workspace-name-header"
-    :can-select-all="permissionList.includes(FUNC_ID.WORKSPACE_EDIT_COLLECTION)"
+    :can-select-all="permissionList.includes(FUNC_ID.WORKSPACE_CAN_SELLECT)"
     v-model:selected-item-list="selectedNodeList"
   >
     <template v-slot:box-above>
