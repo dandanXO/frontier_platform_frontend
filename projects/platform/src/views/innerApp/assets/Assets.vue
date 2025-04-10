@@ -48,9 +48,10 @@
         <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
           <div
             v-for="(item, index) in displayedMaterialList"
-            :key="`${item.materialId}-${new Date().getTime()}`"
+            :key="`${item.materialId}-list`"
           >
             <RowItem
+              :key="`${item.materialId}-list`"
               :material="item"
               v-model:selected-list="selectedMaterialList"
               :material-options="materialOptions"
@@ -70,7 +71,7 @@
         >
           <GridItemMaterial
             v-for="material in displayedMaterialList"
-            :key="material.materialId + '-' + new Date().getTime()"
+            :key="material.materialId + '-grid'"
             :material="material"
             :select-value="material"
             v-model:selected-value="selectedMaterialList"

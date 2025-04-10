@@ -323,7 +323,7 @@ const search = async (targetPage = 1) => {
         sort: sort.value,
         isShowMatch: isShowMatch.value,
         targetPage,
-        perPageCount: 40,
+        perPageCount: 30,
       },
       search: (() => {
         return !keyword.value && selectedTagList.value.length === 0
