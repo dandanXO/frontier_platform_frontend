@@ -1,10 +1,16 @@
+import signInApi from '@/apis/signInApi'
 import userApi from '@/apis/user'
+import userSettingApi from '@/apis/userSettingApi'
 import i18n from '@frontier/i18n'
 import {
   setDefaultTrackerProperties,
   setProfileTrackerProperties,
   setTrackerId,
 } from '@frontier/lib'
+import {
+  GeneralSignInRequestPlatformEnum,
+  SignInGooglePostRequestPlatformEnum,
+} from '@frontier/platform-web-sdk'
 
 const state = () => ({
   lastName: '',
@@ -75,8 +81,11 @@ const actions = {
     await userApi.generalSignUpRequest(params)
   },
   async generalSignIn({ dispatch }, params) {
-    const { data } = await userApi.generalSignIn(params)
-    dispatch('setUser', data.result.user)
+    const { data } = await signInApi.generalSignIn({
+      ...params,
+      platform: GeneralSignInRequestPlatformEnum.Frontier,
+    })
+    data.result.user && dispatch('setUser', data.result.user)
     return data.result
   },
   async googleSignUp({ dispatch }, params) {
@@ -88,8 +97,12 @@ const actions = {
     return response.data.result.isExist
   },
   async googleSignIn({ dispatch }, params) {
-    const { data } = await userApi.googleSignIn(params)
-    dispatch('setUser', data.result.user)
+    const { data } = await signInApi.signInGooglePost({
+      ...params,
+      platform: SignInGooglePostRequestPlatformEnum.Frontier,
+    })
+    data.result.user && dispatch('setUser', data.result.user)
+    return data.result
   },
   async oldUserResetPassword(_, params) {
     await userApi.oldUserResetPassword(params)
@@ -161,6 +174,29 @@ const actions = {
       { component: 'modal-announcement' },
       { root: true }
     )
+  },
+  async enableOTP(_, { otp }) {
+    const res = await userSettingApi.userSetting2FaLoginEnable({
+      otp,
+    })
+    return res.data.result
+  },
+  async signInWithOTP({ dispatch }, payload) {
+    const { data } = await signInApi.signInVerifyOtpPost(payload)
+    data.result.user && dispatch('setUser', data.result.user)
+    return data.result
+  },
+  async reSignInWithOTP(_, payload) {
+    const { data } = await signInApi.signInResendOtpPost(payload)
+    return data.result
+  },
+  async disableOTP() {
+    const res = await userSettingApi.userSetting2FaLoginDisable()
+    return res.data.result
+  },
+  async resendOTP() {
+    const res = await userSettingApi.userSetting2FaLoginResendOtp()
+    return res.data.result
   },
 }
 

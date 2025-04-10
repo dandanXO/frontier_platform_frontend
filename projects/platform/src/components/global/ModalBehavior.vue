@@ -1,5 +1,50 @@
 <template lang="pug">
 div(
+  v-if="version === 'v2'"
+  class="fixed inset-0 z-loading w-screen h-screen bg-grey-900/70 flex justify-center items-center"
+)
+  div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
+  div(
+    class="absolute flex flex-col items-center justify-center w-[512px] p-6 gap-6 rounded-xl bg-grey-0 shadow-32"
+  )
+    div(class="flex justify-between w-full pb-6 border-b border-grey-200")
+      div(class="flex items-center gap-2")
+        f-button(
+          v-if="showBackButton && page > 0"
+          @click="$emit('click:back')"
+          type="text"
+        )
+          f-svg-icon(iconName="arrow_back" size="24" class="text-grey-900")
+        p(class="text-xl font-bold") {{ header }}
+      f-button(@click="closeModalBehavior" type="text")
+        f-svg-icon(iconName="close_medium" size="24" class="text-grey-900")
+    div(class="w-full flex flex-col items-center gap-6")
+      slot(name="default")
+      div(v-if="secondaryBtnText || primaryBtnText" class="w-full flex gap-4")
+        f-button(
+          v-if="secondaryBtnText !== ''"
+          class="flex-1 p-2 text-sm !font-bold !border-green-200-v1 text-green-500-v1"
+          :theme="theme"
+          :size="btnSize"
+          type="secondary"
+          :prependIcon="secondaryBtnIcon"
+          :disabled="secondaryBtnDisabled"
+          data-cy="modal-behavior_secondary"
+          @click="$emit('click:secondary')"
+        ) {{ secondaryBtnText }}
+        f-button(
+          class="bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110 flex-1 p-2 text-sm !font-bold transition-all"
+          v-if="primaryBtnText !== ''"
+          :theme="theme"
+          :size="btnSize"
+          type="primary"
+          :prependIcon="primaryBtnIcon"
+          :disabled="primaryBtnDisabled"
+          data-cy="modal-behavior_primary"
+          @click="$emit('click:primary')"
+        ) {{ primaryBtnText }}
+div(
+  v-else
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
@@ -75,10 +120,10 @@ export default {
 
 <script setup>
 import { useStore } from 'vuex'
-import { THEME } from '@/utils/constants'
+import { THEME, VERSION } from '@/utils/constants'
 import { string } from 'zod'
 
-defineEmits(['click:primary', 'click:secondary', 'click:text'])
+defineEmits(['click:primary', 'click:secondary', 'click:text', 'click:back'])
 defineProps({
   theme: {
     type: String,
@@ -156,6 +201,18 @@ defineProps({
   usingCustomFooter: {
     type: Boolean,
     default: false,
+  },
+  version: {
+    type: String,
+    default: 'v1',
+  },
+  showBackButton: {
+    type: Boolean,
+    default: false,
+  },
+  page: {
+    type: Number,
+    default: 0,
   },
 })
 

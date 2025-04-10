@@ -2,9 +2,13 @@
 modal-behavior(
   :header="title"
   :primaryBtnText="$t('UU0018')"
-  :secondaryBtnText="isAllowGoBack ? $t('UU0004') : $t('UU0002')"
+  :secondaryBtnText="version === 'v2' ? undefined : isAllowGoBack ? $t('UU0004') : $t('UU0002')"
   @click:primary="confirm"
   @click:secondary="closeModal"
+  @click:back="closeModal"
+  :version="version"
+  :showBackButton="version === 'v2'"
+  page="1"
 )
   div(class="w-full flex justify-center items-center")
     cropper-default-layout(
@@ -31,6 +35,8 @@ import { useStore } from 'vuex'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import { Cropper, configToPercentScaleRecord } from '@/utils/cropper'
+import { useNotifyStore } from '@/stores/notify'
+import { VERSION } from '@frontier/constants'
 
 const props = defineProps({
   title: {
@@ -54,9 +60,14 @@ const props = defineProps({
   cropRecord: {
     type: Object,
   },
+  version: {
+    type: String,
+    default: 'v2',
+  },
 })
 
 const store = useStore()
+const notify = useNotifyStore()
 const imageCropper = ref(null)
 
 const cropper = new Cropper({
@@ -83,7 +94,14 @@ const confirm = async () => {
   const record = configToPercentScaleRecord(config)
   await props.afterCropHandler(croppedImage, props.image?.file, record)
   store.dispatch('helper/closeModalLoading')
-  closeModal()
+  store.dispatch('helper/closeModalBehavior')
+  store.dispatch('helper/closeModalBehavior')
+  notify.showNotifySnackbar({
+    messageText: t('WW0194'),
+    version: VERSION.V2,
+    hasCloseButton: false,
+    delay: 5000,
+  })
 }
 
 const isAllowGoBack = computed(

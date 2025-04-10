@@ -104,11 +104,12 @@ const btnType = computed(() => {
           'bg-primary',
           'text-brand-solid',
           'border',
-          'disabled:text-grey-250',
+          'disabled:text-disabled',
+          'disabled:border-disabled',
           'border-brand-border',
         ]
         props.isIcon
-          ? result.push('hover:bg-brand', 'disabled:border-grey-250')
+          ? result.push('hover:bg-brand', 'disabled:border-disabled')
           : result.push('hover:text-brand-solid-hover')
 
         return result

@@ -6,9 +6,9 @@ import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
 import { OgType } from '@frontier/platform-web-sdk'
-import { config } from 'vue-gtag'
 import { resetTracker } from '@frontier/lib'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
+import { logout, redirectAfterLogout } from '@/utils/auth'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -73,14 +73,8 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     beforeEnter: () => {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      config({
-        user_id: null,
-      })
-      resetTracker()
-
-      window.location.replace('https://frontier.cool/')
+      logout()
+      redirectAfterLogout()
     },
   },
   {
@@ -222,6 +216,11 @@ const routes = [
           next()
         },
         children: [
+          {
+            path: 'manage-your-account',
+            name: 'manageYourAccount',
+            component: () => import('@/views/innerApp/ManageAccount.vue'),
+          },
           {
             path: 'dashboard',
             name: 'Dashboard',

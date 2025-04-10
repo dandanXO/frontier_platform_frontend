@@ -4611,13 +4611,7 @@ export interface ExportAssetsMaterialExcelRequest {
      * @type {Array<number>}
      * @memberof ExportAssetsMaterialExcelRequest
      */
-    'materialIdList'?: Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof ExportAssetsMaterialExcelRequest
-     */
-    'workspaceNodeIdList'?: Array<number>;
+    'materialIdList': Array<number>;
 }
 
 

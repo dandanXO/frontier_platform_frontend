@@ -55,6 +55,7 @@ export const MODAL_TYPE = {
   CONFIRM: 3,
   BEHAVIOR: 4,
   COMMON: 5,
+  AUTHENTICATION: 6,
 }
 
 export const SIDE_TYPE = {

@@ -6,6 +6,7 @@ f-input-text(
   prependIcon="lock"
   :appendIcon="isVisible ? 'openeye' : 'hideeye'"
   @click:appendIcon="isVisible = !isVisible"
+  :version="version"
 )
 </template>
 
@@ -95,6 +96,14 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  class: {
+    type: String,
+    default: '',
+  },
+  version: {
+    type: String,
+    default: 'v1',
   },
 })
 const emit = defineEmits(['update:textValue'])

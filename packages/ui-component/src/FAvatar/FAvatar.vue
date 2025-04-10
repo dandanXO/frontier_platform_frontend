@@ -22,7 +22,7 @@ const props = withDefaults(
   defineProps<{
     type?: 'user' | 'org'
     imageUrl?: string | null
-    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
     labelColor?: string | null
     hasBorder?: boolean
   }>(),
@@ -69,6 +69,10 @@ const classSize = computed(() => {
     case '4xl':
       avatar = 'w-50 h-50'
       labelColor = 'w-8 h-8'
+      break
+    case '5xl':
+      avatar = 'w-64 h-64'
+      labelColor = 'w-10 h-10'
       break
   }
 

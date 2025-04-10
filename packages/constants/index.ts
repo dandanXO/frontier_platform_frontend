@@ -56,6 +56,16 @@ export enum SIZE {
   LG = 'lg',
 }
 
+export enum VERSION {
+  V1 = 'v1',
+  V2 = 'v2',
+}
+
+export enum MODAL_THEME {
+  DANGER = 'danger',
+  SUCCESS = 'success',
+}
+
 export enum TOOLTIP_PLACEMENT {
   AUTO = 'auto',
   TOP = 'top',

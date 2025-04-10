@@ -140,6 +140,10 @@ export default function useNavigation() {
     await router.push(parsePath(`${prefixPath}/assets?${query}`, navReq))
   }
 
+  const goToManageAccount = async (navReq: NavigationReq = {}) => {
+    await router.push(parsePath(`${prefixPath}/manage-your-account`, navReq))
+  }
+
   const goToMaterialUpload = async (navReq: NavigationReq = {}) => {
     await store.dispatch('sticker/closeStickerDrawer')
     if (
@@ -390,6 +394,7 @@ export default function useNavigation() {
     goToManagement,
     goToLobby,
     goToAssets,
+    goToManageAccount,
     goToMaterialUpload,
     goToMaterialCreate,
     goToAssetMaterialDetail,

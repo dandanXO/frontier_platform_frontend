@@ -42,20 +42,10 @@ export default {
         description,
       },
     }),
-  generalSignIn: ({ email, password }: { [key: string]: string }) =>
-    axios('/sign-in/general', {
-      method: 'POST',
-      data: { email, password, platform: 1 },
-    }),
   googleSignUp: ({ idToken, signupSourceType }: { [key: string]: string }) =>
     axios('/sign-up/google', {
       method: 'POST',
       data: { idToken, locale: 'en-US', platform: 1, signupSourceType },
-    }),
-  googleSignIn: ({ idToken }: { [key: string]: string }) =>
-    axios('/sign-in/google', {
-      method: 'POST',
-      data: { idToken, platform: 1 },
     }),
   getUser: () =>
     axios('/user', {
@@ -175,7 +165,7 @@ export default {
       method: 'POST',
       data: {},
     }),
-  createPrintLabelSetting: (payload) =>
+  createPrintLabelSetting: (payload: any) =>
     axios('/user/qrcode-label-print-setting/create', {
       method: 'POST',
       data: payload,

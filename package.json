@@ -13,6 +13,7 @@
     "pre-prod:platform": "cd ./projects/platform && npm run serve:pre-prod",
     "prod:platform": "cd ./projects/platform && npm run serve:prod",
     "windows:dev:platform": "cd ./projects/platform && npm run windows:serve:dev",
+    "windows:feat:platform": "cd ./projects/platform && npm run windows:serve:feat",
     "test:e2e": "cd ./projects/platform && npm run test:e2e --mode=$npm_config_mode",
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",

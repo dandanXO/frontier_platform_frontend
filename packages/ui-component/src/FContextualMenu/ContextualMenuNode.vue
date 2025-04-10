@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   ref="refTrigger"
-  class="min-h-9 py-1.5 flex items-center"
+  class="min-h-9 py-1.5 flex items-center cursor-pointer"
   :class="bgClassList"
   :disabled="innerMenu.disabled"
   @mouseenter="mouseEnterHandler"
@@ -195,7 +195,7 @@ const props = withDefaults(
     theme: THEME.LIGHT,
   }
 )
-const currentTestId = props.menu.testId ?? "contextual-menu-node"
+const currentTestId = props.menu.testId ?? 'contextual-menu-node'
 const { isDesktop } = useBreakpoints()
 
 const innerMenu = computed<Required<MenuItem>>(() =>

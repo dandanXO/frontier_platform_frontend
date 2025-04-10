@@ -1,45 +1,65 @@
 <style lang="scss" scoped>
-.v-enter-active,
-.v-leave-active {
+.v1-enter-active,
+.v1-leave-active {
   transition: all 0.2s ease-in;
 }
 
-.v-leave-to {
+.v1-leave-to {
   opacity: 0;
 }
 
-.v-enter-from {
+.v1-enter-from {
   transform: translateY(20px);
+  opacity: 0;
+}
+
+.v2-enter-active,
+.v2-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.v2-leave-to {
+  opacity: 0;
+}
+
+.v2-enter-from {
+  transform: translateY(-20px);
   opacity: 0;
 }
 </style>
 
 <template lang="pug">
-transition
+transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
   div(
     v-if="isShowSnackbar"
     ref="refContainer"
     :key="id"
-    class="fixed z-flash-msg bottom-5 left-0 right-0 px-9"
+    class="fixed z-flash-msg left-0 right-0 px-9"
+    :class="[version === VERSION.V2 ? 'top-[50px]' : 'bottom-5']"
     @mouseenter="clearTimer"
     @mouseleave="setTimer"
   )
     div(
       ref="refSnackbar"
-      class="w-fit mx-auto px-4 flex items-start gap-x-4 rounded shadow-16"
-      :class="[getContainerPaddingY, bgColor]"
+      class="flex mx-auto"
+      :class="[getContainerPaddingY, version === VERSION.V2 && bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor, version === VERSION.V2 ? 'w-[512px] items-center rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16  px-4']"
     )
-      f-svg-icon(
-        :iconName="NOTIFY_TYPE_ICON[notifyType]"
-        :size="getIconSize"
-        :class="getIconColor"
-        class="mt-[3px]"
+      div(
+        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 flex items-center justify-center' : ''"
       )
+        f-svg-icon(
+          :iconName="NOTIFY_TYPE_ICON[notifyType]"
+          :size="getIconSize"
+          :class="[getIconColor, version === VERSION.V2 ? '' : 'mt-[3px]']"
+        )
       div(
         class="flex-grow"
         :class="[getMessageMinHeight, !shouldBeNextLine && display === DISPLAY.FLEX ? 'flex items-start gap-x-4' : '']"
       )
-        div(class="flex-grow self-center" :class="[getFontSize, textColor]")
+        div(
+          class="flex-grow self-center"
+          :class="[getFontSize, version === VERSION.V2 && textColor === 'text-grey-100' ? 'text-grey-900-v1' : textColor, version === VERSION.V2 ? 'font-light text-sm' : '']"
+        )
           p(v-if="!!title" class="font-bold flex-shrink-0") {{ title }}
           p(v-if="!!messageText") {{ messageText }}
           component(v-else :is="messageComponent")
@@ -54,7 +74,8 @@ transition
         @click="close"
         iconName="clear"
         :size="getIconSize"
-        class="text-grey-100 hover:text-primary-300 cursor-pointer mt-[3px]"
+        class="cursor-pointer"
+        :class="version === VERSION.V2 ? 'text-grey-900-v1 hover:text-green-700-v1 ' : 'text-grey-100 hover:text-primary-300 mt-[3px]'"
       )
 </template>
 
@@ -68,7 +89,13 @@ export default {
 import { computed, ref, watch, nextTick } from 'vue'
 import type { Component } from 'vue'
 import type { Action } from '../../types'
-import { NOTIFY_TYPE, NOTIFY_TYPE_ICON, SIZE, DISPLAY } from '../../constants'
+import {
+  NOTIFY_TYPE,
+  NOTIFY_TYPE_ICON,
+  SIZE,
+  DISPLAY,
+  VERSION,
+} from '../../constants'
 
 export interface NotifySnackbarProps {
   id?: number
@@ -107,6 +134,7 @@ export interface NotifySnackbarProps {
   // cusomerClass
   bgColor?: string
   textColor?: string
+  version?: VERSION
 }
 
 const emit = defineEmits<{
@@ -124,13 +152,14 @@ const props = withDefaults(defineProps<NotifySnackbarProps>(), {
   delay: 4000,
   bgColor: 'bg-grey-800',
   textColor: 'text-grey-100',
+  version: VERSION.V1,
 })
 const getContainerPaddingY = computed(() => {
   switch (props.size) {
     case SIZE.SM:
-      return 'py-3'
+      return props.version === VERSION.V2 ? 'py-2' : 'py-3'
     case SIZE.MD:
-      return 'py-4'
+      return props.version === VERSION.V2 ? 'py-3' : 'py-4'
   }
 
   throw new Error('unexpected size type')
@@ -152,7 +181,9 @@ const getIconColor = computed(() => {
     case NOTIFY_TYPE.INFO:
       return 'text-cyan-400'
     case NOTIFY_TYPE.SUCCESS:
-      return 'text-primary-300'
+      return props.version === VERSION.V2
+        ? 'text-green-700-v1'
+        : 'text-primary-300'
     case NOTIFY_TYPE.WARNING:
       return 'text-yellow-500'
     case NOTIFY_TYPE.ALERT:

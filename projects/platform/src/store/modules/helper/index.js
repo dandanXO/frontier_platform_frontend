@@ -113,6 +113,21 @@ const actions = {
   closeModalLoading({ commit }) {
     commit('CLOSE_modalPipeline')
   },
+  openModalAuthentication({ commit }, options) {
+    commit('PUSH_modalPipeline', {
+      type: MODAL_TYPE.AUTHENTICATION,
+      options,
+    })
+  },
+  pushModalAuthentication({ commit }, options) {
+    commit('PUSH_modalPipeline', {
+      type: MODAL_TYPE.AUTHENTICATION,
+      options,
+    })
+  },
+  closeModalAuthentication({ commit }) {
+    commit('CLOSE_modalPipeline')
+  },
   async reloadInnerApp({ commit }) {
     commit('SET_isReloadInnerApp', false)
     await nextTick()

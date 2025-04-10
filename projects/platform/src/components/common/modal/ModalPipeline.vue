@@ -24,6 +24,8 @@ template(v-if="modalPipeline.length > 0")
       modal-confirm(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.LOADING")
       modal-loading(v-bind="modal.options")
+    template(v-else-if="modal.type === MODAL_TYPE.AUTHENTICATION")
+      modal-authentication(v-bind="modal.options")
 </template>
 
 <script>
@@ -34,6 +36,7 @@ import ModalConfirm from '@/components/common/modal/ModalConfirm.vue'
 import ModalCommon from '@/components/common/modal/ModalCommon.vue'
 import ModalLoading from '@/components/common/modal/ModalLoading.vue'
 import ModalUploadProgress from '@/components/common/modal/ModalUploadProgress.vue'
+import ModalAuthentication from '@/components/common/modal/ModalAuthentication.vue'
 import { MODAL_TYPE } from '@/utils/constants'
 import { defineAsyncComponent } from 'vue'
 
@@ -44,6 +47,7 @@ export default {
     ModalConfirm,
     ModalLoading,
     ModalUploadProgress,
+    ModalAuthentication,
     ModalCommon,
     ModalCreateOrEditMoodboard: defineAsyncComponent(() =>
       import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')
@@ -97,6 +101,9 @@ export default {
     ),
     ModalUploadThumbnail: defineAsyncComponent(() =>
       import('@/components/common/ModalUploadThumbnail.vue')
+    ),
+    ModalProfilePicture: defineAsyncComponent(() =>
+      import('@/components/common/ModalProfilePicture.vue')
     ),
     ModalCreateMailOrg: defineAsyncComponent(() =>
       import('@/components/lobby/ModalCreateMailOrg.vue')

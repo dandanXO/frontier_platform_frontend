@@ -22,6 +22,9 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { PRAVICY_POLICY_URL } from '@/utils/constants'
 
+import useNavigation from '@/composables/useNavigation'
+
+const { goToManageAccount } = useNavigation()
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
@@ -44,12 +47,8 @@ const menuTree = computed(() => ({
     {
       menuList: [
         {
-          title: t('RR0120'),
-          clickHandler: openModal.bind(undefined, 'modal-org-user-profile'),
-        },
-        {
-          title: t('RR0138'),
-          clickHandler: openModal.bind(undefined, 'modal-change-password'),
+          title: t('MA0001'),
+          clickHandler: goToManageAccount,
         },
       ],
     },

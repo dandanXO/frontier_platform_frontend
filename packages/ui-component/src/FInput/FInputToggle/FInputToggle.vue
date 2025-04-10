@@ -27,12 +27,14 @@ export interface Props {
   value?: boolean
   disabled?: boolean
   size?: 'small' | 'medium'
+  primaryColor?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   size: 'medium',
   value: false,
+  primaryColor: 'bg-brand-solid',
 })
 
 const emit = defineEmits(['update:value'])
@@ -49,7 +51,7 @@ const toggleSwitch = () => {
 }
 
 const switchClasses = computed(() => ({
-  'bg-brand-solid': isOn.value && !props.disabled,
+  [props.primaryColor]: isOn.value && !props.disabled,
   'bg-tertiary': !isOn.value && !props.disabled,
   'bg-grey-400': props.disabled,
   'focus:ring-2 focus:ring-blue-500': !props.disabled,

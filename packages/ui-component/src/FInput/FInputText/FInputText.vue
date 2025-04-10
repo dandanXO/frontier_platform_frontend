@@ -373,6 +373,10 @@ const props = defineProps({
     type: String,
     default: 'left',
   },
+  version: {
+    type: String,
+    default: 'v1',
+  },
 })
 const emit = defineEmits([
   'update:textValue',

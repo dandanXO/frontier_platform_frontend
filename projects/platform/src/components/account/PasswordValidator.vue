@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="grid gap-y-1.5 text-caption leading-none")
+div(v-if="version == 'v1'" class="grid gap-y-1.5 text-caption leading-none")
   div(class="flex")
     p(
       :class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-250']"
@@ -18,6 +18,17 @@ div(class="grid gap-y-1.5 text-caption leading-none")
       size="12"
       class="ml-0.5 text-grey-600"
     )
+div(v-if="version == 'v2'")
+  div(class="flex gap-1 items-center")
+    f-svg-icon(
+      :iconName="containsLetter ? (moreThanSix && lessThanEighteen ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
+      size="16"
+      :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+    )
+    p(
+      class="text-xs"
+      :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+    ) {{ $t('MM0028') }}
 </template>
 
 <script>
@@ -33,6 +44,10 @@ export default {
     isValid: {
       type: Boolean,
       default: false,
+    },
+    version: {
+      type: String,
+      default: 'v1',
     },
   },
   emits: ['update:isValid'],

@@ -15,6 +15,7 @@
     "deploy:dev": "npm run deploy --mode=development",
     "windows:serve": "bash ./scripts/fetchEnvVar.sh %npm_config_mode% && vite --mode %npm_config_mode%",
     "windows:serve:dev": "npm run windows:serve --mode=development",
+    "windows:serve:feat": "npm run windows:serve --mode=feat",
     "windows:build": "bash ./scripts/fetchEnvVar.sh %npm_config_mode% && vite build --mode %npm_config_mode%",
     "windows:build:dev": "npm run windows:build --mode=development",
     "windows:deploy": "npm run windows:build --mode=%npm_config_mode% && bash ./scripts/deploy.sh %npm_config_mode%",

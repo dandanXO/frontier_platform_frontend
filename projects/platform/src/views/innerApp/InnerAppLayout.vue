@@ -12,9 +12,10 @@
 </style>
 
 <template lang="pug">
-div(class="h-full flex overflow-x-hidden")
-  sidebar
-  main(class="flex-grow relative flex flex-col")
+div(class="h-full flex overflow-x-hidden w-screen")
+  sidebar(class="flex-shrink-0")
+  main(class="flex-grow flex flex-col min-w-0 relative")
+    modal-pipeline
     router-view(
       v-if="isReloadInnerApp"
       :key="$route.name + $route.path"
