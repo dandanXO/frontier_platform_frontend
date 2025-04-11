@@ -26,6 +26,7 @@ export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
   let cancelTokenSourceMaterial: CancelTokenSource | null = null
   let cancelTokenSourceSlim: CancelTokenSource | null = null
+  const selectedMaterialList = ref<Material[]>([])
   const { goToAssetMaterialSpreadSheet } = useNavigation()
   const { closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
@@ -57,7 +58,9 @@ export const useAssetsStore = defineStore('assets', () => {
 
     return CREATE_MATERIAL_MODE.OLD
   })
-
+  const setSelectedMaterialList = (list: Material[]) => {
+    selectedMaterialList.value = list
+  }
   const getAssetsMaterialList = async (payload: {
     pagination: PaginationReq
     search: Search | null
@@ -276,5 +279,7 @@ export const useAssetsStore = defineStore('assets', () => {
     useNewAssetsView,
     spreadsheetInputFile,
     viewMode,
+    setSelectedMaterialList,
+    selectedMaterialList,
   }
 })

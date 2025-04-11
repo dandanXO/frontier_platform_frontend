@@ -192,7 +192,7 @@ import SearchTable, {
 } from '@/components/common/SearchTable.vue'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
@@ -272,6 +272,9 @@ const clickMaterialItemHandler = (materialId: number) => {
 const isLoading = ref(false)
 const isSlimMaterialsLoading = ref(false)
 const selectedMaterialList = ref<Material[]>([])
+watch(selectedMaterialList, (newVal) => {
+  assetsStore.setSelectedMaterialList(newVal)
+})
 const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(
   Number(route.query.displayMode) === ASSET_LIST_DISPLAY_MODE.LIST
     ? ASSET_LIST_DISPLAY_MODE.LIST
@@ -554,5 +557,10 @@ const multiSelectOptions = computed(() => {
   })
 
   return options
+})
+onMounted(() => {
+  if (assetsStore.selectedMaterialList.length > 0) {
+    selectedMaterialList.value = assetsStore.selectedMaterialList
+  }
 })
 </script>

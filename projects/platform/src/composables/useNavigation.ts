@@ -137,7 +137,9 @@ export default function useNavigation() {
   }
 
   const goToAssets = async (navReq: NavigationReq = {}, query: string) => {
-    await router.push(parsePath(`${prefixPath}/assets?${query}`, navReq))
+    await router.push(
+      parsePath(`${prefixPath}/assets?${query ? query : ''}`, navReq)
+    )
   }
 
   const goToManageAccount = async (navReq: NavigationReq = {}) => {
