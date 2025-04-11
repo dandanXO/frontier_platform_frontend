@@ -471,14 +471,13 @@ const menuTree = computed<MenuTree>(() => {
   const optionList = [funTwoList, [printLabel, printA4Swatch]]
 
   // Retrieve the user's role and corresponding permissions
-  
   const permissionList = PERMISSION_MAP[roleId]
 
   // Map each permission ID to its handler function
   const permissionHandlerMap = {
     [FUNC_ID.ASSET_EDIT]: () => {
       // If user can edit, add [editMaterial] to the front of optionList
-      optionList.unshift([editMaterial])
+      editable.value && optionList.unshift([editMaterial])
     },
     [FUNC_ID.ASSET_COPY]: () => {
       // If user can copy, push cloneTo into funcOneList
