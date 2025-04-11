@@ -111,7 +111,7 @@
           @click:node="handleNodeClick(node, visit)"
           :test-id="`workspace-item-${index}`"
           :is-selectable="
-            permissionList.includes(FUNC_ID.WORKSPACE_CREATE_COLLECTION)
+            permissionList.includes(FUNC_ID.WORKSPACE_CAN_SELLECT)
           "
         >
           <template
@@ -278,7 +278,16 @@ const optionSort = computed(() => {
 })
 
 const optionMultiSelect = computed(() => {
-  const options = [deleteMultipleNode, exportExcel]
+  const options = [exportExcel]
+  const permissionOptionsMap = {
+    [FUNC_ID.WORKSPACE_DELETE_COLLECTION]: () =>
+      options.push(deleteMultipleNode),
+  }
+  permissionList.forEach((permission) => {
+    if (permissionOptionsMap[permission]) {
+      permissionOptionsMap[permission]()
+    }
+  })
   return options
 })
 
