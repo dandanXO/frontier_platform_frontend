@@ -9,6 +9,7 @@
     v-model:selected-item-list="selectedMaterialList"
     :is-asset-slim-list-loading="isSlimMaterialsLoading"
     assets
+    :canSelectAll="!isLoading"
   >
     <template #header-left="{ totalCount }">
       <h5 class="text-h5 font-bold text-grey-900">
