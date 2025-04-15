@@ -35,6 +35,7 @@ const props = withDefaults(
     isOtpValid: true,
   }
 )
+const NON_DIGIT_AND_WHITESPACE_REGEX = /\D|\s+/g
 
 const emit = defineEmits([
   'update:isOtpValid',
@@ -46,7 +47,7 @@ const inputs = ref<HTMLInputElement[]>([])
 const onInput = (index: any, event: any) => {
   const value = event.target.value
   const newOtp = [...props.otpInputs]
-  newOtp[index] = value
+  newOtp[index] = value.replace(NON_DIGIT_AND_WHITESPACE_REGEX, '')
 
   emit('update:isOtpValid', true)
   emit('update:otpCode', props.otpCode + value)
@@ -69,14 +70,19 @@ const onBackspace = (index: any, event: any) => {
 
 const onPaste = (event: any) => {
   const pastedText = event.clipboardData.getData('text')
+  const formattedText = pastedText
+    .replace(NON_DIGIT_AND_WHITESPACE_REGEX, '')
+    .slice(0, 6)
   const newOtp = [...props.otpInputs]
   inputs.value.forEach((input: any, i: any) => {
-    if (i < pastedText.length) {
-      newOtp[i] = pastedText[i]
+    if (i < formattedText.length) {
+      newOtp[i] = formattedText[i]
     }
   })
   emit('update:otpInputs', newOtp)
-  emit('update:otpCode', pastedText)
+  setTimeout(() => {
+    emit('update:otpCode', formattedText)
+  }, 100)
 }
 
 const onKeyPress = (event: any) => {

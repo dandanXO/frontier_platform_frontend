@@ -18,11 +18,13 @@ div(
           class="flex-1 p-2 text-sm !font-bold !border-green-200-v1 text-green-500-v1"
           type="secondary"
           @click="onClickSecondary"
+          :disabled="isLoading"
         ) {{ secondaryButtonText }}
         f-button(
           class="flex-1 p-2 text-sm !font-bold transition-all"
-          :class="type === 'danger' ? 'bg-red-500-v1 hover:bg-red-500-v1 hover:brightness-110' : 'bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110'"
+          :class="type === 'danger' ? 'bg-red-500-v1 hover:bg-red-500-v1 hover:brightness-110 disabled:hover:brightness-100' : 'bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110 disabled:hover:brightness-100'"
           @click="onClickPrimary"
+          :disabled="isLoading"
         ) {{ primaryButtonText }}
 </template>
 
@@ -38,6 +40,7 @@ defineProps({
   description: String,
   icon: String,
   type: String,
+  isLoading: Boolean,
 })
 </script>
 

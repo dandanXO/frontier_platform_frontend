@@ -201,8 +201,14 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                           :disabled="otpBlockedUI.isBlocked && otpBlockedUI.blockReason === OneTimePasswordStatusBlockReasonEnum.OTP_EXPIRED"
                           class="max-w-[18.75rem]"
                         )
-                        p(v-if="counts.attempt" class="text-xs text-red-500-v1") {{ $t('WW0199', { otpAttempt: counts.attempt, otpAttemptLeft: maxCounts.attempt - counts.attempt }) }}
-                        p(v-if="counts.resend" class="text-xs text-green-500-v1") {{ $t('WW0197', { attempt: counts.resend, attemptRemain: maxCounts.resend - counts.resend }) }}
+                        p(
+                          v-if="!isOtpValid && counts.attempt"
+                          class="text-xs text-red-500-v1"
+                        ) {{ $t('WW0199', { otpAttempt: counts.attempt, otpAttemptLeft: maxCounts.attempt - counts.attempt }) }}
+                        p(
+                          v-if="!isOtpValid && counts.resend"
+                          class="text-xs text-green-500-v1"
+                        ) {{ $t('WW0197', { attempt: counts.resend, attemptRemain: maxCounts.resend - counts.resend }) }}
                       f-button(
                         :disabled="disableResend"
                         class="py-1.5 flex justify-center items-center !font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm disabled:bg-grey-400-v1"
@@ -230,6 +236,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
     :description="$t('MA0016')"
     icon="verification_mail"
     type="success"
+    :isLoading="toggling2FA"
   )
   Modal2FA(
     :isShowModal="isShowTurnOffModal"
@@ -241,6 +248,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
     :title="$t('MA0018')"
     :description="$t('MA0019')"
     type="danger"
+    :isLoading="toggling2FA"
   )
 </template>
 
@@ -258,6 +266,7 @@ import { TOOLTIP_PLACEMENT, VERSION } from '@frontier/constants'
 import { useNotifyStore } from '@/stores/notify'
 import { logout, redirectAfterLogout } from '@/utils/auth'
 import { OneTimePasswordStatusBlockReasonEnum } from '@frontier/platform-web-sdk'
+import { resendTimeLs } from '@/utils/storage'
 
 type Timeout = ReturnType<typeof setTimeout>
 
@@ -298,8 +307,7 @@ const maxCounts = ref<{ attempt: number; resend: number }>({
 
 const isVerifying = ref(false)
 const isShowOTPInput = ref(false)
-
-const mockPasswordLastChangedDate = 1733048100
+const toggling2FA = ref(false)
 const resendTime = ref(Date.now() + 60000)
 const is2FaEnabledLocal = ref(false)
 const availableToChangePassword = computed(
@@ -425,6 +433,9 @@ const removeCountdown = () => {
   clearInterval(countdownInterval.value)
   disableResend.value = false
   countdown.value = '0:00'
+  const newResendTime = 0
+  resendTimeLs.value = newResendTime
+  resendTime.value = newResendTime
 }
 
 const otpBlockedUI = ref<{
@@ -447,25 +458,20 @@ const updateOtpStatus = (otpStatus: any) => {
   }
 }
 
-const getResendTime = () => {
-  const resendTime = parseInt(localStorage.getItem('r_tm') || '0')
-  return resendTime
-    ? resendTime > Date.now()
-      ? resendTime
-      : Date.now()
-    : Date.now() + 60000
-}
-
 const updateResendTime = (endTime: number) => {
-  localStorage.setItem('r_tm', endTime.toString())
-  resendTime.value = endTime
+  const storedResendTime = Number(resendTimeLs.value) || 0
+  const currentTime = Date.now()
+  const newResendTime =
+    storedResendTime > currentTime ? storedResendTime : endTime
+  resendTimeLs.value = newResendTime
+  resendTime.value = newResendTime
 }
 
 const onResend = async () => {
+  disableResend.value = true
   const data = await store.dispatch('user/resendOTP')
   updateResendTime(Date.now() + 60000)
   updateOtpStatus(data.otpStatus)
-  disableResend.value = true
   startResendCountdown()
 }
 
@@ -483,6 +489,7 @@ const closeModal = () => {
 }
 
 const handleTurnOn2FA = async () => {
+  toggling2FA.value = true
   const data = await store.dispatch('user/enableOTP', {
     otp: null,
   })
@@ -491,6 +498,7 @@ const handleTurnOn2FA = async () => {
   is2FaEnabledLocal.value = true
   isShowOTPInput.value = data.otpStatus.mustPass2Fa
   closeModal()
+  toggling2FA.value = false
   if (!data.otpStatus.mustPass2Fa) {
     store.dispatch('helper/pushModalAuthentication')
   } else {
@@ -500,10 +508,12 @@ const handleTurnOn2FA = async () => {
 }
 
 const handleTurnOff2FA = async () => {
+  toggling2FA.value = true
   await store.dispatch('user/disableOTP')
   is2FaEnabledLocal.value = false
   isShowOTPInput.value = false
   closeModal()
+  toggling2FA.value = false
   notify.showNotifySnackbar({
     messageText: t('WW0203'),
     version: VERSION.V2,
@@ -544,10 +554,5 @@ watch(otpCode, (value) => {
 
 onMounted(() => {
   is2FaEnabledLocal.value = user.value.is2FaEnabled
-  const _resendTime = getResendTime()
-  resendTime.value = _resendTime
-
-  localStorage.setItem('r_tm', _resendTime.toString())
-  startResendCountdown()
 })
 </script>
