@@ -10,6 +10,7 @@ import i18n from '@frontier/i18n'
 import { putBinaryData } from '@/utils/fileUpload'
 import Material from '@/store/reuseModules/material.js'
 import { useNotifyStore } from '@/stores/notify'
+import { accessToken } from '@/utils/storage'
 
 export default {
   namespaced: true,
@@ -709,7 +710,7 @@ export default {
       }
       const data = {
         materialId,
-        accessToken: localStorage.getItem('accessToken'),
+        accessToken: accessToken.value,
       }
       if (type === 'org') {
         data['orgId'] = id

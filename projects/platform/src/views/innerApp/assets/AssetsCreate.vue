@@ -154,6 +154,7 @@ import {
   fileOptionId,
 } from '@frontier/constants'
 import UploadArea from '@/components/assets/UploadArea.vue'
+import { hasShownWelcomeModal } from '@/utils/storage'
 
 type option = '2d_file' | '3d_file' | 'Spreadsheet'
 
@@ -243,13 +244,11 @@ const checkAndShowWelcomeModal = () => {
   if (uploadPageUseBothUi.value) {
     return
   }
-  const hasShownWelcomeModal = localStorage.getItem('hasShownWelcomeModal')
-  if (!hasShownWelcomeModal) {
+  if (!hasShownWelcomeModal.value) {
     if (isNewOrgId.value) {
       openWelcomeModal(isNewOrgId.value ? 'new' : 'old')
     }
-
-    localStorage.setItem('hasShownWelcomeModal', 'true')
+    hasShownWelcomeModal.value = true
   }
 }
 const openWelcomeModal = (type: 'old' | 'new') => {

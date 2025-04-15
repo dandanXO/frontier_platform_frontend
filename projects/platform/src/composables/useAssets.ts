@@ -21,6 +21,7 @@ import type { PropsModalHowToScan } from '@/components/assets/ModalHowToScan.vue
 import type { PropsModalWorkspaceNodeList } from '@/components/workspace/ModalWorkspaceNodeList.vue'
 import type { PropsModalU3mDownload } from '@/components/common/material/u3m/ModalU3mDownload.vue'
 import Modal3dQuotaExceeded from '@/components/assets/Modal3dQuotaExceeded.vue'
+import { haveReadU3mInstruction } from '@/utils/storage'
 
 export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
@@ -397,13 +398,13 @@ export default function useAssets() {
         return
       }
 
-      if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+      if (haveReadU3mInstruction.value === 'y') {
         store.dispatch('helper/openModalBehavior', {
           component: 'modal-u3m-preview',
           properties: { material },
         })
       } else {
-        localStorage.setItem('haveReadU3mInstruction', 'y')
+        haveReadU3mInstruction.value = 'y'
         store.dispatch('helper/openModalBehavior', {
           component: 'modal-u3m-instruction',
           properties: {

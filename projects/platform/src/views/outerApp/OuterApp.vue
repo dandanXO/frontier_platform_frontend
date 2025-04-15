@@ -51,6 +51,7 @@ import { useOuterStore } from '@/stores/outer'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { OUTER_TYPE } from '@/utils/constants'
+import { accessToken, refreshToken } from '@/utils/storage'
 
 const route = useRoute()
 const store = useStore()
@@ -115,12 +116,14 @@ window.onmessage = (e) => {
   const { method, params } = e.data
 
   if (method === 'setToken') {
-    const { accessToken, refreshToken } = params
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('refreshToken', refreshToken)
+    const { accessToken: accessTokenVal, refreshToken: refreshTokenVal } =
+      params
+
+    accessToken.value = accessTokenVal
+    refreshToken.value = refreshTokenVal
   } else if (method === 'clearToken') {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    accessToken.value = null
+    refreshToken.value = null
   }
 }
 </script>

@@ -9,6 +9,7 @@ import {
 import i18n from '@frontier/i18n'
 import dayjs from 'dayjs'
 import generateContentComponent from '@/utils/generateContentComponent'
+import { accessToken } from '@/utils/storage'
 
 const state = () => ({
   worker: null,
@@ -230,7 +231,7 @@ const actions = {
       api,
       params: {
         apiEndPoint: import.meta.env.VITE_APP_API_ENDPOINT,
-        token: localStorage.getItem('accessToken'),
+        token: accessToken.value,
         body,
       },
     })

@@ -1,9 +1,10 @@
 import { config } from 'vue-gtag'
 import { resetTracker } from '@frontier/lib'
+import { accessToken, refreshToken } from '@/utils/storage'
 
 export const logout = () => {
-  localStorage.removeItem('accessToken')
-  localStorage.removeItem('refreshToken')
+  accessToken.value = null
+  refreshToken.value = null
   config({
     user_id: null,
   })

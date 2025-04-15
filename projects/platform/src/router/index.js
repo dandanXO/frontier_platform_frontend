@@ -9,6 +9,7 @@ import { OgType } from '@frontier/platform-web-sdk'
 import { resetTracker } from '@frontier/lib'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import { logout, redirectAfterLogout } from '@/utils/auth'
+import { accessToken } from '@/utils/storage'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -52,7 +53,7 @@ const routes = [
     name: 'SignUp',
     component: () => import('@/views/SignUp.vue'),
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('accessToken') !== null) {
+      if (accessToken.value) {
         return next('/')
       }
       next()
@@ -63,7 +64,7 @@ const routes = [
     name: 'SignIn',
     component: () => import('@/views/SignIn.vue'),
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('accessToken') !== null) {
+      if (accessToken.value) {
         return next('/')
       }
       next()

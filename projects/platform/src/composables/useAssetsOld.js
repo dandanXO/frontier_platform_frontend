@@ -4,6 +4,7 @@ import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
+import { haveReadU3mInstruction } from '@/utils/storage'
 
 const toMaterialList = (material) =>
   Array.isArray(material) ? material : [material]
@@ -182,12 +183,12 @@ export default function useAssetsOld() {
         })
       }
 
-      if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+      if (haveReadU3mInstruction.value === 'y') {
         store.dispatch('helper/openModalBehavior', {
           component: 'modal-u3m-preview',
         })
       } else {
-        localStorage.setItem('haveReadU3mInstruction', 'y')
+        haveReadU3mInstruction.value = 'y'
         store.dispatch('helper/openModalBehavior', {
           component: 'modal-u3m-instruction',
           properties: {

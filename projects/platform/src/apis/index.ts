@@ -4,6 +4,7 @@ import store from '@/store'
 import i18n from '@frontier/i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { resetTracker } from '@frontier/lib'
+import { accessToken, refreshToken } from '@/utils/storage'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
@@ -24,8 +25,7 @@ const options = {
 const instance = Axios.create(options)
 
 instance.interceptors.request.use((request) => {
-  const accessToken = localStorage.getItem('accessToken')
-  request.headers!.Authorization = `Bearer ${accessToken}`
+  request.headers!.Authorization = `Bearer ${accessToken.value}`
   return request
 })
 
@@ -70,13 +70,13 @@ instance.interceptors.response.use(
       result &&
       Object.prototype.hasOwnProperty.call(data.result, 'accessToken')
     ) {
-      localStorage.setItem('accessToken', result.accessToken)
+      accessToken.value = result.accessToken
     }
     if (
       result &&
       Object.prototype.hasOwnProperty.call(data.result, 'refreshToken')
     ) {
-      localStorage.setItem('refreshToken', result.refreshToken)
+      refreshToken.value = result.refreshToken
     }
 
     if (status === 200 && !success) {
@@ -134,8 +134,8 @@ instance.interceptors.response.use(
     }
 
     if (status === 401) {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      accessToken.value = null
+      refreshToken.value = null
       const query: {
         [key: string]: any
       } = {}

@@ -21,6 +21,7 @@ import {
   TRACKER_ADDITIONAL_PROPERTIES,
   track,
 } from '@frontier/lib'
+import { accessToken } from '@/utils/storage'
 
 export const useAssetsStore = defineStore('assets', () => {
   const store = useStore()
@@ -214,7 +215,7 @@ export const useAssetsStore = defineStore('assets', () => {
       accessToken: string | null
     } = {
       materialId,
-      accessToken: localStorage.getItem('accessToken'),
+      accessToken: accessToken.value,
     }
 
     if (type === 'org') {

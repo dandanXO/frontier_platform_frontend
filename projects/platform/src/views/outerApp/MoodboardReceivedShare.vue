@@ -56,6 +56,7 @@ import type {
   GetMoodboardShareReceivedInfo200ResponseAllOfResultMoodboardShare,
 } from '@frontier/platform-web-sdk'
 import type { PropsModalChooseSavePlace } from '@/components/common/ModalChooseSavePlace.vue'
+import { accessToken, refreshToken } from '@/utils/storage'
 
 const props = defineProps<{
   sharingKey: string
@@ -107,8 +108,8 @@ const saveReceivedShare = async () => {
       primaryBtnText: t('UU0031'),
       secondaryBtnText: t('UU0106'),
       secondaryBtnHandler: () => {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+        accessToken.value = null
+        refreshToken.value = null
         router.push({
           name: 'SignIn',
           query: {

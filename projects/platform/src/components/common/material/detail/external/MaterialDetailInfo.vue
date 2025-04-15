@@ -224,6 +224,7 @@ import { useRoute } from 'vue-router'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
 import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
+import { accessToken } from '@/utils/storage'
 
 const props = defineProps<{
   material: Material
@@ -290,7 +291,7 @@ const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
 
   if (needCheckTokenStatus) {
     const status = await store.dispatch('checkTokenStatus', {
-      accessToken: localStorage.getItem('accessToken'),
+      accessToken: accessToken.value,
     })
 
     if (status === 1) {
