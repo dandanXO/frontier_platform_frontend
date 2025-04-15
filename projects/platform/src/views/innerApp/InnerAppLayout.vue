@@ -13,9 +13,10 @@
 
 <template lang="pug">
 div(class="h-full flex overflow-x-hidden w-screen")
-  sidebar(class="flex-shrink-0")
-  main(class="flex-grow flex flex-col min-w-0 relative")
+  sidebar(clas="flex-shrink-0")
+  main(class="flex-grow flex flex-col min-w-0 relative bg-primary")
     modal-pipeline
+    assets-header(v-if="$route.name === ROUTE_NAMES.ASSETS")
     router-view(
       v-if="isReloadInnerApp"
       :key="$route.name?.toString() + $route.path"
@@ -32,7 +33,7 @@ div(class="h-full flex overflow-x-hidden w-screen")
             f-svg-icon(iconName="loading" size="92" class="text-primary-500")
     notify-bar-buffer(
       v-if="isInInnerApp && planStatus.BUFFER"
-      :key="String($route.params.orgNo)"
+      :key="$route.params.orgNo.toString()"
       class="flex-shrink-0"
     )
     modal-announcement(v-if="isInInnerApp && user.isShowAnnouncement")

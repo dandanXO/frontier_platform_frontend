@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full h-fit flex flex-col px-8 py-8 gap-8 bg-primary">
+  <div
+    class="w-full h-fit flex flex-col px-8 py-8 gap-8 bg-primary"
+    data-theme="new"
+  >
     <f-search-bar
       :keyword="keyword"
       @typing="typing"

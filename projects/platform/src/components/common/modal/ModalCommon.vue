@@ -9,31 +9,27 @@ div(
     :class="[classModal, noPadding ? '' : 'p-6']"
   )
     div(
-      class="flex flex-col bg-primary rounded-xl shadow-32 p-6 gap-6"
-      :class="classModal"
+      v-if="usingHeader"
+      class="flex flex-row justify-between gap-2 pb-6"
+      :class="title ? 'border-b border-grey-250' : ''"
     )
-      div(
-        v-if="usingHeader"
-        class="flex flex-row justify-between gap-2 pb-6"
-        :class="title ? 'border-b border-grey-250' : ''"
+      p(class="text-h5 font-bold text-primary-inverse") {{ title }}
+      f-svg-icon(
+        v-if="closable"
+        iconName="clear"
+        size="24"
+        class="justify-self-end cursor-pointer text-primary-inverse"
+        @click="onClose"
       )
-        p(class="text-h5 font-bold text-primary-inverse") {{ title }}
-        f-svg-icon(
-          v-if="closable"
-          iconName="clear"
-          size="24"
-          class="justify-self-end cursor-pointer text-primary-inverse"
-          @click="onClose"
-        )
-      component(:is="body" v-bind="properties")
-    transition
-      f-alert(
-        v-if="isShowAlert"
-        v-bind="alertProps"
-        class="absolute left-0 right-0 top-full mt-4"
-        @mouseenter="clearTimer"
-        @mouseleave="setTimer"
-      )
+    component(:is="body" v-bind="properties")
+  transition
+    f-alert(
+      v-if="isShowAlert"
+      v-bind="alertProps"
+      class="absolute left-0 right-0 top-full mt-4"
+      @mouseenter="clearTimer"
+      @mouseleave="setTimer"
+    )
 </template>
 
 <script setup lang="ts">
