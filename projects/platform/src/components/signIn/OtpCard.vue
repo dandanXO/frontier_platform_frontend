@@ -14,7 +14,7 @@ div(class="w-105 flex flex-col")
     template(v-else)
       div(class="flex flex-col gap-2 text-center")
         p(class="text-2xl font-bold") {{ $t('VC0001') }}
-        div(class="text-sm" v-if="email")
+        div(class="text-sm" v-if="email && showButtonResend")
           p {{ $t('VC0002') }}
           p {{ email }}
 
@@ -55,6 +55,11 @@ import {
 } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
 import InputOtp from '../common/InputOTP.vue'
+
+const DISABLED_BUTTON_RESET_ERRORS: OneTimePasswordStatusBlockReasonEnum[] = [
+  OneTimePasswordStatusBlockReasonEnum.MAX_INPUT_ATTEMPT,
+  OneTimePasswordStatusBlockReasonEnum.MAX_RESEND_ATTEMPT,
+]
 
 const props = defineProps<{
   email?: string
@@ -113,18 +118,13 @@ const blockReason = computed(() => {
   return ''
 })
 
-const showButtonResend = computed(() => {
-  if (
-    blockReasonType.value ===
-      OneTimePasswordStatusBlockReasonEnum.MAX_INPUT_ATTEMPT &&
-    blockReasonType.value ===
-      OneTimePasswordStatusBlockReasonEnum.MAX_INPUT_ATTEMPT
-  ) {
-    return false
-  }
-
-  return true
-})
+const showButtonResend = computed(
+  () =>
+    !(
+      blockReasonType.value &&
+      DISABLED_BUTTON_RESET_ERRORS.includes(blockReasonType.value)
+    )
+)
 
 let countdownInterval: NodeJS.Timer
 
@@ -183,6 +183,7 @@ const onResend = async () => {
       updateOtpStatus(data.otpStatus)
       isResendNow.value = !data.otpStatus.isBlocked
     }
+    isOtpValid.value = true
 
     startCountdown()
   } catch (error) {
