@@ -12,20 +12,29 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
         tr
           td(class="border-b border-grey-200-v1 w-48 pl-6 py-5")
             p(class="text-sm text-secondary") {{ $t('MM0002') }}
-          td(class="border-b border-grey-200-v1 pl-4 pr-6 py-5")
-            div(
-              class="flex gap-2 justify-between items-center border p-3 rounded-[4px] border-grey-400 focus-within:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]"
-            )
-              input(
-                class="w-full outline-none text-sm leading-6"
-                type="text"
-                v-model="displayName"
+          td(
+            class="border-b border-grey-200-v1 pl-4 pr-6"
+            :class="isDisplayNameEmpty ? 'py-7' : 'py-5'"
+          )
+            div(class="relative")
+              div(
+                class="flex gap-2 justify-between items-center border p-3 rounded-[4px] border-grey-400 focus-within:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]"
               )
-              f-button(
-                @click="updateDisplayName"
-                :disabled="!displayName"
-                class="min-w-24 px-3 py-1 font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm leading-6"
-              ) {{ $t('UU0018') }}
+                input(
+                  class="w-full outline-none text-sm leading-6"
+                  type="text"
+                  v-model="displayName"
+                )
+                f-button(
+                  @click="updateDisplayName"
+                  :disabled="isDisplayNameEmpty"
+                  class="min-w-24 px-3 py-1 font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm leading-6"
+                ) {{ $t('UU0018') }}
+              p(
+                v-if="isDisplayNameEmpty"
+                class="text-caption text-red-400 leading-1.3 whitespace-nowrap absolute bottom-[-1.2rem] pl-2"
+                data-cy="hintError"
+              ) {{ $t('WW0002') }}
         tr
           td(class="w-48 pl-6 py-5 align-top")
             p(class="text-sm text-secondary") {{ $t('MA0004') }}
@@ -317,6 +326,7 @@ const availableToChangePassword = computed(
     isPasswordValid.value &&
     isPasswordCorrect.value
 )
+const isDisplayNameEmpty = computed(() => displayName.value.trim() === '')
 
 const fetchMemberList = async () => {
   const routeLocation = store.getters['helper/routeLocation']
