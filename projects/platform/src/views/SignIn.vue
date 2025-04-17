@@ -11,6 +11,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50" data-t
       v-if="needPass2FA"
       :email="currentEmail"
       :isFromGoogle="isFromGoogle"
+      :blockReasonType="blockReasonType"
     )
     sign-in-card(
       v-else
@@ -48,9 +49,11 @@ const { nextAfterSignIn } = useNavigation()
 const needPass2FA = ref(false)
 const isFromGoogle = ref(false)
 const currentEmail = ref<string>()
+const blockReasonType = ref<OneTimePasswordStatus['blockReason']>()
 
 const onLogin = async (otpStatus?: OneTimePasswordStatus) => {
   otpStatus?.mustPass2Fa ? (needPass2FA.value = true) : await nextAfterSignIn()
+  blockReasonType.value = otpStatus?.blockReason
 
   store.dispatch('helper/closeModalLoading')
 }

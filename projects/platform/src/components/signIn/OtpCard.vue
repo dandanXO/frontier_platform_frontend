@@ -64,6 +64,7 @@ const DISABLED_BUTTON_RESET_ERRORS: OneTimePasswordStatusBlockReasonEnum[] = [
 const props = defineProps<{
   email?: string
   isFormGoogle?: boolean
+  blockReasonType?: OneTimePasswordStatus['blockReason']
 }>()
 
 const store = useStore()
@@ -72,7 +73,10 @@ const { t } = useI18n()
 
 const otpInputs = ref(Array(6).fill(''))
 const otpCode = ref('')
-const blockReasonType = ref<OneTimePasswordStatusBlockReasonEnum | null>()
+const blockReasonType = ref<OneTimePasswordStatus['blockReason']>(
+  props.blockReasonType
+)
+
 const maxCounts = ref<{ attempt: number; resend: number }>({
   attempt: 5,
   resend: 5,
@@ -233,6 +237,13 @@ watch(otpCode, (value) => {
     validateOtp()
   }
 })
+
+watch(
+  () => props.blockReasonType,
+  (newBlockReasonType) => {
+    blockReasonType.value = newBlockReasonType ?? null
+  }
+)
 
 onMounted(() => {
   startCountdown()

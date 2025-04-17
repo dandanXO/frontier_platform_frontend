@@ -222,7 +222,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                         :disabled="disableResend"
                         class="py-1.5 flex justify-center items-center !font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm disabled:bg-grey-400-v1"
                         @click="onResend"
-                      ) {{ $t('UU0051') }} ({{ countdown }})
+                      ) {{ $t('UU0051') }} {{ countdown }}
               div(
                 v-else
                 class="w-full bg-green-50-v1 flex gap-4 items-center justify-center p-8 rounded-lg"
@@ -301,7 +301,7 @@ const otpInputs = ref(Array(6).fill(''))
 const isOtpValid = ref(false)
 const otpCode = ref('')
 const countdownInterval = ref<Timeout>()
-const countdown = ref('0:00')
+const countdown = ref('')
 const disableResend = ref(true)
 
 const counts = ref({
@@ -431,9 +431,12 @@ const startResendCountdown = () => {
   countdownInterval.value = setInterval(() => {
     const now = Date.now()
     const distance = resendTime.value - now > 0 ? resendTime.value - now : 0
-    countdown.value = dayjs.unix(Math.floor(distance / 1000)).format('m:ss')
+    countdown.value = `(${dayjs
+      .unix(Math.floor(distance / 1000))
+      .format('m:ss')})`
     if (distance <= 0) {
       clearInterval(countdownInterval.value)
+      countdown.value = ''
       disableResend.value = false
     }
   }, 1000)
@@ -442,7 +445,7 @@ const startResendCountdown = () => {
 const removeCountdown = () => {
   clearInterval(countdownInterval.value)
   disableResend.value = false
-  countdown.value = '0:00'
+  countdown.value = ''
   const newResendTime = 0
   resendTimeLs.value = newResendTime
   resendTime.value = newResendTime
