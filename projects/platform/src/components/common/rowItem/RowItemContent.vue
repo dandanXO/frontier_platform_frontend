@@ -173,7 +173,7 @@ div(class="grid gap-x-14 grid-cols-2 col-span-8")
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, toRef } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { FUNC_ID } from '@/utils/constants'
@@ -219,6 +219,8 @@ const innerSelectedList = computed({
   set: (v) => emit('update:selectedList', v),
 })
 
+// track prop material reactively
+const materialRef = toRef(props, 'material')
 const {
   currentSideType,
   switchSideType,
@@ -228,18 +230,18 @@ const {
   colorInfo,
   carbonEmissionInfo,
   scanImageStatus,
-} = useMaterial(ref(props.material))
+} = useMaterial(materialRef)
 
 const showMoreButtons = reactive({
   publicTagList: true,
   privateTagList: true,
 })
 
-const tempPublicTagList = props.material.tagInfo.tagList.join(', ') ?? ''
-const publicTagList = ref(tempPublicTagList)
-
-const tempPrivateTagList = props.material.internalInfo?.tagList.join(', ') ?? ''
-const privateTagList = ref(tempPrivateTagList)
+// derive tag lists so they recompute on material change
+const publicTagList = computed(() => props.material.tagInfo.tagList.join(', '))
+const privateTagList = computed(
+  () => props.material.internalInfo?.tagList.join(', ') ?? ''
+)
 
 const handleShowMore = (key: string) => {
   showMoreButtons[key as keyof typeof showMoreButtons] = false
@@ -255,7 +257,18 @@ const pricing = computed(() => {
 
 const SIDE_COVER = 0
 const isShowOriginalCoverImage = ref(true)
-const currentCoverImage = ref(props.material.coverImage?.displayUrl)
+// compute cover image dynamically on prop or toggle change
+const currentCoverImage = computed(() => {
+  if (isShowOriginalCoverImage.value) {
+    return props.material.coverImage?.displayUrl ?? null
+  }
+  if (currentSideType.value === MATERIAL_SIDE_TYPE.FACE) {
+    // cast sideImage to any to access thumbnailUrl
+    return (props.material.faceSide?.sideImage as any)?.thumbnailUrl ?? null
+  }
+  // cast sideImage to any to access thumbnailUrl
+  return (props.material.backSide?.sideImage as any)?.thumbnailUrl ?? null
+})
 type SideType = MATERIAL_SIDE_TYPE | typeof SIDE_COVER
 const innerSideOptionList = computed(() => {
   return [
@@ -281,17 +294,8 @@ const innerSwitchSideType = (sideType: SideType) => {
   if (sideType !== SIDE_COVER) {
     switchSideType(sideType)
     isShowOriginalCoverImage.value = false
-
-    if (currentSideType.value === MATERIAL_SIDE_TYPE.FACE) {
-      currentCoverImage.value =
-        (props.material.faceSide?.sideImage?.thumbnailUrl as string) ?? null
-    } else if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
-      currentCoverImage.value =
-        (props.material.backSide?.sideImage?.thumbnailUrl as string) ?? null
-    }
   } else {
     isShowOriginalCoverImage.value = true
-    currentCoverImage.value = props.material.coverImage?.thumbnailUrl
   }
 }
 
