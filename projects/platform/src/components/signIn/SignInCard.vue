@@ -22,7 +22,7 @@ div(class="w-105 flex flex-col gap-5")
           type="text"
           class="self-end w-fit underline font-semibold"
           size="sm"
-          @click="openModalForgotPasswordEmail"
+          @click.prevent="openModalForgotPasswordEmail"
         ) {{ $t('AA0095') }}
     f-button(
       size="lg"
