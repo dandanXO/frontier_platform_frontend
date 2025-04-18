@@ -76,7 +76,7 @@ modal-behavior(
             p(class="col-span-4") {{ constructionProperty.value }}
         //- Construction CustomProperty
         div(
-          v-if="specificationInfo.constructionCustomPropertyList && specificationInfo.constructionCustomPropertyList.value.length > 0"
+          v-if="specificationInfo.constructionCustomPropertyList && specificationInfo.constructionCustomPropertyList.value?.length > 0"
           class="grid gap-y-2"
           :class="specificationInfo.constructionCustomPropertyList.textColor"
         )

@@ -232,6 +232,6 @@ const toggleExpand = (ogId) => {
   sessionStorage.setItem('expandedState', JSON.stringify(expandedState.value))
 }
 onUnmounted(() => {
-  store.dispatch('polling/stopPollingSidebar')
+  // store.dispatch('polling/stopPollingSidebar')
 })
 </script>

@@ -72,7 +72,7 @@ const materialInfoForDisplay = {
         ? [constructionType.name]
         : []
 
-    if (descriptionList.length > 0) {
+    if (descriptionList?.length > 0) {
       valueInArray.push(...descriptionList.map(({ name }) => name))
     }
     return {
@@ -87,7 +87,7 @@ const materialInfoForDisplay = {
   contentList: (contentList: MaterialSideAllOfContentList[]) => ({
     name: t('RR0021'),
     value: contentList
-      .map((content) => `${content.percentage}% ${content.name}`)
+      ?.map((content) => `${content.percentage}% ${content.name}`)
       .join(', '),
   }),
   materialType: (isComposite: boolean, materialType: MaterialType) => {
@@ -122,7 +122,7 @@ const materialInfoForDisplay = {
       }
 
       if (
-        descriptionList.length > 0 &&
+        descriptionList?.length > 0 &&
         materialOption.isPrintMaterialDescription
       ) {
         stringList.push(

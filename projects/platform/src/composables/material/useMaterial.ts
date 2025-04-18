@@ -354,7 +354,7 @@ export default function useMaterial(
           return {
             ...materialInfoForDisplay.materialType(
               isComposite,
-              sideWithoutMiddleSide.materialType
+              sideWithoutMiddleSide?.materialType
             ),
             textColor: getTextColor(true, false, true),
           }
@@ -362,25 +362,25 @@ export default function useMaterial(
         constructionType: getConstructionType(sideWithoutMiddleSide),
         construction: {
           ...materialInfoForDisplay.construction(
-            sideWithoutMiddleSide.materialType,
-            sideWithoutMiddleSide.construction ?? {}
+            sideWithoutMiddleSide?.materialType,
+            sideWithoutMiddleSide?.construction ?? {}
           ),
-          isPublic: sideWithoutMiddleSide.construction?.isPublic ?? false,
+          isPublic: sideWithoutMiddleSide?.construction?.isPublic ?? false,
           textColor: getTextColor(
-            sideWithoutMiddleSide.construction?.isPublic ?? false,
+            sideWithoutMiddleSide?.construction?.isPublic ?? false,
             false,
             true
           ),
         },
         constructionCustomPropertyList: {
           ...materialInfoForDisplay.constructionCustomPropertyList(
-            sideWithoutMiddleSide.constructionCustomPropertyList
+            sideWithoutMiddleSide?.constructionCustomPropertyList
           ),
           textColor: getTextColor(true, false, true),
         },
         contentList: {
           ...materialInfoForDisplay.contentList(
-            sideWithoutMiddleSide.contentList
+            sideWithoutMiddleSide?.contentList
           ),
           textColor: getTextColor(true, false, true),
         },
@@ -434,7 +434,7 @@ export default function useMaterial(
     const side = currentSide.value as MaterialSide
     return {
       name: t('RR0026'),
-      value: side.colorInfo,
+      value: side?.colorInfo,
     }
   })
   const patternInfo = computed(() => {
@@ -445,7 +445,7 @@ export default function useMaterial(
     const side = currentSide.value as MaterialSide
     return {
       name: t('RR0025'),
-      value: side.patternInfo,
+      value: side?.patternInfo,
     }
   })
 

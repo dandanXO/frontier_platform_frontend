@@ -19,7 +19,7 @@ div(class="grid gap-y-1.5 w-full")
           p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
     template(v-else-if="key === 'constructionCustomPropertyList'")
       div(
-        v-if="specificationInfo.constructionCustomPropertyList && specificationInfo.constructionCustomPropertyList.value.length > 0"
+        v-if="specificationInfo.constructionCustomPropertyList && specificationInfo.constructionCustomPropertyList.value?.length > 0"
         class="w-full grid gap-y-1.5"
       )
         div(
