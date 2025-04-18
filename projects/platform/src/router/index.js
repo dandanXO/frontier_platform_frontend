@@ -94,7 +94,10 @@ const routes = [
     name: 'AppRoot',
     component: () => import('@/views/PassThrough.vue'),
     beforeEnter: async (to, from, next) => {
-      await store.dispatch('user/getUser')
+      // fetch user only if not already loaded
+      if (!store.getters['user/user'].email) {
+        await store.dispatch('user/getUser')
+      }
       next()
     },
     children: [
@@ -149,29 +152,30 @@ const routes = [
     name: 'InnerAppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: [
+      // fetch user only if not already loaded
       async (to, from, next) => {
-        await store.dispatch('user/getUser')
+        if (!store.getters['user/user'].email) {
+          await store.dispatch('user/getUser')
+        }
         next()
       },
       checkUserIsVerify,
       checkOrgIsInactive,
       async (to, from, next) => {
-        await store.dispatch('organization/getOrg', {
-          orgNo: to.params.orgNo,
-        })
-
-        const apiList = [
-          'organization/orgUser/getOrgUser',
-          'organization/getPricing',
-        ]
-
-        if (to.params.orgNo && !from.params.orgNo) {
-          apiList.push('polling/getSidebar')
+        // only fetch organization when switching orgNo
+        const currentOrgNo = store.getters['organization/orgNo']
+        if (currentOrgNo !== to.params.orgNo) {
+          await store.dispatch('organization/getOrg', {
+            orgNo: to.params.orgNo,
+          })
         }
 
-        await Promise.all(
-          apiList.map((actionPath) => store.dispatch(actionPath))
-        )
+        // fire-and-forget non-critical calls
+        store.dispatch('organization/orgUser/getOrgUser')
+        store.dispatch('organization/getPricing')
+        if (to.params.orgNo && !from.params.orgNo) {
+          store.dispatch('polling/startPollingSidebar')
+        }
 
         const org = store.getters['organization/organization']
         const orgUser = store.getters['organization/orgUser/orgUser']

@@ -4,7 +4,6 @@ div(class="grid")
     class="justify-self-center my-3.5 w-[min(calc(100vw_-_40px),800px)] h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5"
   )
     div(class="flex-grow flex items-center" data-cy="search-box")
-    
       f-svg-icon(
         v-if="!keyword"
         class="pr-1 text-grey-250"
@@ -74,10 +73,7 @@ div(class="grid")
           v-if="searchType === SEARCH_TYPE.ASSETS"
           @search="handleSearch"
         )
-        filter-country(
-          v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
-          @search="handleSearch"
-        )
+        filter-country(v-if="usingCountryFilter" @search="handleSearch")
 </template>
 
 <script setup lang="ts">
@@ -110,7 +106,7 @@ interface InnerTag extends SearchAITag {
   isSelected: boolean
 }
 
-defineProps<{
+const props = defineProps<{
   searchType: SEARCH_TYPE
 }>()
 
@@ -148,6 +144,9 @@ const selectTag = (tag: InnerTag) => {
 }
 
 const debounceSearchAITag = debounce(searchStore.getAITags, 300)
+const usingCountryFilter = computed(() =>
+  [SEARCH_TYPE.ASSETS, SEARCH_TYPE.INNER_EXTERNAL].includes(props.searchType)
+)
 
 const typing = (e: Event) => {
   const target = e.target as HTMLInputElement

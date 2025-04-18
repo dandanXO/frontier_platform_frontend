@@ -224,6 +224,7 @@ import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
 // Permission hook
 interface PermissionsAPI {
   hasPermission: (permissionId: string | number) => boolean
+  permissionList: number[]
 }
 const usePermissions = (): PermissionsAPI => {
   const store = useStore()
@@ -231,8 +232,13 @@ const usePermissions = (): PermissionsAPI => {
   const permissionList = PERMISSION_MAP[roleId] || []
   return {
     hasPermission: (permissionId: string | number): boolean => {
-      return permissionList.includes(permissionId)
+      const id =
+        typeof permissionId === 'string'
+          ? parseInt(permissionId, 10)
+          : permissionId
+      return permissionList.includes(id)
     },
+    permissionList,
   }
 }
 
@@ -250,25 +256,7 @@ const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail, goToAssets } =
   useNavigation()
-const { hasPermission } = usePermissions()
-const roleId = store.getters['organization/orgUser/orgUser'].roleID
-const permissionList = PERMISSION_MAP[roleId]
-const clickMaterialItemHandler = (materialId: number) => {
-  if (selectedMaterialList.value.length === 0) {
-    goToAssetMaterialDetail({}, materialId)
-  } else {
-    store.dispatch('helper/openModalConfirm', {
-      type: NOTIFY_TYPE.WARNING,
-      header: t('EE0178'),
-      contentText: t('EE0179'),
-      primaryBtnText: t('UU0001'),
-      primaryBtnHandler: () => {
-        goToAssetMaterialDetail({}, materialId)
-      },
-      secondaryBtnText: t('UU0002'),
-    })
-  }
-}
+const { hasPermission, permissionList } = usePermissions()
 
 const isLoading = ref(false)
 const isSlimMaterialsLoading = ref(false)
@@ -356,14 +344,10 @@ const parseSlimMaterial = (material: any): Material => ({
 })
 
 const displayedMaterialList = computed(() => {
-  const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
-  if (!isAnyLoading) {
-    return materialList.value
-  }
-  if (slimMaterialList.value.length > 0) {
-    return slimMaterialList.value.map(parseSlimMaterial)
-  }
-  return materialList.value.length > 0 ? materialList.value : []
+  // Show slim list while full list is loading, otherwise show full list
+  return isLoading.value
+    ? slimMaterialList.value.map(parseSlimMaterial)
+    : materialList.value
 })
 
 const getMaterialList = async (
@@ -372,52 +356,43 @@ const getMaterialList = async (
   >,
   query: RouteQuery
 ) => {
-  // Reset slim and full material list when starting a new search to avoid showing stale data
+  // Clear previous results and set loading flags
   slimMaterialList.value = []
   materialList.value = []
-
-  isLoading.value = true
   isSlimMaterialsLoading.value = true
+  isLoading.value = true
 
-  const requestInfo = {
-    fullMaterialCanceled: false,
-    slimMaterialCanceled: false,
-  }
-
-  // Update URL and check if it was actually changed
+  // Update URL parameters and return early if unchanged
   const updated = updateUrlWithSearchParams(query)
   if (updated) {
-    isLoading.value = false
     isSlimMaterialsLoading.value = false
+    isLoading.value = false
     return
   }
 
-  await Promise.allSettled([
-    assetsStore
-      .getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.fullMaterialCanceled = true
-        }
-        throw error
-      }),
-    assetsStore
-      .getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
-      .then((response) => {
-        if (!requestInfo.slimMaterialCanceled) {
-          isSlimMaterialsLoading.value = false
-        }
-        return response
-      })
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.slimMaterialCanceled = true
-        }
-        throw error
-      }),
-  ])
+  // Fetch slim list first for quick initial display
+  try {
+    await assetsStore.getAssetsMaterialSlimList(
+      payload as SearchPayload<AssetsFilter>
+    )
+  } catch (error: any) {
+    if (error?.name !== 'CanceledError') {
+      console.error('Error fetching slim material list', error)
+    }
+  } finally {
+    isSlimMaterialsLoading.value = false
+  }
 
-  if (!requestInfo.fullMaterialCanceled) {
+  // Fetch full list and replace slim items when done
+  try {
+    await assetsStore.getAssetsMaterialList(
+      payload as SearchPayload<AssetsFilter>
+    )
+  } catch (error: any) {
+    if (error?.name !== 'CanceledError') {
+      console.error('Error fetching full material list', error)
+    }
+  } finally {
     isLoading.value = false
   }
 }

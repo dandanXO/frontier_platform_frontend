@@ -273,6 +273,12 @@ export interface AssetsFilter {
      * @memberof AssetsFilter
      */
     'status': AssetsFilterStatusEnum | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetsFilter
+     */
+    'priceCountryOriginList': Array<string>;
 }
 
 export const AssetsFilterStatusEnum = {
