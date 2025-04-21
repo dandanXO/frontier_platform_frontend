@@ -1,10 +1,10 @@
 <template lang="pug">
 div(
   ref="step2Ref"
-  class="fixed top-0 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
+  class="fixed -top-3.5 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
 )
   div(
-    class="w-80 h-60 bg-grey-0 rounded-lg relative flex overflow-hidden absolute -top-[100px]"
+    class="w-120 h-60 bg-grey-0 rounded-lg relative flex overflow-hidden absolute -top-[100px]"
   )
     div(class="flex-grow p-4")
       div(class="flex flex-col")
