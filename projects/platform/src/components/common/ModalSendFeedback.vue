@@ -15,12 +15,22 @@ modal-behavior(
       :fileSizeMaxLimit="fileSizeMaxLimit"
     )
   div(class="w-94")
+    f-input-text(
+      v-if="props.showEmail"
+      ref="emailInput"
+      v-model:textValue="formData.email"
+      :label="$t('AA0002')"
+      :placeholder="$t('AA0002')"
+      required
+      class="mb-6"
+      :rules="[$inputRules.required(), $inputRules.email()]"
+    )
     f-select-dropdown(
       v-model:selectValue="formData.category"
       :dropdownMenuTree="categoryMenuTree"
       :label="$t('MM0007')"
       :placeholder="$t('MM0008')"
-      class="pb-5"
+      class="mb-6"
       required
     )
     f-input-textarea(
@@ -72,28 +82,39 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { v4 as uuidv4 } from 'uuid'
 
-interface Props {
-  title?: string
-  category?: number
-}
+const props = defineProps({
+  showEmail: {
+    type: Boolean,
+    default: false,
+  },
+  category: {
+    type: Number,
+    default: null,
+  },
+})
 
-const props = defineProps<Props>()
-
+const emailInput = ref()
 const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
 const tempFeedbackId = uuidv4()
 const formData = reactive({
+  email: '',
   category: props.category ?? null,
   comment: '',
 })
 const feedbackAttachmentList = ref([])
 const errorCode = ref('')
 
-const actionBtnDisabled = computed(
-  () => !formData.category || !formData.comment
-)
+const actionBtnDisabled = computed(() => {
+  return (
+    emailInput?.value?.isError ||
+    !formData.comment ||
+    (props.showEmail && !formData.email) ||
+    !formData.category
+  )
+})
 
 const categoryMenuTree = computed(() => ({
   width: 'w-94',

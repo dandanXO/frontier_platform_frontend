@@ -2,7 +2,7 @@ export const emailFormat = (v: string | null | undefined) => {
   if (v == null) {
     return false
   }
-  return /.+@.+/gi.test(v)
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gi.test(v)
 }
 
 export const required = (v: unknown) => {

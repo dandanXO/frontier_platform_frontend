@@ -134,8 +134,8 @@ const actions = {
     const { data } = await userApi.updateUserProfile({ firstName, lastName })
     dispatch('setUser', data.result.user)
   },
-  async sendFeedback(_, { tempFeedbackId, category, comment }) {
-    await userApi.sendFeedback({ tempFeedbackId, category, comment })
+  async sendFeedback(_, { tempFeedbackId, category, comment, email }) {
+    await userApi.sendFeedback({ tempFeedbackId, category, comment, email })
   },
   async sendFeedbackAttachment(_, { tempFeedbackId, file }) {
     const { data } = await userApi.sendFeedbackAttachment({

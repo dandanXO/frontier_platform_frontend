@@ -120,12 +120,13 @@ export default {
     tempFeedbackId,
     category,
     comment,
+    email,
   }: {
     [key: string]: string
   }) =>
     axios('/user/feedback/send', {
       method: 'POST',
-      data: { tempFeedbackId, category, comment },
+      data: { tempFeedbackId, category, comment, email },
     }),
   sendFeedbackAttachment: async ({
     tempFeedbackId,
