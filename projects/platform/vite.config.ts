@@ -60,7 +60,6 @@ export default ({ mode }) => ({
   },
   build: {
     sourcemap: process.env.NODE_ENV === 'development',
-    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
