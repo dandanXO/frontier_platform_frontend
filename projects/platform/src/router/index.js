@@ -170,8 +170,8 @@ const routes = [
           })
         }
 
-        // fire-and-forget non-critical calls
-        store.dispatch('organization/orgUser/getOrgUser')
+        // important api to get permission need wait it
+        await store.dispatch('organization/orgUser/getOrgUser')
         store.dispatch('organization/getPricing')
         if (to.params.orgNo && !from.params.orgNo) {
           store.dispatch('polling/startPollingSidebar')
