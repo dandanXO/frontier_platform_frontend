@@ -19,25 +19,37 @@ div(v-if="version == 'v1'" class="grid pt-1.5 gap-y-1.5 text-caption leading-non
       class="ml-0.5 text-grey-600"
     )
 div(v-if="version == 'v2'")
-  div(class="flex gap-1 items-center")
-    f-svg-icon(
-      :iconName="containsLetter ? (moreThanSix && lessThanEighteen ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
-      size="16"
-      :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
-    )
-    p(
-      class="text-xs"
-      :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
-    ) {{ $t('MM0028') }} {{ containsLetter }}
-    f-svg-icon(
-      :iconName="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
-      size="16"
-      :class="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
-    )
-    p(
-      class="text-xs"
-      :class="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
-    ) {{ $t('AA0020') }}
+  div(class="flex flex-col gap-1 items-start")
+    div(class="flex flex-row gap-1 items-center")
+      f-svg-icon(
+        :iconName="containsLetter ? (moreThanSix && lessThanEighteen ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
+        size="16"
+        :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+      )
+      p(
+        class="text-xs"
+        :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+      ) {{ $t('MM0028') }} {{ containsLetter }}
+    div(class="flex flex-row gap-1 items-center")
+      f-svg-icon(
+        :iconName="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
+        size="16"
+        :class="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+      )
+      p(
+        class="text-xs"
+        :class="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
+      ) {{ $t('AA0020') }}
+    div(class="flex flex-row gap-1 items-center" v-if="checkOldAndNewPassword")
+      f-svg-icon(
+        :iconName="containsLetter ? (isSameAsOldPassword ? 'cancel_outline' : 'check_circle_outline') : 'check_circle_outline'"
+        size="16"
+        :class="containsLetter ? (isSameAsOldPassword ? 'text-red-500-v1' : 'text-green-500-v1') : 'text-grey-600-v1'"
+      )
+      p(
+        class="text-xs"
+        :class="containsLetter ? (isSameAsOldPassword ? 'text-red-500-v1' : 'text-green-500-v1') : 'text-grey-600-v1'"
+      ) {{ $t('AA0097') }}
 </template>
 
 <script>
@@ -57,6 +69,14 @@ export default {
     version: {
       type: String,
       default: 'v1',
+    },
+    oldPassword: {
+      type: String,
+      default: '',
+    },
+    checkOldAndNewPassword: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:isValid'],
@@ -78,7 +98,12 @@ export default {
       }
       return props.password.length <= 999
     })
-
+    const isSameAsOldPassword = computed(() => {
+      if (props.checkOldAndNewPassword) {
+        return props.oldPassword === props.password
+      }
+      return true
+    })
     watch(
       () => props.password,
       () => {
@@ -94,6 +119,7 @@ export default {
     )
 
     return {
+      isSameAsOldPassword,
       containsLetter,
       containsNumber,
       containsSpecialChar,

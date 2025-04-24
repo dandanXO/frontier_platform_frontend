@@ -109,8 +109,10 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                 PasswordValidator(
                   v-model:isValid="isPasswordValid"
                   :password="newPassword"
+                  :oldPassword="currentPassword"
                   class="pt-1"
                   version="v2"
+                  check-old-and-new-password
                 )
                 f-button(
                   :disabled="!availableToChangePassword"
