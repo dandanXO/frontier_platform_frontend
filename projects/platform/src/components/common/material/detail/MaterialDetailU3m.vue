@@ -43,7 +43,7 @@ div
         :isMultiple="false"
         :status="selectedU3m.status"
         :hasPhysicalData="selectedU3m?.hasPhysicalData ?? false"
-        :hasZfab="selectedU3m.zfab?.status === ZfabStatus.COMPLETED"
+        :hasZfab="selectedU3m.zfab?.status === ZfabStatus.COMPLETED && !!selectedU3m.zfab.url"
         @download="downloadHandler"
       )
     material-u3m-status-block(v-if="showStatusBlock" :u3m="selectedU3m")

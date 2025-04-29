@@ -86,7 +86,7 @@ div(class="grid gap-y-8 content-start")
     )
     div(class="flex items-center gap-x-3")
       div(
-        v-for="option in u3mDownloadOptionList"
+        v-for="option in u3mDownloadOptions"
         :key="option.title"
         class="group px-2 py-3 h-11 box-content rounded bg-grey-150 flex-1 flex flex-col justify-between"
         :class="{ 'cursor-pointer': selectedU3m.status === MaterialU3mStatus.COMPLETED }"
@@ -212,6 +212,7 @@ import {
   type MaterialCustomU3m,
   MaterialU3mStatus,
   type Material,
+  ZfabStatus,
 } from '@frontier/platform-web-sdk'
 import useLogSender from '@/composables/useLogSender'
 import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
@@ -275,6 +276,19 @@ const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() =>
     : props.material.customU3m
 )
 
+const u3mDownloadOptions = computed(() =>
+  u3mDownloadOptionList.value.filter((option) => {
+    if (option.format === U3M_DOWNLOAD_PROP.ZFAB) {
+      return (
+        selectedU3m.value.zfab?.status === ZfabStatus.COMPLETED &&
+        !!selectedU3m.value.zfab.url
+      )
+    }
+
+    return true
+  })
+)
+
 const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
   if (selectedU3m.value.status !== MaterialU3mStatus.COMPLETED) {
     return
@@ -313,7 +327,15 @@ const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
     return
   }
 
-  const url = selectedU3m.value[format]!
+  const url =
+    format === U3M_DOWNLOAD_PROP.ZFAB
+      ? selectedU3m.value.zfab?.url
+      : selectedU3m.value[format]
+  if (!url) {
+    return console.error(
+      `url for ${props.material.materialId} and ${format} is not found`
+    )
+  }
   const fileName = url.split('/')[url.split('/').length - 1]
   downloadDataURLFile(url, fileName)
   logSender.createDownloadLog(props.material.materialId, format)

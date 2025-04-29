@@ -50,6 +50,11 @@ const useU3mDownloadTabs = () => {
       format: U3M_DOWNLOAD_PROP.GLTF,
       tooltipMessage: t('MI0135'),
     },
+    {
+      title: t('UU0189'),
+      format: U3M_DOWNLOAD_PROP.ZFAB,
+      tooltipMessage: t('MI0158'),
+    },
   ])
 
   return {

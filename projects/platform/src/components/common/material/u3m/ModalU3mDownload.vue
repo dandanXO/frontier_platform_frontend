@@ -28,7 +28,7 @@ modal-behavior(
       class="my-3"
       :isMultiple="isMultiple"
       :hasPhysicalData="hasPhysicalData"
-      :hasZfab="materialU3mDownloadItemList[0].u3m.zfab?.status === ZfabStatus.COMPLETED"
+      :hasZfab="materialU3mDownloadItemList[0].u3m.zfab?.status === ZfabStatus.COMPLETED && !!materialU3mDownloadItemList[0].u3m.zfab?.url"
       :status="status"
       @download="downloadHandler"
     )
