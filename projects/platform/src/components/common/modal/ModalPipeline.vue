@@ -1,6 +1,6 @@
 <template lang="pug">
 template(v-if="modalPipeline.length > 0")
-  template(v-for="modal in modalPipeline")
+  template(v-for="modal in modalPipeline" :key="modal.options.component")
     template(v-if="modal.type === MODAL_TYPE.MODAL")
       suspense
         modal(v-bind="modal.options" :key="modal.options.component")
@@ -325,6 +325,9 @@ export default {
     ),
     ModalWelcome2: defineAsyncComponent(() =>
       import('@/components/common/ModalWelcome2.vue')
+    ),
+    ModalEmailContact: defineAsyncComponent(() =>
+      import('@/components/common/ModalEmailContact.vue')
     ),
   },
   setup() {

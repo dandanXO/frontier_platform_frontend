@@ -7,7 +7,7 @@ button(
   f-svg-icon(
     v-if="prependIcon !== ''"
     :iconName="prependIcon"
-    :class="[animation ? 'animation-circle' : '']"
+    :class="[animation ? 'animation-circle' : '', 'mt-0.5']"
   )
   slot
   f-svg-icon(v-if="postpendIcon !== ''" :iconName="postpendIcon" class="self-center")

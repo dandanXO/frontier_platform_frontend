@@ -6,6 +6,7 @@ material-detail-external-inner(
   :publishedDate="nodeMeta.publicDate ?? undefined"
   @clone="publicLibraryClone([nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
   :forceEnableDownloadU3M="true"
+  :showReachOutEmailCategory="reachOutEmailCategory.PublicLibraryDetailPage"
 )
 </template>
 
@@ -17,6 +18,7 @@ import useNavigation from '@/composables/useNavigation'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import { usePublicLibraryStore } from '@/stores/publicLibrary'
 import { useSearchStore } from '@/stores/search'
+import { reachOutEmailCategory } from '@/utils/constants'
 
 const props = defineProps<{
   nodeId: string

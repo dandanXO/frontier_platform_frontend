@@ -19,6 +19,13 @@ export const ROLE_ID = {
   GUEST: 7, // in use
 }
 
+export const reachOutEmailCategory = {
+  PublicLibraryDetailPage: 1,
+  SharedDetailPage: 2,
+  EmbededDetailPage: 3,
+  ExternalDetailPage: 4,
+}
+
 export const INVALID_IMAGE_CODE = {
   INVALID_DIMENSION: 1,
   INVALID_FILE_SIZE: 2,

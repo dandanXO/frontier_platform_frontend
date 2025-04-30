@@ -75,6 +75,8 @@ search-table(
         :node="node"
         :optionList="optionNode"
         @click:node="handleNodeClick(node, visit)"
+        showReachOutEmail
+        :showReachOutEmailCategory="reachOutEmailCategory.SharedDetailPage"
       )
         template(#title-right-icon)
           tooltip-location(
@@ -97,7 +99,7 @@ import SearchTable, {
   type RouteQuery,
   type SearchPayload,
 } from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { SEARCH_TYPE, reachOutEmailCategory } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'

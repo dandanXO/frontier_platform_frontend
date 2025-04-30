@@ -128,6 +128,27 @@ export default {
       method: 'POST',
       data: { tempFeedbackId, category, comment, email },
     }),
+  contactSend: ({
+    category,
+    frontierNo,
+    message,
+    email,
+  }: {
+    category: string
+    frontierNo: string
+    message: string
+    email: string
+  }) => {
+    return axios('/user/contact/send', {
+      method: 'POST',
+      data: {
+        category,
+        frontierNo,
+        message,
+        email,
+      },
+    })
+  },
   sendFeedbackAttachment: async ({
     tempFeedbackId,
     file,

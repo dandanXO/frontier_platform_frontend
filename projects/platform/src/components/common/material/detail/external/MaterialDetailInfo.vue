@@ -43,7 +43,10 @@ div(class="grid gap-y-8 content-start")
         @click="openModalIndicatorMethodology"
       )
         f-svg-icon(iconName="info_outline" size="14")
-    div(class="flex flex-wrap gap-x-4 gap-y-2")
+    div(
+      class="flex flex-wrap gap-x-4 gap-y-2"
+      v-if="Object.keys(carbonEmissionInfo.carbonEmission).length > 0"
+    )
       div(
         v-for="property in carbonEmissionInfo.carbonEmission"
         class="flex items-center gap-x-1"
@@ -107,12 +110,19 @@ div(class="grid gap-y-8 content-start")
           :class="[selectedU3m.status === MaterialU3mStatus.COMPLETED ? 'text-grey-900 group-hover:text-primary-400' : 'text-grey-300']"
         )
   //- Sticker
+  //- f-button(
+  //-   v-if="drawerOpenFromLocationList"
+  //-   prependIcon="sticker_thread"
+  //-   size="md"
+  //-   class="w-full -mt-2"
+  //-   @click="store.dispatch('sticker/preOpenStickerDrawer', { material, drawerOpenFromLocationList })"
+  //- ) {{ $t('UU0141') }}ConversationOld
+  //- email contact
   f-button(
-    v-if="drawerOpenFromLocationList"
-    prependIcon="sticker_thread"
+    prependIcon="contact_mail"
     size="md"
     class="w-full -mt-2"
-    @click="store.dispatch('sticker/preOpenStickerDrawer', { material, drawerOpenFromLocationList })"
+    @click="openEmailModal"
   ) {{ $t('UU0141') }}
   //- Specifications
   div(class="text-grey-900 text-body2/1.6 grid gap-y-2")
@@ -226,19 +236,21 @@ import MultimediaCard from '@/components/common/material/multimedia/MultimediaCa
 import useU3mDownloadTabs from '@/composables/material/useU3mDownloadTabs'
 import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
 import { accessToken } from '@/utils/storage'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps<{
   material: Material
   publishedDate?: number
   isCanDownloadU3M: boolean
   drawerOpenFromLocationList?: string[]
+  showReachOutEmailCategory?: number
 }>()
 
 const { t } = useI18n()
+const userStore = useUserStore()
 const store = useStore()
 const logSender = useLogSender()
 const route = useRoute()
-
 const { specificationInfo, carbonEmissionInfo, scanImageStatus } = useMaterial(
   ref(props.material)
 )
@@ -396,6 +408,18 @@ const disabledTooltipErrorMessage = () => {
   } else {
     return true
   }
+}
+async function openEmailModal() {
+  await userStore.checkHasLogin()
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-email-contact',
+    properties: {
+      metaData: props.material.metaData,
+      showEmail: userStore.hasLogin,
+      material: material.value,
+      showReachOutEmailCategory: props.showReachOutEmailCategory,
+    },
+  })
 }
 
 onMounted(async () => {

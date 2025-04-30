@@ -51,6 +51,7 @@ div(class="w-full mx-auto rwd-outer-external-container")
         :publishedDate="shareInfo?.shareDate"
         :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
         :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
+        :showReachOutEmailCategory="showReachOutEmailCategory"
       )
 </template>
 
@@ -66,6 +67,7 @@ defineProps<{
   material: Material
   nodeMeta: NodeMeta
   locationList: { name: string; goTo: () => void }[]
+  showReachOutEmailCategory?: number
 }>()
 
 const { isDesktop } = useBreakpoints()

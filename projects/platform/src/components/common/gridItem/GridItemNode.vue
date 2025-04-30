@@ -14,7 +14,7 @@ grid-item-wrapper(
     div(class="w-full h-full rounded-md border-grey-250 overflow-hidden bg-cover")
       img(
         v-defaultImg
-        :src="mainMaterial.coverImage?.thumbnailUrl"
+        :src="mainMaterial.coverImage?.thumbnailUrl ?? undefined"
         class="w-full h-full object-contain"
       )
   template(#hover-content)
@@ -28,11 +28,19 @@ grid-item-wrapper(
         :class="{ 'font-bold': index === 0 }"
         class="text-body2 line-clamp-1"
       ) {{ info }}
-  template(#corner-top-right)
-    digital-thread-entrance(
-      :material="mainMaterial"
-      :drawerOpenFromLocationList="node.nodeMeta.locationList.map((l) => l.name)"
+
+    f-tooltip-standard(
+      v-if="showReachOutEmail"
+      @click.stop="openEmailModal"
+      :tooltipMessage="$t('FF0096')"
+      class="z-11 absolute top-2 right-2 cursor-pointer rounded bg-grey-0 hover:bg-grey-100 flex items-center justify-start gap-x-2 p-1 overflow-hidden text-green-500-v1 border border-green-200-v1"
     )
+      template(#slot:tooltip-trigger)
+        div(class="flex items- gap-x-2 min-w-0")
+          f-svg-icon(iconName="contact_mail" size="20")
+
+  template(#corner-top-right)
+    slot(name="corner-top-right")
   template(#corner-bottom-left)
     slot(name="corner-bottom-left")
   template(#title-right-icon)
@@ -74,6 +82,7 @@ import { NodeType } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import { useUserStore } from '@/stores/user'
 
 const props = withDefaults(
   defineProps<{
@@ -84,8 +93,11 @@ const props = withDefaults(
       | FunctionOption<NodeChild>[][]
       | FunctionOption<ShareNodeChild>[][]
     testId?: string
+    showReachOutEmail?: boolean
+    showReachOutEmailCategory: number
   }>(),
   {
+    showReachOutEmail: false,
     isSelectable: true,
   }
 )
@@ -93,7 +105,7 @@ const emit = defineEmits<{
   (e: 'update:selectedValue', v: NodeChild[] | ShareNodeChild[]): void
   (e: 'click:node', v: NodeChild | ShareNodeChild): void
 }>()
-
+const userStore = useUserStore()
 const store = useStore()
 const nodeType = computed(() => props.node.nodeMeta.nodeType)
 const collection = computed(() =>
@@ -178,5 +190,19 @@ const preventClickWhenSelectText = (e: Event) => {
   }
 
   return true
+}
+
+// Opens the Reach Out modal
+async function openEmailModal() {
+  await userStore.checkHasLogin()
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-email-contact',
+    properties: {
+      node: props.node,
+      showEmail: userStore.hasLogin,
+      material: mainMaterial.value,
+      showReachOutEmailCategory: props.showReachOutEmailCategory,
+    },
+  })
 }
 </script>

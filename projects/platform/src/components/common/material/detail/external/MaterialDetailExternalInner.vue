@@ -42,6 +42,7 @@ div
           :publishedDate="publishedDate"
           :isCanDownloadU3M="forceEnableDownloadU3M ? true : nodeMeta.isCanDownloadU3M"
           :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
+          :showReachOutEmailCategory="showReachOutEmailCategory"
         )
 </template>
 
@@ -57,6 +58,7 @@ defineProps<{
   locationList: { name: string; goTo: () => void }[]
   publishedDate?: number
   forceEnableDownloadU3M?: { type: boolean; default: false }
+  showReachOutEmailCategory?: number
 }>()
 
 defineEmits<{ (e: 'clone'): void }>()

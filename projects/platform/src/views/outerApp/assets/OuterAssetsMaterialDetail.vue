@@ -39,12 +39,17 @@ div(v-if="material" class="w-full mx-auto rwd-outer-external-container")
         //- Item No
         h4(class="text-h4 text-grey-900 font-bold") {{ material.itemNo }}
       //- Material Info
-      material-detail-info(:material="material" :isCanDownloadU3M="false")
+      material-detail-info(
+        :material="material"
+        :isCanDownloadU3M="false"
+        :showReachOutEmailCategory="reachOutEmailCategory.ExternalDetailPage"
+      )
 </template>
 
 <script setup lang="ts">
 import MaterialDetailExternalImage from '@/components/common/material/detail/external/MaterialDetailExternalImage.vue'
 import MaterialDetailInfo from '@/components/common/material/detail/external/MaterialDetailInfo.vue'
+import { reachOutEmailCategory } from '@/utils/constants'
 import { computed, watch } from 'vue'
 import { useOuterStore } from '@/stores/outer'
 import { useUserStore } from '@/stores/user'

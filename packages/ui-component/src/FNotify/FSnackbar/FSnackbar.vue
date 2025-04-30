@@ -45,7 +45,7 @@ transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
       :class="[getContainerPaddingY, version === VERSION.V2 && bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor, version === VERSION.V2 ? 'w-[512px] items-center rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16  px-4']"
     )
       div(
-        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 flex items-center justify-center' : ''"
+        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 min-w-10 flex items-center justify-center' : ''"
       )
         f-svg-icon(
           :iconName="NOTIFY_TYPE_ICON[notifyType]"

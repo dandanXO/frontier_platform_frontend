@@ -3,6 +3,7 @@ material-detail-external-outer(
   :material="material"
   :nodeMeta="nodeMeta"
   :locationList="locationList"
+  :showReachOutEmailCategory="reachOutEmailCategory.EmbededDetailPage"
 )
 </template>
 
@@ -12,6 +13,7 @@ import { useOuterStore } from '@/stores/outer'
 import { useSearchStore } from '@/stores/search'
 import useNavigation from '@/composables/useNavigation'
 import MaterialDetailExternalOuter from '@/components/common/material/detail/external/MaterialDetailExternalOuter.vue'
+import { reachOutEmailCategory } from '@/utils/constants'
 
 const props = defineProps<{
   sharingKey: string

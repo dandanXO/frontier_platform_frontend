@@ -36,6 +36,8 @@ search-table(
         v-model:selectedValue="selectedNodeList"
         :node="node"
         @click:node="handleNodeClick(node, visit)"
+        showReachOutEmail
+        :showReachOutEmailCategory="reachOutEmailCategory.SharedDetailPage"
       )
         template(#corner-bottom-left)
           f-svg-icon(
@@ -52,7 +54,7 @@ import SearchTable, {
   type SearchPayload,
 } from '@/components/common/SearchTable.vue'
 import { computed, ref } from 'vue'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { SEARCH_TYPE, reachOutEmailCategory } from '@/utils/constants'
 import { useRoute, useRouter } from 'vue-router'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'

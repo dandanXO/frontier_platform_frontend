@@ -3,6 +3,7 @@ material-detail-external-outer(
   :material="material"
   :nodeMeta="nodeMeta"
   :locationList="locationList"
+  :showReachOutEmailCategory="reachOutEmailCategory.SharedDetailPage"
 )
 </template>
 
@@ -14,6 +15,7 @@ import MaterialDetailExternalOuter from '@/components/common/material/detail/ext
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { checkU3mImageExist } from '@/utils/3dViewer/checkU3mImageExist'
+import { reachOutEmailCategory } from '@/utils/constants'
 
 const router = useRouter()
 

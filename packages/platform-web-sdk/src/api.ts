@@ -517,44 +517,6 @@ export interface BaseBookmark {
 
 
 /**
- * 基底加工段資料請求模型。
- * @export
- * @interface BaseProcessDataRequest
- */
-export interface BaseProcessDataRequest {
-    /**
-     * 加工段類型。
-     * @type {ProcessType}
-     * @memberof BaseProcessDataRequest
-     */
-    'processType': ProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof BaseProcessDataRequest
-     */
-    'electricityKWh': number | null;
-}
-/**
- * 基底加工段資料回應模型。
- * @export
- * @interface BaseProcessDataResponse
- */
-export interface BaseProcessDataResponse {
-    /**
-     * 加工段類型。
-     * @type {ProcessType}
-     * @memberof BaseProcessDataResponse
-     */
-    'processType'?: ProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof BaseProcessDataResponse
-     */
-    'electricityKWh'?: number;
-}
-/**
  * @type BookmarkListInner
  * @export
  */
@@ -646,92 +608,6 @@ export interface CancelMaterialUploadProgressRequest {
 }
 
 
-/**
- * 表示單一加工段的碳排放詳細資訊回應模型。
- * @export
- * @interface CarbonEmissionDetailResponseModel
- */
-export interface CarbonEmissionDetailResponseModel {
-    /**
-     * 加工段類型。
-     * @type {ProcessType}
-     * @memberof CarbonEmissionDetailResponseModel
-     */
-    'processType'?: ProcessType;
-    /**
-     * 碳排放（kg-CO₂e/kg）。
-     * @type {number}
-     * @memberof CarbonEmissionDetailResponseModel
-     */
-    'carbonEmissionsKgCO2ePerKg'?: number;
-    /**
-     * 最大碳排放（kg-CO₂e/kg）。
-     * @type {number}
-     * @memberof CarbonEmissionDetailResponseModel
-     */
-    'carbonEmissionsMaxKgCO2ePerKg'?: number;
-    /**
-     * 最小碳排放（kg-CO₂e/kg）。
-     * @type {number}
-     * @memberof CarbonEmissionDetailResponseModel
-     */
-    'carbonEmissionsMinKgCO2ePerKg'?: number;
-    /**
-     * 平均碳排放（kg-CO₂e/kg）。
-     * @type {number}
-     * @memberof CarbonEmissionDetailResponseModel
-     */
-    'carbonEmissionsAvgKgCO2ePerKg'?: number;
-}
-/**
- * 表示產品各個加工段的碳排放資訊回應模型。
- * @export
- * @interface CarbonEmissionsResponseModel
- */
-export interface CarbonEmissionsResponseModel {
-    /**
-     * 布片 ID。
-     * @type {number}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'materialId'?: number;
-    /**
-     * 原料加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'rawMaterial'?: CarbonEmissionDetailResponseModel;
-    /**
-     * 紗線加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'yarn'?: CarbonEmissionDetailResponseModel;
-    /**
-     * 紗線處理加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'yarnProcessing'?: CarbonEmissionDetailResponseModel;
-    /**
-     * 編織加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'weaving'?: CarbonEmissionDetailResponseModel;
-    /**
-     * 染色加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'dyeing'?: CarbonEmissionDetailResponseModel;
-    /**
-     * 整理加工段的碳排放資訊。
-     * @type {CarbonEmissionDetailResponseModel}
-     * @memberof CarbonEmissionsResponseModel
-     */
-    'finishing'?: CarbonEmissionDetailResponseModel;
-}
 /**
  * 
  * @export
@@ -3241,75 +3117,6 @@ export type DigitalDrapeStatus = typeof DigitalDrapeStatus[keyof typeof DigitalD
 /**
  * 
  * @export
- * @interface DigitalPlusGetCarbonEmissions200Response
- */
-export interface DigitalPlusGetCarbonEmissions200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DigitalPlusGetCarbonEmissions200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalPlusGetCarbonEmissions200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {CarbonEmissionsResponseModel}
-     * @memberof DigitalPlusGetCarbonEmissions200Response
-     */
-    'result'?: CarbonEmissionsResponseModel;
-    /**
-     * 
-     * @type {object}
-     * @memberof DigitalPlusGetCarbonEmissions200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface DigitalPlusGetProductInfo200Response
- */
-export interface DigitalPlusGetProductInfo200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DigitalPlusGetProductInfo200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DigitalPlusGetProductInfo200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {ProductInfoResponseModel}
-     * @memberof DigitalPlusGetProductInfo200Response
-     */
-    'result'?: ProductInfoResponseModel;
-    /**
-     * 
-     * @type {object}
-     * @memberof DigitalPlusGetProductInfo200Response
-     */
-    'message'?: object | null;
-}
-/**
- * @type DigitalPlusMaterialType
- * Digital+ 布種列舉。
- * @export
- */
-export type DigitalPlusMaterialType = number | string;
-
-/**
- * 
- * @export
  * @interface DigitalThread
  */
 export interface DigitalThread {
@@ -4275,141 +4082,6 @@ export interface DuplicateWorkspaceNodeRequest {
 /**
  * 
  * @export
- * @interface DyeingProcessDataRequest
- */
-export interface DyeingProcessDataRequest {
-    /**
-     * 加工段類型，必須為 \'Dyeing\'。
-     * @type {string}
-     * @memberof DyeingProcessDataRequest
-     */
-    'processType': DyeingProcessDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 退漿（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'desizingKg': number | null;
-    /**
-     * 漂白（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'bleachingKg': number | null;
-    /**
-     * 染色（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'dyeingKg': number | null;
-    /**
-     * 車縫線（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'sewingThreadKg': number | null;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'paperTubeKg': number | null;
-    /**
-     * 水（公升）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'waterL': number | null;
-    /**
-     * 熱煤油（公升）。
-     * @type {number}
-     * @memberof DyeingProcessDataRequest
-     */
-    'thermalOilL': number | null;
-}
-
-export const DyeingProcessDataRequestProcessTypeEnum = {
-    Dyeing: 'Dyeing'
-} as const;
-
-export type DyeingProcessDataRequestProcessTypeEnum = typeof DyeingProcessDataRequestProcessTypeEnum[keyof typeof DyeingProcessDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface DyeingProcessDataResponse
- */
-export interface DyeingProcessDataResponse {
-    /**
-     * 
-     * @type {DyeingProcessDataResponseAllOfProcessType}
-     * @memberof DyeingProcessDataResponse
-     */
-    'processType': DyeingProcessDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'electricityKWh'?: number;
-    /**
-     * 退漿（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'desizingKg'?: number;
-    /**
-     * 漂白（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'bleachingKg'?: number;
-    /**
-     * 染色（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'dyeingKg'?: number;
-    /**
-     * 車縫線（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'sewingThreadKg'?: number;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'paperTubeKg'?: number;
-    /**
-     * 水（公升）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'waterL'?: number;
-    /**
-     * 熱媒油（公升）。
-     * @type {number}
-     * @memberof DyeingProcessDataResponse
-     */
-    'thermalOilL'?: number;
-}
-/**
- * @type DyeingProcessDataResponseAllOfProcessType
- * @export
- */
-export type DyeingProcessDataResponseAllOfProcessType = number | string;
-
-/**
- * 
- * @export
  * @interface EditAssetsMaterialSideImage200Response
  */
 export interface EditAssetsMaterialSideImage200Response {
@@ -4650,7 +4322,13 @@ export interface ExportAssetsMaterialExcelRequest {
      * @type {Array<number>}
      * @memberof ExportAssetsMaterialExcelRequest
      */
-    'materialIdList': Array<number>;
+    'materialIdList'?: Array<number>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'workspaceNodeIdList'?: Array<number>;
 }
 
 
@@ -5282,93 +4960,6 @@ export interface FilterWidthCuttable {
      */
     'isInfinity': boolean;
 }
-/**
- * 
- * @export
- * @interface FinishingProcessDataRequest
- */
-export interface FinishingProcessDataRequest {
-    /**
-     * 加工段類型，必須為 \'Finishing\'。
-     * @type {string}
-     * @memberof FinishingProcessDataRequest
-     */
-    'processType': FinishingProcessDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof FinishingProcessDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 藥劑（公斤）。
-     * @type {number}
-     * @memberof FinishingProcessDataRequest
-     */
-    'chemicalAgentsKg': number | null;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof FinishingProcessDataRequest
-     */
-    'paperTubeKg': number | null;
-    /**
-     * 熱煤油（公升）。
-     * @type {number}
-     * @memberof FinishingProcessDataRequest
-     */
-    'thermalOilL': number | null;
-}
-
-export const FinishingProcessDataRequestProcessTypeEnum = {
-    Finishing: 'Finishing'
-} as const;
-
-export type FinishingProcessDataRequestProcessTypeEnum = typeof FinishingProcessDataRequestProcessTypeEnum[keyof typeof FinishingProcessDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface FinishingProcessDataResponse
- */
-export interface FinishingProcessDataResponse {
-    /**
-     * 
-     * @type {FinishingProcessDataResponseAllOfProcessType}
-     * @memberof FinishingProcessDataResponse
-     */
-    'processType': FinishingProcessDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof FinishingProcessDataResponse
-     */
-    'electricityKWh'?: number;
-    /**
-     * 藥劑（公斤）。
-     * @type {number}
-     * @memberof FinishingProcessDataResponse
-     */
-    'chemicalAgentsKg'?: number;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof FinishingProcessDataResponse
-     */
-    'paperTubeKg'?: number;
-    /**
-     * 熱媒油（公升）。
-     * @type {number}
-     * @memberof FinishingProcessDataResponse
-     */
-    'thermalOilL'?: number;
-}
-/**
- * @type FinishingProcessDataResponseAllOfProcessType
- * @export
- */
-export type FinishingProcessDataResponseAllOfProcessType = number | string;
-
 /**
  * 資料夾型態書籤
  * @export
@@ -19655,68 +19246,6 @@ export interface PrivateShareAccessInfo {
     'accessCode': string;
 }
 /**
- * @type ProcessType
- * 加工段類型列舉。
- * @export
- */
-export type ProcessType = number | string;
-
-/**
- * 產品資訊的回應模型。
- * @export
- * @interface ProductInfoResponseModel
- */
-export interface ProductInfoResponseModel {
-    /**
-     * 布片 ID。
-     * @type {number}
-     * @memberof ProductInfoResponseModel
-     */
-    'materialId'?: number;
-    /**
-     * Digital+ 布種。
-     * @type {DigitalPlusMaterialType}
-     * @memberof ProductInfoResponseModel
-     */
-    'digitalPlusMaterialType'?: DigitalPlusMaterialType;
-    /**
-     * 原料加工段資料。
-     * @type {RawMaterialProcessDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'rawMaterialProcessData'?: RawMaterialProcessDataResponse;
-    /**
-     * 紗線加工段資料。
-     * @type {YarnProcessDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'yarnProcessData'?: YarnProcessDataResponse;
-    /**
-     * 紗線加工資料。
-     * @type {YarnProcessingDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'yarnProcessingData'?: YarnProcessingDataResponse;
-    /**
-     * 織造加工段資料。
-     * @type {WeavingProcessDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'weavingProcessData'?: WeavingProcessDataResponse;
-    /**
-     * 染色加工段資料。
-     * @type {DyeingProcessDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'dyeingProcessData'?: DyeingProcessDataResponse;
-    /**
-     * 整理定型加工段資料。
-     * @type {FinishingProcessDataResponse}
-     * @memberof ProductInfoResponseModel
-     */
-    'finishingProcessData'?: FinishingProcessDataResponse;
-}
-/**
  * 
  * @export
  * @interface ProgressExcelItem
@@ -20133,105 +19662,6 @@ export interface PublishWorkspaceNodeRequest {
     'isCanDownloadU3M': boolean;
 }
 
-
-/**
- * 
- * @export
- * @interface RawMaterialProcessDataRequest
- */
-export interface RawMaterialProcessDataRequest {
-    /**
-     * 加工段類型，必須為 \'RawMaterial\'。
-     * @type {string}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'processType': RawMaterialProcessDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 油劑（公斤）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'oilKg': number | null;
-    /**
-     * 包裝袋（公斤）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'packagingBagsKg': number | null;
-    /**
-     * 水（公升）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'waterL': number | null;
-    /**
-     * 高壓空氣（立方公尺）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataRequest
-     */
-    'compressedAirM3': number | null;
-}
-
-export const RawMaterialProcessDataRequestProcessTypeEnum = {
-    RawMaterial: 'RawMaterial'
-} as const;
-
-export type RawMaterialProcessDataRequestProcessTypeEnum = typeof RawMaterialProcessDataRequestProcessTypeEnum[keyof typeof RawMaterialProcessDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface RawMaterialProcessDataResponse
- */
-export interface RawMaterialProcessDataResponse {
-    /**
-     * 
-     * @type {RawMaterialProcessDataResponseAllOfProcessType}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'processType': RawMaterialProcessDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'electricityKWh'?: number;
-    /**
-     * 油劑（公斤）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'oilKg'?: number;
-    /**
-     * 包裝袋（公斤）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'packagingBagsKg'?: number;
-    /**
-     * 水（公升）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'waterL'?: number;
-    /**
-     * 高壓空氣（立方公尺）。
-     * @type {number}
-     * @memberof RawMaterialProcessDataResponse
-     */
-    'compressedAirM3'?: number;
-}
-/**
- * @type RawMaterialProcessDataResponseAllOfProcessType
- * @export
- */
-export type RawMaterialProcessDataResponseAllOfProcessType = number | string;
 
 /**
  * 
@@ -24553,81 +23983,6 @@ export interface UploadAssetsMaterialSideImageRequestFaceSideImage {
     'original': S3UploadedObject;
 }
 /**
- * 新增或更新產品資訊請求模型。
- * @export
- * @interface UpsertProductInfoRequest
- */
-export interface UpsertProductInfoRequest {
-    /**
-     * 布片 ID。
-     * @type {number}
-     * @memberof UpsertProductInfoRequest
-     */
-    'materialId': number | null;
-    /**
-     * Digital+ 布種。
-     * @type {DigitalPlusMaterialType}
-     * @memberof UpsertProductInfoRequest
-     */
-    'digitalPlusMaterialType': DigitalPlusMaterialType | null;
-    /**
-     * 原料加工段資料。
-     * @type {RawMaterialProcessDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'rawMaterialProcessData': RawMaterialProcessDataRequest | null;
-    /**
-     * 紗線加工段資料。
-     * @type {YarnProcessDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'yarnProcessData': YarnProcessDataRequest | null;
-    /**
-     * 紗線加工資料。
-     * @type {YarnProcessingDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'yarnProcessingData': YarnProcessingDataRequest | null;
-    /**
-     * 織造加工段資料。
-     * @type {WeavingProcessDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'weavingProcessData': WeavingProcessDataRequest | null;
-    /**
-     * 染色加工段資料。
-     * @type {DyeingProcessDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'dyeingProcessData': DyeingProcessDataRequest | null;
-    /**
-     * 整理定型加工段資料。
-     * @type {FinishingProcessDataRequest}
-     * @memberof UpsertProductInfoRequest
-     */
-    'finishingProcessData': FinishingProcessDataRequest | null;
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof UpsertProductInfoRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof UpsertProductInfoRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof UpsertProductInfoRequest
-     */
-    'ogId': number;
-}
-
-
-/**
  * 
  * @export
  * @interface User
@@ -25914,6 +25269,47 @@ export type UserResendVerifyEmailPostRequestSignupSourceTypeEnum = typeof UserRe
 /**
  * 
  * @export
+ * @interface UserSendContactRequest
+ */
+export interface UserSendContactRequest {
+    /**
+     * 1: Public Library Detail Page 2: Shared Detail Page 3: Embeded Detail Page 4: External Detail Page 
+     * @type {number}
+     * @memberof UserSendContactRequest
+     */
+    'category': UserSendContactRequestCategoryEnum;
+    /**
+     * The material frontierNo.
+     * @type {string}
+     * @memberof UserSendContactRequest
+     */
+    'frontierNo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSendContactRequest
+     */
+    'message': string;
+    /**
+     * When user not login, this field is required.
+     * @type {string}
+     * @memberof UserSendContactRequest
+     */
+    'email'?: string;
+}
+
+export const UserSendContactRequestCategoryEnum = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4
+} as const;
+
+export type UserSendContactRequestCategoryEnum = typeof UserSendContactRequestCategoryEnum[keyof typeof UserSendContactRequestCategoryEnum];
+
+/**
+ * 
+ * @export
  * @interface UserSendFeedbackRequest
  */
 export interface UserSendFeedbackRequest {
@@ -26332,153 +25728,6 @@ export type ValueAddedServiceStarTrustStatusIdEnum = typeof ValueAddedServiceSta
 /**
  * 
  * @export
- * @interface WeavingProcessDataRequest
- */
-export interface WeavingProcessDataRequest {
-    /**
-     * 加工段類型，必須為 \'Weaving\'。
-     * @type {string}
-     * @memberof WeavingProcessDataRequest
-     */
-    'processType': WeavingProcessDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'oilKg': number | null;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'paperTubeKg': number | null;
-    /**
-     * 整經油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'warpingOilKg': number | null;
-    /**
-     * 漿紗油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'sizingOilKg': number | null;
-    /**
-     * 併經油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'doublingOilKg': number | null;
-    /**
-     * 整經耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'warpingElectricityKWh': number | null;
-    /**
-     * 漿紗耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'sizingElectricityKWh': number | null;
-    /**
-     * 併經耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataRequest
-     */
-    'doublingElectricityKWh': number | null;
-}
-
-export const WeavingProcessDataRequestProcessTypeEnum = {
-    Weaving: 'Weaving'
-} as const;
-
-export type WeavingProcessDataRequestProcessTypeEnum = typeof WeavingProcessDataRequestProcessTypeEnum[keyof typeof WeavingProcessDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface WeavingProcessDataResponse
- */
-export interface WeavingProcessDataResponse {
-    /**
-     * 
-     * @type {WeavingProcessDataResponseAllOfProcessType}
-     * @memberof WeavingProcessDataResponse
-     */
-    'processType': WeavingProcessDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'electricityKWh'?: number;
-    /**
-     * 油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'oilKg'?: number;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'paperTubeKg'?: number;
-    /**
-     * 整經油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'warpingOilKg'?: number;
-    /**
-     * 漿紗油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'sizingOilKg'?: number;
-    /**
-     * 併經油劑（公斤）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'doublingOilKg'?: number;
-    /**
-     * 整經耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'warpingElectricityKWh'?: number;
-    /**
-     * 漿紗耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'sizingElectricityKWh'?: number;
-    /**
-     * 併經耗電（千瓦．小時）。
-     * @type {number}
-     * @memberof WeavingProcessDataResponse
-     */
-    'doublingElectricityKWh'?: number;
-}
-/**
- * @type WeavingProcessDataResponseAllOfProcessType
- * @export
- */
-export type WeavingProcessDataResponseAllOfProcessType = number | string;
-
-/**
- * 
- * @export
  * @enum {string}
  */
 
@@ -26670,168 +25919,6 @@ export interface WorkspaceNodeMaterial {
      */
     'material': Material;
 }
-/**
- * 
- * @export
- * @interface YarnProcessDataRequest
- */
-export interface YarnProcessDataRequest {
-    /**
-     * 加工段類型，必須為 \'Yarn\'。
-     * @type {string}
-     * @memberof YarnProcessDataRequest
-     */
-    'processType': YarnProcessDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof YarnProcessDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 紡絲油劑（公斤）。
-     * @type {number}
-     * @memberof YarnProcessDataRequest
-     */
-    'spinningOilKg': number | null;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof YarnProcessDataRequest
-     */
-    'paperTubeKg': number | null;
-    /**
-     * 水（公升）。
-     * @type {number}
-     * @memberof YarnProcessDataRequest
-     */
-    'waterL': number | null;
-    /**
-     * 高壓空氣（立方公尺）。
-     * @type {number}
-     * @memberof YarnProcessDataRequest
-     */
-    'compressedAirM3': number | null;
-}
-
-export const YarnProcessDataRequestProcessTypeEnum = {
-    Yarn: 'Yarn'
-} as const;
-
-export type YarnProcessDataRequestProcessTypeEnum = typeof YarnProcessDataRequestProcessTypeEnum[keyof typeof YarnProcessDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface YarnProcessDataResponse
- */
-export interface YarnProcessDataResponse {
-    /**
-     * 
-     * @type {YarnProcessDataResponseAllOfProcessType}
-     * @memberof YarnProcessDataResponse
-     */
-    'processType': YarnProcessDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof YarnProcessDataResponse
-     */
-    'electricityKWh'?: number;
-}
-/**
- * @type YarnProcessDataResponseAllOfProcessType
- * @export
- */
-export type YarnProcessDataResponseAllOfProcessType = number | string;
-
-/**
- * 
- * @export
- * @interface YarnProcessingDataRequest
- */
-export interface YarnProcessingDataRequest {
-    /**
-     * 加工段類型，必須為 \'YarnProcessing\'。
-     * @type {string}
-     * @memberof YarnProcessingDataRequest
-     */
-    'processType': YarnProcessingDataRequestProcessTypeEnum;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof YarnProcessingDataRequest
-     */
-    'electricityKWh': number | null;
-    /**
-     * 加工油劑（公斤）。
-     * @type {number}
-     * @memberof YarnProcessingDataRequest
-     */
-    'processingOilKg': number | null;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof YarnProcessingDataRequest
-     */
-    'paperTubeKg': number | null;
-    /**
-     * 高壓空氣（立方公尺）。
-     * @type {number}
-     * @memberof YarnProcessingDataRequest
-     */
-    'compressedAirM3': number | null;
-}
-
-export const YarnProcessingDataRequestProcessTypeEnum = {
-    YarnProcessing: 'YarnProcessing'
-} as const;
-
-export type YarnProcessingDataRequestProcessTypeEnum = typeof YarnProcessingDataRequestProcessTypeEnum[keyof typeof YarnProcessingDataRequestProcessTypeEnum];
-
-/**
- * 
- * @export
- * @interface YarnProcessingDataResponse
- */
-export interface YarnProcessingDataResponse {
-    /**
-     * 
-     * @type {YarnProcessingDataResponseAllOfProcessType}
-     * @memberof YarnProcessingDataResponse
-     */
-    'processType': YarnProcessingDataResponseAllOfProcessType;
-    /**
-     * 電力（千瓦．小時）。
-     * @type {number}
-     * @memberof YarnProcessingDataResponse
-     */
-    'electricityKWh'?: number;
-    /**
-     * 加工油劑（公斤）。
-     * @type {number}
-     * @memberof YarnProcessingDataResponse
-     */
-    'processingOilKg'?: number;
-    /**
-     * 紙管（公斤）。
-     * @type {number}
-     * @memberof YarnProcessingDataResponse
-     */
-    'paperTubeKg'?: number;
-    /**
-     * 高壓空氣（立方公尺）。
-     * @type {number}
-     * @memberof YarnProcessingDataResponse
-     */
-    'compressedAirM3'?: number;
-}
-/**
- * @type YarnProcessingDataResponseAllOfProcessType
- * @export
- */
-export type YarnProcessingDataResponseAllOfProcessType = number | string;
-
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
@@ -31260,330 +30347,6 @@ export class DashboardApi extends BaseAPI {
      */
     public getDashboard(getDashboardRequest?: GetDashboardRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).getDashboard(getDashboardRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * DigitalPlusApi - axios parameter creator
- * @export
- */
-export const DigitalPlusApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
-         * @summary 取得指定產品的各個加工段碳排放資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusGetCarbonEmissions: async (orgId: number, ogType: OgType, ogId: number, materialId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orgId' is not null or undefined
-            assertParamExists('digitalPlusGetCarbonEmissions', 'orgId', orgId)
-            // verify required parameter 'ogType' is not null or undefined
-            assertParamExists('digitalPlusGetCarbonEmissions', 'ogType', ogType)
-            // verify required parameter 'ogId' is not null or undefined
-            assertParamExists('digitalPlusGetCarbonEmissions', 'ogId', ogId)
-            // verify required parameter 'materialId' is not null or undefined
-            assertParamExists('digitalPlusGetCarbonEmissions', 'materialId', materialId)
-            const localVarPath = `/digital-plus/get-carbon-emissions`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (orgId !== undefined) {
-                localVarQueryParameter['orgId'] = orgId;
-            }
-
-            if (ogType !== undefined) {
-                localVarQueryParameter['ogType'] = ogType;
-            }
-
-            if (ogId !== undefined) {
-                localVarQueryParameter['ogId'] = ogId;
-            }
-
-            if (materialId !== undefined) {
-                localVarQueryParameter['materialId'] = materialId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
-         * @summary 取得產品資訊與加工段資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusGetProductInfo: async (orgId: number, ogType: OgType, ogId: number, materialId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orgId' is not null or undefined
-            assertParamExists('digitalPlusGetProductInfo', 'orgId', orgId)
-            // verify required parameter 'ogType' is not null or undefined
-            assertParamExists('digitalPlusGetProductInfo', 'ogType', ogType)
-            // verify required parameter 'ogId' is not null or undefined
-            assertParamExists('digitalPlusGetProductInfo', 'ogId', ogId)
-            // verify required parameter 'materialId' is not null or undefined
-            assertParamExists('digitalPlusGetProductInfo', 'materialId', materialId)
-            const localVarPath = `/digital-plus/get-product-info`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (orgId !== undefined) {
-                localVarQueryParameter['orgId'] = orgId;
-            }
-
-            if (ogType !== undefined) {
-                localVarQueryParameter['ogType'] = ogType;
-            }
-
-            if (ogId !== undefined) {
-                localVarQueryParameter['ogId'] = ogId;
-            }
-
-            if (materialId !== undefined) {
-                localVarQueryParameter['materialId'] = materialId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
-         * @summary 新增或更新產品資訊。
-         * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusUpsertProductInfo: async (upsertProductInfoRequest?: UpsertProductInfoRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/digital-plus/upsert-product-info`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(upsertProductInfoRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * DigitalPlusApi - functional programming interface
- * @export
- */
-export const DigitalPlusApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = DigitalPlusApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
-         * @summary 取得指定產品的各個加工段碳排放資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalPlusGetCarbonEmissions200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DigitalPlusApi.digitalPlusGetCarbonEmissions']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
-         * @summary 取得產品資訊與加工段資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DigitalPlusGetProductInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DigitalPlusApi.digitalPlusGetProductInfo']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
-         * @summary 新增或更新產品資訊。
-         * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async digitalPlusUpsertProductInfo(upsertProductInfoRequest?: UpsertProductInfoRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.digitalPlusUpsertProductInfo(upsertProductInfoRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DigitalPlusApi.digitalPlusUpsertProductInfo']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * DigitalPlusApi - factory interface
- * @export
- */
-export const DigitalPlusApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = DigitalPlusApiFp(configuration)
-    return {
-        /**
-         * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
-         * @summary 取得指定產品的各個加工段碳排放資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): AxiosPromise<DigitalPlusGetCarbonEmissions200Response> {
-            return localVarFp.digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
-         * @summary 取得產品資訊與加工段資訊。
-         * @param {number} orgId 組織 ID。
-         * @param {OgType} ogType 組織類型。
-         * @param {number} ogId 組織群組 ID。
-         * @param {number} materialId 布片 ID。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig): AxiosPromise<DigitalPlusGetProductInfo200Response> {
-            return localVarFp.digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
-         * @summary 新增或更新產品資訊。
-         * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        digitalPlusUpsertProductInfo(upsertProductInfoRequest?: UpsertProductInfoRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
-            return localVarFp.digitalPlusUpsertProductInfo(upsertProductInfoRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * DigitalPlusApi - object-oriented interface
- * @export
- * @class DigitalPlusApi
- * @extends {BaseAPI}
- */
-export class DigitalPlusApi extends BaseAPI {
-    /**
-     * 此 API 端點接受產品查詢條件，返回該產品各個加工段的碳排放資訊。
-     * @summary 取得指定產品的各個加工段碳排放資訊。
-     * @param {number} orgId 組織 ID。
-     * @param {OgType} ogType 組織類型。
-     * @param {number} ogId 組織群組 ID。
-     * @param {number} materialId 布片 ID。
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DigitalPlusApi
-     */
-    public digitalPlusGetCarbonEmissions(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig) {
-        return DigitalPlusApiFp(this.configuration).digitalPlusGetCarbonEmissions(orgId, ogType, ogId, materialId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 此 API 端點接受產品查詢條件，返回指定產品的詳細資訊和各加工段資料。
-     * @summary 取得產品資訊與加工段資訊。
-     * @param {number} orgId 組織 ID。
-     * @param {OgType} ogType 組織類型。
-     * @param {number} ogId 組織群組 ID。
-     * @param {number} materialId 布片 ID。
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DigitalPlusApi
-     */
-    public digitalPlusGetProductInfo(orgId: number, ogType: OgType, ogId: number, materialId: number, options?: RawAxiosRequestConfig) {
-        return DigitalPlusApiFp(this.configuration).digitalPlusGetProductInfo(orgId, ogType, ogId, materialId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 此 API 端點接受產品資訊的請求模型，根據產品是否已存在，執行新增或更新操作。
-     * @summary 新增或更新產品資訊。
-     * @param {UpsertProductInfoRequest} [upsertProductInfoRequest] 包含產品資訊的請求模型。
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DigitalPlusApi
-     */
-    public digitalPlusUpsertProductInfo(upsertProductInfoRequest?: UpsertProductInfoRequest, options?: RawAxiosRequestConfig) {
-        return DigitalPlusApiFp(this.configuration).digitalPlusUpsertProductInfo(upsertProductInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -45786,6 +44549,40 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @summary 使用者聯絡組織
+         * @param {UserSendContactRequest} [userSendContactRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSendContact: async (userSendContactRequest?: UserSendContactRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/contact/send`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userSendContactRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 回饋反饋
          * @param {UserSendFeedbackRequest} [userSendFeedbackRequest] 
          * @param {*} [options] Override http request option.
@@ -46127,6 +44924,19 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 使用者聯絡組織
+         * @param {UserSendContactRequest} [userSendContactRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userSendContact(userSendContactRequest?: UserSendContactRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userSendContact(userSendContactRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserApi.userSendContact']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 回饋反饋
          * @param {UserSendFeedbackRequest} [userSendFeedbackRequest] 
          * @param {*} [options] Override http request option.
@@ -46332,6 +45142,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
             return localVarFp.userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 使用者聯絡組織
+         * @param {UserSendContactRequest} [userSendContactRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userSendContact(userSendContactRequest?: UserSendContactRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.userSendContact(userSendContactRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -46557,6 +45377,18 @@ export class UserApi extends BaseAPI {
      */
     public userResendVerifyEmailPost(userResendVerifyEmailPostRequest?: UserResendVerifyEmailPostRequest, options?: RawAxiosRequestConfig) {
         return UserApiFp(this.configuration).userResendVerifyEmailPost(userResendVerifyEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 使用者聯絡組織
+     * @param {UserSendContactRequest} [userSendContactRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public userSendContact(userSendContactRequest?: UserSendContactRequest, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).userSendContact(userSendContactRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

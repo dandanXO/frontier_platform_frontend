@@ -81,6 +81,8 @@ div(class="relative")
           :isSelectable="isNode"
           :optionList="optionNode"
           @click:node="handleNodeClick(node, visit)"
+          showReachOutEmail
+          :showReachOutEmailCategory="reachOutEmailCategory.PublicLibraryDetailPage"
         )
           template(#caption v-if="isFirstLayer")
             div(
@@ -103,7 +105,7 @@ import SearchTable, {
   type RouteQuery,
   type SearchPayload,
 } from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { SEARCH_TYPE, reachOutEmailCategory } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'

@@ -35,6 +35,8 @@ search-table(
         :node="node"
         :isSelectable="false"
         @click:node="handleNodeClick(node, visit)"
+        :showReachOutEmail="true"
+        :showReachOutEmailCategory="reachOutEmailCategory.EmbededDetailPage"
       )
 </template>
 
@@ -44,7 +46,7 @@ import SearchTable, {
   type SearchPayload,
 } from '@/components/common/SearchTable.vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { SEARCH_TYPE, reachOutEmailCategory } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref } from 'vue'

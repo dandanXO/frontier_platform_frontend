@@ -33,7 +33,8 @@ div(
           @click="$emit('click:secondary')"
         ) {{ secondaryBtnText }}
         f-button(
-          class="bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110 flex-1 p-2 text-sm !font-bold transition-all"
+          class="bg-green-500-v1 hover:bg-green-500-v1 flex-1 p-2 text-sm !font-bold transition-all"
+          :class="{ 'hover:brightness-110': !primaryBtnDisabled }"
           v-if="primaryBtnText !== ''"
           :theme="theme"
           :size="btnSize"

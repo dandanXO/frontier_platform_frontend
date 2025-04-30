@@ -137,6 +137,18 @@ const actions = {
   async sendFeedback(_, { tempFeedbackId, category, comment, email }) {
     await userApi.sendFeedback({ tempFeedbackId, category, comment, email })
   },
+  /**
+   * Contact form submission.
+   * @param {Object} payload - The contact form payload
+   * @param {string} payload.category - The category of the contact
+   * @param {string} payload.email - The email address of the contact
+   * @param {string} payload.frontierNo - The frontierNo of the contact
+   * @param {string} payload.message - The message content of the contact
+   * @returns {Promise<void>}
+   */
+  async contactSend(_dispatch, payload) {
+    await userApi.contactSend({ ...payload })
+  },
   async sendFeedbackAttachment(_, { tempFeedbackId, file }) {
     const { data } = await userApi.sendFeedbackAttachment({
       tempFeedbackId,
