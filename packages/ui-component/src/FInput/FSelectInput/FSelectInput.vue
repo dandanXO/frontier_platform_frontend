@@ -134,6 +134,8 @@ f-input-container(
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
     slot(name="slot:hint-supporting")
+  template(#slot:suffix)
+    slot(name="slot:suffix-label")
 </template>
 
 <script>

@@ -1,7 +1,44 @@
 <style lang="scss">
 #arrow,
 #arrow::before {
-  border-top-color: var(--color-primary) !important;
+  position: absolute;
+  width: 12px !important;
+  height: 12px !important;
+  z-index: 1001 !important;
+}
+
+#arrow {
+  visibility: hidden;
+}
+
+#arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg) !important;
+  background-color: var(--color-primary) !important;
+
+  border-width: 0 !important;
+}
+
+/* Position the arrow correctly based on placement */
+.tooltip-container[data-popper-placement^='top'] #arrow {
+  bottom: 0px !important;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* Shadow for bottom when arrow points down */
+}
+
+.tooltip-container[data-popper-placement^='bottom'] #arrow {
+  top: -10px !important;
+  @apply shadow-md;
+}
+
+.tooltip-container[data-popper-placement^='left'] #arrow {
+  right: -0px !important;
+  @apply shadow-md;
+}
+
+.tooltip-container[data-popper-placement^='right'] #arrow {
+  left: -12px !important;
+  @apply shadow-md;
 }
 </style>
 
@@ -23,7 +60,7 @@ div(
     div(
       ref="refTooltip" 
       role="popper" 
-      :class="[classContainer, customClassContainer]" 
+      :class="[classContainer, customClassContainer, 'tooltip-container']" 
       class="z-tooltip"   
       :onmouseleave="mouseLeaveContainer"
       :onmouseenter="mouseEnterContainer"
@@ -31,17 +68,18 @@ div(
       v-if="isActive"
       :data-theme="theme"
     )
-      div(
-        class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265"
-        :class="[classContent]"
-      )
-        div(class="flex flex-col gap-1")
-          p(v-if="!!title" class="break-all font-bold text-sm") {{ title }}
-          div(v-if="!!desc" class="break-words text-xs")
-            p(v-if="isDescHTML" v-html="desc")
-            p(v-else) {{ desc }}
-        slot(name="slot:tooltip-content")
-      #arrow
+      div(class="shadow-md")
+        div(
+          class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265 relative"
+          :class="[classContent]"
+        )
+          div(class="flex flex-col gap-1")
+            p(v-if="!!title" class="break-all font-bold text-sm") {{ title }}
+            div(v-if="!!desc" class="break-words text-xs")
+              p(v-if="isDescHTML" v-html="desc")
+              p(v-else) {{ desc }}
+          slot(name="slot:tooltip-content")
+        #arrow
 </template>
 
 <script lang="ts">
@@ -117,26 +155,6 @@ const mouseenterHandler = async () => {
         name: 'placementListener',
         phase: 'main',
         enabled: true,
-        fn: (properties) => {
-          const {
-            state: { placement },
-          } = properties
-
-          if (!placement) {
-            return
-          }
-          const styleTooltip = {
-            [TOOLTIP_PLACEMENT.RIGHT]: 'pl-2',
-            [TOOLTIP_PLACEMENT.TOP_END]: 'pb-2',
-          }
-
-          // no need to get the placement right
-          // by giving empty string as the default value
-          // will solved the issue
-          // @ts-expect-error
-          customClassContainer.value = styleTooltip[placement] ?? ''
-          return properties.state
-        },
       },
       {
         name: 'offset',

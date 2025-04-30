@@ -15,4 +15,9 @@ export const hasShownWelcomeModal = useLocalStorage<boolean | null>(
   null
 )
 
+export const hasShownConstructionTypeInfo = useLocalStorage<boolean>(
+  'hasShownConstructionTypeInfo',
+  false
+)
+
 export const resendTimeLs = useLocalStorage<number | null>('r_tm', null)

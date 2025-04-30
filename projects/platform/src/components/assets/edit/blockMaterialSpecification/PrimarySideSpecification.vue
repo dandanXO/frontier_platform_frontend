@@ -111,7 +111,24 @@
               <template #custom-not-found>
                 <custom-not-found />
               </template>
+              <template #slot:suffix-label v-if="!hasShownConstructionTypeInfo">
+                <f-tooltip
+                  :placement="TOOLTIP_PLACEMENT.RIGHT"
+                  :offset="[2, 12]"
+                  classContainer="w-82"
+                  theme="new"
+                  :title="$t('RR0516')"
+                  :desc="$t('RR0517')"
+                >
+                  <template #slot:tooltip-trigger>
+                    <f-badge type="success" class="font-normal">{{
+                      $t('RR0515')
+                    }}</f-badge>
+                  </template>
+                </f-tooltip>
+              </template>
             </f-select-input>
+
             <f-select-input
               :disabled="disableBackSideFields"
               :selectValue="descriptionList.value"
@@ -889,7 +906,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, nextTick, ref, watch, onMounted } from 'vue'
+import {
+  computed,
+  inject,
+  nextTick,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+} from 'vue'
 import { useFieldArray } from 'vee-validate'
 import { useStore } from 'vuex'
 import {
@@ -897,7 +922,7 @@ import {
   MaterialType,
   type MaterialOptionsMaterialTypeConstructionListWoven,
 } from '@frontier/platform-web-sdk'
-import { NOTIFY_TYPE, DISPLAY } from '@frontier/constants'
+import { NOTIFY_TYPE, DISPLAY, TOOLTIP_PLACEMENT } from '@frontier/constants'
 import { WeightUnit } from '@frontier/platform-web-sdk'
 import {
   CREATE_EDIT,
@@ -909,6 +934,7 @@ import { materialFormServiceKey } from '@/utils/constants'
 import useEnumText from '@/composables/useEnumText'
 import CustomNotFound from './CustomNotFound.vue'
 import { requiredMessage } from '@/composables/material/useMaterialSchema'
+import { hasShownConstructionTypeInfo } from '@/utils/storage'
 
 const props = defineProps<{
   primarySideType: 'faceSide' | 'backSide'
@@ -1323,8 +1349,19 @@ const openModalSendFeedback = () => {
     component: 'modal-send-feedback',
   })
 }
+
+function handleBeforeUnload() {
+  hasShownConstructionTypeInfo.value = true
+}
+
 onMounted(() => {
   validate()
+  window.addEventListener('beforeunload', handleBeforeUnload)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+  handleBeforeUnload()
 })
 </script>
 
