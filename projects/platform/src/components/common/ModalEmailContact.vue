@@ -19,7 +19,7 @@ modal-behavior(
         class="w-full"
         :rules="[$inputRules.required(), $inputRules.email()]"
       )
-    div(class="mb-6")
+    div(class="")
       f-input-textarea(
         v-model:textValue="emailBody"
         :label="textAreaLabel"
