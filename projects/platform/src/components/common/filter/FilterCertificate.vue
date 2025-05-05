@@ -65,16 +65,16 @@ const menuTree = computed(() => {
             position: 'bottom',
             icon: hasSelectedAll ? 'check_box' : 'check_box_outline_blank',
             text: t('RR0209'),
-            // clickHandler: () => {
-            //   hasSelectedAll
-            //     ? (innerCertificateList.value = [])
-            //     : (innerCertificateList.value = Array.from(
-            //         new Set([
-            //           ...(innerCertificateList.value ?? []),
-            //           ...allValueList,
-            //         ])
-            //       ))
-            // },
+            clickHandler: () => {
+              hasSelectedAll
+                ? (innerCertificateList.value = [])
+                : (innerCertificateList.value = Array.from(
+                    new Set([
+                      ...(innerCertificateList.value ?? []),
+                      ...allValueList,
+                    ])
+                  ))
+            },
           }
         : null,
   } as MenuTree

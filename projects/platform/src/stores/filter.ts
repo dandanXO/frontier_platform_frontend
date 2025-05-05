@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import searchApi from '@/apis/search'
 import type {
   CodeCountryGet200ResponseResultCode,
+  MaterialCertification,
   MaterialOptions,
 } from '@frontier/platform-web-sdk'
 import type {
@@ -77,7 +78,7 @@ export interface FilterState {
   // for assets
   status: AssetsFilterStatusEnum | null
   countryList: string[]
-  certificateList?: number[]
+  certificateList: number[]
 }
 
 type NullableMaterialOptions = {
@@ -105,7 +106,7 @@ interface FilterOption extends NullableMaterialOptions {
     name: CodeCountryGet200ResponseResultCode['countryList'][number]['name']
     countryCode: CodeCountryGet200ResponseResultCode['countryList'][number]['countryCode']
   }[]
-  certificateList: []
+  certificateList?: MaterialCertification[]
 }
 
 export const useFilterStore = defineStore('filter', () => {
@@ -131,7 +132,6 @@ export const useFilterStore = defineStore('filter', () => {
       max: 10000,
     },
     countryList: [] as Country[],
-    certificateList: [],
   })
 
   watch(
@@ -203,14 +203,13 @@ export const useFilterStore = defineStore('filter', () => {
       currencyList: [],
       unitList: [],
     },
+    countryList: [],
+    certificateList: [],
     hasU3M: null,
     // for assets and workspace
     withOutEcoImpactor: null,
     // for assets
     status: null,
-    // for Inner External
-    countryList: [],
-    certificateList: [],
   })
   const filterState = ref<FilterState>(getInitFilterState())
   const setFilterState = (filter: FilterState) => (filterState.value = filter)

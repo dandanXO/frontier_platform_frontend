@@ -50,7 +50,7 @@ const menuTree = computed(() => {
 
   return {
     width: 'w-57.5',
-    scrollAreaMaxHeight: 'max-h-100',
+    scrollAreaMaxHeight: 'max-h-80',
     searchEnable: true,
     blockList: [
       {
@@ -63,13 +63,13 @@ const menuTree = computed(() => {
             position: 'bottom',
             icon: hasSelectedAll ? 'check_box' : 'check_box_outline_blank',
             text: t('RR0209'),
-            // clickHandler: () => {
-            //   hasSelectedAll
-            //     ? (innerCountryList.value = [])
-            //     : (innerCountryList.value = Array.from(
-            //         new Set([...innerCountryList.value, ...allValueList])
-            //       ))
-            // },
+            clickHandler: () => {
+              hasSelectedAll
+                ? (innerCountryList.value = [])
+                : (innerCountryList.value = Array.from(
+                    new Set([...innerCountryList.value, ...allValueList])
+                  ))
+            },
           }
         : null,
   } as MenuTree
