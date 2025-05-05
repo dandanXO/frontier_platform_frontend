@@ -26,9 +26,9 @@ const { t } = useI18n()
 const router = useRouter()
 const store = useStore()
 const STORAGE_LOCATION = {
-  ORG: 0,
-  GROUP: 1,
-  NO_STORE: 2,
+  ORG: 1,
+  GROUP: 2,
+  NO_STORE: -1,
 }
 const deletedGroup = computed(() => store.getters['group/group'])
 const organization = computed(() => store.getters['organization/organization'])
@@ -69,9 +69,9 @@ const storageMenuTree = computed(() => {
 const deleteGroup = async () => {
   const [storageLocation, id] = currentStorage.value.split('-')
   const transferOrgId =
-    storageLocation === STORAGE_LOCATION.ORG ? Number(id) : null
+    storageLocation == STORAGE_LOCATION.ORG ? Number(id) : null
   const transferGroupId =
-    storageLocation === STORAGE_LOCATION.GROUP ? Number(id) : null
+    storageLocation == STORAGE_LOCATION.GROUP ? Number(id) : null
   store.dispatch('helper/openModalLoading')
   await store.dispatch('group/deleteGroup', {
     transferOrgId,
