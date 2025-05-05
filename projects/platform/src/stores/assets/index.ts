@@ -8,6 +8,7 @@ import type {
   Search,
   AssetsFilter,
   SmartUploadAssetsMaterialV2U3MRequestAllOfU3MListInner,
+  MaterialOptions,
 } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import { useSearchStore } from '@/stores/search'
@@ -39,6 +40,7 @@ export const useAssetsStore = defineStore('assets', () => {
   const spreadsheetInitialMaterial = ref<Material[]>([])
   const useNewAssetsView = ref<boolean>(false)
   const spreadsheetInputFile = ref<File | null>(null)
+  const materialOptions = ref<MaterialOptions>()
   const uploadPageUseBothUi = computed(
     () => store.getters['permission/uploadPageUseBothUi']
   )
@@ -104,6 +106,15 @@ export const useAssetsStore = defineStore('assets', () => {
   const updateabortController = () => {
     abortController.value.abort()
     abortController.value = new AbortController()
+  }
+
+  const getMaterialOptions = async () => {
+    if (materialOptions.value) {
+      return materialOptions.value
+    }
+    const data = await ogBaseAssetsApi('getMaterialOptions')
+    materialOptions.value = data.data.result
+    return materialOptions.value
   }
   const uploadCustomU3m = async (payload: {
     materialId: number
@@ -282,5 +293,6 @@ export const useAssetsStore = defineStore('assets', () => {
     viewMode,
     setSelectedMaterialList,
     selectedMaterialList,
+    getMaterialOptions,
   }
 })

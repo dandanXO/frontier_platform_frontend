@@ -1,26 +1,25 @@
 <template lang="pug">
 filter-wrapper(
-  iconName="globe"
-  :displayName="$t('AA0036')"
-  :dirty="filterDirty.countryList"
+  iconName="license"
+  :displayName="$t('EE0129')"
+  :dirty="filterDirty.certificateList"
   :confirmButton="false"
+  :withDefaultContainer="false"
 )
   f-contextual-menu(
-    v-model:inputSelectValue="innerCountryList"
+    v-model:inputSelectValue="innerCertificateList"
     :selectMode="CONTEXTUAL_MENU_MODE.MULTIPLE"
     :menuTree="menuTree"
-    class="-mx-5 -my-4"
   )
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useI18n } from 'vue-i18n'
-
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
+import { computed } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import type { MenuItem, MenuTree } from '@frontier/ui-component'
 
 const emit = defineEmits<{
@@ -33,24 +32,27 @@ const { filterDirty, filterState, filterOption } = storeToRefs(filterStore)
 
 const menuTree = computed(() => {
   const menuList: MenuItem[] = []
-  const allValueList: string[] = []
+  const allValueList: number[] = []
   let hasSelectedAll = true
 
-  filterOption.value.countryList.forEach(({ name, countryCode }) => {
-    allValueList.push(countryCode)
-    if (hasSelectedAll && !innerCountryList.value.includes(countryCode)) {
+  filterOption.value.certificateList?.forEach(({ name, certificateId }) => {
+    allValueList.push(certificateId)
+    if (
+      hasSelectedAll &&
+      !innerCertificateList.value?.includes(certificateId)
+    ) {
       hasSelectedAll = false
     }
 
     menuList.push({
       title: name,
-      selectValue: countryCode,
+      selectValue: certificateId,
     })
   })
 
   return {
-    width: 'w-57.5',
-    scrollAreaMaxHeight: 'max-h-100',
+    width: 'w-full',
+    scrollAreaMaxHeight: 'max-h-80',
     searchEnable: true,
     blockList: [
       {
@@ -65,9 +67,12 @@ const menuTree = computed(() => {
             text: t('RR0209'),
             clickHandler: () => {
               hasSelectedAll
-                ? (innerCountryList.value = [])
-                : (innerCountryList.value = Array.from(
-                    new Set([...innerCountryList.value, ...allValueList])
+                ? (innerCertificateList.value = [])
+                : (innerCertificateList.value = Array.from(
+                    new Set([
+                      ...(innerCertificateList.value ?? []),
+                      ...allValueList,
+                    ])
                   ))
             },
           }
@@ -75,10 +80,10 @@ const menuTree = computed(() => {
   } as MenuTree
 })
 
-const innerCountryList = computed({
-  get: () => filterState.value.countryList,
+const innerCertificateList = computed({
+  get: () => filterState.value.certificateList,
   set: (v) => {
-    filterStore.setFilterStateByProperty('countryList', v)
+    filterStore.setFilterStateByProperty('certificateList', v)
     emit('search')
   },
 })

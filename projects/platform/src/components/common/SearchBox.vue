@@ -73,7 +73,11 @@ div(class="grid")
           v-if="searchType === SEARCH_TYPE.ASSETS"
           @search="handleSearch"
         )
-        filter-country(v-if="usingCountryFilter" @search="handleSearch")
+        filter-country(@search="handleSearch")
+        filter-certificate(
+          @search="handleSearch"
+          v-if="filterOption.certificateList"
+        )
 </template>
 
 <script setup lang="ts">
@@ -93,6 +97,7 @@ import FilterEco from '@/components/common/filter/FilterEco.vue'
 import FilterAssetStatus from '@/components/common/filter/FilterAssetStatus.vue'
 import FilterPrice from '@/components/common/filter/FilterPrice.vue'
 import FilterCountry from '@/components/common/filter/FilterCountry.vue'
+import FilterCertificate from './filter/FilterCertificate.vue'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { SEARCH_TYPE } from '@/utils/constants'
 import { useSearchStore } from '@/stores/search'
@@ -106,7 +111,7 @@ interface InnerTag extends SearchAITag {
   isSelected: boolean
 }
 
-const props = defineProps<{
+defineProps<{
   searchType: SEARCH_TYPE
 }>()
 
@@ -115,7 +120,7 @@ const emit = defineEmits<{
 }>()
 
 const filterStore = useFilterStore()
-const { isFilterDirty } = storeToRefs(filterStore)
+const { isFilterDirty, filterOption } = storeToRefs(filterStore)
 const searchStore = useSearchStore()
 const { keyword, tagList, selectedTagList } = storeToRefs(searchStore)
 const isOpenFilterPanel = ref(false)
@@ -144,9 +149,6 @@ const selectTag = (tag: InnerTag) => {
 }
 
 const debounceSearchAITag = debounce(searchStore.getAITags, 300)
-const usingCountryFilter = computed(() =>
-  [SEARCH_TYPE.ASSETS, SEARCH_TYPE.INNER_EXTERNAL].includes(props.searchType)
-)
 
 const typing = (e: Event) => {
   const target = e.target as HTMLInputElement

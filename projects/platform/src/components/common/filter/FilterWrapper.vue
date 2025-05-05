@@ -29,7 +29,9 @@ f-popper(
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content)
-    div(class="bg-grey-0 px-5 py-4 rounded shadow-16 flex flex-col gap-y-5")
+    div(
+      :class="{ 'bg-grey-0 px-5 py-4 rounded shadow-16 flex flex-col gap-y-5': withDefaultContainer }"
+    )
       slot
       f-button(
         v-if="confirmButton"
@@ -49,12 +51,14 @@ withDefaults(
     disabled?: boolean
     confirmButton?: boolean
     confirmDisabled?: boolean
+    withDefaultContainer?: boolean
   }>(),
   {
     dirty: false,
     disabled: false,
     confirmButton: true,
     confirmDisabled: false,
+    withDefaultContainer: true,
   }
 )
 

@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import searchApi from '@/apis/search'
-import type { MaterialDescription } from '@frontier/platform-web-sdk'
+import type {
+  CodeCountryGet200ResponseResultCode,
+  MaterialOptions,
+} from '@frontier/platform-web-sdk'
 import type {
   LengthUnit,
   WeightUnit,
@@ -13,6 +16,7 @@ import type {
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { isEqual } from '@frontier/lib'
 import { useStore } from 'vuex'
+import { useAssetsStore } from './assets'
 
 export interface FilterState {
   materialTypeList: number[]
@@ -73,37 +77,14 @@ export interface FilterState {
   // for assets
   status: AssetsFilterStatusEnum | null
   countryList: string[]
+  certificateList?: number[]
 }
 
-interface Description {
-  default: MaterialDescription[]
-  custom: MaterialDescription[]
+type NullableMaterialOptions = {
+  [K in keyof MaterialOptions]?: MaterialOptions[K]
 }
 
-export interface FilterOption {
-  descriptionList?: {
-    woven: Description
-    knit: Description
-    leather: Description
-    nonWoven?: Description
-    trim?: Description
-    others?: Description
-  }
-  contentList?: {
-    displayName: string
-    value: string
-  }[]
-  patternList?: {
-    key: string
-    list: {
-      value: string
-      img: string
-    }[]
-  }[]
-  colorList?: {
-    hex: string
-    value: string
-  }[]
+interface FilterOption extends NullableMaterialOptions {
   width: {
     min: number
     max: number
@@ -120,20 +101,17 @@ export interface FilterOption {
     min: number
     max: number
   }
-  finishList?: {
-    displayName: string
-    value: string
-  }[]
   countryList: {
-    name: string
-    countryCode: string
+    name: CodeCountryGet200ResponseResultCode['countryList'][number]['name']
+    countryCode: CodeCountryGet200ResponseResultCode['countryList'][number]['countryCode']
   }[]
 }
 
 export const useFilterStore = defineStore('filter', () => {
   const ogBaseSearchApi = useOgBaseApiWrapper(searchApi)
   const store = useStore()
-  const countryList = store.getters['code/countryList'] as Country[]
+  const { getMaterialOptions } = useAssetsStore()
+
   const filterOption = ref<FilterOption>({
     width: {
       min: 0,
@@ -151,14 +129,24 @@ export const useFilterStore = defineStore('filter', () => {
       min: 0,
       max: 10000,
     },
-    countryList: countryList.map(({ name, countryCode }) => ({
-      name,
-      countryCode,
-    })),
+    countryList: [] as Country[]
   })
+
+  watch(
+    () => store.getters['code/countryList'],
+    (newCountryList) => {
+      
+      filterOption.value.countryList = newCountryList
+    },
+    { immediate: true } // Run immediately on mount
+  )
+
   const getInternalFilterOption = async () => {
     const { data } = await ogBaseSearchApi('getInternalSearchFilterOptions')
+    const materialOptions = await getMaterialOptions()
+
     filterOption.value = Object.assign(filterOption.value, data.result)
+    filterOption.value.certificateList = materialOptions?.certificateList
   }
   const getExternalFilterOption = async () => {
     const { data } = await ogBaseSearchApi('getExternalSearchFilterOptions')

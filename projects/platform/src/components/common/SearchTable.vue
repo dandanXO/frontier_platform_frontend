@@ -353,16 +353,12 @@ const search = async (targetPage = 1) => {
               }
             }
 
-            if (props.searchType !== SEARCH_TYPE.INNER_EXTERNAL) {
-              if (property === 'countryList') {
-                return props.searchType === SEARCH_TYPE.ASSETS
-                  ? {
-                      ...acc,
-                      priceCountryOriginList: filterDirty.value[property]
-                        ? filterState.value[property]
-                        : null,
-                    }
-                  : acc
+            if (property === 'countryList') {
+              return {
+                ...acc,
+                priceCountryOriginList: filterDirty.value[property]
+                  ? filterState.value[property]
+                  : null,
               }
             }
 
