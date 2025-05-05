@@ -105,6 +105,7 @@ interface FilterOption extends NullableMaterialOptions {
     name: CodeCountryGet200ResponseResultCode['countryList'][number]['name']
     countryCode: CodeCountryGet200ResponseResultCode['countryList'][number]['countryCode']
   }[]
+  certificateList: []
 }
 
 export const useFilterStore = defineStore('filter', () => {
@@ -129,13 +130,13 @@ export const useFilterStore = defineStore('filter', () => {
       min: 0,
       max: 10000,
     },
-    countryList: [] as Country[]
+    countryList: [] as Country[],
+    certificateList: [],
   })
 
   watch(
     () => store.getters['code/countryList'],
     (newCountryList) => {
-      
       filterOption.value.countryList = newCountryList
     },
     { immediate: true } // Run immediately on mount
@@ -209,6 +210,7 @@ export const useFilterStore = defineStore('filter', () => {
     status: null,
     // for Inner External
     countryList: [],
+    certificateList: [],
   })
   const filterState = ref<FilterState>(getInitFilterState())
   const setFilterState = (filter: FilterState) => (filterState.value = filter)
