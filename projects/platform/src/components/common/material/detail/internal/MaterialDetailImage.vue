@@ -98,7 +98,10 @@ div(class="flex flex-col gap-y-4")
           @click="clickSmallImage(index)"
           :loading="index === 3 && isDDProcessing"
         )
-        span(class="text-caption/1.6 text-grey-900 text-center") {{ image.displayNameShort }}
+        span(
+          class="text-caption/1.6 text-grey-900 text-center"
+          style="word-wrap: anywhere;"
+        ) {{ image.displayNameShort }}
         span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
 </template>
 
