@@ -9,7 +9,7 @@ modal-behavior(
   version="v2"
 )
   div(class="w-full min-h-31.5")
-    div(class="mb-4" v-if="!props.showEmail")
+    div(class="mb-7" v-if="!props.showEmail")
       f-input-text(
         :label="$t('FF0094')"
         v-model:textValue="emailSubject"
@@ -19,13 +19,14 @@ modal-behavior(
         class="w-full"
         :rules="[$inputRules.required(), $inputRules.email()]"
       )
-    div(class="")
+    div(class="mb-2")
       f-input-textarea(
         v-model:textValue="emailBody"
         :label="textAreaLabel"
         :placeholder="$t('RR0510')"
         height="146"
         required
+        :rules="[$inputRules.required()]"
       )
 </template>
 
