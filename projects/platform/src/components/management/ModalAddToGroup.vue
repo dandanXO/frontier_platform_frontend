@@ -36,10 +36,14 @@ modal-behavior(
               span(class="flex-grow pl-4 text-body2 text-grey-250") {{ member.email }}
               span(class="text-body2 text-grey-250") ({{ $t('BB0024') }})
             template(v-else-if="member.joined")
-              span(class="flex-grow pl-4 text-body2 text-grey-250 truncate w-64") {{ member.displayName }}
+              span(
+                class="flex-grow pl-4 text-body2 text-grey-250 truncate w-64 h-6 flex items-center"
+              ) {{ member.displayName }}
               span(class="text-body2 text-grey-250") ({{ $t('BB0097') }})
             template(v-else)
-              p(class="flex-grow pl-4 text-body2 text-grey-900 truncate w-64") {{ member.displayName }}
+              p(
+                class="flex-grow pl-4 text-body2 text-grey-900 truncate w-64 h-6 flex items-center"
+              ) {{ member.displayName }}
           template(v-if="!member.isPending && !member.joined")
             f-input-checkbox(
               v-if="addedMemberList.includes(member.orgUserId) || index === indexOfOnHover"
