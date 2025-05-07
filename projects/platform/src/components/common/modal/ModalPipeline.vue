@@ -1,6 +1,6 @@
 <template lang="pug">
 template(v-if="modalPipeline.length > 0")
-  template(v-for="modal in modalPipeline" :key="modal.options.component")
+  template(v-for="(modal, moIndex) in modalPipeline" :key="moIndex")
     template(v-if="modal.type === MODAL_TYPE.MODAL")
       suspense
         modal(v-bind="modal.options" :key="modal.options.component")
