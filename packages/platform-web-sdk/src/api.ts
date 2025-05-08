@@ -20536,6 +20536,12 @@ export interface Search {
      * @memberof Search
      */
     'tagList': Array<SearchAITag>;
+    /**
+     * 
+     * @type {S3UploadedObject}
+     * @memberof Search
+     */
+    'imageFile'?: S3UploadedObject;
 }
 /**
  * 

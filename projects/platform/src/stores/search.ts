@@ -5,15 +5,22 @@ import { useRoute } from 'vue-router'
 import searchApi from '@/apis/search'
 import {
   PaginationReqSortEnum,
+  type S3UploadedObject,
   type PaginationRes,
   type SearchAITag,
 } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 import { SortByText } from '@/utils/enumText'
+import { uploadFileToS3 } from '@/utils/fileUpload'
+
+interface ImageData extends S3UploadedObject {
+  url: string
+}
 
 export const useSearchStore = defineStore('search', () => {
   const route = useRoute()
   const keyword = ref<string | null>(null)
+  const imageInput = ref<ImageData>()
   const setKeyword = (k: string | null) => (keyword.value = k)
   const tagList = ref<SearchAITag[]>([])
   const setTagList = (tags: SearchAITag[]) => (tagList.value = tags)
@@ -30,6 +37,16 @@ export const useSearchStore = defineStore('search', () => {
   )
   const isShowMatch = ref(false)
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
+
+  const setImageInput = async (file: File) => {
+    const { s3UploadId, fileName } = await uploadFileToS3(file, file.name)
+
+    imageInput.value = {
+      url: URL.createObjectURL(file),
+      fileName,
+      s3UploadId,
+    }
+  }
 
   const getAITags = async () => {
     if (!keyword.value) {
@@ -83,6 +100,8 @@ export const useSearchStore = defineStore('search', () => {
     setIsShowMatch,
     paginationRes,
     setPaginationRes,
+    imageInput,
+    setImageInput,
     getAITags,
     sortOption,
     getSearchLog,

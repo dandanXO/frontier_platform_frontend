@@ -123,7 +123,6 @@ export const useFilterStore = defineStore('filter', () => {
   const store = useStore()
   const { getMaterialOptions } = useAssetsStore()
 
-  const imageFileURL = ref('')
   const filterOption = ref<FilterOption>({
     width: {
       min: 0,
@@ -276,9 +275,6 @@ export const useFilterStore = defineStore('filter', () => {
     yearList: [],
   })
 
-  const setImageFileURL = (val: string) => {
-    imageFileURL.value = val
-  }
   const filterState = ref<FilterState>(getInitFilterState())
   const setFilterState = (filter: FilterState) => (filterState.value = filter)
   const setFilterStateByProperty = <T extends keyof FilterState>(
@@ -334,8 +330,6 @@ export const useFilterStore = defineStore('filter', () => {
     filterOption,
     getInternalFilterOption,
     getExternalFilterOption,
-    imageFileURL,
-    setImageFileURL,
     setFilterStateByProperty,
     filterDirty,
     isFilterDirty,

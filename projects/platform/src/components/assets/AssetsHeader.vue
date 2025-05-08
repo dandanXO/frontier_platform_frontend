@@ -167,6 +167,7 @@ const {
   sort,
   isShowMatch,
   paginationRes: pagination,
+  imageInput: imageSearchData,
 } = storeToRefs(searchStore)
 const {
   displayedMaterialList,
@@ -179,8 +180,7 @@ const {
   isSearching,
   isOpenFilterPanel,
 } = storeToRefs(assetsLibraryStore)
-const { isFilterDirty, imageFileURL: imageSearchData } =
-  storeToRefs(filterStore)
+const { isFilterDirty } = storeToRefs(filterStore)
 const sortMenuTree = computed(() => {
   const { base, keywordSearch } = sortOptions.value
   const temp = [...base]
@@ -259,10 +259,10 @@ const showSearchByImageModal = () => {
       store.dispatch('helper/closeModal')
     },
     properties: {
-      onFinish: (file: File) => {
-        filterStore.setImageFileURL(URL.createObjectURL(file))
-        handleSearch()
+      onFinish: async (file: File) => {
+        await searchStore.setImageInput(file)
         store.dispatch('helper/closeModal')
+        handleSearch()
       },
     },
   })

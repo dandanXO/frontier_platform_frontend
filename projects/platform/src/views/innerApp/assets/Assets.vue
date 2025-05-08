@@ -2,7 +2,7 @@
   <search-table-v2
     :display-mode="displayMode"
     :search-type="SEARCH_TYPE.ASSETS"
-    :search-callback="getMaterialList"
+    :search-callback="assetsLibraryStore.getMaterialList"
     :option-sort="sortOptions"
     :option-multi-select="multiSelectOptions"
     :item-list="displayedMaterialList"
@@ -68,7 +68,7 @@
             ></f-svg-icon>
             <img
               v-else
-              :src="imageSearchData"
+              :src="imageSearchData.url"
               class="w-full h-full object-cover rounded-xl"
             />
           </div>
@@ -220,9 +220,8 @@
 
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { ref, computed, watch, onMounted } from 'vue'
+import { computed, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useI18n } from 'vue-i18n'
 
@@ -237,24 +236,14 @@ import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { useAssetsStore } from '@/stores/assets'
 import { useSearchStore } from '@/stores/search'
-import { useFilterStore } from '@/stores/filter'
 import { useAssetsLibraryStore } from '@/stores/assets/library'
-import type {
-  AssetsFilter,
-  ExternalFilter,
-  InnerExternalFilter,
-  WorkspaceFilter,
-} from '@frontier/platform-web-sdk'
 import RowItem from '@/components/assets/RowItem.vue'
 import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import SkeletonBase from '@/components/common/SkeletonBase.vue'
 import EmptyStateAssets from '@/components/assets/EmptyStateAssets.vue'
 import ModalSearchByImage from '@/components/common/ModalSearchByImage.vue'
 import GridItemMaterialSkeleton from '@/components/common/gridItem/GridItemMaterialSkeleton.vue'
-import SearchTableV2, {
-  type RouteQuery,
-  type SearchPayload,
-} from '@/components/common/SearchTableV2.vue'
+import SearchTableV2 from '@/components/common/SearchTableV2.vue'
 import LowDpiLabel from '@/components/assets/LowDpiLabel.vue'
 
 // Permission hook
@@ -285,13 +274,9 @@ defineOptions({
 const assetsStore = useAssetsStore()
 const assetsLibraryStore = useAssetsLibraryStore()
 const searchStore = useSearchStore()
-const filterStore = useFilterStore()
-const route = useRoute()
-const router = useRouter()
+
 const {
   displayMode,
-  materialList,
-  slimMaterialList,
   displayedMaterialList,
   selectedMaterialList,
   displayModeOptions,
@@ -300,8 +285,7 @@ const {
   isLoading,
   isSlimMaterialsLoading,
 } = storeToRefs(assetsLibraryStore)
-const { imageFileURL: imageSearchData } = storeToRefs(filterStore)
-
+const { imageInput: imageSearchData } = storeToRefs(searchStore)
 const { t } = useI18n()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
@@ -344,78 +328,6 @@ const handleMaterialClick = (materialId: number) => {
   })
 }
 
-const getMaterialList = async (
-  payload: SearchPayload<
-    AssetsFilter | WorkspaceFilter | InnerExternalFilter | ExternalFilter
-  >,
-  query: RouteQuery
-) => {
-  // Clear previous results and set loading flags
-  slimMaterialList.value = []
-  materialList.value = []
-  isSlimMaterialsLoading.value = true
-  isLoading.value = true
-
-  // Update URL parameters and return early if unchanged
-  const updated = updateUrlWithSearchParams(query)
-  if (updated) {
-    isSlimMaterialsLoading.value = false
-    isLoading.value = false
-    return
-  }
-
-  // Fetch slim list first for quick initial display
-  try {
-    await assetsStore.getAssetsMaterialSlimList(
-      payload as SearchPayload<AssetsFilter>
-    )
-  } catch (error: any) {
-    if (error?.name !== 'CanceledError') {
-      console.error('Error fetching slim material list', error)
-    }
-  } finally {
-    isSlimMaterialsLoading.value = false
-  }
-
-  // Fetch full list and replace slim items when done
-  try {
-    await assetsStore.getAssetsMaterialList(
-      payload as SearchPayload<AssetsFilter>
-    )
-  } catch (error: any) {
-    if (error?.name !== 'CanceledError') {
-      console.error('Error fetching full material list', error)
-    }
-  } finally {
-    isLoading.value = false
-  }
-}
-
-const updateUrlWithSearchParams = (query: RouteQuery): boolean => {
-  const queryParams = new URLSearchParams()
-  queryParams.set('displayMode', displayMode.value.toString())
-
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
-      queryParams.set(key, value.toString())
-    }
-  })
-
-  // Compare with current route query
-  const currentQuery = new URLSearchParams(
-    route.query as Record<string, string>
-  )
-  if (queryParams.toString() === currentQuery.toString()) {
-    return false
-  }
-
-  // Use router.replace to update the URL without triggering a full navigation
-  router.replace({
-    query: Object.fromEntries(queryParams),
-    hash: route.hash,
-  })
-  return true
-}
 
 const {
   editMaterial,
@@ -474,9 +386,10 @@ const showSearchByImageModal = () => {
       store.dispatch('helper/closeModal')
     },
     properties: {
-      onFinish: (file: File) => {
-        filterStore.setImageFileURL(URL.createObjectURL(file))
+      onFinish: async (file: File) => {
+        await searchStore.setImageInput(file)
         store.dispatch('helper/closeModal')
+        assetsLibraryStore.search()
       },
     },
   })

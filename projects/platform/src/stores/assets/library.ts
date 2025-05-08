@@ -65,7 +65,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   } = useAssets()
   const searchStore = useSearchStore()
   const filterStore = useFilterStore()
-  const { keyword, sort, isShowMatch, selectedTagList } =
+  const { keyword, sort, isShowMatch, selectedTagList, imageInput } =
     storeToRefs(searchStore)
   const store = useStore()
   const { filterState, isFilterDirty, filterDirty } = storeToRefs(filterStore)
@@ -275,56 +275,40 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     payload: SearchPayload<AssetsFilter>,
     query: RouteQuery
   ) => {
-    // Reset slim and full material list when starting a new search to avoid showing stale data
+    // Clear previous results and set loading flags
     slimMaterialList.value = []
     materialList.value = []
-
-    isLoading.value = true
     isSlimMaterialsLoading.value = true
+    isLoading.value = true
 
-    const requestInfo = {
-      fullMaterialCanceled: false,
-      slimMaterialCanceled: false,
-    }
-
-    // Update URL and check if it was actually changed
+    // Update URL parameters and return early if unchanged
     const updated = updateUrlWithSearchParams(query)
     if (updated) {
-      isLoading.value = false
       isSlimMaterialsLoading.value = false
-      isSearching.value = false
-
+      isLoading.value = false
       return
     }
 
-    await Promise.allSettled([
-      getAssetsMaterialList(payload as SearchPayload<AssetsFilter>).catch(
-        (error: any) => {
-          if (error?.name === 'CanceledError') {
-            requestInfo.fullMaterialCanceled = true
-          }
-          throw error
-        }
-      ),
-      getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
-        .then((response) => {
-          if (!requestInfo.slimMaterialCanceled) {
-            isSlimMaterialsLoading.value = false
-            isSearching.value = false
-          }
-          return response
-        })
-        .catch((error: any) => {
-          if (error?.name === 'CanceledError') {
-            requestInfo.slimMaterialCanceled = true
-          }
-          throw error
-        }),
-    ])
+    // Fetch slim list first for quick initial display
+    try {
+      await getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
+    } catch (error: any) {
+      if (error?.name !== 'CanceledError') {
+        console.error('Error fetching slim material list', error)
+      }
+    } finally {
+      isSlimMaterialsLoading.value = false
+    }
 
-    if (!requestInfo.fullMaterialCanceled) {
+    // Fetch full list and replace slim items when done
+    try {
+      await getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
+    } catch (error: any) {
+      if (error?.name !== 'CanceledError') {
+        console.error('Error fetching full material list', error)
+      }
+    } finally {
       isLoading.value = false
-      isSearching.value = false
     }
   }
 
@@ -366,12 +350,21 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
             perPageCount: 40,
           },
           search: (() => {
-            return !keyword.value && selectedTagList.value.length === 0
-              ? null
-              : {
-                  keyword: keyword.value,
-                  tagList: selectedTagList.value,
-                }
+            if (imageInput.value && !imageInput.value.s3UploadId) {
+              console.error('image input exists without S3 Upload ID')
+              return null
+            }
+
+            return {
+              keyword: keyword.value ?? null,
+              tagList: selectedTagList.value,
+              imageFile: imageInput.value?.s3UploadId
+                ? {
+                    fileName: imageInput.value?.fileName,
+                    s3UploadId: imageInput.value?.s3UploadId,
+                  }
+                : undefined,
+            }
           })(),
           filter: (() => {
             if (!isFilterDirty.value) {
@@ -410,19 +403,30 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
             if (!isFilterDirty.value) {
               return undefined
             }
+
             return encodeURI(
-              JSON.stringify(
-                Object.keys(filterState.value).reduce((acc, key) => {
+              JSON.stringify({
+                ...Object.keys(filterState.value).reduce((acc, key) => {
                   const property = key as keyof typeof filterState.value
 
-                  return filterDirty.value[property]
-                    ? {
-                        ...acc,
-                        [property]: filterState.value[property],
-                      }
-                    : acc
-                }, {})
-              )
+                  if (property === 'countryList') {
+                    return {
+                      ...acc,
+                      priceCountryOriginList: filterDirty.value[property]
+                        ? filterState.value[property]
+                        : null,
+                    }
+                  }
+
+                  return {
+                    ...acc,
+                    [property]: filterDirty.value[property]
+                      ? filterState.value[property]
+                      : null,
+                  }
+                }, {}),
+                densityAndYarn: woven || knit ? { woven, knit } : null,
+              } as AssetsFilter)
             )
           })(),
         }
@@ -447,6 +451,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     isSlimMaterialsLoading,
     getAssetsMaterialList,
     getAssetsMaterialSlimList,
+    getMaterialList,
     search,
     isKeywordDirty,
     isSearching,

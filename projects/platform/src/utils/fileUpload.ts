@@ -3,8 +3,8 @@ import generalApi from '@/apis/general'
 export const putBinaryData = (
   url = '',
   data: Blob,
-  onProgress: (progress: number, loaded: number, total: number) => void,
-  signal: AbortSignal // 新增參數，用於取消請求
+  onProgress?: (progress: number, loaded: number, total: number) => void,
+  signal?: AbortSignal // 新增參數，用於取消請求
 ) => {
   return new Promise<void>((resolve, reject) => {
     const xhr = new XMLHttpRequest()
@@ -43,8 +43,8 @@ export const putBinaryData = (
 export const uploadFileToS3 = async (
   file: File,
   fileName: string,
-  onProgress: (progress: number, loaded: number, total: number) => void,
-  signal: AbortSignal // 新增參數，用於取消請求
+  onProgress?: (progress: number, loaded: number, total: number) => void,
+  signal?: AbortSignal // 新增參數，用於取消請求
 ) => {
   const getUploadU3mResult = await generalApi.getS3UploadUrl({ fileName })
   const { s3UploadId, fileUploadUrl } = getUploadU3mResult.data.result
