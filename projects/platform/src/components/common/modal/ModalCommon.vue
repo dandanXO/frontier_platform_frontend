@@ -3,9 +3,9 @@ div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
   :data-theme="theme"
 ) 
-  div(class="w-screen h-screen" @click="closable && onClose()")
+  div(class="absolute inset-0" @click="closable && onClose()")
   div(
-    class="absolute flex flex-col bg-primary rounded-xl shadow-32 gap-6"
+    class="relative flex flex-col bg-primary rounded-xl shadow-32 gap-6"
     :class="[classModal, noPadding ? '' : 'p-6']"
   )
     div(
@@ -22,14 +22,14 @@ div(
         @click="onClose"
       )
     component(:is="body" v-bind="properties")
-  transition
-    f-alert(
-      v-if="isShowAlert"
-      v-bind="alertProps"
-      class="absolute left-0 right-0 top-full mt-4"
-      @mouseenter="clearTimer"
-      @mouseleave="setTimer"
-    )
+    transition
+      f-alert(
+        v-if="isShowAlert"
+        v-bind="alertProps"
+        class="absolute left-0 right-0 top-full mt-4"
+        @mouseenter="clearTimer"
+        @mouseleave="setTimer"
+      )
 </template>
 
 <script setup lang="ts">
@@ -104,6 +104,7 @@ const usingHeader = !!title || withCloseButton
 }
 
 .v-leave-to {
+  transform: translateY(20px);
   opacity: 0;
 }
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="p-3 flex flex-row rounded-lg gap-3" :class="[bgColor[type]]")
+div(class="p-3 flex flex-row rounded-lg gap-3 items-center" :class="[bgColor[type]]")
   f-svg-icon(:iconName="iconMap[type]" :class="iconColor[type]")
   div(class="flex flex-col gap-1 text-sm")
     p(class="font-bold" :class="primaryTextColor[type]" v-if="title") {{ title }}
