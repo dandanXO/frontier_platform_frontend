@@ -1,14 +1,13 @@
 <template lang="pug">
 div(class="w-105 flex flex-col gap-5")
   div(class="w-full rounded-lg shadow-4 p-8 flex flex-col gap-5")
-    p(class="text-primary-inverse text-h6 font-bold text-center" data-cy="login-title") {{ $t('AA0093') }}
+    p(class="text-primary-inverse text-xl font-bold text-center" data-cy="login-title") {{ $t('AA0093') }}
     div(class="border-b border-primary-border")
     form(class="grid gap-5")
       f-input-text(
         v-model:textValue="formData.email"
         :label="$t('AA0002')"
         placeholder="name@mail.com"
-        prependIcon="mail"
         data-cy="email"
       )
       div(class="flex flex-col gap-2")
@@ -33,11 +32,11 @@ div(class="w-105 flex flex-col gap-5")
     div(class="flex-grow text-caption h-5" v-if="errorMsgSignIn !== ''")
       p(class="text-red-400 text-center" data-cy="errorMsg") {{ errorMsgSignIn }}
     template(v-if="!isGoogleLoadFail")
-      div(class="grid grid-flow-col gap-x-3 items-center justify-center")
-        div(class="w-19 h-px border-b border-grey-250")
-        span(class="w-30.5 text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
-        div(class="w-19 h-px border-b border-grey-250")
-      button#google-sign-in(class="h-10")
+      div(class="flex flex-row gap-x-1 items-center justify-center")
+        div(class="h-px bg-primary-border w-full")
+        span(class="text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
+        div(class="h-px bg-primary-border w-full gap-2")
+      button#google-sign-in(class="h-10 self-center")
   i18n-t(
     keypath="UU0045"
     tag="p"

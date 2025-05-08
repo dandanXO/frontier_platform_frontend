@@ -11,14 +11,13 @@ modal-behavior(
   modalTheme="success"
   :page="page"
   :showBackButton="true"
+  :closable="!isRemovingImage && !isChangingImage"
+  data-theme="new"
 )
   div(v-if="isCroppingImage" class="w-full flex justify-center items-center")
     cropper-default-layout(
-      class="w-70"
       :config="config"
       :scaleStart="scaleStart"
-      :rotateStart="rotateStart"
-      @update:rotateDeg="config.rotateDeg = $event"
       @update:scaleRatio="config.scaleRatio = $event / 100"
     )
       template(#imageCropArea)
@@ -62,14 +61,14 @@ modal-behavior(
       )
         f-svg-icon(iconName="person" size="48" class="text-green-500-v1")
       f-button(
-        class="bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110 flex-1 px-3 py-2 text-sm !font-bold transition-all"
+        class="hover:brightness-110 flex-1 px-3 py-2 text-sm !font-bold transition-all"
         type="primary"
         @click="removeLogo"
       ) {{ $t('UU0182') }}
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { ImageOperator, VERSION } from '@frontier/lib'
 import { Cropper } from '@/utils/cropper'
@@ -99,7 +98,7 @@ const props = defineProps({
 const store = useStore()
 const { t } = useI18n()
 
-const cropRectSize = 200
+const cropRectSize = 276
 const isUploading = ref(false)
 const isChangingImage = ref(false)
 const isRemovingImage = ref(false)
@@ -111,7 +110,6 @@ const notify = useNotifyStore()
 const imageCropper = ref(null)
 const config = ref(null)
 const scaleStart = ref(null)
-const rotateStart = ref(null)
 
 const errorCode = ref('')
 
@@ -156,7 +154,6 @@ imageOperator.on('finish', (image) => {
   originalImage.value = image
   config.value = cropper.config
   scaleStart.value = cropper.config.scaleRatio * 100
-  rotateStart.value = cropper.config.rotateDeg
 })
 
 const primaryBtnHandler = () => {

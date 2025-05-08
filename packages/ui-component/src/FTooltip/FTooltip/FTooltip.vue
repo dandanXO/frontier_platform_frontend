@@ -99,7 +99,7 @@ interface Props {
   theme?: 'new' | 'new-dark' | 'startrust'
   classContent?: string
   classContainer?: string
-  placement?: TOOLTIP_PLACEMENT.RIGHT
+  placement?: TOOLTIP_PLACEMENT
   offset?: [number, number]
   interactive?: boolean
   title?: string

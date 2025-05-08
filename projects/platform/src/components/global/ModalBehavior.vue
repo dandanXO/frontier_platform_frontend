@@ -16,7 +16,7 @@ div(
         )
           f-svg-icon(iconName="arrow_back" size="24" class="text-grey-900")
         p(class="text-xl font-bold") {{ header }}
-      f-button(@click="closeModalBehavior" type="text")
+      f-button(@click="closeModalBehavior" type="text" v-if="closable")
         f-svg-icon(iconName="close_medium" size="24" class="text-grey-900")
     div(class="w-full flex flex-col items-center gap-6")
       slot(name="default")

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="px-54 py-16 h-full flex flex-col gap-8")
+div(class="px-54 py-16 h-full flex flex-col gap-8" data-theme="new")
   div(class="flex gap-2.5")
     f-svg-icon(iconName="person_setting" size="32")
     p(class="text-2xl h-10 font-bold text-black") {{ $t('MA0001') }}
@@ -11,14 +11,14 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
       tbody
         tr
           td(class="border-b border-grey-200-v1 w-48 pl-6 py-5")
-            p(class="text-sm text-secondary") {{ $t('MM0002') }}
+            p(class="text-sm text-secondary-text") {{ $t('MM0002') }}
           td(
             class="border-b border-grey-200-v1 pl-4 pr-6"
             :class="isDisplayNameEmpty ? 'py-7' : 'py-5'"
           )
             div(class="relative")
               div(
-                class="flex gap-2 justify-between items-center border p-3 rounded-[4px] border-grey-400 focus-within:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]"
+                class="flex gap-2 justify-between items-center border p-3 rounded-[4px] border-primary-border focus-within:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]"
               )
                 input(
                   class="w-full outline-none text-sm leading-6"
@@ -27,8 +27,8 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                 )
                 f-button(
                   @click="updateDisplayName"
-                  :disabled="isDisplayNameEmpty"
-                  class="min-w-24 px-3 py-1 font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm leading-6"
+                  :disabled="isDisplayNameEmpty || orgUser.displayName === displayName"
+                  class="min-w-24 px-3 py-1 font-bold text-sm leading-6"
                 ) {{ $t('UU0018') }}
               p(
                 v-if="isDisplayNameEmpty"
@@ -37,12 +37,12 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
               ) {{ $t('WW0002') }}
         tr
           td(class="w-48 pl-6 py-5 align-top")
-            p(class="text-sm text-secondary") {{ $t('MA0004') }}
+            p(class="text-sm text-secondary-text") {{ $t('MA0004') }}
           td(class="pl-4 pr-6 py-5 align-top flex")
             div(class="relative")
               f-avatar(:imageUrl="avatar" size="2xl" type="user")
               div(
-                class="absolute right-0 bottom-0 flex justify-center items-center w-6 h-6 bg-green-500-v1 rounded-[4px] cursor-pointer hover:opacity-80 transition-all"
+                class="absolute right-0 bottom-0 flex justify-center items-center w-6 h-6 bg-brand-solid rounded-[4px] cursor-pointer hover:opacity-80 transition-all"
                 @click="openModalChangeAvatar"
               )
                 f-svg-icon(iconName="photo_camera" size="14" class="text-white")
@@ -60,7 +60,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
               class="border-b border-grey-200-v1 w-48 pl-6 py-5 align-top"
               :class="[isShowChangePassword ? 'bg-grey-50' : '']"
             )
-              p(class="text-sm text-secondary") {{ $t('MM0025') }}
+              p(class="text-sm text-secondary-text") {{ $t('MM0025') }}
             td(
               class="border-b border-grey-200-v1 pl-4 pr-6 py-5 align-top"
               :class="[isShowChangePassword ? 'bg-grey-50' : '']"
@@ -117,11 +117,11 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                 f-button(
                   :disabled="!availableToChangePassword"
                   @Click="changePassword"
-                  class="py-1.5 flex justify-center items-center !font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm disabled:bg-grey-400-v1"
+                  class="py-1.5 flex justify-center items-center !font-bold text-sm"
                 ) {{ $t('MM0025') }}
           tr
             td(class="border-b border-grey-200-v1 w-48 pl-6 py-5 align-top")
-              p(class="text-sm text-secondary") {{ $t('BB0014') }}
+              p(class="text-sm text-secondary-text") {{ $t('BB0014') }}
             td(class="border-b border-grey-200-v1 pl-4 pr-6 py-5 align-top")
               div(class="flex flex-col gap-2")
                 p(class="text-grey-900-v1") {{ user?.email }}
@@ -133,7 +133,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
           tr
             td(class="w-48 pl-6 py-5 align-top")
               div(class="flex gap-1 items-center")
-                div(class="text-sm text-secondary h-6") {{ $t('MA0007') }}
+                div(class="text-sm text-secondary-text h-6") {{ $t('MA0007') }}
                 f-tooltip(
                   :desc="$t('WW0201')"
                   :placement="TOOLTIP_PLACEMENT?.TOP"
@@ -222,7 +222,7 @@ div(class="px-54 py-16 h-full flex flex-col gap-8")
                         ) {{ $t('WW0197', { attempt: counts.resend, attemptRemain: maxCounts.resend - counts.resend }) }}
                       f-button(
                         :disabled="disableResend"
-                        class="py-1.5 flex justify-center items-center !font-bold bg-green-500-v1 hover:bg-green-600-v1 text-sm disabled:bg-grey-400-v1"
+                        class="py-1.5 flex justify-center items-center !font-bold text-sm"
                         @click="onResend"
                       ) {{ $t('UU0051') }} {{ countdown }}
               div(
@@ -367,7 +367,7 @@ const openModalChangeAvatar = () => {
       thumbnail: avatar.value,
       defaultImage: 'default_user.png',
       version: VERSION.V2,
-      updateHandler: async (croppedImage, originalImage) => {
+      updateHandler: async (croppedImage: unknown, originalImage: unknown) => {
         await store.dispatch('organization/orgUser/updateAvatar', {
           avatar: croppedImage,
           originalAvatar: originalImage,

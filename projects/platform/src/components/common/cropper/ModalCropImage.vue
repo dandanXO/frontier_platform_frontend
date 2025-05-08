@@ -12,7 +12,6 @@ modal-behavior(
 )
   div(class="w-full flex justify-center items-center")
     cropper-default-layout(
-      class="w-70"
       :config="config"
       :scaleStart="scaleStart"
       :rotateStart="rotateStart"

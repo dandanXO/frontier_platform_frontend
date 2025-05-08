@@ -82,7 +82,8 @@ const btnSize = computed(() => {
     case 'xsm':
       return [
         'text-caption',
-        props.prependIcon && props.postpendIcon ? 'px-1' : 'px-1.5',
+        props.prependIcon && props.postpendIcon ? 'px-1' : 'px-3',
+        'py-1',
       ]
     default:
       return []

@@ -3,10 +3,10 @@ f-input-text(
   v-bind="props"
   v-model:textValue="innerTextValue"
   :inputType="isVisible ? 'text' : 'password'"
-  prependIcon="lock"
-  :appendIcon="isVisible ? 'openeye' : 'hideeye'"
+  :appendIcon="isVisible ? 'visibility' : 'visibility_off'"
   @click:appendIcon="isVisible = !isVisible"
-  :version="version"
+  appendIconClass="text-primary-inverse"
+  :disabled="disabled"
 )
 </template>
 

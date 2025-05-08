@@ -58,7 +58,7 @@ f-input-container(
       v-if="prependIcon"
       :size="size === 'lg' ? '24' : '20'"
       :iconName="prependIcon"
-      :class="classIcon"
+      :class="[classIcon, `ml-${paddingSize[props.size]}`]"
     )
     //- Main Input
     flat-pickr(
@@ -140,7 +140,7 @@ f-input-container(
       :size="size === 'lg' ? '24' : '20'"
       iconName="cancel"
       class="cursor-pointer"
-      :class="[{ '-mr-1': size === 'lg' && !!appendIcon }, theme === THEME.LIGHT ? 'text-grey-150 hover:text-grey-250 active:text-grey-300' : 'text-grey-700 hover:text-grey-750 active:text-grey-800']"
+      :class="clearIconClass"
       @click="clear"
       @mousedown.prevent
     )
@@ -152,7 +152,7 @@ f-input-container(
       v-if="appendIcon"
       :size="size === 'lg' ? '24' : '20'"
       :iconName="appendIcon"
-      :class="classIcon"
+      :class="[classIcon, `mr-${paddingSize[props.size]}`]"
       @click="onClickAppendIcon"
       @mousedown.prevent
     )
@@ -373,10 +373,9 @@ const props = defineProps({
     type: String,
     default: 'left',
   },
-  version: {
-    type: String,
-    default: 'v1',
-  },
+  appendIconClass: {
+    type: String
+  }
 })
 const emit = defineEmits([
   'update:textValue',
@@ -576,6 +575,22 @@ const decrease = () => {
   emit('update:textValue', textValue)
 }
 
+const clearIconClass = computed(() => {
+  const classList = [
+    props.theme === THEME.LIGHT
+      ? 'text-grey-150 hover:text-grey-250 active:text-grey-300'
+      : 'text-grey-700 hover:text-grey-750 active:text-grey-800',
+  ]
+
+  classList.push(
+    props.appendIcon
+      ? { '-mr-1': props.size === 'lg' }
+      : `mr-${paddingSize[props.size]}`
+  )
+
+  return classList
+})
+
 const classMain = computed(() => {
   const classList = [
     ...classTransition.value,
@@ -583,17 +598,18 @@ const classMain = computed(() => {
     'rounded',
     'flex',
     'items-center',
+    'gap-x-3'
   ]
 
   switch (props.size) {
     case 'md':
-      classList.push('h-9', 'px-2', 'gap-x-1')
+      classList.push('h-9')
       break
     case 'lg':
-      classList.push('h-11', 'px-3', 'gap-x-2')
+      classList.push('h-11')
       break
     case 'xl':
-      classList.push('h-12', 'px-2', 'gap-x-2')
+      classList.push('h-12')
       break
   }
 
@@ -675,6 +691,12 @@ const classMain = computed(() => {
   return classList
 })
 
+const paddingSize = {
+  md: '2',
+  lg: '3',
+  xl: '2',
+}
+
 const classInput = computed(() => {
   const classList = [
     'w-full',
@@ -685,6 +707,8 @@ const classInput = computed(() => {
     'text-body2',
     'leading-1.6',
   ]
+
+  classList.push(`px-${paddingSize[props.size]}`)
 
   if (props.theme === THEME.LIGHT) {
     switch (state.value) {
@@ -738,6 +762,11 @@ const classInput = computed(() => {
 
 const classIcon = computed(() => {
   const classList = [...classTransition.value]
+
+  if (props.appendIconClass) {
+    classList.push(state.value === STATE.DISABLED ? 'text-disabled' : props.appendIconClass)
+    return classList
+  }
 
   switch (state.value) {
     case STATE.DEFAULT:
