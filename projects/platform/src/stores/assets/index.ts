@@ -68,8 +68,6 @@ export const useAssetsStore = defineStore('assets', () => {
     search: Search | null
     filter: AssetsFilter | null
   }) => {
-    console.log({ payload })
-
     if (cancelTokenSourceMaterial) {
       cancelTokenSourceMaterial.cancel('Operation canceled due to new request')
     }
@@ -77,8 +75,6 @@ export const useAssetsStore = defineStore('assets', () => {
     const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload, {
       cancelToken: cancelTokenSourceMaterial.token,
     })
-
-    console.log({ data })
 
     materialList.value = data.result.materialList.map((item) => {
       return assignCarbonEmissionValue(item)

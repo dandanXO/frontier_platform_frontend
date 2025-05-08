@@ -364,30 +364,18 @@ const getMaterialList = async (
     return
   }
 
-  await Promise.allSettled([
-    assetsLibraryStore
-      .getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.fullMaterialCanceled = true
-        }
-        throw error
-      }),
-    assetsLibraryStore
-      .getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
-      .then((response) => {
-        if (!requestInfo.slimMaterialCanceled) {
-          isSlimMaterialsLoading.value = false
-        }
-        return response
-      })
-      .catch((error: any) => {
-        if (error?.name === 'CanceledError') {
-          requestInfo.slimMaterialCanceled = true
-        }
-        throw error
-      }),
-  ])
+  // Fetch slim list first for quick initial display
+  try {
+    await assetsStore.getAssetsMaterialSlimList(
+      payload as SearchPayload<AssetsFilter>
+    )
+  } catch (error: any) {
+    if (error?.name !== 'CanceledError') {
+      console.error('Error fetching slim material list', error)
+    }
+  } finally {
+    isSlimMaterialsLoading.value = false
+  }
 
   // Fetch full list and replace slim items when done
   try {
