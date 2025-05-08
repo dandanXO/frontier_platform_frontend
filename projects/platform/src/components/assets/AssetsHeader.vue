@@ -43,7 +43,7 @@
           <f-svg-icon iconName="checklist" size="24"></f-svg-icon>
           <p>{{ $t('RR0209') }}</p>
         </f-pill>
-        <f-popper placement="bottom-end">
+        <f-popper placement="bottom-end" v-if="!imageSearchData">
           <template #trigger="{ isExpand }">
             <f-pill :size="SIZE.LG" :active="isExpand" :disabled="isSearching">
               <f-svg-icon

@@ -1,7 +1,8 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col px-8 gap-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
-  div(class="flex flex-col gap-5 min-h-0 flex-1")
+  div(class="flex flex-row gap-5 min-h-0 flex-1")
+    slot(name="left-side-content")
     div(
       v-if="pagination"
       class="md:overflow-y-auto flex-grow flex flex-col"

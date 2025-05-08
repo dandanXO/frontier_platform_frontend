@@ -43,6 +43,38 @@
       </f-button>
     </template>
 
+    <template #left-side-content>
+      <div
+        class="flex flex-col p-4 gap-4 rounded-2xl bg-secondary h-fit"
+        v-if="imageSearchData"
+      >
+        <div
+          class="flex flex-col align-center justify-center rounded-xl gap-2 bg-primary w-62 h-60"
+        >
+          <f-svg-icon
+            v-if="isSlimMaterialsLoading"
+            iconName="loading"
+            size="140"
+            class="text-green-600-v1 self-center"
+            testId="loading-indicator"
+          ></f-svg-icon>
+          <img
+            v-else
+            :src="imageSearchData.url"
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
+        <f-button
+          :size="SIZE.LG"
+          prependIcon="sync"
+          type="text"
+          @click="showSearchByImageModal"
+          class="underline font-semibold"
+          :disabled="isSlimMaterialsLoading"
+          >{{ $t('RR0489') }}</f-button
+        >
+      </div>
+    </template>
     <template #default>
       <div
         class="flex gap-5"
@@ -52,36 +84,6 @@
             : 'flex-row',
         ]"
       >
-        <div
-          class="flex flex-col p-4 gap-4 rounded-2xl bg-secondary h-fit"
-          v-if="imageSearchData"
-        >
-          <div
-            class="flex flex-col align-center justify-center rounded-xl gap-2 bg-primary w-62 h-60"
-          >
-            <f-svg-icon
-              v-if="isSlimMaterialsLoading"
-              iconName="loading"
-              size="140"
-              class="text-green-600-v1 self-center"
-              testId="loading-indicator"
-            ></f-svg-icon>
-            <img
-              v-else
-              :src="imageSearchData.url"
-              class="w-full h-full object-cover rounded-xl"
-            />
-          </div>
-          <f-button
-            :size="SIZE.LG"
-            prependIcon="sync"
-            type="text"
-            @click="showSearchByImageModal"
-            class="underline font-semibold"
-            :disabled="isSlimMaterialsLoading"
-            >{{ $t('RR0489') }}</f-button
-          >
-        </div>
         <template v-if="isSlimMaterialsLoading">
           <!-- Skeleton loading for LIST view -->
           <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
@@ -327,7 +329,6 @@ const handleMaterialClick = (materialId: number) => {
     secondaryBtnText: t('UU0002'),
   })
 }
-
 
 const {
   editMaterial,

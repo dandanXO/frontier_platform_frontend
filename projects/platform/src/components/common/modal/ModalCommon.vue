@@ -11,7 +11,7 @@ div(
     div(
       v-if="usingHeader"
       class="flex flex-row justify-between gap-2 pb-6"
-      :class="title ? 'border-b border-grey-250' : ''"
+      :class="title ? 'border-b border-primary-border' : ''"
     )
       p(class="text-h5 font-bold text-primary-inverse") {{ title }}
       f-svg-icon(
