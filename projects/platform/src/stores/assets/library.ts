@@ -298,6 +298,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
       }
     } finally {
       isSlimMaterialsLoading.value = false
+      isSearching.value = false
     }
 
     // Fetch full list and replace slim items when done
@@ -309,6 +310,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
       }
     } finally {
       isLoading.value = false
+      isSearching.value = false
     }
   }
 
@@ -433,8 +435,6 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
       )
     } catch (error) {
       console.error(error)
-    } finally {
-      isSearching.value = false
     }
   }
 

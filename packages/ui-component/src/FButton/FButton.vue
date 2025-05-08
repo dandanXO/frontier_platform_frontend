@@ -53,7 +53,7 @@ const btnSize = computed(() => {
   const result = []
   switch (props.size) {
     case 'lg':
-      result.push('text-base', 'h-11', 'p-3')
+      result.push('text-base', 'min-h-11', 'p-3')
 
       !props.isIcon && result.push('min-w-24')
       return result
@@ -61,12 +61,12 @@ const btnSize = computed(() => {
     case 'md':
       return props.isIcon
         ? ['p-2']
-        : ['text-sm', 'min-w-24', 'h-10', 'px-3', 'py-2']
+        : ['text-sm', 'min-w-24', 'min-h-10', 'px-3', 'py-2']
 
     case 'sm':
       return props.isIcon
         ? ['p-1']
-        : ['text-sm', 'min-w-24', 'h-8.5', 'px-3', 'py-1']
+        : ['text-sm', 'min-w-24', 'min-h-8.5', 'px-3', 'py-1']
 
     default:
       return []
