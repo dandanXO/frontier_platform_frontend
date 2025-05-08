@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="px-54 py-16 h-full flex flex-col gap-8" data-theme="new")
-  div(class="flex gap-2.5")
+  div(class="flex items-center gap-2.5")
     f-svg-icon(iconName="person_setting" size="32")
     p(class="text-2xl h-10 font-bold text-black") {{ $t('MA0001') }}
   div(class="border border-grey-200-v1 rounded-lg")
