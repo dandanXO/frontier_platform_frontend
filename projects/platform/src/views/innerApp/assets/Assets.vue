@@ -2,7 +2,6 @@
   <search-table-v2
     :display-mode="displayMode"
     :search-type="SEARCH_TYPE.ASSETS"
-    :search-callback="assetsLibraryStore.getMaterialList"
     :option-sort="sortOptions"
     :option-multi-select="multiSelectOptions"
     :item-list="displayedMaterialList"

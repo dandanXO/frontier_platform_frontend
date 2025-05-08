@@ -11,10 +11,12 @@ import {
 } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 import { SortByText } from '@/utils/enumText'
-import { uploadFileToS3 } from '@/utils/fileUpload'
 
-interface ImageData extends S3UploadedObject {
+interface ImageData {
   url: string
+  file: File
+  fileName?: S3UploadedObject['fileName']
+  s3UploadId?: S3UploadedObject['s3UploadId']
 }
 
 export const useSearchStore = defineStore('search', () => {
@@ -39,12 +41,9 @@ export const useSearchStore = defineStore('search', () => {
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
 
   const setImageInput = async (file: File) => {
-    const { s3UploadId, fileName } = await uploadFileToS3(file, file.name)
-
     imageInput.value = {
       url: URL.createObjectURL(file),
-      fileName,
-      s3UploadId,
+      file,
     }
   }
 

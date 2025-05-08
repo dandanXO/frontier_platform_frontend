@@ -52,15 +52,9 @@ import {
 import type { FunctionOption } from '@/types'
 import type {
   Material,
-  NodeChild,
   PaginationReqSortEnum,
-  AssetsFilter,
-  WorkspaceFilter,
-  ExternalFilter,
-  InnerExternalFilter,
   Search,
   PaginationReq,
-  ShareNodeChild,
 } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
@@ -94,21 +88,10 @@ const props = withDefaults(
       keywordSearch: SortOption[]
       disabled?: boolean
     }
-    optionMultiSelect?:
-      | FunctionOption<Material>[]
-      | FunctionOption<NodeChild>[]
-      | FunctionOption<ShareNodeChild>[]
-    searchCallback: (
-      payload:
-        | SearchPayload<AssetsFilter>
-        | SearchPayload<WorkspaceFilter>
-        | SearchPayload<InnerExternalFilter>
-        | SearchPayload<ExternalFilter>,
-      query: RouteQuery
-    ) => Promise<void>
-    itemList: Material[] | NodeChild[] | ShareNodeChild[]
+    optionMultiSelect?: FunctionOption<Material>[]
+    itemList: Material[]
     testId?: string
-    selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
+    selectedItemList?: Material[]
     isAssetSlimListLoading?: boolean
     displayMode?: ASSET_LIST_DISPLAY_MODE
   }>(),

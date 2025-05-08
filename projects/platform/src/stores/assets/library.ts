@@ -23,6 +23,7 @@ import {
 } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
 import { useFilterStore } from '../filter'
+import { uploadFileToS3 } from '@/utils/fileUpload'
 
 export interface SortOption {
   text: string
@@ -314,9 +315,47 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     }
   }
 
+  const getSearchMaterialParams = async () => {
+    if (imageInput.value && !imageInput.value.s3UploadId) {
+      const { fileName, s3UploadId } = await uploadFileToS3(
+        imageInput.value.file,
+        imageInput.value.file.name
+      )
+
+      imageInput.value = {
+        ...imageInput.value,
+        fileName,
+        s3UploadId,
+      }
+    }
+    if (
+      imageInput.value &&
+      !(imageInput.value.s3UploadId && imageInput.value.fileName)
+    ) {
+      console.error(
+        'image should have S3 Uplaod ID and file name the current data are:',
+        { ...imageInput.value }
+      )
+      return null
+    }
+
+    return {
+      keyword: keyword.value ?? null,
+      tagList: selectedTagList.value,
+      imageFile: imageInput.value?.s3UploadId
+        ? {
+            fileName: imageInput.value.fileName!,
+            s3UploadId: imageInput.value.s3UploadId!,
+          }
+        : undefined,
+    }
+  }
+
   const search = async (targetPage = 1) => {
     try {
       isSearching.value = true
+      isSlimMaterialsLoading.value = true
+      isLoading.value = true
 
       selectedMaterialList.value = []
       if (sortOptions.value.keywordSearch.length > 0) {
@@ -351,23 +390,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
             targetPage,
             perPageCount: 40,
           },
-          search: (() => {
-            if (imageInput.value && !imageInput.value.s3UploadId) {
-              console.error('image input exists without S3 Upload ID')
-              return null
-            }
-
-            return {
-              keyword: keyword.value ?? null,
-              tagList: selectedTagList.value,
-              imageFile: imageInput.value?.s3UploadId
-                ? {
-                    fileName: imageInput.value?.fileName,
-                    s3UploadId: imageInput.value?.s3UploadId,
-                  }
-                : undefined,
-            }
-          })(),
+          search: await getSearchMaterialParams(),
           filter: (() => {
             if (!isFilterDirty.value) {
               return null
