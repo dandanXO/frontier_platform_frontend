@@ -50,38 +50,24 @@ const props = withDefaults(
 )
 
 const btnSize = computed(() => {
+  const result = []
   switch (props.size) {
     case 'lg':
-      return props.isIcon
-        ? ['p-3']
-        : ['text-body1', 'min-w-21.5', 'h-12', 'p-3']
+      result.push('text-base', 'h-11', 'p-3')
+
+      !props.isIcon && result.push('min-w-24')
+      return result
 
     case 'md':
       return props.isIcon
         ? ['p-2']
-        : [
-            'text-body1',
-            'min-w-21',
-            'h-10',
-            props.prependIcon && props.postpendIcon ? 'px-3' : 'px-4',
-            props.parentIsFlex ? 'py-4' : '',
-          ]
+        : ['text-sm', 'min-w-24', 'h-10', 'px-3', 'py-2']
 
     case 'sm':
       return props.isIcon
         ? ['p-1']
-        : [
-            'text-body2',
-            'min-w-14',
-            'h-8.5',
-            props.prependIcon && props.postpendIcon ? 'px-3' : 'px-3.5',
-          ]
-    case 'xsm':
-      return [
-        'text-caption',
-        props.prependIcon && props.postpendIcon ? 'px-1' : 'px-3',
-        'py-1',
-      ]
+        : ['text-sm', 'min-w-24', 'h-8.5', 'px-3', 'py-1']
+
     default:
       return []
   }
