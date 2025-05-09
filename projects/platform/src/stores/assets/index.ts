@@ -272,6 +272,7 @@ export const useAssetsStore = defineStore('assets', () => {
   return {
     switchCreateAssetsView,
     spreadsheetInitialMaterial,
+    materialList,
     slimMaterialList,
     progressLoaded,
     progressTotal,
