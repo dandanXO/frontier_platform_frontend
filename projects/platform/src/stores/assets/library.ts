@@ -357,7 +357,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
       isSlimMaterialsLoading.value = true
       isLoading.value = true
 
-      selectedMaterialList.value = []
+      // selectedMaterialList.value = []
       if (sortOptions.value.keywordSearch.length > 0) {
         if (!isKeywordDirty.value && !!keyword.value) {
           searchStore.setSort(sortOptions.value.keywordSearch[0].value)
@@ -388,7 +388,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
             sort: sort.value,
             isShowMatch: isShowMatch.value,
             targetPage,
-            perPageCount: 40,
+            perPageCount: 30,
           },
           search: await getSearchMaterialParams(),
           filter: (() => {

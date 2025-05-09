@@ -6,7 +6,7 @@
     <f-search-bar
       :keyword="keyword"
       @typing="typing"
-      @search="handleSearch"
+      @search="handleSearch('text')"
       @clear="() => searchStore.setKeyword('')"
       rightIcon="image_search"
       @clickRightIcon="showSearchByImageModal"
@@ -39,7 +39,7 @@
           binary
           iconSize="20"
         />
-        <f-pill :size="SIZE.LG" @click="selectAll" :disabled="isSearching">
+        <f-pill :size="SIZE.LG" @click="selectAll" :disabled="isLoading">
           <f-svg-icon iconName="checklist" size="24"></f-svg-icon>
           <p>{{ $t('RR0209') }}</p>
         </f-pill>
@@ -178,6 +178,7 @@ const {
   displayModeOptions,
   isKeywordDirty,
   isSearching,
+  isLoading,
   isOpenFilterPanel,
 } = storeToRefs(assetsLibraryStore)
 const { isFilterDirty } = storeToRefs(filterStore)
@@ -220,6 +221,9 @@ const typing = (e: Event) => {
 }
 
 const selectAll = () => {
+  if (isLoading.value) {
+    return
+  }
   const stringifyItemList = displayedMaterialList.value.map((item) =>
     JSON.stringify(item)
   )
@@ -237,7 +241,13 @@ const handleCheckboxInput = (value: any) => {
   assetsLibraryStore.search()
 }
 
-const handleSearch = () => {
+const handleSearch = (firstType?: 'image' | 'text') => {
+  if (firstType === 'image') {
+    searchStore.setKeyword('')
+  }
+  if (firstType === 'text') {
+    searchStore.setImageInput(undefined)
+  }
   searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
   assetsLibraryStore.search()
 }
@@ -262,7 +272,7 @@ const showSearchByImageModal = () => {
       onFinish: async (file: File) => {
         await searchStore.setImageInput(file)
         store.dispatch('helper/closeModal')
-        handleSearch()
+        handleSearch('image')
       },
     },
   })

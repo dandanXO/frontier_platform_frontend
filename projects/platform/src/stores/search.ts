@@ -40,7 +40,11 @@ export const useSearchStore = defineStore('search', () => {
   const isShowMatch = ref(false)
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
 
-  const setImageInput = async (file: File) => {
+  const setImageInput = async (file?: File) => {
+    if (!file) {
+      imageInput.value = undefined
+      return
+    }
     imageInput.value = {
       url: URL.createObjectURL(file),
       file,
