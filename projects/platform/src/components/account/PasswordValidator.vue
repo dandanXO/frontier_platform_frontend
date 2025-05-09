@@ -29,7 +29,7 @@ div(v-if="version == 'v2'")
       p(
         class="text-xs"
         :class="containsLetter ? (moreThanSix && lessThanEighteen ? 'text-green-500-v1' : 'text-red-500-v1') : 'text-grey-600-v1'"
-      ) {{ $t('MM0028') }} {{ containsLetter }}
+      ) {{ $t('MM0028') }}
     div(class="flex flex-row gap-1 items-center")
       f-svg-icon(
         :iconName="containsLetter ? (containsLetter && containsSpecialChar && containsNumber ? 'check_circle_outline' : 'cancel_outline') : 'check_circle_outline'"
