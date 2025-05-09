@@ -28,13 +28,17 @@ div
         v-if="searchType === SEARCH_TYPE.ASSETS"
         @search="handleSearch"
       )
-      filter-country(
-        v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
+      filter-country(@search="handleSearch")
+      filter-certificate(
         @search="handleSearch"
+        v-if="filterOption.certificateList"
       )
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+
+import { useFilterStore } from '@/stores/filter'
 import { SEARCH_TYPE } from '@/utils/constants'
 import FilterMaterialType from '@/components/common/filter/FilterMaterialType.vue'
 import FilterMaterialDescription from '@/components/common/filter/FilterMaterialDescription.vue'
@@ -68,4 +72,7 @@ const handleSearch = () => {
 const resetFilterHandler = () => {
   emit('resetFilter')
 }
+
+const filterStore = useFilterStore()
+const { filterOption } = storeToRefs(filterStore)
 </script>
