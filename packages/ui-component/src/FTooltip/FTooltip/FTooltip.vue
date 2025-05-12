@@ -1,10 +1,10 @@
 <style lang="scss">
 #arrow,
 #arrow::before {
+  z-index: 1 !important;
   position: absolute;
   width: 12px !important;
   height: 12px !important;
-  z-index: 1001 !important;
 }
 
 #arrow {
@@ -16,7 +16,7 @@
   content: '';
   transform: rotate(45deg) !important;
   background-color: var(--color-primary) !important;
-
+  @apply shadow-md;
   border-width: 0 !important;
 }
 
@@ -70,7 +70,7 @@ div(
     )
       div(class="shadow-md")
         div(
-          class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265 relative"
+          class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265 relative z-2"
           :class="[classContent]"
         )
           div(class="flex flex-col gap-1")
