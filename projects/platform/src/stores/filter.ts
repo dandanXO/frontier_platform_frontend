@@ -144,12 +144,15 @@ export const useFilterStore = defineStore('filter', () => {
     { immediate: true } // Run immediately on mount
   )
 
-  const getInternalFilterOption = async () => {
+  const getInternalFilterOption = async (routePath: string) => {
     const { data } = await ogBaseSearchApi('getInternalSearchFilterOptions')
     const materialOptions = await getMaterialOptions()
 
     filterOption.value = Object.assign(filterOption.value, data.result)
     filterOption.value.certificateList = materialOptions?.certificateList
+    if (routePath.includes('/public-library')) {
+      filterOption.value.countryList = store.getters['code/countryList']
+    }
   }
   const getExternalFilterOption = async () => {
     const { data } = await ogBaseSearchApi('getExternalSearchFilterOptions')

@@ -55,6 +55,7 @@ import useNavigation from '@/composables/useNavigation'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import { useFilterStore } from '@/stores/filter'
 import { OgType } from '@frontier/platform-web-sdk'
+import { useRoute } from 'vue-router'
 
 const NotifyBarBuffer = defineAsyncComponent(
   () => import('@/components/billings/NotifyBarBuffer.vue')
@@ -62,7 +63,7 @@ const NotifyBarBuffer = defineAsyncComponent(
 const ModalAnnouncement = defineAsyncComponent(
   () => import('@/components/common/ModalAnnouncement.vue')
 )
-
+const  route = useRoute()
 const store = useStore()
 const filterStore = useFilterStore()
 const { isInInnerApp, ogId, ogType } = useNavigation()
@@ -96,7 +97,7 @@ onBeforeRouteUpdate(async (to, from) => {
 watch(
   () => ogId.value + ogType.value,
   () => {
-    isInInnerApp.value && filterStore.getInternalFilterOption()
+    isInInnerApp.value && filterStore.getInternalFilterOption(route.path)
   },
   {
     immediate: true,

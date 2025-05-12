@@ -133,7 +133,7 @@ const {
   handleSubmit,
   values,
 } = materialFormService
-console.log(values, 'dan2')
+
 const u3mSelectService: MaterialU3mSelectService = useU3mSelect(
   values as Material
 )
