@@ -27,6 +27,19 @@ const emit = defineEmits<{
   (e: 'search'): void
 }>()
 
+function parseEmoji(raw: string): string {
+  return (
+    raw
+      // 按空白切開 → ["U+1F1FA", "U+1F1F8"]
+      .trim()
+      .split(/\s+/)
+      // 去掉 U+，轉成整數 → [0x1F1FA, 0x1F1F8]
+      .map((code) => parseInt(code.replace(/^U\+/, ''), 16))
+      // 再組回字串
+      .reduce((str, cp) => str + String.fromCodePoint(cp), '')
+  )
+}
+
 const { t } = useI18n()
 const filterStore = useFilterStore()
 const { filterDirty, filterState, filterOption } = storeToRefs(filterStore)
@@ -36,17 +49,22 @@ const menuTree = computed(() => {
   const allValueList: string[] = []
   let hasSelectedAll = true
 
-  filterOption.value.countryList.forEach(({ name, countryCode }) => {
-    allValueList.push(countryCode)
-    if (hasSelectedAll && !innerCountryList.value.includes(countryCode)) {
-      hasSelectedAll = false
+  filterOption.value.countryList.forEach(
+    ({ name, countryCode, count, emoji }) => {
+      allValueList.push(countryCode)
+      if (hasSelectedAll && !innerCountryList.value.includes(countryCode)) {
+        hasSelectedAll = false
+      }
+      let _title = `${parseEmoji(emoji)} ${name} (${count})`
+      if (!count) {
+        _title = `${parseEmoji(emoji)} ${name}`
+      }
+      menuList.push({
+        title: _title,
+        selectValue: countryCode,
+      })
     }
-
-    menuList.push({
-      title: name,
-      selectValue: countryCode,
-    })
-  })
+  )
 
   return {
     width: 'w-57.5',

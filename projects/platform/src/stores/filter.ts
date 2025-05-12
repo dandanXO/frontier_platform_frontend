@@ -105,6 +105,8 @@ interface FilterOption extends NullableMaterialOptions {
   countryList: {
     name: CodeCountryGet200ResponseResultCode['countryList'][number]['name']
     countryCode: CodeCountryGet200ResponseResultCode['countryList'][number]['countryCode']
+    count: number
+    emoji: CodeCountryGet200ResponseResultCode['countryList'][number]['emoji']
   }[]
   certificateList?: MaterialCertification[]
 }
