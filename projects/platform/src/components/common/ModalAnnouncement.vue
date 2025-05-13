@@ -86,7 +86,6 @@ const refAnnouncement = ref<HTMLElement>()
 const closeAnnouncement = () => {
   store.dispatch('user/readAnnouncement')
   store.commit('user/SET_isShowAnnouncement', false)
-  refAnnouncement.value?.remove()
   store.dispatch('helper/closeModal')
 }
 </script>
