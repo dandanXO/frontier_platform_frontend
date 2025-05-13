@@ -1,4 +1,6 @@
+@@ -1,137 +1,104 @@
 <template lang="pug">
+div
 div(class="flex flex-col gap-4 px-10")
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(
@@ -10,25 +12,28 @@ div(class="flex flex-col gap-4 px-10")
         :innerScaleSize="scaleValue"
         :innerShowScale="showScale"
       )
-  div(class="flex flex-col gap-4" v-if="showScale")
-    div(class="flex flex-row gap-2 p-2 !pb-0")
-      p(class="text-sm font-bold") {{ $t('EE0098') }}
-      f-button(
-        type="secondary"
-        :disabled="scaleValue <= 100"
-        size="xsm"
-        @click="resetScale"
-        class="min-w-24"
-      ) {{ $t('RR0255') }}
-    f-input-slider(
-      class="px-3"
-      ref="refScale"
-      v-model:range="formattedScaleValue"
-      v-bind="scaleSetting"
-      :theme="theme"
-      :inputUnit="scaleUnit"
-      :canReset="false"
-    )
+  f-input-slider(
+    v-if="showRotate"
+    class="mt-4"
+    ref="refRotateDeg"
+    v-model:range="formattedRotateDeg"
+    v-bind="rotateSetting"
+    :theme="theme"
+    inputUnit="°"
+    :label="$t('EE0049')"
+    labelIcon="rotate"
+  )
+  f-input-slider(
+    v-if="showScale"
+    class="mt-3"
+    ref="refScale"
+    v-model:range="formattedScaleValue"
+    v-bind="scaleSetting"
+    :theme="theme"
+    :inputUnit="scaleUnit"
+    :label="$t('EE0098')"
+    labelIcon="open_in_full"
+  )
 </template>
 
 <script setup lang="ts">
@@ -41,16 +46,19 @@ const props = withDefaults(
   defineProps<{
     theme?: string
     showScale?: boolean
+    showRotate?: boolean
     scaleUnit?: string
     scaleInputStep?: number
     scaleRange?: number[]
     scaleStart?: number
     scaleInitial?: number
+    rotateStart: number
     config: CropperConfig
   }>(),
   {
     theme: THEME.LIGHT,
     showScale: true,
+    showRotate: true,
     scaleUnit: '%',
     scaleInputStep: 1,
     scaleRange: () => {
@@ -60,11 +68,13 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
+  'update:rotateDeg': [val: number]
   'update:scaleRatio': [val: number]
   'update:options': [val: CropperConfig]
 }>()
 
 const refScale = ref<InstanceType<typeof FInputSlider> | null>(null)
+const refRotateDeg = ref<InstanceType<typeof FInputSlider> | null>(null)
 const scaleSetting = {
   step: props.scaleInputStep,
   tooltips: false,
@@ -72,9 +82,21 @@ const scaleSetting = {
   max: props.scaleRange[1],
   defaultRange: props.scaleStart || props.scaleRange[0],
 }
+const rotateSetting = {
+  step: 0.1,
+  tooltips: false,
+  min: -180,
+  max: 180,
+  defaultRange: props.rotateStart || 0,
+}
 const scaleValue = ref(
   props.scaleInitial || props.scaleStart || props.scaleRange[0]
 )
+
+const innerRotateDeg = computed({
+  get: () => props.config.rotateDeg,
+  set: (val) => emit('update:rotateDeg', val),
+})
 
 const formattedScaleValue = computed({
   get: () => scaleValue.value,
@@ -86,11 +108,26 @@ const formattedScaleValue = computed({
   },
 })
 
+const formattedRotateDeg = computed({
+  get: () => parseFloat(innerRotateDeg.value.toFixed(2)),
+  set: (val) => {
+    if (val.length === 0) {
+      return
+    }
+    innerRotateDeg.value = val
+  },
+})
+
+const resetRotate = () => {
+  refRotateDeg.value?.reset()
+}
+
 const resetScale = () => {
   refScale.value?.reset()
 }
 
-defineExpose({ resetScale })
+defineExpose({ resetRotate, resetScale })
+
 
 watch(
   () => scaleValue.value,

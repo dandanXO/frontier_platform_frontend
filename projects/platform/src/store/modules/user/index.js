@@ -137,6 +137,18 @@ const actions = {
     const { data } = await userApi.updateUserProfile({ firstName, lastName })
     dispatch('setUser', data.result.user)
   },
+   /**
+   * Contact form submission.
+   * @param {Object} payload - The contact form payload
+   * @param {string} payload.category - The category of the contact
+   * @param {string} payload.email - The email address of the contact
+   * @param {string} payload.frontierNo - The frontierNo of the contact
+   * @param {string} payload.message - The message content of the contact
+   * @returns {Promise<void>}
+   */
+   async contactSend(_dispatch, payload) {
+    await userApi.contactSend({ ...payload })
+  },
   async sendFeedback(_, { tempFeedbackId, category, comment, email }) {
     await userApi.sendFeedback({ tempFeedbackId, category, comment, email })
   },

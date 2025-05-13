@@ -18,6 +18,7 @@ modal-behavior(
     cropper-default-layout(
       :config="config"
       :scaleStart="scaleStart"
+      :showRotate="false"
       @update:scaleRatio="config.scaleRatio = $event / 100"
     )
       template(#imageCropArea)
