@@ -191,19 +191,68 @@ const chartOptions = ref<EChartsOption>({
 watch(
   () => [props.chartData, currentViewTab.value] as const,
   ([newData, viewTab]) => {
-    // Update based on newData
     if (newData) {
-      // Update legend, ensuring it's a single object
+      // 1. Prepare series: Sort by total items
+      const seriesWithTotals = newData.series.map((s) => ({
+        ...s, // Includes name, data, color from original SeriesItem
+        totalItems: s.data.reduce((acc, val) => acc + (val || 0), 0),
+      }))
+      seriesWithTotals.sort((a, b) => b.totalItems - a.totalItems)
+
+      let finalProcessedSeries: SeriesItem[] = []
+      let legendNames: string[] = []
+      // seriesForTooltipCalculation holds the raw data for series that will be displayed,
+      // including "Others" if it's formed.
+      let seriesForTooltipCalculation: SeriesItem[] = []
+
+      if (seriesWithTotals.length <= 8) {
+        // If 8 or fewer series, display all of them with their original names
+        finalProcessedSeries = [...seriesWithTotals]
+        legendNames = seriesWithTotals.map((s) => s.name)
+        seriesForTooltipCalculation = [...seriesWithTotals] // Tooltip uses original data for all displayed series
+      } else {
+        // More than 8 series, so display top 7 + aggregate the rest into "Others"
+        const top7Series = seriesWithTotals.slice(0, 7)
+        const remainingSeries = seriesWithTotals.slice(7)
+
+        finalProcessedSeries = [...top7Series]
+        legendNames = top7Series.map((s) => s.name)
+        seriesForTooltipCalculation = [...top7Series] // Start with top 7 for tooltip
+
+        // Aggregate "Others"
+        const numCategories = newData.categories.length
+        const aggregatedOthersData = new Array(numCategories).fill(0)
+        remainingSeries.forEach((series) => {
+          series.data.forEach((value, index) => {
+            aggregatedOthersData[index] += value || 0
+          })
+        })
+
+        finalProcessedSeries.push({
+          name: 'Others',
+          data: aggregatedOthersData,
+          color: '#A9A9A9', // DarkGray for Others
+        })
+        legendNames.push('Others')
+
+        seriesForTooltipCalculation.push({
+          // Add aggregated "Others" to tooltip series
+          name: 'Others',
+          data: aggregatedOthersData,
+          color: '#A9A9A9',
+        })
+      }
+
+      // 2. Update legend
       if (
         chartOptions.value.legend &&
         typeof chartOptions.value.legend === 'object' &&
         !Array.isArray(chartOptions.value.legend)
       ) {
-        chartOptions.value.legend.data = newData.series.map(
-          (item: SeriesItem) => item.name
-        )
+        chartOptions.value.legend.data = legendNames
       }
-      // Update yAxis, ensuring it's a single object and category type
+
+      // 3. Update yAxis categories
       if (
         chartOptions.value.yAxis &&
         typeof chartOptions.value.yAxis === 'object' &&
@@ -214,7 +263,7 @@ watch(
           newData.categories
       }
 
-      // Update xAxis max value based on view type
+      // 4. Update xAxis max value
       if (
         chartOptions.value.xAxis &&
         typeof chartOptions.value.xAxis === 'object' &&
@@ -224,49 +273,62 @@ watch(
           viewTab === 'percentage' ? 100 : undefined
       }
 
-      // Update tooltip formatter based on view type
+      // 5. Update tooltip formatter
       if (
         chartOptions.value.tooltip &&
         typeof chartOptions.value.tooltip === 'object'
       ) {
         ;(chartOptions.value.tooltip as any).formatter = (params: any) => {
           const idx = params.dataIndex as number
-          const seriesArr = newData.series
-          const total = seriesArr.reduce(
-            (sum, s) => sum + (s.data[idx] || 0),
-            0
-          )
-          const count = params.value as number
-          const percent =
-            total > 0 ? Math.round((count / total) * 100) + '%' : '0%'
+          const chartValue = params.value as number // Value from chart (can be % or count)
           const color = (params.color as string) || 'transparent'
           const markerRect = `<span style="display:inline-block;width:12px;height:8px;background-color:${color};"></span>`
           const header = `<div style="display:inline-flex; align-items:center; justify-content:center; gap:8px">${markerRect}<span>${params.seriesName}</span></div>`
 
+          // Find the original data point for piece count
+          const originalSeriesPoint =
+            seriesForTooltipCalculation.find(
+              (s) => s.name === params.seriesName
+            )?.data[idx] || 0
+
+          // Calculate total for this category across all series for percentage display
+          const categoryTotal = seriesForTooltipCalculation.reduce(
+            (sum, s) => sum + (s.data[idx] || 0),
+            0
+          )
+
           if (viewTab === 'percentage') {
-            const pieceCount =
-              seriesArr.find((s) => s.name === params.seriesName)?.data[idx] ||
-              0
-            const displayPercent = (count as number).toFixed(2)
-            return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${displayPercent}%</span><span>${pieceCount} pieces</span></div>`
+            // chartValue is already the percentage
+            const displayPercent = chartValue.toFixed(2)
+            return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${displayPercent}%</span><span>${originalSeriesPoint} pieces</span></div>`
           } else {
-            return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${percent}</span><span>${count} pieces</span></div>`
+            // 'count' view
+            // chartValue is the count
+            const percent =
+              categoryTotal > 0
+                ? Math.round((originalSeriesPoint / categoryTotal) * 100) + '%'
+                : '0%'
+            return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${percent}</span><span>${originalSeriesPoint} pieces</span></div>`
           }
         }
       }
 
-      // Update series with transformed data based on view type
-      chartOptions.value.series = newData.series.map((item: SeriesItem) => {
-        const data =
-          viewTab === 'percentage'
-            ? item.data.map((value, index) => {
-                const total = newData.series.reduce(
-                  (sum, s) => sum + (s.data[index] || 0),
-                  0
-                )
-                return total > 0 ? (value / total) * 100 : 0
-              })
-            : item.data
+      // 6. Update series with transformed data for chart display
+      chartOptions.value.series = finalProcessedSeries.map((item) => {
+        let dataForDisplay: number[]
+        if (viewTab === 'percentage') {
+          dataForDisplay = item.data.map((value, index) => {
+            const categoryTotalForAllSeries = finalProcessedSeries.reduce(
+              (sum, s) => sum + (s.data[index] || 0),
+              0
+            )
+            return categoryTotalForAllSeries > 0
+              ? (value / categoryTotalForAllSeries) * 100
+              : 0
+          })
+        } else {
+          dataForDisplay = item.data
+        }
 
         return {
           name: item.name,
@@ -275,8 +337,9 @@ watch(
           emphasis: {
             focus: 'series',
           },
-          data,
+          data: dataForDisplay,
           barWidth: 32,
+          color: item.color, // Use the color from SeriesItem (original or 'Others' color)
         }
       })
     } else {
