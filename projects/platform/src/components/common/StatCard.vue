@@ -17,15 +17,15 @@
         :class="isDisabled ? 'text-grey-400-v1' : 'text-green-500'"
       ></f-svg-icon>
     </div>
-    <div class="flex flex-col justify-center min-w-0">
+    <div class="flex flex-col justify-center min-w-0 flex-grow">
       <!-- Title -->
       <div
-        class="text-sm font-normal leading-6 text-grey-600-v1 truncate w-full"
+        class="text-sm font-normal leading-6 text-grey-600-v1 truncate w-full text-left"
       >
         {{ title }}
       </div>
       <!-- Value -->
-      <div class="text-black font-bold leading-[60px] text-[40px]">
+      <div class="text-black font-bold leading-[60px] text-[40px] text-left">
         <AnimatedNumber
           v-if="value"
           :end-val="Number(value)"
