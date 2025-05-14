@@ -123,11 +123,27 @@ instance.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    const { response } = error
-    const {
-      status,
-      data: { code, message },
-    } = response
+    const { response, config: requestConfig } = error
+    if (!response) {
+      console.error('Network or other error without response:', error)
+      store.dispatch('helper/openModalConfirm', {
+        type: NOTIFY_TYPE.ALERT,
+        header: i18n.global.t('RR0107'),
+        contentText: i18n.global.t('RR0108', { code: 'N/A' }),
+        primaryBtnText: i18n.global.t('UU0031'),
+        primaryBtnHandler: () => window.location.reload(),
+      })
+      return Promise.reject(error)
+    }
+
+    const { status } = response
+    const responseData = response.data || {}
+    const code = responseData.code
+    const message = responseData.message
+
+    if (status === 404 && requestConfig?.meta?.suppressGlobal404Popup) {
+      return Promise.reject(error)
+    }
 
     if (status === 423) {
       return router.push({ name: 'NotAvailable' })
@@ -146,31 +162,36 @@ instance.interceptors.response.use(
       resetTracker()
       router.push({ name: 'SignIn', query })
     } else if (status === 403) {
-      return
-      // do not things because no permission
+      return Promise.reject(error)
     } else {
-      // status 999 is Client Side Data Error
-      const apiTranslateContent = response.code
-        ? i18n.global.t(response.code)
-        : ''
+      const apiTranslateContent = code ? i18n.global.t(code) : ''
+      const messageTitle =
+        typeof message === 'object' && message !== null
+          ? message.title
+          : undefined
+      const messageContent =
+        typeof message === 'object' && message !== null
+          ? message.content
+          : undefined
+
       store.dispatch('helper/openModalConfirm', {
         type: NOTIFY_TYPE.ALERT,
-        header: message?.title || i18n.global.t('RR0107'),
+        header: messageTitle || i18n.global.t('RR0107'),
         contentText:
           apiTranslateContent ||
-          message?.content ||
+          messageContent ||
           i18n.global.t('RR0108', { code: status || 999 }),
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload(),
       })
     }
 
-    return Promise.reject({ status, code, message })
+    return Promise.reject(error)
   }
 )
 
 const apiWrapper = (path: string, type = 'org', id = '', params = {}) => {
-  const data = { ...params }
+  const data: { [key: string]: any } = { ...params }
   if (type === 'org') {
     data['orgId'] = id
   } else {

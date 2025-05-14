@@ -441,6 +441,9 @@ importers:
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
+      countup.js:
+        specifier: ^2.8.2
+        version: 2.8.2
       decimal.js:
         specifier: ^10.4.3
         version: 10.4.3
@@ -462,6 +465,9 @@ importers:
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
+      install:
+        specifier: ^0.13.0
+        version: 0.13.0
       jspdf:
         specifier: ^2.5.1
         version: 2.5.1
@@ -519,6 +525,9 @@ importers:
       vue-echarts:
         specifier: ^6.5.5
         version: 6.7.3(@vue/runtime-core@3.5.12)(echarts@5.5.0)(vue@3.5.12(typescript@5.4.2))
+      vue-grid-layout-v3:
+        specifier: ^3.1.2
+        version: 3.1.2(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.4.2)
       vue-gtag:
         specifier: ^2.0.1
         version: 2.0.1(vue@3.5.12(typescript@5.4.2))
@@ -1419,6 +1428,51 @@ packages:
     resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
     peerDependencies:
       react: '*'
+
+  '@interactjs/actions@1.10.27':
+    resolution: {integrity: sha512-FCRg5KwB+stkPcAMx/Cn0fgGP6p4LyMX9S/Upcn/W+hpYme31bPi54PCqmOebzz6myTthN6zFf9jMyLOqtI/gg==}
+    peerDependencies:
+      '@interactjs/core': 1.10.27
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/auto-scroll@1.10.27':
+    resolution: {integrity: sha512-zPg5TnVsZv+9Hnt4qnbxLvBMf+rIWHkoJVoSETEbLNaj90C8hIyr0pVwukSUySSgDhCgQ7np0f3pg4INLq9beQ==}
+    peerDependencies:
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/auto-start@1.10.27':
+    resolution: {integrity: sha512-ECLBO/nxmaF1knncJKIE5F7la3KKRgEkn0Cu2JTPOYj9xy/LpfYElo3wkRHsodgOqF651nR70GK2/IzPR2lO9A==}
+    peerDependencies:
+      '@interactjs/core': 1.10.27
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/core@1.10.27':
+    resolution: {integrity: sha512-SliUr/3ZbLAdED8LokzYzWHWMdCB5Cq+UnpXuRy+BIod1j97m4IUFf/D1iIKUBBjBcucgXbz28z96WnenVCB7Q==}
+    peerDependencies:
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/dev-tools@1.10.27':
+    resolution: {integrity: sha512-YolmBwRaKH1gWbvyLeV3m5QSwtD38lOZnCBA87PCAlcd9PQAC2gb03fEPeEyD336bE20oLB8f0WZt4Wre+afiw==}
+    peerDependencies:
+      '@interactjs/modifiers': 1.10.27
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/interact@1.10.27':
+    resolution: {integrity: sha512-XdH3A2UUzjEFGGJgFuJlhiz99tE8jB8xNh/DmnoMuL6uOQPxNA+sWRnzEVjG0+zY2P3/dbhEpi4Cn3FLPzydwA==}
+
+  '@interactjs/modifiers@1.10.27':
+    resolution: {integrity: sha512-ei/qfoQ+9/8k6WzNzdNqHI6cWkIV576N4Ap16r5CoqOWwhA6Xzj3OMHf1g0t1O4eSq2HdJsVJn3eLNfw9HsbeQ==}
+    peerDependencies:
+      '@interactjs/core': 1.10.27
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/snappers@1.10.27':
+    resolution: {integrity: sha512-HZLZ0XSi6HI08OmTv/HKG6AltQoaKAALLQ+KDW92utj3XSgw7oren0KsWUKPhaPg3Av7R1jFQd08s+uafqIlLw==}
+    peerDependencies:
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/utils@1.10.27':
+    resolution: {integrity: sha512-+qfLOio2OxQqg1cXSnRaCl+N8MQDQLDS9w+aOGxH8YLAhIMyt7Asxx/46//sT8orgsi16pmlBPtngPHT9s8zKw==}
 
   '@intlify/core-base@9.13.1':
     resolution: {integrity: sha512-+bcQRkJO9pcX8d0gel9ZNfrzU22sZFSA0WVhfXrf5jdJOS24a+Bp8pozuS9sBI9Hk/tGz83pgKfmqcn/Ci7/8w==}
@@ -3020,6 +3074,9 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
+  batch-processor@1.0.0:
+    resolution: {integrity: sha512-xoLQD8gmmR32MeuBHgH0Tzd5PuSZx71ZsbhVxOCRbgktZEPe4SQy7s9Z50uPp0F/f7iw2XmkHN2xkgbMfckMDA==}
+
   bcrypt-pbkdf@1.0.2:
     resolution: {integrity: sha512-qeFIXtP4MSoi6NLqO12WfqARWWuCKi2Rn/9hJLEmtB5yTNr9DqFWkJRCf2qShWzPeAMRnOgCrq0sg/KLv5ES9w==}
 
@@ -3393,6 +3450,9 @@ packages:
       typescript:
         optional: true
 
+  countup.js@2.8.2:
+    resolution: {integrity: sha512-UtRoPH6udaru/MOhhZhI/GZHJKAyAxuKItD2Tr7AbrqrOPBX/uejWBBJt8q86169AMqKkE9h9/24kFWbUk/Bag==}
+
   crc-32@1.2.2:
     resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
     engines: {node: '>=0.8'}
@@ -3698,6 +3758,9 @@ packages:
 
   electron-to-chromium@1.4.806:
     resolution: {integrity: sha512-nkoEX2QIB8kwCOtvtgwhXWy2IHVcOLQZu9Qo36uaGB835mdX/h8uLRlosL6QIhLVUnAiicXRW00PwaPZC74Nrg==}
+
+  element-resize-detector@1.2.4:
+    resolution: {integrity: sha512-Fl5Ftk6WwXE0wqCgNoseKWndjzZlDCwuPTcoVZfCP9R3EHQF8qUtr3YUPNETegRBOKqQKPW3n4kiIWngGi8tKg==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4426,6 +4489,10 @@ packages:
   ini@2.0.0:
     resolution: {integrity: sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==}
     engines: {node: '>=10'}
+
+  install@0.13.0:
+    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
+    engines: {node: '>= 0.10'}
 
   internal-slot@1.0.7:
     resolution: {integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==}
@@ -7188,8 +7255,8 @@ packages:
   vue-component-type-helpers@2.0.21:
     resolution: {integrity: sha512-3NaicyZ7N4B6cft4bfb7dOnPbE9CjLcx+6wZWAg5zwszfO4qXRh+U52dN5r5ZZfc6iMaxKCEcoH9CmxxoFZHLg==}
 
-  vue-component-type-helpers@2.2.2:
-    resolution: {integrity: sha512-6lLY+n2xz2kCYshl59mL6gy8OUUTmkscmDFMO8i7Lj+QKwgnIFUZmM1i/iTYObtrczZVdw7UakPqDTGwVSGaRg==}
+  vue-component-type-helpers@2.2.10:
+    resolution: {integrity: sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==}
 
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
@@ -7247,6 +7314,9 @@ packages:
     engines: {node: '>=14.13.0'}
     peerDependencies:
       vue: ^3.2.0
+
+  vue-grid-layout-v3@3.1.2:
+    resolution: {integrity: sha512-4VB6pel2OklFNnFSUVg4wXwx/fKuKKvnhleLyscwk5ay7aEFk+HghcVKbComg+EgMvjuPzZ7hgIES3FlxuVK6w==}
 
   vue-gtag@2.0.1:
     resolution: {integrity: sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==}
@@ -8587,6 +8657,61 @@ snapshots:
     dependencies:
       react: 18.3.1
 
+  '@interactjs/actions@1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/core': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+
+  '@interactjs/auto-scroll@1.10.27(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+
+  '@interactjs/auto-start@1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/core': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+
+  '@interactjs/core@1.10.27(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/dev-tools@1.10.27(@interactjs/modifiers@1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.4.2)':
+    dependencies:
+      '@interactjs/modifiers': 1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+      vue: 3.5.12(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+
+  '@interactjs/interact@1.10.27':
+    dependencies:
+      '@interactjs/core': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/utils': 1.10.27
+
+  '@interactjs/modifiers@1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/core': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/snappers': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+
+  '@interactjs/snappers@1.10.27(@interactjs/utils@1.10.27)':
+    dependencies:
+      '@interactjs/utils': 1.10.27
+    optionalDependencies:
+      '@interactjs/interact': 1.10.27
+
+  '@interactjs/utils@1.10.27': {}
+
   '@intlify/core-base@9.13.1':
     dependencies:
       '@intlify/message-compiler': 9.13.1
@@ -9815,7 +9940,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.12(typescript@5.0.4)
-      vue-component-type-helpers: 2.2.2
+      vue-component-type-helpers: 2.2.10
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10884,6 +11009,8 @@ snapshots:
 
   base64-js@1.5.1: {}
 
+  batch-processor@1.0.0: {}
+
   bcrypt-pbkdf@1.0.2:
     dependencies:
       tweetnacl: 0.14.5
@@ -11266,6 +11393,8 @@ snapshots:
     optionalDependencies:
       typescript: 5.0.4
 
+  countup.js@2.8.2: {}
+
   crc-32@1.2.2: {}
 
   crelt@1.0.6: {}
@@ -11614,6 +11743,10 @@ snapshots:
       jake: 10.9.1
 
   electron-to-chromium@1.4.806: {}
+
+  element-resize-detector@1.2.4:
+    dependencies:
+      batch-processor: 1.0.0
 
   emoji-regex@8.0.0: {}
 
@@ -12548,6 +12681,8 @@ snapshots:
   ini@1.3.8: {}
 
   ini@2.0.0: {}
+
+  install@0.13.0: {}
 
   internal-slot@1.0.7:
     dependencies:
@@ -15642,7 +15777,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.21: {}
 
-  vue-component-type-helpers@2.2.2: {}
+  vue-component-type-helpers@2.2.10: {}
 
   vue-demi@0.13.11(vue@3.5.12(typescript@5.4.2)):
     dependencies:
@@ -15703,6 +15838,21 @@ snapshots:
     dependencies:
       flatpickr: 4.6.13
       vue: 3.5.12(typescript@5.0.4)
+
+  vue-grid-layout-v3@3.1.2(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.4.2):
+    dependencies:
+      '@interactjs/actions': 1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)
+      '@interactjs/auto-scroll': 1.10.27(@interactjs/utils@1.10.27)
+      '@interactjs/auto-start': 1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)
+      '@interactjs/dev-tools': 1.10.27(@interactjs/modifiers@1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)(typescript@5.4.2)
+      '@interactjs/interact': 1.10.27
+      '@interactjs/modifiers': 1.10.27(@interactjs/core@1.10.27(@interactjs/utils@1.10.27))(@interactjs/utils@1.10.27)
+      element-resize-detector: 1.2.4
+      mitt: 3.0.1
+    transitivePeerDependencies:
+      - '@interactjs/core'
+      - '@interactjs/utils'
+      - typescript
 
   vue-gtag@2.0.1(vue@3.5.12(typescript@5.4.2)):
     dependencies:

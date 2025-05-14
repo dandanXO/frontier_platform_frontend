@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
   "i18n-ally.localesPaths": ["./packages/i18n/locales"],
   "i18n-ally.sourceLanguage": "en-US",
@@ -57,5 +57,15 @@
     "vueuse",
     "vuex"
   ],
-  "volar.inlayHints.eventArgumentInInlineHandlers": false
+  "volar.inlayHints.eventArgumentInInlineHandlers": false,
+  "svg.preview.background": "transparent",
+  "tailwindCSS.experimental.configFile": "projects/platform/tailwind.config.js",
+  "tailwindCSS.includeLanguages": {
+    "javascript": "javascript",
+    "javascriptreact": "javascript",
+    "typescript": "typescript",
+    "typescriptreact": "typescriptreact",
+    "html": "html",
+    "vue": "vue"
+  }
 }

@@ -4,6 +4,7 @@ filter-wrapper(
   :displayName="$t('AA0036')"
   :dirty="filterDirty.countryList"
   :confirmButton="false"
+  :disabled="isFilterDisabled"
 )
   f-contextual-menu(
     v-model:inputSelectValue="innerCountryList"
@@ -43,6 +44,13 @@ function parseEmoji(raw: string): string {
 const { t } = useI18n()
 const filterStore = useFilterStore()
 const { filterDirty, filterState, filterOption } = storeToRefs(filterStore)
+
+const isFilterDisabled = computed(() => {
+  return (
+    !filterOption.value.countryList ||
+    filterOption.value.countryList.length === 0
+  )
+})
 
 const menuTree = computed(() => {
   const menuList: MenuItem[] = []

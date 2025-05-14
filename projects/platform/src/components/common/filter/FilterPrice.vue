@@ -74,7 +74,12 @@ const unitList = ref<MaterialQuantityUnit[]>(price.unitList)
 
 const disabled = computed(() => {
   const [min, max] = inputRange.value
-  return min > max
+  const isRangeInvalid =
+    typeof min === 'number' && typeof max === 'number' && min > max
+  const noCurrencySelected = currencyList.value.length === 0
+  const noUnitsSelected = unitList.value.length === 0
+
+  return isRangeInvalid || noCurrencySelected || noUnitsSelected
 })
 
 const update = () => {

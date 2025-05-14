@@ -5,6 +5,8 @@ import type {
   CodeCountryGet200ResponseResultCode,
   MaterialCertification,
   MaterialOptions,
+  MaterialDescription,
+  MaterialOptionsSeasonList,
 } from '@frontier/platform-web-sdk'
 import type {
   LengthUnit,
@@ -17,7 +19,8 @@ import type {
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { isEqual } from '@frontier/lib'
 import { useStore } from 'vuex'
-import { useAssetsStore } from './assets'
+import { useAssetsStore } from '@/stores/assets'
+import { clone as ramdaClone } from 'ramda'
 
 export interface FilterState {
   materialTypeList: number[]
@@ -78,7 +81,8 @@ export interface FilterState {
   // for assets
   status: AssetsFilterStatusEnum | null
   countryList: string[]
-  certificateList: number[]
+  seasonList: string[]
+  yearList: number[]
 }
 
 type NullableMaterialOptions = {
@@ -109,10 +113,13 @@ interface FilterOption extends NullableMaterialOptions {
     emoji: CodeCountryGet200ResponseResultCode['countryList'][number]['emoji']
   }[]
   certificateList?: MaterialCertification[]
+  seasonList?: MaterialOptionsSeasonList
+  yearList?: number[]
 }
 
 export const useFilterStore = defineStore('filter', () => {
   const ogBaseSearchApi = useOgBaseApiWrapper(searchApi)
+  const { ogBaseAssetsApi } = useAssetsStore()
   const store = useStore()
   const { getMaterialOptions } = useAssetsStore()
 
@@ -134,6 +141,12 @@ export const useFilterStore = defineStore('filter', () => {
       max: 10000,
     },
     countryList: [] as Country[],
+    certificateList: [],
+    seasonList: {
+      default: [],
+      custom: [],
+    },
+    yearList: [],
   })
 
   watch(
@@ -153,10 +166,51 @@ export const useFilterStore = defineStore('filter', () => {
     if (routePath.includes('/public-library')) {
       filterOption.value.countryList = store.getters['code/countryList']
     }
+
+    try {
+      const { data: materialOptionsData } = await ogBaseAssetsApi(
+        'getMaterialOptions'
+      )
+      if (materialOptionsData.result?.seasonList) {
+        filterOption.value.seasonList = materialOptionsData.result.seasonList
+        // TODO: populate yearList when backend adds year field
+        filterOption.value.yearList = []
+      }
+      if (materialOptionsData.result?.certificateList) {
+        filterOption.value.certificateList =
+          materialOptionsData.result.certificateList
+      }
+    } catch (error) {
+      console.error('Failed to fetch material options for filter:', error)
+      filterOption.value.yearList = filterOption.value.yearList || []
+    }
   }
   const getExternalFilterOption = async () => {
-    const { data } = await ogBaseSearchApi('getExternalSearchFilterOptions')
-    filterOption.value = Object.assign(filterOption.value, data.result)
+    const { data: searchOptionsData } = await ogBaseSearchApi(
+      'getExternalSearchFilterOptions'
+    )
+    filterOption.value = Object.assign(
+      filterOption.value,
+      searchOptionsData.result
+    )
+
+    try {
+      const { data: materialOptionsData } = await ogBaseAssetsApi(
+        'getMaterialOptions'
+      )
+      if (materialOptionsData.result?.seasonList) {
+        filterOption.value.seasonList = materialOptionsData.result.seasonList
+        // TODO: populate yearList when backend adds year field
+        filterOption.value.yearList = []
+      }
+      if (materialOptionsData.result?.certificateList) {
+        filterOption.value.certificateList =
+          materialOptionsData.result.certificateList
+      }
+    } catch (error) {
+      console.error('Failed to fetch material options for filter:', error)
+      filterOption.value.yearList = filterOption.value.yearList || []
+    }
   }
   const getInitFilterState: () => FilterState = () => ({
     materialTypeList: [],
@@ -208,20 +262,24 @@ export const useFilterStore = defineStore('filter', () => {
       currencyList: [],
       unitList: [],
     },
-    countryList: [],
     certificateList: [],
     hasU3M: null,
     // for assets and workspace
     withOutEcoImpactor: null,
     // for assets
     status: null,
+    // for Inner External
+    countryList: [],
+    // Initialize seasonList
+    seasonList: [],
+    yearList: [],
   })
   const filterState = ref<FilterState>(getInitFilterState())
   const setFilterState = (filter: FilterState) => (filterState.value = filter)
   const setFilterStateByProperty = <T extends keyof FilterState>(
     property: T,
     val: FilterState[T]
-  ) => (filterState.value[property] = JSON.parse(JSON.stringify(val)))
+  ) => (filterState.value[property] = ramdaClone(val))
   const setFilterStateByQueryString = (queryString: string) => {
     const query = JSON.parse(decodeURI(queryString))
     filterState.value = Object.assign(

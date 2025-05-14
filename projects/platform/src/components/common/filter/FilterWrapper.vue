@@ -1,14 +1,17 @@
 <template lang="pug">
-f-tooltip-standard(v-if="disabled")
-  template(#slot:tooltip-trigger)
-    div(
-      class="flex items-center gap-x-1 p-1.5 border rounded-lg border-grey-250 cursor-default"
-    )
-      f-svg-icon(:iconName="iconName" size="24" class="text-grey-250")
-      span(class="text-grey-250 text-body2") {{ displayName }}
-      f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-250")
-  template(#slot:tooltip-content)
-    slot
+// If disabled, show a non-interactive, styled div.
+// The f-tooltip-standard is removed or would need to be rethought if it's for a text tip.
+// For now, focusing on making it non-clickable by not rendering the slot as tooltip content.
+div(
+  v-if="disabled"
+  class="flex items-center gap-x-1 p-1.5 border rounded-lg border-grey-250 cursor-default"
+)
+  f-svg-icon(v-if="iconName" :iconName="iconName" size="24" class="text-grey-250")
+  div(v-else class="w-1")
+  span(class="text-grey-250 text-body2") {{ displayName }}
+  f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-250")
+
+// If not disabled, use the f-popper to make the slot content (the menu) appear.
 f-popper(
   v-else
   placement="bottom-start"
@@ -20,7 +23,8 @@ f-popper(
       class="flex items-center gap-x-1 p-1.5 border rounded-lg cursor-pointer"
       :class="[isExpand || dirty ? 'border-grey-900' : 'border-grey-250']"
     )
-      f-svg-icon(:iconName="iconName" size="24" class="text-grey-900")
+      f-svg-icon(v-if="iconName" :iconName="iconName" size="24" class="text-grey-900")
+      div(v-else class="w-1")
       span(class="text-grey-900 text-body2") {{ displayName }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
@@ -32,7 +36,7 @@ f-popper(
     div(
       :class="{ 'bg-grey-0 px-5 py-4 rounded shadow-16 flex flex-col gap-y-5': withDefaultContainer }"
     )
-      slot
+      slot // Slot is correctly placed here for the popper content
       f-button(
         v-if="confirmButton"
         size="sm"
@@ -45,7 +49,7 @@ f-popper(
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    iconName: string
+    iconName?: string
     displayName: string
     dirty?: boolean
     disabled?: boolean

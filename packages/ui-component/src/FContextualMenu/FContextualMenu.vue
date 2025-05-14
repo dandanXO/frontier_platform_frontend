@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-2 bg-grey-0 rounded shadow-16"
+    class="bg-grey-0 rounded shadow-16 p-2"
     :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
   >
     <!-- Root Title -->
@@ -83,6 +83,8 @@
         @click:menu="clickMenuHandler($event)"
         :selectMode="selectMode"
         :inputSelectValue="inputSelectValue"
+        :hideLeadingVisual="hideLeadingVisual"
+        :hideTrailingIcon="hideTrailingIcon"
       />
 
       <template
@@ -99,12 +101,15 @@
 
         <contextual-menu-node
           v-for="menu in block.menuList"
+          class="rounded"
           :key="menu.title"
           :theme="theme"
           :menu="menu"
           @click:menu="clickMenuHandler($event)"
           :selectMode="selectMode"
           :inputSelectValue="inputSelectValue"
+          :hideLeadingVisual="hideLeadingVisual"
+          :hideTrailingIcon="hideTrailingIcon"
         />
 
         <div
@@ -240,11 +245,15 @@ const props = withDefaults(
      */
     menuTree: MenuTree
     canAddNew?: boolean
+    hideLeadingVisual?: boolean
+    hideTrailingIcon?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
     selectMode: CONTEXTUAL_MENU_MODE.NONE_SELECT,
     canAddNMew: false,
+    hideLeadingVisual: false,
+    hideTrailingIcon: false,
   }
 )
 

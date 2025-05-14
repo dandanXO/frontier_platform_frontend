@@ -37,7 +37,7 @@ div(
         )
       //- Leading Visual
       div(
-        v-if="innerMenu.icon || innerMenu.thumbnail || innerMenu.labelColor || innerMenu.flag"
+        v-if="!hideLeadingVisual && (innerMenu.icon || innerMenu.thumbnail || innerMenu.labelColor || innerMenu.flag)"
         class="flex items-center justify-center mr-2 shrink-0"
         :class="[innerMenu.thumbnailSize === SIZE.MD ? 'w-8 h-8' : 'w-6 h-6']"
       )
@@ -68,6 +68,7 @@ div(
           class="w-3 h-3 rounded-sm"
           :class="{ 'opacity-60': innerMenu.disabled }"
         )
+
       div(
         :class="innerMenu.display"
         class="w-full flex-grow items-center pr-2 overflow-hidden"
@@ -93,7 +94,7 @@ div(
         div(class="w-2 h-2 rounded-full bg-primary-400")
       //- Trailing Icon
       div(
-        v-if="hasNextLevel || (selectMode !== MULTIPLE && isSelect)"
+        v-if="!hideTrailingIcon && (hasNextLevel || (selectMode !== MULTIPLE && isSelect))"
         class="shrink-0 w-6 h-6"
       )
         f-svg-icon(
@@ -108,6 +109,7 @@ div(
           size="24"
           class="text-primary-400"
         )
+
     template(#slot:tooltip-content v-if="innerMenu.tooltipContentComponent")
       component(:is="innerMenu.tooltipContentComponent")
   div(
@@ -184,17 +186,23 @@ const emit = defineEmits<{
   (e: 'click:menu', menu: Required<MenuItem>): void
 }>()
 
+// Extend the props with the new Boolean props for visual hiding.
 const props = withDefaults(
   defineProps<{
     theme?: `${THEME}`
     menu: MenuItem
     inputSelectValue: any
     selectMode: CONTEXTUAL_MENU_MODE
+    hideLeadingVisual?: boolean
+    hideTrailingIcon?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
+    hideLeadingVisual: false,
+    hideTrailingIcon: false,
   }
 )
+
 const currentTestId = props.menu.testId ?? 'contextual-menu-node'
 const { isDesktop } = useBreakpoints()
 

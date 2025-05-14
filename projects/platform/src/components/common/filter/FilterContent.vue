@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="ingredient"
   :displayName="$t('RR0021')"
   :dirty="filterDirty.contentList"
-  :confirmDisabled="!!errorMsg"
+  :confirmDisabled="!!errorMsg || contentList.length === 0"
   @confirm="update"
 )
   div(class="w-110 flex flex-col gap-y-3")
@@ -54,7 +54,7 @@ filter-wrapper(
 
 <script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { inputValidator } from '@frontier/lib'
 import { useFilterStore, type FilterState } from '@/stores/filter'
@@ -70,15 +70,23 @@ const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
 
 const menuTree = computed(() => {
+  const actualContentList =
+    (filterOption.value.contentList as unknown as
+      | { displayName: string; value: string }[]
+      | undefined) ?? []
+
+  const mappedMenuList = actualContentList.map(
+    (item: { displayName: string; value: string }) => ({
+      title: item.displayName,
+      selectValue: item.value,
+    })
+  )
+
   return {
     width: 'w-64',
     blockList: [
       {
-        menuList:
-          filterOption.value?.contentList?.map(({ displayName, value }) => ({
-            title: displayName,
-            selectValue: value,
-          })) ?? [],
+        menuList: mappedMenuList,
       },
     ],
   }
@@ -90,6 +98,15 @@ const contentList = ref<
     percentage: number | null
   }[]
 >(clone(filterState.value.contentList))
+
+// Watch for external changes to the store's contentList (e.g., global reset)
+watch(
+  () => filterState.value.contentList,
+  (newStoreList, oldStoreList) => {
+    contentList.value = clone(newStoreList)
+  },
+  { deep: true }
+)
 
 const errorMsg = computed(() => {
   let total = 0

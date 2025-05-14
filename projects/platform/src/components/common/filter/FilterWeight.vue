@@ -53,7 +53,10 @@ const unitList = ref<WeightUnit[]>(weight.unitList)
 
 const disabled = computed(() => {
   const [min, max] = inputRange.value
-  return min > max
+  const isRangeInvalid =
+    typeof min === 'number' && typeof max === 'number' && min > max
+  const noUnitsSelected = unitList.value.length === 0
+  return isRangeInvalid || noUnitsSelected
 })
 
 const update = () => {

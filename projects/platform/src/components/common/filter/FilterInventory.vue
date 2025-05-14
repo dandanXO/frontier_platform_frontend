@@ -33,7 +33,7 @@ import { storeToRefs } from 'pinia'
 import { MaterialQuantityUnit } from '@frontier/platform-web-sdk'
 import useEnumText from '@/composables/useEnumText'
 
-defineProps<{
+const props = defineProps<{
   searchType: SEARCH_TYPE
 }>()
 
@@ -44,10 +44,11 @@ const emit = defineEmits<{
 const { materialQuantityText } = useEnumText()
 const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
+
 const unitOptionList = computed(() =>
   Object.entries(MaterialQuantityUnit).map(([key, value]) => ({
     name: key,
-    value,
+    value: value,
     label: materialQuantityText.value[value],
   }))
 )
@@ -58,7 +59,17 @@ const unitList = ref<MaterialQuantityUnit[]>(inventory.unitList)
 
 const disabled = computed(() => {
   const [min, max] = inputRange.value
-  return min > max
+  const isRangeInvalid =
+    typeof min === 'number' && typeof max === 'number' && min > max
+
+  let disableDueToNoUnits = false
+  if (props.searchType !== SEARCH_TYPE.EXTERNAL) {
+    if (unitList.value.length === 0) {
+      disableDueToNoUnits = true
+    }
+  }
+
+  return isRangeInvalid || disableDueToNoUnits
 })
 
 const update = () => {

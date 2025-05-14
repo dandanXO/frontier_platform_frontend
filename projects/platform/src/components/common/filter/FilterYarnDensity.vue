@@ -3,6 +3,7 @@ filter-wrapper(
   iconName="yarn"
   :displayName="`${$t('RR0023')}/${$t('RR0024')}`"
   :dirty="filterDirty.densityAndYarn"
+  :confirmDisabled="disabled"
   @confirm="updateYarnAndDensity"
 )
   div(class="w-111")
@@ -61,7 +62,7 @@ filter-wrapper(
 
 <script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { ref, watch, reactive } from 'vue'
+import { ref, watch, reactive, computed } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
 import { clone } from 'ramda'
@@ -84,6 +85,20 @@ const knit = reactive(densityAndYarn.knit)
 const currentYarnType = ref(
   knit.knitYarnSize === null ? YARN_TYPE.WOVEN : YARN_TYPE.KNIT
 )
+
+const disabled = computed(() => {
+  if (currentYarnType.value === YARN_TYPE.WOVEN) {
+    return (
+      (woven.warpDensity === null || woven.warpDensity === '') &&
+      (woven.weftDensity === null || woven.weftDensity === '') &&
+      (woven.warpYarnSize === null || woven.warpYarnSize === '') &&
+      (woven.weftYarnSize === null || woven.weftYarnSize === '')
+    )
+  } else {
+    // YARN_TYPE.KNIT
+    return knit.knitYarnSize === null || knit.knitYarnSize === ''
+  }
+})
 
 const updateYarnAndDensity = () => {
   filterStore.setFilterStateByProperty('densityAndYarn', { woven, knit })

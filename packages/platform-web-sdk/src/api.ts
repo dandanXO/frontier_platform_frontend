@@ -3016,6 +3016,182 @@ export interface DashboardFabricKeywordCountsLastMonthDataInner {
 /**
  * 
  * @export
+ * @interface DashboardGetSummary200Response
+ */
+export interface DashboardGetSummary200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DashboardGetSummary200Response
+     */
+    'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardGetSummary200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardGetSummary200Response
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {DashboardGetSummary200ResponseResult}
+     * @memberof DashboardGetSummary200Response
+     */
+    'result'?: DashboardGetSummary200ResponseResult;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetSummary200ResponseResult
+ */
+export interface DashboardGetSummary200ResponseResult {
+    /**
+     * 
+     * @type {DashboardGetSummary200ResponseResultCreateCounts}
+     * @memberof DashboardGetSummary200ResponseResult
+     */
+    'createCounts'?: DashboardGetSummary200ResponseResultCreateCounts;
+    /**
+     * 
+     * @type {{ [key: string]: Array<DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner>; }}
+     * @memberof DashboardGetSummary200ResponseResult
+     */
+    'materialTypeOfCountryList'?: { [key: string]: Array<DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner>; };
+    /**
+     * 
+     * @type {{ [key: string]: Array<DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner>; }}
+     * @memberof DashboardGetSummary200ResponseResult
+     */
+    'materialContentCategoryList'?: { [key: string]: Array<DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner>; };
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetSummary200ResponseResultCreateCounts
+ */
+export interface DashboardGetSummary200ResponseResultCreateCounts {
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultCreateCounts
+     */
+    'yourAssetCounts'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultCreateCounts
+     */
+    'threeDimensionAssetCounts'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultCreateCounts
+     */
+    'collectionCounts'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultCreateCounts
+     */
+    'sharedCollectionCounts'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultCreateCounts
+     */
+    'countryCounts'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
+ */
+export interface DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
+     */
+    'materialType'?: number;
+    /**
+     * 
+     * @type {{ [key: string]: number; }}
+     * @memberof DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
+     */
+    'materialContentCategoryList'?: { [key: string]: number; };
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
+ */
+export interface DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
+     */
+    'materialType'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
+     */
+    'countryCode'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
+     */
+    'count'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetSummaryRequest
+ */
+export interface DashboardGetSummaryRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof DashboardGetSummaryRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof DashboardGetSummaryRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof DashboardGetSummaryRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Search}
+     * @memberof DashboardGetSummaryRequest
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {WorkspaceFilter}
+     * @memberof DashboardGetSummaryRequest
+     */
+    'filter': WorkspaceFilter | null;
+}
+
+
+/**
+ * 
+ * @export
  * @interface DashboardTextureCountsInner
  */
 export interface DashboardTextureCountsInner {
@@ -30121,6 +30297,46 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary Get Summary of Dashboard page
+         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboardGetSummary: async (dashboardGetSummaryRequest: DashboardGetSummaryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'dashboardGetSummaryRequest' is not null or undefined
+            assertParamExists('dashboardGetSummary', 'dashboardGetSummaryRequest', dashboardGetSummaryRequest)
+            const localVarPath = `/dashboard/get-summary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(dashboardGetSummaryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 取得Dashboard資訊
          * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
@@ -30234,6 +30450,19 @@ export const DashboardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get Summary of Dashboard page
+         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DashboardGetSummary200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardGetSummary(dashboardGetSummaryRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.dashboardGetSummary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 取得Dashboard資訊
          * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
@@ -30304,6 +30533,16 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          */
         createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createViewerLog(createViewerLogRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Summary of Dashboard page
+         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig): AxiosPromise<DashboardGetSummary200Response> {
+            return localVarFp.dashboardGetSummary(dashboardGetSummaryRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -30383,6 +30622,18 @@ export class DashboardApi extends BaseAPI {
      */
     public createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createViewerLog(createViewerLogRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Summary of Dashboard page
+     * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).dashboardGetSummary(dashboardGetSummaryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -29,7 +29,8 @@ const state = () => ({
   new3DViewer: false,
   moodboardOrg: false,
   threadboardOrg: false,
-
+  // new flag to toggle between old/new dashboard
+  enableNewDashboard: false,
   customPlanName: [1935],
   customerPlanNameMap: {
     1935: PLAN_TYPE.PRO,
@@ -110,6 +111,9 @@ const getters = {
     // Show Digital Drape
     return state.trialDigitalDrape
   },
+  isEnableNewDashboard: (state: { enableNewDashboard: boolean }) => {
+    return state.enableNewDashboard
+  },
 }
 
 const mutations = {
@@ -177,6 +181,13 @@ const mutations = {
   ) {
     state.threadboardOrg = newThreadboardOrg
   },
+  // mutation for new dashboard feature-flag
+  updateEnableNewDashboard(
+    state: { enableNewDashboard: boolean },
+    newVal: boolean
+  ) {
+    state.enableNewDashboard = newVal
+  },
   // update customPlanName
   updateCustomPlanName(
     state: { customPlanName: number[] },
@@ -205,6 +216,7 @@ const actions = {
       New3DViewer: 'updateNew3DViewer',
       Moodboard: 'updateMoodboardOrg',
       ThreadBoard: 'updateThreadboardOrg',
+      EnableNewDashboard: 'updateEnableNewDashboard',
     }
 
     Object.entries(featureFlagMapping).forEach(([flag, mutation]) => {
