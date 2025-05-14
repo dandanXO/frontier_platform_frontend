@@ -50,7 +50,7 @@ export default {
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent, watch } from 'vue'
-import { onBeforeRouteUpdate } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import useNavigation from '@/composables/useNavigation'
@@ -66,6 +66,8 @@ const NotifyBarBuffer = defineAsyncComponent(
 const ModalAnnouncement = defineAsyncComponent(
   () => import('@/components/common/ModalAnnouncement.vue')
 )
+
+const route = useRoute()
 const store = useStore()
 const filterStore = useFilterStore()
 const { isInInnerApp, ogId, ogType } = useNavigation()
