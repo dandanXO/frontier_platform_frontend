@@ -40,7 +40,7 @@ div(class="flex flex-col flex-wrap h-full items-center pt-5 pb-10 rounded bg-gre
         p {{ $t('RR0145') }}
           i18n-t(keypath="DD0101" tag="p" class="inline-block") 
             template(#number) &nbsp; {{ bytesToSize(fileSizeMaxLimit) }}
-        p {{ $t('RR0244') }} 800 x 800 px
+        p {{ $t('WW0146') }} 800 x 800 px
         p {{ $t('DD0075') }}
 </template>
 
