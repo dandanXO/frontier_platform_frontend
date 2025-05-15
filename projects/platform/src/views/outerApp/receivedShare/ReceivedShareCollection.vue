@@ -142,7 +142,7 @@ const getShareReceivedList = async (
       sharingKey: props.sharingKey,
       nodeId: currentNodeId.value,
     },
-    query,
+    query: route.query,
   })
   const {
     data: { result },
@@ -166,7 +166,9 @@ const handleNodeClick = (node: NodeChild, visit: Function) => {
     goToReceivedShareMaterial(
       props.sharingKey,
       node.nodeMeta.nodeId,
-      node.nodeMeta.rank ?? undefined
+      node.nodeMeta.rank ?? undefined,
+      route.query.open3d as any,
+      route.query
     )
   }
 }

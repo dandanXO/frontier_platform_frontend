@@ -84,7 +84,7 @@ f-input-container(
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
-      :readonly="disabled"
+      :readonly="disabled || readonly"
       @compositionstart="onCompositionStart"
       @compositionend="onCompositionEnd"
       @input="onBigNumberInput"
@@ -100,7 +100,7 @@ f-input-container(
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
-      :readonly="disabled"
+      :readonly="disabled || readonly"
       :min="min"
       :max="max"
       :step="step"
@@ -374,8 +374,12 @@ const props = defineProps({
     default: 'left',
   },
   appendIconClass: {
-    type: String
-  }
+    type: String,
+  },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 })
 const emit = defineEmits([
   'update:textValue',
@@ -598,7 +602,7 @@ const classMain = computed(() => {
     'rounded',
     'flex',
     'items-center',
-    'gap-x-3'
+    'gap-x-3',
   ]
 
   switch (props.size) {
@@ -764,7 +768,9 @@ const classIcon = computed(() => {
   const classList = [...classTransition.value]
 
   if (props.appendIconClass) {
-    classList.push(state.value === STATE.DISABLED ? 'text-disabled' : props.appendIconClass)
+    classList.push(
+      state.value === STATE.DISABLED ? 'text-disabled' : props.appendIconClass
+    )
     return classList
   }
 

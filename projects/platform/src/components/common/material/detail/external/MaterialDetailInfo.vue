@@ -244,6 +244,7 @@ const props = defineProps<{
   isCanDownloadU3M: boolean
   drawerOpenFromLocationList?: string[]
   showReachOutEmailCategory?: number
+  validateShowAllToken?: boolean
 }>()
 
 const { t } = useI18n()
@@ -306,6 +307,21 @@ const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
     return
   }
 
+  if (props.validateShowAllToken) {
+    const url =
+      format === U3M_DOWNLOAD_PROP.ZFAB
+        ? selectedU3m.value.zfab?.url
+        : selectedU3m.value[format]
+    if (!url) {
+      return console.error(
+        `url for ${props.material.materialId} and ${format} is not found`
+      )
+    }
+    const fileName = url.split('/')[url.split('/').length - 1]
+    downloadDataURLFile(url, fileName)
+    logSender.createDownloadLog(props.material.materialId, format)
+    return
+  }
   if (!route.path.includes('embed')) {
     await store.dispatch('user/getUser')
   }

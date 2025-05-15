@@ -318,22 +318,46 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  const goToReceivedShare = (sharingKey: string, nodeId?: number) => {
+  const goToReceivedShare = (
+    sharingKey: string,
+    nodeId?: number,
+    query?: {
+      openAllToken?: string
+    }
+  ) => {
     const basePath = `/received-share/${sharingKey}`
     const path = nodeId ? `${basePath}/${nodeId}` : basePath
-    router.push(path)
+    router.push({ path: path, query: query })
   }
 
   const goToReceivedShareMaterial = (
     sharingKey: string,
     nodeId: number,
     rank?: number,
-    open3d?: boolean
+    open3d?: boolean,
+    query?: {
+      showAllToken?: string
+    }
   ) => {
-    const basePath = `/received-share/${sharingKey}/material/${nodeId}${
-      open3d ? '?open3d=true' : ''
-    }`
-    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    const basePath = `/received-share/${sharingKey}/material/${nodeId}`
+    const queryParams = new URLSearchParams()
+
+    // 動態添加查詢參數
+    if (open3d) {
+      queryParams.append('open3d', 'true')
+    }
+    if (rank !== undefined) {
+      queryParams.append('rank', rank.toString())
+    }
+    if (query?.showAllToken) {
+      queryParams.append('showAllToken', query.showAllToken)
+    }
+
+    // 構建完整的 URL
+    const queryString = queryParams.toString()
+    const path = queryString ? `${basePath}?${queryString}` : basePath
+
+    // 導航到生成的路徑
     router.push(path)
   }
 

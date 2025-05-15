@@ -1,12 +1,8 @@
 <template lang="pug">
-modal-behavior(
-  :header="$t('RR0079')"
-  :secondaryBtnText="$t('UU0002')"
-  @click:secondary="closeModal"
-)
+modal-behavior(:header="$t('RR0079')" :footer="false")
   f-tabs(:tabList="tabList" keyField="id")
     template(#default="{ currentTab }")
-      div(class="w-101 h-43 pt-5")
+      div(class="w-full h-43 pt-5")
         template(v-if="currentTab === TAB.ASSIGNED")
           div(class="flex flex-col gap-6")
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
@@ -31,23 +27,37 @@ modal-behavior(
                 ) {{ $t('UU0145') }}
         template(v-else-if="currentTab === TAB.COPY_LINK")
           div(class="h-full flex flex-col gap-y-2")
-            p(class="text-body2 font-bold text-primary-900") {{ $t('FF0063') }}
-            div(class="flex items-center justify-between")
-              f-input-switch(
-                iconSize="30"
-                :label="$t('FF0064')"
-                v-model:inputValue="isCanShared"
-                @update:inputValue="toggleCopyLink"
-              )
-              f-button(
-                size="sm"
-                :disabled="!isCanShared"
-                @click="generateCopyLink"
-              ) {{ $t('UU0068') }}
-            f-infobar(
-              :notifyType="NOTIFY_TYPE.WARNING"
-              :messageText="$t('FF0062')"
-            )
+            //- p(class="text-body2 font-bold text-primary-900") {{ $t('FF0063') }}
+            div(class="flex flex-col items-start justify-between")
+              //- f-input-switch(
+              //-   iconSize="30"
+              //-   :label="$t('FF0064')"
+              //-   v-model:inputValue="isCanShared"
+              //-   @update:inputValue="toggleCopyLink"
+              //- )
+
+              div(class="text-body2 mb-1.5") {{ $t('RR0554') }}
+              div(class="flex flex-row w-full items-center justify-between")
+                f-input-text(
+                  :textValue="sharedUrl"
+                  class="w-[77%]"
+                  :clearable="false"
+                  readonly
+                )
+                f-button(size="md" @click="generateCopyLinkShowAll") {{ $t('UU0068') }}
+              div(class="mt-6 text-body2 mb-1.5") {{ $t('RR0555') }}
+              div(class="flex flex-row w-full items-center justify-between")
+                f-input-text(
+                  :textValue="sharedUrlNormal"
+                  class="w-[77%]"
+                  :clearable="false"
+                  readonly
+                )
+                f-button(size="md" @click="generateCopyLink") {{ $t('UU0068') }}
+            //- f-infobar(
+            //-   :notifyType="NOTIFY_TYPE.WARNING"
+            //-   :messageText="$t('FF0062')"
+            //- )
         template(v-else-if="currentTab === TAB.SOCIAL_MEDIA")
           div(class="flex gap-8 bg-grey-50 py-5 justify-center text-grey-900")
             div(class="cursor-pointer" @click="shareToSocialMedia(SocialMedia.LINKEDIN)")
@@ -115,10 +125,16 @@ modal-behavior(
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share'
+import {
+  getSharedUrlNormal,
+  getSharedUrl,
+  shareViaCopyLink,
+  shareViaSocialMedia,
+  shareShowAllViaCopyLink,
+} from '@/utils/share'
 import { copyText } from '@frontier/lib'
 import {
   type NodeChild,
@@ -149,6 +165,8 @@ const TAB = {
 }
 const nodeId = computed(() => props.node.nodeMeta.nodeId)
 
+const sharedUrlNormal = ref('')
+const sharedUrl = ref('')
 await getWorkspaceNodeShareInfo(nodeId.value)
 const { embed, isCanShared } = toRefs(nodeShareInfo)
 
@@ -213,6 +231,20 @@ const toggleCopyLink = () =>
     nodeId: nodeId.value,
     isCanShared: isCanShared.value,
   })
+const _getSharedUrl = async () => {
+  const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareCopyLink', {
+    nodeId: nodeId.value,
+  })
+  getSharedUrl(res.data.result.key)
+
+  sharedUrl.value = getSharedUrl(res.data.result.key)
+}
+const _getSharedUrlNormal = async () => {
+  const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareCopyLink', {
+    nodeId: nodeId.value,
+  })
+  sharedUrlNormal.value = getSharedUrlNormal(res.data.result.key)
+}
 
 const generateCopyLink = async () => {
   store.dispatch('helper/pushModalLoading')
@@ -220,6 +252,15 @@ const generateCopyLink = async () => {
     nodeId: nodeId.value,
   })
   shareViaCopyLink(res.data.result.key)
+  store.dispatch('helper/closeModalLoading')
+  notify.showNotifySnackbar({ messageText: t('RR0149') })
+}
+const generateCopyLinkShowAll = async () => {
+  store.dispatch('helper/pushModalLoading')
+  const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareCopyLink', {
+    nodeId: nodeId.value,
+  })
+  shareShowAllViaCopyLink(res.data.result.key)
   store.dispatch('helper/closeModalLoading')
   notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
@@ -246,4 +287,7 @@ const copyEmbedIFrameCode = () => {
 }
 
 const closeModal = () => store.dispatch('helper/closeModalBehavior')
+
+_getSharedUrlNormal()
+_getSharedUrl()
 </script>

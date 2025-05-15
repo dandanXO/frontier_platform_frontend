@@ -52,6 +52,7 @@ div(class="w-full mx-auto rwd-outer-external-container")
         :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
         :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
         :showReachOutEmailCategory="showReachOutEmailCategory"
+        :validateShowAllToken="validateShowAllToken"
       )
 </template>
 
@@ -62,6 +63,9 @@ import MaterialDetailInfo from '@/components/common/material/detail/external/Mat
 import { storeToRefs } from 'pinia'
 import { useBreakpoints } from '@frontier/lib'
 import type { Material, NodeMeta } from '@frontier/platform-web-sdk'
+import { decodeToken } from '@/utils/share'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
 defineProps<{
   material: Material
@@ -70,7 +74,19 @@ defineProps<{
   showReachOutEmailCategory?: number
 }>()
 
+const route = useRoute()
 const { isDesktop } = useBreakpoints()
 const outerStore = useOuterStore()
 const { shareInfo } = storeToRefs(outerStore)
+const validateShowAllToken = computed(() => {
+  if (route.query.showAllToken) {
+    if (decodeToken(route.query.showAllToken) === route.params.sharingKey) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+})
 </script>

@@ -40,9 +40,13 @@
       const urlParams = new URLSearchParams(window.location.search)
       const sharingKey = urlParams.get('sharingKey')
       const open3d = urlParams.get('open3d')
-      window.location = `${
-        window.location.origin
-      }/received-share/${sharingKey}/navigator${open3d ? '?open3d=true' : ''}`
+      const showAllToken = urlParams.get('showAllToken')
+      const queryParams = [];
+      if (open3d) queryParams.push('open3d=true');
+      if (showAllToken) queryParams.push(`showAllToken=${showAllToken}`);
+
+      const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+      window.location = `${window.location.origin}/received-share/${sharingKey}/navigator${queryString}`;
     </script>
   </body>
 </html>

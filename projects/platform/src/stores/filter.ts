@@ -194,23 +194,23 @@ export const useFilterStore = defineStore('filter', () => {
       searchOptionsData.result
     )
 
-    try {
-      const { data: materialOptionsData } = await ogBaseAssetsApi(
-        'getMaterialOptions'
-      )
-      if (materialOptionsData.result?.seasonList) {
-        filterOption.value.seasonList = materialOptionsData.result.seasonList
-        // TODO: populate yearList when backend adds year field
-        filterOption.value.yearList = []
-      }
-      if (materialOptionsData.result?.certificateList) {
-        filterOption.value.certificateList =
-          materialOptionsData.result.certificateList
-      }
-    } catch (error) {
-      console.error('Failed to fetch material options for filter:', error)
-      filterOption.value.yearList = filterOption.value.yearList || []
-    }
+    // try {
+    //   const { data: materialOptionsData } = await ogBaseAssetsApi(
+    //     'getMaterialOptions'
+    //   )
+    //   if (materialOptionsData.result?.seasonList) {
+    //     filterOption.value.seasonList = materialOptionsData.result.seasonList
+    //     // TODO: populate yearList when backend adds year field
+    //     filterOption.value.yearList = []
+    //   }
+    //   if (materialOptionsData.result?.certificateList) {
+    //     filterOption.value.certificateList =
+    //       materialOptionsData.result.certificateList
+    //   }
+    // } catch (error) {
+    //   console.error('Failed to fetch material options for filter:', error)
+    //   filterOption.value.yearList = filterOption.value.yearList || []
+    // }
   }
   const getInitFilterState: () => FilterState = () => ({
     materialTypeList: [],
