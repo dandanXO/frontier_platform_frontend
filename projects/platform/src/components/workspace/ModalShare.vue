@@ -7,7 +7,7 @@ modal-behavior(:header="$t('RR0079')" :footer="false")
           div(class="flex flex-col gap-6")
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
               p(class="font-bold pb-2") {{ $t('RR0344') }}
-              div(class="flex items-end justify-between")
+              div(class="flex items-end justify-between gap-x-2")
                 p(class="leading-normal") {{ $t('FF0074') }}
                 f-button(
                   size="sm"
@@ -17,7 +17,7 @@ modal-behavior(:header="$t('RR0079')" :footer="false")
                 ) {{ $t('UU0144') }}
             div(class="text-body2 text-grey-900 flex flex-col justify-between")
               p(class="font-bold pb-2") {{ $t('RR0155') }}
-              div(class="flex items-end justify-between")
+              div(class="flex items-end justify-between gap-x-2")
                 p(class="leading-normal") {{ $t('FF0089') }}
                 f-button(
                   size="sm"
@@ -37,19 +37,19 @@ modal-behavior(:header="$t('RR0079')" :footer="false")
               //- )
 
               div(class="text-body2 mb-1.5") {{ $t('RR0554') }}
-              div(class="flex flex-row w-full items-center justify-between")
+              div(class="flex flex-row w-full items-center justify-between gap-x-2")
                 f-input-text(
                   :textValue="sharedUrl"
-                  class="w-[77%]"
+                  class="w-[100%]"
                   :clearable="false"
                   readonly
                 )
                 f-button(size="md" @click="generateCopyLinkShowAll") {{ $t('UU0068') }}
               div(class="mt-6 text-body2 mb-1.5") {{ $t('RR0555') }}
-              div(class="flex flex-row w-full items-center justify-between")
+              div(class="flex flex-row w-full items-center justify-between gap-x-2")
                 f-input-text(
                   :textValue="sharedUrlNormal"
-                  class="w-[77%]"
+                  class="w-[100%]"
                   :clearable="false"
                   readonly
                 )
