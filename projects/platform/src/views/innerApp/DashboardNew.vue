@@ -645,6 +645,7 @@ const hasEcoData = computed(
 
 onMounted(async () => {
   isLoading.value = true
+  dashboardIsLoading.value = true
   // Fetch dashboard data (ensure ecoImpactorInformation is fetched)
   try {
     await dashboard.getDashboard()
@@ -654,6 +655,7 @@ onMounted(async () => {
     // console.warn("Dashboard summary failed to load in onMounted:", error);
   } finally {
     isLoading.value = false
+    dashboardIsLoading.value = false
   }
 })
 </script>
