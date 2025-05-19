@@ -1,6 +1,7 @@
 <template lang="pug">
 button(
   class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
+  :type="htmlType"
   :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )
@@ -23,6 +24,7 @@ import { THEME, SIZE } from '../constants'
 
 const props = withDefaults(
   defineProps<{
+    htmlType?: 'button' | 'submit' | 'reset'
     theme?: `${THEME}`
     size?: `${SIZE}` | 'special' | 'xsm'
     type?: 'primary' | 'secondary' | 'text' | 'special' | 'critical-outline'
@@ -35,6 +37,7 @@ const props = withDefaults(
     animation?: boolean
   }>(),
   {
+    htmlType: 'button',
     theme: THEME.LIGHT,
     size: 'special',
     type: 'primary',

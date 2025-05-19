@@ -3,7 +3,7 @@ div(class="w-105 flex flex-col gap-5")
   div(class="w-full rounded-lg shadow-4 p-8 flex flex-col gap-5")
     p(class="text-primary-inverse text-xl font-bold text-center" data-cy="login-title") {{ $t('AA0093') }}
     div(class="border-b border-primary-border")
-    form(class="grid gap-5")
+    form(class="grid gap-5" @submit.prevent)
       f-input-text(
         v-model:textValue="formData.email"
         :label="$t('AA0002')"
@@ -21,14 +21,15 @@ div(class="w-105 flex flex-col gap-5")
           type="text"
           class="self-end w-fit underline font-semibold"
           size="sm"
-          @click.prevent="openModalForgotPasswordEmail"
+          @click="openModalForgotPasswordEmail"
         ) {{ $t('AA0095') }}
-    f-button(
-      size="lg"
-      class="w-full font-bold self-center"
-      @click="$emit('onSignIn', formData)"
-      data-cy="login"
-    ) {{ $t('AA0093') }}
+      f-button(
+        htmlType="submit"
+        size="lg"
+        class="w-full font-bold self-center"
+        @click="$emit('onSignIn', formData)"
+        data-cy="login"
+      ) {{ $t('AA0093') }}
     div(class="flex-grow text-caption h-5" v-if="errorMsgSignIn !== ''")
       p(class="text-red-400 text-center" data-cy="errorMsg") {{ errorMsgSignIn }}
     template(v-if="!isGoogleLoadFail")
