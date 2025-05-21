@@ -10,7 +10,7 @@
       <div class="flex gap-2 items-center flex-shrink-0">
         <DropdownOgMenuV2
           :selectValue="`${ogType}-${ogId}`"
-          @update:selectValue="goToDashboard({ ogKey: $event })"
+          @update:selectValue="clickDropDownOgMenu"
         ></DropdownOgMenuV2>
 
         <div class="text-h2/1.5 font-bold text-grey-900 text-center">
@@ -462,6 +462,15 @@ const resetFilterHandler = async () => {
   } finally {
     dashboardIsLoading.value = false
   }
+}
+
+const clickDropDownOgMenu = (event: string) => {
+  // reset all data to 0
+  createCounts.value.yourAssetCounts = 0
+  createCounts.value.threeDimensionAssetCounts = 0
+  createCounts.value.collectionCounts = 0
+  createCounts.value.countryCounts = 0
+  goToDashboard({ ogKey: event })
 }
 
 const handleSearch = async () => {
