@@ -272,6 +272,10 @@ export interface Colors {
     0: '#FDE7DA'
   }
   grey: {
+    950: {
+      DEFAULT: '#131414'
+      v1: '#131414'
+    }
     900: {
       DEFAULT: '#262626'
       v1: '#2B2C2C'
@@ -611,6 +615,10 @@ const colors: Colors = {
     0: '#FDE7DA',
   },
   grey: {
+    950: {
+      DEFAULT: '#131414',
+      v1: '#131414',
+    },
     900: {
       DEFAULT: '#262626',
       v1: '#2B2C2C',

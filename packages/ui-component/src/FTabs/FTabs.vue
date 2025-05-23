@@ -12,13 +12,11 @@
         @click="!tab.disabled && switchTab(tab)"
         :data-cy="tab.testId ?? `tab-item-${index}`"
       >
-        <f-svg-icon
-          v-if="tab.icon"
-          :iconName="tab.icon"
-          size="14"
-          class="mr-1"
-        ></f-svg-icon>
-        <p class="text-body2 whitespace-nowrap cursor-pointer">
+        <f-svg-icon v-if="tab.icon" :iconName="tab.icon" size="14"></f-svg-icon>
+        <p
+          v-if="tab.name"
+          class="ml-1 text-body2 whitespace-nowrap cursor-pointer"
+        >
           {{ tab.name }}
         </p>
         <div

@@ -122,7 +122,7 @@ const lineChartOptions = computed<EChartsOption>(() => {
       axisLabel: {
         color: '#A0A0A0',
         inside: false,
-        margin: 5,
+        margin: 20,
         formatter: (value: number) => `${value} ${unit}`,
       },
     },

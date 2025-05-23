@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex items-center mb-4 flex-shrink-0">
-      <div class="text-grey-900 text-xl font-bold leading-8 mr-1">
+    <div class="flex items-center flex-shrink-0 mb-4">
+      <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
         {{ titleText }}
       </div>
       <f-svg-icon
         iconName="question"
         size="16"
-        class="text-grey-400 cursor-help"
+        class="text-grey-700-v1 cursor-help"
         :tooltip-message="tooltipMessage"
         tooltipType="bubble"
       />
@@ -29,7 +29,7 @@
         class="w-full h-full bg-grey-50-v1 rounded-[4px] flex items-center justify-center min-h-[120px]"
       >
         <div
-          class="text-grey-600-v1 text-center text-base leading-6 font-normal"
+          class="text-base font-normal leading-6 text-center text-grey-600-v1"
         >
           {{ $t('RR0507') }}
         </div>
@@ -118,8 +118,8 @@ defineOptions({
 // Add view tabs
 const currentViewTab = ref<'percentage' | 'count'>('percentage')
 const viewTabs = computed(() => [
-  { id: 'percentage', name: '%', icon: '' },
-  { id: 'count', name: '#', icon: '' },
+  { id: 'percentage', name: '', icon: 'percent' },
+  { id: 'count', name: '', icon: 'numbers' },
 ])
 
 // Use the EChartsOption type for chartOptions
@@ -306,7 +306,7 @@ watch(
             // chartValue is the count
             const percent =
               categoryTotal > 0
-                ? Math.round((originalSeriesPoint / categoryTotal) * 100) + '%'
+                ? ((originalSeriesPoint / categoryTotal) * 100).toFixed(2) + '%'
                 : '0%'
             return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${percent}</span><span>${originalSeriesPoint} pieces</span></div>`
           }

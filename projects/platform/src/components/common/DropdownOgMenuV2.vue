@@ -15,7 +15,7 @@
         <div class="text-grey-700-v1 text-xs font-normal">
           Organization / Group
         </div>
-        <div class="text-grey-600-v1 text-sm font-bold">
+        <div class="text-grey-900-v1 text-sm font-bold">
           {{ selectedMenu ? selectedMenu.title : 'Select Organization/Group' }}
         </div>
       </div>

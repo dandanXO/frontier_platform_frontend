@@ -59,7 +59,7 @@
     >
       <div
         v-if="showHeader"
-        class="grid grid-cols-12 gap-6 items-center bg-grey-100 text-body2 text-grey-900 h-10 px-15 rounded"
+        class="grid grid-cols-12 gap-6 items-center bg-grey-50-v1 text-body2 text-grey-900 h-10 px-15 rounded"
         :class="{ 'flex-shrink-0': fitContainer, 'my-2.5': !fitContainer }"
         :style="{ minWidth: tableWidth }"
       >
@@ -75,14 +75,17 @@
           >
             <span
               class="inline-block whitespace-nowrap"
-              :class="{
-                'group-hover:text-grey-900': !!header.sortBy && !fitContainer,
-                'text-green-500 font-bold':
-                  header.sortBy?.includes(currentSort) && fitContainer,
-                'text-grey-600': !(
-                  header.sortBy?.includes(currentSort) && fitContainer
-                ),
-              }"
+              :class="[
+                {
+                  'group-hover:text-grey-900': !!header.sortBy && !fitContainer,
+                  'text-green-500 font-bold':
+                    header.sortBy?.includes(currentSort) && fitContainer,
+                  'text-grey-600': !(
+                    header.sortBy?.includes(currentSort) && fitContainer
+                  ),
+                },
+                header.textColor || '',
+              ]"
               >{{ header.label }}</span
             >
             <f-svg-icon
