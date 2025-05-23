@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex items-center flex-shrink-0 mb-4">
-      <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
+      <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
         {{ titleText }}
       </div>
       <f-svg-icon
         iconName="question"
         size="16"
-        class="text-grey-400 cursor-help"
+        class="text-grey-700-v1 cursor-help"
         :tooltip-message="tooltipMessage"
         tooltipType="bubble"
       />
@@ -137,8 +137,8 @@ const switchMaterialTypeOfCountryList =
 const currentViewTab = ref<'percentage' | 'count'>('percentage')
 const currentPublicAndPrivateTab = ref<'public' | 'private'>('private')
 const viewTabs = computed(() => [
-  { id: 'percentage', name: '%', icon: '' },
-  { id: 'count', name: '#', icon: '' },
+  { id: 'percentage', name: '', icon: 'percent' },
+  { id: 'count', name: '', icon: 'numbers' },
 ])
 const publicAndPrivateTabs = computed(() => [
   { id: 'public', name: '', icon: 'public_earth' },

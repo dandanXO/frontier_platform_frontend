@@ -13,7 +13,7 @@
           @update:selectValue="clickDropDownOgMenu"
         ></DropdownOgMenuV2>
 
-        <div class="text-h2/1.5 font-bold text-grey-900 text-center">
+        <div class="text-h2/1.5 font-bold text-grey-950 text-center">
           {{ $t('BB0138') }}
         </div>
         <div class="flex-1"></div>
@@ -25,7 +25,7 @@
       >
         <div class="flex items-center self-stretch justify-between">
           <div
-            class="font-sans text-xl leading-8 font-bold text-[#2B2C2C] text-center"
+            class="font-sans text-xl font-bold leading-8 text-center text-grey-900-v1"
           >
             Overview
           </div>
@@ -253,12 +253,12 @@
           <div class="flex items-center justify-between flex-shrink-0 mb-4">
             <div class="flex items-center">
               <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
-                {{ $t('RR0500') }}
+                {{ $t('RR0500') }}z
               </div>
               <f-svg-icon
                 iconName="question"
                 size="16"
-                class="text-grey-400 cursor-help"
+                class="text-grey-700-v1 cursor-help"
                 :tooltipMessage="$t('RR0501')"
                 tooltipType="bubble"
               />
@@ -314,7 +314,7 @@
           class="w-full min-h-[216px] bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col flex-shrink-0"
         >
           <div class="flex items-center justify-between flex-shrink-0 mb-4">
-            <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
+            <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
               {{ $t('M2F031') }}
             </div>
             <!-- Tabs -->
@@ -538,7 +538,8 @@ const tableHeaders = ref([
     label: t('RR0504'),
     colSpan: 'col-span-6',
     align: 'text-center', // Changed align for keywords
-    customClass: 'font-bold leading-4 text-[#131414]',
+    customClass: 'font-bold leading-4',
+    textColor: 'text-grey-900-v1',
   },
   {
     prop: 'searchVolume',
