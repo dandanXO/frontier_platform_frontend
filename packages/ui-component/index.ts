@@ -12,6 +12,7 @@ export default {
   },
 }
 
+import FAccordion from './src/FAccordion/FAccordion.vue'
 import FButton from './src/FButton/FButton.vue'
 import FBadge from './src/FBadge/FBadge.vue'
 import FButtonLabel from './src/FButtonLabel/FButtonLabel.vue'
@@ -40,6 +41,7 @@ import FAvatar from './src/FAvatar/FAvatar.vue'
 import FTag from './src/FTag/FTag.vue'
 
 export {
+  FAccordion,
   FButton,
   FBadge,
   FButtonLabel,

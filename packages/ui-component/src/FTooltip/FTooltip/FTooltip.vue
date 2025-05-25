@@ -1,7 +1,7 @@
-<style lang="scss">
+<style lang="scss" scoped>
 #arrow,
 #arrow::before {
-  z-index: 1 !important;
+  z-index: 10001 !important;
   position: absolute;
   width: 12px !important;
   height: 12px !important;
@@ -22,7 +22,7 @@
 
 /* Position the arrow correctly based on placement */
 .tooltip-container[data-popper-placement^='top'] #arrow {
-  bottom: 0px !important;
+  top: 65% !important;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* Shadow for bottom when arrow points down */
 }
 
@@ -60,7 +60,7 @@ div(
     div(
       ref="refTooltip" 
       role="popper" 
-      :class="[classContainer, customClassContainer, 'tooltip-container']" 
+      :class="[classContainer, 'tooltip-container']" 
       class="z-tooltip"   
       :onmouseleave="mouseLeaveContainer"
       :onmouseenter="mouseEnterContainer"
@@ -73,7 +73,7 @@ div(
           class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265 relative z-2"
           :class="[classContent]"
         )
-          div(class="flex flex-col gap-1")
+          div(class="flex flex-col gap-1" v-if="title || desc")
             p(v-if="!!title" class="break-all font-bold text-sm") {{ title }}
             div(v-if="!!desc" class="break-words text-xs")
               p(v-if="isDescHTML" v-html="desc")
@@ -111,7 +111,6 @@ const isActive = ref(false)
 const isMouseInsideContainer = ref(false)
 const refTrigger = ref<HTMLElement>()
 const refTooltip = ref<HTMLElement>()
-const customClassContainer = ref('')
 
 const props = withDefaults(defineProps<Props>(), {
   placement: TOOLTIP_PLACEMENT.RIGHT,

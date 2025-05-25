@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   class="aspect-square relative rounded overflow-hidden flex items-center justify-center"
-  :class="{ 'border border-grey-250': !!thumbnailUrl || !!originalUrl }"
+  :class="{ 'border border-primary-border': !!thumbnailUrl || !!originalUrl }"
 )
   template(v-if="[PNG, JPEG, JPG, PDF, GIF].includes(extension)")
     img(

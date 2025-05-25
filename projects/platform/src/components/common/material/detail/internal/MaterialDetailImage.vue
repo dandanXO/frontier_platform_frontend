@@ -1,34 +1,46 @@
 <template lang="pug">
-div(class="flex flex-col gap-y-4")
-  div(class="w-125 h-125 relative")
+div(class="flex flex-col gap-y-4 w-112")
+  div(class="relative w-full h-112")
     file-display(
       class="w-full h-full"
       :displayUrl="localFileList[currentDisplayIndex]?.displayUrl"
       :originalUrl="localFileList[currentDisplayIndex]?.originalUrl"
       :extension="localFileList[currentDisplayIndex]?.extension"
     )
-    div(class="absolute top-2 right-2 flex gap-x-5")
+    div(class="absolute flex bottom-5 right-5 gap-x-5")
       low-dpi-label(
         :material="material"
         :materialOptions="materialOptions"
+        :placement="TOOLTIP_PLACEMENT.LEFT"
         v-if="localFileList[currentDisplayIndex]?.isLowDpi"
+        :offset="[0, 10]"
+        theme="new-dark"
       )
-    div(class="absolute bottom-5 left-5 right-5 flex gap-x-5")
-      button(
-        v-if="!props.hideMagnifier"
-        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
-        @click="openViewMode"
-      )
-        f-svg-icon(iconName="visibility" size="32" class="text-grey-900")
+    div(class="absolute flex top-5 right-5 gap-x-5")
+      f-tooltip(:placement="TOOLTIP_PLACEMENT.TOP" theme="new-dark")
+        template(#slot:tooltip-trigger)
+          f-button(
+            v-if="!props.hideMagnifier"
+            @click="openViewMode"
+            size="md"
+            type="secondary"
+            isIcon
+            data-theme="new"
+            class="!bg-primary"
+          )
+            f-svg-icon(iconName="loupe" size="20")
+        template(#slot:tooltip-content)
+          p(class="text-xs break-all") {{ $t('EE0242') }}
+    div(class="absolute flex items-center bottom-5 left-5 right-5 gap-x-5")
       button(
         v-if="isShowEdit"
-        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
+        class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
         @click="emits('editScannedImage')"
       )
         f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
       button(
         v-if="isShowStar"
-        class="w-10 h-10 rounded-md bg-grey-100/40 flex items-center justify-center cursor-pointer"
+        class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
         @click="emits('updateCurrentCoverIndex', currentDisplayIndex)"
       )
         f-svg-icon(
@@ -43,9 +55,9 @@ div(class="flex flex-col gap-y-4")
           size="32"
           :class="[props.selectedId && props.selectedId === localFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
         )
-      div(v-if="isShowDDButton" class="ml-auto flex-col")
+      div(v-if="isShowDDButton" class="flex-col ml-auto")
         button(
-          class="w-10 h-10 rounded-md bg-grey-100/40 flex flex-col items-center justify-center cursor-pointer"
+          class="flex flex-col items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
           @click="isDDMenuOpen = !isDDMenuOpen"
         )
           f-svg-icon(iconName="3D_material" size="32" class="text-grey-900")
@@ -62,12 +74,12 @@ div(class="flex flex-col gap-y-4")
     )
       div(class="w-4 mr-2.5")
         f-svg-icon(iconName="error_outline" size="16" class="text-yellow-500")
-      div(class="flex-grow text-grey-600 text-caption leading-4") 
+      div(class="flex-grow leading-4 text-grey-600 text-caption") 
         p(class="font-bold leading-4") {{ $t('WW0167') }}
         p(class="font-normal leading-4") 
           span {{ $t('EE0188') + ' ' }}
-          a(class="cursor-pointer underline" @click.prevent="handleCreateFeedback") {{ $t('RR0123') }}
-        a(class="text-cyan-500 cursor-pointer" @click.prevent="handleCreateU3m") {{ $t('UU0082') }}
+          a(class="underline cursor-pointer" @click.prevent="handleCreateFeedback") {{ $t('RR0123') }}
+        a(class="cursor-pointer text-cyan-500" @click.prevent="handleCreateU3m") {{ $t('UU0082') }}
       div(class="w-4 ml-2.5")
         f-svg-icon(
           iconName="close"
@@ -78,31 +90,27 @@ div(class="flex flex-col gap-y-4")
     //- A loading spinner is displayed when the 3D Digital Drape image is being processed.
     div(
       v-if="isShowDDButton && isDDProcessing"
-      class="absolute bg-grey-50 z-50 w-51 p-3 rounded-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2 flex flex-col items-center justify-center"
+      class="absolute z-50 flex flex-col items-center justify-center p-3 transform -translate-x-1/2 -translate-y-1/2 rounded-md bg-grey-50 w-51 top-1/2 left-1/2 shadow-2"
     )
       f-svg-icon(iconName="loading" size="40" class="text-primary-500, min-h-7")
-      p(class="text-grey-600 text-caption leading-4 text-center") {{ isCustomDDSelected ? $t('EE0185') : $t('EE0184') }}
-  slider(:key="localFileList.length" heightLinerBg="h-19.5" :scrollPerItem="5")
-    div(class="grid grid-flow-col gap-x-2 justify-start")
+      p(class="leading-4 text-center text-grey-600 text-caption") {{ isCustomDDSelected ? $t('EE0185') : $t('EE0184') }}
+  slider(class="w-full")
+    div(class="flex justify-start gap-3")
       div(
         v-for="(image, index) in localFileList"
         :key="image.displayNameShort"
-        class="w-18 flex flex-col items-center gap-y-0.5"
+        class="flex flex-col gap-2 p-2 border rounded-lg cursor-pointer group"
+        :class="currentDisplayIndex === index ? 'border-brand-solid bg-brand' : 'border-primary-border'"
+        @click="clickSmallImage(index)"
       )
+        span(class="text-caption/1.6 text-primary-inverse line-clamp-1") {{ image.displayNameShort }} {{ image.caption ? `(${image.caption})` : '' }}
         file-thumbnail(
-          class="w-18 h-18 hover:border-2 hover:border-primary-300"
+          class="w-[5.438rem] h-[5.438rem] group-hover:border-2"
           :thumbnailUrl="currentCoverImageUrl(image, index)"
           :originalUrl="image.originalUrl"
           :extension="image.extension"
-          :class="{ 'border-2 border-primary-300': currentDisplayIndex === index }"
-          @click="clickSmallImage(index)"
           :loading="index === 3 && isDDProcessing"
         )
-        span(
-          class="text-caption/1.6 text-grey-900 text-center"
-          style="word-wrap: anywhere;"
-        ) {{ image.displayNameShort }}
-        span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
 </template>
 
 <script setup lang="ts">
@@ -114,7 +122,7 @@ import type { MenuTree } from '@frontier/ui-component'
 import type { CoverId, MaterialFile } from '@/types'
 import FileThumbnail from '@/components/common/material/file/FileThumbnail.vue'
 import FileDisplay from '@/components/common/material/file/FileDisplay.vue'
-import { IMAGE_FILE_ACCEPT_TYPE } from '@/utils/constants'
+import { IMAGE_FILE_ACCEPT_TYPE, TOOLTIP_PLACEMENT } from '@/utils/constants'
 import { useCurrentDisplayIndex } from '@/composables/material/useMaterialDetailImage'
 import { useI18n } from 'vue-i18n'
 import {

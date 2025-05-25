@@ -15,7 +15,7 @@
         <f-svg-icon v-if="tab.icon" :iconName="tab.icon" size="14"></f-svg-icon>
         <p
           v-if="tab.name"
-          class="ml-1 text-body2 whitespace-nowrap cursor-pointer"
+          class="ml-1 cursor-pointer text-body2 whitespace-nowrap"
         >
           {{ tab.name }}
         </p>
@@ -27,6 +27,17 @@
           <div class="new-badge">
             <p>{{ $t('RR0465') }}</p>
           </div>
+        </div>
+        <div
+          v-if="tab.value !== undefined"
+          class="p-1 text-xs font-bold text-center rounded aspect-square min-w-6"
+          :class="
+            tab[keyField] === currentTab
+              ? 'text-white bg-brand-solid'
+              : 'text-primary-inverse bg-primary-hover'
+          "
+        >
+          {{ tab.value }}
         </div>
       </div>
     </div>
@@ -58,8 +69,9 @@ export interface TabItem {
   path?: string
   hasNewUpdate?: boolean
   new?: boolean
-  icon: string
+  icon?: string
   disabled?: boolean
+  value?: any
   [key: string]: any
 }
 

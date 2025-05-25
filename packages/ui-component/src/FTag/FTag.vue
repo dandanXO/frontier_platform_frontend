@@ -19,13 +19,15 @@ import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    size?: 'sm' | 'lg'
+    size?: 'sm' | 'md' | 'lg'
     appendIcon?: string
     isActive?: boolean
+    clickable?: boolean
   }>(),
   {
     size: 'lg',
     isActive: false,
+    clickable: true,
   }
 )
 
@@ -36,15 +38,21 @@ const classes = computed(() => {
     'flex',
     'items-center',
     'rounded',
-    'bg-grey-100',
-    'hover:bg-grey-150',
-    'active:bg-grey-100',
-    'active:cursor-pointer',
+    'bg-secondary',
   ]
+  props.clickable &&
+    classList.push(
+      'hover:bg-grey-150',
+      'active:bg-grey-100',
+      'active:cursor-pointer'
+    )
 
   switch (props.size) {
     case 'sm':
       classList.push('h-6', 'px-2', 'gap-x-1.5', 'text-caption')
+      break
+    case 'md':
+      classList.push('p-2', 'gap-x-1.5', 'text-sm')
       break
     case 'lg':
       classList.push('h-8.5', 'px-3', 'gap-x-2.5', 'text-body2')

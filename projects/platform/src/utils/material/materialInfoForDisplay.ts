@@ -80,6 +80,17 @@ const materialInfoForDisplay = {
       value: valueInArray.join(', '),
     }
   },
+  constructionTypeOnly: (
+    materialType: MaterialType,
+    constructionType: IdTextWithCustomData
+  ) => {
+    const withConstructionType =
+      WITH_CONSTRUCTION_TYPE_MATERIALS.includes(materialType)
+    return {
+      name: t('MI0150'),
+      value: withConstructionType ? constructionType.name : undefined,
+    }
+  },
   finishList: (finishList: MaterialFinish[]) => ({
     name: t('RR0022'),
     value: finishList.map((finish) => finish.name).join(', '),

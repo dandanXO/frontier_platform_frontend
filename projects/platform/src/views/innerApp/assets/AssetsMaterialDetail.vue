@@ -1,10 +1,9 @@
 <template lang="pug">
-div
+div(data-theme="new")
   material-detail-internal(
     v-if="material"
     :material="material"
     :locationList="locationList"
-    class="mx-auto w-230 pb-25"
   )
 </template>
 

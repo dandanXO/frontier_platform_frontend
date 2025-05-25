@@ -1,64 +1,44 @@
-<style lang="scss">
-$size: 12px;
-$location: 12px;
-div[role='popper'] {
-  &[data-popper-placement='top-start'] #arrow {
-    left: 10%;
-    transform: translateX(-20%);
-    bottom: $location;
-    &::before {
-      left: -6px;
-    }
-  }
-
-  &[data-popper-placement='top-end'] #arrow {
-    left: 90%;
-    transform: translateX(-20%);
-    bottom: $location;
-    &::before {
-      left: -6px;
-    }
-  }
-
-  &[data-popper-placement='bottom-start'] #arrow {
-    top: -$location;
-    left: 10%;
-    transform: translateX(-50%);
-    &::before {
-      left: -6px;
-      transform: rotate(180deg);
-    }
-  }
-
-  &[data-popper-placement='bottom-end'] #arrow {
-    top: -$location;
-    left: 90%;
-    transform: translateX(-50%);
-    &::before {
-      left: -6px;
-      transform: rotate(180deg);
-    }
-  }
-}
-
+<style lang="scss" scoped>
 #arrow,
 #arrow::before {
-  visibility: visible;
-  content: '';
+  z-index: 10001 !important;
   position: absolute;
-  width: 0;
-  height: 0;
-  border-left: $size solid transparent;
-  border-right: $size solid transparent;
-  border-top: $size solid #fafcfc;
-  /* border-top: $size solid red; */
-  background: transparent;
-  z-index: 1000;
+  width: 12px !important;
+  height: 12px !important;
 }
 
 #arrow {
   visibility: hidden;
-  @apply bg-transparent;
+}
+
+#arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg) !important;
+  background-color: var(--color-primary) !important;
+  @apply shadow-md;
+  border-width: 0 !important;
+}
+
+/* Position the arrow correctly based on placement */
+.popup-container[data-popper-placement^='top'] #arrow {
+  bottom: 65% !important;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* Shadow for bottom when arrow points down */
+}
+
+.popup-container[data-popper-placement^='bottom'] #arrow {
+  top: -10px !important;
+  @apply shadow-md;
+}
+
+.popup-container[data-popper-placement^='left'] #arrow {
+  right: -0px !important;
+  @apply shadow-md;
+}
+
+.popup-container[data-popper-placement^='right'] #arrow {
+  left: -12px !important;
+  @apply shadow-md;
 }
 </style>
 
@@ -70,20 +50,21 @@ div(
   :onmouseleave="collapsePopper"
   v-bind="$attrs"
   data-cy="f-popper"
+  :data-theme="theme"
 )
   f-badge(type="warning" class="cursor-help whitespace-nowrap overflow-auto") &lt; {{MIN_DPI_2D_MATERIAL}} DPI
   div(
     ref="refPopper"
     role="popper"
-    class="z-popper w-[328px]"
+    class="z-popper w-[328px] popup-container"
     :class="[customClassPopper]"
     :onmouseleave="collapsePopper"
     :onclick="(e:Event) => e.stopPropagation()"
     v-if="isExpand"
   )
-    div(class="rounded-sm p-4 z-popper bg-white flex flex-col gap-4 shadow")
+    div(class="rounded-sm p-4 z-popper bg-primary text-primary-inverse flex flex-col gap-4 shadow")
       p(class="font-normal text-xs") {{ $t('DD0158') }}
-      f-button(size="sm" type="secondary" @click="onReplaceImage" v-if="isReplaceImageEnabled") {{ $t('DD0159') }}
+      f-button(size="sm" :type="theme? btnType[theme] : 'secondary'" @click="onReplaceImage" v-if="isReplaceImageEnabled") {{ $t('DD0159') }}
     #arrow
 </template>
 
@@ -96,6 +77,7 @@ import type {
   MaterialOptions,
   PantoneColor,
 } from '@frontier/platform-web-sdk'
+import { type BtnType } from '@frontier/ui-component/src/FButton/FButton.vue'
 import { createPopper } from '@popperjs/core'
 import { noop } from '@vueuse/core'
 import { computed, nextTick, ref } from 'vue'
@@ -104,9 +86,18 @@ import { useStore } from 'vuex'
 interface Props {
   material?: Material
   materialOptions?: MaterialOptions
+  placement?: TOOLTIP_PLACEMENT
+  offset?: [number, number]
+  theme?: 'new' | 'new-dark' | 'primary'
 }
 
 const props = defineProps<Props>()
+
+const btnType: Record<string, BtnType> = {
+  new: 'secondary',
+  'new-dark': 'primary',
+  startrust: 'primary',
+}
 
 const store = useStore()
 
@@ -130,34 +121,17 @@ const expandPopper = async () => {
   }
 
   createPopper(refTrigger.value, refPopper.value, {
-    placement: TOOLTIP_PLACEMENT.BOTTOM_END,
+    placement: props.placement ?? TOOLTIP_PLACEMENT.BOTTOM_END,
     modifiers: [
       {
         name: 'placementListener',
         phase: 'main',
         enabled: true,
-        fn: (properties) => {
-          const {
-            state: { placement },
-          } = properties
-
-          if (!placement) {
-            return
-          }
-          const stylePopper = {
-            [TOOLTIP_PLACEMENT.BOTTOM_START]: 'pt-2',
-            [TOOLTIP_PLACEMENT.BOTTOM_END]: 'pt-2',
-            [TOOLTIP_PLACEMENT.TOP_START]: 'pb-2',
-            [TOOLTIP_PLACEMENT.TOP_END]: 'pb-2',
-          }
-
-          // no need to get the placement right
-          // by giving empty string as the default value
-          // will solved the issue
-          // @ts-expect-error
-          customClassPopper.value = stylePopper[placement] ?? ''
-
-          return properties.state
+      },
+      {
+        name: 'offset',
+        options: {
+          offset: props.offset,
         },
       },
     ],

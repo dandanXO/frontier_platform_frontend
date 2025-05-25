@@ -1,15 +1,10 @@
 <template lang="pug">
-div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
+div(class="rounded-lg p-4 box-border flex flex-col gap-y-2 border border-primary-border")
   slot(name="slot:prepend-item")
-  div(class="flex items-center gap-x-2")
-    p(class="w-18 text-caption text-grey-600") {{ $t('PP0010') }}
+  div(class="flex items-center gap-4")
+    p(class="text-sm text-primary-inverse font-bold") {{ $t('PP0010') }}
     material-u3m-status-label(:status="u3m.status")
-    f-svg-icon(
-      v-if="[U3M_STATUS.IN_QUEUE, U3M_STATUS.PROCESSING].includes(u3m.status)"
-      iconName="loading"
-      size="16"
-      class="text-primary-400"
-    )
+
   div(v-if="u3m.status === U3M_STATUS.COMPLETED" class="flex items-center gap-x-2")
     p(class="w-18 text-caption text-grey-600") {{ $t('RR0188') }}
     div(class="flex items-center gap-x-3")

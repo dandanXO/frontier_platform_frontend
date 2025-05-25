@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center")
+div(class="w-full h-full flex justify-center" data-theme="new")
   div(class="w-260 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
       global-breadcrumb-list(
@@ -18,7 +18,6 @@ div(class="w-full h-full flex justify-center")
     div(class="flex flex-col gap-y-17.5")
       div(class="flex flex-row gap-x-15")
         material-detail-image(
-          class="w-125 shrink-0"
           canEdit
           canStar
           :selectedId="multimediaUpdateService.selectedCoverId.value"

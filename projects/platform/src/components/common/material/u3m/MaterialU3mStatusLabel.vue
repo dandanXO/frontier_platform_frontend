@@ -1,7 +1,12 @@
 <template lang="pug">
-div(class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded")
-  div(v-if="label.color" class="w-3 h-3 rounded-sm mr-2.5" :class="[label.color]")
+f-badge(type="neutral" size="medium" class="flex flex-row items-center")
   p(class="text-body2 text-grey-900") {{ label.text }}
+  f-svg-icon(
+    v-if="[U3M_STATUS.IN_QUEUE, U3M_STATUS.PROCESSING].includes(status)"
+    iconName="loading"
+    size="16"
+    class="text-primary-400"
+  )
 </template>
 
 <script setup lang="ts">

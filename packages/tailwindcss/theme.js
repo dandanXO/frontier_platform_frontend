@@ -74,15 +74,18 @@ module.exports = plugin(function () {}, {
         hover: 'var(--color-critical-hover)',
         solid: 'var(--color-critical-solid)',
         border: 'var(--color-critical-border)',
+        text: 'var(--color-critical-text)',
       },
       secondary: {
         border: 'var(--color-secondary-border)',
         text: 'var(--color-secondary-text)',
+        hover: 'var(--color-secondary-hover)',
         DEFAULT: 'var(--color-secondary)',
       },
       tertiary: {
         DEFAULT: 'var(--color-tertiary)',
         text: 'var(--color-tertiary-text)',
+        border: 'var(--color-tertiary-border)',
       },
       disabled: {
         DEFAULT: 'var(--color-disabled)',

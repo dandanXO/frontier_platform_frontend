@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="aspect-square relative rounded overflow-hidden"
+  class="aspect-square relative rounded-xl overflow-hidden"
   :class="{ 'border border-grey-250': !!displayUrl || !!originalUrl }"
 )
   template(
@@ -31,7 +31,7 @@ div(
 import VideoView from '@/components/common/material/file/viewMode/VideoView.vue'
 import { Extension } from '@frontier/platform-web-sdk'
 import { ref } from 'vue'
-const { GIF, MOV, MP4, ZIP, PDF } = Extension
+const { GIF, ZIP, PDF } = Extension
 
 import {
   IMAGE_FILE_ACCEPT_TYPE,

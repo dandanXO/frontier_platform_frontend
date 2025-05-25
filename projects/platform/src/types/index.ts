@@ -265,3 +265,8 @@ export interface AddonsService {
   totalQty: number
   unFilledCertificationQty: number
 }
+
+export interface Location {
+  name: string
+  goTo: () => void
+}

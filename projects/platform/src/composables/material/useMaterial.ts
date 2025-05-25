@@ -10,18 +10,17 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { EXTENSION, MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
-import { useBreakpoints } from '@frontier/lib'
 import type { MaterialFile, MaterialViewModeFile } from '@/types'
 import { getMaterialMainSideType } from '@/utils/material/getMaterialMainSide'
 import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
 import isTrimOrOthersType from '@/utils/material/isTrimOrOthersType'
 import { isExcludedMaterialType } from '@/utils/material/isTrimOrOthersType'
-import { useStore } from 'vuex'
 
 export type MaterialSpecificationInfoBasicProperty = {
   name: string
   value: string
   textColor: string
+  showMore?: boolean
 }
 
 export type MaterialSpecificationInfo = {
@@ -41,6 +40,7 @@ export type MaterialSpecificationInfo = {
     textColor: string
   } | null
   constructionType?: MaterialSpecificationInfoBasicProperty
+  constructionTypeOnly?: MaterialSpecificationInfoBasicProperty
   constructionCustomPropertyList: {
     name: string
     value: {
@@ -66,8 +66,6 @@ export default function useMaterial(
   material: ComputedRef<Material> | Ref<Material>
 ) {
   const { t } = useI18n()
-  const store = useStore()
-  const { isMobile } = useBreakpoints()
 
   const mainSideType = computed(() => getMaterialMainSideType(material.value))
 
@@ -336,8 +334,13 @@ export default function useMaterial(
       ...materialInfoForDisplay.finishList(currentSide.value?.finishList ?? []),
       textColor: getTextColor(true, false, false),
     })
-    const getConstructionType = (materialSide: MaterialSide) => ({
-      ...materialInfoForDisplay.constructionType(
+    const getConstructionType = (
+      materialSide: MaterialSide,
+      onlyConstructionType?: boolean
+    ) => ({
+      ...materialInfoForDisplay[
+        onlyConstructionType ? 'constructionTypeOnly' : 'constructionType'
+      ](
         materialSide?.materialType,
         materialSide?.materialTypeConstruction,
         materialSide?.descriptionList
@@ -346,7 +349,12 @@ export default function useMaterial(
     })
 
     if (currentSideType.value !== MATERIAL_SIDE_TYPE.MIDDLE) {
-      const sideWithoutMiddleSide = currentSide.value as MaterialSide
+      const sideWithoutMiddleSide = currentSide.value as MaterialSide | null
+      if (!sideWithoutMiddleSide) {
+        return console.error(
+          'not found current side data while geting specification info'
+        )
+      }
       return {
         seasonInfo: getSeasonInfo(),
         featureList: getFeatureList(),
@@ -360,6 +368,7 @@ export default function useMaterial(
           }
         })(),
         constructionType: getConstructionType(sideWithoutMiddleSide),
+        constructionTypeOnly: getConstructionType(sideWithoutMiddleSide, true),
         construction: {
           ...materialInfoForDisplay.construction(
             sideWithoutMiddleSide?.materialType,
@@ -407,7 +416,7 @@ export default function useMaterial(
         construction: null,
         constructionCustomPropertyList: {
           ...materialInfoForDisplay.constructionCustomPropertyList(
-            (currentSide.value as MaterialMiddleSide).customPropertyList
+            (currentSide.value as MaterialMiddleSide)?.customPropertyList
           ),
           textColor: getTextColor(true, false, true),
         },
@@ -423,15 +432,15 @@ export default function useMaterial(
       return null
     }
 
-    const side = currentSide.value as MaterialSide
-    return side.pantoneList
+    const side = currentSide.value as MaterialSide | null
+    return side?.pantoneList
   })
   const colorInfo = computed(() => {
     if (currentSideType.value === MATERIAL_SIDE_TYPE.MIDDLE) {
       return null
     }
 
-    const side = currentSide.value as MaterialSide
+    const side = currentSide.value as MaterialSide | null
     return {
       name: t('RR0026'),
       value: side?.colorInfo,
@@ -442,7 +451,7 @@ export default function useMaterial(
       return null
     }
 
-    const side = currentSide.value as MaterialSide
+    const side = currentSide.value as MaterialSide | null
     return {
       name: t('RR0025'),
       value: side?.patternInfo,

@@ -1,92 +1,175 @@
 <template lang="pug">
 div(class="relative")
-  div(v-if="currentX < 0" :class="classLinerBg" class="left-0 bg-gradient-to-r")
-    div(
-      class="h-8 w-8 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer absolute left-0 transform -translate-x-1/2"
-      @click="forward"
-    )
-      f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-600")
-  div(v-if="remainingWidth > 0" :class="classLinerBg" class="right-0 bg-gradient-to-l")
-    div(
-      class="h-8 w-8 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer absolute right-0 transform translate-x-1/2"
-      @click="backward"
-    )
-      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-600")
   div(class="overflow-hidden")
-    div(ref="refSlider" class="transition-all duration-500" :style="translateX")
-      slot(ref="test")
+    div(ref="refSlider" class="transition-all duration-500 flex" :style="translateX")
+      slot
+
+  div(
+    class="flex justify-between items-center mt-4 gap-4 w-full"
+    v-if="showPagination && totalPages > 1"
+  )
+    f-button(
+      type="secondary"
+      size="md"
+      @click="prev"
+      :disabled="currentX >= 0"
+      class="!min-w-0 !p-2 !h-[2.625rem]"
+    )
+      f-svg-icon(iconName="chevron_left" size="24")
+
+    div(class="flex gap-2 items-center bg-green-50-v1 p-2 rounded")
+      div(
+        v-for="page in totalPages"
+        :key="page"
+        class="h-2 w-2 rounded-full transition-colors"
+        :class="currentPage === page - 1 ? 'bg-brand-solid' : 'bg-green-100-v1'"
+      )
+
+    f-button(
+      type="secondary"
+      size="md"
+      class="!min-w-0 !p-2 !h-[2.625rem]"
+      @click="next"
+      :disabled="currentPage >= totalPages - 1"
+    )
+      f-svg-icon(iconName="chevron_right" size="24")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, nextTick, onUnmounted } from 'vue'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    heightLinerBg?: string // tailwindcss class,
-    scrollPerItem?: number
+    showPagination?: boolean
   }>(),
   {
-    heightLinerBg: 'h-full',
+    scrollPerItem: 1,
+    showPagination: true,
   }
 )
 
-const classLinerBg = computed(() => {
-  return [
-    'absolute',
-    'z-1',
-    'top-0',
-    'w-12',
-    props.heightLinerBg,
-    'flex',
-    'justify-center',
-    'items-center',
-    'from-grey-0',
-    'to-transparent',
-  ]
-})
-
 const refSlider = ref<HTMLDivElement>()
-const test = ref()
 const currentX = ref(0)
 const remainingWidth = ref(0)
 const movement = ref(0)
+const visibleWidth = ref(0)
+const totalContentWidth = ref(0)
+
+// Calculate total pages based on item count
+const totalPages = computed(() => {
+  return movement.value
+    ? Math.ceil(totalContentWidth.value / visibleWidth.value)
+    : 0
+})
+
+// Current "page" based on position
+const currentPage = computed(() => {
+  if (visibleWidth.value === 0) {
+    return 0
+  }
+  const offset = Math.abs(currentX.value)
+  return Math.floor(offset / movement.value)
+})
 
 const translateX = computed(() => {
   return `transform: translateX(${currentX.value}px)`
 })
 
-const forward = () => {
+const prev = () => {
   if (currentX.value >= 0) {
     return
   }
 
-  currentX.value += movement.value
-  remainingWidth.value += movement.value
+  const newPosition = currentX.value + movement.value
+  // Don't move beyond start position (0)
+  currentX.value = Math.min(0, newPosition)
+  calculateRemainingWidth()
 }
 
-const backward = () => {
-  if (remainingWidth.value < 0) {
+const next = () => {
+  if (currentPage.value >= totalPages.value - 1) {
     return
   }
 
-  currentX.value -= movement.value
-  remainingWidth.value -= movement.value
+  const newPosition = currentX.value - movement.value
+  currentX.value = newPosition
+  calculateRemainingWidth()
 }
 
-onMounted(() => {
-  if (refSlider.value) {
-    const totalWidth = refSlider.value.scrollWidth
-    const sliderWidth = refSlider.value.clientWidth
-    remainingWidth.value = totalWidth - sliderWidth
+const calculateTotalWidth = () => {
+  if (!refSlider.value) {
+    return 0
+  }
+  return refSlider.value.scrollWidth
+}
 
-    if (!props.scrollPerItem || refSlider.value.children.length === 0) {
-      movement.value = sliderWidth
-    } else {
-      movement.value =
-        refSlider.value.children[0].children[0].clientWidth *
-          props.scrollPerItem +
-        8 * (props.scrollPerItem - 1)
+const calculateVisibleWidth = () => {
+  if (!refSlider.value) {
+    return 0
+  }
+  return refSlider.value.clientWidth
+}
+
+const calculateRemainingWidth = () => {
+  if (!refSlider.value) {
+    return
+  }
+
+  totalContentWidth.value = calculateTotalWidth()
+  visibleWidth.value = calculateVisibleWidth()
+  const maxScroll = totalContentWidth.value - visibleWidth.value
+
+  // Calculate how much content is still off-screen to the right
+  remainingWidth.value = maxScroll + currentX.value
+}
+
+const calculateMovementSize = () => {
+  if (!refSlider.value) {
+    return 0
+  }
+
+  // Calculate movement based on visible width and items per page
+  return Math.min(visibleWidth.value, remainingWidth.value)
+}
+
+const recalculateSlider = async () => {
+  await nextTick()
+
+  if (!refSlider.value) {
+    return
+  }
+
+  // Calculate how much to move per click
+  visibleWidth.value = calculateVisibleWidth()
+  movement.value = calculateMovementSize()
+
+  // Calculate how much content is off-screen
+  calculateRemainingWidth()
+
+  // Reset position to beginning
+  currentX.value = 0
+}
+
+let resizeObserver: ResizeObserver | null = null
+
+onMounted(() => {
+  recalculateSlider()
+
+  if (window.ResizeObserver) {
+    resizeObserver = new ResizeObserver(() => {
+      recalculateSlider()
+    })
+
+    if (refSlider.value) {
+      resizeObserver.observe(refSlider.value)
     }
+  }
+})
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
   }
 })
 </script>

@@ -13,10 +13,10 @@ div(class="grid gap-y-1.5 w-full")
         div(
           v-for="(constructionProperty, constructionKey) in specificationInfo.construction.value"
           :key="constructionKey"
-          class="flex"
+          class="flex gap-4"
         )
-          p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
-          p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
+          p(class="text-base break-words font-bold w-41") {{ constructionProperty.name }}：
+          p(class="text-base break-words") {{ constructionProperty.value }}
     template(v-else-if="key === 'constructionCustomPropertyList'")
       div(
         v-if="specificationInfo.constructionCustomPropertyList && specificationInfo.constructionCustomPropertyList.value?.length > 0"
@@ -25,22 +25,22 @@ div(class="grid gap-y-1.5 w-full")
         div(
           v-for="constructionProperty in specificationInfo.constructionCustomPropertyList.value"
           :key="constructionProperty.customId"
-          class="flex"
+          class="flex gap-4"
           :class="[specificationInfo.constructionCustomPropertyList.textColor, { 'bg-grey-50 px-3 py-2 rounded': !constructionProperty.isPublic }]"
         )
-          p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
-          p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
+          p(class="text-base break-words font-bold w-41") {{ constructionProperty.name }}：
+          p(class="text-base break-words") {{ constructionProperty.value }}
     div(
       v-else-if="property && property.value"
-      class="flex w-full"
+      class="flex w-full gap-4"
       :class="property.textColor"
     )
       p(
-        class="text-body2/1.6 flex-shrink-0"
+        class="text-base break-words font-bold w-41"
         :class="[{ 'line-clamp-1': !property.showMore }]"
-      ) {{ property.name }}：
+      ) {{ property.name }}
       p(
-        class="text-body2/1.6 break-word"
+        class="text-base break-words"
         :class="[{ 'line-clamp-1': !property.showMore }]"
       ) {{ property.value }}
       div(class="grid gap-y-2 pt-4")
@@ -126,8 +126,10 @@ const hasExtendedContent = (
     (property.value + propertyKey).length >= oneLineLengthIncludeTitle
   )
 }
-const handleShowMore = (key: string) => {
-  innerSpecificationInfo.value[key].showMore = true
+const handleShowMore = (key: keyof MaterialSpecificationInfo) => {
+  ;(
+    innerSpecificationInfo.value[key] as MaterialSpecificationInfoBasicProperty
+  ).showMore = true
   innerSpecificationInfo.value = { ...innerSpecificationInfo.value }
 }
 const innerSpecificationInfoComputed = computed(() => {

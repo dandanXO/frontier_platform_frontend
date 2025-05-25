@@ -1,6 +1,6 @@
 <template lang="pug">
 button(
-  class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
+  class="flex items-center justify-center font-normal rounded gap-x-1 whitespace-nowrap"
   :class="[btnSize, btnType, isFullWidth]"
   :disabled="disabled"
 )
@@ -14,6 +14,12 @@ button(
 </template>
 
 <script lang="ts">
+export type BtnType =
+  | 'primary'
+  | 'secondary'
+  | 'text'
+  | 'special'
+  | 'critical-outline'
 export default { name: 'FButton' }
 </script>
 
@@ -26,7 +32,7 @@ const props = withDefaults(
     htmlType?: 'button' | 'submit' | 'reset'
     theme?: `${THEME}`
     size?: `${SIZE}` | 'special' | 'xsm'
-    type?: 'primary' | 'secondary' | 'text' | 'special' | 'critical-outline'
+    type?: BtnType
     isIcon?: boolean
     prependIcon?: string
     postpendIcon?: string

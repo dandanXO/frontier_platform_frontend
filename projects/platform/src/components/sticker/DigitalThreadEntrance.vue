@@ -6,7 +6,7 @@ f-tooltip-standard(
 )
   template(#slot:tooltip-trigger)
     div(
-      class="relative cursor-pointer w-12 h-7.5 rounded border border-grey-150 bg-grey-0 hover:bg-grey-100 text-grey-600 flex items-center justify-center gap-x-2"
+      class="relative cursor-pointer p-3 rounded border border-grey-150 bg-grey-0 hover:bg-grey-100 text-grey-600 flex items-center justify-center gap-x-2"
       :class="[{ '!bg-primary-50 !text-primary-400': currentMaterialId === material.materialId }]"
     )
       f-svg-icon(iconName="sticker_thread" size="20")

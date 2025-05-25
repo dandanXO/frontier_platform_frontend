@@ -1,5 +1,6 @@
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    FAccordion: typeof import('./src/FAccordion/FAccordion.vue').default
     FButton: typeof import('./src/FButton/FButton.vue').default
     FBadge: typeof import('./src/FBadge/FBadge.vue').default
     FButtonLabel: typeof import('./src/FButtonLabel/FButtonLabel.vue').default

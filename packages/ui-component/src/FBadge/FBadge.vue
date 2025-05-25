@@ -32,7 +32,7 @@ const sizeStyle = computed(() => {
 })
 
 const typeStyle = computed(() => {
-  const neutralStyle = ['bg-grey-50 text-grey-800 border-grey-400']
+  const neutralStyle = ['bg-primary-hover text-grey-800 border-primary-border']
   if (!props.type) {
     return neutralStyle
   }
