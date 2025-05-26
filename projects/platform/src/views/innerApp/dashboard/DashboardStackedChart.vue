@@ -1,18 +1,29 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex items-center flex-shrink-0 mb-4">
-      <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
+      <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
         {{ titleText }}
       </div>
       <f-svg-icon
         iconName="question"
         size="16"
-        class="text-grey-700-v1 cursor-help"
+        class="text-grey-400 cursor-help"
         :tooltip-message="tooltipMessage"
         tooltipType="bubble"
       />
       <div class="flex-1"></div>
       <!-- Add Tabs -->
+      <f-tabs
+        v-if="props.havePublicAndPrivate"
+        :tabList="publicAndPrivateTabs"
+        :initValue="currentPublicAndPrivateTab"
+        :type="FTabsType.SEGMENTED"
+        keyField="id"
+        @switch="currentPublicAndPrivateTab = $event.id"
+        tabListContainerStyle="w-auto"
+        tabItemContainerStyle="px-2 py-1"
+        class="mr-2"
+      />
       <f-tabs
         :tabList="viewTabs"
         :initValue="currentViewTab"
@@ -36,6 +47,7 @@
       </div>
       <v-chart
         v-else
+        :key="chartKey"
         :theme="props.theme"
         class="h-full w-full min-h-[216px]"
         :option="chartOptions"
@@ -64,7 +76,8 @@ import FTabs, {
   TYPE as FTabsType,
 } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import { useI18n } from 'vue-i18n'
-
+import { useDashboardStore } from '@/stores/dashboard'
+import { storeToRefs } from 'pinia'
 import * as echarts from 'echarts'
 import macaronsTheme from './eCahrtThemeMacarons.json'
 import romaTheme from './eCahrtThemeRoma.json'
@@ -92,6 +105,7 @@ interface Props {
   chartData?: ChartData | null
   tooltipMessage?: string
   theme?: string
+  havePublicAndPrivate?: boolean
 }
 
 // Define props with default values
@@ -99,6 +113,7 @@ const props = withDefaults(defineProps<Props>(), {
   titleText: 'Default Chart Title',
   chartData: null,
   tooltipMessage: '',
+  havePublicAndPrivate: false,
 })
 
 // Register ECharts components
@@ -114,12 +129,20 @@ use([
 defineOptions({
   name: 'DashboardStackedChart',
 })
-
+const chartKey = ref(0)
+const dashboardStore = useDashboardStore()
+const switchMaterialTypeOfCountryList =
+  dashboardStore.switchMaterialTypeOfCountryList
 // Add view tabs
 const currentViewTab = ref<'percentage' | 'count'>('percentage')
+const currentPublicAndPrivateTab = ref<'public' | 'private'>('private')
 const viewTabs = computed(() => [
-  { id: 'percentage', name: '', icon: 'percent' },
-  { id: 'count', name: '', icon: 'numbers' },
+  { id: 'percentage', name: '%', icon: '' },
+  { id: 'count', name: '#', icon: '' },
+])
+const publicAndPrivateTabs = computed(() => [
+  { id: 'public', name: '', icon: 'public_earth' },
+  { id: 'private', name: '', icon: 'private_earth' },
 ])
 
 // Use the EChartsOption type for chartOptions
@@ -187,6 +210,14 @@ const chartOptions = ref<EChartsOption>({
   series: [],
 })
 
+watch(
+  () => [props.chartData, currentPublicAndPrivateTab.value] as const,
+  ([newData, viewTab]) => {
+    switchMaterialTypeOfCountryList(viewTab)
+    chartKey.value++
+  }
+)
+
 // Watch for changes in props and update options
 watch(
   () => [props.chartData, currentViewTab.value] as const,
@@ -233,7 +264,7 @@ watch(
           data: aggregatedOthersData,
           color: '#A9A9A9', // DarkGray for Others
         })
-        legendNames.push('Others')
+        legendNames.push(`Others (${seriesWithTotals.length - 7} more)`)
 
         seriesForTooltipCalculation.push({
           // Add aggregated "Others" to tooltip series
@@ -306,7 +337,7 @@ watch(
             // chartValue is the count
             const percent =
               categoryTotal > 0
-                ? ((originalSeriesPoint / categoryTotal) * 100).toFixed(2) + '%'
+                ? Math.round((originalSeriesPoint / categoryTotal) * 100) + '%'
                 : '0%'
             return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${percent}</span><span>${originalSeriesPoint} pieces</span></div>`
           }

@@ -2,13 +2,11 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type {
   Dashboard,
-  DashboardCreateCounts,
   DashboardTextureCountsInner,
   DashboardFabricKeywordCounts,
   DashboardEcoImpactorInformation,
   DashboardGetSummary200ResponseResult,
 } from '@frontier/platform-web-sdk'
-import { MaterialType } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { type WorkspaceFilter } from '@frontier/platform-web-sdk'
@@ -16,6 +14,14 @@ import { type FilterState } from './filter'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   function formatChartData<T>(rawData: T): T {
+    rawData.series.forEach((item: any) => {
+      if (chooseCountryType.value === 'public') {
+        item.data = item.publicData
+      } else {
+        item.data = item.privateData
+      }
+      return item
+    })
     return rawData
   }
   const ogBaseDashboardApi = useOgBaseApiWrapper(dashboardApi)
@@ -26,6 +32,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const ecoImpactorInformation = ref<DashboardEcoImpactorInformation>()
   const materialContentCategoryList = ref()
   const materialTypeOfCountryList = ref()
+  const chooseCountryType = ref<'public' | 'private' | null>('private')
   const getDashboard = async (filters?: FilterState) => {
     try {
       const { data } = await ogBaseDashboardApi('getDashboard', {
@@ -40,6 +47,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
       // do nothing
     }
   }
+
+  const switchMaterialTypeOfCountryList = (type: 'public' | 'private') => {
+    chooseCountryType.value = type
+    materialTypeOfCountryList.value = formatChartData(
+      materialTypeOfCountryList.value
+    )
+  }
+
   const getDashboardSummary = async (filters?: FilterState) => {
     try {
       const { data } = await ogBaseDashboardApi(
@@ -54,9 +69,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
       const dashboard = data.result as DashboardGetSummary200ResponseResult
       createCounts.value = dashboard.createCounts
 
-      materialContentCategoryList.value = formatChartData(
-        dashboard.materialContentCategoryList
-      )
+      materialContentCategoryList.value = dashboard.materialContentCategoryList
+
       materialTypeOfCountryList.value = formatChartData(
         dashboard.materialTypeOfCountryList
       )
@@ -74,5 +88,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     textureCounts,
     ecoImpactorInformation,
     fabricKeywordCounts,
+    chooseCountryType,
+    switchMaterialTypeOfCountryList,
   }
 })

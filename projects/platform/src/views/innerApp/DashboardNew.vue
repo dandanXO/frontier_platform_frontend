@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col overflow-y-auto overflow-x-hidden">
+  <div class="flex flex-col h-screen overflow-x-hidden overflow-y-auto">
     <!-- refContainer now wraps the main content and inherits parent styles -->
     <div
       v-if="dashboardPagePermission"
@@ -7,13 +7,13 @@
       class="px-8 pt-8 pb-16 flex flex-col gap-y-8 w-[1146px] mx-auto flex-grow"
     >
       <!-- Header section -->
-      <div class="flex gap-2 items-center flex-shrink-0">
+      <div class="flex items-center flex-shrink-0 gap-2">
         <DropdownOgMenuV2
           :selectValue="`${ogType}-${ogId}`"
           @update:selectValue="clickDropDownOgMenu"
         ></DropdownOgMenuV2>
 
-        <div class="text-h2/1.5 font-bold text-grey-950 text-center">
+        <div class="text-h2/1.5 font-bold text-grey-900 text-center">
           {{ $t('BB0138') }}
         </div>
         <div class="flex-1"></div>
@@ -23,9 +23,9 @@
       <div
         class="text-h4/1.6 font-bold text-primary text-center rounded-2xl bg-grey-50-v1 p-6 gap-4 flex flex-col"
       >
-        <div class="flex justify-between items-center self-stretch">
+        <div class="flex items-center self-stretch justify-between">
           <div
-            class="font-sans text-xl leading-8 font-bold text-grey-900-v1 text-center"
+            class="font-sans text-xl leading-8 font-bold text-[#2B2C2C] text-center"
           >
             Overview
           </div>
@@ -38,7 +38,7 @@
             @click="isOpenFilterPanel = !isOpenFilterPanel"
           >
             <span
-              class="text-body2 font-bold text-center leading-6 text-green-500-v1"
+              class="font-bold leading-6 text-center text-body2 text-green-500-v1"
             >
               {{ $t('RR0085') }}
             </span>
@@ -48,7 +48,7 @@
             type="primary"
             prependIcon="download"
             size="md"
-            class="h-11 text-white hover:text-white bg-green-500"
+            class="text-white bg-green-500 h-11 hover:text-white"
             @click="openFilterModal = true"
             >{{ $t('BB0116') }}</f-button
           > -->
@@ -61,78 +61,78 @@
                 <p class="text-body1 text-grey-900">{{ $t('RR0085') }}</p>
               </div> -->
             <div
-              class="flex flex-wrap items-center gap-x-2 gap-y-2 justify-end"
+              class="flex flex-wrap items-center justify-end gap-x-2 gap-y-2"
             >
               <filter-material-type
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-material-description
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-content
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-pattern
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-color
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-width
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-weight
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-yarn-density
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-finish
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-inventory
                 :searchType="searchType"
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-price
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-has-u3m
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-eco
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-asset-status
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <filter-country
                 v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
                 @search="handleSearch"
-                class="bg-grey-0 rounded-lg font-normal"
+                class="font-normal rounded-lg bg-grey-0"
               />
               <!-- <filter-season @search="handleSearch" /> -->
               <!-- <filter-year @search="handleSearch" /> -->
               <!-- <filter-certification
                   @search="handleSearch"
-                  class="bg-grey-0 rounded-lg"
+                  class="rounded-lg bg-grey-0"
                 /> -->
               <p
-                class="text-caption font-normal text-grey-600 pl-3 cursor-pointer"
+                class="pl-3 font-normal cursor-pointer text-caption text-grey-600"
                 @click="resetFilterHandler"
               >
                 {{ $t('UU0041') }}
@@ -142,8 +142,8 @@
         </div>
 
         <!-- Statistics -->
-        <div class="flex flex-col gap-y-4 flex-shrink-0">
-          <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col flex-shrink-0 gap-y-4">
+          <div class="grid grid-cols-3 gap-4">
             <StatCard
               :title="$t('RR0493')"
               :value="createCounts?.yourAssetCounts || 0"
@@ -162,12 +162,12 @@
               icon-name="collections-bookmark"
               class="w-full"
             />
-            <StatCard
+            <!-- <StatCard
               :title="$t('RR0495')"
               :value="createCounts?.countryCounts || 0"
               icon-name="public"
               class="w-full"
-            />
+            /> -->
           </div>
           <!-- <div class="flex gap-4">
               <StatCard
@@ -210,15 +210,15 @@
               :tooltip-message="$t('RR0497')"
             />
             <div
-              class="flex flex-col justify-around align-arund h-full"
+              class="flex flex-col justify-around h-full align-arund"
               v-if="dashboardIsLoading"
             >
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
             </div>
           </div>
           <div class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl">
@@ -228,36 +228,37 @@
               :title-text="$t('RR0498')"
               :chart-data="materialTypeOfCountryList"
               :tooltip-message="$t('RR0499')"
+              :havePublicAndPrivate="true"
             />
             <div
-              class="flex flex-col justify-around align-arund h-full"
+              class="flex flex-col justify-around h-full align-arund"
               v-if="dashboardIsLoading"
             >
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
-              <SkeletonBase class="h-8 w-full mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
+              <SkeletonBase class="w-full h-8 mb-1" />
             </div>
           </div>
         </div>
       </div>
 
-      <div class="flex flex-col gap-y-4 flex-shrink-0">
+      <div class="flex flex-col flex-shrink-0 gap-y-4">
         <!-- Trending Now -->
         <div
           class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col"
         >
-          <div class="flex justify-between items-center mb-4 flex-shrink-0">
+          <div class="flex items-center justify-between flex-shrink-0 mb-4">
             <div class="flex items-center">
-              <div class="text-grey-900-v1 text-xl font-bold leading-8 mr-1">
+              <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
                 {{ $t('RR0500') }}
               </div>
               <f-svg-icon
                 iconName="question"
                 size="16"
-                class="text-grey-700-v1 cursor-help"
+                class="text-grey-400 cursor-help"
                 :tooltipMessage="$t('RR0501')"
                 tooltipType="bubble"
               />
@@ -277,7 +278,7 @@
           <!-- Show skeletons when loading -->
           <template v-if="isLoading || dashboardIsLoading">
             <div class="w-full">
-              <SkeletonBase class="h-30 w-full mb-2" />
+              <SkeletonBase class="w-full mb-2 h-30" />
             </div>
           </template>
           <template v-else>
@@ -286,7 +287,7 @@
               class="w-full h-full bg-grey-50-v1 rounded-[4px] flex items-center justify-center min-h-[120px]"
             >
               <div
-                class="text-grey-600-v1 text-center text-base leading-6 font-normal"
+                class="text-base font-normal leading-6 text-center text-grey-600-v1"
               >
                 {{ $t('RR0502') }}
               </div>
@@ -312,8 +313,8 @@
         <div
           class="w-full min-h-[216px] bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col flex-shrink-0"
         >
-          <div class="flex justify-between items-center mb-4 flex-shrink-0">
-            <div class="text-grey-900-v1 text-xl font-bold leading-8 mr-1">
+          <div class="flex items-center justify-between flex-shrink-0 mb-4">
+            <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
               {{ $t('M2F031') }}
             </div>
             <!-- Tabs -->
@@ -329,8 +330,8 @@
           </div>
           <!-- Show skeleton when loading -->
           <template v-if="isLoading || dashboardIsLoading">
-            <div class="flex-grow flex items-center justify-center">
-              <SkeletonBase class="h-30 w-full mb-2" />
+            <div class="flex items-center justify-center flex-grow">
+              <SkeletonBase class="w-full mb-2 h-30" />
             </div>
           </template>
           <!-- Show chart when not loading -->
@@ -347,7 +348,7 @@
     </div>
 
     <!-- Permission Denied Message: Shown outside when permission denied -->
-    <div v-else class="flex justify-center items-center h-full">
+    <div v-else class="flex items-center justify-center h-full">
       {{ $t('PP0038') }}
     </div>
   </div>
@@ -537,8 +538,7 @@ const tableHeaders = ref([
     label: t('RR0504'),
     colSpan: 'col-span-6',
     align: 'text-center', // Changed align for keywords
-    customClass: 'font-bold leading-4',
-    textColor: 'text-grey-900-v1',
+    customClass: 'font-bold leading-4 text-[#131414]',
   },
   {
     prop: 'searchVolume',
