@@ -39,8 +39,12 @@ div(class="w-full min-w-42.5 max-w-67.5 col-span-3")
         uncheckColor="text-grey-0"
       )
   div(class="my-2 text-body2 text-grey-900")
-    p(:class="['line-clamp-1', specificationInfo.seasonInfo.textColor]") {{ specificationInfo.seasonInfo.value }}
-    p(:class="['line-clamp-1', specificationInfo.featureList.textColor]") {{ specificationInfo.featureList.value }}
+    p(
+      :class="['line-clamp-1', specificationInfo?.seasonInfo?.textColor || '']"
+    ) {{ specificationInfo?.seasonInfo?.value ?? '' }}
+    p(
+      :class="['line-clamp-1', specificationInfo?.featureList?.textColor || '']"
+    ) {{ specificationInfo?.featureList?.value ?? '' }}
   div(class="flex items-center justify-between")
     div(class="flex gap-3 items-center")
       f-svg-icon(
