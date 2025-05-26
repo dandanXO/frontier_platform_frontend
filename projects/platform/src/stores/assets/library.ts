@@ -404,6 +404,15 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
                   return acc
                 }
 
+                if (property === 'countryList') {
+                  return {
+                    ...acc,
+                    priceCountryOriginList: filterDirty.value[property]
+                      ? filterState.value[property]
+                      : null,
+                  }
+                }
+
                 return {
                   ...acc,
                   [property]: filterDirty.value[property]
@@ -433,15 +442,6 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
               JSON.stringify({
                 ...Object.keys(filterState.value).reduce((acc, key) => {
                   const property = key as keyof typeof filterState.value
-
-                  if (property === 'countryList') {
-                    return {
-                      ...acc,
-                      priceCountryOriginList: filterDirty.value[property]
-                        ? filterState.value[property]
-                        : null,
-                    }
-                  }
 
                   return {
                     ...acc,

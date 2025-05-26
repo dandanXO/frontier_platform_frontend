@@ -2,13 +2,9 @@ import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import searchApi from '@/apis/search'
 import type {
-  CodeCountryGet200ResponseResultCode,
   MaterialCertification,
   MaterialOptions,
-  MaterialDescription,
   MaterialOptionsSeasonList,
-} from '@frontier/platform-web-sdk'
-import type {
   LengthUnit,
   WeightUnit,
   CurrencyCode,
@@ -106,12 +102,7 @@ interface FilterOption extends NullableMaterialOptions {
     min: number
     max: number
   }
-  countryList: {
-    name: CodeCountryGet200ResponseResultCode['countryList'][number]['name']
-    countryCode: CodeCountryGet200ResponseResultCode['countryList'][number]['countryCode']
-    count: number
-    emoji: CodeCountryGet200ResponseResultCode['countryList'][number]['emoji']
-  }[]
+  countryList: Country[]
   certificateList?: MaterialCertification[]
   seasonList?: MaterialOptionsSeasonList
   yearList?: number[]
