@@ -190,7 +190,7 @@ export interface Announcement {
  */
 export interface AssetsFilter {
     /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 8 - DoubleSide 
      * @type {Array<number>}
      * @memberof AssetsFilter
      */
@@ -531,7 +531,7 @@ export type BookmarkListInner = FolderBookmark | OrgBookmark;
 /**
  * 書籤類型
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const BookmarkType = {
@@ -1699,7 +1699,7 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
      * @type {number}
      * @memberof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner
      */
-    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum;
+    'orgRoleId'?: CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum | null;
     /**
      * 
      * @type {Array<number>}
@@ -1709,22 +1709,10 @@ export interface CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInner {
 }
 
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerOrgRoleIdEnum];
 export const CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum = typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum[keyof typeof CodeRoleLimitTableGet200ResponseResultCodeRoleLimitInnerGroupRoleIdListEnum];
@@ -1803,7 +1791,7 @@ export interface CodeRoleListGet200ResponseResultCodeRoleListInner {
      * @type {number}
      * @memberof CodeRoleListGet200ResponseResultCodeRoleListInner
      */
-    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum;
+    'roleId'?: CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum | null;
 }
 
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
@@ -1817,12 +1805,6 @@ export const CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = {
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerNameEnum];
 export const CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null,
-    NUMBER_null5: null,
-    NUMBER_null6: null
 } as const;
 
 export type CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum = typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum[keyof typeof CodeRoleListGet200ResponseResultCodeRoleListInnerRoleIdEnum];
@@ -1993,7 +1975,7 @@ export interface CoverImage {
 /**
  * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面) 4 (Digital Drape)
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const CoverMode = {
@@ -3016,182 +2998,6 @@ export interface DashboardFabricKeywordCountsLastMonthDataInner {
 /**
  * 
  * @export
- * @interface DashboardGetSummary200Response
- */
-export interface DashboardGetSummary200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DashboardGetSummary200Response
-     */
-    'success'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DashboardGetSummary200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof DashboardGetSummary200Response
-     */
-    'message'?: string | null;
-    /**
-     * 
-     * @type {DashboardGetSummary200ResponseResult}
-     * @memberof DashboardGetSummary200Response
-     */
-    'result'?: DashboardGetSummary200ResponseResult;
-}
-/**
- * 
- * @export
- * @interface DashboardGetSummary200ResponseResult
- */
-export interface DashboardGetSummary200ResponseResult {
-    /**
-     * 
-     * @type {DashboardGetSummary200ResponseResultCreateCounts}
-     * @memberof DashboardGetSummary200ResponseResult
-     */
-    'createCounts'?: DashboardGetSummary200ResponseResultCreateCounts;
-    /**
-     * 
-     * @type {{ [key: string]: Array<DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner>; }}
-     * @memberof DashboardGetSummary200ResponseResult
-     */
-    'materialTypeOfCountryList'?: { [key: string]: Array<DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner>; };
-    /**
-     * 
-     * @type {{ [key: string]: Array<DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner>; }}
-     * @memberof DashboardGetSummary200ResponseResult
-     */
-    'materialContentCategoryList'?: { [key: string]: Array<DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner>; };
-}
-/**
- * 
- * @export
- * @interface DashboardGetSummary200ResponseResultCreateCounts
- */
-export interface DashboardGetSummary200ResponseResultCreateCounts {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultCreateCounts
-     */
-    'yourAssetCounts'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultCreateCounts
-     */
-    'threeDimensionAssetCounts'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultCreateCounts
-     */
-    'collectionCounts'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultCreateCounts
-     */
-    'sharedCollectionCounts'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultCreateCounts
-     */
-    'countryCounts'?: number;
-}
-/**
- * 
- * @export
- * @interface DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
- */
-export interface DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
-     */
-    'materialType'?: number;
-    /**
-     * 
-     * @type {{ [key: string]: number; }}
-     * @memberof DashboardGetSummary200ResponseResultMaterialContentCategoryListValueInner
-     */
-    'materialContentCategoryList'?: { [key: string]: number; };
-}
-/**
- * 
- * @export
- * @interface DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
- */
-export interface DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
-     */
-    'materialType'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
-     */
-    'countryCode'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetSummary200ResponseResultMaterialTypeOfCountryListValueInner
-     */
-    'count'?: number;
-}
-/**
- * 
- * @export
- * @interface DashboardGetSummaryRequest
- */
-export interface DashboardGetSummaryRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof DashboardGetSummaryRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof DashboardGetSummaryRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof DashboardGetSummaryRequest
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {Search}
-     * @memberof DashboardGetSummaryRequest
-     */
-    'search': Search | null;
-    /**
-     * 
-     * @type {WorkspaceFilter}
-     * @memberof DashboardGetSummaryRequest
-     */
-    'filter': WorkspaceFilter | null;
-}
-
-
-/**
- * 
- * @export
  * @interface DashboardTextureCountsInner
  */
 export interface DashboardTextureCountsInner {
@@ -3283,7 +3089,7 @@ export interface DeleteWorkspaceNodeRequest {
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const DigitalDrapeStatus = {
@@ -3803,19 +3609,19 @@ export interface DigitalThreadCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum;
+    'addFromOGType': DigitalThreadCreatePostRequestAddFromOGTypeEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'addTo': DigitalThreadCreatePostRequestAddToEnum;
+    'addTo': DigitalThreadCreatePostRequestAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadCreatePostRequest
      */
-    'type': DigitalThreadCreatePostRequestTypeEnum;
+    'type': DigitalThreadCreatePostRequestTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -3831,21 +3637,14 @@ export interface DigitalThreadCreatePostRequest {
 }
 
 export const DigitalThreadCreatePostRequestAddFromOGTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddFromOGTypeEnum = typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum[keyof typeof DigitalThreadCreatePostRequestAddFromOGTypeEnum];
 export const DigitalThreadCreatePostRequestAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadCreatePostRequestAddToEnum = typeof DigitalThreadCreatePostRequestAddToEnum[keyof typeof DigitalThreadCreatePostRequestAddToEnum];
 export const DigitalThreadCreatePostRequestTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadCreatePostRequestTypeEnum = typeof DigitalThreadCreatePostRequestTypeEnum[keyof typeof DigitalThreadCreatePostRequestTypeEnum];
@@ -3980,7 +3779,7 @@ export interface DigitalThreadGetPostRequestFilter {
      * @type {number}
      * @memberof DigitalThreadGetPostRequestFilter
      */
-    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum;
+    'addTo'?: DigitalThreadGetPostRequestFilterAddToEnum | null;
     /**
      * 
      * @type {boolean}
@@ -4014,9 +3813,6 @@ export interface DigitalThreadGetPostRequestFilter {
 }
 
 export const DigitalThreadGetPostRequestFilterAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadGetPostRequestFilterAddToEnum = typeof DigitalThreadGetPostRequestFilterAddToEnum[keyof typeof DigitalThreadGetPostRequestFilterAddToEnum];
@@ -4106,13 +3902,13 @@ export interface DigitalThreadStickerCreatePostRequest {
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum;
+    'addTo': DigitalThreadStickerCreatePostRequestAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof DigitalThreadStickerCreatePostRequest
      */
-    'type': DigitalThreadStickerCreatePostRequestTypeEnum;
+    'type': DigitalThreadStickerCreatePostRequestTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -4128,15 +3924,10 @@ export interface DigitalThreadStickerCreatePostRequest {
 }
 
 export const DigitalThreadStickerCreatePostRequestAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestAddToEnum = typeof DigitalThreadStickerCreatePostRequestAddToEnum[keyof typeof DigitalThreadStickerCreatePostRequestAddToEnum];
 export const DigitalThreadStickerCreatePostRequestTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type DigitalThreadStickerCreatePostRequestTypeEnum = typeof DigitalThreadStickerCreatePostRequestTypeEnum[keyof typeof DigitalThreadStickerCreatePostRequestTypeEnum];
@@ -4642,7 +4433,7 @@ export type Extension = typeof Extension[keyof typeof Extension];
  */
 export interface ExternalFilter {
     /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 8 - DoubleSide 
      * @type {Array<number>}
      * @memberof ExternalFilter
      */
@@ -4748,7 +4539,7 @@ export interface ExternalFilterAllOfInventory {
 /**
  * 功能列表Enum
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const FeatureType = {
@@ -4775,7 +4566,7 @@ export type FeatureType = typeof FeatureType[keyof typeof FeatureType];
  */
 export interface Filter {
     /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 8 - DoubleSide 
      * @type {Array<number>}
      * @memberof Filter
      */
@@ -9983,7 +9774,7 @@ export interface IdTextWithCustomData {
  */
 export interface InnerExternalFilter {
     /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 8 - DoubleSide 
      * @type {Array<number>}
      * @memberof InnerExternalFilter
      */
@@ -10194,7 +9985,7 @@ export interface InvoiceInfoServiceItemListInner {
 /**
  * 長度單位
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const LengthUnit = {
@@ -10208,7 +9999,7 @@ export type LengthUnit = typeof LengthUnit[keyof typeof LengthUnit];
 /**
  * 未有訂閱M2F加值服務時為NULL
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const Made2FlowPlanType = {
@@ -12165,6 +11956,37 @@ export interface MaterialLeatherConstruction {
 /**
  * 
  * @export
+ * @interface MaterialMakeDoubleSide200Response
+ */
+export interface MaterialMakeDoubleSide200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialMakeDoubleSide200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialMakeDoubleSide200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialMakeDoubleSide200Response
+     */
+    'result': boolean;
+    /**
+     * 
+     * @type {object}
+     * @memberof MaterialMakeDoubleSide200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
  * @interface MaterialMiddleSide
  */
 export interface MaterialMiddleSide {
@@ -13579,7 +13401,7 @@ export interface MaterialSideImage {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialSideType = {
@@ -13655,7 +13477,7 @@ export interface MaterialTrimConstruction {
 /**
  * 布種
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialType = {
@@ -13858,7 +13680,7 @@ export interface MaterialU3mImageCropRecord {
 /**
  * 1: Frontier產生 2: 客製化上傳
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialU3mSourceType = {
@@ -13872,7 +13694,7 @@ export type MaterialU3mSourceType = typeof MaterialU3mSourceType[keyof typeof Ma
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MaterialU3mStatus = {
@@ -15091,7 +14913,7 @@ export interface MoodboardPropertiesProvider {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const MoodboardType = {
@@ -15626,7 +15448,7 @@ export interface NodeMetaLocationListInner {
 /**
  * 節點型態：1:Collection，2:Material
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const NodeType = {
@@ -15698,7 +15520,7 @@ export interface OGBaseRequestBody {
 /**
  * 單位(組織或團隊)型態：1:Org，2:Group
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const OgType = {
@@ -15789,7 +15611,7 @@ export type OneTimePasswordStatusBlockReasonEnum = typeof OneTimePasswordStatusB
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Partially Failed 5: Complete 6: Canceled 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const OnlineSpreadSheetProgressStatus = {
@@ -15993,7 +15815,7 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgCreatePostRequestOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -16041,20 +15863,14 @@ export interface OrgCreatePostRequest {
      * @type {number}
      * @memberof OrgCreatePostRequest
      */
-    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum;
+    'signupSourceType': OrgCreatePostRequestSignupSourceTypeEnum | null;
 }
 
 export const OrgCreatePostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgCreatePostRequestOrgCategoryIdEnum = typeof OrgCreatePostRequestOrgCategoryIdEnum[keyof typeof OrgCreatePostRequestOrgCategoryIdEnum];
 export const OrgCreatePostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgCreatePostRequestSignupSourceTypeEnum = typeof OrgCreatePostRequestSignupSourceTypeEnum[keyof typeof OrgCreatePostRequestSignupSourceTypeEnum];
@@ -17000,7 +16816,7 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner
      */
-    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum;
+    'category'?: OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum | null;
     /**
      * 
      * @type {string}
@@ -17010,8 +16826,6 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInner {
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultInvoiceListInnerCategoryEnum];
@@ -17051,12 +16865,10 @@ export interface OrgPaymentInvoiceGetListPost200ResponseResultPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPost200ResponseResultPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum;
+    'sort'?: OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum | null;
 }
 
 export const OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum = typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPost200ResponseResultPaginationSortEnum];
@@ -17090,7 +16902,7 @@ export interface OrgPaymentInvoiceGetListPostRequest {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequest
      */
-    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum;
+    'category': OrgPaymentInvoiceGetListPostRequestCategoryEnum | null;
     /**
      * 
      * @type {string}
@@ -17106,9 +16918,6 @@ export interface OrgPaymentInvoiceGetListPostRequest {
 }
 
 export const OrgPaymentInvoiceGetListPostRequestCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestCategoryEnum = typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestCategoryEnum];
@@ -17136,12 +16945,10 @@ export interface OrgPaymentInvoiceGetListPostRequestPagination {
      * @type {number}
      * @memberof OrgPaymentInvoiceGetListPostRequestPagination
      */
-    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum;
+    'sort'?: OrgPaymentInvoiceGetListPostRequestPaginationSortEnum | null;
 }
 
 export const OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type OrgPaymentInvoiceGetListPostRequestPaginationSortEnum = typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum[keyof typeof OrgPaymentInvoiceGetListPostRequestPaginationSortEnum];
@@ -17605,7 +17412,7 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      * @type {number}
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
      */
-    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum;
+    'orgCategoryId': OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -17717,10 +17524,6 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
 }
 
 export const OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum = typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum[keyof typeof OrgRemoveLogoPost200ResponseResultOrganizationOrgCategoryIdEnum];
@@ -17873,7 +17676,7 @@ export interface OrgUpdatePostRequest {
      * @type {number}
      * @memberof OrgUpdatePostRequest
      */
-    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgUpdatePostRequestOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -17919,10 +17722,6 @@ export interface OrgUpdatePostRequest {
 }
 
 export const OrgUpdatePostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgUpdatePostRequestOrgCategoryIdEnum = typeof OrgUpdatePostRequestOrgCategoryIdEnum[keyof typeof OrgUpdatePostRequestOrgCategoryIdEnum];
@@ -18297,7 +18096,7 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
      * @type {number}
      * @memberof OrgValueAddedServiceMade2flowScheduleMeetingPostRequest
      */
-    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum;
+    'orgCategoryId': OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum | null;
     /**
      * 使用者名稱
      * @type {string}
@@ -18343,10 +18142,6 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequest {
 }
 
 export const OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum = typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum[keyof typeof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestOrgCategoryIdEnum];
@@ -18411,7 +18206,7 @@ export interface Organization {
      * @type {number}
      * @memberof Organization
      */
-    'orgCategoryId': OrganizationOrgCategoryIdEnum;
+    'orgCategoryId': OrganizationOrgCategoryIdEnum | null;
     /**
      * 國家代碼
      * @type {string}
@@ -18523,10 +18318,6 @@ export interface Organization {
 }
 
 export const OrganizationOrgCategoryIdEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type OrganizationOrgCategoryIdEnum = typeof OrganizationOrgCategoryIdEnum[keyof typeof OrganizationOrgCategoryIdEnum];
@@ -18614,13 +18405,25 @@ export interface OrganizationFeatureFlag {
      * @type {boolean}
      * @memberof OrganizationFeatureFlag
      */
-    'digitalDrapeDoubleSide'?: boolean;
+    'digitalDrapeDoubleSide': boolean;
     /**
      * 是否啟用Zfab
      * @type {boolean}
      * @memberof OrganizationFeatureFlag
      */
-    'zfab'?: boolean;
+    'zfab': boolean;
+    /**
+     * To control whether the new custom field-related features are shown
+     * @type {boolean}
+     * @memberof OrganizationFeatureFlag
+     */
+    'enableNewCustomField': boolean;
+    /**
+     * To control whether the old custom field-related features are shown
+     * @type {boolean}
+     * @memberof OrganizationFeatureFlag
+     */
+    'enableOldCustomField': boolean;
 }
 /**
  * 
@@ -19039,7 +18842,7 @@ export interface Plan {
      * @type {number}
      * @memberof Plan
      */
-    'status'?: PlanStatusEnum;
+    'status'?: PlanStatusEnum | null;
     /**
      * 停用日
      * @type {string}
@@ -19088,10 +18891,6 @@ export const PlanPlatformEnum = {
 
 export type PlanPlatformEnum = typeof PlanPlatformEnum[keyof typeof PlanPlatformEnum];
 export const PlanStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
@@ -19619,7 +19418,7 @@ export interface ProgressMaterialUploadItemMappingWith {
 /**
  * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressMaterialUploadUnsuccessfulMsgCode = {
@@ -19699,7 +19498,7 @@ export type ProgressOnlineSpreadSheetItemUnsuccessfulMsgCodeEnum = typeof Progre
 /**
  * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressStatus = {
@@ -19809,7 +19608,7 @@ export type ProgressU3mItemUnsuccessfulMsgCodeEnum = typeof ProgressU3mItemUnsuc
 /**
  * 排序方式 1: 時間排序由新到舊 2: 時間排序由舊到新 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: sourceType (Frontier -> Customized) 6: sourceType (Customized -> Frontier) 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ProgressU3mSort = {
@@ -21161,7 +20960,7 @@ export interface ShareOGTarget {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SharePermission = {
@@ -21292,7 +21091,7 @@ export interface ShareTarget {
 /**
  * 分享對象的種類
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ShareToType = {
@@ -21943,7 +21742,7 @@ export type ShowroomBaseColorEnum = typeof ShowroomBaseColorEnum[keyof typeof Sh
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ShowroomStatus = {
@@ -22230,24 +22029,20 @@ export interface SignUpGeneralPostRequest {
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'platform': SignUpGeneralPostRequestPlatformEnum;
+    'platform': SignUpGeneralPostRequestPlatformEnum | null;
     /**
      * 
      * @type {number}
      * @memberof SignUpGeneralPostRequest
      */
-    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum;
+    'signupSourceType': SignUpGeneralPostRequestSignupSourceTypeEnum | null;
 }
 
 export const SignUpGeneralPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestPlatformEnum = typeof SignUpGeneralPostRequestPlatformEnum[keyof typeof SignUpGeneralPostRequestPlatformEnum];
 export const SignUpGeneralPostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type SignUpGeneralPostRequestSignupSourceTypeEnum = typeof SignUpGeneralPostRequestSignupSourceTypeEnum[keyof typeof SignUpGeneralPostRequestSignupSourceTypeEnum];
@@ -22338,7 +22133,7 @@ export interface SlotContentContentValueInner {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SlotContentType = {
@@ -22601,7 +22396,7 @@ export interface SmartUploadAssetsUpdateConfigRequest {
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const SocialMedia = {
@@ -22630,13 +22425,13 @@ export interface Sticker {
      * @type {number}
      * @memberof Sticker
      */
-    'addTo': StickerAddToEnum;
+    'addTo': StickerAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof Sticker
      */
-    'type': StickerTypeEnum;
+    'type': StickerTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -22718,15 +22513,10 @@ export interface Sticker {
 }
 
 export const StickerAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerAddToEnum = typeof StickerAddToEnum[keyof typeof StickerAddToEnum];
 export const StickerTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerTypeEnum = typeof StickerTypeEnum[keyof typeof StickerTypeEnum];
@@ -22748,13 +22538,13 @@ export interface StickerAllOfChildStickerList {
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'addTo': StickerAllOfChildStickerListAddToEnum;
+    'addTo': StickerAllOfChildStickerListAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof StickerAllOfChildStickerList
      */
-    'type': StickerAllOfChildStickerListTypeEnum;
+    'type': StickerAllOfChildStickerListTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -22824,15 +22614,10 @@ export interface StickerAllOfChildStickerList {
 }
 
 export const StickerAllOfChildStickerListAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerAllOfChildStickerListAddToEnum = typeof StickerAllOfChildStickerListAddToEnum[keyof typeof StickerAllOfChildStickerListAddToEnum];
 export const StickerAllOfChildStickerListTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerAllOfChildStickerListTypeEnum = typeof StickerAllOfChildStickerListTypeEnum[keyof typeof StickerAllOfChildStickerListTypeEnum];
@@ -22854,13 +22639,13 @@ export interface StickerBase {
      * @type {number}
      * @memberof StickerBase
      */
-    'addTo': StickerBaseAddToEnum;
+    'addTo': StickerBaseAddToEnum | null;
     /**
      * 
      * @type {number}
      * @memberof StickerBase
      */
-    'type': StickerBaseTypeEnum;
+    'type': StickerBaseTypeEnum | null;
     /**
      * 
      * @type {string}
@@ -22924,15 +22709,10 @@ export interface StickerBase {
 }
 
 export const StickerBaseAddToEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type StickerBaseAddToEnum = typeof StickerBaseAddToEnum[keyof typeof StickerBaseAddToEnum];
 export const StickerBaseTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null
 } as const;
 
 export type StickerBaseTypeEnum = typeof StickerBaseTypeEnum[keyof typeof StickerBaseTypeEnum];
@@ -24647,12 +24427,10 @@ export interface UserForgotPasswordSendEmailPostRequest {
      * @type {number}
      * @memberof UserForgotPasswordSendEmailPostRequest
      */
-    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum;
+    'platform': UserForgotPasswordSendEmailPostRequestPlatformEnum | null;
 }
 
 export const UserForgotPasswordSendEmailPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserForgotPasswordSendEmailPostRequestPlatformEnum = typeof UserForgotPasswordSendEmailPostRequestPlatformEnum[keyof typeof UserForgotPasswordSendEmailPostRequestPlatformEnum];
@@ -25462,24 +25240,20 @@ export interface UserResendVerifyEmailPostRequest {
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'platform': UserResendVerifyEmailPostRequestPlatformEnum;
+    'platform': UserResendVerifyEmailPostRequestPlatformEnum | null;
     /**
      * 
      * @type {number}
      * @memberof UserResendVerifyEmailPostRequest
      */
-    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum;
+    'signupSourceType': UserResendVerifyEmailPostRequestSignupSourceTypeEnum | null;
 }
 
 export const UserResendVerifyEmailPostRequestPlatformEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestPlatformEnum = typeof UserResendVerifyEmailPostRequestPlatformEnum[keyof typeof UserResendVerifyEmailPostRequestPlatformEnum];
 export const UserResendVerifyEmailPostRequestSignupSourceTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null
 } as const;
 
 export type UserResendVerifyEmailPostRequestSignupSourceTypeEnum = typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum[keyof typeof UserResendVerifyEmailPostRequestSignupSourceTypeEnum];
@@ -25843,7 +25617,7 @@ export interface ValueAddedServiceMade2flow {
      * @type {number}
      * @memberof ValueAddedServiceMade2flow
      */
-    'status'?: ValueAddedServiceMade2flowStatusEnum;
+    'status'?: ValueAddedServiceMade2flowStatusEnum | null;
     /**
      * 
      * @type {Made2FlowPlanType}
@@ -25877,10 +25651,6 @@ export interface ValueAddedServiceMade2flow {
 }
 
 export const ValueAddedServiceMade2flowStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null2: null,
-    NUMBER_null3: null,
-    NUMBER_null4: null
 } as const;
 
 export type ValueAddedServiceMade2flowStatusEnum = typeof ValueAddedServiceMade2flowStatusEnum[keyof typeof ValueAddedServiceMade2flowStatusEnum];
@@ -25946,7 +25716,7 @@ export type ValueAddedServiceStarTrustStatusIdEnum = typeof ValueAddedServiceSta
 /**
  * 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const WeightUnit = {
@@ -26015,7 +25785,7 @@ export interface WorkflowStage {
  */
 export interface WorkspaceFilter {
     /**
-     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 8 - DoubleSide 
      * @type {Array<number>}
      * @memberof WorkspaceFilter
      */
@@ -26152,7 +25922,7 @@ export interface WorkspaceNodeMaterial {
 /**
  * 0: 未建立 1: 執行中 2: 完成 99: 失敗 
  * @export
- * @enum {string}
+ * @enum {number}
  */
 
 export const ZfabStatus = {
@@ -27100,6 +26870,44 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(materialGetAiImageProcessorRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Make existing single side material into double side
+         * @param {GetAssetsMaterialCarbonFootprintRequest} [getAssetsMaterialCarbonFootprintRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        materialMakeDoubleSide: async (getAssetsMaterialCarbonFootprintRequest?: GetAssetsMaterialCarbonFootprintRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/make-as-double-side`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAssetsMaterialCarbonFootprintRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28324,6 +28132,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Make existing single side material into double side
+         * @param {GetAssetsMaterialCarbonFootprintRequest} [getAssetsMaterialCarbonFootprintRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest?: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MaterialMakeDoubleSide200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AssetsApi.materialMakeDoubleSide']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 合併布卡
          * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
@@ -28873,6 +28694,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
+         * @summary Make existing single side material into double side
+         * @param {GetAssetsMaterialCarbonFootprintRequest} [getAssetsMaterialCarbonFootprintRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest?: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig): AxiosPromise<MaterialMakeDoubleSide200Response> {
+            return localVarFp.materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 合併布卡
          * @param {MergeAssetsMaterialListRequest} mergeAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
@@ -29397,6 +29228,18 @@ export class AssetsApi extends BaseAPI {
      */
     public materialGetAiImageProcessor(materialGetAiImageProcessorRequest: MaterialGetAiImageProcessorRequest, options?: RawAxiosRequestConfig) {
         return AssetsApiFp(this.configuration).materialGetAiImageProcessor(materialGetAiImageProcessorRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Make existing single side material into double side
+     * @param {GetAssetsMaterialCarbonFootprintRequest} [getAssetsMaterialCarbonFootprintRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest?: GetAssetsMaterialCarbonFootprintRequest, options?: RawAxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).materialMakeDoubleSide(getAssetsMaterialCarbonFootprintRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -30303,46 +30146,6 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @summary Get Summary of Dashboard page
-         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        dashboardGetSummary: async (dashboardGetSummaryRequest: DashboardGetSummaryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'dashboardGetSummaryRequest' is not null or undefined
-            assertParamExists('dashboardGetSummary', 'dashboardGetSummaryRequest', dashboardGetSummaryRequest)
-            const localVarPath = `/dashboard/get-summary`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(dashboardGetSummaryRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 取得Dashboard資訊
          * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
@@ -30456,19 +30259,6 @@ export const DashboardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get Summary of Dashboard page
-         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DashboardGetSummary200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardGetSummary(dashboardGetSummaryRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DashboardApi.dashboardGetSummary']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 取得Dashboard資訊
          * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
@@ -30539,16 +30329,6 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          */
         createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig): AxiosPromise<ResSuccessTrue> {
             return localVarFp.createViewerLog(createViewerLogRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Get Summary of Dashboard page
-         * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig): AxiosPromise<DashboardGetSummary200Response> {
-            return localVarFp.dashboardGetSummary(dashboardGetSummaryRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -30628,18 +30408,6 @@ export class DashboardApi extends BaseAPI {
      */
     public createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createViewerLog(createViewerLogRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Get Summary of Dashboard page
-     * @param {DashboardGetSummaryRequest} dashboardGetSummaryRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DashboardApi
-     */
-    public dashboardGetSummary(dashboardGetSummaryRequest: DashboardGetSummaryRequest, options?: RawAxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardGetSummary(dashboardGetSummaryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
