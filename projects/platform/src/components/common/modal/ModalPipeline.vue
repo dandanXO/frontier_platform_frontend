@@ -141,6 +141,9 @@ export default {
     ModalForgotPasswordEmail: defineAsyncComponent(() =>
       import('@/components/account/ModalForgotPasswordEmail.vue')
     ),
+    ModalCustomFieldSetting: defineAsyncComponent(() =>
+      import('@/components/management/ModalCustomFieldSetting.vue')
+    ),
     ModalForgotPasswordCode: defineAsyncComponent(() =>
       import('@/components/account/ModalForgotPasswordCode.vue')
     ),

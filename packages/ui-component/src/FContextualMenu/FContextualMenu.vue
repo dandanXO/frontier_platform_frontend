@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-grey-0 rounded shadow-16 p-2"
+    class="p-2 rounded bg-grey-0 shadow-16"
     :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
   >
     <!-- Root Title -->
@@ -32,12 +32,12 @@
 
     <!-- Search Input -->
     <template v-if="innerMenuTree.searchEnable">
-      <div class="h-8 flex items-center px-4">
-        <f-svg-icon iconName="search" size="20" class="text-grey-600 mr-2" />
+      <div class="flex items-center h-8 px-4">
+        <f-svg-icon iconName="search" size="20" class="mr-2 text-grey-600" />
         <input
           v-model="searchInput"
           placeholder="Search"
-          class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-250"
+          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-250"
         />
       </div>
       <div class="w-full h-px my-1 bg-grey-150"></div>
@@ -46,8 +46,8 @@
     <!-- Add New Menu -->
     <template v-if="!disabledAddNew">
       <template v-if="!!searchInput && !menuIsExist">
-        <div class="px-4 min-h-6 flex items-center">
-          <p class="text-caption text-grey-600 break-all">
+        <div class="flex items-center px-4 min-h-6">
+          <p class="break-all text-caption text-grey-600">
             Press <span class="font-bold">Enter</span> to create "{{
               searchInput
             }}"
@@ -55,11 +55,11 @@
         </div>
         <div v-if="!isEmpty" class="w-full h-px my-1 bg-grey-150"></div>
       </template>
-      <div v-else-if="isEmpty" class="px-4 min-h-6 flex items-center">
+      <div v-else-if="isEmpty" class="flex items-center px-4 min-h-6">
         <i18n-t
           keypath="RR0256"
           tag="p"
-          class="text-caption text-grey-600 break-all"
+          class="break-all text-caption text-grey-600"
           scope="global"
         >
           <template #Enter>
@@ -72,7 +72,7 @@
     <div
       v-if="isItemsExist[innerMenuTree.type ?? CONTEXTUAL_MENU_TYPE.LIST]"
       :class="innerMenuTree.scrollAreaMaxHeight"
-      class="overflow-y-auto overflow-x-hidden overscroll-contain"
+      class="overflow-x-hidden overflow-y-auto overscroll-contain"
       data-cy="f-context-menu"
     >
       <contextual-menu-node
@@ -85,6 +85,7 @@
         :inputSelectValue="inputSelectValue"
         :hideLeadingVisual="hideLeadingVisual"
         :hideTrailingIcon="hideTrailingIcon"
+        :version="version"
       />
 
       <template
@@ -110,6 +111,7 @@
           :inputSelectValue="inputSelectValue"
           :hideLeadingVisual="hideLeadingVisual"
           :hideTrailingIcon="hideTrailingIcon"
+          :version="version"
         />
 
         <div
@@ -247,6 +249,7 @@ const props = withDefaults(
     canAddNew?: boolean
     hideLeadingVisual?: boolean
     hideTrailingIcon?: boolean
+    version?: string
   }>(),
   {
     theme: THEME.LIGHT,
@@ -254,6 +257,7 @@ const props = withDefaults(
     canAddNMew: false,
     hideLeadingVisual: false,
     hideTrailingIcon: false,
+    version: 'v1',
   }
 )
 

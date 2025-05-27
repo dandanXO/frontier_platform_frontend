@@ -101,6 +101,10 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath}/management/${tabName}`, navReq))
   }
 
+  const goToCustomField = async (navReq: NavigationReq = {}) => {
+    router.push(parsePath(`${prefixPath}/custom-field`, navReq))
+  }
+
   const goToBillings = async (navReq: NavigationReq = {}) => {
     await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath('/:orgNo/billings/plan', navReq))
@@ -418,6 +422,7 @@ export default function useNavigation() {
     parsePath,
     goToDashboard,
     goToManagement,
+    goToCustomField,
     goToLobby,
     goToAssets,
     goToManageAccount,

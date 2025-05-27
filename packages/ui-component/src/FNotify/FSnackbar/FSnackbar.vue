@@ -34,7 +34,7 @@ transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
     v-if="isShowSnackbar"
     ref="refContainer"
     :key="id"
-    class="fixed z-flash-msg left-0 right-0 px-9"
+    class="fixed left-0 right-0 z-flash-msg px-9"
     :class="[version === VERSION.V2 ? 'top-[50px]' : 'bottom-5']"
     @mouseenter="clearTimer"
     @mouseleave="setTimer"
@@ -42,10 +42,10 @@ transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
     div(
       ref="refSnackbar"
       class="flex mx-auto"
-      :class="[getContainerPaddingY, version === VERSION.V2 && bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor, version === VERSION.V2 ? 'w-[512px] items-center rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16  px-4']"
+      :class="[getContainerPaddingY, version === VERSION.V2 && bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor, version === VERSION.V2 ? 'w-[512px] items-start rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16 px-4']"
     )
       div(
-        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 min-w-10 flex items-center justify-center' : ''"
+        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 flex items-center justify-center mt-1' : ''"
       )
         f-svg-icon(
           :iconName="NOTIFY_TYPE_ICON[notifyType]"
@@ -57,16 +57,20 @@ transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
         :class="[getMessageMinHeight, !shouldBeNextLine && display === DISPLAY.FLEX ? 'flex items-start gap-x-4' : '']"
       )
         div(
-          class="flex-grow self-center"
+          class="self-center flex-grow"
           :class="[getFontSize, version === VERSION.V2 && textColor === 'text-grey-100' ? 'text-grey-900-v1' : textColor, version === VERSION.V2 ? 'font-light text-sm' : '']"
         )
-          p(v-if="!!title" class="font-bold flex-shrink-0") {{ title }}
+          p(
+            v-if="!!title"
+            class="flex-shrink-0 font-bold"
+            :class="[title ? 'mb-1' : '']"
+          ) {{ title }}
           p(v-if="!!messageText") {{ messageText }}
           component(v-else :is="messageComponent")
         button(
           v-if="!!action"
           @click="action.handler"
-          class="outline-none text-cyan-300 hover:text-cyan-100 cursor-pointer"
+          class="outline-none cursor-pointer text-cyan-300 hover:text-cyan-100"
           :class="[getFontSize, action.classes, { 'px-2': !shouldBeNextLine && display === DISPLAY.FLEX }]"
         ) {{ action.text }}
       f-svg-icon(

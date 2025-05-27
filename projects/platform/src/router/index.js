@@ -233,6 +233,12 @@ const routes = [
             component: () => import('@/views/innerApp/Dashboard.vue'),
           },
           {
+            path: 'custom-field',
+            name: 'CustomField',
+            component: () =>
+              import('@/views/innerApp/CustomField/CustomField.vue'),
+          },
+          {
             path: 'management/:tab(about|members|history|dashboard)',
             name: 'Management',
             component: () => import('@/views/innerApp/Management.vue'),

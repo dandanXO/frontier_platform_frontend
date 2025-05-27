@@ -418,7 +418,7 @@ const changePassword = async () => {
   currentPassword.value = ''
   newPassword.value = ''
   notify.showNotifySnackbar({
-    messageText: "t-Password changed successfully! You'll be logged out now...",
+    messageText: t('MM0030'),
     version: VERSION.V2,
     hasCloseButton: false,
     delay: 5000,

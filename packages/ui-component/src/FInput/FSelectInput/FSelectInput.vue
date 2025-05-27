@@ -126,6 +126,7 @@ f-input-container(
           :canAddNew="canAddNew"
           :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
           :menuTree="dropdownMenuTree"
+          :version="version"
         )
           template(#custom-not-found)
             slot(name="custom-not-found")
@@ -272,6 +273,14 @@ const props = defineProps({
   widthFitWithInput: {
     type: Boolean,
     default: true,
+  },
+  labelNeeded: {
+    type: Boolean,
+    default: true,
+  },
+  version: {
+    type: String,
+    default: 'v1',
   },
 })
 const innerSelectValue = computed({
@@ -505,7 +514,7 @@ const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
 const refContainerObserver = ref(null)
 onMounted(() => {
   refContainerObserver.value = new ResizeObserver((entries) => {
-    if (props.label) {
+    if (props.label || !props.labelNeeded) {
       popperOffsetY.value =
         refContainer.value.$el.children[1].getBoundingClientRect().height
     } else {

@@ -1,11 +1,12 @@
 <template lang="pug">
 div(
   v-if="version === 'v2'"
-  class="fixed inset-0 z-loading w-screen h-screen bg-grey-900/70 flex justify-center items-center"
+  class="fixed inset-0 flex items-center justify-center w-screen h-screen z-modal bg-grey-900/70"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
   div(
-    class="absolute flex flex-col items-center justify-center w-[512px] p-6 gap-6 rounded-xl bg-grey-0 shadow-32"
+    class="absolute flex flex-col items-center gap-6 p-6 rounded-xl bg-grey-0 shadow-32"
+    :class="modalClass"
   )
     div(class="flex justify-between w-full pb-6 border-b border-grey-200")
       div(class="flex items-center gap-2")
@@ -18,12 +19,17 @@ div(
         p(class="text-xl font-bold") {{ header }}
       f-button(@click="closeModalBehavior" type="text" v-if="closable")
         f-svg-icon(iconName="close_medium" size="24" class="text-grey-900")
-    div(class="w-full flex flex-col items-center gap-6")
+    div(class="flex flex-col items-center justify-between flex-1 w-full gap-6")
       slot(name="default")
-      div(v-if="secondaryBtnText || primaryBtnText" class="w-full flex gap-4")
+      div(
+        v-if="secondaryBtnText || primaryBtnText"
+        class="flex gap-4"
+        :class="actionBtnFullWidth ? 'w-full' : 'w-fit ml-auto'"
+      )
         f-button(
           v-if="secondaryBtnText !== ''"
-          class="flex-1 p-2 text-sm !font-bold !border-green-200-v1 text-green-500-v1"
+          class="flex-1 p-2 text-sm !font-bold"
+          :class="[secondaryBtnDisabled ? '' : '!border-green-200-v1 text-green-500-v1']"
           :theme="theme"
           :size="btnSize"
           type="secondary"
@@ -33,8 +39,8 @@ div(
           @click="$emit('click:secondary')"
         ) {{ secondaryBtnText }}
         f-button(
-          class="bg-green-500-v1 hover:bg-green-500-v1 flex-1 p-2 text-sm !font-bold transition-all"
-          :class="{ 'hover:brightness-110': !primaryBtnDisabled }"
+          class="flex-1 p-2 text-sm !font-bold transition-all"
+          :class="[primaryBtnDisabled ? '' : 'bg-green-500-v1 hover:bg-green-500-v1 hover:brightness-110 ']"
           v-if="primaryBtnText !== ''"
           :theme="theme"
           :size="btnSize"
@@ -46,11 +52,11 @@ div(
         ) {{ primaryBtnText }}
 div(
   v-else
-  class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+  class="fixed inset-0 flex items-center justify-center w-screen h-screen z-modal bg-grey-900/40"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
   div(
-    class="absolute w-min rounded card-show shadow-32"
+    class="absolute rounded w-min card-show shadow-32"
     :data-cy="testId"
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', needFullScreen ? 'w-screen h-screen' : '', displayHeader ? 'pt-5' : '', animation ? 'modal-animation' : '']"
   )
@@ -60,7 +66,7 @@ div(
       data-cy="modal-how-to-scan-header"
     )
       p(
-        class="text-body2 font-bold"
+        class="font-bold text-body2"
         :class="[theme === THEME.DARK ? 'text-grey-100' : 'text-grey-900']"
       ) {{ header }}
       f-svg-icon(
@@ -70,13 +76,13 @@ div(
         class="cursor-pointer text-grey-600"
         @click="closeModalBehavior"
       )
-    f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-115 box-content relative")
+    f-scrollbar-container(class="box-content relative px-5 pt-5 pb-10 w-fit max-h-115")
       slot(name="default")
     div(
       v-if="footer && !usingCustomFooter"
       class="p-5 h-18.5 border-content border-t flex items-center border-primary-border"
     )
-      div(class="w-full flex justify-between")
+      div(class="flex justify-between w-full")
         div(class="flex items-center text-caption leading-1.6")
           slot(name="note")
         div(class="flex items-center gap-x-2.5")
@@ -214,6 +220,14 @@ defineProps({
   page: {
     type: Number,
     default: 0,
+  },
+  modalClass: {
+    type: String,
+    default: '',
+  },
+  actionBtnFullWidth: {
+    type: Boolean,
+    default: false,
   },
 })
 

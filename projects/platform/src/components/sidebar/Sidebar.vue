@@ -30,6 +30,13 @@ div(
           :disabled="planStatus.INACTIVE"
           testId="management"
         )
+        sidebar-item#CustomField(
+          :title="$t('RR0518')"
+          :goTo="goToCustomField"
+          icon="table_edit"
+          :disabled="planStatus.INACTIVE"
+          testId="custom_field"
+        )
         sidebar-item#Progress(:goTo="goToProgress" testId="progress-status")
           f-svg-icon(
             iconName="progress"
@@ -126,6 +133,7 @@ const {
   goToPublicLibrary,
   goToDashboard,
   goToManagement,
+  goToCustomField,
   goToProgress,
   goToAssets,
   goToWorkspace,

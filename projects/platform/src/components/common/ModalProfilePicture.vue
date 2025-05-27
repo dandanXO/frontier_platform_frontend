@@ -13,8 +13,9 @@ modal-behavior(
   :showBackButton="true"
   :closable="!isRemovingImage && !isChangingImage"
   data-theme="new"
+  actionBtnFullWidth
 )
-  div(v-if="isCroppingImage" class="w-full flex justify-center items-center")
+  div(v-if="isCroppingImage" class="flex items-center justify-center w-full")
     cropper-default-layout(
       :config="config"
       :scaleStart="scaleStart"
@@ -34,14 +35,14 @@ modal-behavior(
       f-avatar(:imageUrl="thumbnail" type="org" size="5xl")
     div(class="w-full space-y-4" v-if="isChangingImage")
       div(
-        class="rounded-lg border-green-500-v1 bg-green-50-v1 border border-dashed flex justify-center items-center w-full px-10 py-15"
+        class="flex items-center justify-center w-full px-10 border border-dashed rounded-lg border-green-500-v1 bg-green-50-v1 py-15"
         data-cy="modal-smart-upload_dropzone"
         @drop.stop.prevent="onDrop($event)"
         @dragover.prevent
         @dragenter.prevent
       )
         div(class="flex flex-col items-center gap-4")
-          div(class="bg-green-500-v1 rounded-full p-5")
+          div(class="p-5 rounded-full bg-green-500-v1")
             f-svg-icon(iconName="upload" size="24" class="text-white")
           div(class="flex flex-col items-center w-full gap-2")
             p(class="text-sm text-grey-900-v1") {{ $t('RR0484') }}
@@ -52,11 +53,11 @@ modal-behavior(
               data-cy="modal-smart-upload_browse"
               @click="uploadImg"
             ) {{ $t('DD0038') }}
-      div(class="p-2 text-sm space-y-1")
+      div(class="p-2 space-y-1 text-sm")
         p {{ $t('RR0244') }}
         p {{ $t('WW0145') }}
     div(class="flex flex-col items-center w-full space-y-6" v-if="isRemovingImage")
-      p(class="text-center text-sm") {{ $t('MA0014') }}
+      p(class="text-sm text-center") {{ $t('MA0014') }}
       div(
         class="h-[256px] w-[256px] flex justify-center items-center bg-green-50-v1 rounded-full"
       )

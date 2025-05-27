@@ -13,7 +13,7 @@ div(
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"
     isNotFitWidth
-    class="w-full flex items-center px-4"
+    class="flex items-center w-full px-4"
     :disabledTooltip="disabledTooltip"
     :tooltipTitle="tooltipTitle"
     :tooltipMessage="tooltipMessage"
@@ -27,13 +27,14 @@ div(
           v-if="isSelect"
           iconName="check_box"
           size="20"
-          class="text-primary-400 mr-2"
+          class="mr-2"
+          :class="[version === 'v2' ? 'text-green-500-v1' : 'text-primary-400']"
         )
         f-svg-icon(
           v-else
           iconName="check_box_outline_blank"
           size="20"
-          class="text-grey-250 mr-2"
+          class="mr-2 text-grey-250"
         )
       //- Leading Visual
       div(
@@ -71,7 +72,7 @@ div(
 
       div(
         :class="innerMenu.display"
-        class="w-full flex-grow items-center pr-2 overflow-hidden"
+        class="items-center flex-grow w-full pr-2 overflow-hidden"
         @mouseleave="hoverOn = null"
       )
         p(
@@ -90,12 +91,12 @@ div(
           @mouseenter="hoverOn = 'description'"
         ) {{ innerMenu.description }}
       //- Notify
-      div(v-if="innerMenu.hasNotify" class="pr-2 flex items-center justify-center")
+      div(v-if="innerMenu.hasNotify" class="flex items-center justify-center pr-2")
         div(class="w-2 h-2 rounded-full bg-primary-400")
       //- Trailing Icon
       div(
         v-if="!hideTrailingIcon && (hasNextLevel || (selectMode !== MULTIPLE && isSelect))"
-        class="shrink-0 w-6 h-6"
+        class="w-6 h-6 shrink-0"
       )
         f-svg-icon(
           v-if="hasNextLevel"
@@ -116,7 +117,7 @@ div(
     ref="refContextMenu"
     v-if="isExpand"
     :class="innerMenu.width"
-    class="py-2 bg-grey-0 rounded shadow-16"
+    class="py-2 rounded bg-grey-0 shadow-16"
     @click.stop
   )
     //- Button if position is top
@@ -126,12 +127,12 @@ div(
     )
     //- Search Input
     template(v-if="innerMenu.searchEnable")
-      div(class="h-8 flex items-center px-4")
-        f-svg-icon(iconName="search" size="20" class="text-grey-600 mr-2")
+      div(class="flex items-center h-8 px-4")
+        f-svg-icon(iconName="search" size="20" class="mr-2 text-grey-600")
         input(
           v-model="searchInput"
           placeholder="Search"
-          class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-250"
+          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-250"
         )
       div(class="w-full h-px my-1 bg-grey-150")
     div(
@@ -195,11 +196,13 @@ const props = withDefaults(
     selectMode: CONTEXTUAL_MENU_MODE
     hideLeadingVisual?: boolean
     hideTrailingIcon?: boolean
+    version?: 'v1' | 'v2'
   }>(),
   {
     theme: THEME.LIGHT,
     hideLeadingVisual: false,
     hideTrailingIcon: false,
+    version: 'v1',
   }
 )
 
