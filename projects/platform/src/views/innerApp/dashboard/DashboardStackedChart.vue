@@ -260,7 +260,7 @@ watch(
         })
 
         finalProcessedSeries.push({
-          name: 'Others',
+          name: `Others (${seriesWithTotals.length - 7} more)`,
           data: aggregatedOthersData,
           color: '#A9A9A9', // DarkGray for Others
         })
@@ -280,7 +280,7 @@ watch(
         typeof chartOptions.value.legend === 'object' &&
         !Array.isArray(chartOptions.value.legend)
       ) {
-        chartOptions.value.legend.data = legendNames
+        chartOptions.value.legend.data = [...legendNames]
       }
 
       // 3. Update yAxis categories
