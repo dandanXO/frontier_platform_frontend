@@ -268,7 +268,7 @@ watch(
 
         seriesForTooltipCalculation.push({
           // Add aggregated "Others" to tooltip series
-          name: 'Others',
+          name: `Others (${seriesWithTotals.length - 7} more)`,
           data: aggregatedOthersData,
           color: '#A9A9A9',
         })
@@ -337,7 +337,7 @@ watch(
             // chartValue is the count
             const percent =
               categoryTotal > 0
-                ? Math.round((originalSeriesPoint / categoryTotal) * 100) + '%'
+                ? ((originalSeriesPoint / categoryTotal) * 100).toFixed(2) + '%'
                 : '0%'
             return `<div style="display:flex; flex-direction:column; align-items:center; text-align:center">${header}<span>${percent}</span><span>${originalSeriesPoint} pieces</span></div>`
           }
