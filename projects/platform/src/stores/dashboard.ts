@@ -69,7 +69,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
       const dashboard = data.result as DashboardGetSummary200ResponseResult
       createCounts.value = dashboard.createCounts
 
-      materialContentCategoryList.value = dashboard.materialContentCategoryList
+      materialContentCategoryList.value =
+        dashboard.materialTypeOfContentCategoryList
 
       materialTypeOfCountryList.value = formatChartData(
         dashboard.materialTypeOfCountryList
