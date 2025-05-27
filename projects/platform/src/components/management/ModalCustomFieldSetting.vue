@@ -203,7 +203,7 @@
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import TableHeader from '@/components/customField/tableHeader.vue'
+import TableHeader from '@/components/customField/TableHeader.vue'
 import Draggable from 'vuedraggable'
 import { customFieldSchema } from '@/views/innerApp/CustomField/useCustomerFieldFrom'
 import {

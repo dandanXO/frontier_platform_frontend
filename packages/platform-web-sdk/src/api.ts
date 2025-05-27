@@ -2189,6 +2189,12 @@ export interface CreateAssetsMaterialRequest {
      * @memberof CreateAssetsMaterialRequest
      */
     'hasCustomU3mUploading': boolean;
+    /**
+     * 
+     * @type {MaterialUpdateCustomFieldList}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'customFieldList': MaterialUpdateCustomFieldList;
 }
 
 
@@ -2770,6 +2776,159 @@ export type CurrencyCode = typeof CurrencyCode[keyof typeof CurrencyCode];
 
 
 /**
+ * Custom field information 
+ * @export
+ * @interface CustomField
+ */
+export interface CustomField {
+    /**
+     * Custom field ID. This field can be null. - If this field is used in the context of retrieving an existing custom field, it will have a value. - If this field is used in the context of adding a new field, it will be null, indicating a new custom field. - If this field is used in the context of editing an existing custom field, it will have a value. 
+     * @type {number}
+     * @memberof CustomField
+     */
+    'customFieldId': number | null;
+    /**
+     * Custom field name
+     * @type {string}
+     * @memberof CustomField
+     */
+    'name': string;
+    /**
+     * 
+     * @type {CustomFieldTabType}
+     * @memberof CustomField
+     */
+    'tabType': CustomFieldTabType;
+    /**
+     * 
+     * @type {CustomFieldType}
+     * @memberof CustomField
+     */
+    'fieldType': CustomFieldType;
+    /**
+     * Custom field option list If the custom field type is 1 or 2, an empty array will be returned 
+     * @type {Array<CustomFieldCustomFieldOptionListInner>}
+     * @memberof CustomField
+     */
+    'customFieldOptionList': Array<CustomFieldCustomFieldOptionListInner>;
+    /**
+     * Indicates whether this custom field is public. Default is false (not public).
+     * @type {boolean}
+     * @memberof CustomField
+     */
+    'isPublic': boolean;
+    /**
+     * Which material types the custom field should be applied to 
+     * @type {Array<MaterialType>}
+     * @memberof CustomField
+     */
+    'applyTo': Array<MaterialType>;
+    /**
+     * Custom field sort order
+     * @type {number}
+     * @memberof CustomField
+     */
+    'sort': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CustomFieldCustomFieldOptionListInner
+ */
+export interface CustomFieldCustomFieldOptionListInner {
+    /**
+     * Custom field option ID If this field is used in the context of adding a custom field, it will be null If this field is used in the context of retrieving or editing a custom field, it will have a value 
+     * @type {number}
+     * @memberof CustomFieldCustomFieldOptionListInner
+     */
+    'customFieldOptionId': number | null;
+    /**
+     * Custom field option display text
+     * @type {string}
+     * @memberof CustomFieldCustomFieldOptionListInner
+     */
+    'text': string;
+    /**
+     * Option sort order
+     * @type {number}
+     * @memberof CustomFieldCustomFieldOptionListInner
+     */
+    'sort': number;
+}
+/**
+ * Custom field list. This schema defines a list of custom fields for various tabs, including specifications, fabric details, tags, pricing, and inventory. 
+ * @export
+ * @interface CustomFieldList
+ */
+export interface CustomFieldList {
+    /**
+     * Custom fields list for the specification tab
+     * @type {Array<CustomField>}
+     * @memberof CustomFieldList
+     */
+    'specificationList': Array<CustomField>;
+    /**
+     * Custom fields list for the fabric detail tab
+     * @type {Array<CustomField>}
+     * @memberof CustomFieldList
+     */
+    'fabricDetailList': Array<CustomField>;
+    /**
+     * Custom fields list for the tag tab
+     * @type {Array<CustomField>}
+     * @memberof CustomFieldList
+     */
+    'tagList': Array<CustomField>;
+    /**
+     * Custom fields list for the pricing tab
+     * @type {Array<CustomField>}
+     * @memberof CustomFieldList
+     */
+    'pricingList': Array<CustomField>;
+    /**
+     * Custom fields list for the inventory tab
+     * @type {Array<CustomField>}
+     * @memberof CustomFieldList
+     */
+    'inventoryList': Array<CustomField>;
+}
+/**
+ * The tab type where the custom field is located 1. specification 2. fabric detail 3. tag 4. pricing 5. inventory 
+ * @export
+ * @enum {number}
+ */
+
+export const CustomFieldTabType = {
+    SPECIFICATION: 1,
+    FABRIC_DETAIL: 2,
+    TAG: 3,
+    PRICING: 4,
+    INVENTORY: 5
+} as const;
+
+export type CustomFieldTabType = typeof CustomFieldTabType[keyof typeof CustomFieldTabType];
+
+
+/**
+ * Custom field type 1. Single-Line Text 2. Numeric Input 3. Single Select Dropdown 4. Multi Select Dropdown 5. Single Select Radio Button 
+ * @export
+ * @enum {number}
+ */
+
+export const CustomFieldType = {
+    SINGLE_LINE_TEXT: 1,
+    NUMERIC_INPUT: 2,
+    SINGLE_SELECT_DROPDOWN: 3,
+    MULTI_SELECT_DROPDOWN: 4,
+    SINGLE_SELECT_RADIO_BUTTON: 5
+} as const;
+
+export type CustomFieldType = typeof CustomFieldType[keyof typeof CustomFieldType];
+
+
+/**
  * Dashboard資訊
  * @export
  * @interface Dashboard
@@ -3053,6 +3212,25 @@ export interface DeleteAssetsMaterialListRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface DeleteCustomFieldRequest
+ */
+export interface DeleteCustomFieldRequest {
+    /**
+     * Organization ID
+     * @type {number}
+     * @memberof DeleteCustomFieldRequest
+     */
+    'orgId': number;
+    /**
+     * Custom field ID
+     * @type {number}
+     * @memberof DeleteCustomFieldRequest
+     */
+    'customFieldId': number;
+}
 /**
  * 
  * @export
@@ -5838,6 +6016,50 @@ export interface GetContactOrgList200ResponseResultOrgListInner {
      * @memberof GetContactOrgList200ResponseResultOrgListInner
      */
     'logo': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetCustomFieldList200Response
+ */
+export interface GetCustomFieldList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCustomFieldList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetCustomFieldList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CustomFieldList}
+     * @memberof GetCustomFieldList200Response
+     */
+    'result': CustomFieldList;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetCustomFieldList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetCustomFieldListRequest
+ */
+export interface GetCustomFieldListRequest {
+    /**
+     * Organization ID
+     * @type {number}
+     * @memberof GetCustomFieldListRequest
+     */
+    'orgId': number;
 }
 /**
  * 
@@ -10463,6 +10685,12 @@ export interface Material {
     'multimediaList': Array<MultimediaFile>;
     /**
      * 
+     * @type {MaterialCustomFieldList}
+     * @memberof Material
+     */
+    'customFieldList'?: MaterialCustomFieldList;
+    /**
+     * 
      * @type {MaterialPublicMetaData}
      * @memberof Material
      */
@@ -10958,6 +11186,12 @@ export interface MaterialCreate {
      * @memberof MaterialCreate
      */
     'hasCustomU3mUploading': boolean;
+    /**
+     * 
+     * @type {MaterialUpdateCustomFieldList}
+     * @memberof MaterialCreate
+     */
+    'customFieldList': MaterialUpdateCustomFieldList;
 }
 
 
@@ -11242,6 +11476,81 @@ export interface MaterialCustomConstructionBase {
      */
     'value': string;
 }
+/**
+ * Custom field information. For security reasons, only the information required for display is returned to prevent unnecessary data exposure on external pages. 
+ * @export
+ * @interface MaterialCustomField
+ */
+export interface MaterialCustomField {
+    /**
+     * Custom field ID.
+     * @type {number}
+     * @memberof MaterialCustomField
+     */
+    'customFieldId': number;
+    /**
+     * Custom field name
+     * @type {string}
+     * @memberof MaterialCustomField
+     */
+    'name': string;
+    /**
+     * 
+     * @type {MaterialCustomFieldValue}
+     * @memberof MaterialCustomField
+     */
+    'value': MaterialCustomFieldValue | null;
+    /**
+     * Custom field value for display This field is used to display the custom field value in the UI. The value is formatted based on the custom field type. - If the custom field type is a single-line text, the value will be a string. For example, \'This is the value of Custom Field 1\'. - If the custom field type is a numeric input, the value will be a number string. For example, \'0.123456\'. - If the custom field type is a single select dropdown, the value will be a string representing the selected option. For example, \'Option A\'. - If the custom field type is a multi-select dropdown, the value will be a comma-separated string of selected options. For example, \'Option A, Option B\'. - If the custom field type is a single select radio button, the value will be a string representing the selected option. For example, \'Option A\'. 
+     * @type {string}
+     * @memberof MaterialCustomField
+     */
+    'valueForDisplay': string;
+}
+/**
+ * Custom field list for the view mode of the Material Detail. This schema defines a list of custom fields for various tabs, including specifications, fabric details, tags, pricing, and inventory. For security reasons, only the information required for display is returned to prevent unnecessary data exposure on external pages. 
+ * @export
+ * @interface MaterialCustomFieldList
+ */
+export interface MaterialCustomFieldList {
+    /**
+     * Custom fields list for the specification tab
+     * @type {Array<MaterialCustomField>}
+     * @memberof MaterialCustomFieldList
+     */
+    'specificationList': Array<MaterialCustomField>;
+    /**
+     * Custom fields list for the fabric detail tab
+     * @type {Array<MaterialCustomField>}
+     * @memberof MaterialCustomFieldList
+     */
+    'fabricDetailList': Array<MaterialCustomField>;
+    /**
+     * Custom fields list for the tag tab
+     * @type {Array<MaterialCustomField>}
+     * @memberof MaterialCustomFieldList
+     */
+    'tagList': Array<MaterialCustomField>;
+    /**
+     * Custom fields list for the pricing tab
+     * @type {Array<MaterialCustomField>}
+     * @memberof MaterialCustomFieldList
+     */
+    'pricingList': Array<MaterialCustomField>;
+    /**
+     * Custom fields list for the inventory tab
+     * @type {Array<MaterialCustomField>}
+     * @memberof MaterialCustomFieldList
+     */
+    'inventoryList': Array<MaterialCustomField>;
+}
+/**
+ * @type MaterialCustomFieldValue
+ * The value of the custom field, null means the custom field is not used. 1. If fieldType is 1: Single-Line Text, this parameter is a string.    For example, \'This is the value of Custom Field 1\'. 2. If fieldType is 2: Numeric Input, this parameter is a number.    For example, 0.123456. 3. If fieldType is 3: Single Select Dropdown, this parameter is an integer, and the value must be the customFieldOptionId of the option.    For example, 11. 4. If fieldType is 4: Multi Select Dropdown, this parameter is an array of integers, and the values must be the customFieldOptionId of the options.   For example, [11, 22]. 5. If fieldType is 5: Single Select Radio Button, this parameter is an integer, and the value must be the customFieldOptionId of the option.   For example, 11.
+ * @export
+ */
+export type MaterialCustomFieldValue = Array<number> | number | string;
+
 /**
  * 
  * @export
@@ -12181,6 +12490,12 @@ export interface MaterialOptions {
      * @memberof MaterialOptions
      */
     'materialTypeConstructionList': MaterialOptionsMaterialTypeConstructionList;
+    /**
+     * 
+     * @type {CustomFieldList}
+     * @memberof MaterialOptions
+     */
+    'customFieldList': CustomFieldList;
     /**
      * List of Material\'s Year sorted ascending
      * @type {Array<number>}
@@ -13799,6 +14114,68 @@ export interface MaterialUpdate {
      * @memberof MaterialUpdate
      */
     'hasCustomU3mUploading': boolean;
+    /**
+     * 
+     * @type {MaterialUpdateCustomFieldList}
+     * @memberof MaterialUpdate
+     */
+    'customFieldList': MaterialUpdateCustomFieldList;
+}
+/**
+ * Material custom field update. It includes the custom field ID and the value to be set. 
+ * @export
+ * @interface MaterialUpdateCustomField
+ */
+export interface MaterialUpdateCustomField {
+    /**
+     * Custom field ID
+     * @type {number}
+     * @memberof MaterialUpdateCustomField
+     */
+    'customFieldId': number;
+    /**
+     * 
+     * @type {MaterialCustomFieldValue}
+     * @memberof MaterialUpdateCustomField
+     */
+    'value': MaterialCustomFieldValue | null;
+}
+/**
+ * Custom field list for the edit mode of the Material Detail. This schema defines a list of custom fields for various tabs, including specifications, fabric details, tags, pricing, and inventory. 
+ * @export
+ * @interface MaterialUpdateCustomFieldList
+ */
+export interface MaterialUpdateCustomFieldList {
+    /**
+     * Custom fields list for the specification tab
+     * @type {Array<MaterialUpdateCustomField>}
+     * @memberof MaterialUpdateCustomFieldList
+     */
+    'specificationList': Array<MaterialUpdateCustomField>;
+    /**
+     * Custom fields list for the fabric detail tab
+     * @type {Array<MaterialUpdateCustomField>}
+     * @memberof MaterialUpdateCustomFieldList
+     */
+    'fabricDetailList': Array<MaterialUpdateCustomField>;
+    /**
+     * Custom fields list for the tag tab
+     * @type {Array<MaterialUpdateCustomField>}
+     * @memberof MaterialUpdateCustomFieldList
+     */
+    'tagList': Array<MaterialUpdateCustomField>;
+    /**
+     * Custom fields list for the pricing tab
+     * @type {Array<MaterialUpdateCustomField>}
+     * @memberof MaterialUpdateCustomFieldList
+     */
+    'pricingList': Array<MaterialUpdateCustomField>;
+    /**
+     * Custom fields list for the inventory tab
+     * @type {Array<MaterialUpdateCustomField>}
+     * @memberof MaterialUpdateCustomFieldList
+     */
+    'inventoryList': Array<MaterialUpdateCustomField>;
 }
 /**
  * 
@@ -23005,6 +23382,12 @@ export interface UpdateAssetsMaterialRequest {
      * @memberof UpdateAssetsMaterialRequest
      */
     'hasCustomU3mUploading': boolean;
+    /**
+     * 
+     * @type {MaterialUpdateCustomFieldList}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'customFieldList': MaterialUpdateCustomFieldList;
 }
 
 
@@ -23128,6 +23511,33 @@ export interface UpdateAssetsMaterialSimpleTagRequest {
      * @memberof UpdateAssetsMaterialSimpleTagRequest
      */
     'internalInfo': MaterialUpdateTagInternalInfo;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateCustomFieldSortRequest
+ */
+export interface UpdateCustomFieldSortRequest {
+    /**
+     * Organization ID
+     * @type {number}
+     * @memberof UpdateCustomFieldSortRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {CustomFieldTabType}
+     * @memberof UpdateCustomFieldSortRequest
+     */
+    'tabType': CustomFieldTabType;
+    /**
+     * Custom field ID list. The backend will update the custom field sort order according to the order of this list.
+     * @type {Array<number>}
+     * @memberof UpdateCustomFieldSortRequest
+     */
+    'customFieldIdList': Array<number>;
 }
 
 
@@ -23979,6 +24389,25 @@ export interface UploadAssetsMaterialSideImageRequestFaceSideImage {
      * @memberof UploadAssetsMaterialSideImageRequestFaceSideImage
      */
     'original': S3UploadedObject;
+}
+/**
+ * 
+ * @export
+ * @interface UpsertCustomFieldRequest
+ */
+export interface UpsertCustomFieldRequest {
+    /**
+     * Organization ID
+     * @type {number}
+     * @memberof UpsertCustomFieldRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {CustomField}
+     * @memberof UpsertCustomFieldRequest
+     */
+    'customField': CustomField;
 }
 /**
  * 
@@ -29943,6 +30372,345 @@ export class CodeApi extends BaseAPI {
      */
     public getPantoneList(options?: RawAxiosRequestConfig) {
         return CodeApiFp(this.configuration).getPantoneList(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * CustomFieldApi - axios parameter creator
+ * @export
+ */
+export const CustomFieldApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Delete custom field
+         * @param {DeleteCustomFieldRequest} deleteCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCustomField: async (deleteCustomFieldRequest: DeleteCustomFieldRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteCustomFieldRequest' is not null or undefined
+            assertParamExists('deleteCustomField', 'deleteCustomFieldRequest', deleteCustomFieldRequest)
+            const localVarPath = `/custom-field/delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteCustomFieldRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get custom field list
+         * @param {GetCustomFieldListRequest} getCustomFieldListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCustomFieldList: async (getCustomFieldListRequest: GetCustomFieldListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getCustomFieldListRequest' is not null or undefined
+            assertParamExists('getCustomFieldList', 'getCustomFieldListRequest', getCustomFieldListRequest)
+            const localVarPath = `/custom-field/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getCustomFieldListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update custom field sort order
+         * @param {UpdateCustomFieldSortRequest} updateCustomFieldSortRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCustomFieldSort: async (updateCustomFieldSortRequest: UpdateCustomFieldSortRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateCustomFieldSortRequest' is not null or undefined
+            assertParamExists('updateCustomFieldSort', 'updateCustomFieldSortRequest', updateCustomFieldSortRequest)
+            const localVarPath = `/custom-field/update-sort`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCustomFieldSortRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Add or edit custom field
+         * @param {UpsertCustomFieldRequest} upsertCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        upsertCustomField: async (upsertCustomFieldRequest: UpsertCustomFieldRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'upsertCustomFieldRequest' is not null or undefined
+            assertParamExists('upsertCustomField', 'upsertCustomFieldRequest', upsertCustomFieldRequest)
+            const localVarPath = `/custom-field/upsert`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(upsertCustomFieldRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CustomFieldApi - functional programming interface
+ * @export
+ */
+export const CustomFieldApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CustomFieldApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete custom field
+         * @param {DeleteCustomFieldRequest} deleteCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCustomField(deleteCustomFieldRequest: DeleteCustomFieldRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCustomFieldList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCustomField(deleteCustomFieldRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CustomFieldApi.deleteCustomField']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get custom field list
+         * @param {GetCustomFieldListRequest} getCustomFieldListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCustomFieldList(getCustomFieldListRequest: GetCustomFieldListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCustomFieldList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCustomFieldList(getCustomFieldListRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CustomFieldApi.getCustomFieldList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update custom field sort order
+         * @param {UpdateCustomFieldSortRequest} updateCustomFieldSortRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCustomFieldSort(updateCustomFieldSortRequest: UpdateCustomFieldSortRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCustomFieldList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCustomFieldSort(updateCustomFieldSortRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CustomFieldApi.updateCustomFieldSort']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Add or edit custom field
+         * @param {UpsertCustomFieldRequest} upsertCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async upsertCustomField(upsertCustomFieldRequest: UpsertCustomFieldRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCustomFieldList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.upsertCustomField(upsertCustomFieldRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CustomFieldApi.upsertCustomField']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * CustomFieldApi - factory interface
+ * @export
+ */
+export const CustomFieldApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CustomFieldApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete custom field
+         * @param {DeleteCustomFieldRequest} deleteCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCustomField(deleteCustomFieldRequest: DeleteCustomFieldRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCustomFieldList200Response> {
+            return localVarFp.deleteCustomField(deleteCustomFieldRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get custom field list
+         * @param {GetCustomFieldListRequest} getCustomFieldListRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCustomFieldList(getCustomFieldListRequest: GetCustomFieldListRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCustomFieldList200Response> {
+            return localVarFp.getCustomFieldList(getCustomFieldListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update custom field sort order
+         * @param {UpdateCustomFieldSortRequest} updateCustomFieldSortRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCustomFieldSort(updateCustomFieldSortRequest: UpdateCustomFieldSortRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCustomFieldList200Response> {
+            return localVarFp.updateCustomFieldSort(updateCustomFieldSortRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Add or edit custom field
+         * @param {UpsertCustomFieldRequest} upsertCustomFieldRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        upsertCustomField(upsertCustomFieldRequest: UpsertCustomFieldRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCustomFieldList200Response> {
+            return localVarFp.upsertCustomField(upsertCustomFieldRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CustomFieldApi - object-oriented interface
+ * @export
+ * @class CustomFieldApi
+ * @extends {BaseAPI}
+ */
+export class CustomFieldApi extends BaseAPI {
+    /**
+     * 
+     * @summary Delete custom field
+     * @param {DeleteCustomFieldRequest} deleteCustomFieldRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomFieldApi
+     */
+    public deleteCustomField(deleteCustomFieldRequest: DeleteCustomFieldRequest, options?: RawAxiosRequestConfig) {
+        return CustomFieldApiFp(this.configuration).deleteCustomField(deleteCustomFieldRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get custom field list
+     * @param {GetCustomFieldListRequest} getCustomFieldListRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomFieldApi
+     */
+    public getCustomFieldList(getCustomFieldListRequest: GetCustomFieldListRequest, options?: RawAxiosRequestConfig) {
+        return CustomFieldApiFp(this.configuration).getCustomFieldList(getCustomFieldListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update custom field sort order
+     * @param {UpdateCustomFieldSortRequest} updateCustomFieldSortRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomFieldApi
+     */
+    public updateCustomFieldSort(updateCustomFieldSortRequest: UpdateCustomFieldSortRequest, options?: RawAxiosRequestConfig) {
+        return CustomFieldApiFp(this.configuration).updateCustomFieldSort(updateCustomFieldSortRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Add or edit custom field
+     * @param {UpsertCustomFieldRequest} upsertCustomFieldRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CustomFieldApi
+     */
+    public upsertCustomField(upsertCustomFieldRequest: UpsertCustomFieldRequest, options?: RawAxiosRequestConfig) {
+        return CustomFieldApiFp(this.configuration).upsertCustomField(upsertCustomFieldRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
