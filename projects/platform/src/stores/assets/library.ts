@@ -175,12 +175,17 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   const displayedMaterialList = computed(() => {
     const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
 
+    if (slimMaterialList.value && slimMaterialList.value.length > 0) {
+      return slimMaterialList.value.map(parseSlimMaterial)
+    }
     if (!isAnyLoading) {
       return materialList.value
     }
     if (slimMaterialList.value.length > 0) {
+      console.log('inin slimMaterialList')
       return slimMaterialList.value.map(parseSlimMaterial)
     }
+    console.log('inin3 slimMaterialList')
     return materialList.value.length > 0 ? materialList.value : []
   })
 
