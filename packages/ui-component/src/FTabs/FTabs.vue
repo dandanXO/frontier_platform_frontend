@@ -12,15 +12,39 @@
         @click="!tab.disabled && switchTab(tab)"
         :data-cy="tab.testId ?? `tab-item-${index}`"
       >
-        <f-svg-icon
-          v-if="tab.icon"
-          :iconName="tab.icon"
-          size="20"
-          class=""
-        ></f-svg-icon>
-        <p class="cursor-pointer text-body2 whitespace-nowrap">
-          {{ tab.name }}
-        </p>
+        <FTooltip
+          v-if="tab.toolTipsContent"
+          :offset="[0, 18]"
+          :desc="tab.toolTipsContent"
+          classContainer="shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),0px_4px_8px_0px_rgba(19,20,20,0.05)]"
+          :placement="TOOLTIP_PLACEMENT.TOP"
+          theme="new-dark"
+        >
+          <template #slot:tooltip-trigger>
+            <f-svg-icon
+              v-if="tab.icon"
+              :iconName="tab.icon"
+              size="16"
+              class="mr-1"
+              classContent="bg-grey-950-v1"
+            ></f-svg-icon>
+            <p class="cursor-pointer text-body2 whitespace-nowrap">
+              {{ tab.name }}
+            </p>
+          </template>
+        </FTooltip>
+        <template v-else>
+          <f-svg-icon
+            v-if="tab.icon"
+            :iconName="tab.icon"
+            size="16"
+            class="mr-1"
+          ></f-svg-icon>
+          <p class="cursor-pointer text-body2 whitespace-nowrap">
+            {{ tab.name }}
+          </p>
+        </template>
+
         <div
           v-if="tab.hasNewUpdate"
           class="ml-0.5 w-1.5 h-1.5 rounded-full bg-red-400"
@@ -39,6 +63,8 @@
 </template>
 
 <script lang="ts">
+import FTooltip from '../FTooltip/FTooltip/FTooltip.vue'
+import { TOOLTIP_PLACEMENT } from '@frontier/constants'
 export default {
   name: 'FTabs',
 }

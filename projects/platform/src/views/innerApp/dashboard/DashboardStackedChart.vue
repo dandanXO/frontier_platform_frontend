@@ -138,11 +138,21 @@ const currentViewTab = ref<'percentage' | 'count'>('percentage')
 const currentPublicAndPrivateTab = ref<'public' | 'private'>('private')
 const viewTabs = computed(() => [
   { id: 'percentage', name: '', icon: 'percent' },
-  { id: 'count', name: '', icon: 'numbers' },
+  { id: 'count', name: '', icon: 'shap', toolTipsContent: 'Counts' },
 ])
 const publicAndPrivateTabs = computed(() => [
-  { id: 'public', name: '', icon: 'public_earth' },
-  { id: 'private', name: '', icon: 'private_earth' },
+  {
+    id: 'public',
+    name: '',
+    icon: 'public_earth',
+    toolTipsContent: t('FF0031'),
+  },
+  {
+    id: 'private',
+    name: '',
+    icon: 'private_earth',
+    toolTipsContent: t('RR0521'),
+  },
 ])
 
 // Use the EChartsOption type for chartOptions
@@ -184,9 +194,9 @@ const chartOptions = ref<EChartsOption>({
         },
         noTruncate: {},
       },
-      width: 60, 
-      overflow: 'truncate', 
-      ellipsis: '...', 
+      width: 60,
+      overflow: 'truncate',
+      ellipsis: '...',
     },
   },
   grid: {
