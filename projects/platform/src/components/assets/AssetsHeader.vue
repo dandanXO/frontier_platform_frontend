@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-fit flex flex-col px-8 py-8 gap-8 bg-primary"
+    class="flex flex-col w-full gap-8 px-8 py-8 h-fit bg-primary"
     data-theme="new"
   >
     <f-search-bar
@@ -15,12 +15,12 @@
     <div
       data-tooltip-boundary-reference="search-table-header"
       :data-cy="'search-table'"
-      class="flex justify-between items-center"
+      class="flex items-center justify-between"
     >
       <div>
-        <h5 class="text-h5 font-bold text-grey-900">
+        <h5 class="font-bold text-h5 text-grey-900">
           {{ $t('RR0008') }}
-          <span class="text-caption text-grey-600 pl-1">
+          <span class="pl-1 text-caption text-grey-600">
             <span>(</span>
             <i18n-t keypath="RR0068" tag="span" scope="global">
               <template #number>{{ pagination.totalCount }}</template>

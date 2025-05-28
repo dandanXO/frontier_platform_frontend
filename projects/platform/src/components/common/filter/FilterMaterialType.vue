@@ -41,6 +41,7 @@ const menuTree = computed(() => {
           t('MI0004'),
           t('MI0021'),
           t('MI0022'),
+          t('RR0342')
         ].map((displayName, index) => ({
           title: displayName,
           selectValue: index + 1,
