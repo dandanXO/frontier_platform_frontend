@@ -7,7 +7,7 @@ transition
     )
       div(class="p-2 rounded-full" :class="iconContainerClass[status]")
         f-svg-icon(:iconName="iconName[status]" size="24")
-      div(class="flex flex-col gap-2 flex-1")
+      div(class="flex flex-col gap-1 flex-1")
         p(class="font-bold text-base" v-if="title") {{ title }}
         p(class="text-sm" v-if="description") {{ description }}
       div(class="self-start cursor-pointer" :onClick="onClose" v-if="showBtnClose")
@@ -35,7 +35,7 @@ interface Props {
 defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'onNotifChange', v: boolean): void
+  (e: 'osnNotifChange', v: boolean): void
 }>()
 
 const iconName = computed(() => ({
@@ -44,8 +44,8 @@ const iconName = computed(() => ({
 }))
 
 const iconContainerClass = computed(() => ({
-  [STATUS.FAILED]: ['bg-critical-hover text-red-200-v1'],
-  [STATUS.SUCCESS]: ['bg-brand-hover text-green-200-v1'],
+  [STATUS.FAILED]: ['bg-red-800-v1 text-red-200-v1'],
+  [STATUS.SUCCESS]: ['bg-green-800-v1 text-green-200-v1'],
 }))
 
 const onClose = () => {
@@ -53,8 +53,8 @@ const onClose = () => {
 }
 
 const contentContainerClass = computed(() => ({
-  [STATUS.FAILED]: ['bg-critical'],
-  [STATUS.SUCCESS]: ['bg-brand'],
+  [STATUS.FAILED]: ['bg-red-900-v1'],
+  [STATUS.SUCCESS]: ['bg-green-900-v1'],
 }))
 </script>
 

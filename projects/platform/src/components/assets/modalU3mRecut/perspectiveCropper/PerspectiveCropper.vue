@@ -62,7 +62,7 @@ div(class="h-full flex flex-1 flex-col")
           :onClick="restore"
         )
           f-svg-icon(iconName="restore_original_state" size="24" class="self-center")
-          p(class="underline") {{ $t('RR0476') }}
+          p(class="underline") {{ $t('RR0255') }}
         zoom-input-select(
           :value="zoomSourceValue"
           :blockList="zoomBlockList"

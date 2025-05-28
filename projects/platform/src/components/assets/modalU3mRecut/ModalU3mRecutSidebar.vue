@@ -24,14 +24,17 @@ div(
         :active="currentSideCropMode === CROP_MODE.PERSPECTIVE"
         :onClick="onChangeCropMode(CROP_MODE.PERSPECTIVE)"
       )
-    div(class="flex flex-row gap-3")
+    div(
+      class="flex flex-row gap-3"
+      v-if="refSideCropperArea?.refPerspectiveCanvas?.isChanging && isFindPatternButtonVisible"
+    )
       action-button(
         :title="$t('EE0216')"
         iconName="crop_original"
         :onClick="onFindPattern"
-        :disabled="!refSideCropperArea?.refPerspectiveCanvas?.isChanging || (rotateDeg ?? 0) !== 0"
-        :tooltipTitle="$t('EE0235')"
-        :tooltipDesc="$t('EE0236')"
+        :disabled="(rotateDeg ?? 0) !== 0"
+        :tooltipTitle="$t('EE0246')"
+        :tooltipDesc="$t('EE0247')"
       )
       div(class="flex-1 p-2")
   div(class="border border-secondary-border")
@@ -74,14 +77,12 @@ div(
         template(#slot:tooltip-trigger)
           f-svg-icon(iconName="question" size="16" color="white" class="self-center")
         template(#slot:tooltip-content)
-          div(
-            class="underline decoration-link hover:decoration-link-hover color-cyan-400-v1"
-          )
+          div
             a(
               href="https://www.frontier.cool/a/docs/asset-library/creating-3d-materials#:~:text=%E2%9C%A8NEW%0ASolid%20Quiling%20Tool%3A"
               target="_blank"
             )
-              f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+              button(class="text-sm font-semibold underline text-cyan-400-v1") {{ $t('EE0238') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
         :value="isShowModalReplaceSides"
@@ -118,7 +119,13 @@ div(
       )
   div(class="border border-secondary-border")
   div(class="flex flex-col gap-3 text-primary-inverse")
-    p(class="text-base font-bold") {{ $t('EE0049') }}
+    div(class="flex justify-between")
+      p(class="text-base font-bold") {{ $t('EE0049') }}
+      button(
+        @click="onResetRotation"
+        class="text-sm font-semibold underline text-cyan-400-v1"
+      )
+        span {{ $t('RR0255') }}
     f-input-text(
       v-model:textValue="rotateDeg"
       size="md"
@@ -192,8 +199,16 @@ const store = useStore()
 const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 const isQuilting = ref(false)
 const isColorBalancing = ref(false)
+const foundPatternCoords = ref<any>({})
+const isFindPatternButtonVisible = ref(false)
+
+const onResetRotation = () => {
+  props.refSideCropperArea?.refPerspectiveCanvas?.resetRotation()
+}
 
 const onFindPattern = async () => {
+  isFindPatternButtonVisible.value = false
+
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const coordsMap =
     props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
@@ -219,16 +234,51 @@ const onFindPattern = async () => {
 
   const { isFound, pattern } = data.result
 
-  isFound &&
+  if (isFound) {
+    foundPatternCoords.value = pattern
     props.refSideCropperArea?.refPerspectiveCanvas?.setCoordsMap(pattern)
-
-  store.dispatch('helper/closeModalLoading')
-  !isFound &&
     props.refSideCropperArea?.showToast({
-      description: t('WW0186'),
+      title: t('EE0248'),
+      description: t('EE0249'),
+      status: NOTIF_STATUS.SUCCESS,
+    })
+  } else {
+    foundPatternCoords.value = coordsMap
+    props.refSideCropperArea?.showToast({
+      title: t('EE0250'),
+      description: t('EE0251'),
       status: NOTIF_STATUS.FAILED,
     })
+  }
+  store.dispatch('helper/closeModalLoading')
 }
+const currentCoords = computed(() => {
+  return props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
+})
+
+function areRectanglesEqual(r1: any, r2: any) {
+  const pointsEqual = (p1: any, p2: any) => {
+    return p1?.x === p2?.x && p1?.y === p2?.y
+  }
+  return (
+    pointsEqual(r1.leftTop, r2.leftTop) &&
+    pointsEqual(r1.rightTop, r2.rightTop) &&
+    pointsEqual(r1.leftBottom, r2.leftBottom) &&
+    pointsEqual(r1.rightBottom, r2.rightBottom)
+  )
+}
+
+watch(currentCoords, (newValue) => {
+  if (
+    foundPatternCoords.value &&
+    !areRectanglesEqual(
+      JSON.parse(JSON.stringify(newValue)),
+      JSON.parse(JSON.stringify(foundPatternCoords.value))
+    )
+  ) {
+    isFindPatternButtonVisible.value = true
+  }
+})
 
 const generateCustomResult = (
   isQuilting: boolean,

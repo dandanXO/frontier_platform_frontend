@@ -22,14 +22,12 @@ div(
       template(#slot:tooltip-trigger)
         f-svg-icon(iconName="question" size="16" color="white" class="self-center")
       template(#slot:tooltip-content)
-        div(
-          class="underline decoration-link hover:decoration-link-hover color-cyan-400-v1"
-        )
+        div
           a(
             href="https://www.frontier.cool/a/docs/asset-library/creating-3d-materials#:~:text=%E2%9C%A8NEW%C2%A0%0APattern%20Finder%3A"
             target="_blank"
           )
-            f-button(type="text" postpendIcon="arrow_circle_right") {{ $t('EE0238') }}
+            button(class="text-sm font-semibold underline text-cyan-400-v1") {{ $t('EE0238') }}
 </template>
 
 <script setup lang="ts">
