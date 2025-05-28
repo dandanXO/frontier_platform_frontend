@@ -4,7 +4,7 @@
     <div
       v-if="dashboardPagePermission"
       ref="refContainer"
-      class="px-8 pt-8 pb-16 flex flex-col gap-y-8 w-[1146px] mx-auto flex-grow"
+      class="px-8 pt-8 pb-16 flex flex-col gap-y-8 w-[1200px] mx-auto flex-grow"
     >
       <!-- Header section -->
       <div class="flex items-center flex-shrink-0 gap-2">
@@ -252,8 +252,8 @@
         >
           <div class="flex items-center justify-between flex-shrink-0 mb-4">
             <div class="flex items-center">
-              <div class="mr-1 text-xl font-bold leading-8 text-grey-900">
-                {{ $t('RR0500') }}z
+              <div class="mr-1 font-bold leading-8 text-md text-grey-900">
+                {{ $t('RR0500') }}
               </div>
               <f-svg-icon
                 iconName="question"
@@ -314,7 +314,7 @@
           class="w-full min-h-[216px] bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col flex-shrink-0"
         >
           <div class="flex items-center justify-between flex-shrink-0 mb-4">
-            <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
+            <div class="mr-1 font-bold leading-8 text-md text-grey-900-v1">
               {{ $t('M2F031') }}
             </div>
             <!-- Tabs -->

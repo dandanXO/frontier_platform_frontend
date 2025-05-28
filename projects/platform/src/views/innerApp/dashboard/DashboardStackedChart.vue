@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex items-center flex-shrink-0 mb-4">
-      <div class="mr-1 text-xl font-bold leading-8 text-grey-900-v1">
+      <div class="mr-1 font-bold leading-8 text-md text-grey-900-v1">
         {{ titleText }}
       </div>
       <f-svg-icon
@@ -167,10 +167,26 @@ const chartOptions = ref<EChartsOption>({
     bottom: 0,
     left: 'center',
     orient: 'horizontal',
+    formatter: function (name) {
+      if (name.startsWith('Others')) {
+        return `{truncate|${name}}`
+      } else {
+        return `{noTruncate|${name}}`
+      }
+    },
     textStyle: {
       fontSize: 12,
       fontWeight: 400,
       color: '#717272',
+      rich: {
+        truncate: {
+          width: 60,
+        },
+        noTruncate: {},
+      },
+      width: 60, 
+      overflow: 'truncate', 
+      ellipsis: '...', 
     },
   },
   grid: {
