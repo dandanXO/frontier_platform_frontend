@@ -9,10 +9,15 @@ const { resolve } = path
 
 const getGitTag = () => {
   try {
-    return 'v' + packageJson.version
+    // Try to get the latest tag
+    const latestTag = execSync('git describe --tags --abbrev=0', {
+      encoding: 'utf8',
+    }).trim()
+    return latestTag || 'v' + packageJson.version
   } catch (error) {
     console.warn('Failed to get Git tag:', error)
-    return 'unknown'
+    // Fallback to package.json version if git command fails
+    return 'v' + packageJson.version
   }
 }
 
