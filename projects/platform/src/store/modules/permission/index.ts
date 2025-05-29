@@ -29,6 +29,7 @@ const state = () => ({
   new3DViewer: false,
   moodboardOrg: false,
   threadboardOrg: false,
+  enableImageSearch: false, // enable image search in material library
   // new flag to toggle between old/new dashboard
   enableNewDashboard: false,
   customPlanName: [1935],
@@ -113,6 +114,9 @@ const getters = {
   },
   isEnableNewDashboard: (state: { enableNewDashboard: boolean }) => {
     return state.enableNewDashboard
+  },
+  isEnableImageSearch: (state: { enableImageSearch: boolean }) => {
+    return state.enableImageSearch
   },
 }
 
@@ -202,6 +206,9 @@ const mutations = {
   ) {
     state.customerPlanNameMap = newCustomerPlanNameMap
   },
+  updateEnableImageSearch(state: any, newVal: boolean) {
+    state.enableImageSearch = newVal
+  },
 }
 
 const actions = {
@@ -217,6 +224,7 @@ const actions = {
       Moodboard: 'updateMoodboardOrg',
       ThreadBoard: 'updateThreadboardOrg',
       EnableNewDashboard: 'updateEnableNewDashboard',
+      EnableImageSearch: 'updateEnableImageSearch',
     }
 
     Object.entries(featureFlagMapping).forEach(([flag, mutation]) => {

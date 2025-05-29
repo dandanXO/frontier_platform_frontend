@@ -11,9 +11,9 @@
     data-theme="new"
   >
     <template #header-left="{ totalCount }">
-      <h5 class="text-h5 font-bold text-grey-900">
+      <h5 class="font-bold text-h5 text-grey-900">
         {{ $t('RR0008') }}
-        <span class="text-caption text-grey-600 pl-1">
+        <span class="pl-1 text-caption text-grey-600">
           <span>(</span>
           <i18n-t keypath="RR0068" tag="span" scope="global">
             <template #number>{{ totalCount }}</template>
@@ -44,23 +44,23 @@
 
     <template #left-side-content>
       <div
-        class="flex flex-col p-4 gap-4 rounded-2xl bg-secondary h-fit"
+        class="flex flex-col gap-4 p-4 rounded-2xl bg-secondary h-fit"
         v-if="imageSearchData"
       >
         <div
-          class="flex flex-col align-center justify-center rounded-xl gap-2 bg-primary w-62 h-60"
+          class="flex flex-col justify-center gap-2 align-center rounded-xl bg-primary w-62 h-60"
         >
           <f-svg-icon
             v-if="isSlimMaterialsLoading"
             iconName="loading"
             size="140"
-            class="text-green-600-v1 self-center"
+            class="self-center text-green-600-v1"
             testId="loading-indicator"
           ></f-svg-icon>
           <img
             v-else
             :src="imageSearchData.url"
-            class="w-full h-full object-cover rounded-xl"
+            class="object-cover w-full h-full rounded-xl"
           />
         </div>
         <f-button
@@ -68,7 +68,7 @@
           prependIcon="sync"
           type="text"
           @click="showSearchByImageModal"
-          class="underline font-semibold"
+          class="font-semibold underline"
           :disabled="isSlimMaterialsLoading"
           >{{ $t('RR0489') }}</f-button
         >
@@ -88,30 +88,30 @@
           <div v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST">
             <div v-for="i in 40" :key="`skeleton-list-${i}`">
               <div
-                class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+                class="grid grid-cols-12 gap-12 py-5 max-w-405 lg:gap-14 px-14 hover:bg-grey-50"
               >
                 <!-- Item content - using col-span-11 like the real component -->
-                <div class="col-span-11 grid grid-cols-12">
+                <div class="grid grid-cols-12 col-span-11">
                   <!-- Left part: image + item details (matches RowItemContent structure) -->
                   <div class="w-full min-w-42.5 max-w-67.5 col-span-3">
                     <!-- Item number -->
                     <SkeletonBase class="h-5 w-3/4 mb-2.5" />
 
                     <!-- Image placeholder -->
-                    <div class="w-full relative aspect-square">
+                    <div class="relative w-full aspect-square">
                       <SkeletonBase class="w-full h-full" />
                     </div>
 
                     <!-- Item specs -->
                     <div class="my-2">
-                      <SkeletonBase class="h-4 w-full mb-1" />
-                      <SkeletonBase class="h-4 w-3/4" />
+                      <SkeletonBase class="w-full h-4 mb-1" />
+                      <SkeletonBase class="w-3/4 h-4" />
                     </div>
 
                     <!-- Icons row -->
                     <div class="flex gap-3">
-                      <SkeletonBase class="h-6 w-6 rounded-full" />
-                      <SkeletonBase class="h-6 w-6 rounded-full" />
+                      <SkeletonBase class="w-6 h-6 rounded-full" />
+                      <SkeletonBase class="w-6 h-6 rounded-full" />
                     </div>
                   </div>
 
@@ -119,12 +119,12 @@
                   <div class="col-span-9 pl-5">
                     <!-- Material properties -->
                     <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                      <SkeletonBase class="h-4 w-3/4" />
-                      <SkeletonBase class="h-4 w-2/3" />
-                      <SkeletonBase class="h-4 w-1/2" />
-                      <SkeletonBase class="h-4 w-2/3" />
-                      <SkeletonBase class="h-4 w-3/4" />
-                      <SkeletonBase class="h-4 w-3/5" />
+                      <SkeletonBase class="w-3/4 h-4" />
+                      <SkeletonBase class="w-2/3 h-4" />
+                      <SkeletonBase class="w-1/2 h-4" />
+                      <SkeletonBase class="w-2/3 h-4" />
+                      <SkeletonBase class="w-3/4 h-4" />
+                      <SkeletonBase class="w-3/5 h-4" />
                     </div>
                   </div>
                 </div>
@@ -136,14 +136,14 @@
                   <SkeletonBase class="h-7.5 w-7.5 rounded-full" />
                 </div>
               </div>
-              <div class="border-b border-grey-250 my-5" />
+              <div class="my-5 border-b border-grey-250" />
             </div>
           </div>
 
           <!-- Skeleton loading for GRID view -->
           <div
             v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-            class="grid gap-y-6 gap-x-5 w-full"
+            class="grid w-full gap-y-6 gap-x-5"
             :class="[
               imageSearchData
                 ? 'grid-cols-4'
@@ -172,7 +172,7 @@
               />
               <div
                 v-if="index !== displayedMaterialList.length - 1"
-                class="border-b border-grey-250 my-5"
+                class="my-5 border-b border-grey-250"
               />
             </div>
           </div>

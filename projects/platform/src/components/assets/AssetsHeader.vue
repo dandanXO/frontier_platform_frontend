@@ -8,7 +8,7 @@
       @typing="typing"
       @search="handleSearch('text')"
       @clear="() => searchStore.setKeyword('')"
-      rightIcon="image_search"
+      :rightIcon="isEnableImageSearch ? 'image_search' : ''"
       @clickRightIcon="showSearchByImageModal"
       class="w-160 self-center min-h-[42px]"
     />
@@ -181,6 +181,9 @@ const {
   isLoading,
   isOpenFilterPanel,
 } = storeToRefs(assetsLibraryStore)
+const isEnableImageSearch = computed(
+  () => store.getters['permission/isEnableImageSearch']
+)
 const { isFilterDirty } = storeToRefs(filterStore)
 const sortMenuTree = computed(() => {
   const { base, keywordSearch } = sortOptions.value

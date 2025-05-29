@@ -182,10 +182,8 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
       return materialList.value
     }
     if (slimMaterialList.value.length > 0) {
-      console.log('inin slimMaterialList')
       return slimMaterialList.value.map(parseSlimMaterial)
     }
-    console.log('inin3 slimMaterialList')
     return materialList.value.length > 0 ? materialList.value : []
   })
 
@@ -405,9 +403,9 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
               ...Object.keys(filterState.value).reduce((acc, key) => {
                 const property = key as keyof typeof filterState.value
 
-                if (property === 'status') {
-                  return acc
-                }
+                // if (property === 'status') {
+                //   return acc
+                // }
 
                 if (property === 'countryList') {
                   return {

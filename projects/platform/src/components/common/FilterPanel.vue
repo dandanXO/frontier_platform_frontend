@@ -1,10 +1,10 @@
 <template lang="pug">
 div
-  div(class="bg-grey-50 p-5 rounded")
+  div(class="p-5 rounded bg-grey-50")
     div(class="flex items-end pb-4")
       p(class="text-body1 text-grey-900") {{ $t('RR0085') }}
       p(
-        class="text-caption text-grey-250 pl-3 cursor-pointer"
+        class="pl-3 cursor-pointer text-caption text-grey-250"
         @click="resetFilterHandler"
       ) {{ $t('UU0041') }}
     div(class="flex flex-wrap gap-x-2 gap-y-4")
@@ -33,6 +33,7 @@ div
         @search="handleSearch"
         v-if="filterOption.certificateList"
       )
+      filter-certificate(@search="handleSearch")
 </template>
 
 <script setup lang="ts">
@@ -55,6 +56,7 @@ import FilterHasU3m from '@/components/common/filter/FilterHasU3m.vue'
 import FilterEco from '@/components/common/filter/FilterEco.vue'
 import FilterAssetStatus from '@/components/common/filter/FilterAssetStatus.vue'
 import FilterCountry from '@/components/common/filter/FilterCountry.vue'
+import FilterCertificate from './filter/FilterCertificate.vue'
 
 defineProps<{
   searchType: SEARCH_TYPE
