@@ -22,6 +22,8 @@
         @switch="currentPublicAndPrivateTab = $event.id"
         tabListContainerStyle="w-auto"
         tabItemContainerStyle="px-2 py-1"
+        iconSize="24"
+        centerIcon
         class="mr-2"
       />
       <f-tabs
@@ -32,6 +34,8 @@
         @switch="currentViewTab = $event.id"
         tabListContainerStyle="w-auto"
         tabItemContainerStyle="px-2 py-1"
+        iconSize="24"
+        centerIcon
       />
     </div>
     <div class="flex-grow min-h-0">
@@ -145,13 +149,13 @@ const publicAndPrivateTabs = computed(() => [
     id: 'public',
     name: '',
     icon: 'public_earth',
-    toolTipsContent: t('FF0031'),
+    toolTipsContent: t('RR0521'),
   },
   {
     id: 'private',
     name: '',
     icon: 'private_earth',
-    toolTipsContent: t('RR0521'),
+    toolTipsContent: t('FF0031'),
   },
 ])
 

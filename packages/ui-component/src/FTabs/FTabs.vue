@@ -24,8 +24,8 @@
             <f-svg-icon
               v-if="tab.icon"
               :iconName="tab.icon"
-              size="16"
-              class="mr-1"
+              :size="iconSize"
+              :class="[centerIcon ? 'flex items-center justify-center' : 'mr-1']"
               classContent="bg-grey-950-v1"
             ></f-svg-icon>
             <p class="cursor-pointer text-body2 whitespace-nowrap">
@@ -37,8 +37,8 @@
           <f-svg-icon
             v-if="tab.icon"
             :iconName="tab.icon"
-            size="16"
-            class="mr-1"
+            :size="iconSize"
+            :class="[centerIcon ? 'flex items-center justify-center' : 'mr-1']"
           ></f-svg-icon>
           <p class="cursor-pointer text-body2 whitespace-nowrap">
             {{ tab.name }}
@@ -102,6 +102,8 @@ export interface Props {
   tabListContainerStyle?: string
   tabItemContainerStyle?: string
   type?: TYPE
+  iconSize?: string
+  centerIcon?: boolean
 }
 </script>
 
@@ -112,6 +114,8 @@ const props = withDefaults(defineProps<Props>(), {
   tabListContainerStyle: 'grid gap-x-6 grid-flow-col justify-start',
   keyField: 'path',
   type: TYPE.LINE,
+  iconSize: '16',
+  centerIcon: false,
 })
 const emit = defineEmits(['switch'])
 

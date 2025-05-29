@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type {
   Dashboard,
@@ -6,24 +6,27 @@ import type {
   DashboardFabricKeywordCounts,
   DashboardEcoImpactorInformation,
   DashboardGetSummary200ResponseResult,
+  DashboardGetSummary200ResponseResultMaterialTypeOfCountryList,
+  DashboardGetSummary200ResponseResultMaterialTypeOfCountryListSeriesInner,
 } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { type WorkspaceFilter } from '@frontier/platform-web-sdk'
 import { type FilterState } from './filter'
 
+// Define the shape of the API response series item
+interface ApiSeriesItem extends DashboardGetSummary200ResponseResultMaterialTypeOfCountryListSeriesInner {
+  publicData: number[]
+  privateData: number[]
+}
+
+// Define the shape of the transformed data
+interface TransformedChartData {
+  categories: string[]
+  series: ApiSeriesItem[]
+}
+
 export const useDashboardStore = defineStore('dashboard', () => {
-  function formatChartData<T>(rawData: T): T {
-    rawData.series.forEach((item: any) => {
-      if (chooseCountryType.value === 'public') {
-        item.data = item.publicData
-      } else {
-        item.data = item.privateData
-      }
-      return item
-    })
-    return rawData
-  }
   const ogBaseDashboardApi = useOgBaseApiWrapper(dashboardApi)
 
   const createCounts = ref()
@@ -31,8 +34,27 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const fabricKeywordCounts = ref<DashboardFabricKeywordCounts>()
   const ecoImpactorInformation = ref<DashboardEcoImpactorInformation>()
   const materialContentCategoryList = ref()
-  const materialTypeOfCountryList = ref()
+  const rawMaterialTypeOfCountryList = ref<TransformedChartData>()
   const chooseCountryType = ref<'public' | 'private' | null>('private')
+
+  // Computed property for transformed data
+  const materialTypeOfCountryList = computed(() => {
+    if (!rawMaterialTypeOfCountryList.value?.series) {
+      return null
+    }
+    
+    // Transform the data once and cache it
+    const transformedData = {
+      ...rawMaterialTypeOfCountryList.value,
+      series: rawMaterialTypeOfCountryList.value.series.map(item => ({
+        ...item,
+        data: chooseCountryType.value === 'public' ? item.publicData : item.privateData
+      }))
+    }
+
+    return transformedData
+  })
+
   const getDashboard = async (filters?: FilterState) => {
     try {
       const { data } = await ogBaseDashboardApi('getDashboard', {
@@ -50,9 +72,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
   const switchMaterialTypeOfCountryList = (type: 'public' | 'private') => {
     chooseCountryType.value = type
-    materialTypeOfCountryList.value = formatChartData(
-      materialTypeOfCountryList.value
-    )
   }
 
   const getDashboardSummary = async (filters?: FilterState) => {
@@ -61,20 +80,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
         'dashboardGetSummary',
         {
           filter: filters as unknown as WorkspaceFilter,
-          search: null,
         },
         { meta: { suppressGlobal404Popup: true } } as any
       )
 
       const dashboard = data.result as DashboardGetSummary200ResponseResult
       createCounts.value = dashboard.createCounts
-
-      materialContentCategoryList.value =
-        dashboard.materialTypeOfContentCategoryList
-
-      materialTypeOfCountryList.value = formatChartData(
-        dashboard.materialTypeOfCountryList
-      )
+      materialContentCategoryList.value = dashboard.materialTypeOfContentCategoryList
+      rawMaterialTypeOfCountryList.value = dashboard.materialTypeOfCountryList as unknown as TransformedChartData
     } catch (error) {
       console.error('Failed to get dashboard summary:', error)
     }

@@ -75,19 +75,18 @@ const menuTree = computed<MenuTree>(() => ({
           title: item.title,
           display: 'block',
           description: (() => {
-            if (item.format === U3M_DOWNLOAD_PROP.GLTF) {
-              if (props.isMultiple) {
-                return t('RR0284')
-              }
-              return props.hasPhysicalData ? t('RR0285') : t('RR0286')
-            }
+            // if (item.format === U3M_DOWNLOAD_PROP.GLTF) {
+            //   if (props.isMultiple) {
+            //     return t('RR0284')
+            //   }
+            //   return props.hasPhysicalData ? t('RR0285') : t('RR0286')
+            // }
 
             if (props.isMultiple) {
               return t('RR0283')
             }
-            return props.hasPhysicalData &&
-              item.format !== U3M_DOWNLOAD_PROP.ZFAB
-              ? t('RR0282')
+            return props.hasPhysicalData
+              ? t('RR0569')
               : t('RR0281')
           })(),
           descriptionLineClamp: 2,
