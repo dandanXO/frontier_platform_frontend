@@ -127,10 +127,10 @@
               />
               <!-- <filter-season @search="handleSearch" /> -->
               <!-- <filter-year @search="handleSearch" /> -->
-              <!-- <filter-certification
-                  @search="handleSearch"
-                  class="rounded-lg bg-grey-0"
-                /> -->
+              <filter-certification
+                @search="handleSearch"
+                class="font-normal rounded-lg bg-grey-0"
+              />
               <p
                 class="pl-3 font-normal cursor-pointer text-caption text-grey-600"
                 @click="resetFilterHandler"

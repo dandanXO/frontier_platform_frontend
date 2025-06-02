@@ -31,9 +31,8 @@ div
       filter-country(@search="handleSearch")
       filter-certificate(
         @search="handleSearch"
-        v-if="filterOption.certificateList"
+        :disabled="!(filterOption?.certificateList && filterOption.certificateList.length > 0)"
       )
-      filter-certificate(@search="handleSearch")
 </template>
 
 <script setup lang="ts">
