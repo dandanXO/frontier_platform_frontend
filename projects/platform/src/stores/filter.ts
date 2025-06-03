@@ -154,7 +154,14 @@ export const useFilterStore = defineStore('filter', () => {
 
     filterOption.value = Object.assign(filterOption.value, data.result)
     filterOption.value.certificateList = materialOptions?.certificateList
-    if (routePath.includes('/public-library')) {
+    if (
+      [
+        '/public-library',
+        '/workspace',
+        '/meta-fabric',
+        '/share-with-me',
+      ].includes(routePath)
+    ) {
       filterOption.value.countryList = store.getters['code/countryList']
     }
 

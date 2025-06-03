@@ -113,18 +113,24 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     search: Search | null
     filter: AssetsFilter | null
   }) => {
-    if (cancelTokenSourceMaterial) {
-      cancelTokenSourceMaterial.cancel('Operation canceled due to new request')
-    }
-    cancelTokenSourceMaterial = axios.CancelToken.source()
-    const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload, {
-      cancelToken: cancelTokenSourceMaterial.token,
-    })
+    try {
+      if (cancelTokenSourceMaterial) {
+        cancelTokenSourceMaterial.cancel(
+          'Operation canceled due to new request'
+        )
+      }
+      cancelTokenSourceMaterial = axios.CancelToken.source()
+      const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload, {
+        cancelToken: cancelTokenSourceMaterial.token,
+      })
 
-    materialList.value = data.result.materialList.map((item) => {
-      return assignCarbonEmissionValue(item)
-    })
-    searchStore.setPaginationRes(data.result.pagination)
+      materialList.value = data.result.materialList.map((item) => {
+        return assignCarbonEmissionValue(item)
+      })
+      searchStore.setPaginationRes(data.result.pagination)
+    } catch (error: any) {
+      console.error('Error fetching material list', error)
+    }
   }
 
   const getAssetsMaterialSlimList = async (payload: {
@@ -173,18 +179,25 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
   })
 
   const displayedMaterialList = computed(() => {
-    const isAnyLoading = isLoading.value || isSlimMaterialsLoading.value
+    const isAnyLoading = isLoading.value && isSlimMaterialsLoading.value
 
-    if (slimMaterialList.value && slimMaterialList.value.length > 0) {
-      return slimMaterialList.value.map(parseSlimMaterial)
-    }
+    // if (slimMaterialList.value && slimMaterialList.value.length > 0) {
+    //   return slimMaterialList.value.map(parseSlimMaterial)
+    // }
     if (!isAnyLoading) {
-      return materialList.value
+      return materialList.value.length > 0
+        ? materialList.value
+        : slimMaterialList.value.map(parseSlimMaterial)
     }
     if (slimMaterialList.value.length > 0) {
       return slimMaterialList.value.map(parseSlimMaterial)
     }
-    return materialList.value.length > 0 ? materialList.value : []
+    if (isLoading.value) {
+      return slimMaterialList.value.map(parseSlimMaterial)
+    }
+    return materialList.value.length > 0
+      ? materialList.value
+      : slimMaterialList.value.map(parseSlimMaterial)
   })
 
   const sortOptions = computed(() => {
@@ -288,34 +301,39 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
     // Update URL parameters and return early if unchanged
     const updated = updateUrlWithSearchParams(query)
     if (updated) {
-      isSlimMaterialsLoading.value = false
-      isLoading.value = false
+      isSlimMaterialsLoading.value = true
+      isLoading.value = true
       return
     }
 
     // Fetch slim list first for quick initial display
     try {
+      isSlimMaterialsLoading.value = true
       await getAssetsMaterialSlimList(payload as SearchPayload<AssetsFilter>)
     } catch (error: any) {
+      isSlimMaterialsLoading.value = false
       if (error?.name !== 'CanceledError') {
         console.error('Error fetching slim material list', error)
       }
     } finally {
-      isSlimMaterialsLoading.value = false
       isSearching.value = false
     }
 
     // Fetch full list and replace slim items when done
     try {
+      isLoading.value = true
       await getAssetsMaterialList(payload as SearchPayload<AssetsFilter>)
     } catch (error: any) {
+      isLoading.value = false
       if (error?.name !== 'CanceledError') {
         console.error('Error fetching full material list', error)
       }
     } finally {
-      isLoading.value = false
       isSearching.value = false
     }
+
+    isSlimMaterialsLoading.value = false
+    isLoading.value = false
   }
 
   const getSearchMaterialParams = async () => {

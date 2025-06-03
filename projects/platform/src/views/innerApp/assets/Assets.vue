@@ -179,7 +179,7 @@
 
           <div
             v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
-            class="grid grid-cols-3 gap-y-6 gap-x-5"
+            class="grid w-full grid-cols-3 gap-y-6 gap-x-5"
             :class="[
               imageSearchData
                 ? 'grid-cols-4'
@@ -214,7 +214,13 @@
             </GridItemMaterial>
           </div>
         </template>
-        <EmptyStateAssets v-else />
+        <EmptyStateAssets
+          v-else-if="
+            !isLoading &&
+            !isSlimMaterialsLoading &&
+            displayedMaterialList.length <= 0
+          "
+        />
       </div>
     </template>
   </search-table-v2>

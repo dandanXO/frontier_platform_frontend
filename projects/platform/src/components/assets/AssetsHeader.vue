@@ -29,7 +29,7 @@
           </span>
         </h5>
       </div>
-      <div class="flex items-center gap-x-5">
+      <div class="flex items-center gap-x-4">
         <f-input-checkbox
           v-if="isKeywordDirty"
           :inputValue="isShowMatch"
