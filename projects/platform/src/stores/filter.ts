@@ -155,12 +155,10 @@ export const useFilterStore = defineStore('filter', () => {
     filterOption.value = Object.assign(filterOption.value, data.result)
     filterOption.value.certificateList = materialOptions?.certificateList
     if (
-      [
-        '/public-library',
-        '/workspace',
-        '/meta-fabric',
-        '/share-with-me',
-      ].includes(routePath)
+      routePath.includes('puclic-library') ||
+      routePath.includes('workspace') ||
+      routePath.includes('meta-fabric') ||
+      routePath.includes('share-with-me')
     ) {
       filterOption.value.countryList = store.getters['code/countryList']
     }
