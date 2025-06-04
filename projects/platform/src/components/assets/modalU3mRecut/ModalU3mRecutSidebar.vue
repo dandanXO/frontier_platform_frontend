@@ -24,21 +24,22 @@ div(
         :active="currentSideCropMode === CROP_MODE.PERSPECTIVE"
         :onClick="onChangeCropMode(CROP_MODE.PERSPECTIVE)"
       )
-    div(
-      class="flex flex-row gap-3"
-      v-if="refSideCropperArea?.refPerspectiveCanvas?.isChanging && isFindPatternButtonVisible"
-    )
-      action-button(
-        :title="$t('EE0216')"
-        iconName="crop_original"
-        :onClick="onFindPattern"
-        :disabled="(rotateDeg ?? 0) !== 0"
-        :tooltipTitle="$t('EE0246')"
-        :tooltipDesc="$t('EE0247')"
+    Transition(name="find-pattern" mode="out-in")
+      div(
+        class="flex flex-row gap-3"
+        v-if="refSideCropperArea?.refPerspectiveCanvas?.isChanging && isFindPatternButtonVisible"
       )
-      div(class="flex-1 p-2")
-  div(class="border border-secondary-border")
-  div(class="flex flex-col gap-4 text-primary-inverse")
+        action-button(
+          :title="$t('EE0216')"
+          iconName="crop_original"
+          :onClick="onFindPattern"
+          :disabled="(rotateDeg ?? 0) !== 0"
+          :tooltipTitle="$t('EE0246')"
+          :tooltipDesc="$t('EE0247')"
+        )
+        div(class="flex-1 p-2")
+  div(class="border border-secondary-border transition-all duration-200 ease-in-out")
+  div(class="flex flex-col gap-4 text-primary-inverse transition-all duration-200 ease-in-out")
     p(class="text-base font-bold") {{ $t('RR0122') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
@@ -92,7 +93,7 @@ div(
   div(class="border border-secondary-border")
   div(class="flex flex-col gap-3 text-primary-inverse")
     p(class="text-base font-bold") {{ $t('EE0215') }}
-    div(class="flex flex-row gap-3")
+    div(class="grid grid-cols-2 gap-3")
       f-input-text(
         v-model:textValue="cropSizeWidth"
         size="md"
@@ -207,7 +208,6 @@ const onResetRotation = () => {
 }
 
 const onFindPattern = async () => {
-  isFindPatternButtonVisible.value = false
 
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const coordsMap =
@@ -251,6 +251,8 @@ const onFindPattern = async () => {
     })
   }
   store.dispatch('helper/closeModalLoading')
+  isFindPatternButtonVisible.value = false
+
 }
 const currentCoords = computed(() => {
   return props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
@@ -352,3 +354,24 @@ const onRotate = (deg: number) => () => {
   props.refSideCropperArea?.handleRotate(deg)
 }
 </script>
+
+<style scoped>
+.find-pattern-enter-active,
+.find-pattern-leave-active {
+  transition: all 200ms ease-in-out;
+  overflow: hidden;
+}
+
+.find-pattern-enter-from,
+.find-pattern-leave-to {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+.find-pattern-enter-to,
+.find-pattern-leave-from {
+  opacity: 1;
+  max-height: 70px;
+}
+</style>
