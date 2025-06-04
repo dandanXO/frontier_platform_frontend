@@ -316,6 +316,7 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
         console.error('Error fetching slim material list', error)
       }
     } finally {
+      isSlimMaterialsLoading.value = false
       isSearching.value = false
     }
 

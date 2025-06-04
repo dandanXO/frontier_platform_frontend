@@ -403,6 +403,7 @@ const showSearchByImageModal = () => {
 }
 
 onMounted(() => {
+  searchStore.setImageInput(undefined)
   if (assetsStore.selectedMaterialList.length > 0) {
     selectedMaterialList.value = assetsStore.selectedMaterialList
   }
