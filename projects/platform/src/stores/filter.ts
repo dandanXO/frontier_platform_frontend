@@ -155,7 +155,7 @@ export const useFilterStore = defineStore('filter', () => {
     filterOption.value = Object.assign(filterOption.value, data.result)
     filterOption.value.certificateList = materialOptions?.certificateList
     if (
-      routePath.includes('puclic-library') ||
+      routePath.includes('public-library') ||
       routePath.includes('workspace') ||
       routePath.includes('meta-fabric') ||
       routePath.includes('share-with-me')
