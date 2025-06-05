@@ -13,7 +13,7 @@ div(class="h-full flex flex-1 flex-col")
       div(class="flex-1 rounded-lg overflow-hidden")
         div(
           ref="sourceCanvasContainer"
-          class="relative w-full h-full rounded-lg bg-primary"
+          class="relative w-full h-full rounded-lg bg-grey-950-v1"
           @mousemove="sourceCanvasContainerHandleMouseMove"
           @mouseleave="sourceCanvasContainerHideLines"
         )
@@ -28,7 +28,7 @@ div(class="h-full flex flex-1 flex-col")
             :style="{ left: coords.x + 'px', display: coords.show ? 'block' : 'none' }"
           )
           div(class="flex w-full absolute z-1 pointer-events-none")
-            div(class="w-[50px] h-[50px] bg-primary")
+            div(class="w-[50px] h-[50px] bg-grey-950-v1")
             div(ref="RefRoulerH" class="w-full h-[50px] absolute left-[50px]")
           div(
             class="flex w-full flex-col h-full absolute top-[50px] z-1 pointer-events-none"
@@ -55,7 +55,7 @@ div(class="h-full flex flex-1 flex-col")
             @editStatusChange="changeStatusCrop"
           )
       div(
-        class="flex flex-row justify-between align-middle p-3 gap-4 bg-primary text-primary-inverse border-t border-secondary-border rounded-b-lg"
+        class="flex flex-row justify-between align-middle p-3 gap-4 bg-grey-950-v1 text-primary-inverse border-t border-secondary-border rounded-b-lg"
       )
         div(
           class="flex flex-row gap-2 align-middle cursor-pointer text-secondary-text"
@@ -68,11 +68,11 @@ div(class="h-full flex flex-1 flex-col")
           :blockList="zoomBlockList"
           @select="handleSourceZoomUpdate"
         )
-    div(class="relative flex-1 flex flex-col bg-primary rounded-lg")
-      div(class="flex-1 rounded-lg bg-primary overflow-hidden")
+    div(class="relative flex-1 flex flex-col bg-grey-950-v1 rounded-lg")
+      div(class="flex-1 rounded-lg bg-grey-950-v1 overflow-hidden")
         div(ref="previewCanvasContainer" class="relative w-full h-full")
       div(
-        class="flex flex-row justify-between align-middle p-3 gap-4 bg-primary text-primary-inverse border-t border-secondary-border rounded-b-lg"
+        class="flex flex-row justify-between align-middle p-3 gap-4 bg-grey-950-v1 text-primary-inverse border-t border-secondary-border rounded-b-lg"
       )
         div(class="flex flex-row gap-2 align-middle")
           f-input-toggle(
@@ -85,7 +85,7 @@ div(class="h-full flex flex-1 flex-col")
           :blockList="zoomBlockList"
           @select="handlePreviewZoomUpdate"
         )
-  div(class="bg-primary flex flex-row px-8 py-5")
+  div(class="bg-grey-950-v1 flex flex-row px-8 py-5")
     div(class="flex flex-row gap-4 text-primary-inverse align-middle justify-center h-fit")
       p(class="text-base font-bold self-center") {{ $t('EE0218') }}
 
@@ -129,7 +129,6 @@ import type {
   Dimension,
   PerspectiveCropRecord,
 } from '@/types'
-import colors from 'tailwindcss/colors'
 import ModalU3mConfirm from '../../ModalU3mConfirm.vue'
 import InputGridColor from './InputGridColor.vue'
 import { perspectiveCropperToolTour } from '@/utils/storage'
@@ -458,14 +457,14 @@ onMounted(async () => {
     zoom: rulerPixelCM,
     unit: 1,
     height: 50,
-    backgroundColor: colors.black,
+    backgroundColor: '#131414',
   })
   vRuler.value = new Ruler(RefRoulerV.value as HTMLDivElement, {
     type: 'vertical',
     zoom: rulerPixelCM,
     unit: 1,
     width: 50,
-    backgroundColor: colors.black,
+    backgroundColor: '#131414',
   })
 })
 onMounted(async () => {

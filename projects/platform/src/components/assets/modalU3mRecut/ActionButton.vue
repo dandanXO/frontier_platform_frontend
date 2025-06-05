@@ -11,11 +11,11 @@ div(
       v-if="tooltipTitle"
       :title="tooltipTitle"
       :desc="tooltipDesc"
-      :placement="TOOLTIP_PLACEMENT.RIGHT"
+      :placement="TOOLTIP_PLACEMENT.TOP_START"
       data-theme="new"
       class="self-center"
       classContent="w-85"
-      :offset="[-6, 0]"
+      :offset="[2, 6]"
       theme="new"
       interactive
     )

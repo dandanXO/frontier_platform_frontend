@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex flex-row bg-primary px-8 py-5 justify-between align-middle border border-b-secondary-border"
+  class="flex flex-row bg-grey-950-v1 px-8 py-5 justify-between align-middle border border-b-secondary-border"
 )
   div(class="flex")
     f-button(

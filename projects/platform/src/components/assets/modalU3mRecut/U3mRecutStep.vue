@@ -1,10 +1,10 @@
 <template lang="pug">
 div(class="relative flex flex-row items-center gap-2 flex-1 justify-center")
   div(
-    class="w-6 h-6 flex items-center justify-center rounded-full text-sm p-1"
+    class="w-6 h-6 flex items-center justify-center rounded-full text-sm p-0.5"
     :class="circleStyles"
   )
-    span {{ step }}
+    span(class="w-5 h-5 flex items-center justify-center text-center") {{ step }}
   span(:class="textStyles") {{ side === U3M_CUT_SIDE.FACE_SIDE ? $t('EE0231') : $t('EE0232') }}
 </template>
 

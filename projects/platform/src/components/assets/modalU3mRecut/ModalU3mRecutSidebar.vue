@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex flex-col bg-primary w-100 h-full p-6 gap-6 border-r border-secondary-border"
+  class="flex flex-col bg-grey-950-v1 w-100 h-full p-6 gap-6 border-r border-secondary-border"
 )
   u3m-recut-stepper(
     v-if="isDoubleSideMaterial"
@@ -50,10 +50,10 @@ div(
       f-tooltip(
         :title="$t('EE0240')"
         :desc="$t('EE0241')"
-        :placement="TOOLTIP_PLACEMENT.RIGHT"
+        :placement="TOOLTIP_PLACEMENT.TOP_START"
         data-theme="new"
         classContent="w-80"
-        :offset="[-6, 0]"
+        :offset="[2, 6]"
         class="self-center"
         interactive
         isDescHTML
@@ -66,10 +66,10 @@ div(
       f-tooltip(
         :title="$t('EE0234')"
         :desc="$t('EE0237')"
-        :placement="TOOLTIP_PLACEMENT.RIGHT"
+        :placement="TOOLTIP_PLACEMENT.TOP_START"
         data-theme="new"
         classContent="w-80"
-        :offset="[-6, 0]"
+        :offset="[2, 6]"
         :theme="'new'"
         class="self-center"
         interactive

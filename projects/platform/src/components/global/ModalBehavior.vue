@@ -62,21 +62,21 @@ div(
   )
     div(
       v-if="displayHeader"
-      class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-primary-border"
+      class="px-5 pb-4 flex justify-between items-center gap-4 border-b border-primary-border"
       data-cy="modal-how-to-scan-header"
     )
       p(
-        class="font-bold text-body2"
+        class="font-bold text-grey-950-v1 text-lg"
         :class="[theme === THEME.DARK ? 'text-grey-100' : 'text-grey-900']"
       ) {{ header }}
       f-svg-icon(
         v-if="closable"
         iconName="clear"
-        size="20"
-        class="cursor-pointer text-grey-600"
+        size="24"
+        class="cursor-pointer text-grey-900-v1"
         @click="closeModalBehavior"
       )
-    f-scrollbar-container(class="box-content relative px-5 pt-5 pb-10 w-fit max-h-115")
+    f-scrollbar-container(class="box-content relative px-5 pt-5 pb-5 w-fit max-h-115")
       slot(name="default")
     div(
       v-if="footer && !usingCustomFooter"
