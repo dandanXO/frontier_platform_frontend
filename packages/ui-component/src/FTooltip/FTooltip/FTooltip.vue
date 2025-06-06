@@ -60,8 +60,7 @@ div(
     div(
       ref="refTooltip" 
       role="popper" 
-      :class="[classContainer, 'tooltip-container']" 
-      class="z-tooltip"   
+      :class="[classContainer, 'tooltip-container', is3DViewer ? 'z-[3000]': 'z-tooltip']" 
       :onmouseleave="mouseLeaveContainer"
       :onmouseenter="mouseEnterContainer"
       :onclick="(e:Event) => e.stopPropagation()"
@@ -104,6 +103,7 @@ interface Props {
   title?: string
   desc?: string
   isDescHTML?: boolean
+  is3DViewer?: boolean
 }
 
 const isActive = ref(false)
