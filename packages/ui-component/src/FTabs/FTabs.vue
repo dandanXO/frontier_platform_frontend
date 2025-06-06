@@ -14,7 +14,7 @@
       >
         <FTooltip
           v-if="tab.toolTipsContent"
-          :offset="[0, 18]"
+          :offset="[0, 8]"
           :desc="tab.toolTipsContent"
           classContainer="shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),0px_4px_8px_0px_rgba(19,20,20,0.05)]"
           :placement="TOOLTIP_PLACEMENT.TOP"

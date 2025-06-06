@@ -70,16 +70,15 @@ div(
     )
       div(class="shadow-md")
         div(
-          class="rounded p-3 flex flex-col gap-3 bg-primary text-primary-inverse max-w-265 relative z-2"
+          class="relative flex flex-col gap-3 p-3 rounded bg-primary text-primary-inverse max-w-265 z-2"
           :class="[classContent]"
         )
           div(class="flex flex-col gap-1" v-if="title || desc")
-            p(v-if="!!title" class="break-all font-bold text-sm") {{ title }}
-            div(v-if="!!desc" class="break-words text-xs")
+            p(v-if="!!title" class="text-sm font-bold break-all") {{ title }}
+            div(v-if="!!desc" class="text-xs break-words")
               p(v-if="isDescHTML" v-html="desc")
               p(v-else) {{ desc }}
           slot(name="slot:tooltip-content")
-        #arrow
 </template>
 
 <script lang="ts">
@@ -117,6 +116,7 @@ const props = withDefaults(defineProps<Props>(), {
   classContent: '',
   classContainer: '',
   interactive: false,
+  theme: 'new-dark',
 })
 
 const debouncedMouseLeave = debounce(() => {
