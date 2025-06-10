@@ -22,8 +22,7 @@ stages:
 dependency_scanning:
   image: node:20
   stage: dependency_scan
-  tags:
-    - saas-linux-medium-amd64
+  
   variables:
     # 若需要排除 node_modules 或其他目錄，可以設定 DS_EXCLUDED_PATHS
     DS_EXCLUDED_PATHS: 'node_modules'
@@ -47,8 +46,7 @@ dependency_scanning:
 platform-build:
   image: cypress/base:20.18.0
   stage: build
-  tags:
-    - saas-linux-medium-amd64
+  
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
       variables:
@@ -94,8 +92,7 @@ platform-build:
 platform-deploy-to-dev:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   only:
     refs:
       - main
@@ -106,8 +103,7 @@ platform-deploy-to-dev:
 platform-deploy-to-staging:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   only:
     refs:
       - staging
@@ -118,8 +114,7 @@ platform-deploy-to-staging:
 platform-deploy-to-feat:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   only:
     refs:
       - feat
@@ -130,8 +125,7 @@ platform-deploy-to-feat:
 platform-deploy-to-pre-production:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   only:
     refs:
       - pre-production
@@ -142,8 +136,7 @@ platform-deploy-to-pre-production:
 platform-deploy-to-prod:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   only:
     refs:
       - tags
@@ -154,8 +147,7 @@ platform-deploy-to-prod:
 
 storybook-build:
   stage: build
-  tags:
-    - saas-linux-medium-amd64
+  
   image: node:20.18.0
   only:
     refs:
@@ -186,8 +178,7 @@ storybook-build:
 
 storybook-deploy:
   stage: deploy
-  tags:
-    - saas-linux-medium-amd64
+  
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
     refs:
