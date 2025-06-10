@@ -23,7 +23,7 @@ dependency_scanning:
   image: node:20
   stage: dependency_scan
   tags:
-    - peter-home
+    - dan-home
   variables:
     # 若需要排除 node_modules 或其他目錄，可以設定 DS_EXCLUDED_PATHS
     DS_EXCLUDED_PATHS: 'node_modules'
