@@ -11,7 +11,7 @@ div(
       f-button(
         size="lg"
         type="secondary"
-        class="inline-block hover:bg-green-50-v1 px-3 py-2"
+        class="inline-block text-green-50-v1 hover:bg-green-50-v1 px-3 py-2"
       ) {{ $t('UU0196') }}
 </template>
 

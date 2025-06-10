@@ -548,7 +548,7 @@
                 ]
               )
             "
-            class="w-40"
+            class="w-42"
             data-cy="content-text-value"
           />
           <f-svg-icon
