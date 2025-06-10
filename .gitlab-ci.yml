@@ -48,7 +48,7 @@ platform-build:
   image: cypress/base:20.18.0
   stage: build
   tags:
-    - peter-home
+    - dan-home
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
       variables:
@@ -95,7 +95,7 @@ platform-deploy-to-dev:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   only:
     refs:
       - main
@@ -107,7 +107,7 @@ platform-deploy-to-staging:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   only:
     refs:
       - staging
@@ -119,7 +119,7 @@ platform-deploy-to-feat:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   only:
     refs:
       - feat
@@ -131,7 +131,7 @@ platform-deploy-to-pre-production:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   only:
     refs:
       - pre-production
@@ -143,7 +143,7 @@ platform-deploy-to-prod:
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   only:
     refs:
       - tags
@@ -155,7 +155,7 @@ platform-deploy-to-prod:
 storybook-build:
   stage: build
   tags:
-    - peter-home
+    - dan-home
   image: node:20.18.0
   only:
     refs:
@@ -187,7 +187,7 @@ storybook-build:
 storybook-deploy:
   stage: deploy
   tags:
-    - peter-home
+    - dan-home
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
     refs:
