@@ -44,9 +44,21 @@
 
     <template #left-side-content>
       <div
-        class="flex flex-col gap-4 p-4 rounded-2xl bg-secondary h-fit"
+        class="relative flex flex-col gap-4 p-4 rounded-2xl bg-secondary h-fit"
         v-if="imageSearchData"
       >
+        <div
+          v-if="!isLoading"
+          class="absolute top-0 right-0 p-1 rounded-full cursor-pointer bg-grey-50"
+          @click="closeImageSearch"
+        >
+          <f-svg-icon
+            iconName="close"
+            size="24"
+            class="self-center text-green-grey"
+            testId="loading-indicator"
+          ></f-svg-icon>
+        </div>
         <div
           class="flex flex-col justify-center gap-2 align-center rounded-xl bg-primary w-62 h-60"
         >
@@ -401,9 +413,12 @@ const showSearchByImageModal = () => {
     },
   })
 }
-
-onMounted(() => {
+const closeImageSearch = () => {
   searchStore.setImageInput(undefined)
+  assetsLibraryStore.search()
+}
+onMounted(() => {
+  // searchStore.setImageInput(undefined)
   if (assetsStore.selectedMaterialList.length > 0) {
     selectedMaterialList.value = assetsStore.selectedMaterialList
   }
