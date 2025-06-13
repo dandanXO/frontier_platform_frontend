@@ -31,12 +31,20 @@ div(class="!gap-4")
         p(:class="property.value ? 'text-primary-inverse' : 'text-disabled'") {{ property.value || $t('RR0561') }}
     div(class="flex flex-col p-2" v-else)
       p(class="text-sm primary-inverse text-center") {{ $t('RR0561') }}
+  custom-fields-section(
+    v-if="customFieldList"
+    :customFields="customFieldList.pricingList"
+    :materialCustomFields="props.material.customFieldList?.pricingList"
+  )
 </template>
 
 <script setup lang="ts">
 import { type Material } from '@frontier/platform-web-sdk'
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import usePriceSection from '@/composables/material/usePriceSection'
+import { useCustomFieldStore } from '@/stores/customField';
+import { storeToRefs } from 'pinia';
+import CustomFieldsSection from './CustomFieldsSection.vue';
 
 enum TAB_ID {
   PUBLIC = 0,
@@ -54,4 +62,9 @@ const {
   withPrivatePrices,
   withPublicPrices,
 } = usePriceSection(props.material)
+
+
+const customFieldStore = useCustomFieldStore()
+const { customFieldList } = storeToRefs(customFieldStore)
+
 </script>

@@ -6,14 +6,14 @@ div(class="!gap-5")
     :title="$t('RR0559')"
     :desc="$t('RR0560')"
   )
-  div(class="grid gap-y-5 w-full px-8")
+  div(class="grid w-full px-8 gap-y-5")
     div(v-for="spec in filteredCommonSpecs" class="flex w-full gap-4" :key="spec.key")
-      p(class="text-base break-words font-bold w-50 text-secondary-text") {{ spec.name }}
+      p(class="text-base font-bold break-words w-50 text-secondary-text") {{ spec.name }}
       expandable-text(
         containerClass="text-sm break-words cursor-text"
         :class="[spec.value ? 'text-primary-inverse' : 'text-disabled', 'flex-1']"
       ) {{ spec.value || $t('RR0561') }}
-  div(class="p-3 flex flex-col rounded-lg border border-primary-border gap-2")
+  div(class="flex flex-col gap-2 p-3 border rounded-lg border-primary-border")
     f-tabs(
       :tabList="tabList"
       keyField="id"
@@ -21,28 +21,28 @@ div(class="!gap-5")
       @switch="switchSideType($event.id)"
       tabItemContainerStyle="flex-1"
       tabListContainerStyle=""
-      class="bg-secondary rounded-lg"
+      class="rounded-lg bg-secondary"
     )
-    div(class="flex flex-col bg-brand rounded-lg")
+    div(class="flex flex-col rounded-lg bg-brand")
       div(
         class="flex flex-col gap-4 p-5"
         v-if="withSideSpecs"
         :class="{ 'border-b border-brand-border': !missingImportantSpecs }"
       )
         div(v-for="spec in filteredSideSpecs" class="flex w-full gap-4" :key="spec.key")
-          p(class="text-base break-words font-bold w-50 text-secondary-text") {{ spec.name }}
+          p(class="text-base font-bold break-words w-50 text-secondary-text") {{ spec.name }}
 
           expandable-text(
             containerClass="text-sm break-words"
             :class="[spec.value ? 'text-primary-inverse' : 'text-disabled', 'flex-1']"
           ) {{ spec.value || $t('RR0561') }}
       div(
-        class="hover:bg-secondary-hover bg-secondary cursor-pointer rounded-b-lg"
+        class="rounded-b-lg cursor-pointer hover:bg-secondary-hover bg-secondary"
         @click="onShowMore"
         v-if="!missingImportantSpecs"
       )
-        div(class="py-2 px-5 justify-end flex")
-          f-button(type="text" size="md" class="underline font-semibold")
+        div(class="flex justify-end px-5 py-2")
+          f-button(type="text" size="md" class="font-semibold underline")
             p {{ isShowMore ? $t('EE0245') : $t('EE0244') }}
             f-svg-icon(
               size="24"
@@ -53,15 +53,15 @@ div(class="!gap-5")
           ref="extraContentWrapper"
           :style="{ height: wrapperHeight }"
         )
-          div(class="py-5 flex flex-col gap-4")
+          div(class="flex flex-col gap-4 py-5")
             div(
               v-for="spec in filteredMoreSpecs"
               class="flex w-full gap-4"
               :key="spec.key"
             )
-              div(class="w-50 flex flex-row gap-2 items-center")
+              div(class="flex flex-row items-center gap-2 w-50")
                 p(
-                  class="text-base break-words font-bold text-secondary-text cursor-text"
+                  class="text-base font-bold break-words text-secondary-text cursor-text"
                 ) {{ spec.name }}
                 f-tooltip(
                   v-if="spec.infoText"
@@ -83,19 +83,25 @@ div(class="!gap-5")
                 class="flex-1"
               ) {{ spec.value || $t('RR0561') }}
           div(v-if="showColorPatternData" class="flex w-full gap-4 pb-3")
-            div(class="w-50 flex flex-row gap-2 items-center")
-              p(class="text-base break-words font-bold text-secondary-text cursor-text") {{ $t('RR0309') }}
+            div(class="flex flex-row items-center gap-2 w-50")
+              p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ $t('RR0309') }}
             material-detail-color-and-pattern(
               :pantoneList="pantoneList ?? undefined"
               :colorInfo="colorInfo ?? undefined"
               :patternInfo="patternInfo ?? undefined"
               class="flex-1"
             )
+  custom-fields-section(
+    v-if="customFieldList"
+    :customFields="customFieldList.specificationList"
+    :materialCustomFields="props.material.customFieldList?.specificationList"
+  )
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 
 import {
   type MaterialSide,
@@ -104,11 +110,13 @@ import {
 } from '@frontier/platform-web-sdk'
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import { TYPE as ALERT_TYPE } from '@frontier/ui-component/src/FNotify/FAlert/FAlert.vue'
+import { useCustomFieldStore } from '@/stores/customField'
 import { MATERIAL_SIDE_TYPE, TOOLTIP_PLACEMENT } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import useUser from '@/composables/useUser'
 import ExpandableText from './ExpandableText.vue'
 import MaterialDetailColorAndPattern from './internal/MaterialDetailColorAndPattern.vue'
+import CustomFieldsSection from './CustomFieldsSection.vue'
 
 interface Spec {
   key: string
@@ -131,6 +139,8 @@ const {
   patternInfo,
   colorInfo,
 } = useMaterial(ref(props.material))
+const customFieldStore = useCustomFieldStore()
+const { customFieldList } = storeToRefs(customFieldStore)
 const { isInternalUser } = useUser()
 
 const isShowMore = ref(false)
@@ -205,7 +215,7 @@ const hasExtendedContent = ref(false)
 
 onMounted(() => {
   hasExtendedContent.value = !canExtendContent(
-    specificationInfo.value.featureList.value,
+    specificationInfo.value?.featureList.value,
     2
   )
 })
@@ -224,20 +234,20 @@ const withImportantSpec = computed(() => {
 const commonSpecs = computed<Spec[]>(() => [
   {
     key: 'width',
-    name: specificationInfo.value.width?.name,
-    value: specificationInfo.value.width?.value,
+    name: specificationInfo.value?.width?.name,
+    value: specificationInfo.value?.width?.value,
     isRequired: withImportantSpec.value,
   },
   {
     key: 'weight',
-    name: specificationInfo.value.weight?.name,
-    value: specificationInfo.value.weight?.value,
+    name: specificationInfo.value?.weight?.name,
+    value: specificationInfo.value?.weight?.value,
     isRequired: withImportantSpec.value,
   },
   {
     key: 'season',
-    name: specificationInfo.value.seasonInfo?.name,
-    value: specificationInfo.value.seasonInfo?.value,
+    name: specificationInfo.value?.seasonInfo?.name,
+    value: specificationInfo.value?.seasonInfo?.value,
   },
   {
     key: 'remark',
@@ -265,20 +275,20 @@ const missingImportantSpecs = computed(
 const sideSpecs = computed<Spec[]>(() => [
   {
     key: 'material_type',
-    name: specificationInfo.value.materialType?.name,
-    value: specificationInfo.value.materialType?.value,
+    name: specificationInfo.value?.materialType?.name,
+    value: specificationInfo.value?.materialType?.value,
     isRequired: withImportantSpec.value,
   },
   {
     key: 'construction_type',
-    name: specificationInfo.value.constructionTypeOnly?.name,
-    value: specificationInfo.value.constructionTypeOnly?.value,
+    name: specificationInfo.value?.constructionTypeOnly?.name,
+    value: specificationInfo.value?.constructionTypeOnly?.value,
     isRequired: withImportantSpec.value,
   },
   {
     key: 'content_list',
-    name: specificationInfo.value.contentList?.name,
-    value: specificationInfo.value.contentList?.value,
+    name: specificationInfo.value?.contentList?.name,
+    value: specificationInfo.value?.contentList?.value,
     isRequired: withImportantSpec.value,
   },
   // add more specs here as needed

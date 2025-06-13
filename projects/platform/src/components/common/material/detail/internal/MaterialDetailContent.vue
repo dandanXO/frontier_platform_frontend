@@ -42,7 +42,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
 
   //- Right Side: Item#, Spec, Color and Pattern, 3D Material
   div(
-    class="w-164 flex flex-col flex-grow-0 flex-shrink overflow-y-auto pr-2"
+    class="w-full flex flex-col flex-grow-0 flex-shrink overflow-y-auto pr-2"
     :style="{ maxHeight: leftSideHeight + 'px' }"
     ref="rightSideRef"
   )
@@ -116,7 +116,15 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, nextTick, onUnmounted, toRef } from 'vue'
+import {
+  computed,
+  ref,
+  onMounted,
+  nextTick,
+  onUnmounted,
+  toRef,
+  onUpdated,
+} from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -127,6 +135,7 @@ import {
   type MenuItem,
   type MenuTree,
 } from '@frontier/ui-component'
+import { useCustomFieldStore } from '@/stores/customField'
 import {
   PLATFORM_LOCATION_TYPE,
   ATTACHMENT_FILE_ACCEPT_TYPE,
@@ -141,7 +150,6 @@ import useAssets from '@/composables/useAssets'
 import useTagSection from '@/composables/material/useTagsSection'
 import usePriceSection from '@/composables/material/usePriceSection'
 import useInventorySection from '@/composables/material/useInventorySection'
-import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
 import SpecificationSection from '../SpecificationSection.vue'
 import TagsSection from '../TagsSection.vue'
 import PriceSection from '../PriceSection.vue'
@@ -174,9 +182,12 @@ const {
 const { withPrivatePrices, withPublicPrices, ...resPriceSection } =
   usePriceSection()
 const withPrices = computed(
-  () => withPrivatePrices.value && withPublicPrices.value
+  () => withPrivatePrices.value || withPublicPrices.value
 )
 const { inventorySections, ...resInventorySection } = useInventorySection()
+const customFieldStore = useCustomFieldStore()
+const { getCustomFieldList } = customFieldStore
+
 const withInventoryData = computed(
   () =>
     inventorySections.value.length && props.material.internalInfo?.nativeCode
@@ -238,6 +249,10 @@ onMounted(() => {
       attributes: true,
     })
   }
+})
+
+onUpdated(() => {
+  getCustomFieldList()
 })
 
 // remove resize listener

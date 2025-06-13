@@ -61,7 +61,7 @@ export const formatFieldType = (type: number) => {
 
 export const formatApplyTo = (types: Array<number | string>) => {
   return types.length === APPLY_TO_OPTIONS.length
-    ? 't-All'
+    ? t('RR0052')
     : types
         .map((num: number | string) => {
           const item = APPLY_TO_OPTIONS.find((item) => item.selectValue === num)

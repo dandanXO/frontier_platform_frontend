@@ -36,7 +36,6 @@ const toggleExpand = () => {
   isExpanded.value = !isExpanded.value
 }
 const style = ref({
-  overflow: 'hidden',
   transition: 'max-height 0.3s ease',
   maxHeight: '3rem', // default height for 2 lines
 })

@@ -1,6 +1,10 @@
 <template>
-  <div class="flex flex-col border border-primary-border rounded-lg">
+  <div
+    class="flex flex-col border border-primary-border rounded-lg"
+    :class="className"
+  >
     <div
+      id="f-accordion-header"
       class="flex flex-row gap-3 items-center justify-between p-6"
       :class="[
         {
@@ -14,9 +18,31 @@
       @click="toggleContent"
     >
       <div>
-        <p class="text-primary-inverse font-bold text-xl line-clamp-2">
-          {{ title }}
-        </p>
+        <div class="flex items-center gap-1">
+          <p
+            id="f-accordion-title"
+            class="text-primary-inverse font-bold text-xl line-clamp-2"
+          >
+            {{ title }}
+          </p>
+
+          <f-tooltip
+            v-if="headerTooltip?.title || headerTooltip?.desc"
+            :title="headerTooltip?.title"
+            :desc="headerTooltip?.desc"
+            :placement="TOOLTIP_PLACEMENT.RIGHT"
+            data-theme="new"
+            classContent="w-80"
+            :offset="[0, 10]"
+            class="self-center"
+            interactive
+            isDescHTML
+          >
+            <template #slot:tooltip-trigger>
+              <f-svg-icon iconName="question" size="16" class="text-cyan-500" />
+            </template>
+          </f-tooltip>
+        </div>
         <p class="text-secondary-text text-sm line-clamp-4">
           {{ desc }}
         </p>
@@ -46,13 +72,19 @@ export default { name: 'FAccordion' }
 </script>
 
 <script setup lang="ts">
+import { TOOLTIP_PLACEMENT } from '@frontier/constants'
 import { Comment, computed, isVNode, ref, toRefs, useSlots, watch } from 'vue'
 
 interface Props {
+  className?: string
   title: string
   desc?: string
   contentContainerClass?: string
   viewOnly?: boolean
+  headerTooltip?: {
+    title?: string
+    desc?: string
+  }
 }
 const props = defineProps<Props>()
 const { viewOnly } = toRefs(props)
