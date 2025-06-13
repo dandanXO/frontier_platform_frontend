@@ -55,6 +55,9 @@ const BACK_SIDE_LABEL_HEIGHT = 226
 const A4_WIDTH = 594
 const A4_HEIGHT = 842
 
+const ONLY_QRCODE_WIDTH = 354
+const ONLY_QRCODE_HEIGHT = 295
+
 const makeA4standardSwatchPdf = async (
   imgDataUrlList: (string | HTMLCanvasElement)[]
 ) => {
@@ -108,11 +111,15 @@ const makeA4standardSwatchPdf = async (
 }
 
 const makeQRcodeLabelPdf = async (
-  imgDataUrlList: (string | HTMLCanvasElement)[]
+  imgDataUrlList: (string | HTMLCanvasElement)[],
+  onlyQrcodeImage: boolean = false
 ) => {
   const pdf = new JsPDF({
     unit: 'px',
-    format: [LABEL_HEIGHT, LABEL_WIDTH],
+    format: [
+      onlyQrcodeImage ? ONLY_QRCODE_WIDTH : LABEL_WIDTH,
+      onlyQrcodeImage ? ONLY_QRCODE_HEIGHT : LABEL_HEIGHT,
+    ],
     orientation: 'l',
   })
 
@@ -176,7 +183,11 @@ const makeQrCode = async (
   }
 }
 
-const getImageDataUrl = (node: Node, isA4Swatch: boolean = false) => {
+const getImageDataUrl = (
+  node: Node,
+  isA4Swatch: boolean = false,
+  onlyQrcodeImage: boolean = false
+) => {
   if (isA4Swatch) {
     return domtoimage.toPng(node, {
       width: A4_WIDTH * DEFAULT_SCALE,
@@ -195,8 +206,8 @@ const getImageDataUrl = (node: Node, isA4Swatch: boolean = false) => {
       ?.setAttribute('data-html2canvas-ignore', 'true')
     return html2canvas(node as HTMLElement, {
       scale: DEFAULT_SCALE * 5,
-      width: LABEL_WIDTH,
-      height: LABEL_HEIGHT,
+      width: onlyQrcodeImage ? ONLY_QRCODE_WIDTH : LABEL_WIDTH,
+      height: onlyQrcodeImage ? ONLY_QRCODE_HEIGHT : LABEL_HEIGHT,
       useCORS: true,
     }).then((canvas) => canvas)
   }
@@ -205,7 +216,8 @@ const getImageDataUrl = (node: Node, isA4Swatch: boolean = false) => {
 const pdfGenerator = async (
   generator: DomGenerator,
   materialList: Material[],
-  isA4Swatch: boolean = false
+  isA4Swatch: boolean = false,
+  onlyQrcodeImage: boolean = false
 ) => {
   const imgDataUrlList = []
   for (const material of materialList) {
@@ -229,7 +241,11 @@ const pdfGenerator = async (
     }
     for (const side of sideList) {
       const pdfVirtualDom = await generator(side)
-      const imgDataUrl = await getImageDataUrl(pdfVirtualDom, isA4Swatch)
+      const imgDataUrl = await getImageDataUrl(
+        pdfVirtualDom,
+        isA4Swatch,
+        onlyQrcodeImage
+      )
       imgDataUrlList.push(imgDataUrl)
       pdfVirtualDom.remove()
     }
@@ -238,7 +254,7 @@ const pdfGenerator = async (
     if (isA4Swatch) {
       await makeA4standardSwatchPdf(imgDataUrlList)
     } else {
-      await makeQRcodeLabelPdf(imgDataUrlList)
+      await makeQRcodeLabelPdf(imgDataUrlList, onlyQrcodeImage)
     }
   } catch (e) {
     console.error('in pdfGenerator')
@@ -637,10 +653,72 @@ const usePrint = () => {
 
   const printLabel = async (
     materialList: Material[],
-    setting: QrCodePrintLabelSetting = DefaultPrintLabelSetting
+    setting: QrCodePrintLabelSetting = DefaultPrintLabelSetting,
+    onlyQrcodeImage: boolean = false
   ) => {
     store.dispatch('helper/pushModalLoading')
+    if (onlyQrcodeImage) {
+      const onlyQrcodeImageDomGenerator = async (item: {
+        sideType: MaterialSideType
+        material: Material
+      }) => {
+        const { sideType, material } = item
+        const currentSide = getMaterialBySide(material, sideType)
+        const { frontierNo } = currentSide
 
+        const domLabel = (virtualDom: HTMLDivElement) => {
+          virtualDom.innerHTML = `
+          
+            <div class="w-[354px] h-[295px] flex justify-center overflow-hidden">
+              <div class=" h-full flex flex-col justify-center">
+                <div class="w-full flex flex-row justify-center mt-1 mb-1">
+                  <div id="qr-code-container" class="relative"></div>
+                </div>
+                <div class="w-full flex flex-col items-center mb-[10px]">
+                  <p class="text-[8px] text-center text-grey-600 whitespace-nowrap">${
+                    sideType === MaterialSideType.FACE_SIDE
+                      ? t('DD0046')
+                      : t('DD0047')
+                  }-${frontierNo}</p>
+                </div>
+              </div>
+            </div>
+          
+        `
+        }
+        const virtualDom = document.createElement('div')
+        virtualDom.classList.add(
+          'w-[354px]',
+          'h-[295px]',
+          'bg-[#ffffff]',
+          'px-2',
+          'pt-2',
+          'pb-1',
+          'flex',
+          'flex-col',
+          'overflow-hidden',
+          'relative',
+          'top-[-9999px]'
+        )
+        domLabel(virtualDom)
+        document.body.appendChild(virtualDom)
+        const qrWidth = 200
+        await makeQrCode(
+          frontierNo,
+          'qr-code-container',
+          qrWidth,
+          true,
+          isTexpertsRule.value ? '' : logo.value
+        )
+
+        return virtualDom
+      }
+      await pdfGenerator(onlyQrcodeImageDomGenerator, materialList, false, true)
+      store.dispatch('helper/closeModalLoading')
+      return new Promise((res, rej) => {
+        res('finish printLabel')
+      })
+    }
     const fontSizeIndex = () => {
       const value = setting.fontSize ? setting.fontSize : 5
 

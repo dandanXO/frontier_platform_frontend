@@ -478,11 +478,12 @@ export default function useAssets() {
           materialList: toMaterialList(m),
           printLabel: async (
             materialList: Material[],
-            setting: QrCodePrintLabelSetting
+            setting: QrCodePrintLabelSetting,
+            onlyQrcodeImage: boolean
           ): Promise<void> => {
             store.getters['permission/isJBRule']
               ? await customPrint.printLabel(materialList)
-              : await print.printLabel(materialList, setting)
+              : await print.printLabel(materialList, setting, onlyQrcodeImage)
           },
           updateSetting: async (
             setting: QrCodePrintLabelSetting

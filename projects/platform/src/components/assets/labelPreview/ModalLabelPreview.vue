@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :primaryBtnDisabled="disablePrintBtn()"
+  :primaryBtnDisabled="disablePrintBtn"
   :header="$t('MM0038')"
   :primaryBtnText="$t('MM0042')"
   :primaryBtnIcon="'open_in_new'"
@@ -12,14 +12,14 @@ modal-behavior(
 )
   div(class="flex mx-[-21px] my-[-21px]")
     div(class="w-200")
-      f-scrollbar-container(class="w-fit max-h-103 box-content relative")
-        div(v-for="(material, index) in materialList")
+      f-scrollbar-container(class="box-content relative w-fit max-h-103")
+        div(v-for="(material, index) in materialList" :key="index")
           div(
-            class="h-52 w-full flex flex-row border border-transparent border-b-grey-200"
+            class="flex flex-row w-full border border-transparent h-52 border-b-grey-200"
             :class="[materialShowConfigs.value[index] ? 'opacity-100' : 'opacity-75']"
           )
             div(
-              class="w-25 border border-transparent border-r-grey-200 flex flex-col items-center justify-center"
+              class="flex flex-col items-center justify-center border border-transparent w-25 border-r-grey-200"
             )
               p(class="text-[12px] font-bold text-grey-400") {{ index + 1 }}
               label(class="cursor-pointer")
@@ -36,34 +36,43 @@ modal-behavior(
                   @input="checkMaterial($event)"
                   :disabled="false"
                 )
-            div(class="w-175 bg-grey-150 flex flex-row items-center justify-center")
+            div(class="flex flex-row items-center justify-center w-175 bg-grey-150")
               label-preview(
+                :onlyQrcodeImage="onlyQrcodeImage"
                 :type="'face'"
                 :index="index + 1"
                 :material="material"
-                :size="isTexpertsRule ? 64 : 79"
+                :size="labelPreviewSize"
                 :setting="currentLabelSetting"
                 :reloadQrcode="needReloadQrcode"
               )
               label-preview(
+                :onlyQrcodeImage="onlyQrcodeImage"
                 :type="'back'"
                 :index="index + 1"
                 :material="material"
-                :size="isTexpertsRule ? 64 : 79"
+                :size="labelPreviewSize"
                 :setting="currentLabelSetting"
                 :reloadQrcode="needReloadQrcode"
               )
-    div(class="w-60 max-h-103 overflow-y-scroll")
+    div(class="overflow-y-scroll w-60 max-h-103")
+      div(class="inline-flex w-full p-3")
+        f-input-toggle(
+          :value="onlyQrcodeImage"
+          @update:value="toggleOnlyQrcode"
+        )
+        p(class="ml-2 text-sm font-bold") {{ $t("UU0198")}}
       div(
-        class="w-full py-3 px-3 flex flex-row justify-between border border-transparent border-b-grey-150"
+        class="flex flex-row justify-between w-full px-3 py-3 border border-transparent border-b-grey-150"
       )
         p(class="text-sm font-bold") {{ $t('RR0054') }}
         p(class="text-xs text-grey-600") {{ $t('MM0040', { number: countMaterials }) }}
       div(
-        class="w-full px-3 pt-4 pb-6 justify-between border border-transparent border-b-grey-150"
+        class="justify-between w-full px-3 pt-4 pb-6 border border-transparent border-b-grey-150"
       )
-        p(class="text-xs font-bold mb-2") {{ $t('MM0043') }} {{ fontSizeValue }}px
+        p(class="mb-2 text-xs font-bold") {{ $t('MM0043') }} {{ fontSizeValue }}px
         f-input-slider(
+          :disabled="onlyQrcodeImage"
           :canReset="false"
           :defaultRange="fontSizeDefaultRange"
           :min="5"
@@ -71,11 +80,12 @@ modal-behavior(
           v-model:range="fontSizeValue"
           ref="fontSzieSliderRef"
         )
-      div(class="w-full px-3 pt-4 pb-3 justify-between")
-        p(class="text-xs font-bold mb-2") {{ $t('MM0039') }}
-        div(class="border border-transparent border-b-grey-150 mb-5 pb-3")
+      div(class="justify-between w-full px-3 pt-4 pb-3")
+        p(class="mb-2 text-xs font-bold") {{ $t('MM0039') }}
+        div(class="pb-3 mb-5 border border-transparent border-b-grey-150")
           template(v-if="!isTexpertsRule")
             f-input-checkbox(
+              :disabled="onlyQrcodeImage"
               v-for="(option, index) in PrintBaseInfoConfig.options"
               :key="index"
               v-model:inputValue="PrintBaseInfoConfig.list.value"
@@ -86,7 +96,7 @@ modal-behavior(
             )
           p(class="text-[10px] font-bold mb-2 text-grey-400") {{ $t('MI0003') }}
           div(v-for="(materialType, index) in materialTypeConfig" :key="index" class="")
-            f-expansion-panel(class="hover:bg-grey-150 rounded mb-2")
+            f-expansion-panel(class="mb-2 rounded hover:bg-grey-150")
               template(#trigger="{ isExpand }")
                 div(
                   class="h-8 flex items-center justify-between px-1.5 rounded"
@@ -96,14 +106,15 @@ modal-behavior(
                     f-svg-icon(
                       iconName="keyboard_arrow_right"
                       size="16"
-                      class="transform text-grey-900 mr-1"
+                      class="mr-1 transform text-grey-900"
                       :class="[isExpand ? 'rotate-90' : '']"
                     )
-                    p(class="text-xs text-grey-900 font-bold") {{ materialType.key }}
+                    p(class="text-xs font-bold text-grey-900") {{ materialType.key }}
                   p(class="text-xs text-grey-400") {{ $t('MM0040', { number: materialType.list.value.length }) }}
               template(#content)
                 div(class="bg-grey-100 rounded px-1.5 py-2") 
                   f-input-checkbox(
+                    :disabled="onlyQrcodeImage"
                     v-for="(option, index) in materialType.options"
                     :key="index"
                     v-model:inputValue="materialType.list.value"
@@ -111,9 +122,10 @@ modal-behavior(
                     :value="option.value"
                     @update:inputValue="setAbleToUpdateSetting"
                   )
-        div(class="border border-transparent border-b-grey-150 mb-5 pb-3")
+        div(class="pb-3 mb-5 border border-transparent border-b-grey-150")
           p(class="text-[10px] font-bold mb-2 text-grey-400") {{ $t('MI0001') }}
           f-input-checkbox(
+            :disabled="onlyQrcodeImage"
             v-for="(option, index) in materialInformationConfig.options"
             :key="index"
             v-model:inputValue="materialInformationConfig.list.value"
@@ -122,9 +134,10 @@ modal-behavior(
             class="px-1"
             @update:inputValue="setAbleToUpdateSetting"
           )
-        div(class="border border-transparent border-b-grey-150 mb-5 pb-3")
+        div(class="pb-3 mb-5 border border-transparent border-b-grey-150")
           p(class="text-[10px] font-bold mb-2 text-grey-400") {{ $t('RR0219') }}
           f-input-checkbox(
+            :disabled="onlyQrcodeImage"
             v-for="(option, index) in ecoImpactorConfig.options"
             :key="index"
             v-model:inputValue="ecoImpactorConfig.list.value"
@@ -140,7 +153,7 @@ modal-behavior(
             scope="global"
           )
             template(#UU0078)
-              span(class="text-cyan-400 cursor-pointer" @click="") {{ $t('UU0078') }}
+              span(class="cursor-pointer text-cyan-400" @click="") {{ $t('UU0078') }}
 </template>
 
 <script setup lang="ts">
@@ -161,7 +174,11 @@ import {
 
 const props = defineProps<{
   materialList: Material[]
-  printLabel: (materials: Material[], setting: QrCodePrintLabelSetting) => any
+  printLabel: (
+    materials: Material[],
+    setting: QrCodePrintLabelSetting,
+    onlyQrcodeImage: boolean
+  ) => any
   updateSetting: (setting: QrCodePrintLabelSetting) => void
 }>()
 const needReloadQrcode = ref(0)
@@ -185,12 +202,25 @@ const fontSzieSliderRef = ref<InstanceType<typeof FInputSlider> | null>(null)
 const { t } = useI18n()
 const store = useStore()
 
+const onlyQrcodeImage = ref(false)
 const materialList = toRef(props.materialList)
 const isTexpertsRule = computed<boolean>(
   () => store.getters['permission/isTexpertsRule']
 )
 const printSetting = computed(() => store.getters['user/printLabelSetting'])
-
+const labelPreviewSize = computed(() => {
+  if (onlyQrcodeImage.value) {
+    return 120
+  } else if (isTexpertsRule.value) {
+    return 64
+  } else {
+    return 79
+  }
+})
+const toggleOnlyQrcode = () => {
+  onlyQrcodeImage.value = !onlyQrcodeImage.value
+  needReloadQrcode.value = Math.random()
+}
 const materialTypeConfig = computed(() => {
   const materialTypes = []
 
@@ -301,9 +331,9 @@ const materialShowConfigs = computed(() => {
   return materialShow
 })
 
-const disablePrintBtn = () => {
+const disablePrintBtn = computed(() => {
   return !materialShow.value.some((item) => item)
-}
+})
 
 const checkMaterial = (e: Event) => {
   if (!e.target) {
@@ -435,7 +465,8 @@ const handlePrintLabel = async () => {
     props
       .printLabel(
         printMaterials,
-        currentSetting as unknown as QrCodePrintLabelSetting
+        currentSetting as unknown as QrCodePrintLabelSetting,
+        onlyQrcodeImage.value
       )
       .then(() => {
         // 強制觸發 vue的子組件watch rerander qrcode img 的作法
