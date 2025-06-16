@@ -45,19 +45,22 @@ div(class="w-105 flex flex-col gap-5")
     scope="global"
   )
     template(#signUp)
-      //- span(
-      //-   class="text-grey-900 font-bold ml-3 cursor-pointer"
-      //-   data-cy="sign-up-page"
-      //-   @click="openSignUpRequestModal"
-      //- ) {{ $t('AA0016') }}
+      //- Re-enable this button due task F22-4735,
+      //- Our platform currently allows users to freely sign up without sales team involvement.
+      //- However, the product’s complexity makes it unsuitable for unassisted exploration, leading to confusion and misaligned expectations.
+      span(
+        class="text-grey-900 font-bold ml-3 cursor-pointer"
+        data-cy="sign-up-page"
+        @click="openSignUpRequestModal"
+      ) {{ $t('AA0016') }}
       //- Considering that competitors can use Frontier Platform at will, a sign up review mechanism is added. 
       //- Only the application form is sent, and direct registration is not possible.
       //- However, considering that it may be added back in the future, I only commented it out.
-      router-link(
-        :to="{ path: '/sign-up', query: $route.query }"
-        data-cy="sign-up-page"
-      ) 
-        f-button(type="text" class="self-end w-fit underline font-semibold" size="sm") {{ $t('AA0096') }}
+      //- router-link(
+      //-   :to="{ path: '/sign-up', query: $route.query }"
+      //-   data-cy="sign-up-page"
+      //- ) 
+      //-   f-button(type="text" class="self-end w-fit underline font-semibold" size="sm") {{ $t('AA0096') }}
 </template>
 
 <script lang="ts" setup>
@@ -90,10 +93,9 @@ const openModalForgotPasswordEmail = () => {
   })
 }
 
-// maybe used in the future, based on the UI above
-// const openSignUpRequestModal = () => {
-//   store.dispatch('helper/openModalBehavior', {
-//     component: 'modal-sign-up-request',
-//   })
-// }
+const openSignUpRequestModal = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-sign-up-request',
+  })
+}
 </script>
