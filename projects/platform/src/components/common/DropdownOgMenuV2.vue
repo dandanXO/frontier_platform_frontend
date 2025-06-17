@@ -12,10 +12,10 @@
         @mouseenter="isHover = true"
         @mouseleave="isHover = false"
       >
-        <div class="text-grey-700-v1 text-xs font-normal">
-          Organization / Group
+        <div class="text-xs font-normal text-grey-700-v1">
+          {{ $t('RR0573') }}
         </div>
-        <div class="text-grey-900-v1 text-sm font-bold">
+        <div class="text-sm font-bold text-grey-900-v1">
           {{ selectedMenu ? selectedMenu.title : 'Select Organization/Group' }}
         </div>
       </div>
@@ -45,6 +45,8 @@ import FPopper from '@frontier/ui-component/src/FPopper/FPopper.vue'
 import FContextualMenu from '@frontier/ui-component/src/FContextualMenu/FContextualMenu.vue'
 // Import useInput to achieve similar focus/hover/error states as in FSelectDropdown.vue
 import useInput from '@frontier/ui-component/src/FInput/useInput'
+import { ROLE_ID } from '../../utils/constants'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{ selectValue: string }>()
 const emit = defineEmits<{
@@ -53,29 +55,49 @@ const emit = defineEmits<{
 }>()
 
 const { SINGLE_NONE_CANCEL } = CONTEXTUAL_MENU_MODE
-
+const { t } = useI18n()
 const store = useStore()
-const organization = computed<Organization>(
-  () => store.getters['organization/organization']
+const organization = computed(
+  () =>
+    store.getters['organization/organization'] as Organization & {
+      orgUser?: { orgRoleId?: number }
+    }
 )
+const user = computed(() => store.getters['user/user'])
+
 const menuOrgOrGroup = computed(() => {
-  const { orgId, orgName, labelColor } = organization.value
+  const { orgId, orgName, labelColor, orgUser, groupList } = organization.value
+  const infoText = t('RR0572')
+
   return {
-    width: 'w-75',
+    width: 'w-auto max-w-75',
     blockList: [
       {
         menuList: [
           {
             title: orgName,
+            tooltipTitle: `${
+              orgUser?.orgRoleId === ROLE_ID.GUEST ? infoText : ''
+            }`,
             selectValue: `${OgType.ORG}-${orgId}`,
             labelColor,
+            disabled: orgUser?.orgRoleId === ROLE_ID.GUEST,
           },
-          ...organization.value.groupList.map((group) => {
+          ...groupList.map((group) => {
             const { groupId, groupName, labelColor } = group
+
+            const roleId = user.value.organizationList
+              ?.find((org: any) => org?.orgId === orgId)
+              ?.groupList?.find(
+                (gr: any) => gr?.groupId === groupId
+              )?.groupRoleId
+
             return {
               title: groupName,
+              tooltipTitle: `${roleId === ROLE_ID.GUEST ? infoText : ''}`,
               selectValue: `${OgType.GROUP}-${groupId}`,
               labelColor,
+              disabled: roleId === ROLE_ID.GUEST,
             }
           }),
         ],

@@ -2,7 +2,6 @@
   <div class="flex flex-col h-screen overflow-x-hidden overflow-y-auto">
     <!-- refContainer now wraps the main content and inherits parent styles -->
     <div
-      v-if="dashboardPagePermission"
       ref="refContainer"
       class="px-8 pt-8 pb-16 flex flex-col gap-y-8 w-[1200px] mx-auto flex-grow"
     >
@@ -19,32 +18,33 @@
         <div class="flex-1"></div>
       </div>
 
-      <!-- Overview -->
-      <div
-        class="text-h4/1.6 font-bold text-primary text-center rounded-2xl bg-grey-50-v1 p-6 gap-4 flex flex-col"
-      >
-        <div class="flex items-center self-stretch justify-between">
-          <div
-            class="font-sans text-xl font-bold leading-8 text-center text-grey-900-v1"
-          >
-            Overview
-          </div>
-          <!-- Filter Button -->
-          <f-button
-            type="secondary"
-            prependIcon="union_2"
-            size="md"
-            class="flex min-w-[96px] max-w-[512px] py-1 px-3 justify-center items-center gap-1 hover:bg-grey-50-v1 border-green-200-v1"
-            @click="isOpenFilterPanel = !isOpenFilterPanel"
-          >
-            <span
-              class="font-bold leading-6 text-center text-body2 text-green-500-v1"
+      <div v-if="dashboardPagePermission">
+        <!-- Overview -->
+        <div
+          class="text-h4/1.6 font-bold text-primary text-center rounded-2xl bg-grey-50-v1 p-6 gap-4 flex flex-col"
+        >
+          <div class="flex items-center self-stretch justify-between">
+            <div
+              class="font-sans text-xl font-bold leading-8 text-center text-grey-900-v1"
             >
-              {{ $t('RR0085') }}
-            </span>
-          </f-button>
-          <!-- Download Report Button -->
-          <!-- <f-button
+              Overview
+            </div>
+            <!-- Filter Button -->
+            <f-button
+              type="secondary"
+              prependIcon="union_2"
+              size="md"
+              class="flex min-w-[96px] max-w-[512px] py-1 px-3 justify-center items-center gap-1 hover:bg-grey-50-v1 border-green-200-v1"
+              @click="isOpenFilterPanel = !isOpenFilterPanel"
+            >
+              <span
+                class="font-bold leading-6 text-center text-body2 text-green-500-v1"
+              >
+                {{ $t('RR0085') }}
+              </span>
+            </f-button>
+            <!-- Download Report Button -->
+            <!-- <f-button
             type="primary"
             prependIcon="download"
             size="md"
@@ -52,124 +52,124 @@
             @click="openFilterModal = true"
             >{{ $t('BB0116') }}</f-button
           > -->
-        </div>
+          </div>
 
-        <!-- Filter Panel -->
-        <div v-if="isOpenFilterPanel" class="flex-shrink-0">
-          <div>
-            <!-- <div class="flex items-end pb-4">
+          <!-- Filter Panel -->
+          <div v-if="isOpenFilterPanel" class="flex-shrink-0">
+            <div>
+              <!-- <div class="flex items-end pb-4">
                 <p class="text-body1 text-grey-900">{{ $t('RR0085') }}</p>
               </div> -->
-            <div
-              class="flex flex-wrap items-center justify-end gap-x-2 gap-y-2"
-            >
-              <filter-material-type
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-material-description
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-content
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-pattern
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-color
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-width
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-weight
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-yarn-density
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-finish
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-inventory
-                :searchType="searchType"
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-price
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-has-u3m
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-eco
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-asset-status
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <filter-country
-                v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <!-- <filter-season @search="handleSearch" /> -->
-              <!-- <filter-year @search="handleSearch" /> -->
-              <filter-certification
-                @search="handleSearch"
-                class="font-normal rounded-lg bg-grey-0"
-              />
-              <p
-                class="pl-3 font-normal cursor-pointer text-caption text-grey-600"
-                @click="resetFilterHandler"
+              <div
+                class="flex flex-wrap items-center justify-end gap-x-2 gap-y-2"
               >
-                {{ $t('UU0041') }}
-              </p>
+                <filter-material-type
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-material-description
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-content
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-pattern
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-color
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-width
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-weight
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-yarn-density
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-finish
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-inventory
+                  :searchType="searchType"
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-price
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-has-u3m
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-eco
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-asset-status
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <filter-country
+                  v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <!-- <filter-season @search="handleSearch" /> -->
+                <!-- <filter-year @search="handleSearch" /> -->
+                <filter-certification
+                  @search="handleSearch"
+                  class="font-normal rounded-lg bg-grey-0"
+                />
+                <p
+                  class="pl-3 font-normal cursor-pointer text-caption text-grey-600"
+                  @click="resetFilterHandler"
+                >
+                  {{ $t('UU0041') }}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Statistics -->
-        <div class="flex flex-col flex-shrink-0 gap-y-4">
-          <div class="grid grid-cols-3 gap-4">
-            <StatCard
-              :title="$t('RR0493')"
-              :value="createCounts?.yourAssetCounts || 0"
-              icon-name="texture"
-              class="w-full"
-            />
-            <StatCard
-              :title="$t('RR0494')"
-              :value="createCounts?.threeDimensionAssetCounts || 0"
-              icon-name="view-in-ar"
-              class="w-full"
-            />
-            <StatCard
-              :title="$t('BB0119')"
-              :value="createCounts?.collectionCounts || 0"
-              icon-name="collections-bookmark"
-              class="w-full"
-            />
-            <!-- <StatCard
+          <!-- Statistics -->
+          <div class="flex flex-col flex-shrink-0 gap-y-4">
+            <div class="grid grid-cols-3 gap-4">
+              <StatCard
+                :title="$t('RR0493')"
+                :value="createCounts?.yourAssetCounts || 0"
+                icon-name="texture"
+                class="w-full"
+              />
+              <StatCard
+                :title="$t('RR0494')"
+                :value="createCounts?.threeDimensionAssetCounts || 0"
+                icon-name="view-in-ar"
+                class="w-full"
+              />
+              <StatCard
+                :title="$t('BB0119')"
+                :value="createCounts?.collectionCounts || 0"
+                icon-name="collections-bookmark"
+                class="w-full"
+              />
+              <!-- <StatCard
               :title="$t('RR0495')"
               :value="createCounts?.countryCounts || 0"
               icon-name="public"
               class="w-full"
             /> -->
-          </div>
-          <!-- <div class="flex gap-4">
+            </div>
+            <!-- <div class="flex gap-4">
               <StatCard
                 :title="$t('BB0119')"
                 :value="createCounts?.collectionCounts || 0"
@@ -189,167 +189,170 @@
                 class="flex-1"
               />
             </div> -->
-        </div>
+          </div>
 
-        <!-- Stacked Bar Charts -->
-        <!-- Solution 1: Using inline style -->
-        <div
-          class="flex justify-between flex-shrink-0 gap-x-4"
-          :style="{
-            height: `${6 * 65}px`,
-          }"
-        >
+          <!-- Stacked Bar Charts -->
+          <!-- Solution 1: Using inline style -->
           <div
-            class="w-full h-auto bg-white p-6 border border-[#DEDEDE] rounded-2xl"
+            class="flex justify-between flex-shrink-0 gap-x-4"
+            :style="{
+              height: `${6 * 65}px`,
+            }"
           >
-            <DashboardStackedChart
-              v-if="!dashboardIsLoading"
-              theme="macarons"
-              :title-text="$t('RR0496')"
-              :chart-data="materialContentCategoryList"
-              :tooltip-message="$t('RR0497')"
-            />
             <div
-              class="flex flex-col justify-around h-full align-arund"
-              v-if="dashboardIsLoading"
+              class="w-full h-auto bg-white p-6 border border-[#DEDEDE] rounded-2xl"
             >
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
+              <DashboardStackedChart
+                v-if="!dashboardIsLoading"
+                theme="macarons"
+                :title-text="$t('RR0496')"
+                :chart-data="materialContentCategoryList"
+                :tooltip-message="$t('RR0497')"
+              />
+              <div
+                class="flex flex-col justify-around h-full align-arund"
+                v-if="dashboardIsLoading"
+              >
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+              </div>
             </div>
-          </div>
-          <div class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl">
-            <DashboardStackedChart
-              v-if="!dashboardIsLoading"
-              theme="roma"
-              :title-text="$t('RR0498')"
-              :chart-data="materialTypeOfCountryList"
-              :tooltip-message="$t('RR0499')"
-              :havePublicAndPrivate="true"
-            />
             <div
-              class="flex flex-col justify-around h-full align-arund"
-              v-if="dashboardIsLoading"
+              class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl"
             >
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
-              <SkeletonBase class="w-full h-8 mb-1" />
+              <DashboardStackedChart
+                v-if="!dashboardIsLoading"
+                theme="roma"
+                :title-text="$t('RR0498')"
+                :chart-data="materialTypeOfCountryList"
+                :tooltip-message="$t('RR0499')"
+                :havePublicAndPrivate="true"
+              />
+              <div
+                class="flex flex-col justify-around h-full align-arund"
+                v-if="dashboardIsLoading"
+              >
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+                <SkeletonBase class="w-full h-8 mb-1" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex flex-col flex-shrink-0 gap-y-4">
-        <!-- Trending Now -->
-        <div
-          class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col"
-        >
-          <div class="flex items-center justify-between flex-shrink-0 mb-4">
-            <div class="flex items-center">
-              <div class="mr-1 font-bold leading-8 text-md text-grey-900">
-                {{ $t('RR0500') }}
+        <div class="flex flex-col flex-shrink-0 gap-y-4">
+          <!-- Trending Now -->
+          <div
+            class="w-full bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col"
+          >
+            <div class="flex items-center justify-between flex-shrink-0 mb-4">
+              <div class="flex items-center">
+                <div class="mr-1 font-bold leading-8 text-md text-grey-900">
+                  {{ $t('RR0500') }}
+                </div>
+                <f-svg-icon
+                  iconName="question"
+                  size="16"
+                  class="text-grey-700-v1 cursor-help"
+                  :tooltipMessage="$t('RR0501')"
+                  tooltipType="bubble"
+                />
               </div>
-              <f-svg-icon
-                iconName="question"
-                size="16"
-                class="text-grey-700-v1 cursor-help"
-                :tooltipMessage="$t('RR0501')"
-                tooltipType="bubble"
+
+              <!-- Tabs -->
+              <f-tabs
+                :tabList="timePeriodTabs"
+                :initValue="currentTimePeriodTab"
+                :type="FTabsType.SEGMENTED"
+                keyField="id"
+                @switch="currentTimePeriodTab = $event.id"
+                tabListContainerStyle="w-auto"
+                tabItemContainerStyle="px-2 py-1"
               />
             </div>
-
-            <!-- Tabs -->
-            <f-tabs
-              :tabList="timePeriodTabs"
-              :initValue="currentTimePeriodTab"
-              :type="FTabsType.SEGMENTED"
-              keyField="id"
-              @switch="currentTimePeriodTab = $event.id"
-              tabListContainerStyle="w-auto"
-              tabItemContainerStyle="px-2 py-1"
-            />
-          </div>
-          <!-- Show skeletons when loading -->
-          <template v-if="isLoading || dashboardIsLoading">
-            <div class="w-full">
-              <SkeletonBase class="w-full mb-2 h-30" />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              v-if="processedTableItems.length === 0"
-              class="w-full h-full bg-grey-50-v1 rounded-[4px] flex items-center justify-center min-h-[120px]"
-            >
-              <div
-                class="text-base font-normal leading-6 text-center text-grey-600-v1"
-              >
-                {{ $t('RR0502') }}
+            <!-- Show skeletons when loading -->
+            <template v-if="isLoading || dashboardIsLoading">
+              <div class="w-full">
+                <SkeletonBase class="w-full mb-2 h-30" />
               </div>
-            </div>
-            <f-table
-              v-else
-              :headers="tableHeaders"
-              :items="processedTableItems"
-              :show-header="true"
-              :empty-text="$t('RR0503')"
-              :fit-container="true"
-              v-model:currentSort="currentSort"
-              @sort="handleSort"
-            >
-              <template #default="{ item, prop }">
-                <span>{{ item[prop] }}</span>
-              </template>
-            </f-table>
-          </template>
-        </div>
-
-        <!-- Eco Impactor -->
-        <div
-          class="w-full min-h-[216px] bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col flex-shrink-0"
-        >
-          <div class="flex items-center justify-between flex-shrink-0 mb-4">
-            <div class="mr-1 font-bold leading-8 text-md text-grey-900-v1">
-              {{ $t('M2F031') }}
-            </div>
-            <!-- Tabs -->
-            <f-tabs
-              :tabList="trendingTabs"
-              :initValue="currentTrendingTab"
-              :type="FTabsType.SEGMENTED"
-              keyField="id"
-              @switch="currentTrendingTab = $event.id"
-              tabListContainerStyle="w-auto"
-              tabItemContainerStyle="px-2 py-1"
-            />
+            </template>
+            <template v-else>
+              <div
+                v-if="processedTableItems.length === 0"
+                class="w-full h-full bg-grey-50-v1 rounded-[4px] flex items-center justify-center min-h-[120px]"
+              >
+                <div
+                  class="text-base font-normal leading-6 text-center text-grey-600-v1"
+                >
+                  {{ $t('RR0502') }}
+                </div>
+              </div>
+              <f-table
+                v-else
+                :headers="tableHeaders"
+                :items="processedTableItems"
+                :show-header="true"
+                :empty-text="$t('RR0503')"
+                :fit-container="true"
+                v-model:currentSort="currentSort"
+                @sort="handleSort"
+              >
+                <template #default="{ item, prop }">
+                  <span>{{ item[prop] }}</span>
+                </template>
+              </f-table>
+            </template>
           </div>
-          <!-- Show skeleton when loading -->
-          <template v-if="isLoading || dashboardIsLoading">
-            <div class="flex items-center justify-center flex-grow">
-              <SkeletonBase class="w-full mb-2 h-30" />
+
+          <!-- Eco Impactor -->
+          <div
+            class="w-full min-h-[216px] bg-white p-6 border border-[#DEDEDE] rounded-2xl flex flex-col flex-shrink-0"
+          >
+            <div class="flex items-center justify-between flex-shrink-0 mb-4">
+              <div class="mr-1 font-bold leading-8 text-md text-grey-900-v1">
+                {{ $t('M2F031') }}
+              </div>
+              <!-- Tabs -->
+              <f-tabs
+                :tabList="trendingTabs"
+                :initValue="currentTrendingTab"
+                :type="FTabsType.SEGMENTED"
+                keyField="id"
+                @switch="currentTrendingTab = $event.id"
+                tabListContainerStyle="w-auto"
+                tabItemContainerStyle="px-2 py-1"
+              />
             </div>
-          </template>
-          <!-- Show chart when not loading -->
-          <template v-else>
-            <div
-              class="flex-grow"
-              :class="hasEcoData ? 'min-h-[200px]' : 'min-h-[120px]'"
-            >
-              <DashboardLineChart :chart-data="currentEcoImpactorData" />
-            </div>
-          </template>
+            <!-- Show skeleton when loading -->
+            <template v-if="isLoading || dashboardIsLoading">
+              <div class="flex items-center justify-center flex-grow">
+                <SkeletonBase class="w-full mb-2 h-30" />
+              </div>
+            </template>
+            <!-- Show chart when not loading -->
+            <template v-else>
+              <div
+                class="flex-grow"
+                :class="hasEcoData ? 'min-h-[200px]' : 'min-h-[120px]'"
+                :style="{ height: hasEcoData ? '200px' : '120px' }"
+              >
+                <DashboardLineChart :chart-data="currentEcoImpactorData" />
+              </div>
+            </template>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Permission Denied Message: Shown outside when permission denied -->
-    <div v-else class="flex items-center justify-center h-full">
-      {{ $t('PP0038') }}
+      <!-- Permission Denied Message: Shown outside when permission denied -->
+      <div v-else class="flex items-center justify-center h-full">
+        {{ $t('PP0038') }}
+      </div>
     </div>
   </div>
 </template>
