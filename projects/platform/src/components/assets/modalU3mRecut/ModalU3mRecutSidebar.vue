@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex flex-col bg-grey-950-v1 w-100 h-full p-6 gap-6 border-r border-secondary-border"
+  class="flex flex-col h-full gap-6 p-6 border-r bg-grey-950-v1 w-100 border-secondary-border"
 )
   u3m-recut-stepper(
     v-if="isDoubleSideMaterial"
@@ -38,8 +38,10 @@ div(
           :tooltipDesc="$t('EE0247')"
         )
         div(class="flex-1 p-2")
-  div(class="border border-secondary-border transition-all duration-200 ease-in-out")
-  div(class="flex flex-col gap-4 text-primary-inverse transition-all duration-200 ease-in-out")
+  div(class="transition-all duration-200 ease-in-out border border-secondary-border")
+  div(
+    class="flex flex-col gap-4 transition-all duration-200 ease-in-out text-primary-inverse"
+  )
     p(class="text-base font-bold") {{ $t('RR0122') }}
     div(class="flex flex-row gap-2")
       f-input-toggle(
@@ -55,6 +57,7 @@ div(
         classContent="w-80"
         :offset="[2, 6]"
         class="self-center"
+        :theme="'new'"
         interactive
         isDescHTML
       )
@@ -208,7 +211,6 @@ const onResetRotation = () => {
 }
 
 const onFindPattern = async () => {
-
   store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const coordsMap =
     props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
@@ -252,7 +254,6 @@ const onFindPattern = async () => {
   }
   store.dispatch('helper/closeModalLoading')
   isFindPatternButtonVisible.value = false
-
 }
 const currentCoords = computed(() => {
   return props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
