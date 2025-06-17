@@ -1,16 +1,16 @@
 <template lang="pug">
-div(class="w-full h-full flex flex-col px-8 gap-8 bg-primary" v-bind="$attrs")
+div(class="flex flex-col w-full h-full gap-8 px-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
-  div(class="flex flex-row gap-5 min-h-0 flex-1")
+  div(class="flex flex-row gap-5 min-h-0 min-w-[1440px] flex-1")
     slot(name="left-side-content")
     div(
       v-if="pagination"
-      class="md:overflow-y-auto flex-grow flex flex-col"
+      class="flex flex-col flex-grow md:overflow-y-auto"
       ref="scrollContainer"
     )
       div(
         v-if="inSearch && pagination.totalCount === 0"
-        class="flex-grow flex flex-col justify-center items-center"
+        class="flex flex-col items-center justify-center flex-grow"
       )
         p(class="text-center text-body2 text-grey-900") {{ $t('RR0105') }}
       div(class="flex-grow" v-else)

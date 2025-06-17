@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50"
+    class="grid grid-cols-12 gap-12 py-5 overflow-hidden max-w-405 lg:gap-14 2xl:px-14 hover:bg-grey-50"
   >
     <row-item-content
       :material="material"

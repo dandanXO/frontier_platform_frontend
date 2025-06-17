@@ -5,7 +5,7 @@ f-banner(
   class="flex-shrink-0"
   @close="notify.closeNotifyBanner"
 )
-router-view(:key="route.fullPath")
+router-view(:key="$route.path")
 f-snackbar(
   v-bind="notify.notifySnackbarProps"
   @update:isShowSnackbar="notify.closeNotifySnackbar"

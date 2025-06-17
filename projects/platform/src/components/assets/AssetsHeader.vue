@@ -244,7 +244,7 @@ const handleCheckboxInput = (value: any) => {
   assetsLibraryStore.search()
 }
 
-const handleSearch = (firstType?: 'image' | 'text') => {
+const handleSearch = debounce((firstType?: 'image' | 'text') => {
   if (firstType === 'image') {
     searchStore.setKeyword('')
   }
@@ -253,7 +253,7 @@ const handleSearch = (firstType?: 'image' | 'text') => {
   }
   searchStore.setKeyword(searchStore.keyword?.trim() ?? null)
   assetsLibraryStore.search()
-}
+}, 500)
 
 const resetFilterHandler = () => {
   if (isFilterDirty.value) {

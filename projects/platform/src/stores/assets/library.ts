@@ -300,11 +300,11 @@ export const useAssetsLibraryStore = defineStore('assetsLibraryStore', () => {
 
     // Update URL parameters and return early if unchanged
     const updated = updateUrlWithSearchParams(query)
-    if (updated) {
-      isSlimMaterialsLoading.value = true
-      isLoading.value = true
-      return
-    }
+    // if (updated) {
+    //   isSlimMaterialsLoading.value = true
+    //   isLoading.value = true
+    //   return
+    // }
 
     // Fetch slim list first for quick initial display
     try {
