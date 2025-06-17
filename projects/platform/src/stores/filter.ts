@@ -284,7 +284,7 @@ export const useFilterStore = defineStore('filter', () => {
       Object.keys(query).reduce((acc, key) => {
         const property = key as keyof FilterState
 
-        return query[property]
+        return query[property] !== undefined && query[property] !== null
           ? {
               ...acc,
               [property]: query[property],
@@ -313,11 +313,23 @@ export const useFilterStore = defineStore('filter', () => {
       }),
     }
   })
-  const isFilterDirty = computed(() =>
-    Object.keys(filterDirty.value).some(
-      (key) => filterDirty.value[key as keyof FilterState]
+  const isFilterDirty = computed(() => {
+    // 只要有 dirty 就 true
+    if (
+      Object.keys(filterDirty.value).some(
+        (key) => filterDirty.value[key as keyof FilterState]
+      )
+    ) {
+      return true
+    }
+    // 只要有 boolean 屬性為 false 也算 dirty
+    Object.values(filterState.value).some((val) => {
+      return typeof val === 'boolean' && val === false
+    })
+    return Object.values(filterState.value).some(
+      (val) => typeof val === 'boolean' && val === false
     )
-  )
+  })
 
   return {
     filterState,
