@@ -214,7 +214,7 @@ const useInventorySection = () => {
     return list
   })
 
-  const currentTabId = ref<TAB_ID>(tabList.value[0].id)
+  const currentTabId = ref<TAB_ID>(tabList.value[0]?.id)
 
   watch(tabList, (tabs) => (currentTabId.value = tabs[0].id))
 

@@ -1,7 +1,10 @@
 <template lang="pug">
 div(class="flex flex-col w-full h-full gap-8 px-8 bg-primary" v-bind="$attrs")
   slot(name="box-above")
-  div(class="flex flex-row gap-5 min-h-0 min-w-[1440px] flex-1")
+  div(
+    class="flex flex-row flex-1 min-h-0 gap-5"
+    :class="{ 'min-w-[1440px]': displayMode !== ASSET_LIST_DISPLAY_MODE.GRID }"
+  )
     slot(name="left-side-content")
     div(
       v-if="pagination"
