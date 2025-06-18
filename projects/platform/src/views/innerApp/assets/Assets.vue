@@ -44,23 +44,11 @@
 
     <template #left-side-content>
       <div
-        class="relative flex flex-col gap-4 p-4 rounded-2xl bg-secondary h-fit"
+        class="flex flex-col gap-4 p-4 rounded-2xl bg-secondary h-fit"
         v-if="imageSearchData"
       >
         <div
-          v-if="!isLoading"
-          class="absolute top-0 right-0 p-1 rounded-full cursor-pointer bg-grey-50"
-          @click="closeImageSearch"
-        >
-          <f-svg-icon
-            iconName="close"
-            size="24"
-            class="self-center text-green-grey"
-            testId="loading-indicator"
-          ></f-svg-icon>
-        </div>
-        <div
-          class="flex flex-col justify-center gap-2 align-center rounded-xl bg-primary w-62 h-60"
+          class="flex flex-col justify-center gap-2 align-center rounded-xl bg-primary w-60 h-60"
         >
           <f-svg-icon
             v-if="isSlimMaterialsLoading"
@@ -68,22 +56,33 @@
             size="140"
             class="self-center text-green-600-v1"
             testId="loading-indicator"
-          ></f-svg-icon>
+          />
           <img
             v-else
             :src="imageSearchData.url"
             class="object-cover w-full h-full rounded-xl"
           />
         </div>
-        <f-button
-          :size="SIZE.LG"
-          prependIcon="sync"
-          type="text"
-          @click="showSearchByImageModal"
-          class="font-semibold underline"
-          :disabled="isSlimMaterialsLoading"
-          >{{ $t('RR0489') }}</f-button
-        >
+        <div class="flex justify-center gap-2">
+          <f-button
+            :size="SIZE.MD"
+            prependIcon="delete_forever"
+            type="text"
+            @click="closeImageSearch"
+            class="flex-1 font-semibold underline text-red-500-v1 hover:text-red-400-v1"
+            :disabled="isLoading"
+            >{{ $t('RR0063') }}</f-button
+          >
+          <f-button
+            :size="SIZE.MD"
+            prependIcon="sync"
+            type="text"
+            @click="showSearchByImageModal"
+            class="flex-1 font-semibold underline"
+            :disabled="isLoading"
+            >{{ $t('WW0175') }}</f-button
+          >
+        </div>
       </div>
     </template>
     <template #default>

@@ -180,6 +180,7 @@ const {
   isSearching,
   isLoading,
   isOpenFilterPanel,
+  isSlimMaterialsLoading
 } = storeToRefs(assetsLibraryStore)
 const isEnableImageSearch = computed(
   () => store.getters['permission/isEnableImageSearch']
@@ -273,6 +274,7 @@ const showSearchByImageModal = () => {
     },
     properties: {
       onFinish: async (file: File) => {
+        isSlimMaterialsLoading.value = true
         await searchStore.setImageInput(file)
         store.dispatch('helper/closeModal')
         handleSearch('image')
