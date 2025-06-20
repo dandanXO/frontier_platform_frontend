@@ -397,6 +397,7 @@ const updateMaterial = async (payload: {
       body: ModalUploadProgress,
       classModal: 'w-116',
       closable: false,
+      title: t('UU0191'),
       properties: {
         theme: THEME.LIGHT,
         hasUpload: true,

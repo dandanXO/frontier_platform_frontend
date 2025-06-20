@@ -1,21 +1,21 @@
 <template lang="pug">
-div(class="text-black font-bold text-xl") {{ $t('UU0191') }}
-div(class="flex justify-center items-center")
+//- div(class="text-xl font-bold text-black") {{ $t('UU0191') }}
+div(class="flex items-center justify-center")
   f-svg-icon(iconName="upload_now" size="104")
 div
-  div(class="w-full bg-grey-50-v1 h-4 overflow-hidden rounded-full")
+  div(class="w-full h-4 overflow-hidden rounded-full bg-grey-50-v1")
     div(
-      class="bg-green-500-v1 transition-all duration-300 h-4 rounded-full"
+      class="h-4 transition-all duration-300 rounded-full bg-green-500-v1"
       :style="{ width: `${progressPercentage}%` }"
     )
 
-  div(class="text-red-500-v1 text-xs flex justify-between mt-2") 
+  div(class="flex justify-between mt-2 text-xs text-red-500-v1") 
     div(class="") {{ $t('UU0192') }}
-    div(class="text-body2 text-black font-bold") {{ progressPercentage }}%
+    div(class="font-bold text-black text-body2") {{ progressPercentage }}%
 
 button(
   @click="onHandleCancel"
-  class="hover:bg-red-50-v1 h-auto py-2 w-full border border-red-200 rounded-xl text-red-500-v1 font-bold flex justify-center"
+  class="flex justify-center w-full h-auto py-2 font-bold border border-red-200 hover:bg-red-50-v1 rounded-xl text-red-500-v1"
 ) 
   div(class="mr-1")
     f-svg-icon(iconName="stop_upload" size="24")
