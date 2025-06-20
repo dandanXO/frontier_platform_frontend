@@ -357,7 +357,7 @@ const filteredBlockListItems = computed(() => {
   }
 
   const blockList: MenuBlock[] = []
-  innerMenuTree.value.blockList.forEach((block) => {
+  innerMenuTree.value.blockList?.forEach((block) => {
     const filteredMenuList = block.menuList.filter((menu) =>
       menu.title.toLowerCase().includes(searchInput.value.toLowerCase())
     )
