@@ -1,7 +1,7 @@
 <template lang="pug">
 button(
-  class="flex items-center justify-center font-normal rounded gap-x-1 whitespace-nowrap"
-  :class="[btnSize, btnType, isFullWidth]"
+  class="flex items-center justify-center rounded gap-x-1 whitespace-nowrap"
+  :class="[btnSize, btnType, isFullWidth, version === 'v2' ? 'font-semibold' : 'font-normal ']"
   :disabled="disabled"
 )
   f-svg-icon(
@@ -31,7 +31,7 @@ const props = withDefaults(
   defineProps<{
     htmlType?: 'button' | 'submit' | 'reset'
     theme?: `${THEME}`
-    size?: `${SIZE}` | 'special' | 'xsm'
+    size?: `${SIZE}` | 'special' | 'xsm' | 'xs' | 'xl'
     type?: BtnType
     isIcon?: boolean
     prependIcon?: string
@@ -40,6 +40,7 @@ const props = withDefaults(
     parentIsFlex?: boolean
     isFullWidth?: boolean
     animation?: boolean
+    version?: 'v1' | 'v2'
   }>(),
   {
     htmlType: 'button',
@@ -52,10 +53,27 @@ const props = withDefaults(
     parentIsFlex: false,
     isFullWidth: false,
     animation: false,
+    version: 'v1',
   }
 )
 
 const btnSize = computed(() => {
+  if (props.version === 'v2') {
+    switch (props.size) {
+      case 'xs':
+        return ['h-fit', 'text-xs', 'min-w-24', 'px-3', 'py-1']
+      case 'sm':
+        return ['text-sm', 'min-w-24', 'px-3', 'py-1']
+      case 'md':
+        return ['text-sm', 'min-w-24', 'px-3', 'py-2']
+      case 'lg':
+        return ['text-base', 'px-3', 'py-3']
+      case 'xl':
+        return ['text-base', 'px-3', 'py-4']
+      default:
+        return []
+    }
+  }
   const result = []
   switch (props.size) {
     case 'lg':
@@ -83,6 +101,16 @@ const btnType = computed(() => {
   if (props.theme === THEME.LIGHT) {
     switch (props.type) {
       case 'primary':
+        if (props.version === 'v2') {
+          return [
+            'bg-green-500-v1',
+            'text-white',
+            'hover:bg-green-600-v1',
+            'disabled:bg-grey-400-v1',
+            'focus:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]',
+            'focus:outline-none',
+          ]
+        }
         return [
           'bg-brand-solid',
           'text-white',
@@ -90,6 +118,20 @@ const btnType = computed(() => {
           'disabled:bg-grey-150',
         ]
       case 'secondary': {
+        if (props.version === 'v2') {
+          return [
+            'bg-transparent',
+            'text-green-500-v1',
+            'border',
+            'border-green-200-v1',
+            'disabled:text-grey-400-v1',
+            'disabled:border-grey-400-v1',
+            'disabled:hover:bg-transparent',
+            'hover:bg-green-50-v1',
+            'focus:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]',
+            'focus:outline-none',
+          ]
+        }
         const result = [
           'bg-transparent',
           'text-brand-solid',
@@ -105,6 +147,17 @@ const btnType = computed(() => {
         return result
       }
       case 'text':
+        if (props.version === 'v2') {
+          return [
+            'bg-transparent',
+            'text-cyan-500-v1',
+            'hover:text-cyan-600-v1',
+            'disabled:text-grey-400-v1',
+            'underline',
+            'focus:shadow-[0px_0px_0px_2px_rgba(138,221,244,1.00)]',
+            'focus:outline-none',
+          ]
+        }
         return [
           'bg-transparent',
           'text-link',

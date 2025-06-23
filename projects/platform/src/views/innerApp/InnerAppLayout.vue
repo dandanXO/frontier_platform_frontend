@@ -12,16 +12,16 @@
 </style>
 
 <template lang="pug">
-div(class="h-full flex overflow-x-hidden w-screen")
+div(class="flex w-screen h-full overflow-x-hidden")
   sidebar(clas="flex-shrink-0")
-  main(class="flex-grow flex flex-col min-w-0 relative bg-primary")
+  main(class="relative flex flex-col flex-grow min-w-0 bg-primary")
     modal-pipeline
     assets-header(v-if="$route.name === ROUTE_NAMES.ASSETS")
     router-view(
       v-if="isReloadInnerApp"
       :key="$route.name?.toString() + $route.path"
       v-slot="{ Component }"
-      class="overflow-y-auto flex-grow"
+      class="flex-grow overflow-y-auto"
     )
       suspense
         component(:is="Component")
@@ -29,7 +29,7 @@ div(class="h-full flex overflow-x-hidden w-screen")
           #fallback
           v-if="!$route.matched.some((r) => r.name === 'Assets')"
         )
-          div(class="h-full flex justify-center items-center" data-cy="loading-indicator")
+          div(class="flex items-center justify-center h-full" data-cy="loading-indicator")
             f-svg-icon(iconName="loading" size="92" class="text-primary-500")
     notify-bar-buffer(
       v-if="isInInnerApp && planStatus.BUFFER"
