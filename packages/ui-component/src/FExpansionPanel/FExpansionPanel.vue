@@ -23,16 +23,18 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['expand', 'collapse'])
+const emit = defineEmits(['expand', 'collapse', 'update:isExpand'])
 const isExpand = ref(props.isExpand)
 
 const expand = () => {
   isExpand.value = true
   emit('expand')
+  emit('update:isExpand', true)
 }
 
 const collapse = () => {
   isExpand.value = false
   emit('collapse')
+  emit('update:isExpand', false)
 }
 </script>

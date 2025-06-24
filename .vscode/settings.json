@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
   "i18n-ally.localesPaths": ["./packages/i18n/locales"],
   "i18n-ally.sourceLanguage": "en-US",
