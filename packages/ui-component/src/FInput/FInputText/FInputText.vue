@@ -218,8 +218,7 @@ import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import useInput from '../useInput'
-import { THEME } from '../../constants'
-
+import { THEME, VERSION } from '../../constants'
 const { te } = useI18n()
 const slots = useSlots()
 
@@ -379,6 +378,10 @@ const props = defineProps({
   readonly: {
     type: Boolean,
     default: false,
+  },
+  version: {
+    type: VERSION,
+    default: VERSION.V1,
   },
 })
 const emit = defineEmits([
@@ -640,7 +643,13 @@ const classMain = computed(() => {
         )
         break
       case STATE.DISABLED:
-        classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-100')
+        classList.push(
+          'cursor-not-allowed',
+          props.version === VERSION.V2
+            ? 'border-grey-400-v1'
+            : 'border-grey-200',
+          props.version === VERSION.V2 ? 'bg-grey-100-v1' : 'bg-grey-100'
+        )
         break
     }
   } else {
@@ -728,7 +737,7 @@ const classInput = computed(() => {
       case STATE.DISABLED:
         classList.push(
           'placeholder:text-grey-250',
-          'text-grey-250',
+          props.version === VERSION.V2 ? 'text-black' : 'text-grey-250',
           'cursor-not-allowed'
         )
         break

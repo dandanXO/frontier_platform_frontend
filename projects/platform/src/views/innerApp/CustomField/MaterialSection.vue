@@ -1,6 +1,6 @@
 <template>
   <section class="mb-8">
-    <h2 class="text-xl font-bold py-6">{{ title }}</h2>
+    <h2 class="py-6 text-xl font-bold">{{ title }}</h2>
     <table class="w-full text-sm">
       <TableHeader isListPage />
       <Draggable
@@ -10,6 +10,7 @@
         handle=".drag-handle"
         :animation="150"
         @change="onDragChange"
+        :disabled="!rolePermission"
       >
         <template #item="{ element }">
           <CustomFieldRow
@@ -27,9 +28,21 @@
         </template>
       </Draggable>
     </table>
-    <button type="button" class="flex gap-1 ml-3 py-5" @click="openModal">
-      <f-svg-icon class="text-cyan-500-v1" iconName="add" size="24" />
-      <p class="text-cyan-500-v1 font-semibold underline text-sm">
+    <button
+      type="button"
+      class="flex gap-1 py-5 ml-3"
+      @click="(e) => openModal(e, null, 'add')"
+      :disabled="!rolePermission"
+    >
+      <f-svg-icon
+        :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
+        iconName="add"
+        size="24"
+      />
+      <p
+        class="text-sm font-semibold underline"
+        :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
+      >
         {{ $t('RR0527') }}
       </p>
     </button>
@@ -47,6 +60,8 @@ import { CustomFieldTabType } from '@frontier/platform-web-sdk'
 import { useNotifyStore } from '../../../stores/notify'
 import { VERSION } from '@frontier/constants'
 import { useI18n } from 'vue-i18n'
+import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
+
 const store = useStore()
 const { t } = useI18n()
 const organization = computed(() => store.getters['organization/organization'])
@@ -63,7 +78,11 @@ const { tabType, title, fieldList, updateCustomFieldList } =
   defineProps<Props>()
 
 const sortedFieldList = ref<any>([])
-
+const rolePermission = computed(() => {
+  const roleId = store.getters['organization/orgUser/orgUser'].roleID
+  const permissionList = PERMISSION_MAP[roleId]
+  return permissionList.includes(FUNC_ID.CUSTOM_FIDLE_EDIT)
+})
 watch(
   () => fieldList,
   (newValue) => {

@@ -160,9 +160,11 @@ const btnType = computed(() => {
         }
         return [
           'bg-transparent',
-          'text-link',
-          'hover:text-link-hover',
+          'text-green-500-v1',
+          'hover:text-green-500-v1',
           'disabled:text-grey-250',
+          'disabled:border-grey-250',
+          'disabled:hover:text-grey-250'
         ]
       case 'critical-outline': {
         const result = [

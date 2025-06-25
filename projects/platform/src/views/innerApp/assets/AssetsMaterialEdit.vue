@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center" data-theme="new")
+div(class="flex justify-center w-full h-full" data-theme="new")
   div(class="w-260 h-fit pb-25")
-    div(class="pt-12 pb-9 flex justify-between")
+    div(class="flex justify-between pt-12 pb-9")
       global-breadcrumb-list(
         :breadcrumbList="breadcrumbList"
         @click:item="$event.goTo?.()"
@@ -32,12 +32,12 @@ div(class="w-full h-full flex justify-center" data-theme="new")
           :material="material"
         )
         block-material-u3m(:material="material")
-      div(class="w-full flex flex-col divide-y divide-grey-250")
+      div(class="flex flex-col w-full divide-y divide-grey-250")
         div(class="w-full")
           f-tabs(:tabList="tabList" keyField="id" class="pt-10")
             template(#default="{ currentTab }")
-              div(class="w-full pt-10 flex flex-row gap-x-16")
-                div(class="w-full grid gap-y-10")
+              div(class="flex flex-row w-full pt-10 gap-x-16")
+                div(class="grid w-full gap-y-10")
                   block-material-specification(
                     v-show="currentTab === TAB.SPECIFICATION"
                   )
@@ -50,7 +50,7 @@ div(class="w-full h-full flex justify-center" data-theme="new")
                     v-show="currentTab === TAB.ATTACHMENTS"
                     @selectCover="handleSelectCoverFromAttachmentFiles"
                   )
-                  div(class="flex flex-row gap-x-2 pl-15 justify-end w-full")
+                  div(class="flex flex-row justify-end w-full gap-x-2 pl-15")
                     f-button(type="secondary" size="md" @click="cancel") {{ $t('UU0002') }}
                     f-button(
                       type="primary"
@@ -71,7 +71,7 @@ div(class="w-full h-full flex justify-center" data-theme="new")
                   ) {{ isOpenSampleCard ? $t('UU0026') : $t('UU0033') }}
                   div(
                     v-if="isOpenSampleCard"
-                    class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0"
+                    class="sticky top-0 flex-shrink-0 ml-8 w-75 h-fit"
                   )
                     cropper-default-layout(
                       v-if="isImageCropConfigReady"
@@ -86,7 +86,7 @@ div(class="w-full h-full flex justify-center" data-theme="new")
                           :cropRectSize="cropRectSize"
                           @update:options="Object.assign(cropperConfig.options, $event)"
                         )
-                    div(v-else class="h-111 flex justify-center items-center")
+                    div(v-else class="flex items-center justify-center h-111")
                       f-svg-icon(iconName="loading" size="54" class="text-primary-400")
 </template>
 
@@ -401,6 +401,7 @@ const updateMaterial = async (payload: {
       properties: {
         theme: THEME.LIGHT,
         hasUpload: true,
+        title: 'test title',
         onHandleCancel: () => {
           store.dispatch('helper/closeModal')
           assetsStore.updateabortController()

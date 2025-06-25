@@ -577,6 +577,8 @@
   "RR0582": "Real Impact on New Asset Detail Page",
   "RR0583": "We heard you! The split between view and edit modes made it hard to manage your fabric info. No more guesswork!",
   "RR0584": "Explore",
+  "RR0585": "Only Owner and Admin can Edit",
+  "RR0586": "Custom fields apply organization-wide and can only be edited by Owners or Admins.",
   "UU0001": "Confirm",
   "UU0002": "Cancel",
   "UU0003": "Preview",

@@ -58,7 +58,7 @@
     "vuex"
   ],
   "volar.inlayHints.eventArgumentInInlineHandlers": false,
-  "svg.preview.background": "transparent",
+  "svg.preview.background": "custom",
   "tailwindCSS.experimental.configFile": "projects/platform/tailwind.config.js",
   "tailwindCSS.includeLanguages": {
     "javascript": "javascript",

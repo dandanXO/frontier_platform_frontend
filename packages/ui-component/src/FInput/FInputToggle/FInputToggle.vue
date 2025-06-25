@@ -2,8 +2,9 @@
   <button
     type="button"
     :class="[
-      'relative inline-flex flex-shrink-0 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer focus:outline-none',
+      'relative inline-flex flex-shrink-0 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full focus:outline-none',
       switchClasses,
+      disabled ? 'cursor-default' : 'cursor-pointer',
     ]"
     :disabled="disabled"
     @click="toggleSwitch"

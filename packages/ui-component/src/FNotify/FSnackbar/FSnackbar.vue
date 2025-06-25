@@ -29,23 +29,23 @@
 </style>
 
 <template lang="pug">
-transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
+transition(:name="version || 'v1'")
   div(
     v-if="isShowSnackbar"
     ref="refContainer"
     :key="id"
     class="fixed left-0 right-0 z-flash-msg px-9"
-    :class="[version === VERSION.V2 ? 'top-[50px]' : 'bottom-5']"
+    :class="[version === VERSION.V2 ? 'top-10' : 'bottom-5']"
     @mouseenter="clearTimer"
     @mouseleave="setTimer"
   )
     div(
       ref="refSnackbar"
       class="flex mx-auto"
-      :class="[getContainerPaddingY, version === VERSION.V2 && bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor, version === VERSION.V2 ? 'w-[512px] items-start rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16 px-4']"
+      :class="[getContainerPaddingY, computedBgColor, version === VERSION.V2 ? 'w-[512px] items-start rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3' : 'w-fit items-start rounded gap-x-4 shadow-16 px-4']"
     )
       div(
-        :class="version === VERSION.V2 ? 'bg-green-100-v1 rounded-full h-10 w-10 flex items-center justify-center mt-1' : ''"
+        :class="version === VERSION.V2 ? `${getIconBgColor} rounded-full h-10 w-10 min-h-10 min-w-10 flex items-center justify-center` : ''"
       )
         f-svg-icon(
           :iconName="NOTIFY_TYPE_ICON[notifyType]"
@@ -76,7 +76,7 @@ transition(:name="version === VERSION.V2 ? 'v2' : 'v1'")
       f-svg-icon(
         v-if="hasCloseButton"
         @click="close"
-        iconName="clear"
+        :iconName="version === VERSION.V2 ? 'close_medium' : 'clear'"
         :size="getIconSize"
         class="cursor-pointer"
         :class="version === VERSION.V2 ? 'text-grey-900-v1 hover:text-green-700-v1 ' : 'text-grey-100 hover:text-primary-300 mt-[3px]'"
@@ -179,7 +179,24 @@ const getIconSize = computed(() => {
 
   throw new Error('unexpected size type')
 })
-
+const computedBgColor = computed(() => {
+  // V2 且 bgColor 為預設時，根據 notifyType 決定顏色
+  if (props.version === VERSION.V2 && props.bgColor === 'bg-grey-800') {
+    switch (props.notifyType) {
+      case NOTIFY_TYPE.WARNING:
+        return 'bg-yellow-50-v1'
+      case NOTIFY_TYPE.ALERT:
+        return 'bg-red-50-v1'
+      case NOTIFY_TYPE.SUCCESS:
+        return 'bg-green-50-v1'
+      case NOTIFY_TYPE.INFO:
+        return 'bg-cyan-50-v1'
+      default:
+        return 'bg-green-50-v1'
+    }
+  }
+  return props.bgColor
+})
 const getIconColor = computed(() => {
   switch (props.notifyType) {
     case NOTIFY_TYPE.INFO:
@@ -192,6 +209,21 @@ const getIconColor = computed(() => {
       return 'text-yellow-500'
     case NOTIFY_TYPE.ALERT:
       return 'text-red-300'
+  }
+
+  throw new Error('unexpected notify type')
+})
+
+const getIconBgColor = computed(() => {
+  switch (props.notifyType) {
+    case NOTIFY_TYPE.INFO:
+      return 'bg-cyan-100-v1'
+    case NOTIFY_TYPE.SUCCESS:
+      return 'bg-green-100-v1'
+    case NOTIFY_TYPE.WARNING:
+      return 'bg-yellow-100-v1'
+    case NOTIFY_TYPE.ALERT:
+      return 'bg-red-100-v1'
   }
 
   throw new Error('unexpected notify type')
