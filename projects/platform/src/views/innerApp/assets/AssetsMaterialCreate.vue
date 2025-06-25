@@ -1,21 +1,21 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center")
+div(class="flex justify-center w-full h-full")
   div(class="w-260 h-fit pb-25")
-    div(class="pt-12 pb-9 flex justify-between")
+    div(class="flex justify-between pt-12 pb-9")
       global-breadcrumb-list(
         :breadcrumbList="breadcrumbList"
         @click:item="$event.goTo?.()"
       )
     div(v-if="materialOptions" class="flex flex-col gap-y-17.5")
       div(class="flex items-center h-16")
-        h5(class="text-h5 font-bold") {{ $t('MI0001') }}
+        h5(class="font-bold text-h5") {{ $t('MI0001') }}
       div(class="flex flex-col divide-y divide-grey-250")
         div(class="pl-15")
           block-material-type
         div(class="pl-15")
           f-tabs(:tabList="tabList" keyField="id" class="pt-10")
             template(#default="{ currentTab }")
-              div(class="pt-10 grid gap-y-10")
+              div(class="grid pt-10 gap-y-10")
                 block-material-specification(
                   v-show="currentTab === TAB.SPECIFICATION"
                 )
@@ -25,7 +25,7 @@ div(class="w-full h-full flex justify-center")
                 block-material-upload-files(
                   v-show="currentTab === TAB.UPLOAD_FILES"
                 )
-      div(class="flex flex-row gap-x-2 pl-15 justify-end w-full")
+      div(class="flex flex-row justify-end w-full gap-x-2 pl-15")
         f-button(type="secondary" size="md" @click="cancel") {{ $t('UU0002') }}
         f-button(
           type="primary"
@@ -61,6 +61,7 @@ import {
   materialFormServiceKey,
   materialMultimediaCreateServiceKey,
   materialU3mSelectServiceKey,
+  THEME,
 } from '@/utils/constants'
 import type {
   AttachmentCreateItem,
@@ -87,6 +88,8 @@ import {
   TRACKER_ERROR_LOCATION,
   track,
 } from '@frontier/lib'
+import ModalUploadProgress from '@/components/common/modal/ModalUploadProgress.vue'
+const assetsStore = useAssetsStore()
 
 const TRACKER_ID = 'Create Asset'
 const { t } = useI18n()
@@ -225,7 +228,6 @@ const createMaterial = async (payload: {
 }) => {
   store.dispatch('helper/openModalLoading')
   const { form, multimediaList, attachmentList, u3m } = payload
-
   const uploadMultiMediaTasks = Promise.all(
     multimediaList.map(async (m) => {
       const uploadOriginalFileTask = uploadFileToS3(m.file, m.file.name)
@@ -330,46 +332,110 @@ const createMaterial = async (payload: {
   const res = await ogBaseAssetsApi('createAssetsMaterial', getReq())
   store.dispatch('helper/closeModalLoading')
 
+  if (u3m) {
+    store.dispatch('helper/pushModalUploadProgress', {
+      body: ModalUploadProgress,
+      classModal: 'w-116',
+      closable: false,
+      title: t('UU0191'),
+      properties: {
+        theme: THEME.LIGHT,
+        hasUpload: true,
+        // title: 'test title',
+        onHandleCancel: () => {
+          store.dispatch('helper/closeModal')
+          assetsStore.updateabortController()
+          store.commit('assets/SET_progressLoaded', 0)
+          store.commit('assets/SET_progressTotal', 0)
+        },
+      },
+      // theme: THEME.LIGHT,
+      // hasUpload: !!u3m,
+    })
+  } else {
+    store.dispatch('helper/pushModalLoading', {
+      theme: THEME.LIGHT,
+    })
+  }
   const material = res.data.result!.material!
   if (u3m) {
     uploadCustomU3m({
       materialId: material.materialId,
       u3mFile: u3m.u3mFile,
       needToGeneratePhysical: u3m.needToGeneratePhysical,
+      // callBackUrlTarget: 'createAssetsMaterial',// not call back because is created already
+      callBackUrlTargetQuery: getReq(),
     })
+      .then(() => {
+        store.dispatch('helper/closeModalLoading')
+        track({
+          eventName: [
+            TRACKER_PREFIX.SUBMIT_DATA,
+            TRACKER_ID,
+            TRACKER_POSTFIX.SUCCESS,
+          ].join(' '),
+          properties: {
+            [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+          },
+        })
+        store.commit('assets/SET_progressLoaded', 0)
+        store.commit('assets/SET_progressTotal', 0)
+        isConfirmedToLeave.value = true
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-how-to-scan',
+          properties: {
+            header: t('DD0096'),
+            title: t('DD0028'),
+            primaryBtnText: t('UU0093'),
+            secondaryBtnText: t('UU0092'),
+            primaryHandler: () => {
+              goToAssets()
+              store.dispatch('helper/closeModalBehavior')
+            },
+            secondaryHandler: () => {
+              goToMaterialUpload()
+              store.dispatch('helper/closeModalBehavior')
+            },
+            materialList: [material],
+          },
+        })
+
+        goToAssetMaterialDetail({}, material.materialId)
+      })
+      .catch(() => {})
+  } else {
+    track({
+      eventName: [
+        TRACKER_PREFIX.SUBMIT_DATA,
+        TRACKER_ID,
+        TRACKER_POSTFIX.SUCCESS,
+      ].join(' '),
+      properties: {
+        [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
+      },
+    })
+    isConfirmedToLeave.value = true
+    store.dispatch('helper/openModalBehavior', {
+      component: 'modal-how-to-scan',
+      properties: {
+        header: t('DD0096'),
+        title: t('DD0028'),
+        primaryBtnText: t('UU0093'),
+        secondaryBtnText: t('UU0092'),
+        primaryHandler: () => {
+          goToAssets()
+          store.dispatch('helper/closeModalBehavior')
+        },
+        secondaryHandler: () => {
+          goToMaterialUpload()
+          store.dispatch('helper/closeModalBehavior')
+        },
+        materialList: [material],
+      },
+    })
+
+    goToAssetMaterialDetail({}, material.materialId)
   }
-
-  track({
-    eventName: [
-      TRACKER_PREFIX.SUBMIT_DATA,
-      TRACKER_ID,
-      TRACKER_POSTFIX.SUCCESS,
-    ].join(' '),
-    properties: {
-      [TRACKER_ADDITIONAL_PROPERTIES.CREATE_MATERIAL_MODE]: viewMode,
-    },
-  })
-  isConfirmedToLeave.value = true
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-how-to-scan',
-    properties: {
-      header: t('DD0096'),
-      title: t('DD0028'),
-      primaryBtnText: t('UU0093'),
-      secondaryBtnText: t('UU0092'),
-      primaryHandler: () => {
-        goToAssets()
-        store.dispatch('helper/closeModalBehavior')
-      },
-      secondaryHandler: () => {
-        goToMaterialUpload()
-        store.dispatch('helper/closeModalBehavior')
-      },
-      materialList: [material],
-    },
-  })
-
-  goToAssetMaterialDetail({}, material.materialId)
 }
 
 const org = computed<Organization>(

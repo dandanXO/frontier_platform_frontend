@@ -401,7 +401,7 @@ const updateMaterial = async (payload: {
       properties: {
         theme: THEME.LIGHT,
         hasUpload: true,
-        title: 'test title',
+        // title: 'test title',
         onHandleCancel: () => {
           store.dispatch('helper/closeModal')
           assetsStore.updateabortController()

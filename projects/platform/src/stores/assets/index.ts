@@ -119,7 +119,7 @@ export const useAssetsStore = defineStore('assets', () => {
     materialId: number
     u3mFile: File
     needToGeneratePhysical: boolean
-    callBackUrlTarget: any
+    callBackUrlTarget?: any
     callBackUrlTargetQuery: {}
   }) => {
     const {
@@ -150,8 +150,10 @@ export const useAssetsStore = defineStore('assets', () => {
         },
         abortController.value.signal // 傳遞取消信號
       )
+      if (callBackUrlTarget) {
+        await ogBaseAssetsApi(callBackUrlTarget, callBackUrlTargetQuery)
+      }
 
-      await ogBaseAssetsApi(callBackUrlTarget, callBackUrlTargetQuery)
       await ogBaseAssetsApi('uploadAssetsMaterialCustomU3m', {
         materialId,
         s3UploadId,
