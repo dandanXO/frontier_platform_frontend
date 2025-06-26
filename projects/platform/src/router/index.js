@@ -259,6 +259,13 @@ const routes = [
               ),
             props: true,
           },
+          // playGround
+          {
+            path: 'threeD-viewer-playground',
+            name: 'threeD-viewer-playground',
+            component: () =>
+              import('@/views/outerApp/embed3DViewer/playGround.vue'),
+          },
           // Assets
           {
             path: 'assets',
