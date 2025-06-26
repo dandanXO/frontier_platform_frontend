@@ -14,12 +14,14 @@ div(
   p(class="text-body1 font-bold pl-1.5 text-primary-inverse self-center") {{ $t('EE0069') }}
   div(class="flex flex-row gap-3")
     f-button(
+      class="h-10"
       size="md"
       type="secondary"
       @click="emit('back')"
       v-if="readyToSubmit && isDoubleSideMaterial"
     ) {{ $t('UU0004') }}
     f-button(
+      class="h-10"
       size="md"
       :disabled="!isValid"
       @click="readyToSubmit ? emit('confirm') : emit('next')"

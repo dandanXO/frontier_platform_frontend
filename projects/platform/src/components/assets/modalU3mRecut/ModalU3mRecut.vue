@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-secondary overflow-y-auto"
+  class="fixed inset-0 flex flex-col w-screen h-screen overflow-y-auto z-modal bg-secondary"
   data-theme="new-dark"
 )
   modal-u3m-recut-header(
@@ -15,9 +15,9 @@ div(
     @confirm="handleConfirm"
     @close="handleClose"
   ) 
-  div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3 inset-0")
+  div(class="absolute inset-0 grid invisible grid-cols-3 grid-rows-3 w-125 h-125")
     div(ref="previewRect")
-  div(class="flex-1 flex")
+  div(class="flex flex-1")
     modal-u3m-recut-sidebar(
       :currentSide="currentSide"
       :handleCropModeChange="handleCropModeChange"
@@ -30,17 +30,25 @@ div(
       :faceSideUrl="faceSideU3mImage?.original"
       :backSideUrl="backSideU3mImage?.original"
     )
-    div(class="flex flex-1")
-      template(v-for="side in sideList" :key="side.sideName")
-        perspective-cropper(
-          v-if="side.sideName === currentSideName"
-          :side="side"
-          :isSquare="side.cropMode === CROP_MODE.SQUARE"
-          :ref="(el) => (side.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(side.sideName, el) : handlePerspectiveCropAreaRefUpdate(side.sideName, el))"
-          @update:editStatus="handlePerspectiveEditStatusChange"
-          :handleGenerateCustomResult="handleGenerateCustomResult"
-        )
-      div
+    div(class="relative flex flex-1")
+      perspective-cropper(
+        v-if="faceSide"
+        :class="[currentSideName === U3M_CUT_SIDE.FACE_SIDE ? 'z-10 opacity-100' : 'z-0 opacity-0', 'absolute inset-0']"
+        :side="faceSide"
+        :isSquare="faceSide.cropMode === CROP_MODE.SQUARE"
+        :ref="(el) => (faceSide.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(U3M_CUT_SIDE.FACE_SIDE, el) : handlePerspectiveCropAreaRefUpdate(U3M_CUT_SIDE.FACE_SIDE, el))"
+        @update:editStatus="handlePerspectiveEditStatusChange"
+        :handleGenerateCustomResult="handleGenerateCustomResult"
+      )
+      perspective-cropper(
+        v-if="backSide"
+        :class="[currentSideName === U3M_CUT_SIDE.BACK_SIDE ? 'z-10 opacity-100' : 'z-0 opacity-0', 'absolute inset-0']"
+        :side="backSide"
+        :isSquare="backSide.cropMode === CROP_MODE.SQUARE"
+        :ref="(el) => (backSide.cropMode === CROP_MODE.SQUARE ? handleCropAreaRefUpdate(U3M_CUT_SIDE.BACK_SIDE, el) : handlePerspectiveCropAreaRefUpdate(U3M_CUT_SIDE.BACK_SIDE, el))"
+        @update:editStatus="handlePerspectiveEditStatusChange"
+        :handleGenerateCustomResult="handleGenerateCustomResult"
+      )
 </template>
 
 <script setup lang="ts">
@@ -136,9 +144,6 @@ const refBackSidePerspectiveCropArea = ref<InstanceType<
 > | null>(null)
 const faceSide = ref<U3mSide>()
 const backSide = ref<U3mSide>()
-const sideList = computed(() => {
-  return [faceSide.value, backSide.value].filter((s) => !!s) as U3mSide[]
-})
 
 const currentSide = ref<U3mSide>()
 const currentSideName = computed(() => currentSide.value?.sideName)
@@ -558,7 +563,9 @@ onMounted(async () => {
       },
       cropMode: CROP_MODE.SQUARE,
       croppedImage: null,
-      perspectiveCropRecord: u3mImage.cropRecord.perspectiveCropRecord,
+      perspectiveCropRecord:
+        u3mImage.cropRecord.perspectiveCropRecord ||
+        u3mImage.cropRecord.squareCropRecord,
       config,
       scaleSizeInCm,
       scaleStartInCm: scaleSizeInCm,

@@ -256,7 +256,7 @@ const onFindPattern = async () => {
   isFindPatternButtonVisible.value = false
 }
 const currentCoords = computed(() => {
-  return props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap()
+  return props.refSideCropperArea?.refPerspectiveCanvas?.getCoordsMap() || {}
 })
 
 function areRectanglesEqual(r1: any, r2: any) {
