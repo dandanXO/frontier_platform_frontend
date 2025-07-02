@@ -135,7 +135,7 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
       sectionTitle: title,
       initialField,
       type,
-      fieldNames: sortedFieldList.value.map((field) => ({
+      fieldNames: sortedFieldList.value.map((field: any) => ({
         customFieldId: field.customFieldId,
         name: field.name,
       })),
@@ -157,7 +157,7 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
               customFieldOptionList: data.customFieldOptionList,
               isPublic: data.isPublic,
               applyTo: data.applyTo,
-              sort: 1,
+              sort: initialField.sort,
             },
           })
           updateCustomFieldList(res.data.result)
@@ -172,7 +172,10 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
               customFieldOptionList: data.customFieldOptionList,
               isPublic: data.isPublic,
               applyTo: data.applyTo,
-              sort: 1,
+              sort:
+                Math.max(
+                  ...sortedFieldList.value.map((field: any) => field.sort)
+                ) + 1,
             },
           })
           updateCustomFieldList(res.data.result)

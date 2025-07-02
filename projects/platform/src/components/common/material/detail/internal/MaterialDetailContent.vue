@@ -56,17 +56,22 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
     div(class="flex flex-col gap-8")
       f-accordion(:title="$t('MI0005')")
         specification-section(:material="material" :class="SECTION_CLASS")
-
       f-accordion(
         :title="tagsTitle"
         :desc="tagsDesc"
         :viewOnly="isTagsTabsEmpty"
+        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material) }"
       )
-        tags-section(:class="SECTION_CLASS" v-if="!isTagsTabsEmpty")
+        tags-section(
+          :class="SECTION_CLASS"
+          v-if="!isTagsTabsEmpty"
+          :material="material"
+        )
       f-accordion(
         :title="$t('EE0129')"
         :desc="certList.length ? undefined : $t('RR0564')"
         :viewOnly="!certList.length"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material) }"
       )
         div(
           class="!flex-row w-full flex-wrap"
@@ -83,6 +88,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0134')"
         :desc="withPrices ? undefined : $t('RR0565')"
         :viewOnly="!withPrices"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material) }"
       )
         price-section(
           :material="material"
@@ -93,6 +99,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0135')"
         :desc="withInventoryData ? undefined : $t('RR0566')"
         :viewOnly="!withInventoryData"
+        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterial.func(material) }"
       )
         inventory-section(
           :material="material"
@@ -103,6 +110,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0298')"
         :desc="withAttachments ? $t('RR0558') : $t('RR0563')"
         :viewOnly="!withAttachments"
+        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterial.func(material) }"
       )
         attachments-section(
           :material="material"
@@ -157,6 +165,7 @@ import InventorySection from '../InventorySection.vue'
 import AttachmentsSection from '../AttachmentsSection.vue'
 import EcoImpactorSection from '../EcoImpactorSection.vue'
 import StarTrustSection from '../StarTrustSection.vue'
+import ActionButton from '@/components/assets/modalU3mRecut/ActionButton.vue'
 
 const SECTION_CLASS = 'flex flex-col gap-3'
 
@@ -190,7 +199,7 @@ const { getCustomFieldList } = customFieldStore
 
 const withInventoryData = computed(
   () =>
-    inventorySections.value.length && props.material.internalInfo?.nativeCode
+    inventorySections.value.length || props.material.internalInfo?.nativeCode
 )
 
 const withAttachments = computed(

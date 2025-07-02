@@ -8,14 +8,18 @@ div(class="!gap-5")
   )
   div(class="grid w-full px-8 gap-y-5")
     div(v-for="spec in filteredCommonSpecs" class="flex w-full gap-4" :key="spec.key")
-      p(class="text-base font-bold break-words w-50 text-secondary-text") {{ spec.name }}
+      p(
+        class="text-base font-bold break-words w-50"
+        :class="[missingImportantSpecs && !spec.value && spec.isRequired ? 'text-red-500-v1' : 'text-secondary-text']"
+      ) {{ spec.name }}
       expandable-text(
         containerClass="text-sm break-words cursor-text"
         :class="[spec.value ? 'text-primary-inverse' : 'text-disabled', 'flex-1']"
+        :version="VERSION.V2"
       ) {{ spec.value || $t('RR0561') }}
   div(class="flex flex-col gap-2 p-3 border rounded-lg border-primary-border")
     f-tabs(
-      :tabList="tabList"
+      :tabList="filteredTabList"
       keyField="id"
       :type="TAB_TYPE.CONTROL"
       @switch="switchSideType($event.id)"
@@ -27,10 +31,13 @@ div(class="!gap-5")
       div(
         class="flex flex-col gap-4 p-5"
         v-if="withSideSpecs"
-        :class="{ 'border-b border-brand-border': !missingImportantSpecs }"
+        :class="{ 'border-b border-brand-border': showShowMoreData }"
       )
         div(v-for="spec in filteredSideSpecs" class="flex w-full gap-4" :key="spec.key")
-          p(class="text-base font-bold break-words w-50 text-secondary-text") {{ spec.name }}
+          p(
+            class="text-base font-bold break-words w-50"
+            :class="[missingImportantSpecs && !spec.value && spec.isRequired ? 'text-red-500-v1' : 'text-secondary-text']"
+          ) {{ spec.name }}
 
           expandable-text(
             containerClass="text-sm break-words"
@@ -39,10 +46,10 @@ div(class="!gap-5")
       div(
         class="rounded-b-lg cursor-pointer hover:bg-secondary-hover bg-secondary"
         @click="onShowMore"
-        v-if="!missingImportantSpecs"
+        v-if="showShowMoreData"
       )
         div(class="flex justify-end px-5 py-2")
-          f-button(type="text" size="md" class="font-semibold underline")
+          f-button(type="text" size="md" class="font-semibold underline" version="v2")
             p {{ isShowMore ? $t('EE0245') : $t('EE0244') }}
             f-svg-icon(
               size="24"
@@ -79,7 +86,7 @@ div(class="!gap-5")
                     )
 
               expandable-text(
-                containerClass="text-sm break-words text-primary-inverse  cursor-text"
+                containerClass="text-sm break-words text-primary-inverse cursor-text"
                 class="flex-1"
               ) {{ spec.value || $t('RR0561') }}
           div(v-if="showColorPatternData" class="flex w-full gap-4 pb-3")
@@ -87,12 +94,12 @@ div(class="!gap-5")
               p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ $t('RR0309') }}
             material-detail-color-and-pattern(
               :pantoneList="pantoneList ?? undefined"
-              :colorInfo="colorInfo ?? undefined"
-              :patternInfo="patternInfo ?? undefined"
+              :colorInfo="colorInfo?.value ? { ...colorInfo, value: colorInfo.value } : undefined"
+              :patternInfo="patternInfo?.value ? { ...patternInfo, value: patternInfo.value } : undefined"
               class="flex-1"
             )
   custom-fields-section(
-    v-if="customFieldList"
+    v-if="(props.material?.customFieldList?.specificationList?.length ?? 0) > 0"
     :customFields="customFieldList.specificationList"
     :materialCustomFields="props.material.customFieldList?.specificationList"
   )
@@ -103,20 +110,25 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 
-import {
-  type MaterialSide,
-  type MaterialWovenConstruction,
-  type Material,
+import type {
+  MaterialSide,
+  MaterialWovenConstruction,
+  Material,
 } from '@frontier/platform-web-sdk'
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import { TYPE as ALERT_TYPE } from '@frontier/ui-component/src/FNotify/FAlert/FAlert.vue'
 import { useCustomFieldStore } from '@/stores/customField'
-import { MATERIAL_SIDE_TYPE, TOOLTIP_PLACEMENT } from '@/utils/constants'
+import {
+  MATERIAL_SIDE_TYPE,
+  TOOLTIP_PLACEMENT,
+  VERSION,
+} from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import useUser from '@/composables/useUser'
 import ExpandableText from './ExpandableText.vue'
 import MaterialDetailColorAndPattern from './internal/MaterialDetailColorAndPattern.vue'
 import CustomFieldsSection from './CustomFieldsSection.vue'
+import isEmpty from 'lodash/isEmpty'
 
 interface Spec {
   key: string
@@ -139,6 +151,7 @@ const {
   patternInfo,
   colorInfo,
 } = useMaterial(ref(props.material))
+
 const customFieldStore = useCustomFieldStore()
 const { customFieldList } = storeToRefs(customFieldStore)
 const { isInternalUser } = useUser()
@@ -173,17 +186,32 @@ const tabList = computed(() => {
     {
       id: MATERIAL_SIDE_TYPE.FACE,
       name: t('EE0231'),
+      icon: '',
     },
     {
       id: MATERIAL_SIDE_TYPE.MIDDLE,
       name: t('EE0243'),
+      icon: '',
     },
     {
       id: MATERIAL_SIDE_TYPE.BACK,
       name: t('EE0232'),
+      icon: '',
     },
   ]
   return list
+})
+
+const filteredTabList = computed(() => {
+  const mapping = {
+    [MATERIAL_SIDE_TYPE.FACE]: 'faceSide',
+    [MATERIAL_SIDE_TYPE.MIDDLE]: 'middleSide',
+    [MATERIAL_SIDE_TYPE.BACK]: 'backSide',
+  }
+
+  return tabList.value.filter(
+    (tab) => (props.material as any)?.[mapping[tab.id]] !== null
+  )
 })
 
 const showColorPatternData = computed(
@@ -193,11 +221,23 @@ const showColorPatternData = computed(
       currentSideType.value === MATERIAL_SIDE_TYPE.BACK &&
       props.material.isAutoSyncFaceToBackSideInfo
     ) &&
-    isInternalUser
+    isInternalUser &&
+    ((pantoneList.value?.length ?? 0) > 0 ||
+      colorInfo.value?.value.color ||
+      colorInfo.value?.value.customPropertyList.length > 0 ||
+      patternInfo.value?.value.pattern ||
+      patternInfo.value?.value.customPropertyList.length > 0)
 )
 
-const { t } = useI18n()
+const showShowMoreData = computed(() => {
+  return (
+    filteredMoreSpecs.value
+      .map((spec) => spec.value)
+      .some((value) => !!value) || showColorPatternData.value
+  )
+})
 
+const { t } = useI18n()
 const canExtendContent = (text: string, numberOfLine: number) => {
   const p = document.createElement('p')
   p.innerText = text

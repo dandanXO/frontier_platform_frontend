@@ -8,11 +8,21 @@ div(class="flex flex-col gap-5")
     @switch="switchTab"
     tabItemContainerStyle="flex-1 justify-center items-center"
     tabListContainerStyle=""
+    :version="VERSION.V2"
   )
 
   template(v-if="currentTabId === TAB_ID.PUBLIC")
-    div(class="flex flex-col p-2" v-if="!material.multimediaList.length")
+    div(
+      class="flex flex-row items-center justify-center gap-2 p-2"
+      v-if="!material.multimediaList.length"
+    )
       p(class="text-sm primary-inverse text-center") {{ $t('RR0563') }}
+      f-button(
+        type="secondary"
+        size="sm"
+        :version="VERSION.V2"
+        @click="editMaterial.func(material)"
+      ) {{ $t('UU0022') }}
     div(class="flex flex-wrap gap-5" v-else)
       attachment-file(
         v-for="(attachment, index) in material.multimediaList"
@@ -24,8 +34,18 @@ div(class="flex flex-col gap-5")
         @click="openAttachmentExternalViewMode(index)"
       )
   template(v-if="currentTabId === TAB_ID.PRIVATE")
-    div(class="flex flex-col p-2" v-if="!material.internalInfo?.attachmentList?.length")
+    div(
+      class="flex flex-row items-center justify-center gap-2 p-2"
+      v-if="!material.internalInfo?.attachmentList?.length"
+    )
       p(class="text-sm primary-inverse text-center") {{ $t('RR0563') }}
+      f-button(
+        type="secondary"
+        size="sm"
+        :version="VERSION.V2"
+        @click="editMaterial.func(material)"
+      ) {{ $t('UU0022') }}
+
     div(class="flex flex-wrap gap-5" v-else)
       attachment-file(
         v-for="(attachment, index) in material.internalInfo?.attachmentList"
@@ -45,11 +65,10 @@ import { useI18n } from 'vue-i18n'
 
 import { type Material } from '@frontier/platform-web-sdk'
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
-import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
-import useAttachmentUpdate from '@/composables/material/useAttachmentUpdate'
-import useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
+import { FUNC_ID, PERMISSION_MAP, VERSION } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import AttachmentFile from './AttachmentFile.vue'
+import useAssets from '@/composables/useAssets'
 
 enum TAB_ID {
   PUBLIC = 0,
@@ -63,6 +82,8 @@ interface Tab {
 const props = defineProps<{ material: Material }>()
 const store = useStore()
 const { t } = useI18n()
+
+const { editMaterial } = useAssets()
 
 const { attachmentViewModeList } = useMaterial(ref(props.material))
 const currentTabId = ref<TAB_ID>(TAB_ID.PUBLIC)
@@ -78,6 +99,7 @@ const tabList = computed<Tab[]>(() => {
     {
       id: TAB_ID.PUBLIC,
       name: t('FF0030'),
+      value: props.material.multimediaList.length || 0,
     },
   ]
 
@@ -85,6 +107,7 @@ const tabList = computed<Tab[]>(() => {
     list.push({
       id: TAB_ID.PRIVATE,
       name: t('FF0031'),
+      value: props.material.internalInfo?.attachmentList?.length || 0,
     })
   }
   return list

@@ -82,7 +82,7 @@ const orgId = computed<number>(() => store.getters['organization/orgId'])
 const { status } = valueAddedService.value.starTrust || {}
 
 const isActive = computed(
-  () => status.id === VALUE_ADDED_SERVICE_STATUS.ACTIVATE
+  () => status?.id === VALUE_ADDED_SERVICE_STATUS.ACTIVATE
 )
 
 const redirectUrl = computed(() => {
@@ -180,14 +180,14 @@ onMounted(async () => {
       co2DistributionStage,
       co2ProcessStage,
       co2RawMaterialStage,
-    } = data.result.footprintData
+    } = data.result.footprintData || {}
 
     startTrustToken.value = stToken ?? ''
     isCarbonFootprintData.value =
-      status.id ===
+      status?.id ===
       GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.Complete
     isProcessingCarbonFootprintData.value =
-      status.id ===
+      status?.id ===
       GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.InProgress
     distribution.value = parseAndFormatNumber(co2DistributionStage) ?? 0
     process.value = parseAndFormatNumber(co2ProcessStage) ?? 0

@@ -3,7 +3,7 @@ div
   material-detail-internal(
     :material="nodeMaterial.material"
     :locationList="locationList"
-    class="mx-auto w-230 pb-25"
+    class="mx-auto pb-25"
   )
 </template>
 

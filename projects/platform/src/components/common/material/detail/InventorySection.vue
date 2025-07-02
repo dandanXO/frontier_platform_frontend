@@ -8,6 +8,7 @@ div(class="flex flex-col gap-5")
     @switch="switchTab"
     tabItemContainerStyle="flex-1 justify-center items-center"
     tabListContainerStyle=""
+    :version="VERSION.V2"
   )
   div(class="flex flex-col gap-1 text-sm" v-if="currentTabId === TAB_ID.PUBLIC")
     p(class="text-secondary-text font-bold") {{ $t('RR0034') }}
@@ -35,8 +36,9 @@ import useInventorySection, {
   TAB_ID,
 } from '@/composables/material/useInventorySection'
 import { type Material } from '@frontier/platform-web-sdk'
+import { VERSION } from '@frontier/constants'
 
-const props = defineProps<{ material: Material }>()
+defineProps<{ material: Material }>()
 const { inventorySections, switchTab, tabList, currentTabId } =
-  useInventorySection(props.material)
+  useInventorySection()
 </script>

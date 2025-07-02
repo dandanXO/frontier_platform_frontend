@@ -25,7 +25,9 @@
               v-if="tab.icon"
               :iconName="tab.icon"
               :size="iconSize"
-              :class="[centerIcon ? 'flex items-center justify-center' : 'mr-1']"
+              :class="[
+                centerIcon ? 'flex items-center justify-center' : 'mr-1',
+              ]"
               classContent="bg-grey-950-v1"
             ></f-svg-icon>
             <p class="cursor-pointer text-body2 whitespace-nowrap">
@@ -43,6 +45,17 @@
           <p class="cursor-pointer text-body2 whitespace-nowrap">
             {{ tab.name }}
           </p>
+          <div
+            v-if="
+              version === VERSION.V2 &&
+              tab.value !== null &&
+              tab.value !== undefined
+            "
+            :class="counterStyle(tab)"
+            class="w-6 h-6 flex items-center justify-center text-xs rounded"
+          >
+            {{ tab.value }}
+          </div>
         </template>
 
         <div
@@ -64,7 +77,7 @@
 
 <script lang="ts">
 import FTooltip from '../FTooltip/FTooltip/FTooltip.vue'
-import { TOOLTIP_PLACEMENT } from '@frontier/constants'
+import { TOOLTIP_PLACEMENT, VERSION } from '@frontier/constants'
 export default {
   name: 'FTabs',
 }
@@ -89,6 +102,7 @@ export interface TabItem {
   icon: string
   disabled?: boolean
   [key: string]: any
+  value?: number | null
 }
 
 export interface Props {
@@ -96,6 +110,7 @@ export interface Props {
   keyField?: string
   theme?: 'new' | 'startrust' | 'new-dark'
   /**
+   *
    * To be equal to the value of [keyField] in `tabList` item
    */
   initValue?: any
@@ -104,6 +119,7 @@ export interface Props {
   type?: TYPE
   iconSize?: string
   centerIcon?: boolean
+  version?: VERSION
 }
 </script>
 
@@ -116,6 +132,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: TYPE.LINE,
   iconSize: '16',
   centerIcon: false,
+  version: VERSION.V1,
 })
 const emit = defineEmits(['switch'])
 
@@ -128,47 +145,101 @@ const switchTab = (tab: TabItem) => {
 }
 
 const ListContainerStyle = computed(() => {
-  const styleMap: Record<TYPE, string> = {
-    //Line still using the old design system style
-    [TYPE.LINE]: 'border-b border-grey-250 h-10',
-
-    [TYPE.CONTROL]: 'bg-secondary p-1 rounded-lg',
-    [TYPE.PILLS]: 'p-1 rounded-lg',
-    // Use 'rounded' for the container and add min-height
-    [TYPE.SEGMENTED]: 'border border-grey-300 rounded inline-flex min-h-[32px]',
+  const styleMap: Record<TYPE, Record<VERSION, string>> = {
+    [TYPE.LINE]: {
+      [VERSION.V1]: 'border-b border-grey-250 h-10',
+      [VERSION.V2]: 'border-b border-grey-200-v1 h-10',
+    },
+    [TYPE.CONTROL]: {
+      [VERSION.V1]: 'bg-secondary p-1 rounded-lg',
+      [VERSION.V2]: 'bg-secondary p-1 rounded-lg',
+    },
+    [TYPE.PILLS]: {
+      [VERSION.V1]: 'p-1 rounded-lg',
+      [VERSION.V2]: 'p-1 rounded-lg',
+    },
+    [TYPE.SEGMENTED]: {
+      [VERSION.V1]: 'border border-grey-300 rounded inline-flex min-h-[32px]',
+      [VERSION.V2]: 'border border-grey-300 rounded inline-flex min-h-[32px]',
+    },
   }
-  return styleMap[props.type]
+  return styleMap[props.type][props.version]
 })
 
 // Extracted base item styles
-const BASE_ITEM_STYLE: Record<TYPE, string> = {
-  [TYPE.LINE]: 'flex cursor-pointer justify-center items-center p-3 gap-2',
-  [TYPE.CONTROL]:
-    'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
-  [TYPE.PILLS]:
-    'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
-  [TYPE.SEGMENTED]:
-    'flex cursor-pointer justify-center items-center align-middle px-2 py-1 text-sm border-r border-grey-300 last:border-r-0',
+const BASE_ITEM_STYLE: Record<TYPE, Record<VERSION, string>> = {
+  [TYPE.LINE]: {
+    [VERSION.V1]: 'flex cursor-pointer justify-center items-center p-3 gap-2',
+    [VERSION.V2]:
+      'flex cursor-pointer justify-center items-center p-3 gap-2 font-bold',
+  },
+  [TYPE.CONTROL]: {
+    [VERSION.V1]:
+      'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
+    [VERSION.V2]:
+      'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
+  },
+  [TYPE.PILLS]: {
+    [VERSION.V1]:
+      'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
+    [VERSION.V2]:
+      'flex cursor-pointer justify-center items-center text-primary-inverse font-bold rounded p-3 gap-2',
+  },
+  [TYPE.SEGMENTED]: {
+    [VERSION.V1]:
+      'flex cursor-pointer justify-center items-center align-middle px-2 py-1 text-sm border-r border-grey-300 last:border-r-0',
+    [VERSION.V2]:
+      'flex cursor-pointer justify-center items-center align-middle px-2 py-1 text-sm border-r border-grey-300 last:border-r-0',
+  },
 }
 
 // Extracted state-based item styles
-const STATE_ITEM_STYLE: Record<TYPE, Record<STATUS_TAB, string>> = {
+// Extracted state-based item styles
+const STATE_ITEM_STYLE: Record<
+  TYPE,
+  Record<VERSION, Record<STATUS_TAB, string>>
+> = {
   [TYPE.LINE]: {
-    [STATUS_TAB.ACTIVE]:
-      'border-b-2 border-primary-400 text-grey-900 font-bold',
-    [STATUS_TAB.INACTIVE]: 'text-grey-600 hover:text-grey-900',
+    [VERSION.V1]: {
+      [STATUS_TAB.ACTIVE]:
+        'border-b-2 border-primary-400 text-grey-900 font-bold',
+      [STATUS_TAB.INACTIVE]: 'text-grey-600 hover:text-grey-900',
+    },
+    [VERSION.V2]: {
+      [STATUS_TAB.ACTIVE]:
+        'border-b-2 border-green-500-v1 text-green-500-v1 font-bold hover:bg-green-50-v1',
+      [STATUS_TAB.INACTIVE]: 'text-grey-600 hover:text-grey-900',
+    },
   },
   [TYPE.CONTROL]: {
-    [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
-    [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    [VERSION.V1]: {
+      [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    },
+    [VERSION.V2]: {
+      [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    },
   },
   [TYPE.PILLS]: {
-    [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
-    [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    [VERSION.V1]: {
+      [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    },
+    [VERSION.V2]: {
+      [STATUS_TAB.ACTIVE]: 'bg-brand-solid text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-secondary text-primary-inverse',
+    },
   },
   [TYPE.SEGMENTED]: {
-    [STATUS_TAB.ACTIVE]: 'bg-green-700 text-white',
-    [STATUS_TAB.INACTIVE]: 'bg-white text-grey-700 hover:bg-grey-50',
+    [VERSION.V1]: {
+      [STATUS_TAB.ACTIVE]: 'bg-green-700 text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-white text-grey-700 hover:bg-grey-50',
+    },
+    [VERSION.V2]: {
+      [STATUS_TAB.ACTIVE]: 'bg-green-700 text-white',
+      [STATUS_TAB.INACTIVE]: 'bg-white text-grey-700 hover:bg-grey-50',
+    },
   },
 }
 
@@ -176,8 +247,8 @@ const STATE_ITEM_STYLE: Record<TYPE, Record<STATUS_TAB, string>> = {
 const itemContainerStyle = (tab: TabItem, index: number): string => {
   const isActive = tab[props.keyField] === currentTab.value
   const status = isActive ? STATUS_TAB.ACTIVE : STATUS_TAB.INACTIVE
-  const baseStyle = BASE_ITEM_STYLE[props.type]
-  const stateStyle = STATE_ITEM_STYLE[props.type][status]
+  const baseStyle = BASE_ITEM_STYLE[props.type][props.version]
+  const stateStyle = STATE_ITEM_STYLE[props.type][props.version][status]
   const classes = [baseStyle, stateStyle]
 
   if (props.type === TYPE.SEGMENTED) {
@@ -190,6 +261,16 @@ const itemContainerStyle = (tab: TabItem, index: number): string => {
   }
 
   return classes.join(' ').trim()
+}
+
+const counterStyle = (tab: TabItem) => {
+  const isActive = tab[props.keyField] === currentTab.value
+  const status = isActive ? STATUS_TAB.ACTIVE : STATUS_TAB.INACTIVE
+  const styleMap: Record<STATUS_TAB, string> = {
+    [STATUS_TAB.ACTIVE]: 'bg-green-500-v1 text-white',
+    [STATUS_TAB.INACTIVE]: 'bg-grey-50-v1 text-black',
+  }
+  return styleMap[status]
 }
 
 defineExpose({

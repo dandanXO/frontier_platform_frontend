@@ -13,15 +13,24 @@ div(class="flex flex-col gap-1")
       type="text"
       @click.prevent="toggleExpand"
       class="underline font-semibold text-sm"
+      :version="version"
     ) {{ $t('RR0567') }}
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
+import { VERSION } from '@frontier/constants'
 
-defineProps<{
-  containerClass?: string
-}>()
+withDefaults(
+  defineProps<{
+    containerClass?: string
+    version?: VERSION
+  }>(),
+  {
+    containerClass: '',
+    version: VERSION.V1,
+  }
+)
 
 const isExpanded = ref(false)
 const descriptionContentRef = ref<HTMLElement | null>(null)

@@ -82,14 +82,14 @@ onMounted(async () => {
       co2DistributionStage,
       co2ProcessStage,
       co2RawMaterialStage,
-    } = data.result.footprintData
+    } = data.result.footprintData || {}
 
     startTrustToken.value = stToken ?? ''
     isCarbonFootprintData.value =
-      status.id ===
+      status?.id ===
       GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.Complete
     isProcessingCarbonFootprintData.value =
-      status.id ===
+      status?.id ===
       GetAssetsMaterialCarbonFootprint200ResponseAllOfResultFootprintDataStatusIdEnum.InProgress
     distribution.value = parseAndFormatNumber(co2DistributionStage) ?? 0
     process.value = parseAndFormatNumber(co2ProcessStage) ?? 0

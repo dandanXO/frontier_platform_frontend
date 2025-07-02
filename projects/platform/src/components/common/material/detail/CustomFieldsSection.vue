@@ -1,6 +1,6 @@
 <template lang="pug">
 f-accordion(
-  :title="$t('RR0572')"
+  :title="$t('RR0587')"
   className="[&_#f-accordion-title]:text-lg [&_#f-accordion-header]:p-5"
 )
   div(class="flex flex-col gap-4")
@@ -10,7 +10,7 @@ f-accordion(
           p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ spec.name }}
         expandable-text(
           containerClass="break-words cursor-text"
-          class="flex-1 text-sm text-primary-inverse "
+          class="flex-1 text-sm text-primary-inverse"
         ) {{ spec.value || $t('RR0561') }}
       template(v-else)
         div(class="flex flex-row items-center gap-2 min-w-50 w-50")

@@ -17,7 +17,11 @@ div(class="flex flex-col gap-y-4 w-112")
         theme="new-dark"
       )
     div(class="absolute flex top-5 right-5 gap-x-5")
-      f-tooltip(:placement="TOOLTIP_PLACEMENT.TOP" theme="new-dark")
+      f-tooltip(
+        :placement="TOOLTIP_PLACEMENT.TOP"
+        theme="new-dark"
+        :offset="[0, 4]"
+      )
         template(#slot:tooltip-trigger)
           f-button(
             v-if="!props.hideMagnifier"

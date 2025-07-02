@@ -46,6 +46,22 @@
         <p class="text-secondary-text text-sm line-clamp-4">
           {{ desc }}
         </p>
+        <f-button
+          v-if="viewOnly && actionButton"
+          :type="'secondary'"
+          :size="'sm'"
+          :version="'v2'"
+          @click.stop="actionButton.onClick()"
+          class="mt-2"
+        >
+          <f-svg-icon
+            v-if="actionButton.iconName"
+            :iconName="actionButton.iconName"
+            size="16"
+            class="mr-2"
+          />
+          {{ actionButton.text }}
+        </f-button>
       </div>
 
       <f-svg-icon
@@ -84,6 +100,11 @@ interface Props {
   headerTooltip?: {
     title?: string
     desc?: string
+  }
+  actionButton?: {
+    text: string
+    iconName?: string
+    onClick: () => void
   }
 }
 const props = defineProps<Props>()
