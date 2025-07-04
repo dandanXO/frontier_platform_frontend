@@ -27,9 +27,13 @@ transition(name="v2")
     div(
       ref="refSnackbar"
       class="flex mx-auto w-[512px] items-start rounded-lg gap-x-3 shadow-[0px_0px_8px_0px_rgba(19,20,20,0.10),_0px_4px_8px_0px_rgba(19,20,20,0.05)] px-3"
-      :class="[getContainerPaddingY, bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor]"
+      :class="[getContainerPaddingY, computedBgColor, bgColor === 'bg-grey-800' ? 'bg-green-50-v1' : bgColor]"
     )
-      div(class="bg-green-100-v1 rounded-full h-10 w-10 flex items-center justify-center")
+      div(
+        class="flex items-center justify-center w-10 h-10 rounded-full grow-1"
+        :class="getIconBgColor"
+        :style="{ 'min-width': 42 + 'px', 'min-height': 42 + 'px' }"
+      )
         f-svg-icon(
           :iconName="NOTIFY_TYPE_ICON[notifyType]"
           :size="getIconSize"
@@ -40,12 +44,12 @@ transition(name="v2")
         :class="[getMessageMinHeight, !shouldBeNextLine && display === DISPLAY.FLEX ? 'flex items-start gap-x-4' : '']"
       )
         div(
-          class="self-center flex-grow font-normal text-sm"
+          class="self-center flex-grow text-sm font-normal"
           :class="[getFontSize, textColor === 'text-grey-100' ? 'text-grey-900-v1' : textColor]"
         )
           p(
             v-if="!!title"
-            class="flex-shrink-0 font-bold text-base text-grey-950-v1"
+            class="flex-shrink-0 text-base font-bold text-grey-950-v1"
             :class="[title ? 'mb-1' : '']"
           ) {{ title }}
           p(v-if="!!messageText") {{ messageText }}
@@ -61,7 +65,7 @@ transition(name="v2")
         @click="close"
         iconName="clear"
         :size="getIconSize"
-        class="cursor-pointer text-grey-900-v1 hover:text-green-700-v1"
+        class="cursor-pointer text-grey-900-v1 hover:text-grey-700-v1"
       )
 </template>
 
@@ -95,6 +99,22 @@ const props = withDefaults(defineProps<NotifySnackbarProps>(), {
   textColor: 'text-grey-100',
 })
 
+const computedBgColor = computed(() => {
+  // V2 且 bgColor 為預設時，根據 notifyType 決定顏色
+  switch (props.notifyType) {
+    case NOTIFY_TYPE.WARNING:
+      return 'bg-yellow-50-v1'
+    case NOTIFY_TYPE.ALERT:
+      return 'bg-red-50-v1'
+    case NOTIFY_TYPE.SUCCESS:
+      return 'bg-green-50-v1'
+    case NOTIFY_TYPE.INFO:
+      return 'bg-cyan-50-v1'
+    default:
+      return props.bgColor
+  }
+})
+
 const doesItWillClose = computed(() => {
   if (!props.hasCloseButton) {
     return true
@@ -122,6 +142,21 @@ const getIconSize = computed(() => {
   }
 
   throw new Error('unexpected size type')
+})
+
+const getIconBgColor = computed(() => {
+  switch (props.notifyType) {
+    case NOTIFY_TYPE.INFO:
+      return 'bg-cyan-100-v1'
+    case NOTIFY_TYPE.SUCCESS:
+      return 'bg-green-100-v1'
+    case NOTIFY_TYPE.WARNING:
+      return 'bg-yellow-100-v1'
+    case NOTIFY_TYPE.ALERT:
+      return 'bg-red-100-v1'
+  }
+
+  throw new Error('unexpected notify type')
 })
 
 const getIconColor = computed(() => {
