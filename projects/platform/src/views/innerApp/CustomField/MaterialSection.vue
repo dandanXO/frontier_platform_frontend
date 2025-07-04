@@ -28,24 +28,26 @@
         </template>
       </Draggable>
     </table>
-    <button
-      type="button"
-      class="flex gap-1 py-5 ml-3"
-      @click="(e) => openModal(e, null, 'add')"
-      :disabled="!rolePermission"
-    >
-      <f-svg-icon
-        :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
-        iconName="add"
-        size="24"
-      />
-      <p
-        class="text-sm font-semibold underline"
-        :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
+    <div class="w-full rounded-b-lg hover:bg-cyan-50-v1">
+      <button
+        type="button"
+        class="flex gap-1 py-5 ml-3"
+        @click="(e) => openModal(e, null, 'add')"
+        :disabled="!rolePermission"
       >
-        {{ $t('RR0527') }}
-      </p>
-    </button>
+        <f-svg-icon
+          :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
+          iconName="add"
+          size="24"
+        />
+        <p
+          class="text-sm font-semibold underline"
+          :class="rolePermission ? 'text-cyan-500-v1' : 'text-grey-400-v1'"
+        >
+          {{ $t('RR0527') }}
+        </p>
+      </button>
+    </div>
   </section>
 </template>
 

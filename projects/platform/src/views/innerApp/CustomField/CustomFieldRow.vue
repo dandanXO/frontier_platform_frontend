@@ -1,5 +1,5 @@
 <template>
-  <tr class="border-b border-grey-50-v1">
+  <tr class="border-b border-grey-50-v1 hover:bg-grey-50-v1">
     <td
       class="w-0 h-16 p-3 select-none"
       :class="rolePermission ? 'drag-handle cursor-grab' : 'cursor-default'"

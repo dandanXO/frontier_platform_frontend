@@ -2,7 +2,7 @@
   <form novalidate>
     <MaterialSection
       :tabType="CustomFieldTabType.SPECIFICATION"
-      :title="t('RR0130')"
+      :title="t('MI0005')"
       v-model:fieldList="customFieldList.specificationList"
       :updateCustomFieldList="updateCustomFieldList"
     />

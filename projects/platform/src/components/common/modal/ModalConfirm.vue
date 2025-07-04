@@ -1,15 +1,15 @@
 <template lang="pug">
 div(
-  class="fixed inset-0 z-modal-confirm w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+  class="fixed inset-0 flex items-center justify-center w-screen h-screen z-modal-confirm bg-grey-900/40"
   @click="closeModalConfirm"
   :data-cy="testId"
 )
   div(
-    class="min-h-30 md:min-h-54 bg-grey-0 rounded flex flex-col shadow-32"
+    class="flex flex-col min-h-30 md:min-h-54 bg-grey-0 rounded-xl shadow-32"
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0', version === 'v2' ? 'w-[min(512px,calc(100vw_-_80px))] items-center p-6' : 'max-h-125 w-[min(416px,calc(100vw_-_80px))] px-4 md:px-8 py-4 md:py-6']"
     @click.stop
   )
-    div(v-if="version === 'v2'" class="w-full flex justify-end")
+    div(v-if="version === 'v2'" class="flex justify-end w-full")
       button(@click="closeModalConfirm")
         f-svg-icon(iconName="close_medium" size="24" class="text-grey-900-v1")
     div(
@@ -19,7 +19,7 @@ div(
     )
       div(
         v-if="version === 'v2'"
-        class="min-h-26 min-w-26 h-26 w-26 bg-red-50-v1 flex items-center justify-center rounded-full"
+        class="flex items-center justify-center rounded-full min-h-26 min-w-26 h-26 w-26 bg-red-50-v1"
       )
         f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="48")
       f-svg-icon(

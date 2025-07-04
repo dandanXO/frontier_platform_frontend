@@ -29,16 +29,17 @@
 </style>
 
 <template lang="pug">
-f-snackbar-v1(
-  v-if="version === VERSION.V1"
-  v-bind="$props"
-  @update:isShowSnackbar="emit('update:isShowSnackbar', $event)"
-)
-f-snackbar-v2(
-  v-else
-  v-bind="$props"
-  @update:isShowSnackbar="emit('update:isShowSnackbar', $event)"
-)
+div
+  f-snackbar-v1(
+    v-show="version === VERSION.V1"
+    v-bind="$props"
+    @update:isShowSnackbar="emit('update:isShowSnackbar', $event)"
+  )
+  f-snackbar-v2(
+    v-show="version === VERSION.V2"
+    v-bind="$props"
+    @update:isShowSnackbar="emit('update:isShowSnackbar', $event)"
+  )
 </template>
 
 <script lang="ts">

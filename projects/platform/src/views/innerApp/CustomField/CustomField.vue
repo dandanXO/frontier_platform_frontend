@@ -6,9 +6,9 @@
         <p class="text-grey-700-v1">
           {{ t('RR0519') }}
         </p>
-        <p class="font-semibold underline text-cyan-500-v1">
+        <!-- <p class="font-semibold underline text-cyan-500-v1">
           {{ t('RR0520') }}
-        </p>
+        </p> -->
       </div>
     </div>
     <AllForm />
