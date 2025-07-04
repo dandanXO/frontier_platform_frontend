@@ -62,7 +62,7 @@ const switchClasses = computed(() => ({
 
 const circleClasses = computed(() => ({
   'translate-x-5': isOn.value && props.size === 'medium',
-  'translate-x-6': isOn.value && props.size === 'small',
+  'translate-x-3': isOn.value && props.size === 'small',
   'bg-white': !props.disabled,
   'bg-grey-400': props.disabled,
   'h-3 w-3': props.size === 'small',

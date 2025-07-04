@@ -403,33 +403,33 @@ const useMultimediaUpdate = (
     }
 
     return {
-      width: 'w-44',
+      width: 'w-[192px]',
       blockList: [
         {
           menuList: (() => {
             const menuList = [
               {
                 title: t('RR0303'),
-                icon: 'download',
+                // icon: 'download',
                 clickHandler: () => downloadMultimediaSelect(id),
               },
               {
                 title: t('RR0302'),
-                icon: 'create',
+                // icon: 'create',
                 clickHandler: () => renameMultimediaSelect(id, theme),
               },
             ]
             if (CROP_FILE_ACCEPT_TYPE.includes(target.extension)) {
               menuList.push({
                 title: t('EE0150'),
-                icon: 'crop',
+                // icon: 'crop',
                 clickHandler: () => startCropMultimedia(id),
               })
             }
             if (target.extension === Extension.PDF) {
               menuList.unshift({
                 title: t('RR0304'),
-                icon: 'open_in_new',
+                // icon: 'open_in_new',
                 clickHandler: () => window.open(target.originalUrl, '_blank'),
               })
             }
@@ -440,7 +440,9 @@ const useMultimediaUpdate = (
           menuList: [
             {
               title: t('RR0063'),
-              icon: 'delete',
+              titleClass: 'text-red-500',
+              icon: 'delete_forever',
+              iconClass: 'text-red-500',
               clickHandler: () => removeMultimediaSelect(id, theme),
             },
           ],

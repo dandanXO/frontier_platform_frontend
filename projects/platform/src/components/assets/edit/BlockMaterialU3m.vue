@@ -87,14 +87,14 @@ div(class="w-79")
           v-if="showU3mWarning"
           class="w-full"
           :notifyType="NOTIFY_TYPE.WARNING"
-          messageText="If you update the content in the required fields, you must first save and create the 3D material in order to display the latest results."
+          :messageText="t('RR0590')"
         )
         f-infobar(
           v-if="showU3mRegenerateInfo"
           class="w-full"
           :notifyType="NOTIFY_TYPE.INFO"
-          title="Create 3D Material"
-          messageText="Re-create to keep the 3D Material up-to-date."
+          :title="t('RR0058')"
+          :messageText="t('RR0589')"
         )
   f-expansion-panel(class="border-t border-grey-250")
     template(#trigger="{ isExpand }")

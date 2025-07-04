@@ -4,15 +4,25 @@
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.vue",
+    "src/types/**/*.d.ts",
     "tests/**/*.ts",
     "tests/**/*.js"
   ],
+  "files": ["src/types/shims-vue.d.ts", "src/types/vite.d.ts"],
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
     "noEmit": false,
     "sourceMap": false,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vite/client", "node"],
+    "allowJs": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveValueImports": false
   }
 }

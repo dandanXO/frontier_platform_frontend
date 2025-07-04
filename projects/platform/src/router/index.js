@@ -10,7 +10,6 @@ import { resetTracker } from '@frontier/lib'
 import { FUNC_ID, PERMISSION_MAP } from '@/utils/constants'
 import { logout, redirectAfterLogout } from '@/utils/auth'
 import { accessToken } from '@/utils/storage'
-import { ROUTE_NAMES } from '@/utils/routes'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -46,6 +45,12 @@ const checkMetaFabricFeatureFlag = async (to, from, next) => {
   }
 
   next()
+}
+
+const isNewCustomFieldEnabled = () => {
+  const featureFlagList =
+    store.getters['organization/organization']?.featureFlagList || []
+  return featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_NEW_CUSTOM_FIELD)
 }
 
 const routes = [
@@ -269,7 +274,7 @@ const routes = [
           // Assets
           {
             path: 'assets',
-            name: ROUTE_NAMES.ASSETS,
+            name: 'Assets',
             component: () => import('@/views/innerApp/assets/Assets.vue'),
           },
           {
@@ -315,14 +320,18 @@ const routes = [
             path: 'assets/:materialId',
             name: 'AssetsMaterialDetail',
             component: () =>
-              import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
+              isNewCustomFieldEnabled()
+                ? import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+                : import('@/views/innerApp/assets/AssetsMaterialDetailOld.vue'),
             props: true,
           },
           {
             path: 'assets/:materialId/edit',
             name: 'AssetsMaterialEdit',
             component: () =>
-              import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+              isNewCustomFieldEnabled()
+                ? import('@/views/innerApp/assets/AssetsMaterialEditV2.vue')
+                : import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
             props: true,
             beforeEnter: async (to, from, next) => {
               // check permission to access
@@ -556,6 +565,13 @@ const routes = [
         meta: { outerType: OUTER_TYPE.EMBED },
         component: () =>
           import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
+      },
+      {
+        path: 'preview',
+        name: 'StandalonePreview',
+        props: true,
+        component: () =>
+          import('@/views/outerApp/preview/StandalonePreview.vue'),
       },
       {
         path: 'assets/:frontierNo',

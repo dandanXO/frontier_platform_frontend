@@ -114,7 +114,7 @@ f-input-container(
     )
     //- Numeric Control
     div(
-      v-if="inputType === 'number' && [STATE.HOVER, STATE.FOCUS].includes(state)"
+      v-if="props.inputType === 'number' && !props.hideNumericControls && [STATE.HOVER, STATE.FOCUS].includes(state)"
       :class="[size === 'lg' ? '-mr-0.5' : 'mr-0.5']"
       @mousedown.prevent
     )
@@ -166,7 +166,7 @@ f-input-container(
     f-popper(
       v-else-if="hasRightDropdown"
       placement="bottom-start"
-      class="border-l-0 rounded-r relative hover:bg-grey-50"
+      class="border-l-0 rounded-r relative hover:bg-grey-50-v1"
       :disabled="disabled"
       :class="classAddon"
     )
@@ -379,9 +379,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  hideNumericControls: {
+    type: Boolean,
+    default: true,
+  },
   version: {
     type: VERSION,
     default: VERSION.V1,
+  },
+  hasError: {
+    type: Boolean,
+    default: false,
   },
 })
 const emit = defineEmits([
@@ -629,7 +637,7 @@ const classMain = computed(() => {
         )
         break
       case STATE.HOVER:
-        classList.push('border-grey-250', 'bg-grey-50')
+        classList.push('border-grey-250', 'bg-grey-50-v1')
         break
       case STATE.FOCUS:
         classList.push(
@@ -680,7 +688,7 @@ const classMain = computed(() => {
     }
   }
 
-  if (isError.value) {
+  if (isError.value || props.hasError) {
     classList.push('!border-red-300')
   }
 
@@ -726,13 +734,13 @@ const classInput = computed(() => {
   if (props.theme === THEME.LIGHT) {
     switch (state.value) {
       case STATE.DEFAULT:
-        classList.push('placeholder:text-grey-250', 'text-grey-800')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-800')
         break
       case STATE.HOVER:
-        classList.push('placeholder:text-grey-300', 'text-grey-900')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-900')
         break
       case STATE.FOCUS:
-        classList.push('placeholder:text-grey-250', 'text-grey-900')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-900')
         break
       case STATE.DISABLED:
         classList.push(
@@ -745,13 +753,13 @@ const classInput = computed(() => {
   } else {
     switch (state.value) {
       case STATE.DEFAULT:
-        classList.push('placeholder:text-grey-400', 'text-grey-250')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-250')
         break
       case STATE.HOVER:
-        classList.push('placeholder:text-grey-250', 'text-grey-100')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-100')
         break
       case STATE.FOCUS:
-        classList.push('placeholder:text-grey-400', 'text-grey-100')
+        classList.push('placeholder:text-grey-600-v1', 'text-grey-100')
         break
       case STATE.DISABLED:
         classList.push(
@@ -819,7 +827,7 @@ const classAddon = computed(() => {
     classList.push('border-grey-250')
     state.value === STATE.DISABLED
       ? classList.push('bg-grey-50', 'text-grey-250', 'cursor-not-allowed')
-      : classList.push('bg-grey-100', 'text-grey-900')
+      : classList.push('bg-grey-0', 'text-grey-900')
   } else {
     classList.push(
       state.value === STATE.HOVER ? 'border-grey-600' : 'border-grey-700',

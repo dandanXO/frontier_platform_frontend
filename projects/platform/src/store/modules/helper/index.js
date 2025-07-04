@@ -58,6 +58,9 @@ const actions = {
   pushModalConfirm({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
   },
+  pushModalConfirmLeave({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM_LEAVE, options })
+  },
   closeModalConfirm({ commit }) {
     commit('CLOSE_modalPipeline')
   },

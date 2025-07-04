@@ -11,6 +11,7 @@ export interface MenuButton {
 
 export interface MenuItem {
   title: string
+  titleClass?: string
   blockList?: MenuBlock[]
   titleLineClamp?: number
   description?: string
@@ -20,6 +21,7 @@ export interface MenuItem {
   selectable?: boolean
   selectValue?: any
   icon?: string
+  iconClass?: string
   thumbnail?: string //  String (URL)
   thumbnailSize?: string // String (SIZE.MD & SIZE.SM)
   flag?: string // String (URL),

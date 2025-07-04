@@ -6,8 +6,8 @@ f-input-container(
   :hintError="ruleErrorMsg || hintError"
 )
   textarea(
-    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900 whitespace-pre-wrap resize-none w-full"
-    :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-250']"
+    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900 whitespace-pre-wrap resize-none w-full transition-colors duration-100 placeholder:text-grey-600-v1"
+    :class="[minHeight, disabled ? 'bg-grey-50-v1 border-none cursor-not-allowed placeholder:text-grey-250' : isFocus ? 'bg-grey-0' : 'bg-grey-0 hover:bg-grey-50-v1', isError ? 'border-red-300' : 'border-grey-250']"
     :placeholder="placeholder"
     :value="innerTextValue"
     :disabled="disabled"
@@ -125,3 +125,15 @@ const onBlur = () => {
   emit('blur')
 }
 </script>
+
+<style scoped>
+textarea {
+  box-shadow: 0px 0px 0px 2px transparent;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  box-shadow: 0px 0px 0px 2px var(--Color-Utility-utility-cyan-200, #8addf4);
+  outline: none;
+}
+</style>

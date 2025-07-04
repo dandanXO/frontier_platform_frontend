@@ -1,8 +1,8 @@
 <template lang="pug">
-div
+div(:class="['flex flex-col', { 'gap-y-2': label !== '' }]")
   div(class="flex flex-row items-center gap-x-3")
     slot(name="slot:label")
-      div(v-if="label !== ''" class="flex pb-3 text-body2 font-bold justify-center")
+      div(v-if="label !== ''" class="flex text-sm font-bold justify-center")
         p(class="text-grey-900") {{ label }}
         i(v-if="required" class="text-red-400 pl-0.5") *
         div(class="flex-start ml-2")
@@ -13,7 +13,7 @@ div
       slot
       div(
         v-if="slots['slot:hint-error'] || !!hintError || slots['slot:hint-supporting'] || !!hintSupporting"
-        class="absolute pt-1 pl-2"
+        class="pt-2"
       )
         slot(name="slot:hint-error")
           template(v-if="!!hintError && typeof hintError === 'string'")
@@ -22,13 +22,13 @@ div
               :keypath="hintError"
               scope="global"
               tag="p"
-              class="text-caption text-red-400 leading-1.3 whitespace-nowrap"
+              class="text-caption text-red-400 leading-1.3 whitespace-nowrap h-4"
             )
               template(#newline)
                 br
             p(
               v-else
-              class="text-caption text-red-400 leading-1.3 whitespace-nowrap"
+              class="text-caption text-red-400 leading-1.3 whitespace-nowrap h-4"
               data-cy="hintError"
             ) {{ hintError }}
         slot(name="slot:hint-supporting")

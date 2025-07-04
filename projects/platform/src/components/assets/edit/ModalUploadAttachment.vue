@@ -4,6 +4,7 @@ modal-behavior(
   :primaryBtnText="$t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
   :primaryBtnDisabled="disabledUpload"
+  version="v2"
   @click:primary="handleConfirm"
   @click:secondary="closeModalBehavior"
 )

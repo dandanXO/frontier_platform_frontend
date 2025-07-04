@@ -60,7 +60,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="tagsTitle"
         :desc="tagsDesc"
         :viewOnly="isTagsTabsEmpty"
-        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material) }"
+        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterialWithTagsFocus(material) }"
       )
         tags-section(
           :class="SECTION_CLASS"
@@ -71,7 +71,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('EE0129')"
         :desc="certList.length ? undefined : $t('RR0564')"
         :viewOnly="!certList.length"
-        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material) }"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterialWithCertificationFocus(material) }"
       )
         div(
           class="!flex-row w-full flex-wrap"
@@ -88,7 +88,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0134')"
         :desc="withPrices ? undefined : $t('RR0565')"
         :viewOnly="!withPrices"
-        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material) }"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterialWithPricingFocus(material) }"
       )
         price-section(
           :material="material"
@@ -99,7 +99,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0135')"
         :desc="withInventoryData ? undefined : $t('RR0566')"
         :viewOnly="!withInventoryData"
-        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterial.func(material) }"
+        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterialWithInventoryFocus(material) }"
       )
         inventory-section(
           :material="material"
@@ -110,7 +110,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0298')"
         :desc="withAttachments ? $t('RR0558') : $t('RR0563')"
         :viewOnly="!withAttachments"
-        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterial.func(material) }"
+        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterialWithAttachmentsFocus(material) }"
       )
         attachments-section(
           :material="material"
@@ -134,7 +134,7 @@ import {
   onUpdated,
 } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import type { Material } from '@frontier/platform-web-sdk'
@@ -177,6 +177,7 @@ const props = defineProps<{
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
 const roleId = store.getters['organization/orgUser/orgUser'].roleID
 
 const materialPropsRef = toRef(props, 'material')
@@ -360,4 +361,49 @@ const availableFileList = publicFileList.value.filter((item: MaterialFile) => {
 })
 
 const certList = computed(() => props.material.tagInfo.certificationTagList)
+
+const editMaterialWithTagsFocus = (material: Material) => {
+  // Navigate to edit page with query parameters to expand and focus on tags
+  router.push({
+    name: 'AssetsMaterialEdit',
+    params: { materialId: material.materialId.toString() },
+    query: { focusTags: 'true' },
+  })
+}
+
+const editMaterialWithCertificationFocus = (material: Material) => {
+  // Navigate to edit page with query parameters to expand and focus on certification form
+  router.push({
+    name: 'AssetsMaterialEdit',
+    params: { materialId: material.materialId.toString() },
+    query: { focusCertification: 'true' },
+  })
+}
+
+const editMaterialWithPricingFocus = (material: Material) => {
+  // Navigate to edit page with query parameters to expand and focus on pricing form
+  router.push({
+    name: 'AssetsMaterialEdit',
+    params: { materialId: material.materialId.toString() },
+    query: { focusPricing: 'true' },
+  })
+}
+
+const editMaterialWithInventoryFocus = (material: Material) => {
+  // Navigate to edit page with query parameters to expand and focus on inventory form
+  router.push({
+    name: 'AssetsMaterialEdit',
+    params: { materialId: material.materialId.toString() },
+    query: { focusInventory: 'true' },
+  })
+}
+
+const editMaterialWithAttachmentsFocus = (material: Material) => {
+  // Navigate to edit page with query parameters to expand and focus on attachments form
+  router.push({
+    name: 'AssetsMaterialEdit',
+    params: { materialId: material.materialId.toString() },
+    query: { focusAttachments: 'true' },
+  })
+}
 </script>

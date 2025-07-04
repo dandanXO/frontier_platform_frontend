@@ -56,13 +56,14 @@ export enum HOLE_TYPE {
 }
 
 export const MODAL_TYPE = {
-  MODAL: 0,
-  FULLSCREEN: 1,
-  LOADING: 2,
-  CONFIRM: 3,
-  BEHAVIOR: 4,
-  COMMON: 5,
-  AUTHENTICATION: 6,
+  MODAL: 'MODAL',
+  FULLSCREEN: 'FULLSCREEN',
+  LOADING: 'LOADING',
+  CONFIRM: 'CONFIRM',
+  CONFIRM_LEAVE: 'CONFIRM_LEAVE',
+  BEHAVIOR: 'BEHAVIOR',
+  COMMON: 'COMMON',
+  AUTHENTICATION: 'AUTHENTICATION',
 }
 
 export const SIDE_TYPE = {
@@ -593,6 +594,7 @@ export enum OUTER_TYPE {
 
 export enum FEATURE_FLAG_KEY {
   ENABLE_META_FABRIC = 'EnableMetaFabric',
+  ENABLE_NEW_CUSTOM_FIELD = 'EnableNewCustomField',
 }
 
 const PrintLabelSettingMaterialTypeCommonOptions = [

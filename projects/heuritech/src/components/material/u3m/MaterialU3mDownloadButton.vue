@@ -4,7 +4,7 @@ f-popper(placement="bottom-start" :disabled="disabled" :offset="[0, -4]")
     button(
       :disabled="disabled"
       class="outline-none rounded bg-grey-0 border flex items-center gap-x-2 px-3 py-1.5"
-      :class="[isExpand ? 'border-primary-300 shadow-[0_0_0_4px_#E9F8F3]' : 'border-grey-200 hover:bg-grey-50 hover:border-grey-250 disabled:bg-grey-50 disabled:border-grey-200 disabled:cursor-not-allowed']"
+      :class="[isExpand ? 'border-primary-300 shadow-[0_0_0_4px_#E9F8F3]' : 'border-grey-200 hover:bg-grey-50-v1 hover:border-grey-250 disabled:bg-grey-50 disabled:border-grey-200 disabled:cursor-not-allowed']"
     )
       f-svg-icon(
         iconName="download"

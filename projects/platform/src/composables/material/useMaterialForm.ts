@@ -20,6 +20,7 @@ import useMaterialSchema, {
   useMaterialPublicPriceSchema,
   useMaterialTagSchema,
   type MaterialSchemaWithConstructionType,
+  materialConstructionSchema,
 } from '@/composables/material/useMaterialSchema'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
 import {
@@ -55,6 +56,8 @@ const mapMaterialToForm = (
     return getDefaults(schema) as MaterialSchemaWithConstructionType
   }
 
+  const defaultConstruction = getDefaults(materialConstructionSchema)
+
   const getSideType = (
     faceSide: Material['faceSide'],
     backSide: Material['backSide']
@@ -72,10 +75,11 @@ const mapMaterialToForm = (
 
   return {
     ...material,
+    itemNo: material.itemNo ?? '',
     faceSide: material.faceSide
       ? {
           ...material.faceSide,
-          construction: material.faceSide?.construction ?? {},
+          construction: material.faceSide?.construction ?? defaultConstruction,
           materialType: material.faceSide?.materialType || MaterialType.WOVEN,
           materialTypeConstruction: {
             id: material.faceSide.materialTypeConstruction.id,
@@ -84,7 +88,7 @@ const mapMaterialToForm = (
           },
           contentList: material.faceSide?.contentList?.length
             ? material.faceSide.contentList
-            : [{ contentId: null, name: '', percentage: null }],
+            : [],
           pantoneNameList:
             material.faceSide?.pantoneList.map((p) => p.name) || [],
         }
@@ -96,12 +100,12 @@ const mapMaterialToForm = (
           materialTypeConstruction: {
             id: material.backSide.materialTypeConstruction.id,
             isCustom: !!material.backSide.materialTypeConstruction.isCustom,
-            name: material.backSide.materialTypeConstruction.name ?? '',
+            name: material.backSide?.materialTypeConstruction.name ?? '',
           },
-          construction: material.backSide?.construction ?? {},
+          construction: material.backSide?.construction ?? defaultConstruction,
           contentList: material.backSide?.contentList?.length
             ? material.backSide.contentList
-            : [{ contentId: null, name: '', percentage: null }],
+            : [],
           pantoneNameList:
             material.backSide?.pantoneList.map((p) => p.name) || [],
         }
@@ -112,29 +116,36 @@ const mapMaterialToForm = (
       year: null,
     },
     width: material.width || {
-      cuttable: null,
-      full: null,
+      cuttable: 0,
+      full: 0,
       unit: LengthUnit.INCH,
     },
     weight: material.weight || {
-      value: null,
+      value: 0,
       unit: WeightUnit.GSM,
     },
-    weightDisplaySetting: material.weightDisplaySetting || {
-      isShowWeightGm: false,
-      isShowWeightOz: false,
-      isShowWeightGy: false,
-      isShowWeightGsm: false,
+    // Default all weight unit display options to true for both new and existing materials.
+    // This ensures that when a material is loaded or created, all these checkboxes are checked,
+    // and these preferences will be persisted upon saving.
+    weightDisplaySetting: {
+      isShowWeightGm: true,
+      isShowWeightOz: true,
+      isShowWeightGy: true,
+      isShowWeightGsm: true,
     },
     tagInfo: {
       ...material.tagInfo,
-      tagList: material.tagInfo?.tagList.map((tag, i) => tag),
+      tagList: material.tagInfo?.tagList.map((tag) => tag),
       certificationTagIdList:
         material.tagInfo?.certificationTagList.map((t) => t.certificateId) ||
         [],
     },
     priceInfo: {
       ...material.priceInfo,
+      countryOfOriginal: material.priceInfo?.countryOfOriginal ?? null,
+      productionLeadTimeInDays:
+        material.priceInfo?.productionLeadTimeInDays ?? null,
+      sampleLeadTimeInDays: material.priceInfo?.sampleLeadTimeInDays ?? null,
       pricing: mapPricing(material.priceInfo?.pricing),
       minimumOrder: material.priceInfo?.minimumOrder || {
         unit: MaterialQuantityUnit.Y,
@@ -146,8 +157,14 @@ const mapMaterialToForm = (
       },
     },
     internalInfo: {
+      tagList: [],
       ...material.internalInfo,
+      remark: material.internalInfo?.remark ?? null,
+      nativeCode: material.internalInfo?.nativeCode ?? null,
       priceInfo: {
+        countryOfOriginal: null,
+        productionLeadTimeInDays: null,
+        sampleLeadTimeInDays: null,
         ...material.internalInfo?.priceInfo,
         pricing: mapPricing(material.internalInfo?.priceInfo?.pricing),
         minimumOrder: material.internalInfo?.priceInfo?.minimumOrder || {
@@ -161,6 +178,8 @@ const mapMaterialToForm = (
       },
       inventoryInfo: {
         ...material.internalInfo?.inventoryInfo,
+        isTotalPublic:
+          material.internalInfo?.inventoryInfo?.isTotalPublic ?? false,
         hangersRemainingList: material.internalInfo?.inventoryInfo
           .hangersRemainingList?.length
           ? material.internalInfo?.inventoryInfo.hangersRemainingList
@@ -206,6 +225,13 @@ const mapMaterialToForm = (
       },
     },
     sideType: getSideType(material.faceSide, material.backSide),
+    customFieldList: material.customFieldList || {
+      specificationList: [],
+      fabricDetailList: [],
+      tagList: [],
+      pricingList: [],
+      inventoryList: [],
+    },
   }
 }
 
@@ -579,7 +605,7 @@ const useMaterialForm = ({
     const oldValues = values[sideKey]?.pantoneNameList || []
     setFieldValue(
       `${sideKey}.pantoneNameList`,
-      oldValues.filter((p) => p !== pantoneCode)
+      oldValues.filter((p: string) => p !== pantoneCode)
     )
   }
 

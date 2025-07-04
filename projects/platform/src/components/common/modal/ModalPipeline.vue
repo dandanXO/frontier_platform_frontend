@@ -21,7 +21,9 @@ template(v-if="modalPipeline.length > 0")
         template(#fallback)
           modal-loading(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.CONFIRM")
-      modal-confirm(v-bind="modal.options")
+      modal-confirm(v-bind="modal.options" @close="closeModalConfirm")
+    template(v-else-if="modal.type === MODAL_TYPE.CONFIRM_LEAVE")
+      modal-confirm-leave(v-bind="modal.options" @close="closeModalConfirm")
     template(v-else-if="modal.type === MODAL_TYPE.LOADING")
       modal-loading(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.AUTHENTICATION")
@@ -39,6 +41,7 @@ import ModalUploadProgress from '@/components/common/modal/ModalUploadProgress.v
 import ModalAuthentication from '@/components/common/modal/ModalAuthentication.vue'
 import { MODAL_TYPE } from '@/utils/constants'
 import { defineAsyncComponent } from 'vue'
+import ModalConfirmLeave from './ModalConfirmLeave.vue'
 
 export default {
   name: 'ModalPipeline',
@@ -332,6 +335,7 @@ export default {
     ModalEmailContact: defineAsyncComponent(() =>
       import('@/components/common/ModalEmailContact.vue')
     ),
+    ModalConfirmLeave,
   },
   setup() {
     const store = useStore()

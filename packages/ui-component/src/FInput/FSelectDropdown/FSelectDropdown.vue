@@ -6,6 +6,7 @@ f-input-container(
   :hintError="ruleErrorMsg || hintError"
 )
   f-popper(
+    ref="refPopper"
     placement="bottom-start"
     data-cy="input-select"
     :disabled="disabled"
@@ -74,7 +75,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, useSlots, toRefs } from 'vue'
+import { computed, useSlots, toRefs, ref } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
 import { isEqual } from '@frontier/lib'
@@ -220,7 +221,7 @@ const classMain = computed(() => {
       )
       break
     case STATE.HOVER:
-      classList.push('border-grey-250', 'bg-grey-50')
+      classList.push('border-grey-250', 'bg-grey-50-v1')
       break
     case STATE.FOCUS:
       classList.push(
@@ -335,8 +336,11 @@ const selectedMenu = computed(() => {
   )
 })
 
+const refPopper = ref(null)
+
 defineExpose({
   isError,
   selectedMenu,
+  focus: () => refPopper.value?.expandPopper(),
 })
 </script>

@@ -5,7 +5,7 @@ div(class="relative")
       slot
 
   div(
-    class="flex justify-between items-center mt-4 gap-4 w-full"
+    class="flex justify-between items-center mt-5 gap-4 w-full"
     v-if="showPagination && totalPages > 1"
   )
     f-button(
@@ -75,6 +75,11 @@ const translateX = computed(() => {
   return `transform: translateX(${currentX.value}px)`
 })
 
+const scrollTo = (position: number) => {
+  currentX.value = -position
+  calculateRemainingWidth()
+}
+
 const prev = () => {
   if (currentX.value >= 0) {
     return
@@ -127,9 +132,8 @@ const calculateMovementSize = () => {
   if (!refSlider.value) {
     return 0
   }
-
-  // Calculate movement based on visible width and items per page
-  return Math.min(visibleWidth.value, remainingWidth.value)
+  // This is the width of a "page"
+  return refSlider.value.clientWidth
 }
 
 const recalculateSlider = async () => {
@@ -139,15 +143,19 @@ const recalculateSlider = async () => {
     return
   }
 
-  // Calculate how much to move per click
+  // Recalculate dimensions
+  totalContentWidth.value = calculateTotalWidth()
   visibleWidth.value = calculateVisibleWidth()
   movement.value = calculateMovementSize()
 
-  // Calculate how much content is off-screen
-  calculateRemainingWidth()
+  // Check if the current position is now out of bounds
+  const maxScroll = Math.max(0, totalContentWidth.value - visibleWidth.value)
+  if (Math.abs(currentX.value) > maxScroll) {
+    currentX.value = -maxScroll // Snap to the new end
+  }
 
-  // Reset position to beginning
-  currentX.value = 0
+  // Update the remaining width based on the new state
+  calculateRemainingWidth()
 }
 
 let resizeObserver: ResizeObserver | null = null
@@ -171,5 +179,14 @@ onUnmounted(() => {
     resizeObserver.disconnect()
     resizeObserver = null
   }
+})
+
+// Expose the necessary properties and methods
+defineExpose({
+  currentX,
+  scrollTo,
+  refSlider,
+  movement,
+  recalculateSlider,
 })
 </script>

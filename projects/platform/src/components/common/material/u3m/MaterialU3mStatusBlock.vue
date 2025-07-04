@@ -1,12 +1,12 @@
 <template lang="pug">
-div(class="rounded-lg p-4 box-border flex flex-col gap-y-2 border border-primary-border")
+div(class="rounded-lg p-4 flex flex-col gap-y-2 bg-grey-50-v1")
   slot(name="slot:prepend-item")
   div(class="flex items-center gap-4")
-    p(class="text-sm text-primary-inverse font-bold") {{ $t('PP0010') }}
+    p(class="w-17 text-caption text-grey-700-v1") {{ $t('PP0010') }}
     material-u3m-status-label(:status="u3m.status")
 
   div(v-if="u3m.status === U3M_STATUS.COMPLETED" class="flex items-center gap-x-2")
-    p(class="w-18 text-caption text-grey-600") {{ $t('RR0188') }}
+    p(class="w-17 text-caption text-grey-700-v1") {{ $t('RR0188') }}
     div(class="flex items-center gap-x-3")
       f-avatar(
         :imageUrl="u3m.creatorAvatar"

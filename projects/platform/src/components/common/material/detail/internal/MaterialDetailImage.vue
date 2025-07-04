@@ -1,12 +1,24 @@
 <template lang="pug">
-div(class="flex flex-col gap-y-4 w-112")
-  div(class="relative w-full h-112")
+div(class="flex flex-col gap-y-5 w-[360px]")
+  div(class="relative w-full h-[360px]")
     file-display(
       class="w-full h-full"
       :displayUrl="localFileList[currentDisplayIndex]?.displayUrl"
       :originalUrl="localFileList[currentDisplayIndex]?.originalUrl"
       :extension="localFileList[currentDisplayIndex]?.extension"
     )
+    template(v-if="props.showMoreMenu")
+      f-button(
+        class="!absolute !top-5 !right-5 dropdown-container !h-10 !w-10 !rounded-[4px] !border !border-green-200-v1 !bg-white focus:!shadow-[0px_0px_0px_2px_#8ADDF4]"
+        @click="isDropdownOpen = !isDropdownOpen"
+        isIcon
+      )
+        f-svg-icon(iconName="more" size="20" class="text-green-500-v1")
+      f-contextual-menu(
+        v-if="isDropdownOpen"
+        class="absolute top-[68px] right-5 z-50"
+        :menuTree="moreMenuTree"
+      )
     div(class="absolute flex bottom-5 right-5 gap-x-5")
       low-dpi-label(
         :material="material"
@@ -98,14 +110,15 @@ div(class="flex flex-col gap-y-4 w-112")
     )
       f-svg-icon(iconName="loading" size="40" class="text-primary-500, min-h-7")
       p(class="leading-4 text-center text-grey-600 text-caption") {{ isCustomDDSelected ? $t('EE0185') : $t('EE0184') }}
-  slider(class="w-full")
+  slider(ref="refSlider" class="w-full")
     div(class="flex justify-start gap-3")
       div(
         v-for="(image, index) in localFileList"
         :key="image.displayNameShort"
         class="flex flex-col gap-2 p-2 border rounded-lg cursor-pointer group"
-        :class="currentDisplayIndex === index ? 'border-brand-solid bg-brand' : 'border-primary-border'"
+        :class="currentDisplayIndex === index ? 'border-brand-solid bg-brand' : 'border-primary-border bg-white'"
         @click="clickSmallImage(index)"
+        :data-index="index"
       )
         span(class="text-caption/1.6 text-primary-inverse line-clamp-1") {{ image.displayNameShort }} {{ image.caption ? `(${image.caption})` : '' }}
         file-thumbnail(
@@ -118,7 +131,16 @@ div(class="flex flex-col gap-y-4 w-112")
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch, type Ref } from 'vue'
+import {
+  computed,
+  reactive,
+  ref,
+  watch,
+  type Ref,
+  onMounted,
+  onUnmounted,
+  nextTick,
+} from 'vue'
 import { useStore } from 'vuex'
 import Slider from '@/components/common/Slider.vue'
 import type { THEME } from '@frontier/lib'
@@ -155,6 +177,7 @@ const props = withDefaults(
     coverId?: CoverId | null
     hideMagnifier?: boolean
     material: Material
+    showMoreMenu?: boolean
   }>(),
   {
     canEdit: false,
@@ -162,10 +185,33 @@ const props = withDefaults(
     selectedId: null,
     coverId: null,
     hideMagnifier: false,
+    showMoreMenu: false,
   }
 )
 
-const localFileList = reactive(props.availableFileList)
+const localFileList = reactive<MaterialFile[]>([])
+watch(
+  () => props.availableFileList,
+  async (newFileList) => {
+    localFileList.splice(0, localFileList.length, ...newFileList)
+
+    await nextTick()
+    if (refSlider.value) {
+      refSlider.value.recalculateSlider()
+    }
+
+    if (
+      currentDisplayIndex.value >= newFileList.length &&
+      newFileList.length > 0
+    ) {
+      setCurrentDisplayIndex(0)
+    } else if (newFileList.length === 0) {
+      // Handle case where all files are deleted
+      setCurrentDisplayIndex(0)
+    }
+  },
+  { immediate: true, deep: true }
+)
 
 const { t } = useI18n()
 
@@ -298,6 +344,7 @@ const { currentDisplayIndex, setCurrentDisplayIndex } = useCurrentDisplayIndex()
 setCurrentDisplayIndex(0)
 
 preDisplayIndex.value = currentDisplayIndex.value
+const refSlider = ref<InstanceType<typeof Slider>>()
 const clickSmallImage = (index: number) => {
   const isValidCoverIndex =
     index === 0 &&
@@ -308,6 +355,32 @@ const clickSmallImage = (index: number) => {
     isValidCoverIndex ? props.currentCoverIndex ?? 0 : index
   )
   preDisplayIndex.value = currentDisplayIndex.value
+
+  // Auto-scroll to make the clicked thumbnail fully visible
+  if (refSlider.value) {
+    const thumbnailElement = refSlider.value.$el.querySelector(
+      `[data-index="${index}"]`
+    )
+    if (thumbnailElement) {
+      const sliderRect = refSlider.value.$el.getBoundingClientRect()
+      const thumbnailRect = thumbnailElement.getBoundingClientRect()
+
+      // Check if thumbnail is partially visible
+      if (
+        thumbnailRect.right > sliderRect.right ||
+        thumbnailRect.left < sliderRect.left
+      ) {
+        // Calculate which page the thumbnail should be on
+        const thumbnailWidth = thumbnailRect.width
+        const thumbnailsPerPage = Math.floor(sliderRect.width / thumbnailWidth)
+        const targetPage = Math.floor(index / thumbnailsPerPage)
+
+        // Use the movement value to scroll to the correct page
+        const scrollAmount = targetPage * refSlider.value.movement
+        refSlider.value.scrollTo(scrollAmount)
+      }
+    }
+  }
 }
 
 const emits = defineEmits<{
@@ -426,4 +499,145 @@ function updateDigitalDrape(sourceType: MaterialU3mSourceType) {
     })
   }
 }
+
+const isDropdownOpen = ref(false)
+
+const deleteMenuItem = computed(() => {
+  const currentFile = props.availableFileList[currentDisplayIndex.value]
+  if (
+    !currentFile ||
+    typeof currentFile.id !== 'number' ||
+    !props.getMenuTree
+  ) {
+    return null
+  }
+  // The theme is hardcoded as we don't have theme prop here.
+  const menuTree = props.getMenuTree(currentFile.id, 'light' as THEME)
+  if (!menuTree) {
+    return null
+  }
+
+  return menuTree.blockList
+    .flatMap((block) => block.menuList)
+    .find((item) => item.title && item.title.toLowerCase().includes('delete'))
+})
+
+const isDeletable = computed(() => {
+  return !!(deleteMenuItem.value && deleteMenuItem.value.clickHandler)
+})
+
+const handleSetAsCover = () => {
+  isDropdownOpen.value = false
+  emits('updateCurrentCoverIndex', currentDisplayIndex.value)
+}
+
+const handleReplaceAndEdit = () => {
+  isDropdownOpen.value = false
+  emits('editScannedImage')
+}
+
+const handlePreviewSampleCard = () => {
+  isDropdownOpen.value = false
+
+  // Clean up old preview data from sessionStorage
+  const keysToRemove = []
+  for (let i = 0; i < sessionStorage.length; i++) {
+    const key = sessionStorage.key(i)
+    if (key && key.startsWith('preview_')) {
+      keysToRemove.push(key)
+    }
+  }
+  keysToRemove.forEach((key) => sessionStorage.removeItem(key))
+
+  // Create a unique key for this preview session
+  const previewKey = `preview_${Date.now()}_${Math.random()
+    .toString(36)
+    .substr(2, 9)}`
+
+  // Store the preview data in sessionStorage
+  const previewData = {
+    startIndex: currentDisplayIndex.value,
+    fileList: props.availableFileList.map((file) => ({
+      id: file.id,
+      originalUrl: file.originalUrl,
+      displayUrl: file.displayUrl || file.originalUrl, // Ensure displayUrl is set
+      thumbnailUrl: file.thumbnailUrl,
+      displayName: file.displayName,
+      extension: file.extension,
+      caption: file.caption,
+    })),
+  }
+
+  sessionStorage.setItem(previewKey, JSON.stringify(previewData))
+
+  // Open in new tab with the preview key
+  const previewUrl = `${window.location.origin}/preview?key=${previewKey}`
+  window.open(previewUrl, '_blank')
+}
+
+const handleDelete = () => {
+  isDropdownOpen.value = false
+  if (deleteMenuItem.value && deleteMenuItem.value.clickHandler) {
+    deleteMenuItem.value.clickHandler(deleteMenuItem.value)
+  }
+}
+
+// Close dropdown when clicking outside
+onMounted(() => {
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement
+    // a bit hacky, but it works for now.
+    if (
+      isDropdownOpen.value &&
+      !target.closest('.dropdown-container') &&
+      !target.closest('.f-contextual-menu')
+    ) {
+      isDropdownOpen.value = false
+    }
+  })
+})
+
+onUnmounted(() => {
+  // A bit hacky, but it works for now.
+  document.removeEventListener('click', () => {})
+})
+
+const moreMenuTree: Ref<MenuTree> = computed(() => {
+  return {
+    width: 'w-fit',
+    blockList: [
+      {
+        menuList: [
+          {
+            title: 'Set as Cover',
+            clickHandler: handleSetAsCover,
+            disabled: !isShowStar.value,
+          },
+          {
+            title: 'Replace & Edit',
+            clickHandler: handleReplaceAndEdit,
+            disabled: !isShowEdit.value,
+          },
+          {
+            title: 'Preview Sample Card',
+            clickHandler: handlePreviewSampleCard,
+            // disabled: props.hideMagnifier,
+          },
+        ],
+      },
+      {
+        menuList: [
+          {
+            title: 'Delete',
+            icon: 'delete_forever',
+            iconClass: isDeletable.value ? '!text-red-500-v1' : '',
+            titleClass: isDeletable.value ? '!text-red-500-v1' : '',
+            clickHandler: handleDelete,
+            disabled: !isDeletable.value,
+          },
+        ],
+      },
+    ],
+  }
+})
 </script>

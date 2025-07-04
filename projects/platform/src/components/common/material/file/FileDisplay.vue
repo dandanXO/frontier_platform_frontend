@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
-  class="aspect-square relative rounded-xl overflow-hidden"
-  :class="{ 'border border-grey-250': !!displayUrl || !!originalUrl }"
+  class="aspect-square relative rounded-lg overflow-hidden"
+  :class="{ 'border-[2px] border-grey-200-v1': !!displayUrl || !!originalUrl }"
 )
   template(
     v-if="[...IMAGE_FILE_ACCEPT_TYPE, PDF, GIF].includes(extension?.toLowerCase())"

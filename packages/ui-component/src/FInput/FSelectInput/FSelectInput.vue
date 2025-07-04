@@ -28,14 +28,14 @@ f-input-container(
             :iconName="prependIcon"
             :size="size === 'lg' ? '24' : '20'"
           )
-        //- display text
-        div(class="flex-1 flex-grow w-full h-full flex items-center")
+        //- display text and input
+        div(class="flex-1 flex-grow w-full h-full flex items-center relative")
           div(
             v-show="multiple && displayText.length !== 0"
             :class="classChipContainer"
           )
             div(
-              v-for="chip in displayText"
+              v-for="(chip, index) in displayText"
               :key="chip"
               class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer"
               :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
@@ -47,77 +47,50 @@ f-input-container(
                     span(class="line-clamp-1") {{ chip }}
               span(v-else) {{ chip }}
               f-svg-icon(
-                v-if="isHover"
                 iconName="clear"
                 size="16"
-                class="text-grey-600"
+                class="text-grey-600 cursor-pointer"
+                @click.stop="removeChip(index)"
               )
-          div(
-            v-show="!multiple && !!displayText"
+          //- Single input field that handles both display and edit modes
+          input(
+            v-show="!multiple || displayText.length === 0 || isEditing"
             :class="classInput"
-            class="flex items-center"
+            ref="refInput"
+            type="text"
+            class="w-full"
+            :placeholder="(!displayText || displayText.length === 0) && !isEditing ? placeholder : ''"
+            :readonly="disabled"
+            v-model.trim="inputText"
+            @input="setSearchInput(inputText)"
+            @keydown.enter="addNewMenu"
+            @focus="handleInputFocus"
+            @blur="handleInputBlur"
+          )
+          //- Display text overlay for single select when not editing
+          div(
+            v-show="!multiple && !!displayText && !isEditing && !disabled"
+            :class="classInput"
+            class="absolute inset-0 pointer-events-none flex items-center"
           )
             template(v-if="getIsEllipsis(displayText)")
               f-tooltip-standard(:tooltipMessage="displayText")
                 template(#slot:tooltip-trigger)
                   span(class="line-clamp-1") {{ displayText }}
             span(v-else) {{ displayText }}
-          //- placeholder
-          input(
-            v-show="!(multiple && displayText.length !== 0) && !(!multiple && !!displayText)"
-            type="text"
-            :placeholder="placeholder"
-            :class="classInput"
-            class="w-full"
-            :readonly="disabled"
+        //- Clear Icon
+        div(
+          v-if="clearable && !disabled && (isEditing || (multiple && displayText.length > 0) || (!multiple && !!displayText))"
+          :class="classIcon"
+        )
+          f-svg-icon(
+            :size="size === 'lg' ? '24' : '20'"
+            iconName="cancel"
+            class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
+            @click.stop="clearAll"
           )
     template(#content="{ collapsePopper }")
       div(:class="{ 'flex-col-reverse': isReverse }" class="w-0 flex flex-col")
-        div(:style="{ width: contentWidth + 'px' }" :class="classMain")
-          //- Leading Visual - Icon
-          div(v-if="prependIcon" :class="classIcon")
-            f-svg-icon(
-              :iconName="prependIcon"
-              :size="size === 'lg' ? '24' : '20'"
-            )
-          //- Input
-          div(
-            :class="[multiple ? classChipContainer : '']"
-            class="flex-grow w-full h-full flex items-center"
-          )
-            template(v-if="multiple")
-              div(
-                v-for="(chip, index) in displayText"
-                :key="chip"
-                class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer"
-                :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
-                :style="{ maxWidth: chipMaxWidth + 'px' }"
-                @click.stop="removeChip(index)"
-              )
-                template(v-if="getIsEllipsis(chip)")
-                  f-tooltip-standard(:tooltipMessage="chip" class="flex-grow")
-                    template(#slot:tooltip-trigger)
-                      span(class="line-clamp-1") {{ chip }}
-                span(v-else) {{ chip }}
-                f-svg-icon(iconName="clear" size="16" class="text-grey-600")
-            input(
-              :class="classInput"
-              ref="refInput"
-              type="text"
-              class="flex-grow"
-              v-model.trim="inputText"
-              @input="setSearchInput(inputText)"
-              @keydown.enter="addNewMenu"
-            )
-          //- Clear Icon
-          div(v-if="clearable" :class="classIcon")
-            f-svg-icon(
-              v-if="clearable"
-              :size="size === 'lg' ? '24' : '20'"
-              iconName="cancel"
-              class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
-              @click.stop="clearAll"
-            )
         f-contextual-menu(
           :style="[widthFitWithInput ? { width: contentWidth + 'px' } : '']"
           ref="refContextualMenu"
@@ -282,6 +255,10 @@ const props = defineProps({
     type: String,
     default: 'v1',
   },
+  hasError: {
+    type: Boolean,
+    default: false,
+  },
 })
 const innerSelectValue = computed({
   get: () => {
@@ -320,6 +297,7 @@ const displayText = computed(() => {
 })
 
 const inputText = ref('')
+const isEditing = ref(false)
 
 const { rules, hintError, disabled, multiple } = toRefs(props)
 const {
@@ -366,7 +344,7 @@ const classMain = computed(() => {
       )
       break
     case STATE.HOVER:
-      classList.push('border-grey-250', 'bg-grey-50')
+      classList.push('border-grey-250', 'bg-grey-50-v1')
       break
     case STATE.FOCUS:
       classList.push(
@@ -382,7 +360,7 @@ const classMain = computed(() => {
       break
   }
 
-  if (isError.value) {
+  if (isError.value || props.hasError) {
     classList.push('!border-red-300')
   }
 
@@ -437,7 +415,7 @@ const classInput = computed(() => {
     'bg-transparent',
     'text-body2',
     'leading-1.6',
-    'placeholder:text-grey-250',
+    'placeholder:text-grey-600-v1',
   ]
 
   switch (props.size) {
@@ -532,11 +510,14 @@ onBeforeUnmount(() => {
 const expand = () => {
   isFocus.value = true
   refInput.value.focus({ preventScroll: isIframe() })
-  !props.multiple && (inputText.value = displayText.value)
+  if (!props.multiple && displayText.value) {
+    inputText.value = displayText.value
+  }
 }
 
 const collapse = () => {
   isFocus.value = false
+  isEditing.value = false
   setSearchInput('')
   inputText.value = ''
   emit('collapse')
@@ -602,7 +583,11 @@ const addNewMenu = async () => {
 
   // step 4
   setSearchInput('')
-  props.multiple && (inputText.value = '')
+  if (props.multiple) {
+    inputText.value = ''
+  } else {
+    isEditing.value = false
+  }
 }
 
 const clearAll = () => {
@@ -611,10 +596,12 @@ const clearAll = () => {
    * 1. inputText
    * 2. innerSelectValue
    * 3. searchInput (which is from FContextualMenu)
+   * 4. editing state
    */
   inputText.value = ''
   innerSelectValue.value = props.multiple ? [] : ''
   setSearchInput('')
+  isEditing.value = false
 }
 
 const removeChip = (index) => {
@@ -622,6 +609,15 @@ const removeChip = (index) => {
 }
 
 const refPopper = ref(null)
+
+const handleInputFocus = () => {
+  isEditing.value = true
+}
+
+const handleInputBlur = () => {
+  isEditing.value = false
+}
+
 defineExpose({
   focus: () => refPopper.value.expandPopper(),
 })

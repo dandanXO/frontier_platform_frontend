@@ -735,6 +735,22 @@ export const useMaterialTagSchema = () => {
 
   return schema
 }
+
+const customFieldSchema = z.object({
+  customFieldId: z.number(),
+  value: z.any().nullable(),
+})
+
+const customFieldListSchema = z
+  .object({
+    specificationList: z.array(customFieldSchema).default([]),
+    fabricDetailList: z.array(customFieldSchema).default([]),
+    tagList: z.array(customFieldSchema).default([]),
+    pricingList: z.array(customFieldSchema).default([]),
+    inventoryList: z.array(customFieldSchema).default([]),
+  })
+  .nullable()
+
 const useMaterialSchema = () =>
   z.object({
     itemNo: z
@@ -782,6 +798,7 @@ const useMaterialSchema = () =>
         .nullable()
         .default(null),
     }),
+    customFieldList: customFieldListSchema,
   })
 
 export type MaterialSchemaWithConstructionType = Omit<
@@ -791,5 +808,7 @@ export type MaterialSchemaWithConstructionType = Omit<
   faceSide: z.infer<typeof materialSideSchema> | null
   backSide: z.infer<typeof materialSideSchema> | null
 }
+
+export type MaterialSchema = z.infer<ReturnType<typeof useMaterialSchema>>
 
 export default useMaterialSchema

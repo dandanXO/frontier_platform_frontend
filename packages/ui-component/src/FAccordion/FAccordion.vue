@@ -1,19 +1,21 @@
 <template>
   <div
-    class="flex flex-col border border-primary-border rounded-lg"
-    :class="className"
+    class="flex flex-col border border-primary-border"
+    :class="[containerClasses, className]"
   >
     <div
       id="f-accordion-header"
-      class="flex flex-row gap-3 items-center justify-between p-6"
+      class="flex flex-row gap-3 items-center justify-between"
       :class="[
+        headerClasses,
         {
           'border-b border-b-primary-border': closedFully,
         },
-        closedFully ? 'rounded-t-lg' : 'rounded-lg',
+        headerBorderRadius,
         {
           'hover:bg-primary-hover cursor-pointer select-none': !viewOnly,
         },
+        headerClass,
       ]"
       @click="toggleContent"
     >
@@ -39,7 +41,11 @@
             isDescHTML
           >
             <template #slot:tooltip-trigger>
-              <f-svg-icon iconName="question" size="16" class="text-cyan-500" />
+              <f-svg-icon
+                iconName="question"
+                size="16"
+                class="text-cyan-500-v1"
+              />
             </template>
           </f-tooltip>
         </div>
@@ -76,7 +82,7 @@
       :style="{ height: viewOnly ? undefined : wrapperHeight }"
       v-if="hasDefaultSlot"
     >
-      <div class="p-5" :class="contentContainerClass">
+      <div class="p-6" :class="contentContainerClass">
         <slot />
       </div>
     </div>
@@ -89,7 +95,18 @@ export default { name: 'FAccordion' }
 
 <script setup lang="ts">
 import { TOOLTIP_PLACEMENT } from '@frontier/constants'
-import { Comment, computed, isVNode, ref, toRefs, useSlots, watch } from 'vue'
+import {
+  Comment,
+  computed,
+  isVNode,
+  ref,
+  toRefs,
+  useSlots,
+  watch,
+  nextTick,
+  onMounted,
+} from 'vue'
+import FTooltip from '../FTooltip/FTooltip/FTooltip.vue'
 
 interface Props {
   className?: string
@@ -97,6 +114,7 @@ interface Props {
   desc?: string
   contentContainerClass?: string
   viewOnly?: boolean
+  headerClass?: string
   headerTooltip?: {
     title?: string
     desc?: string
@@ -106,16 +124,45 @@ interface Props {
     iconName?: string
     onClick: () => void
   }
+  defaultExpanded?: boolean
+  variant?: 'default' | 'compact'
 }
 const props = defineProps<Props>()
 const { viewOnly } = toRefs(props)
 const slots = useSlots()
+
+// Variant-specific styling
+const containerClasses = computed(() => {
+  const variant = props.variant || 'default'
+  return {
+    'rounded-2xl': variant === 'default',
+    'rounded-lg': variant === 'compact',
+  }
+})
+
+const headerClasses = computed(() => {
+  const variant = props.variant || 'default'
+  return {
+    'p-6': variant === 'default',
+    'p-5': variant === 'compact',
+  }
+})
+
+const headerBorderRadius = computed(() => {
+  const variant = props.variant || 'default'
+  return {
+    'rounded-t-2xl': variant === 'default' && closedFully.value,
+    'rounded-2xl': variant === 'default' && !closedFully.value,
+    'rounded-t-lg': variant === 'compact' && closedFully.value,
+    'rounded-lg': variant === 'compact' && !closedFully.value,
+  }
+})
 const hasDefaultSlot = computed(() => {
   const slotContent = slots.default?.() ?? []
   return slotContent.some((vnode) => isVNode(vnode) && vnode.type !== Comment)
 })
 
-const isShowContent = ref(false)
+const isShowContent = ref(props.defaultExpanded || false)
 const closedFully = ref(false)
 const wrapperHeight = ref('0px')
 const contentWrapper = ref<HTMLElement | null>(null)
@@ -124,6 +171,7 @@ const toggleContent = () => {
   isShowContent.value = !isShowContent.value
 }
 
+// Watch for changes in isShowContent and viewOnly
 watch([isShowContent, viewOnly], ([isExpand, isViewMode]) => {
   if (contentWrapper.value && !isViewMode) {
     // Ensure starting height
@@ -143,6 +191,33 @@ watch([isShowContent, viewOnly], ([isExpand, isViewMode]) => {
       }, timeout)
       wrapperHeight.value = isExpand ? 'auto' : '0px'
     }, timeout)
+  }
+})
+
+// Watch for changes in defaultExpanded prop
+watch(
+  () => props.defaultExpanded,
+  (newValue) => {
+    if (newValue !== undefined) {
+      isShowContent.value = newValue
+    }
+  },
+  { immediate: true }
+)
+
+// Initialize the accordion state when component mounts
+onMounted(() => {
+  if (props.defaultExpanded && contentWrapper.value && !props.viewOnly) {
+    // Trigger the height animation for initial expanded state
+    nextTick(() => {
+      const fullHeight = contentWrapper.value!.scrollHeight
+      closedFully.value = true
+      wrapperHeight.value = `${fullHeight}px`
+
+      setTimeout(() => {
+        wrapperHeight.value = 'auto'
+      }, 200)
+    })
   }
 })
 </script>

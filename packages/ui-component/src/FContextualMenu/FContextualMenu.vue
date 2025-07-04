@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-2 rounded bg-grey-0 shadow-16"
+    class="p-2 rounded-lg bg-grey-0 flex flex-col gap-1 shadow-16"
     :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
   >
     <!-- Root Title -->
@@ -37,7 +37,7 @@
         <input
           v-model="searchInput"
           placeholder="Search"
-          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-250"
+          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-600-v1"
         />
       </div>
       <div class="w-full h-px my-1 bg-grey-150"></div>

@@ -1,8 +1,9 @@
 <template lang="pug">
 f-input-container(:required="required" :label="label")
-  div(class="flex gap-x-3")
+  div(class="flex gap-3" :class="direction === 'vertical' ? 'flex-col' : 'flex-row'")
     f-input-radio(
       v-for="option in optionList"
+      :key="option[keyOptionValue]"
       v-model:inputValue="innerInputValue"
       :label="option[keyOptionName]"
       :value="option[keyOptionValue]"
@@ -69,6 +70,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    direction: {
+      type: String,
+      default: 'horizontal',
     },
   },
   emits: ['update:inputValue'],

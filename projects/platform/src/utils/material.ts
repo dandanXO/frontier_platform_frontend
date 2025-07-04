@@ -235,7 +235,7 @@ export const mapPricing = (
 
   return {
     ...pricing,
-    price: Number(pricing.price),
+    price: String(pricing.price),
   }
 }
 

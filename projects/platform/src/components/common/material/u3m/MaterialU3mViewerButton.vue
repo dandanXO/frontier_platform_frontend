@@ -1,11 +1,5 @@
 <template lang="pug">
-f-button(
-  prependIcon="3D_viewer"
-  size="md"
-  type="secondary"
-  :disabled="disabled"
-  @click="openModal3DViewer"
-) {{ $t('UU0006') }}
+custom-button(type="secondary" :disabled="disabled" @click="openModal3DViewer") {{ $t('UU0006') }}
 </template>
 
 <script setup lang="ts">
@@ -17,6 +11,7 @@ import type {
 } from '@frontier/platform-web-sdk'
 import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
+import CustomButton from './CustomButton.vue'
 
 const props = defineProps<{
   materialId: number

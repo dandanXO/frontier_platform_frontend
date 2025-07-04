@@ -22,7 +22,8 @@
       "@frontier/3d-viewer/components.d.ts",
       "node",
       "@types/qrcode",
-      "@types/dom-to-image"
+      "@types/dom-to-image",
+      "./projects/platform/src/types/shims-vue.d.ts"
     ]
   },
   "vueCompilerOptions": {

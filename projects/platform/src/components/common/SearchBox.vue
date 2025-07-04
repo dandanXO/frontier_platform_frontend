@@ -16,7 +16,7 @@ div(class="grid")
         :placeholder="$t('RR0053')"
         @input="typing"
         @keydown.enter="handleSearch"
-        class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
+        class="placeholder:text-grey-600-v1 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
       )
       f-svg-icon(
         v-if="!!keyword"

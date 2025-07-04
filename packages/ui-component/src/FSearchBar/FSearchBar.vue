@@ -14,7 +14,7 @@ div(class="justify-self-center bg-primary flex items-center" :class="[dynamicWid
       @focus="isFocusedInput = true"
       @blur="isFocusedInput = false"
       @keydown.enter="$emit('search')"
-      class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
+      class="placeholder:text-grey-600-v1 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
     )
     f-svg-icon(
       v-if="!!keyword"

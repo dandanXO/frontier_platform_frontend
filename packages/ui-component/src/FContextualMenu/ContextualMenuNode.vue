@@ -11,7 +11,7 @@ div(
   :data-cy="currentTestId"
 )
   f-tooltip-standard(
-    :placement="innerMenu.tooltipPlacement"
+    :placement="tooltipPlacement"
     isNotFitWidth
     class="flex items-center w-full px-4"
     :disabledTooltip="disabledTooltip"
@@ -47,7 +47,7 @@ div(
           v-if="innerMenu.icon"
           :iconName="innerMenu.icon"
           size="24"
-          :class="[innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
+          :class="[innerMenu.iconClass, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
         )
         //- Thumbnail
         img(
@@ -78,7 +78,7 @@ div(
         p(
           ref="refTitle"
           class="text-body2 !leading-1.6 text-ellipsis overflow-hidden break-words"
-          :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
+          :class="[innerMenu.titleClass, { 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.titleLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'title'"
         ) {{ innerMenu.title }}
@@ -132,7 +132,7 @@ div(
         input(
           v-model="searchInput"
           placeholder="Search"
-          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-250"
+          class="w-full outline-none text-caption text-grey-900 placeholder:text-grey-600-v1"
         )
       div(class="w-full h-px my-1 bg-grey-150")
     div(
@@ -176,7 +176,13 @@ export default {
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE, THEME } from '../constants'
+import {
+  CONTEXTUAL_MENU_MODE,
+  DISPLAY,
+  SIZE,
+  THEME,
+  TOOLTIP_PLACEMENT,
+} from '../constants'
 import type { MenuItem, MenuBlock } from '../types'
 import { isEqual } from '@frontier/lib'
 import { useBreakpoints } from '@frontier/lib'
@@ -208,6 +214,10 @@ const props = withDefaults(
 
 const currentTestId = props.menu.testId ?? 'contextual-menu-node'
 const { isDesktop } = useBreakpoints()
+
+const tooltipPlacement = computed(
+  () => innerMenu.value.tooltipPlacement as TOOLTIP_PLACEMENT
+)
 
 const innerMenu = computed<Required<MenuItem>>(() =>
   Object.assign(
@@ -329,6 +339,10 @@ const expandMenu = async () => {
 
   await nextTick()
 
+  if (!refTrigger.value || !refContextMenu.value) {
+    return
+  }
+
   const PADDING_TOP = 8
   const SEARCH_INPUT = 41
   const BUTTON = 40
@@ -448,7 +462,7 @@ const tooltipTitle = computed(() => {
   if (innerMenu.value.tooltipTitle) {
     return innerMenu.value.tooltipTitle
   }
-  return null
+  return undefined
 })
 
 const tooltipMessage = computed(() => {
@@ -458,6 +472,6 @@ const tooltipMessage = computed(() => {
   if (innerMenu.value.tooltipMessage) {
     return innerMenu.value.tooltipMessage
   }
-  return null
+  return undefined
 })
 </script>

@@ -95,7 +95,7 @@ const classMain = computed(() => {
       classList.push('border-grey-200', 'bg-grey-0')
       break
     case STATE.HOVER:
-      classList.push('border-grey-250', 'bg-grey-50')
+      classList.push('border-grey-250', 'bg-grey-50-v1')
       break
     case STATE.FOCUS:
       classList.push(
