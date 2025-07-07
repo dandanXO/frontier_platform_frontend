@@ -36,6 +36,7 @@ import {
   TRACKER_ERROR_LOCATION,
   track,
 } from '@frontier/lib'
+import { useNotifyStore } from '@/stores/notify'
 
 const TRACKER_ID = 'Mass Upload'
 
@@ -51,6 +52,7 @@ const {
 } = useAssetsStore()
 const { goToAssets, goToProgress, goToAssetMaterialSpreadSheet } =
   useNavigation()
+const notify = useNotifyStore()
 
 const materialRowList: MaterialRow[] = spreadsheetInitialMaterial.map(
   mapMaterialToMaterialRow(true)
@@ -72,6 +74,7 @@ const breadcrumbList = computed(() => {
 })
 
 const handleSubmit = async (payload: SubmitPayload) => {
+  let errorModalShown = false
   const result = await new Promise<'confirm' | 'cancel'>((resolve) => {
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
@@ -107,7 +110,30 @@ const handleSubmit = async (payload: SubmitPayload) => {
     : TRACKER_ID
 
   try {
-    await ogBaseAssetsApi('massCreateUpdateDeleteAssetsMaterialList', req)
+    const response = await ogBaseAssetsApi(
+      'massCreateUpdateDeleteAssetsMaterialList',
+      req
+    )
+    if (
+      response &&
+      response.data?.success === false &&
+      response.data?.result?.errorList?.length
+    ) {
+      const errorMsg = response.data.result.errorList
+        .map(
+          (err: { key: string; value: string }) =>
+            `Item #${err.key}: ${err.value}`
+        )
+        .join('\n')
+      store.dispatch('helper/openModalConfirm', {
+        type: NOTIFY_TYPE.ALERT,
+        header: t('GG0010') || 'Save Failed',
+        contentText: errorMsg,
+        primaryBtnText: t('UU0031'),
+      })
+      errorModalShown = true
+      return
+    }
     track({
       eventName: [
         TRACKER_PREFIX.SUBMIT_DATA,
@@ -119,10 +145,25 @@ const handleSubmit = async (payload: SubmitPayload) => {
       },
     })
     goToProgress({}, PROGRESS_TAB.SPREADSHEET)
-  } catch (error) {
+  } catch (error: any) {
+    if (error && error.status === 200 && error.result?.errorList?.length) {
+      const errorMsg = error.result.errorList
+        .map(
+          (err: { key: string; value: string }) =>
+            `Item #${err.key}: ${err.value}`
+        )
+        .join('\n')
+      store.dispatch('helper/openModalConfirm', {
+        type: NOTIFY_TYPE.ALERT,
+        header: t('GG0010') || 'Save Failed',
+        contentText: errorMsg,
+        primaryBtnText: t('UU0031'),
+      })
+      errorModalShown = true
+      return
+    }
     const { message } =
       error as MassCreateUpdateDeleteAssetsMaterialList200Response
-
     track({
       eventName: [
         TRACKER_PREFIX.SUBMIT_DATA,
@@ -137,7 +178,9 @@ const handleSubmit = async (payload: SubmitPayload) => {
       },
     })
   } finally {
-    store.dispatch('helper/clearModalPipeline')
+    if (!errorModalShown) {
+      store.dispatch('helper/clearModalPipeline')
+    }
   }
 }
 

@@ -14999,7 +14999,7 @@ export interface MaterialWidth {
      */
     'cuttable': number;
     /**
-     * 全幅寬 1~999，可填寫至小數 2 位 
+     * 全幅寬 0~999，可填寫至小數 2 位 
      * @type {number}
      * @memberof MaterialWidth
      */

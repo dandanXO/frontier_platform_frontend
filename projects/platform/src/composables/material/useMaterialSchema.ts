@@ -629,15 +629,21 @@ export const seasonInfoSchema = z.object({
   isPublic: z.boolean(nonNullParams).default(false),
 })
 
-export const widthValueSchema = z
+export const cuttableWidthValueSchema = z
   .number(nonNullParams)
   .multipleOf(...getMaxDecimalPlacesParams(2))
   .min(...getMinNumberParams(1, 2))
   .max(...getMaxNumberParams(999, 2))
 
+export const fullWidthValueSchema = z
+  .number(nonNullParams)
+  .multipleOf(...getMaxDecimalPlacesParams(2))
+  .min(...getMinNumberParams(0, 2))
+  .max(...getMaxNumberParams(999, 2))
+
 export const materialWidthSchema = z.object({
-  cuttable: widthValueSchema,
-  full: widthValueSchema,
+  cuttable: cuttableWidthValueSchema,
+  full: fullWidthValueSchema,
   unit: z.nativeEnum(LengthUnit, nonNullParams).default(LengthUnit.INCH),
 })
 

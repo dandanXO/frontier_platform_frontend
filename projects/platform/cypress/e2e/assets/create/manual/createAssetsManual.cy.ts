@@ -131,13 +131,21 @@ context('Verify create asset manual by user input', () => {
       .should('have.value', 998.99)
 
     //verify full width
-    //verify with value less than 1
+    //verify with value 0 (now valid)
     cy.get(`[data-cy="${selectedSide}"] [data-cy="full-width-text"] input`)
-      .type('0.99')
-      .should('have.value', 0.99)
+      .type('0')
+      .should('have.value', 0)
+    cy.get(
+      `[data-cy="${selectedSide}"] [data-cy="full-width-text"] input`
+    ).clear()
+
+    //verify with value less than 0
+    cy.get(`[data-cy="${selectedSide}"] [data-cy="full-width-text"] input`)
+      .type('-0.01')
+      .should('have.value', -0.01)
     cy.checkErrorMessages(
       `[data-cy="${selectedSide}"] [data-cy="full-width-text"] [data-cy="hintError"]`,
-      'Must be at least 1.00.'
+      'Must be at least 0.00.'
     )
 
     //verify with empty value
