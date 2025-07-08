@@ -115,7 +115,7 @@
       </div>
       <template v-else>
         <div
-          v-if="items.length > 0"
+          v-if="items?.length > 0"
           class="grid gap-y-2.5"
           :class="{ 'overflow-y-hidden flex-grow min-h-0': fitContainer }"
           :style="{ minWidth: tableWidth }"

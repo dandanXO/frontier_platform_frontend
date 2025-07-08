@@ -63,7 +63,7 @@ const updateCustomFieldList = (newValue: any) => {
 const rolePermission = computed(() => {
   const roleId = store.getters['organization/orgUser/orgUser'].roleID
   const permissionList = PERMISSION_MAP[roleId]
-  return permissionList.includes(FUNC_ID.CUSTOM_FIDLE_EDIT)
+  return permissionList.includes(FUNC_ID.CUSTOM_FIELD_EDIT)
 })
 
 onMounted(() => {

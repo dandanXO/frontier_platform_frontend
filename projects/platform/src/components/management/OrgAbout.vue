@@ -114,7 +114,6 @@ import { useRouter } from 'vue-router'
 import usePlanOld from '@/composables/usePlanOld.js'
 import { FUNC_ID, NOTIFY_TYPE, PERMISSION_MAP } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
-import { disable } from 'mixpanel-browser'
 
 const store = useStore()
 const notify = useNotifyStore()

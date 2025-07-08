@@ -52,6 +52,7 @@ const getters = {
       [ROLE_ID.OWNER]: t('BB0017'),
       [ROLE_ID.MEMBER1]: t('BB0019'),
       [ROLE_ID.GUEST]: t('BB0143'),
+      [ROLE_ID.ADMIN]: t('BB0018'),
     }
     // const _roleId = state.roleList.find((role) => role.roleId === roleId).roleId
 

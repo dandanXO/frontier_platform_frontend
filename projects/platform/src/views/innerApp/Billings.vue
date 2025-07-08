@@ -66,7 +66,6 @@ const permissionList = PERMISSION_MAP[roleId]
 const BILLING_PAGE_PERMISSOIN = ref(
   permissionList.includes(FUNC_ID.VISIT_BILLING_PAGE)
 )
-console.log(permissionList.includes(FUNC_ID.VISIT_BILLING_PAGE))
 const tabList = reactive([
   {
     name: t('OO0009'),
