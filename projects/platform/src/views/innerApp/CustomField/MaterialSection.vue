@@ -174,10 +174,15 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
               customFieldOptionList: data.customFieldOptionList,
               isPublic: data.isPublic,
               applyTo: data.applyTo,
-              sort:
+              sort: Number.isFinite(
                 Math.max(
                   ...sortedFieldList.value.map((field: any) => field.sort)
-                ) + 1,
+                )
+              )
+                ? Math.max(
+                    ...sortedFieldList.value.map((field: any) => field.sort)
+                  ) + 1
+                : 1,
             },
           })
           updateCustomFieldList(res.data.result)
