@@ -152,48 +152,48 @@ platform-deploy-to-prod:
     - cd ./projects/platform
     - bash ./scripts/deploy.sh production
 
-storybook-build:
-  stage: build
-  # tags:
-  #   - dan-home
-  image: node:20.18.0
-  only:
-    refs:
-      - main
-    changes:
-      - packages/ui-component/**/*
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - eval "$(ssh-agent -s)"
-    - ssh-add ~/.ssh/id_rsa
-    - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
-    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com".insteadOf "https://gitlab.com"
-  script:
-    - git submodule sync --recursive
-    - git submodule update --init --recursive
-    - rm -rf node_modules/.vite
-    - rm -rf node_modules/.cache
-    - npm install -g pnpm
-    - pnpm i
-    - cd ./packages/ui-component
-    - npm run build
-  artifacts:
-    paths:
-      - packages/ui-component/storybook-static/
+# storybook-build:
+#   stage: build
+#   # tags:
+#   #   - dan-home
+#   image: node:20.18.0
+#   only:
+#     refs:
+#       - main
+#     changes:
+#       - packages/ui-component/**/*
+#   before_script:
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#     - chmod 600 ~/.ssh/id_rsa
+#     - eval "$(ssh-agent -s)"
+#     - ssh-add ~/.ssh/id_rsa
+#     - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+#     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com".insteadOf "https://gitlab.com"
+#   script:
+#     - git submodule sync --recursive
+#     - git submodule update --init --recursive
+#     - rm -rf node_modules/.vite
+#     - rm -rf node_modules/.cache
+#     - npm install -g pnpm
+#     - pnpm i
+#     - cd ./packages/ui-component
+#     - npm run build
+#   artifacts:
+#     paths:
+#       - packages/ui-component/storybook-static/
 
-storybook-deploy:
-  stage: deploy
-  # tags:
-  #   - dan-home
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  only:
-    refs:
-      - main
-    changes:
-      - packages/ui-component/**/*
-  script:
-    - cd ./packages/ui-component
-    - bash ./deploy.sh
+# storybook-deploy:
+#   stage: deploy
+#   # tags:
+#   #   - dan-home
+#   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+#   only:
+#     refs:
+#       - main
+#     changes:
+#       - packages/ui-component/**/*
+#   script:
+#     - cd ./packages/ui-component
+#     - bash ./deploy.sh
