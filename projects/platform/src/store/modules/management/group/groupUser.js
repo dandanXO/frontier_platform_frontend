@@ -32,7 +32,7 @@ export default {
         }
       )
       // check if is owner not use group role id
-      if (resOrg.orgRoleId !== ROLE_ID.OWNER) {
+      if (resOrg.orgRoleId !== ROLE_ID.OWNER && resOrg.orgRoleId !== ROLE_ID.ADMIN) {
         const { data } = await dispatch(
           'group/callGroupApi',
           { func: 'getGroupUser' },

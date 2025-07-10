@@ -17,7 +17,7 @@ f-table(
       div(class="flex justify-end mr-6")
         div(
           v-if="item.isPending"
-          class="w-10 h-10 rounded-full border border-grey-900 border-dashed"
+          class="w-10 h-10 border border-dashed rounded-full border-grey-900"
         )
         f-avatar(v-else :imageUrl="item.avatar" size="lg")
       div
@@ -27,10 +27,10 @@ f-table(
         ) {{ $t('BB0024') }}
         p(v-else class="line-clamp-1") {{ item.displayName }}
     template(v-if="prop === 'role'")
-      p(v-if="item.isPending" class="ml-4 w-4 border-t border-grey-900")
+      p(v-if="item.isPending" class="w-4 ml-4 border-t border-grey-900")
       template(v-else)
         p(
-          v-if="item.orgRoleId === ROLE_ID.OWNER || roleIdFromUserOrgOrGroup !== ROLE_ID.OWNER"
+          v-if="item.orgRoleId === ROLE_ID.OWNER || (roleIdFromUserOrgOrGroup !== ROLE_ID.OWNER && roleIdFromUserOrgOrGroup !== ROLE_ID.ADMIN)"
         ) {{ getRoleName(getRoleId(item)) }}
         template(v-else)
           f-select-dropdown(
@@ -43,12 +43,12 @@ f-table(
     template(v-if="prop === 'remove' && isHover")
       p(
         v-if="item.isPending && [ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup)"
-        class="text-body2 text-grey-600 cursor-pointer"
+        class="cursor-pointer text-body2 text-grey-600"
         @click="confirmToCancelInvitation(item)"
       ) {{ $t('UU0002') }}
       p(
         v-else-if="!item.isPending && [ROLE_ID.OWNER].includes(roleIdFromUserOrgOrGroup) && !(item.orgRoleId === ROLE_ID.OWNER)"
-        class="text-body2 text-grey-600 cursor-pointer"
+        class="cursor-pointer text-body2 text-grey-600"
         @click="confirmToRemoveMember(item)"
       ) {{ $t('UU0016') }}
 </template>
