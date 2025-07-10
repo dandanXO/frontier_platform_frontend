@@ -342,13 +342,22 @@ const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const { currencyList, inventoryUnitList, inventoryPerUnitList } = inputMenu
 
 const pricingCustomFields = computed((): CustomField[] => {
-  if (!materialOptions.value) {
+  const currentMaterialType = materialFormService.values.faceSide?.materialType
+  if (!materialOptions.value || !currentMaterialType) {
     return []
   }
 
   const allPricingFields =
     materialOptions.value.customFieldList?.pricingList || []
 
-  return allPricingFields
+  const filteredFields = allPricingFields.filter((field: CustomField) => {
+    return (
+      field.customFieldId !== null &&
+      (field.applyTo.length === 0 ||
+        field.applyTo.includes(currentMaterialType))
+    )
+  })
+
+  return filteredFields
 })
 </script>
