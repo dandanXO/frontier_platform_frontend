@@ -29,9 +29,7 @@ f-table(
     template(v-if="prop === 'role'")
       p(v-if="item.isPending" class="w-4 ml-4 border-t border-grey-900")
       template(v-else)
-        p(
-          v-if="item.orgRoleId === ROLE_ID.OWNER || (roleIdFromUserOrgOrGroup !== ROLE_ID.OWNER && roleIdFromUserOrgOrGroup !== ROLE_ID.ADMIN)"
-        ) {{ getRoleName(getRoleId(item)) }}
+        p(v-if="isRoleDisplayOnly(item)") {{ getRoleName(getRoleId(item)) }}
         template(v-else)
           f-select-dropdown(
             class="w-full"
@@ -195,14 +193,43 @@ export default {
       })
     }
 
+    const isRoleDisplayOnly = (item) => {
+      // 角色欄位應為唯讀狀態，如果：
+      // 1. 目標成員是 OWNER。
+      // 2. 當前使用者不是 OWNER 或 ADMIN。
+      // 3. 當前使用者是 ADMIN，且目標成員也是 ADMIN。
+      const isTargetOwner = item.orgRoleId === ROLE_ID.OWNER
+      const canCurrentUserEdit =
+        roleIdFromUserOrgOrGroup === ROLE_ID.OWNER ||
+        roleIdFromUserOrgOrGroup === ROLE_ID.ADMIN
+      const isCurrentUserAdmin = roleIdFromUserOrgOrGroup === ROLE_ID.ADMIN
+      const isTargetAdmin = getRoleId(item) === ROLE_ID.ADMIN
+
+      return (
+        isTargetOwner ||
+        !canCurrentUserEdit ||
+        (isCurrentUserAdmin && isTargetAdmin)
+      )
+    }
+
     const roleLimitList = (member) => {
       const orgRoleLimitList = store.getters['code/orgRoleLimitList']
       const groupRoleLimitList = store.getters['code/getGroupRoleLimitList'](
         member.orgRoleId
       )
-      return routeLocation.value === 'org'
-        ? orgRoleLimitList
-        : groupRoleLimitList
+      const allPossibleRoles =
+        routeLocation.value === 'org' ? orgRoleLimitList : groupRoleLimitList
+
+      if (roleIdFromUserOrgOrGroup === ROLE_ID.ADMIN) {
+        // An admin can only change roles to Member or Guest.
+        return allPossibleRoles.filter(
+          (role) =>
+            role.roleId === ROLE_ID.MEMBER1 || role.roleId === ROLE_ID.GUEST
+        )
+      }
+
+      // An owner can change to any role in the list.
+      return allPossibleRoles
     }
 
     const getRoleId = (member) =>
@@ -271,6 +298,7 @@ export default {
       roleIdFromUserOrgOrGroup,
       isLoading,
       roleListMenuTree,
+      isRoleDisplayOnly,
     }
   },
 }
