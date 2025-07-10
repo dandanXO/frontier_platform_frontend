@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex flex-col"
+  class="relative flex flex-col h-full z-sidebar min-w-60 w-60 bg-grey-50 shadow-16"
   data-cy="sidebar"
 )
   menu-org
@@ -12,7 +12,7 @@ div(
       )
         img(src="@/assets/images/logo.png" class="w-5 h-5")
         p(class="text-body2 text-grey-900 line-clamp-1") {{ $t('RR0003') }}
-  div(class="flex-grow px-1 flex flex-col")
+  div(class="flex flex-col flex-grow px-1")
     div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
     f-scrollbar-container(class="flex-grow")
       div(class="grid gap-y-1.5")
@@ -31,6 +31,7 @@ div(
           testId="management"
         )
         sidebar-item#CustomField(
+          v-if="isNewCustomFieldEnabled()"
           :title="$t('RR0518')"
           :goTo="goToCustomField"
           icon="table_edit"
@@ -44,7 +45,7 @@ div(
             :class="[planStatus.INACTIVE ? 'text-grey-250' : 'text-grey-600']"
           )
           span(
-            class="text-body2 line-clamp-1 flex-grow"
+            class="flex-grow text-body2 line-clamp-1"
             :class="[planStatus.INACTIVE ? 'text-grey-250' : 'text-grey-900']"
           ) {{ $t('PP0001') }}
           div(
@@ -61,9 +62,9 @@ div(
           @click="toggleExpand(og.ogId)"
         )
           template(#trigger="{ isExpand }")
-            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-100")
+            div(class="flex items-center pl-4 pr-5 h-9 hover:bg-grey-100")
               label(
-                class="w-3 h-3 rounded-sm mr-3"
+                class="w-3 h-3 mr-3 rounded-sm"
                 :style="{ backgroundColor: og.disabled ? '#c4c4c4' : og.labelColor }"
               )
               span(
@@ -97,7 +98,7 @@ div(
                   f-tooltip-standard(class="mr-3" :tooltipMessage="$t('RR0012')")
                     template(#slot:tooltip-trigger)
                       div(
-                        class="flex justify-center items-center w-6 h-6 rounded bg-grey-100"
+                        class="flex items-center justify-center w-6 h-6 rounded bg-grey-100"
                         data-cy="upload-page"
                         @click.stop="goToMaterialUpload({ orgNo: organization.orgNo, ogKey: `${og.ogType}-${og.ogId}` })"
                       )
@@ -125,7 +126,7 @@ import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { OgType, type Organization } from '@frontier/platform-web-sdk'
-import { FUNC_ID } from '@/utils/constants'
+import { ROLE_ID, OUTER_TYPE, FEATURE_FLAG_KEY } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -155,6 +156,12 @@ const showPublicLibrary = computed(
     store.getters['permission/notLittleKingRule'] &&
     !store.getters['permission/isFabriSelectAccount']
 )
+
+const isNewCustomFieldEnabled = () => {
+  const featureFlagList =
+    store.getters['organization/organization']?.featureFlagList || []
+  return featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_NEW_CUSTOM_FIELD)
+}
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus =
   computed(() => store.getters['polling/planStatus']) || reactive({})

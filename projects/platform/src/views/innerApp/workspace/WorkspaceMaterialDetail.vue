@@ -3,7 +3,7 @@ div
   material-detail-internal(
     :material="nodeMaterial.material"
     :locationList="locationList"
-    class="mx-auto pb-25"
+    class="mx-auto w-230 pb-25"
   )
 </template>
 
@@ -12,7 +12,8 @@ import useNavigation from '@/composables/useNavigation'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useWorkspaceStore } from '@/stores/workspace'
-import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
+// import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
+import MaterialDetailInternal from '@/views/innerApp/assets/AssetsMaterialDetailOld/MaterialDetailInternal.vue'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import type { WorkspaceNodeMaterial } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'

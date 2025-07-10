@@ -91,13 +91,17 @@ div(class="!gap-5")
               ) {{ spec.value || $t('RR0561') }}
           div(v-if="showColorPatternData" class="flex w-full gap-4 pb-3")
             div(class="flex flex-row items-center gap-2 w-50")
-              p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ $t('RR0309') }}
+              p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ $t('RR0556') }}
             material-detail-color-and-pattern(
               :pantoneList="pantoneList ?? undefined"
               :colorInfo="colorInfo?.value ? { ...colorInfo, value: colorInfo.value } : undefined"
               :patternInfo="patternInfo?.value ? { ...patternInfo, value: patternInfo.value } : undefined"
               class="flex-1"
             )
+          div(v-if="!showColorPatternData" class="flex w-full gap-4 pb-3")
+            div(class="flex flex-row items-center gap-2 w-50")
+              p(class="text-base font-bold break-words text-secondary-text cursor-text") {{ $t('RR0556') }}
+            div ---
   custom-fields-section(
     v-if="(props.material?.customFieldList?.specificationList?.length ?? 0) > 0"
     :customFields="customFieldList.specificationList"
@@ -115,6 +119,7 @@ import type {
   MaterialWovenConstruction,
   Material,
 } from '@frontier/platform-web-sdk'
+import { MaterialType } from '@frontier/platform-web-sdk'
 import { TYPE as TAB_TYPE } from '@frontier/ui-component/src/FTabs/FTabs.vue'
 import { TYPE as ALERT_TYPE } from '@frontier/ui-component/src/FNotify/FAlert/FAlert.vue'
 import { useCustomFieldStore } from '@/stores/customField'
@@ -223,10 +228,10 @@ const showColorPatternData = computed(
     ) &&
     isInternalUser &&
     ((pantoneList.value?.length ?? 0) > 0 ||
-      colorInfo.value?.value.color ||
-      colorInfo.value?.value.customPropertyList.length > 0 ||
-      patternInfo.value?.value.pattern ||
-      patternInfo.value?.value.customPropertyList.length > 0)
+      colorInfo.value?.value?.color ||
+      (colorInfo.value?.value?.customPropertyList?.length ?? 0) > 0 ||
+      patternInfo.value?.value?.pattern ||
+      (patternInfo.value?.value?.customPropertyList?.length ?? 0) > 0)
 )
 
 const showShowMoreData = computed(() => {
@@ -262,7 +267,11 @@ onMounted(() => {
 
 const withImportantSpec = computed(() => {
   if ((currentSide.value as MaterialSide)?.isMainSide) {
-    return true
+    if(currentSide.value?.materialType === MaterialType.WOVEN || currentSide.value?.materialType === MaterialType.KNIT){
+      return true
+    } else {
+      return false
+    }
   }
 
   return !!(
@@ -271,31 +280,34 @@ const withImportantSpec = computed(() => {
   )
 })
 
-const commonSpecs = computed<Spec[]>(() => [
-  {
-    key: 'width',
-    name: specificationInfo.value?.width?.name,
-    value: specificationInfo.value?.width?.value,
-    isRequired: withImportantSpec.value,
-  },
-  {
-    key: 'weight',
-    name: specificationInfo.value?.weight?.name,
-    value: specificationInfo.value?.weight?.value,
-    isRequired: withImportantSpec.value,
-  },
-  {
-    key: 'season',
-    name: specificationInfo.value?.seasonInfo?.name,
-    value: specificationInfo.value?.seasonInfo?.value,
-  },
-  {
-    key: 'remark',
-    name: t('RR0029'),
-    value: props.material.internalInfo?.remark,
-  },
-  // add more specs here as needed
-])
+const commonSpecs = computed<Spec[]>(() => {
+  const normal = [
+    {
+      key: 'width',
+      name: specificationInfo.value?.width?.name,
+      value: specificationInfo.value?.width?.value,
+      isRequired: withImportantSpec.value,
+    },
+    {
+      key: 'weight',
+      name: specificationInfo.value?.weight?.name,
+      value: specificationInfo.value?.weight?.value,
+      isRequired: withImportantSpec.value,
+    },
+    {
+      key: 'season',
+      name: specificationInfo.value?.seasonInfo?.name,
+      value: specificationInfo.value?.seasonInfo?.value,
+    },
+    {
+      key: 'remark',
+      name: t('RR0029'),
+      value: props.material.internalInfo?.remark,
+    },
+    // add more specs here as needed
+  ]
+  return normal
+})
 
 const filteredCommonSpecs = computed(() =>
   commonSpecs.value.filter((spec) => spec.value || spec.isRequired)
@@ -375,43 +387,158 @@ const yarnSizeText = computed(() => {
   return [warpData, weftData].join(' X ')
 })
 
-const moreSpecs = computed<Spec[]>(() => [
-  {
-    key: 'frontierNo',
-    name: t('RR0084'),
-    value: currentSide.value?.frontierNo,
-  },
-  {
-    key: 'description_list',
-    name: t('MI0023'),
-    value: (currentSide.value as MaterialSide)?.descriptionList
-      ?.map(({ name }) => name)
-      .join(', '),
-    infoText: t('RR0568'),
-  },
-  {
-    key: 'density',
-    name: t('RR0024'),
-    value: densityText.value,
-  },
-  {
-    key: 'yarnSize',
-    name: t('RR0023'),
-    value: yarnSizeText.value,
-  },
-  {
+const moreSpecs = computed<Spec[]>(() => {
+  const displayOption = [
+    {
+      key: 'frontierNo',
+      name: t('RR0084'),
+      value: currentSide.value?.frontierNo,
+      isRequired: true,
+    },
+    {
+      key: 'description_list',
+      name: t('MI0023'),
+      value: (currentSide.value as MaterialSide)?.descriptionList
+        ?.map(({ name }) => name)
+        .join(', '),
+      infoText: t('RR0568'),
+      isRequired: false,
+    },
+    {
+      key: 'density',
+      name: t('RR0024'),
+      value: densityText.value,
+      isRequired: false,
+    },
+    {
+      key: 'yarnSize',
+      name: t('RR0023'),
+      value: yarnSizeText.value,
+      isRequired: false,
+    },
+    // add more specs here as needed
+  ]
+  if (currentSide.value?.materialType === MaterialType.KNIT) {
+    displayOption.push(
+      {
+        key: 'machine_type',
+        name: t('MI0031'),
+        value: specificationInfo.value?.construction?.value?.machineType.value,
+        isRequired: true,
+      },
+      {
+        key: 'walesPerInch',
+        name: t('MI0032'),
+        value: specificationInfo.value?.construction?.value?.walesPerInch.value,
+        isRequired: true,
+      },
+      {
+        key: 'Yarn_Size',
+        name: t('RR0023'),
+        value: specificationInfo.value?.construction?.value?.yarnSize.value,
+        isRequired: true,
+      },
+      {
+        key: 'Machine_Gauge',
+        name: t('MI0068'),
+        value:
+          specificationInfo.value?.construction?.value?.machineGaugeInGg.value,
+        isRequired: true,
+      }
+    )
+  }
+  if (currentSide.value?.materialType === MaterialType.LEATHER) {
+    displayOption.push(
+      {
+        key: 'averageSkinPerMeterSquare',
+        name: t('MI0071'),
+        value:
+          specificationInfo.value?.construction?.value
+            ?.averageSkinPerMeterSquare.value,
+        isRequired: true,
+      },
+      {
+        key: 'grade',
+        name: t('MI0072'),
+        value: specificationInfo.value?.construction?.value?.grade.value,
+        isRequired: true,
+      },
+      {
+        key: 'tannage',
+        name: t('MI0073'),
+        value: specificationInfo.value?.construction?.value?.tannage.value,
+        isRequired: true,
+      },
+      {
+        key: 'thicknessPerMm',
+        name: t('MI0074'),
+        value:
+          specificationInfo.value?.construction?.value?.thicknessPerMm.value,
+        isRequired: true,
+      }
+    )
+  }
+  if (currentSide.value?.materialType === MaterialType.NON_WOVEN) {
+    displayOption.push(
+      {
+        key: 'bondingMethod',
+        name: t('MI0078'),
+        value:
+          specificationInfo.value?.construction?.value?.bondingMethod.value,
+        isRequired: true,
+      },
+      {
+        key: 'Thickness',
+        name: t('MI0074'),
+        value:
+          specificationInfo.value?.construction?.value?.thicknessPerMm.value,
+        isRequired: true,
+      }
+    )
+  }
+  if (currentSide.value?.materialType === MaterialType.TRIM) {
+    displayOption.push(
+      {
+        key: 'trim_outer_diameter',
+        name: t('MI0079'),
+        value:
+          specificationInfo.value?.construction?.value?.outerDiameter.value,
+        isRequired: true,
+      },
+      {
+        key: 'trim_length',
+        name: t('MI0080'),
+        value: specificationInfo.value?.construction?.value?.length.value,
+        isRequired: true,
+      },
+      {
+        key: 'trim_thickness',
+        name: t('MI0081'),
+        value: specificationInfo.value?.construction?.value?.thickness.value,
+        isRequired: true,
+      },
+      {
+        key: 'trim_width',
+        name: t('MI0082'),
+        value: specificationInfo.value?.construction?.value?.width.value,
+        isRequired: true,
+      }
+    )
+  }
+  displayOption.push({
     key: 'finishList',
     name: t('RR0022'),
     value: (currentSide.value as MaterialSide)?.finishList
       ?.map(({ name }) => name)
       .join(', '),
-  },
-  // add more specs here as needed
-])
+    isRequired: true,
+  })
+  return displayOption
+})
 
-const filteredMoreSpecs = computed(() =>
-  moreSpecs.value.filter((spec) => spec.value || spec.isRequired)
-)
+const filteredMoreSpecs = computed(() => {
+  return moreSpecs.value.filter((spec) => spec.value || spec.isRequired)
+})
 </script>
 
 <style scoped>

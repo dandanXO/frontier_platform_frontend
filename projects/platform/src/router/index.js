@@ -240,6 +240,13 @@ const routes = [
           {
             path: 'custom-field',
             name: 'CustomField',
+            beforeEnter: (to, from, next) => {
+              if (isNewCustomFieldEnabled()) {
+                next()
+              } else {
+                return next({ name: 'NotFound' })
+              }
+            },
             component: () =>
               import('@/views/innerApp/CustomField/CustomField.vue'),
           },

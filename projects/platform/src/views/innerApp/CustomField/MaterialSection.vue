@@ -147,6 +147,7 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
         fieldType: any
         applyTo: any
         customFieldOptionList: any
+        sort: number
       }) => {
         if (customFieldId && type === 'edit') {
           const res = await customFieldApi.upsertCustomField({
@@ -159,7 +160,7 @@ const openModal = (e: any, customFieldId: number | null, type: string) => {
               customFieldOptionList: data.customFieldOptionList,
               isPublic: data.isPublic,
               applyTo: data.applyTo,
-              sort: initialField.sort,
+              sort: initialField.sort || data.sort,
             },
           })
           updateCustomFieldList(res.data.result)

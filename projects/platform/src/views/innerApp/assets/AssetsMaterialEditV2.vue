@@ -7,11 +7,11 @@
     />
     <!-- Content -->
     <div class="w-full h-fit pb-25" data-theme="new">
-      <div class="pb-9 flex justify-between">
+      <div class="flex justify-between pb-9">
         <material-item-display
           v-model:itemNo="itemNoForDisplay"
         ></material-item-display>
-        <div class="flex flex-row gap-4 items-center">
+        <div class="flex flex-row items-center gap-4">
           <f-button
             class="!h-12 !font-bold !bg-white"
             type="secondary"
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Right Side: Tabs and Content -->
-        <div class="min-w-164 flex-1 flex flex-col">
+        <div class="flex flex-col flex-1 min-w-164">
           <div class="flex flex-col gap-8">
             <!-- <TCInputShowcase /> -->
 

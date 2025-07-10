@@ -4,7 +4,7 @@
       <material-specification-shared-fields />
       <!-- New Sides Section -->
       <div
-        class="col-span-2 flex flex-col gap-y-2 p-3 bg-white border border-grey-200-v1 rounded-lg"
+        class="flex flex-col col-span-2 p-3 bg-white border rounded-lg gap-y-2 border-grey-200-v1"
       >
         <!-- Tabs -->
         <sides-tabs :material="material" v-model="activeSide" />
@@ -20,7 +20,7 @@
         </div>
 
         <div v-if="activeSide === 'middleSide'">
-          <div class="flex flex-col gap-y-4 p-3 bg-green-50-v1 rounded-t-md">
+          <div class="flex flex-col p-3 gap-y-4 bg-green-50-v1 rounded-t-md">
             <!-- Info Bar -->
             <f-infobar
               class="w-full"
@@ -32,11 +32,11 @@
           </div>
           <!-- See More -->
           <div
-            class="flex flex-col bg-grey-50-v1 rounded-b-md border-t border-green-200-v1"
+            class="flex flex-col border-t bg-grey-50-v1 rounded-b-md border-green-200-v1"
           >
-            <div class="flex justify-end items-center py-2 px-5 h-12">
+            <div class="flex items-center justify-end h-12 px-5 py-2">
               <button
-                class="text-cyan-500-v1 underline text-sm font-semibold flex flex-row items-center gap-x-1"
+                class="flex flex-row items-center text-sm font-semibold underline text-cyan-500-v1 gap-x-1"
                 @click="isMiddleSideExpanded = !isMiddleSideExpanded"
               >
                 {{ isMiddleSideExpanded ? t('EE0245') : t('EE0244') }}
@@ -49,7 +49,7 @@
             </div>
 
             <!-- Additional Fields -->
-            <div v-if="isMiddleSideExpanded" class="flex flex-col gap-y-4 p-3">
+            <div v-if="isMiddleSideExpanded" class="flex flex-col p-3 gap-y-4">
               <!-- Features -->
               <f-input-container :label="t('MI0014')" required>
                 <f-select-input

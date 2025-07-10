@@ -19,14 +19,14 @@
       <TableHeader />
       <tbody>
         <tr class="border-b border-grey-50-v1">
-          <td class="p-3 h-16 text-center align-top pt-5">
+          <td class="h-16 p-3 pt-5 text-center align-top">
             <f-input-toggle
               :value="form.isPublic"
               @update:value="form.isPublic = $event"
               primaryColor="bg-[#065f46]"
             />
           </td>
-          <td class="p-3 h-16 gap-1 align-top">
+          <td class="h-16 gap-1 p-3 align-top">
             <div>
               <f-input-text
                 :textValue="form.name"
@@ -48,7 +48,7 @@
             <div class="p-3" v-else>
               <f-select-input
                 :selectValue="form.fieldType"
-                @update:selectValue="form.fieldType = $event"
+                @update:selectValue="form.fieldType = $event; checkInputError()"
                 :dropdownMenuTree="columnTypeMenuTree"
                 :placeholder="$t('RR0544')"
                 :canAddNew="false"
@@ -58,7 +58,7 @@
               />
             </div>
           </td>
-          <td class="p-3 h-16 gap-1 align-top">
+          <td class="h-16 gap-1 p-3 align-top">
             <p class="mt-2" v-if="type === 'edit'">
               {{ formatApplyTo(form.applyTo) }}
             </p>
@@ -66,7 +66,7 @@
               v-else
               class="w-[300px]"
               :selectValue="form.applyTo"
-              @update:selectValue="form.applyTo = $event"
+              @update:selectValue="form.applyTo = $event; checkInputError()"
               :dropdownMenuTree="materialTypeMenuTree"
               :placeholder="$t('RR0545')"
               :multiple="true"
@@ -116,14 +116,14 @@
                           Number(form.fieldType) ===
                           CustomFieldType.SINGLE_SELECT_RADIO_BUTTON
                         "
-                        class="w-6 h-6 min-w-6 min-h-6 rounded-full border border-grey-200-v1"
+                        class="w-6 h-6 border rounded-full min-w-6 min-h-6 border-grey-200-v1"
                       />
                       <div
                         v-if="
                           Number(form.fieldType) ===
                           CustomFieldType.MULTI_SELECT_DROPDOWN
                         "
-                        class="w-6 h-6 min-w-6 min-h-6 rounded border border-grey-200-v1"
+                        class="w-6 h-6 border rounded min-w-6 min-h-6 border-grey-200-v1"
                       />
                     </span>
                     <div class="w-full">
@@ -160,7 +160,7 @@
                           CustomFieldType.MULTI_SELECT_DROPDOWN,
                         ].includes(Number(form.fieldType))
                       "
-                      class="flex items-center justify-center h-10 w-10 min-h-10 min-w-10 border border-red-200-v1 rounded"
+                      class="flex items-center justify-center w-10 h-10 border rounded min-h-10 min-w-10 border-red-200-v1"
                       type="button"
                       @click="remove(index)"
                     >
@@ -186,7 +186,7 @@
                 @click="add"
               >
                 <f-svg-icon class="text-cyan-500-v1" iconName="add" size="24" />
-                <p class="text-cyan-500-v1 font-semibold underline text-sm">
+                <p class="text-sm font-semibold underline text-cyan-500-v1">
                   {{ $t('UU0035') }}
                 </p>
               </button>
@@ -244,6 +244,7 @@ type Form = {
   name: string
   fieldType: number | null
   applyTo: string[]
+  sort?: number | null
   customFieldOptionList: {
     customFieldOptionId?: number | null
     text: string
@@ -353,6 +354,7 @@ const handleSubmit = () => {
       fieldType: form.fieldType,
       applyTo: form.applyTo,
       customFieldOptionList: form.customFieldOptionList,
+      sort: form.sort,
     })
 
     store.dispatch('helper/closeModal')

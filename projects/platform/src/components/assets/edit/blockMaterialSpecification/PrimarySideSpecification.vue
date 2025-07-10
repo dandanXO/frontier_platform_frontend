@@ -49,9 +49,9 @@
     <f-input-container v-if="!hideBackSideFields" :label="$t('MI0016')">
       <div class="flex flex-row gap-x-4.5 pt-2">
         <div class="w-1.5 bg-grey-100"></div>
-        <div class="flex flex-col gap-y-8 pl-4">
+        <div class="flex flex-col pl-4 gap-y-8">
           <div class="flex flex-col">
-            <div class="flex text-body2 font-bold">
+            <div class="flex font-bold text-body2">
               <p class="text-grey-900">{{ $t('MI0003') }}</p>
               <i class="text-red-400 pl-0.5">*</i>
             </div>
@@ -198,7 +198,7 @@
             <f-input-container
               :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
             >
-              <div class="flex fle-row items-center gap-x-3">
+              <div class="flex items-center fle-row gap-x-3">
                 <f-input-text
                   :disabled="disableBackSideFields"
                   :textValue="wovenConstructionWarpYarnSize.value"
@@ -553,7 +553,7 @@
           />
           <f-svg-icon
             v-if="index === 0"
-            class="text-grey-600 cursor-pointer"
+            class="cursor-pointer text-grey-600"
             size="24"
             iconName="add_box"
             :disabled="disableBackSideFields"
@@ -567,7 +567,7 @@
           />
           <f-svg-icon
             v-else
-            class="text-grey-600 cursor-pointer"
+            class="cursor-pointer text-grey-600"
             size="20"
             iconName="delete"
             :disabled="disableBackSideFields"
@@ -652,7 +652,7 @@
             <p>{{ selectedMenu?.title }}</p>
           </template>
         </f-input-text>
-        <div class="flex flex-row items-center gap-x-4 mt-4">
+        <div class="flex flex-row items-center mt-4 gap-x-4">
           <f-input-checkbox
             v-for="weightItem in weightCheckboxItems"
             :key="weightItem.unit"
@@ -713,7 +713,7 @@
             <f-svg-icon
               iconName="clear"
               size="20"
-              class="text-grey-250 cursor-pointer"
+              class="cursor-pointer text-grey-250"
               @click="removePantone(pantone.name, props.primarySideType)"
             />
           </div>
@@ -768,7 +768,7 @@
               >
                 <template #slot:tooltip-trigger>
                   <div
-                    class="rounded w-5 h-5"
+                    class="w-5 h-5 rounded"
                     :style="{
                       backgroundColor: field.value.value
                         ? `rgb(${isPantoneValue(field.value.value)?.r}, ${
@@ -1314,7 +1314,7 @@ const showInfoBar = computed(() => {
 
   return false
 })
-
+console.log('dan1', values[props.primarySideType])
 const pantoneValueDisplayList = computed(() => {
   return (
     values[props.primarySideType]?.pantoneNameList?.map((pantoneName) => {

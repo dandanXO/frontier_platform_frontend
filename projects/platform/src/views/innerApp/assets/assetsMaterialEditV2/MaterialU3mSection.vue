@@ -2,9 +2,9 @@
   <!-- 3D -->
   <div class="bg-white rounded-2xl">
     <div
-      class="flex items-center text-grey-900 p-5 border border-grey-200-v1 rounded-t-2xl"
+      class="flex items-center p-5 border text-grey-900 border-grey-200-v1 rounded-t-2xl"
     >
-      <h5 class="text-h5 font-bold">{{ $t('RR0132') }}</h5>
+      <h5 class="font-bold text-h5">{{ $t('RR0132') }}</h5>
       <f-tooltip-media
         placement="bottom"
         class="pl-1"
@@ -23,18 +23,18 @@
     </div>
 
     <div
-      class="p-5 border-r border-l border-b border-grey-200-v1 rounded-b-2xl"
+      class="p-5 border-b border-l border-r border-grey-200-v1 rounded-b-2xl"
     >
       <f-expansion-panel>
         <template #trigger="{ isExpand }">
-          <div class="h-15 flex items-center gap-x-1">
+          <div class="flex items-center h-15 gap-x-1">
             <f-svg-icon
               iconName="arrow_drop_down"
               size="24"
-              class="text-grey-900 transition-transform duration-200"
+              class="transition-transform duration-200 text-grey-900"
               :class="{ 'rotate-180': isExpand }"
             />
-            <p class="text-body2 text-grey-800 font-bold">
+            <p class="font-bold text-body2 text-grey-800">
               {{ $t('EE0174') }}
             </p>
           </div>
@@ -117,15 +117,15 @@
 
       <f-expansion-panel class="border-t border-grey-250">
         <template #trigger="{ isExpand }">
-          <div class="h-15 flex items-center gap-x-1">
+          <div class="flex items-center h-15 gap-x-1">
             <f-svg-icon
               iconName="arrow_drop_down"
               size="24"
-              class="text-grey-900 transition-transform duration-200"
+              class="transition-transform duration-200 text-grey-900"
               :class="{ 'rotate-180': isExpand }"
             />
             <div class="flex items-center gap-x-1">
-              <p class="text-body2 text-grey-800 font-bold">
+              <p class="font-bold text-body2 text-grey-800">
                 {{ $t('EE0175') }}
               </p>
               <f-tooltip-standard :tooltipMessage="$t('EE0166')">
@@ -177,6 +177,47 @@
                   class="flex-1"
                 />
               </div>
+              <div v-if="hasUploadedU3mFile" class="flex flex-col gap-y-2 max-w-72.5">
+                <div class="flex items-center px-4 py-3 rounded bg-grey-100">
+                  <div
+                    class="flex items-center justify-center p-2 rounded bg-grey-150"
+                  >
+                    <f-svg-icon
+                      iconName="file"
+                      size="20"
+                      class="text-grey-600"
+                    />
+                  </div>
+                  <div class="flex flex-col flex-grow pl-2 pr-4 gap-y-1">
+                    <p class="font-bold text-body2 text-grey-800 line-clamp-1">
+                      {{ u3mFile?.name || '' }}
+                    </p>
+                    <p class="text-caption text-grey-600">
+                      {{ hasPhysicalData ? $t('EE0169') : $t('EE0170') }}
+                    </p>
+                  </div>
+                  <f-svg-icon
+                    iconName="delete"
+                    size="24"
+                    class="cursor-pointer text-grey-600"
+                    @click="removeU3mFile"
+                  />
+                </div>
+                <div v-if="!hasPhysicalData">
+                  <f-input-checkbox
+                    v-model:inputValue="needToGeneratePhysical"
+                    :label="$t('EE0171')"
+                    binary
+                    iconSize="20"
+                  />
+                </div>
+                <f-infobar
+                  class="mt-0.5"
+                  :notifyType="NOTIFY_TYPE.INFO"
+                  :title="$t('EE0172')"
+                  :messageText="$t('EE0173', { PP0001: $t('PP0001') })"
+                />
+              </div>
 
               <material-u3m-status-block :u3m="material.customU3m">
                 <template
@@ -189,7 +230,7 @@
                     </p>
                     <div class="flex items-center gap-x-2">
                       <div
-                        class="bg-grey-150 flex items-center justify-center p-1 rounded"
+                        class="flex items-center justify-center p-1 rounded bg-grey-150"
                       >
                         <f-svg-icon
                           iconName="file"
@@ -229,7 +270,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, onMounted } from 'vue'
+import { computed, reactive, onMounted, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import {
@@ -237,7 +278,9 @@ import {
   CREATE_EDIT,
   U3M_PROVIDER,
   U3M_STATUS,
+  materialU3mSelectServiceKey,
 } from '@/utils/constants'
+import type { MaterialU3mSelectService } from '@/types'
 import { type Material, MaterialU3mStatus } from '@frontier/platform-web-sdk'
 import MaterialU3mViewerReactButton from '@/components/common/material/u3m/MaterialU3mViewerReactButton.vue'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
@@ -272,6 +315,13 @@ const { createU3m } = useAssets()
 const materialSchema = useMaterialSchema()
 const materialRef = computed(() => props.material)
 const { hasScannedImage } = useMaterial(materialRef)
+
+const u3mSelectService = inject<MaterialU3mSelectService>(
+  materialU3mSelectServiceKey
+)
+if (!u3mSelectService) {
+  throw new Error('MaterialU3mSelectService is not provided')
+}
 
 // Reactive state
 const threeDViewerDisabledMap: {
@@ -361,6 +411,8 @@ const disabledTooltipCostomerErrorMessage = (type: U3M_PROVIDER) => {
     return true
   }
 }
+const { u3mFile, hasPhysicalData, hasUploadedU3mFile, removeU3mFile, needToGeneratePhysical } =
+  u3mSelectService
 
 // Lifecycle
 onMounted(async () => {
