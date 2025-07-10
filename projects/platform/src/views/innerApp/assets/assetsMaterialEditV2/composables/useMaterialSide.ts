@@ -54,6 +54,11 @@ export function useMaterialSide({
   )
   const finishList = materialFormService.defineInputBinds(`${side}.finishList`)
 
+  // Construction Publish Binding
+  const constructionIsPublic = materialFormService.defineInputBinds(
+    `${side}.construction.isPublic`
+  )
+
   // Knit Construction Bindings
   const knitMachineType = materialFormService.defineInputBinds(
     `${side}.construction.machineType`
@@ -256,7 +261,7 @@ export function useMaterialSide({
   const needsConstructionType = computed(() => {
     return (
       materialTypeValue.value.value &&
-      ['WOVEN', 'KNIT', 'LEATHER', 'NON_WOVEN', 'TRIM'].includes(
+      [MaterialType.WOVEN, MaterialType.KNIT].includes(
         materialTypeValue.value.value
       )
     )
@@ -294,6 +299,7 @@ export function useMaterialSide({
     warpYarnSize,
     weftYarnSize,
     finishList,
+    constructionIsPublic,
 
     // Knit Fields
     knitMachineType,

@@ -1,4 +1,17 @@
 <template>
+  <!-- Construction Publish Toggle -->
+  <div class="flex flex-col gap-y-4">
+    <div class="flex items-center gap-x-3">
+      <span class="text-sm font-medium text-gray-900">{{ t('MI0026') }}</span>
+      <f-input-switch
+        :inputValue="constructionIsPublic.value"
+        @update:inputValue="constructionIsPublic.onInput"
+        :label="t('MI0025')"
+        class="w-50"
+      />
+    </div>
+  </div>
+
   <!-- Density (only for WOVEN materials) -->
   <f-input-container
     v-if="isMaterialType(MaterialType.WOVEN)"
@@ -208,10 +221,14 @@ import { useI18n } from 'vue-i18n'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import FInputText from '@frontier/ui-component/src/FInput/FInputText/FInputText.vue'
 import FInputContainer from '@frontier/ui-component/src/FInput/FInputContainer/FInputContainer.vue'
+import FInputSwitch from '@frontier/ui-component/src/FInput/FInputSwitch/FInputSwitch.vue'
 
 interface Props {
   // Material Type
   isMaterialType: (type: MaterialType) => boolean
+
+  // Construction Publish
+  constructionIsPublic: any
 
   // Woven Fields
   warpDensity: any

@@ -81,11 +81,7 @@
         multiple
         :multipleTagInputValidations="[inputValidate, lengthValidate]"
         class="w-full"
-      >
-        <template #custom-not-found>
-          <custom-not-found />
-        </template>
-      </f-select-input>
+      />
 
       <!-- Finish -->
       <f-select-input
@@ -103,6 +99,7 @@
       <!-- Material Construction Fields -->
       <material-construction-fields
         :is-material-type="isMaterialType"
+        :construction-is-public="constructionIsPublic"
         :warp-density="warpDensity"
         :weft-density="weftDensity"
         :warp-yarn-size="warpYarnSize"
@@ -150,6 +147,7 @@ import FInputContainer from '@frontier/ui-component/src/FInput/FInputContainer/F
 import ContentFieldArray from './ContentFieldArray.vue'
 import MaterialConstructionFields from './MaterialConstructionFields.vue'
 import PantoneColorSelector from './PantoneColorSelector.vue'
+import CustomNotFound from '@/components/assets/edit/blockMaterialSpecification/CustomNotFound.vue'
 import { useMaterialSide } from './composables/useMaterialSide'
 
 interface Props {
@@ -204,6 +202,7 @@ const {
   warpYarnSize,
   weftYarnSize,
   finishList,
+  constructionIsPublic,
 
   // Knit Fields
   knitMachineType,
