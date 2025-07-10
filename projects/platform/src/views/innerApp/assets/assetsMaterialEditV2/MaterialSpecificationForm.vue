@@ -1,5 +1,5 @@
 <template>
-  <f-accordion :title="$t('MI0005')" class="bg-white">
+  <f-accordion :title="t('MI0005')" class="bg-white">
     <div class="grid grid-cols-2 gap-x-2 gap-y-5 items-start">
       <material-specification-shared-fields />
       <!-- New Sides Section -->
@@ -11,309 +11,12 @@
 
         <!-- Tab Content -->
         <div v-if="activeSide === 'faceSide'">
-          <div class="flex flex-col gap-y-4 p-5 bg-green-50-v1 rounded-t-md">
-            <!-- Material Type -->
-            <f-input-container :label="$t('MI0003')" required>
-              <f-select-input
-                :placeholder="$t('RR0588')"
-                :selectValue="faceSideMaterialTypeValue.value"
-                @update:selectValue="faceSideMaterialTypeValue.onInput"
-                :dropdownMenuTree="faceSideMaterialTypeDropdownSource"
-                :hintError="
-                  materialFormService.displayErrors.value[
-                    'faceSide.materialType'
-                  ]
-                "
-                :canAddNew="false"
-                emit-value
-                map-options
-                class="w-full"
-              ></f-select-input>
-            </f-input-container>
-
-            <!-- Construction Type -->
-            <f-input-container
-              :label="$t('MI0150')"
-              required
-              v-if="
-                faceSideMaterialTypeValue.value &&
-                WITH_CONSTRUCTION_TYPE_MATERIALS.includes(
-                  faceSideMaterialTypeValue.value
-                )
-              "
-            >
-              <f-select-input
-                :placeholder="$t('MI0152')"
-                :selectValue="faceSideMaterialTypeConstructionValue.value?.name"
-                @update:selectValue="selectFaceSideMaterialTypeConstruction"
-                @addNew="inputMenu.addMaterialTypeConstructionOption($event)"
-                :dropdownMenuTree="faceSideConstructionTypeDropdownSource"
-                :hintError="
-                  materialFormService.displayErrors.value[
-                    'faceSide.materialTypeConstruction'
-                  ]
-                "
-                emit-value
-                map-options
-                class="w-full"
-              ></f-select-input>
-            </f-input-container>
-
-            <!-- Content -->
-            <f-input-container
-              :label="$t('RR0021')"
-              required
-              v-if="faceSideMaterialTypeValue.value != null"
-              :hintError="faceSideContentDisplayError"
-            >
-              <div
-                v-for="(field, index) in faceSideContentFields"
-                :key="field.key"
-                :class="
-                  faceSideContentFields.length > 1
-                    ? 'grid grid-cols-[1fr_1fr_auto] items-center gap-x-2'
-                    : 'grid grid-cols-[1fr_1fr] items-center gap-x-2'
-                "
-                :style="{ marginTop: index > 0 ? '6px' : '0' }"
-              >
-                <f-select-input
-                  :placeholder="$t('RR0591')"
-                  :selectValue="field.value.name"
-                  @update:selectValue="
-                    selectFaceSideContentName($event, index, field.value)
-                  "
-                  @addNew="inputMenu.addContentOption($event)"
-                  :dropdownMenuTree="faceSideContentNameDropdownSource"
-                  :hintError="
-                    materialFormService.displayErrors.value[
-                      `faceSide.contentList[${index}].name`
-                    ]
-                  "
-                  :hasError="!field.value.name"
-                  emit-value
-                  map-options
-                ></f-select-input>
-                <f-input-text
-                  v-model:textValue="field.value.percentage"
-                  inputType="number"
-                  :placeholder="$t('MI0043')"
-                  addOnRight="%"
-                  :hintError="
-                    materialFormService.displayErrors.value[
-                      `faceSide.contentList[${index}].percentage`
-                    ]
-                  "
-                  :hasError="!field.value.percentage"
-                  data-cy="content-text-value"
-                ></f-input-text>
-                <!-- prettier-ignore -->
-                <f-svg-icon
-                v-if="faceSideContentFields.length > 1"
-                class="text-grey-600 cursor-pointer"
-                size="20"
-                iconName="delete"
-                @click="async () => {
-                  const currentIndex = index; // Capture index
-                  removeFaceSideContentField(currentIndex);
-                  try {
-                    await materialFormService.validate();
-                  } catch (e) {
-                    console.error('[DELETE CLICKED] Validation FAILED after removing index:', currentIndex, e);
-                  }
-                }"
-              />
-              </div>
-            </f-input-container>
-            <f-button
-              type="text"
-              size="sm"
-              @click="
-                pushFaceSideContentField({
-                  contentId: null,
-                  name: null,
-                  percentage: '',
-                })
-              "
-              class="!text-cyan-500-v1 text-sm font-medium underline self-start !p-0"
-              ><f-svg-icon iconName="add" size="24" class="text-cyan-500-v1" />
-              {{ $t('RR0592') }}</f-button
-            >
-          </div>
-          <!-- See More -->
-          <div
-            class="flex flex-col bg-grey-50-v1 rounded-b-md border-t border-green-200-v1"
-          >
-            <div class="flex justify-end items-center py-2 px-5 h-12">
-              <button
-                class="text-cyan-500-v1 underline text-sm font-semibold flex flex-row items-center gap-x-1"
-                @click="isFaceSideExpanded = !isFaceSideExpanded"
-              >
-                {{ isFaceSideExpanded ? $t('EE0245') : $t('EE0244') }}
-                <f-svg-icon
-                  size="24"
-                  iconName="arrow_drop_down"
-                  :class="{ 'rotate-180': isFaceSideExpanded }"
-                ></f-svg-icon>
-              </button>
-            </div>
-
-            <!-- Additional Fields -->
-            <div v-if="isFaceSideExpanded" class="flex flex-col gap-y-4 p-3">
-              <!-- Material Description -->
-              <f-select-input
-                :selectValue="faceSideDescriptionList.value"
-                @update:selectValue="faceSideDescriptionList.onInput"
-                :dropdownMenuTree="inputMenu.specOptions.descriptionList"
-                @addNew="inputMenu.addDescriptionOption"
-                :label="$t('MI0023')"
-                :placeholder="$t('MI0151')"
-                :hintError="
-                  materialFormService.displayErrors.value[
-                    'faceSide.descriptionList'
-                  ]
-                "
-                multiple
-                :multipleTagInputValidations="[inputValidate, lengthValidate]"
-                class="w-full"
-              >
-                <template #custom-not-found>
-                  <custom-not-found />
-                </template>
-              </f-select-input>
-
-              <!-- Density (only for WOVEN materials) -->
-              <f-input-container
-                v-if="faceSideMaterialTypeValue.value === MaterialType.WOVEN"
-                :label="`${$t('MI0027')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-              >
-                <div class="flex flex-row items-center gap-x-3 w-full">
-                  <f-input-text
-                    :textValue="faceSideWarpDensity.value"
-                    @update:textValue="faceSideWarpDensity.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'faceSide.construction.warpDensity'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                  <span>x</span>
-                  <f-input-text
-                    :textValue="faceSideWeftDensity.value"
-                    @update:textValue="faceSideWeftDensity.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'faceSide.construction.weftDensity'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                </div>
-              </f-input-container>
-
-              <!-- Yarn Size (only for WOVEN materials) -->
-              <f-input-container
-                v-if="faceSideMaterialTypeValue.value === MaterialType.WOVEN"
-                :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-              >
-                <div class="flex flex-row items-center gap-x-3 w-full">
-                  <f-input-text
-                    :textValue="faceSideWarpYarnSize.value"
-                    @update:textValue="faceSideWarpYarnSize.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'faceSide.construction.warpYarnSize'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                  <span>x</span>
-                  <f-input-text
-                    :textValue="faceSideWeftYarnSize.value"
-                    @update:textValue="faceSideWeftYarnSize.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'faceSide.construction.weftYarnSize'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                </div>
-              </f-input-container>
-
-              <!-- Finish -->
-              <f-select-input
-                :selectValue="faceSideFinishList.value"
-                @update:selectValue="faceSideFinishList.onInput"
-                :dropdownMenuTree="inputMenu.specOptions.finishList"
-                @addNew="inputMenu.addFinishOption"
-                :label="$t('RR0022')"
-                :placeholder="$t('MI0040')"
-                :hintError="
-                  materialFormService.displayErrors.value['faceSide.finishList']
-                "
-                multiple
-                :multipleTagInputValidations="[inputValidate, lengthValidate]"
-              ></f-select-input>
-
-              <!-- Pantone Color -->
-              <f-input-container :label="$t('EE0040')">
-                <div class="flex flex-col gap-y-4">
-                  <f-input-text
-                    class="w-72"
-                    v-model:textValue="pantoneColor"
-                    :placeholder="$t('MI0067')"
-                    :button="{
-                      type: 'primary',
-                      icon: 'add',
-                      isFile: false,
-                    }"
-                    @click:button="handleAddFaceSidePantone"
-                  />
-                  <div class="grid gap-y-3">
-                    <div
-                      v-for="pantone in faceSidePantoneValueDisplayList"
-                      :key="pantone.name"
-                      class="flex items-center gap-x-3"
-                    >
-                      <f-tooltip-media
-                        placement="right-end"
-                        :pantone="{
-                          r: pantone.r,
-                          g: pantone.g,
-                          b: pantone.b,
-                        }"
-                        :tooltipTitle="pantone.name"
-                        :tooltipMessage="pantone.colorName"
-                      >
-                        <template #slot:tooltip-trigger>
-                          <div
-                            class="rounded w-5.5 h-5.5"
-                            :style="{
-                              backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})`,
-                            }"
-                          ></div>
-                        </template>
-                      </f-tooltip-media>
-                      <p class="text-body2 text-grey-900">
-                        {{ pantone.name }}
-                      </p>
-                      <f-svg-icon
-                        iconName="clear"
-                        size="20"
-                        class="text-grey-250 cursor-pointer"
-                        @click="removeFaceSidePantone(pantone.name)"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </f-input-container>
-            </div>
-          </div>
+          <material-side-form
+            side="faceSide"
+            :pantone-list="pantoneList"
+            :pantone-dropdown-menu-tree="pantoneDropdownMenuTree"
+            v-model:is-expanded="isFaceSideExpanded"
+          />
         </div>
 
         <div v-if="activeSide === 'middleSide'">
@@ -323,8 +26,8 @@
               class="w-full"
               :notifyType="NOTIFY_TYPE.TIPS"
               :display="DISPLAY.BLOCK"
-              :title="$t('MI0045')"
-              :messageText="$t('MI0046')"
+              :title="t('MI0045')"
+              :messageText="t('MI0046')"
             />
           </div>
           <!-- See More -->
@@ -336,7 +39,7 @@
                 class="text-cyan-500-v1 underline text-sm font-semibold flex flex-row items-center gap-x-1"
                 @click="isMiddleSideExpanded = !isMiddleSideExpanded"
               >
-                {{ isMiddleSideExpanded ? $t('EE0245') : $t('EE0244') }}
+                {{ isMiddleSideExpanded ? t('EE0245') : t('EE0244') }}
                 <f-svg-icon
                   size="24"
                   iconName="arrow_drop_down"
@@ -348,13 +51,13 @@
             <!-- Additional Fields -->
             <div v-if="isMiddleSideExpanded" class="flex flex-col gap-y-4 p-3">
               <!-- Features -->
-              <f-input-container :label="$t('MI0014')" required>
+              <f-input-container :label="t('MI0014')" required>
                 <f-select-input
                   :selectValue="middleSideFeatureList.value"
                   @update:selectValue="middleSideFeatureList.onInput"
                   :dropdownMenuTree="inputMenu.specOptions.featureList"
                   @addNew="inputMenu.addFeatureOption"
-                  :placeholder="$t('RR0288')"
+                  :placeholder="t('RR0288')"
                   :hintError="
                     materialFormService.displayErrors.value[
                       'middleSide.featureList'
@@ -367,13 +70,13 @@
               </f-input-container>
 
               <!-- Finish List -->
-              <f-input-container :label="$t('RR0593')">
+              <f-input-container :label="t('RR0593')">
                 <f-select-input
                   :selectValue="middleSideFinishList.value"
                   @update:selectValue="middleSideFinishList.onInput"
                   :dropdownMenuTree="inputMenu.specOptions.finishList"
                   @addNew="inputMenu.addFinishOption"
-                  :placeholder="$t('MI0040')"
+                  :placeholder="t('MI0040')"
                   :hintError="
                     materialFormService.displayErrors.value[
                       'middleSide.finishList'
@@ -384,170 +87,19 @@
                   data-cy="finish-info"
                 ></f-select-input>
               </f-input-container>
-            </div>
-          </div>
-        </div>
 
-        <div v-if="activeSide === 'backSide'">
-          <div class="flex flex-col gap-y-4 p-3 bg-green-50-v1 rounded-t-md">
-            <!-- Material Type -->
-            <f-input-container :label="$t('MI0003')" required>
-              <f-select-input
-                :placeholder="$t('RR0588')"
-                :selectValue="backSideMaterialTypeValue.value"
-                @update:selectValue="backSideMaterialTypeValue.onInput"
-                :dropdownMenuTree="backSideMaterialTypeDropdownSource"
-                :hintError="
-                  materialFormService.displayErrors.value[
-                    'backSide.materialType'
-                  ]
-                "
-                emit-value
-                map-options
-                class="w-full"
-              ></f-select-input>
-            </f-input-container>
-
-            <!-- Construction Type -->
-            <f-input-container
-              :label="$t('MI0150')"
-              required
-              v-if="
-                backSideMaterialTypeValue.value &&
-                WITH_CONSTRUCTION_TYPE_MATERIALS.includes(
-                  backSideMaterialTypeValue.value
-                )
-              "
-            >
-              <f-select-input
-                :placeholder="$t('MI0152')"
-                :selectValue="backSideMaterialTypeConstructionValue.value?.name"
-                @update:selectValue="selectBackSideMaterialTypeConstruction"
-                @addNew="inputMenu.addMaterialTypeConstructionOption($event)"
-                :dropdownMenuTree="backSideConstructionTypeDropdownSource"
-                :hintError="
-                  materialFormService.displayErrors.value[
-                    'backSide.materialTypeConstruction'
-                  ]
-                "
-                emit-value
-                map-options
-                class="w-full"
-              ></f-select-input>
-            </f-input-container>
-
-            <!-- Content -->
-            <f-input-container
-              :label="$t('RR0021')"
-              required
-              v-if="backSideMaterialTypeValue.value != null"
-              :hintError="backSideContentDisplayError"
-            >
-              <div
-                v-for="(field, index) in backSideContentFields"
-                :key="field.key"
-                class="grid grid-cols-[1fr_1fr_auto] items-start gap-x-2 mt-1.5"
-              >
-                <f-select-input
-                  :placeholder="$t('RR0591')"
-                  :selectValue="field.value.name"
-                  @update:selectValue="
-                    selectBackSideContentName($event, index, field.value)
-                  "
-                  @addNew="inputMenu.addContentOption($event)"
-                  :dropdownMenuTree="backSideContentNameDropdownSource"
-                  :hintError="
-                    materialFormService.displayErrors.value[
-                      `backSide.contentList[${index}].name`
-                    ]
-                      ? Boolean(
-                          materialFormService.displayErrors.value[
-                            `backSide.contentList[${index}].name`
-                          ]
-                        )
-                      : undefined
-                  "
-                  :hasError="!field.value.name"
-                  emit-value
-                  map-options
-                ></f-select-input>
-                <f-input-text
-                  v-model:textValue="field.value.percentage"
-                  inputType="number"
-                  :placeholder="$t('MI0043')"
-                  addOnRight="%"
-                  :hintError="
-                    materialFormService.displayErrors.value[
-                      `backSide.contentList[${index}].percentage`
-                    ]
-                  "
-                  :hasError="!field.value.percentage"
-                  data-cy="content-text-value"
-                ></f-input-text>
-                <!-- prettier-ignore -->
-                <f-svg-icon
-                v-if="backSideContentFields.length > 1"
-                class="text-grey-600 cursor-pointer"
-                size="20"
-                iconName="delete"
-                @click="async () => {
-                  const currentIndex = index; // Capture index
-                  removeBackSideContentField(currentIndex);
-                  try {
-                    await materialFormService.validate();
-                  } catch (e) {
-                    console.error('[DELETE CLICKED] Validation FAILED after removing index:', currentIndex, e);
-                  }
-                }"
-              />
-              </div>
-            </f-input-container>
-            <f-button
-              type="text"
-              size="sm"
-              @click="
-                pushBackSideContentField({
-                  contentId: null,
-                  name: null,
-                  percentage: '',
-                })
-              "
-              class="text-cyan-500-v1 text-sm font-medium underline self-start !p-0"
-              ><f-svg-icon iconName="add" size="24" class="text-cyan-500-v1" />
-              {{ $t('RR0592') }}</f-button
-            >
-          </div>
-          <!-- See More -->
-          <div
-            class="flex flex-col bg-grey-50-v1 rounded-b-md border-t border-green-200-v1"
-          >
-            <div class="flex justify-end items-center py-2 px-5 h-12">
-              <button
-                class="text-cyan-500-v1 underline text-sm font-semibold flex flex-row items-center gap-x-1"
-                @click="isBackSideExpanded = !isBackSideExpanded"
-              >
-                {{ isBackSideExpanded ? $t('EE0245') : $t('EE0244') }}
-                <f-svg-icon
-                  size="24"
-                  iconName="arrow_drop_down"
-                  :class="{ 'rotate-180': isBackSideExpanded }"
-                ></f-svg-icon>
-              </button>
-            </div>
-
-            <!-- Additional Fields -->
-            <div v-if="isBackSideExpanded" class="flex flex-col gap-y-4 p-3">
               <!-- Material Description -->
-              <f-select-input
-                :selectValue="backSideDescriptionList.value"
-                @update:selectValue="backSideDescriptionList.onInput"
+              <!-- Not available for middle side -->
+              <!-- <f-select-input
+                :selectValue="middleSideDescriptionList.value"
+                @update:selectValue="middleSideDescriptionList.onInput"
                 :dropdownMenuTree="inputMenu.specOptions.descriptionList"
                 @addNew="inputMenu.addDescriptionOption"
-                :label="$t('MI0023')"
-                :placeholder="$t('MI0151')"
+                :label="t('MI0023')"
+                :placeholder="t('MI0151')"
                 :hintError="
                   materialFormService.displayErrors.value[
-                    'backSide.descriptionList'
+                    'middleSide.descriptionList'
                   ]
                 "
                 multiple
@@ -557,141 +109,18 @@
                 <template #custom-not-found>
                   <custom-not-found />
                 </template>
-              </f-select-input>
-
-              <!-- Density (only for WOVEN materials) -->
-              <f-input-container
-                v-if="backSideMaterialTypeValue.value === MaterialType.WOVEN"
-                :label="`${$t('MI0027')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-              >
-                <div class="flex flex-row items-center gap-x-3 w-full">
-                  <f-input-text
-                    :textValue="backSideWarpDensity.value"
-                    @update:textValue="backSideWarpDensity.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'backSide.construction.warpDensity'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                  <span>x</span>
-                  <f-input-text
-                    :textValue="backSideWeftDensity.value"
-                    @update:textValue="backSideWeftDensity.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'backSide.construction.weftDensity'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                </div>
-              </f-input-container>
-
-              <!-- Yarn Size (only for WOVEN materials) -->
-              <f-input-container
-                v-if="backSideMaterialTypeValue.value === MaterialType.WOVEN"
-                :label="`${$t('RR0023')}(${$t('MI0028')} ✕ ${$t('MI0029')})`"
-              >
-                <div class="flex flex-row items-center gap-x-3 w-full">
-                  <f-input-text
-                    :textValue="backSideWarpYarnSize.value"
-                    @update:textValue="backSideWarpYarnSize.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'backSide.construction.warpYarnSize'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                  <span>x</span>
-                  <f-input-text
-                    :textValue="backSideWeftYarnSize.value"
-                    @update:textValue="backSideWeftYarnSize.onInput"
-                    :hintError="
-                      materialFormService.displayErrors.value[
-                        'backSide.construction.weftYarnSize'
-                      ]
-                    "
-                    :placeholder="$t('MI0030')"
-                    class="flex-1"
-                  />
-                </div>
-              </f-input-container>
-
-              <!-- Finish -->
-              <f-select-input
-                :selectValue="backSideFinishList.value"
-                @update:selectValue="backSideFinishList.onInput"
-                :dropdownMenuTree="inputMenu.specOptions.finishList"
-                @addNew="inputMenu.addFinishOption"
-                :label="$t('RR0022')"
-                :placeholder="$t('MI0040')"
-                :hintError="
-                  materialFormService.displayErrors.value['backSide.finishList']
-                "
-                multiple
-                :multipleTagInputValidations="[inputValidate, lengthValidate]"
-              ></f-select-input>
-
-              <!-- Pantone Color -->
-              <f-input-container :label="$t('EE0040')">
-                <div class="flex flex-col gap-y-4">
-                  <f-input-text
-                    class="w-72"
-                    v-model:textValue="pantoneColor"
-                    :placeholder="$t('MI0067')"
-                    :button="{
-                      type: 'primary',
-                      icon: 'add',
-                      isFile: false,
-                    }"
-                    @click:button="handleAddBackSidePantone"
-                  />
-                  <div class="grid gap-y-3">
-                    <div
-                      v-for="pantone in backSidePantoneValueDisplayList"
-                      :key="pantone.name"
-                      class="flex items-center gap-x-3"
-                    >
-                      <f-tooltip-media
-                        placement="right-end"
-                        :pantone="{
-                          r: pantone.r,
-                          g: pantone.g,
-                          b: pantone.b,
-                        }"
-                        :tooltipTitle="pantone.name"
-                        :tooltipMessage="pantone.colorName"
-                      >
-                        <template #slot:tooltip-trigger>
-                          <div
-                            class="rounded w-5.5 h-5.5"
-                            :style="{
-                              backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})`,
-                            }"
-                          ></div>
-                        </template>
-                      </f-tooltip-media>
-                      <p class="text-body2 text-grey-900">
-                        {{ pantone.name }}
-                      </p>
-                      <f-svg-icon
-                        iconName="clear"
-                        size="20"
-                        class="text-grey-250 cursor-pointer"
-                        @click="removeBackSidePantone(pantone.name)"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </f-input-container>
+              </f-select-input> -->
             </div>
           </div>
+        </div>
+
+        <div v-if="activeSide === 'backSide'">
+          <material-side-form
+            side="backSide"
+            :pantone-list="pantoneList"
+            :pantone-dropdown-menu-tree="pantoneDropdownMenuTree"
+            v-model:is-expanded="isBackSideExpanded"
+          />
         </div>
       </div>
 
@@ -709,38 +138,26 @@
 import { computed, ref, inject, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useFieldArray } from 'vee-validate'
-import {
-  NOTIFY_TYPE,
-  DISPLAY,
-  WITH_CONSTRUCTION_TYPE_MATERIALS,
-  materialFormServiceKey,
-} from '@/utils/constants'
+import { NOTIFY_TYPE, DISPLAY, materialFormServiceKey } from '@/utils/constants'
 import {
   type Material,
   type PantoneColor,
-  type MaterialOptionsMaterialTypeConstructionListWoven,
-  MaterialType,
   type CustomField,
 } from '@frontier/platform-web-sdk'
 import type { MaterialFormService } from '@/types'
 import FSelectInput from '@frontier/ui-component/src/FInput/FSelectInput/FSelectInput.vue'
-import FInputText from '@frontier/ui-component/src/FInput/FInputText/FInputText.vue'
 import FInputContainer from '@frontier/ui-component/src/FInput/FInputContainer/FInputContainer.vue'
 import FAccordion from '@frontier/ui-component/src/FAccordion/FAccordion.vue'
+import FInfobar from '@frontier/ui-component/src/FNotify/FInfobar/FInfobar.vue'
 import MaterialSpecificationSharedFields from './MaterialSpecificationSharedFields.vue'
 import SidesTabs from './SidesTabs.vue'
+import MaterialSideForm from './MaterialSideForm.vue'
 import { useAssetsStore } from '@/stores/assets'
 import MaterialCustomFieldsForm from './MaterialCustomFieldsForm.vue'
 
 interface Props {
   material: Material
   pantoneList: PantoneColor[]
-}
-
-interface FaceSideContentItem {
-  contentId: number | null
-  name: string | null
-  percentage: string
 }
 
 const props = defineProps<Props>()
@@ -797,78 +214,6 @@ const pantoneColor = ref('')
 const inputValidate = (str: string) => str.replace(/,/g, '')
 const lengthValidate = (str: string) => str.slice(0, 500)
 
-// Face Side Content Section
-const {
-  fields: faceSideContentFields,
-  push: pushFaceSideContentField,
-  remove: removeFaceSideContentField,
-  update: updateFaceSideContentField,
-} = useFieldArray<FaceSideContentItem>('faceSide.contentList')
-
-// Face Side Bindings
-const faceSideMaterialTypeValue = materialFormService.defineInputBinds(
-  'faceSide.materialType'
-)
-const faceSideMaterialTypeConstructionValue =
-  materialFormService.defineInputBinds('faceSide.materialTypeConstruction')
-const faceSideDescriptionList = materialFormService.defineInputBinds(
-  'faceSide.descriptionList'
-)
-const faceSideWarpDensity = materialFormService.defineInputBinds(
-  'faceSide.construction.warpDensity'
-)
-const faceSideWeftDensity = materialFormService.defineInputBinds(
-  'faceSide.construction.weftDensity'
-)
-const faceSideWarpYarnSize = materialFormService.defineInputBinds(
-  'faceSide.construction.warpYarnSize'
-)
-const faceSideWeftYarnSize = materialFormService.defineInputBinds(
-  'faceSide.construction.weftYarnSize'
-)
-const faceSideFinishList = materialFormService.defineInputBinds(
-  'faceSide.finishList'
-)
-const faceSidePantoneValue = materialFormService.defineInputBinds(
-  'faceSide.pantoneValue'
-)
-
-// Back Side Content Section
-const {
-  fields: backSideContentFields,
-  push: pushBackSideContentField,
-  remove: removeBackSideContentField,
-  update: updateBackSideContentField,
-} = useFieldArray<FaceSideContentItem>('backSide.contentList')
-
-// Back Side Bindings
-const backSideMaterialTypeValue = materialFormService.defineInputBinds(
-  'backSide.materialType'
-)
-const backSideMaterialTypeConstructionValue =
-  materialFormService.defineInputBinds('backSide.materialTypeConstruction')
-const backSideDescriptionList = materialFormService.defineInputBinds(
-  'backSide.descriptionList'
-)
-const backSideWarpDensity = materialFormService.defineInputBinds(
-  'backSide.construction.warpDensity'
-)
-const backSideWeftDensity = materialFormService.defineInputBinds(
-  'backSide.construction.weftDensity'
-)
-const backSideWarpYarnSize = materialFormService.defineInputBinds(
-  'backSide.construction.warpYarnSize'
-)
-const backSideWeftYarnSize = materialFormService.defineInputBinds(
-  'backSide.construction.weftYarnSize'
-)
-const backSideFinishList = materialFormService.defineInputBinds(
-  'backSide.finishList'
-)
-const backSidePantoneValue = materialFormService.defineInputBinds(
-  'backSide.pantoneValue'
-)
-
 // Middle Side Bindings
 const middleSideFeatureList = materialFormService.defineInputBinds(
   'middleSide.featureList'
@@ -876,290 +221,154 @@ const middleSideFeatureList = materialFormService.defineInputBinds(
 const middleSideFinishList = materialFormService.defineInputBinds(
   'middleSide.finishList'
 )
-
-// Face Side Dropdown Sources
-const faceSideMaterialTypeDropdownSource = computed(() => {
-  const options = inputMenu.materialTypeOptionList.value || []
-  return {
-    blockList: [
-      {
-        menuList: options.map((opt) => ({
-          title: opt.name,
-          selectValue: opt.value,
-        })),
-      },
-    ],
-  }
-})
-
-const faceSideConstructionTypeDropdownSource = computed(() => {
-  return inputMenu.specOptions.materialTypeConstructionList
-})
-
-const faceSideContentNameDropdownSource = computed(() => {
-  return inputMenu.specOptions.contentList
-})
-
-// Back Side Dropdown Sources
-const backSideMaterialTypeDropdownSource = computed(() => {
-  const options = inputMenu.materialTypeOptionList.value || []
-  return {
-    blockList: [
-      {
-        menuList: options.map((opt) => ({
-          title: opt.name,
-          selectValue: opt.value,
-        })),
-      },
-    ],
-  }
-})
-
-const backSideConstructionTypeDropdownSource = computed(() => {
-  return inputMenu.specOptions.materialTypeConstructionList
-})
-
-const backSideContentNameDropdownSource = computed(() => {
-  return inputMenu.specOptions.contentList
-})
-
-// Face Side Content Functions
-const selectFaceSideContentName = (
-  name: string | null,
-  index: number,
-  currentFieldData: FaceSideContentItem
-) => {
-  if (name === null || name.length === 0) {
-    updateFaceSideContentField(index, {
-      ...currentFieldData,
-      contentId: null,
-      name: null,
-    })
-    return
-  }
-
-  const targetContent = inputMenu.allContentList.value.find(
-    (c: any) => c.name === name
-  )
-  if (targetContent) {
-    updateFaceSideContentField(index, {
-      percentage: currentFieldData.percentage,
-      ...targetContent,
-    })
-  } else {
-    updateFaceSideContentField(index, {
-      ...currentFieldData,
-      contentId: null,
-      name: name,
-    })
-  }
-}
-
-const selectFaceSideMaterialTypeConstruction = (
-  value:
-    | string
-    | MaterialOptionsMaterialTypeConstructionListWoven['default'][number]
-) => {
-  let newFieldValue: any
-
-  if (typeof value === 'string') {
-    newFieldValue = {
-      id: null,
-      isCustom: true,
-      name: value,
-    }
-  } else {
-    newFieldValue = {
-      id: value.id,
-      isCustom: !!value.isCustom,
-      name: value.name ?? '',
-      ...(typeof value === 'object' && value !== null ? value : {}),
-    }
-  }
-  faceSideMaterialTypeConstructionValue.value.onInput(newFieldValue)
-}
-
-const faceSideContentDisplayError = computed(() => {
-  const errors = []
-  const generalContentError =
-    materialFormService.displayErrors.value['faceSide.contentList']
-  if (generalContentError) {
-    errors.push(generalContentError)
-  }
-
-  for (let i = 0; i < faceSideContentFields.value.length; i++) {
-    if (
-      materialFormService.displayErrors.value[`faceSide.contentList[${i}].name`]
-    ) {
-      errors.push(
-        materialFormService.displayErrors.value[
-          `faceSide.contentList[${i}].name`
-        ]
-      )
-    }
-    if (
-      materialFormService.displayErrors.value[
-        `faceSide.contentList[${i}].percentage`
-      ]
-    ) {
-      errors.push(
-        materialFormService.displayErrors.value[
-          `faceSide.contentList[${i}].percentage`
-        ]
-      )
-    }
-  }
-  return errors.length ? [...new Set(errors)].join(', ') : undefined
-})
-
-// Back Side Content Functions
-const selectBackSideContentName = (
-  name: string | null,
-  index: number,
-  currentFieldData: FaceSideContentItem
-) => {
-  if (name === null || name.length === 0) {
-    updateBackSideContentField(index, {
-      ...currentFieldData,
-      contentId: null,
-      name: null,
-    })
-    return
-  }
-
-  const targetContent = inputMenu.allContentList.value.find(
-    (c: any) => c.name === name
-  )
-  if (targetContent) {
-    updateBackSideContentField(index, {
-      percentage: currentFieldData.percentage,
-      ...targetContent,
-    })
-  } else {
-    updateBackSideContentField(index, {
-      ...currentFieldData,
-      contentId: null,
-      name: name,
-    })
-  }
-}
-
-const selectBackSideMaterialTypeConstruction = (
-  value:
-    | string
-    | MaterialOptionsMaterialTypeConstructionListWoven['default'][number]
-) => {
-  let newFieldValue: any
-
-  if (typeof value === 'string') {
-    newFieldValue = {
-      id: null,
-      isCustom: true,
-      name: value,
-    }
-  } else {
-    newFieldValue = {
-      id: value.id,
-      isCustom: !!value.isCustom,
-      name: value.name ?? '',
-      ...(typeof value === 'object' && value !== null ? value : {}),
-    }
-  }
-  backSideMaterialTypeConstructionValue.value.onInput(newFieldValue)
-}
-
-const backSideContentDisplayError = computed(() => {
-  const errors = []
-  const generalContentError =
-    materialFormService.displayErrors.value['backSide.contentList']
-  if (generalContentError) {
-    errors.push(generalContentError)
-  }
-
-  for (let i = 0; i < backSideContentFields.value.length; i++) {
-    if (
-      materialFormService.displayErrors.value[`backSide.contentList[${i}].name`]
-    ) {
-      errors.push(
-        materialFormService.displayErrors.value[
-          `backSide.contentList[${i}].name`
-        ]
-      )
-    }
-    if (
-      materialFormService.displayErrors.value[
-        `backSide.contentList[${i}].percentage`
-      ]
-    ) {
-      errors.push(
-        materialFormService.displayErrors.value[
-          `backSide.contentList[${i}].percentage`
-        ]
-      )
-    }
-  }
-  return errors.length ? [...new Set(errors)].join(', ') : undefined
-})
+const middleSideDescriptionList = materialFormService.defineInputBinds(
+  'middleSide.descriptionList'
+)
 
 // Pantone Functions
 const faceSidePantoneValueDisplayList = computed(() => {
-  const pantoneValueList = faceSidePantoneValue.value || []
-  return pantoneValueList.map((p: string) => {
-    const pantone = props.pantoneList.find((pant) => pant.name === p)
-    return pantone || { name: p, r: 128, g: 128, b: 128, colorName: 'Unknown' }
-  })
+  return (
+    materialFormService.values.faceSide?.pantoneNameList?.map(
+      (pantoneName: string) => {
+        const pantone = props.pantoneList.find(
+          (pant) => pant.name === pantoneName
+        )
+        if (!pantone) {
+          throw new Error(`Pantone ${pantoneName} not found`)
+        }
+        return pantone
+      }
+    ) || []
+  )
 })
 
 const backSidePantoneValueDisplayList = computed(() => {
-  const pantoneValueList = backSidePantoneValue.value || []
-  return pantoneValueList.map((p: string) => {
-    const pantone = props.pantoneList.find((pant) => pant.name === p)
-    return pantone || { name: p, r: 128, g: 128, b: 128, colorName: 'Unknown' }
-  })
+  return (
+    materialFormService.values.backSide?.pantoneNameList?.map(
+      (pantoneName: string) => {
+        const pantone = props.pantoneList.find(
+          (pant) => pant.name === pantoneName
+        )
+        if (!pantone) {
+          throw new Error(`Pantone ${pantoneName} not found`)
+        }
+        return pantone
+      }
+    ) || []
+  )
 })
 
-const handleAddFaceSidePantone = () => {
-  if (pantoneColor.value.trim()) {
-    const currentList = faceSidePantoneValue.value.value || []
-    if (!currentList.includes(pantoneColor.value.trim())) {
-      faceSidePantoneValue.value.onInput([
-        ...currentList,
-        pantoneColor.value.trim(),
-      ] as any)
-    }
-    pantoneColor.value = ''
-  }
-}
-
-const handleAddBackSidePantone = () => {
-  if (pantoneColor.value.trim()) {
-    const currentList = backSidePantoneValue.value.value || []
-    if (!currentList.includes(pantoneColor.value.trim())) {
-      backSidePantoneValue.value.onInput([
-        ...currentList,
-        pantoneColor.value.trim(),
-      ] as any)
-    }
-    pantoneColor.value = ''
-  }
-}
-
 const removeFaceSidePantone = (pantone: string) => {
-  const currentList = faceSidePantoneValue.value.value || []
-  faceSidePantoneValue.value.onInput(
-    currentList.filter((p: string) => p !== pantone) as any
-  )
+  materialFormService.removePantone(pantone, 'faceSide')
 }
 
 const removeBackSidePantone = (pantone: string) => {
-  const currentList = backSidePantoneValue.value.value || []
-  backSidePantoneValue.value.onInput(
-    currentList.filter((p: string) => p !== pantone) as any
+  materialFormService.removePantone(pantone, 'backSide')
+}
+
+const handlePantoneSelection = (value: string) => {
+  if (value && value.trim()) {
+    // Add to the currently active side
+    if (activeSide.value === 'faceSide') {
+      materialFormService.addPantone(value.trim(), 'faceSide')
+    } else if (activeSide.value === 'backSide') {
+      materialFormService.addPantone(value.trim(), 'backSide')
+    }
+    pantoneColor.value = ''
+  }
+}
+
+// Memoized pantone data for performance
+const memoizedPantoneData = ref<{
+  groupedPantones: { [key: string]: PantoneColor[] }
+  lastPantoneListLength: number
+} | null>(null)
+
+const getGroupedPantones = () => {
+  // Check if we can reuse memoized data
+  if (
+    memoizedPantoneData.value &&
+    memoizedPantoneData.value.lastPantoneListLength === props.pantoneList.length
+  ) {
+    return memoizedPantoneData.value.groupedPantones
+  }
+
+  // Group pantones by major color name for better organization
+  const groupedPantones: { [key: string]: PantoneColor[] } = {}
+
+  props.pantoneList.forEach((pantone) => {
+    const majorColor = pantone.majorColorName || 'Other'
+    if (!groupedPantones[majorColor]) {
+      groupedPantones[majorColor] = []
+    }
+    groupedPantones[majorColor].push(pantone)
+  })
+
+  // Sort within each group
+  Object.keys(groupedPantones).forEach((majorColor) => {
+    groupedPantones[majorColor].sort((a, b) => a.name.localeCompare(b.name))
+  })
+
+  // Memoize the result
+  memoizedPantoneData.value = {
+    groupedPantones,
+    lastPantoneListLength: props.pantoneList.length,
+  }
+
+  return groupedPantones
+}
+
+// Search state for filtering
+const pantoneSearchQuery = ref('')
+
+const pantoneDropdownMenuTree = computed(() => {
+  const groupedPantones = getGroupedPantones()
+
+  let filteredCategories = Object.entries(groupedPantones).sort(([a], [b]) =>
+    a.localeCompare(b)
   )
+
+  // Apply search filter if there's a query
+  if (pantoneSearchQuery.value.trim()) {
+    const query = pantoneSearchQuery.value.toLowerCase()
+    filteredCategories = filteredCategories
+      .map(([majorColor, pantones]) => {
+        const filteredPantones = pantones.filter(
+          (pantone) =>
+            pantone.name.toLowerCase().includes(query) ||
+            pantone.colorName.toLowerCase().includes(query) ||
+            majorColor.toLowerCase().includes(query)
+        )
+        return [majorColor, filteredPantones] as [string, PantoneColor[]]
+      })
+      .filter(([, pantones]) => pantones.length > 0)
+  } else {
+    // Limit initial display to first 8 categories for better performance
+    filteredCategories = filteredCategories.slice(0, 8)
+  }
+
+  return {
+    width: 'w-80',
+    scrollAreaMaxHeight: 'max-h-60',
+    blockList: filteredCategories.map(([majorColor, pantones]) => ({
+      blockTitle: majorColor,
+      menuList: pantones.map((pantone) => ({
+        title: pantone.name,
+        selectValue: pantone.name,
+        labelColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})`,
+        description: pantone.colorName,
+      })),
+    })),
+  }
+})
+
+// Handle search input for pantone dropdown
+const handlePantoneSearch = (query: string) => {
+  pantoneSearchQuery.value = query
 }
 
 const specificationCustomFields = computed((): CustomField[] => {
-  const currentMaterialType = faceSideMaterialTypeValue.value.value
+  const currentMaterialType = materialFormService.values.faceSide?.materialType
   if (!materialOptions.value || !currentMaterialType) {
     return []
   }
