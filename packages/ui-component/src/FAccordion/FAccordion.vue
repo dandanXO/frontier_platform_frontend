@@ -53,16 +53,12 @@
           {{ desc }}
         </p>
         <f-button
-          v-permission="{
-            FUNC_ID: FUNC_ID.ASSET_EDIT,
-            behavior: 'deleteElement',
-          }"
+          
           v-if="viewOnly && actionButton"
           :type="'secondary'"
           :size="'sm'"
           :version="'v2'"
           @click.stop="actionButton.onClick()"
-          :disabled="actionButton.disabled"
           class="mt-2"
         >
           <f-svg-icon
@@ -112,7 +108,7 @@ import {
   onMounted,
 } from 'vue'
 import FTooltip from '../FTooltip/FTooltip/FTooltip.vue'
-import { FUNC_ID } from '../../../../projects/platform/src/utils/constants'
+import { FUNC_ID } from '@/utils/constants'
 
 interface Props {
   className?: string
@@ -129,7 +125,6 @@ interface Props {
     text: string
     iconName?: string
     onClick: () => void
-    disabled?: boolean
   }
   defaultExpanded?: boolean
   variant?: 'default' | 'compact'
