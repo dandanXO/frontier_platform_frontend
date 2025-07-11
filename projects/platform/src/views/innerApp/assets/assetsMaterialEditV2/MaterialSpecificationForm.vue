@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject, onMounted } from 'vue'
+import { computed, ref, inject, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useFieldArray } from 'vee-validate'
 import { NOTIFY_TYPE, DISPLAY, materialFormServiceKey } from '@/utils/constants'
@@ -143,6 +143,7 @@ import {
   type Material,
   type PantoneColor,
   type CustomField,
+  MaterialSideType,
 } from '@frontier/platform-web-sdk'
 import type { MaterialFormService } from '@/types'
 import FSelectInput from '@frontier/ui-component/src/FInput/FSelectInput/FSelectInput.vue'
@@ -201,6 +202,36 @@ onMounted(async () => {
 
 // Active side state
 const activeSide = ref('faceSide')
+
+// Computed property to determine default active side
+const defaultActiveSide = computed(() => {
+  const { isDoubleSide, faceSide, backSide, sideType } = props.material
+
+  // For single-sided materials, use sideType
+  if (!isDoubleSide) {
+    return sideType === MaterialSideType.BACK_SIDE ? 'backSide' : 'faceSide'
+  }
+
+  // For double-sided materials, use main side or fallback to faceSide
+  if (backSide?.isMainSide) {
+    return 'backSide'
+  }
+
+  return 'faceSide'
+})
+
+// Initialize and watch for material changes
+onMounted(() => {
+  activeSide.value = defaultActiveSide.value
+})
+
+watch(
+  () => props.material,
+  () => {
+    activeSide.value = defaultActiveSide.value
+  },
+  { deep: true }
+)
 
 // Expanded states
 const isFaceSideExpanded = ref(false)
