@@ -62,6 +62,7 @@
           :size="'sm'"
           :version="'v2'"
           @click.stop="actionButton.onClick()"
+          :disabled="actionButton.disabled"
           class="mt-2"
         >
           <f-svg-icon
@@ -128,6 +129,7 @@ interface Props {
     text: string
     iconName?: string
     onClick: () => void
+    disabled?: boolean
   }
   defaultExpanded?: boolean
   variant?: 'default' | 'compact'
