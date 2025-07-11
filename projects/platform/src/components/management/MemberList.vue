@@ -237,19 +237,25 @@ export default {
 
     const onChangeMemberRole = async (member, roleId) => {
       isLoading.value = true
-      routeLocation.value === 'org'
-        ? await store.dispatch('organization/changeOrgMemberRole', {
-            orgUserId: member.orgUserId,
-            roleId,
-            ogType: ogType.value,
-          })
-        : await store.dispatch('group/changeGroupMemberRole', {
-            groupUserId: member.groupUserId,
-            roleId,
-            ogId: ogId.value, // ogId = group id
-            orgId: store.state.organization.orgId, // orgId = org id
-            ogType: ogType.value,
-          })
+      const isOrgLevelMemberInGroupView =
+        routeLocation.value === 'group' &&
+        (member.orgRoleId === ROLE_ID.ADMIN ||
+          member.orgRoleId === ROLE_ID.OWNER)
+      if (routeLocation.value === 'org' || isOrgLevelMemberInGroupView) {
+        await store.dispatch('organization/changeOrgMemberRole', {
+          orgUserId: member.orgUserId,
+          roleId,
+          ogType: 1, // alwaoys 1 is org
+        })
+      } else {
+        await store.dispatch('group/changeGroupMemberRole', {
+          groupUserId: member.groupUserId,
+          roleId,
+          ogId: ogId.value, // ogId = group id
+          orgId: store.state.organization.orgId, // orgId = org id
+          ogType: ogType.value,
+        })
+      }
       await fetchMemberList()
       isLoading.value = false
       return roleId
