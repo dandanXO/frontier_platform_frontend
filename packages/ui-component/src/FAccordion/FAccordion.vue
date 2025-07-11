@@ -5,7 +5,7 @@
   >
     <div
       id="f-accordion-header"
-      class="flex flex-row gap-3 items-center justify-between"
+      class="flex flex-row items-center justify-between gap-3"
       :class="[
         headerClasses,
         {
@@ -23,7 +23,7 @@
         <div class="flex items-center gap-1">
           <p
             id="f-accordion-title"
-            class="text-primary-inverse font-bold text-xl line-clamp-2"
+            class="text-xl font-bold text-primary-inverse line-clamp-2"
           >
             {{ title }}
           </p>
@@ -49,10 +49,14 @@
             </template>
           </f-tooltip>
         </div>
-        <p class="text-secondary-text text-sm line-clamp-4">
+        <p class="text-sm text-secondary-text line-clamp-4">
           {{ desc }}
         </p>
         <f-button
+          v-permission="{
+            FUNC_ID: FUNC_ID.ASSET_EDIT,
+            behavior: 'deleteElement',
+          }"
           v-if="viewOnly && actionButton"
           :type="'secondary'"
           :size="'sm'"
@@ -107,6 +111,7 @@ import {
   onMounted,
 } from 'vue'
 import FTooltip from '../FTooltip/FTooltip/FTooltip.vue'
+import { FUNC_ID } from '../../../../projects/platform/src/utils/constants'
 
 interface Props {
   className?: string
