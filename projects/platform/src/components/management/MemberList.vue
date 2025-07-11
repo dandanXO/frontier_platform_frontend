@@ -75,7 +75,7 @@ export default {
         return orgMemberList
       }
 
-      return orgMemberList
+      const orgAdminsAndOwners = orgMemberList
         .filter(
           (member) =>
             member.orgRoleId === ROLE_ID.OWNER ||
@@ -86,7 +86,17 @@ export default {
           groupUserId: null,
           groupRoleId: member.orgRoleId,
         }))
-        .concat(store.getters['group/memberList'])
+
+      // 優先顯示群組內的成員資訊。如果一個組織管理員同時也被加入到群組中，
+      // 我們以群組中的角色為準，避免資料被組織角色覆蓋。
+      const groupMembers = store.getters['group/memberList']
+      const groupMemberEmails = new Set(groupMembers.map((m) => m.email))
+
+      // 過濾掉那些已經存在於群組列表中的組織管理員
+      const uniqueOrgAdminsAndOwners = orgAdminsAndOwners.filter(
+        (orgMember) => !groupMemberEmails.has(orgMember.email)
+      )
+      return [...groupMembers, ...uniqueOrgAdminsAndOwners]
     })
 
     const pagination = reactive({
@@ -96,20 +106,19 @@ export default {
       ),
       perPageCount: 8,
     })
-    const membersData = computed(() =>
-      memberList.value.map((member) => ({
+    const membersData = computed(() =>{
+      return  memberList.value.map((member) => ({
         ...member,
         nameLowerCase: member.displayName
           ? member.displayName?.toLowerCase()
           : '',
         emailLowerCase: member.email ? member.email.toLowerCase() : '',
       }))
-    )
+    })
     const filteredMemberList = computed(() => {
       const searchInputLowerCase = searchInput.value
         ? searchInput.value.toLowerCase()
         : ''
-
       return membersData.value.filter(
         (member) =>
           member.nameLowerCase?.includes(searchInputLowerCase) ||
