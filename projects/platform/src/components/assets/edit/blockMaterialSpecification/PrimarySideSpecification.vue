@@ -435,7 +435,10 @@
               class="w-70"
             />
           </div>
-          <div v-if="materialTypeValue != null" class="flex flex-col gap-y-2">
+          <div
+            v-if="materialTypeValue != null && !isNewCustomFieldEnabled()"
+            class="flex flex-col gap-y-2"
+          >
             <div
               class="flex items-center gap-x-3"
               v-for="(field, index) in constructionCustomPropertyFields"
@@ -720,7 +723,7 @@
         </div>
       </div>
     </f-input-container>
-    <f-input-container :label="$t('RR0026')">
+    <f-input-container v-if="!isNewCustomFieldEnabled()" :label="$t('RR0026')">
       <div class="flex flex-row gap-x-4.5">
         <div class="w-1.5 bg-grey-100"></div>
         <div class="flex flex-col gap-y-2">
@@ -824,7 +827,7 @@
         </div>
       </div>
     </f-input-container>
-    <f-input-container :label="$t('RR0025')">
+    <f-input-container v-if="!isNewCustomFieldEnabled()" :label="$t('RR0025')">
       <div class="flex flex-row gap-x-4.5">
         <div class="w-1.5 bg-grey-100"></div>
         <div class="flex flex-col gap-y-2">
@@ -926,6 +929,7 @@ import { NOTIFY_TYPE, DISPLAY, TOOLTIP_PLACEMENT } from '@frontier/constants'
 import { WeightUnit } from '@frontier/platform-web-sdk'
 import {
   CREATE_EDIT,
+  FEATURE_FLAG_KEY,
   WITH_CONSTRUCTION_TYPE_MATERIALS,
 } from '@/utils/constants'
 import IconButton from '@/components/assets/edit/blockMaterialSpecification/IconButton.vue'
@@ -1004,6 +1008,12 @@ const isShowWeightGsm = defineInputBinds('weightDisplaySetting.isShowWeightGsm')
 const isShowWeightOz = defineInputBinds('weightDisplaySetting.isShowWeightOz')
 const isShowWeightGy = defineInputBinds('weightDisplaySetting.isShowWeightGy')
 const isShowWeightGm = defineInputBinds('weightDisplaySetting.isShowWeightGm')
+
+const isNewCustomFieldEnabled = () => {
+  const featureFlagList =
+    store.getters['organization/organization']?.featureFlagList || []
+  return featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_NEW_CUSTOM_FIELD)
+}
 
 const { weightUnitText } = useEnumText()
 const weightCheckboxItems = computed(() =>

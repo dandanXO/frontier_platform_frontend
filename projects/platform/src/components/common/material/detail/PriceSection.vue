@@ -25,7 +25,7 @@ div(class="!gap-4")
         type="secondary"
         size="sm"
         :version="VERSION.V2"
-        @click="editMaterial.func(material)"
+        @click="handleEdit(material)"
       ) {{ $t('RR0054') }}
   template(v-if="currentTab === TAB_ID.PRIVATE")
     div(class="grid grid-cols-2 gap-4" v-if="withPrivatePrices")
@@ -66,7 +66,10 @@ enum TAB_ID {
   PRIVATE = 1,
 }
 
-const props = defineProps<{ material: Material }>()
+const props = defineProps<{
+  material: Material
+  handleEdit: (material: Material) => void
+}>()
 const {
   currentTab,
   privatePrices,

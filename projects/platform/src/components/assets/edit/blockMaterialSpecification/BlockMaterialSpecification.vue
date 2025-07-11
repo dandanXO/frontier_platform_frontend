@@ -61,19 +61,35 @@ div
       v-show="showBackSideSpecification"
       data-cy="back-side-specification"
     )
+    MaterialCustomFieldsForm(
+      v-if="isNewCustomFieldEnabled()"
+      :fields="specificationCustomFields"
+      :form-service="materialFormService"
+      field-list-name="specificationList"
+    )
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MaterialSideType } from '@frontier/platform-web-sdk'
 import FaceSideSpecification from '@/components/assets/edit/blockMaterialSpecification/FaceSideSpecification.vue'
 import MiddleSideSpecification from '@/components/assets/edit/blockMaterialSpecification/MiddleSideSpecification.vue'
 import BackSideSpecification from '@/components/assets/edit/blockMaterialSpecification/BackSideSpecification.vue'
-import { MATERIAL_SIDE_TYPE, materialFormServiceKey } from '@/utils/constants'
+import {
+  FEATURE_FLAG_KEY,
+  MATERIAL_SIDE_TYPE,
+  materialFormServiceKey,
+} from '@/utils/constants'
 import { CREATE_EDIT } from '@/utils/constants'
 import type { MaterialFormService } from '@/types'
 import { getMaterialSideOptionList } from '@/utils/material/getMaterialSideOptionList'
+import { useAssetsStore } from '@/stores/assets'
+import type { CustomField } from '@/views/innerApp/CustomField/useCustomerFieldFrom'
+import MaterialCustomFieldsForm from '@/views/innerApp/assets/assetsMaterialEditV2/MaterialCustomFieldsForm.vue'
+import { useFieldArray } from 'vee-validate'
+import { watch } from 'vue'
+import { useStore } from 'vuex'
 
 const { t } = useI18n()
 
@@ -97,6 +113,13 @@ const itemNo = defineInputBinds('itemNo')
 const seasonName = defineInputBinds('seasonInfo.season.name')
 const seasonYear = defineInputBinds('seasonInfo.year')
 const isSeasonPublic = defineInputBinds('seasonInfo.isPublic')
+const store = useStore()
+
+const isNewCustomFieldEnabled = () => {
+  const featureFlagList =
+    store.getters['organization/organization']?.featureFlagList || []
+  return featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_NEW_CUSTOM_FIELD)
+}
 
 const showFaceSideSpecification = computed(() => {
   return (
@@ -144,6 +167,55 @@ const sideOptionList = computed(() => {
   const { isDoubleSide, isComposite, sideType } = values
   return getMaterialSideOptionList(isDoubleSide, isComposite, sideType)
 })
+const assetsStore = useAssetsStore()
+const materialOptions = ref()
+const faceSideMaterialTypeValue = materialFormService.defineInputBinds(
+  'faceSide.materialType'
+)
+
+const specificationCustomFields = computed((): CustomField[] => {
+  const currentMaterialType = faceSideMaterialTypeValue.value.value
+  if (!materialOptions.value || !currentMaterialType) {
+    return []
+  }
+
+  const allSpecFields =
+    materialOptions.value.customFieldList?.specificationList || []
+
+  const filteredFields = allSpecFields.filter((field: CustomField) => {
+    return (
+      field.customFieldId !== null &&
+      (field.applyTo.length === 0 ||
+        field.applyTo.includes(currentMaterialType))
+    )
+  })
+
+  return filteredFields
+})
+
+onMounted(async () => {
+  materialOptions.value = await assetsStore.getMaterialOptions()
+})
+
+const { replace: replaceCustomField } = useFieldArray(
+  'customFieldList.specificationList'
+)
+
+const fetchAndSyncMaterialOptions = async () => {
+  materialOptions.value = await assetsStore.getMaterialOptions()
+
+  if (specificationCustomFields.value.length > 0) {
+    replaceCustomField(
+      specificationCustomFields.value.map((field) => ({
+        customFieldId: field.customFieldId,
+        value: null,
+      }))
+    )
+  }
+}
+
+onMounted(fetchAndSyncMaterialOptions)
+watch(specificationCustomFields, fetchAndSyncMaterialOptions)
 </script>
 
 <style scoped></style>

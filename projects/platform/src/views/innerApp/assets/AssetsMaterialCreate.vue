@@ -290,6 +290,27 @@ const createMaterial = async (payload: {
       req = { ...req, middleSide: null }
     }
 
+    req = {
+      ...req,
+      customFieldList: {
+        fabricDetailList: form.customFieldList.fabricDetailList.filter(
+          (f: any) => f.value !== null
+        ),
+        inventoryList: form.customFieldList.inventoryList.filter(
+          (f: any) => f.value !== null
+        ),
+        pricingList: form.customFieldList.pricingList.filter(
+          (f: any) => f.value !== null
+        ),
+        specificationList: form.customFieldList.specificationList.filter(
+          (f: any) => f.value !== null
+        ),
+        tagList: form.customFieldList.tagList.filter(
+          (f: any) => f.value !== null
+        ),
+      },
+    }
+
     return req
   }
 

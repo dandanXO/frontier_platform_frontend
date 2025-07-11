@@ -74,6 +74,13 @@ div(class="mb-15 grid gap-y-7.5")
     :hintError="displayErrors['priceInfo.sampleLeadTimeInDays']"
     :addOnRight="$t('RR0050')"
   )
+
+  MaterialCustomFieldsForm(
+    v-if="isNewCustomFieldEnabled()"
+    :fields="pricingCustomFields"
+    :form-service="materialFormService"
+    field-list-name="pricingList"
+  )
   div(v-if="!onlyPublic" class="bg-grey-50 rounded px-15 py-12.5 grid gap-y-7.5")
     h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     f-select-dropdown(
@@ -153,10 +160,15 @@ div(class="mb-15 grid gap-y-7.5")
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import type { MaterialFormService } from '@/types'
-import { materialFormServiceKey } from '@/utils/constants'
+import { FEATURE_FLAG_KEY, materialFormServiceKey } from '@/utils/constants'
+import type { CustomField } from '@frontier/platform-web-sdk'
+import { useAssetsStore } from '@/stores/assets'
+import { useFieldArray } from 'vee-validate'
+import MaterialCustomFieldsForm from '@/views/innerApp/assets/assetsMaterialEditV2/MaterialCustomFieldsForm.vue'
+import { watch } from 'vue'
 
 withDefaults(
   defineProps<{
@@ -235,4 +247,58 @@ const privatePricingProductionLeadTimeInDays = defineInputBinds(
 const privatePricingSampleLeadTimeInDays = defineInputBinds(
   'internalInfo.priceInfo.sampleLeadTimeInDays'
 )
+
+const materialOptions = ref()
+const faceSideMaterialTypeValue = materialFormService.defineInputBinds(
+  'faceSide.materialType'
+)
+
+const isNewCustomFieldEnabled = () => {
+  const featureFlagList =
+    store.getters['organization/organization']?.featureFlagList || []
+  return featureFlagList.includes(FEATURE_FLAG_KEY.ENABLE_NEW_CUSTOM_FIELD)
+}
+
+const pricingCustomFields = computed((): CustomField[] => {
+  const currentMaterialType = faceSideMaterialTypeValue.value.value
+  if (!materialOptions.value) {
+    return []
+  }
+
+  const allPricingFields =
+    materialOptions.value.customFieldList?.pricingList || []
+
+  const filteredFields = allPricingFields.filter((field: CustomField) => {
+    return (
+      field.customFieldId !== null &&
+      (field.applyTo.length === 0 ||
+        field.applyTo.includes(currentMaterialType))
+    )
+  })
+
+  return filteredFields
+})
+const assetsStore = useAssetsStore()
+const { replace: replaceCustomField } = useFieldArray(
+  'customFieldList.pricingList'
+)
+
+const fetchAndSyncMaterialOptions = async () => {
+  // Fetch material options
+  materialOptions.value = await assetsStore.getMaterialOptions()
+
+  // Sync pricing custom fields
+  if (pricingCustomFields.value.length > 0) {
+    replaceCustomField(
+      pricingCustomFields.value.map((field) => ({
+        customFieldId: field.customFieldId,
+        value: null,
+      }))
+    )
+  }
+}
+
+onMounted(fetchAndSyncMaterialOptions)
+
+watch(pricingCustomFields, fetchAndSyncMaterialOptions)
 </script>

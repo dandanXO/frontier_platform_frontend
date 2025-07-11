@@ -93,6 +93,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         price-section(
           :material="material"
           :class="SECTION_CLASS"
+          :handleEdit="editMaterialWithPricingFocus"
           v-if="withPrices"
         )
       f-accordion(
@@ -189,10 +190,17 @@ const {
   title: tagsTitle,
   ...resTagSection
 } = useTagSection()
-const { withPrivatePrices, withPublicPrices, ...resPriceSection } =
-  usePriceSection()
+const {
+  withPrivatePrices,
+  withPublicPrices,
+  withPricingCustomFields,
+  ...resPriceSection
+} = usePriceSection()
 const withPrices = computed(
-  () => withPrivatePrices.value || withPublicPrices.value
+  () =>
+    withPrivatePrices.value ||
+    withPublicPrices.value ||
+    withPricingCustomFields.value
 )
 const { inventorySections, ...resInventorySection } = useInventorySection()
 const customFieldStore = useCustomFieldStore()

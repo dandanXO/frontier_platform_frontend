@@ -66,6 +66,10 @@ const usePriceSection = () => {
     currentTab.value = tab.id
   }
 
+  const withPricingCustomFields = computed(() => {
+    return material.value?.customFieldList?.pricingList?.length ?? 0 > 0
+  })
+
   return {
     publicPrices,
     currentTab,
@@ -75,6 +79,7 @@ const usePriceSection = () => {
     isInternalUser,
     withPrivatePrices,
     withPublicPrices,
+    withPricingCustomFields,
     setMaterial,
   }
 }
