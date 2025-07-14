@@ -231,7 +231,9 @@ const editable = computed(() => {
   if (!props.material.metaData.isProcessingComplete) {
     return false
   }
-  return true
+  // Check if user has ASSET_EDIT permission
+  const permissionList = PERMISSION_MAP[roleId]
+  return permissionList.includes(FUNC_ID.ASSET_EDIT)
 })
 
 // Refs for the container and sides
