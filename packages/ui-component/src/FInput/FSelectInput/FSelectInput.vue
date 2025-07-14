@@ -34,7 +34,7 @@ f-input-container(
         div(class="flex-1 flex-grow w-full h-full flex items-center relative")
           //- Multiple mode: chips and inline input
           template(v-if="multiple")
-            div(:class="classChipContainer" ref="refChipContainer")
+            div(:class="classChipContainer" class="flex-1 flex" ref="refChipContainer")
               div(
                 v-for="(chip, index) in displayText"
                 :key="chip"
@@ -58,7 +58,7 @@ f-input-container(
                 :class="classInput"
                 ref="refInput"
                 type="text"
-                class="inline-block border-none bg-transparent outline-none"
+                class="inline-block border-none bg-transparent outline-none flex-1"
                 :style="{ width: displayText.length === 0 ? '100%' : '120px', minWidth: displayText.length === 0 ? '0' : '120px', height: size === 'lg' ? '24px' : '20px', fontSize: size === 'lg' ? '14px' : '12px', lineHeight: size === 'lg' ? '1.6' : '1.3' }"
                 :placeholder="displayText.length === 0 && !isEditing ? placeholder : ''"
                 :readonly="disabled"
