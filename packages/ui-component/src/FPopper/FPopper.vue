@@ -37,7 +37,7 @@ export default {
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
-import { createPopper } from '@popperjs/core'
+import { createPopper, type Instance } from '@popperjs/core'
 import type { TOOLTIP_PLACEMENT } from '../constants'
 // https://popper.js.org/docs/v2/
 
@@ -64,6 +64,7 @@ const props = withDefaults(
 const isExpand = ref(false)
 const refTrigger = ref<HTMLElement>()
 const refPopper = ref<HTMLElement>()
+const popperInstance = ref<Instance | null>(null)
 
 const expandPopper = async () => {
   if (isExpand.value || props.disabled) {
@@ -78,7 +79,7 @@ const expandPopper = async () => {
     return
   }
 
-  createPopper(refTrigger.value, refPopper.value, {
+  popperInstance.value = createPopper(refTrigger.value, refPopper.value, {
     onFirstUpdate: props.onFirstUpdate,
     placement: props.placement,
     modifiers: [
@@ -95,11 +96,17 @@ const expandPopper = async () => {
 
 const collapsePopper = () => {
   isExpand.value = false
+  popperInstance.value = null
   emit('collapse')
+}
+
+const getPopperInstance = () => {
+  return popperInstance.value
 }
 
 defineExpose({
   expandPopper,
+  getPopperInstance,
 })
 </script>
 

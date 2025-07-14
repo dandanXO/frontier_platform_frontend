@@ -163,12 +163,14 @@ const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 const emit = defineEmits<{
   (e: 'update:inputSelectValue', inputSelectValue: any): void
   (e: 'click:menu', menu: Required<MenuItem>): void
+  (e: 'tabSwitch', tabId: number): void
 }>()
 
 const activeTab = ref(0)
 
 const switchTab = (id: number) => {
   activeTab.value = id
+  emit('tabSwitch', id)
 }
 
 const props = withDefaults(

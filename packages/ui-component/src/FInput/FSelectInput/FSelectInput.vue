@@ -15,12 +15,14 @@ f-input-container(
     :offset="[0, 8]"
     :disabled="disabled"
     :onFirstUpdate="checkPlacementAndReverse"
+    @click="handleContainerClick"
   )
     template(#trigger)
       div(
         :class="classMain"
         @mouseenter="isHover = true"
         @mouseleave="isHover = false"
+        @click="handleContainerClick"
       )
         //- Leading Visual - Icon
         div(v-if="prependIcon" :class="classIcon")
@@ -30,54 +32,69 @@ f-input-container(
           )
         //- display text and input
         div(class="flex-1 flex-grow w-full h-full flex items-center relative")
-          div(
-            v-show="multiple && displayText.length !== 0"
-            :class="classChipContainer"
-          )
-            div(
-              v-for="(chip, index) in displayText"
-              :key="chip"
-              class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer"
-              :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
-              :style="{ maxWidth: chipMaxWidth + 'px' }"
-            )
-              template(v-if="getIsEllipsis(chip)")
-                f-tooltip-standard(:tooltipMessage="chip" class="flex-grow")
-                  template(#slot:tooltip-trigger)
-                    span(class="line-clamp-1") {{ chip }}
-              span(v-else) {{ chip }}
-              f-svg-icon(
-                iconName="clear"
-                size="16"
-                class="text-grey-600 cursor-pointer"
-                @click.stop="removeChip(index)"
+          //- Multiple mode: chips and inline input
+          template(v-if="multiple")
+            div(:class="classChipContainer" ref="refChipContainer")
+              div(
+                v-for="(chip, index) in displayText"
+                :key="chip"
+                class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer flex-shrink-0"
+                :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
               )
-          //- Single input field that handles both display and edit modes
-          input(
-            v-show="!multiple || displayText.length === 0 || isEditing"
-            :class="classInput"
-            ref="refInput"
-            type="text"
-            class="w-full"
-            :placeholder="(!displayText || displayText.length === 0) && !isEditing ? placeholder : ''"
-            :readonly="disabled"
-            v-model.trim="inputText"
-            @input="setSearchInput(inputText)"
-            @keydown.enter="addNewMenu"
-            @focus="handleInputFocus"
-            @blur="handleInputBlur"
-          )
-          //- Display text overlay for single select when not editing
-          div(
-            v-show="!multiple && !!displayText && !isEditing && !disabled"
-            :class="classInput"
-            class="absolute inset-0 pointer-events-none flex items-center"
-          )
-            template(v-if="getIsEllipsis(displayText)")
-              f-tooltip-standard(:tooltipMessage="displayText")
-                template(#slot:tooltip-trigger)
-                  span(class="line-clamp-1") {{ displayText }}
-            span(v-else) {{ displayText }}
+                template(v-if="getIsEllipsis(chip)")
+                  f-tooltip-standard(:tooltipMessage="chip" class="flex-grow")
+                    template(#slot:tooltip-trigger)
+                      span(class="line-clamp-1 whitespace-nowrap overflow-hidden") {{ chip }}
+                span(v-else class="whitespace-nowrap overflow-hidden") {{ chip }}
+                f-svg-icon(
+                  iconName="clear"
+                  size="16"
+                  class="text-grey-600 cursor-pointer"
+                  @click.stop="removeChip(index)"
+                )
+              //- Inline input that flows with chips
+              input(
+                v-show="displayText.length === 0 || isEditing"
+                :class="classInput"
+                ref="refInput"
+                type="text"
+                class="inline-block border-none bg-transparent outline-none"
+                :style="{ width: displayText.length === 0 ? '100%' : '120px', minWidth: displayText.length === 0 ? '0' : '120px', height: size === 'lg' ? '24px' : '20px', fontSize: size === 'lg' ? '14px' : '12px', lineHeight: size === 'lg' ? '1.6' : '1.3' }"
+                :placeholder="displayText.length === 0 && !isEditing ? placeholder : ''"
+                :readonly="disabled"
+                v-model.trim="inputText"
+                @input="setSearchInput(inputText)"
+                @keydown.enter="addNewMenu"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+              )
+          //- Single mode: full width input or display text
+          template(v-else)
+            input(
+              v-show="!displayText || isEditing"
+              :class="classInput"
+              ref="refInput"
+              type="text"
+              class="w-full"
+              :placeholder="!displayText && !isEditing ? placeholder : ''"
+              :readonly="disabled"
+              v-model.trim="inputText"
+              @input="setSearchInput(inputText)"
+              @keydown.enter="addNewMenu"
+              @focus="handleInputFocus"
+              @blur="handleInputBlur"
+            )
+            //- Display text overlay for single select when not editing
+            div(
+              v-show="!!displayText && !isEditing && !disabled"
+              :class="classInput"
+              class="absolute inset-0 pointer-events-none flex items-center"
+            )
+              template(v-if="getIsEllipsis(displayText)")
+                f-tooltip-standard(:tooltipMessage="displayText")
+                  template(#slot:tooltip-trigger)
+                    span(class="line-clamp-1 whitespace-nowrap overflow-hidden") {{ displayText }}
+              span(v-else class="whitespace-nowrap overflow-hidden") {{ displayText }}
         //- Clear Icon
         div(
           v-if="clearable && !disabled && (isEditing || (multiple && displayText.length > 0) || (!multiple && !!displayText))"
@@ -96,6 +113,7 @@ f-input-container(
           ref="refContextualMenu"
           v-model:inputSelectValue="innerSelectValue"
           @click:menu="!multiple && collapsePopper()"
+          @tabSwitch="handleTabSwitch"
           :canAddNew="canAddNew"
           :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
           :menuTree="dropdownMenuTree"
@@ -133,6 +151,7 @@ import {
   onMounted,
   nextTick,
   onBeforeUnmount,
+  watch,
 } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
@@ -406,6 +425,7 @@ const classChipContainer = computed(() => [
   'flex-wrap',
   'gap-x-1',
   'gap-y-1',
+  'items-center',
   props.multiple ? 'py-[5px]' : 'py-[3px]',
 ])
 
@@ -476,9 +496,11 @@ const chipMaxWidth = computed(() => {
   )
 })
 const getIsEllipsis = (chip) => {
+  // Use a reasonable max width for ellipsis check (e.g., 200px)
+  const maxWidth = 200
   const span = document.createElement('span')
   span.innerText = chip
-  span.style.maxWidth = chipMaxWidth.value + 'px'
+  span.style.maxWidth = maxWidth + 'px'
   span.style.display = 'inline-block'
   span.style.overflow = 'hidden'
   span.style.textOverflow = 'ellipsis'
@@ -490,11 +512,19 @@ const getIsEllipsis = (chip) => {
 }
 const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
 const refContainerObserver = ref(null)
+const refChipContainer = ref(null)
+const popperInstance = ref(null)
+
 onMounted(() => {
   refContainerObserver.value = new ResizeObserver((entries) => {
     // Use a fixed offset for more consistent positioning
     popperOffsetY.value = props.size === 'lg' ? 48 : 40
     contentWidth.value = entries[0].contentRect.width
+
+    // Update popper position when container resizes
+    if (popperInstance.value && isFocus.value) {
+      popperInstance.value.update()
+    }
   })
   refContainerObserver.value.observe(refContainer.value.$el)
 })
@@ -502,11 +532,38 @@ onBeforeUnmount(() => {
   refContainerObserver.value.unobserve(refContainer.value.$el)
 })
 
+// Store popper instance and update position when chips change
+watch(
+  displayText,
+  () => {
+    if (isFocus.value && popperInstance.value) {
+      // Force popper to recalculate position
+      popperInstance.value.update()
+    }
+  },
+  { deep: true }
+)
+
 const expand = () => {
   isFocus.value = true
-  refInput.value.focus({ preventScroll: isIframe() })
+  isEditing.value = true
+  nextTick(() => {
+    if (refInput.value) {
+      refInput.value.focus({ preventScroll: isIframe() })
+    }
+  })
   if (!props.multiple && displayText.value) {
     inputText.value = displayText.value
+  }
+
+  // Store popper instance for later updates
+  if (refPopper.value) {
+    // Access the popper instance through the FPopper component
+    nextTick(() => {
+      if (refPopper.value && refPopper.value.getPopperInstance) {
+        popperInstance.value = refPopper.value.getPopperInstance()
+      }
+    })
   }
 }
 
@@ -515,6 +572,7 @@ const collapse = () => {
   isEditing.value = false
   setSearchInput('')
   inputText.value = ''
+  popperInstance.value = null
   emit('collapse')
 }
 
@@ -611,6 +669,37 @@ const handleInputFocus = () => {
 
 const handleInputBlur = () => {
   isEditing.value = false
+}
+
+const handleContainerClick = () => {
+  if (!props.disabled) {
+    isEditing.value = true
+    nextTick(() => {
+      if (refInput.value) {
+        refInput.value.focus({ preventScroll: isIframe() })
+      }
+    })
+  }
+}
+
+const handleTabSwitch = () => {
+  // Enable editing mode and refocus the input field when tabs are switched
+  isEditing.value = true
+  isFocus.value = true
+
+  nextTick(() => {
+    if (refInput.value) {
+      refInput.value.focus({ preventScroll: isIframe() })
+      // Ensure the input is visible and ready for editing
+      if (props.multiple && displayText.value.length > 0) {
+        // For multiple mode, make sure the input is visible
+        inputText.value = ''
+      } else if (!props.multiple && displayText.value) {
+        // For single mode, set the input text to the current display text
+        inputText.value = displayText.value
+      }
+    }
+  })
 }
 
 defineExpose({
