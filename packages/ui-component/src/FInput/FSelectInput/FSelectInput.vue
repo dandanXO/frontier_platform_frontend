@@ -68,14 +68,13 @@ f-input-container(
                 @focus="handleInputFocus"
                 @blur="handleInputBlur"
               )
-          //- Single mode: full width input or display text
+          //- Single mode: simple input
           template(v-else)
             input(
-              v-show="!displayText || isEditing"
               :class="classInput"
               ref="refInput"
               type="text"
-              class="w-full"
+              class="w-full border-none bg-transparent outline-none"
               :placeholder="!displayText && !isEditing ? placeholder : ''"
               :readonly="disabled"
               v-model.trim="inputText"
