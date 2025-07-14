@@ -12,7 +12,7 @@ f-input-container(
     data-cy="input-chips"
     @expand="expand"
     @collapse="collapse"
-    :offset="[0, -popperOffsetY]"
+    :offset="[0, 8]"
     :disabled="disabled"
     :onFirstUpdate="checkPlacementAndReverse"
   )
@@ -492,13 +492,8 @@ const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
 const refContainerObserver = ref(null)
 onMounted(() => {
   refContainerObserver.value = new ResizeObserver((entries) => {
-    if (props.label || !props.labelNeeded) {
-      popperOffsetY.value =
-        refContainer.value.$el.children[1].getBoundingClientRect().height
-    } else {
-      popperOffsetY.value =
-        refContainer.value.$el.children[0].getBoundingClientRect().height
-    }
+    // Use a fixed offset for more consistent positioning
+    popperOffsetY.value = props.size === 'lg' ? 48 : 40
     contentWidth.value = entries[0].contentRect.width
   })
   refContainerObserver.value.observe(refContainer.value.$el)
