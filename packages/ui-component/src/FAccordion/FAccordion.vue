@@ -53,7 +53,7 @@
           {{ desc }}
         </p>
         <f-button
-          
+          v-permission="{ FUNC_ID: actionButton?.permission }"
           v-if="viewOnly && actionButton"
           :type="'secondary'"
           :size="'sm'"
@@ -125,6 +125,7 @@ interface Props {
     text: string
     iconName?: string
     onClick: () => void
+    permission?: string
   }
   defaultExpanded?: boolean
   variant?: 'default' | 'compact'

@@ -60,7 +60,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="tagsTitle"
         :desc="tagsDesc"
         :viewOnly="isTagsTabsEmpty"
-        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material), disabled: !editable }"
+        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
       )
         tags-section(
           :class="SECTION_CLASS"
@@ -71,7 +71,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('EE0129')"
         :desc="certList.length ? undefined : $t('RR0564')"
         :viewOnly="!certList.length"
-        :actionButton="{ text: $t('RR0054'), onClick: () =>editMaterial.func(material), disabled: !editable }"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
       )
         div(
           class="!flex-row w-full flex-wrap"
@@ -88,7 +88,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0134')"
         :desc="withPrices ? undefined : $t('RR0565')"
         :viewOnly="!withPrices"
-        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable }"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
       )
         price-section(
           :material="material"
@@ -100,7 +100,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0135')"
         :desc="withInventoryData ? undefined : $t('RR0566')"
         :viewOnly="!withInventoryData"
-        :actionButton="{ text: $t('RR0327'), onClick: () =>editMaterial.func(material), disabled: !editable }"
+        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
       )
         inventory-section(
           :material="material"
@@ -111,7 +111,7 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
         :title="$t('RR0298')"
         :desc="withAttachments ? $t('RR0558') : $t('RR0563')"
         :viewOnly="!withAttachments"
-        :actionButton="{ text: $t('UU0022'), onClick: () =>editMaterial.func(material), disabled: !editable }"
+        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
       )
         attachments-section(
           :material="material"
