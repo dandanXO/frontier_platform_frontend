@@ -144,6 +144,7 @@ import {
   type PantoneColor,
   type CustomField,
   MaterialSideType,
+  MaterialType,
 } from '@frontier/platform-web-sdk'
 import type { MaterialFormService } from '@/types'
 import FSelectInput from '@frontier/ui-component/src/FInput/FSelectInput/FSelectInput.vue'
@@ -399,7 +400,16 @@ const handlePantoneSearch = (query: string) => {
 }
 
 const specificationCustomFields = computed((): CustomField[] => {
-  const currentMaterialType = materialFormService.values.faceSide?.materialType
+  // Determine the current material type based on the active side
+  let currentMaterialType: number | undefined
+
+  if (activeSide.value === 'backSide') {
+    currentMaterialType = materialFormService.values.backSide?.materialType
+  } else {
+    // For faceSide and middleSide, use faceSide material type
+    currentMaterialType = materialFormService.values.faceSide?.materialType
+  }
+
   if (!materialOptions.value || !currentMaterialType) {
     return []
   }
@@ -411,7 +421,7 @@ const specificationCustomFields = computed((): CustomField[] => {
     return (
       field.customFieldId !== null &&
       (field.applyTo.length === 0 ||
-        field.applyTo.includes(currentMaterialType))
+        field.applyTo.includes(currentMaterialType as MaterialType))
     )
   })
 
