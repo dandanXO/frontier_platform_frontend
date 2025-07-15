@@ -42,8 +42,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
 
   //- Right Side: Item#, Spec, Color and Pattern, 3D Material
   div(
-    class="w-full flex flex-col flex-grow-0 flex-shrink overflow-y-auto pr-2"
-    :style="{ maxHeight: leftSideHeight + 'px' }"
+    class="w-full flex flex-col flex-grow overflow-y-auto pr-2"
+    :style="{ maxHeight: Math.max(leftSideHeight, 600) + 'px' }"
     ref="rightSideRef"
   )
     div(
@@ -59,8 +59,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
       f-accordion(
         :title="tagsTitle"
         :desc="tagsDesc"
-        :viewOnly="isTagsTabsEmpty"
-        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
+        :viewOnly="false"
+        :actionButton="{ text: $t('RR0602'), onClick: () => editMaterial.func(material), disabled: !editable || isTagsTabsEmpty, permission: FUNC_ID.ASSET_EDIT }"
       )
         tags-section(
           :class="SECTION_CLASS"
@@ -70,8 +70,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
       f-accordion(
         :title="$t('EE0129')"
         :desc="certList.length ? undefined : $t('RR0564')"
-        :viewOnly="!certList.length"
-        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
+        :viewOnly="false"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable || !certList.length, permission: FUNC_ID.ASSET_EDIT }"
       )
         div(
           class="!flex-row w-full flex-wrap"
@@ -87,8 +87,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
       f-accordion(
         :title="$t('RR0134')"
         :desc="withPrices ? undefined : $t('RR0565')"
-        :viewOnly="!withPrices"
-        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
+        :viewOnly="false"
+        :actionButton="{ text: $t('RR0054'), onClick: () => editMaterial.func(material), disabled: !editable || !withPrices, permission: FUNC_ID.ASSET_EDIT }"
       )
         price-section(
           :material="material"
@@ -99,8 +99,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
       f-accordion(
         :title="$t('RR0135')"
         :desc="withInventoryData ? undefined : $t('RR0566')"
-        :viewOnly="!withInventoryData"
-        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
+        :viewOnly="false"
+        :actionButton="{ text: $t('RR0327'), onClick: () => editMaterial.func(material), disabled: !editable || !withInventoryData, permission: FUNC_ID.ASSET_EDIT }"
       )
         inventory-section(
           :material="material"
@@ -110,8 +110,8 @@ div(class="flex flex-row gap-8" data-theme="new" ref="containerRef")
       f-accordion(
         :title="$t('RR0298')"
         :desc="withAttachments ? $t('RR0558') : $t('RR0563')"
-        :viewOnly="!withAttachments"
-        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterial.func(material), disabled: !editable, permission: FUNC_ID.ASSET_EDIT }"
+        :viewOnly="false"
+        :actionButton="{ text: $t('UU0022'), onClick: () => editMaterial.func(material), disabled: !editable || !withAttachments, permission: FUNC_ID.ASSET_EDIT }"
       )
         attachments-section(
           :material="material"
@@ -217,6 +217,17 @@ const withAttachments = computed(
     props.material.internalInfo?.attachmentList?.length
 )
 
+// Check if material has any meaningful data
+const hasMaterialData = computed(() => {
+  return (
+    !isTagsTabsEmpty.value ||
+    certList.value.length > 0 ||
+    withPrices.value ||
+    withInventoryData.value ||
+    withAttachments.value
+  )
+})
+
 const {
   editMaterial,
   downloadU3m,
@@ -246,7 +257,10 @@ const leftSideHeight = ref(0)
 const updateHeight = async () => {
   await nextTick()
   if (leftSideRef.value) {
-    leftSideHeight.value = leftSideRef.value.offsetHeight
+    const height = leftSideRef.value.offsetHeight
+    leftSideHeight.value = Math.max(height, 400) // Ensure minimum height
+  } else {
+    leftSideHeight.value = 600 // Fallback height
   }
 }
 
