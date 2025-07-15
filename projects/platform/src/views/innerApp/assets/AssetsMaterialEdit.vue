@@ -18,8 +18,8 @@ div(class="flex justify-center w-full h-full" data-theme="new")
     div(class="flex flex-col gap-y-17.5")
       div(class="flex flex-row gap-x-15")
         material-detail-image(
-          canEdit
-          canStar
+          :canEdit="true"
+          :canStar="true"
           :selectedId="multimediaUpdateService.selectedCoverId.value"
           :getMenuTree="multimediaUpdateService.getMultimediaMenuTree"
           :selectCover="multimediaUpdateService.selectCover"

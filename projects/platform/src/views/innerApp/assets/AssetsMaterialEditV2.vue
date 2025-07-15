@@ -34,6 +34,8 @@
         <div class="flex flex-col gap-8">
           <material-detail-image
             showMoreMenu
+            :canEdit="true"
+            :canStar="true"
             :selectedId="
               typeof multimediaUpdateService.selectedCoverId.value === 'string'
                 ? parseInt(multimediaUpdateService.selectedCoverId.value, 10)

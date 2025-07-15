@@ -47,42 +47,42 @@ div(class="flex flex-col gap-y-5 w-[360px]")
             f-svg-icon(iconName="loupe" size="20")
         template(#slot:tooltip-content)
           p(class="text-xs break-all") {{ $t('EE0242') }}
-    div(class="absolute flex items-center bottom-5 left-5 right-5 gap-x-5")
-      button(
-        v-if="isShowEdit"
-        class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
-        @click="emits('editScannedImage')"
-      )
-        f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
-      button(
-        v-if="isShowStar"
-        class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
-        @click="emits('updateCurrentCoverIndex', currentDisplayIndex)"
-      )
-        f-svg-icon(
-          v-if="localFileList[currentDisplayIndex].id === props.coverId"
-          iconName="star_solid"
-          size="32"
-          class="text-primary-400"
-        )
-        f-svg-icon(
-          v-else
-          iconName="star"
-          size="32"
-          :class="[props.selectedId && props.selectedId === localFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
-        )
-      div(v-if="isShowDDButton" class="flex-col ml-auto")
-        button(
-          class="flex flex-col items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
-          @click="isDDMenuOpen = !isDDMenuOpen"
-        )
-          f-svg-icon(iconName="3D_material" size="32" class="text-grey-900")
-        div
-          f-contextual-menu(
-            class="absolute z-50 mt-2"
-            :menuTree="dDMenuTree"
-            v-if="isDDMenuOpen"
-          )
+    //- div(class="absolute flex items-center bottom-5 left-5 right-5 gap-x-5")
+    //-   button(
+    //-     v-if="isShowEdit"
+    //-     class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
+    //-     @click="emits('editScannedImage')"
+    //-   )
+    //-     f-svg-icon(iconName="reset_image" size="32" class="text-grey-900")
+    //-   button(
+    //-     v-if="isShowStar"
+    //-     class="flex items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
+    //-     @click="emits('updateCurrentCoverIndex', currentDisplayIndex)"
+    //-   )
+    //-     f-svg-icon(
+    //-       v-if="localFileList[currentDisplayIndex].id === props.coverId"
+    //-       iconName="star_solid"
+    //-       size="32"
+    //-       class="text-primary-400"
+    //-     )
+    //-     f-svg-icon(
+    //-       v-else
+    //-       iconName="star"
+    //-       size="32"
+    //-       :class="[props.selectedId && props.selectedId === localFileList[currentDisplayIndex].id ? 'text-primary-400' : 'text-grey-900']"
+    //-     )
+    //-   div(v-if="isShowDDButton" class="flex-col ml-auto")
+    //-     button(
+    //-       class="flex flex-col items-center justify-center w-10 h-10 rounded-md cursor-pointer bg-grey-100/40"
+    //-       @click="isDDMenuOpen = !isDDMenuOpen"
+    //-     )
+    //-       f-svg-icon(iconName="3D_material" size="32" class="text-grey-900")
+    //-     div
+    //-       f-contextual-menu(
+    //-         class="absolute z-50 mt-2"
+    //-         :menuTree="dDMenuTree"
+    //-         v-if="isDDMenuOpen"
+    //-       )
     //- Warning message is displayed when the 3D Digital Drape image fails to be processed.
     div(
       v-if="isShowDDButton && isDDFailedToGenerate && isShowDDWarning"
@@ -407,16 +407,16 @@ const openViewMode = () => {
   })
 }
 
-const isShowStar = computed(
-  () =>
+const isShowStar = computed(() => {
+  const currentFile = props.availableFileList[currentDisplayIndex.value]
+  return (
     props.canStar &&
-    IMAGE_FILE_ACCEPT_TYPE.includes(
-      props.availableFileList[currentDisplayIndex.value].extension
-    ) &&
-    props.availableFileList[currentDisplayIndex.value].id !== 'faceSideRuler' &&
-    props.availableFileList[currentDisplayIndex.value].id !== 'backSideRuler' &&
-    props.availableFileList[currentDisplayIndex.value].id !== 'cover'
-)
+    IMAGE_FILE_ACCEPT_TYPE.includes(currentFile?.extension) &&
+    currentFile?.id !== 'faceSideRuler' &&
+    currentFile?.id !== 'backSideRuler' &&
+    currentFile?.id !== 'cover'
+  )
+})
 
 const isShowDDButton = computed(
   // F22-3498 Hide and wait for custom U3M DD ready.
@@ -424,15 +424,14 @@ const isShowDDButton = computed(
   // () => props.availableFileList[currentDisplayIndex.value].id === 'digitalDrape'
 )
 
-const isShowEdit = computed(
-  () =>
+const isShowEdit = computed(() => {
+  const currentFile = props.availableFileList[currentDisplayIndex.value]
+  return (
     props.canEdit &&
-    IMAGE_FILE_ACCEPT_TYPE.includes(
-      props.availableFileList[currentDisplayIndex.value].extension
-    ) &&
-    (props.availableFileList[currentDisplayIndex.value].id === 'faceSide' ||
-      props.availableFileList[currentDisplayIndex.value].id === 'backSide')
-)
+    IMAGE_FILE_ACCEPT_TYPE.includes(currentFile?.extension) &&
+    (currentFile?.id === 'faceSide' || currentFile?.id === 'backSide')
+  )
+})
 
 watch(
   // props.currentSideType 1:face, 2:middle 3:back
@@ -603,41 +602,45 @@ onUnmounted(() => {
 })
 
 const moreMenuTree: Ref<MenuTree> = computed(() => {
+  const blockList = [
+    {
+      menuList: [
+        {
+          title: 'Set as Cover',
+          clickHandler: handleSetAsCover,
+          disabled: !isShowStar.value,
+        },
+        {
+          title: 'Replace & Edit',
+          clickHandler: handleReplaceAndEdit,
+          disabled: !isShowEdit.value,
+        },
+        {
+          title: 'Preview Sample Card',
+          clickHandler: handlePreviewSampleCard,
+        },
+      ],
+    },
+  ]
+
+  // Only add delete menu item if isDeletable is true
+  if (isDeletable.value) {
+    blockList.push({
+      menuList: [
+        {
+          title: 'Delete',
+          icon: 'delete_forever',
+          iconClass: '!text-red-500-v1',
+          titleClass: '!text-red-500-v1',
+          clickHandler: handleDelete,
+        },
+      ],
+    })
+  }
+
   return {
     width: 'w-fit',
-    blockList: [
-      {
-        menuList: [
-          {
-            title: 'Set as Cover',
-            clickHandler: handleSetAsCover,
-            disabled: !isShowStar.value,
-          },
-          {
-            title: 'Replace & Edit',
-            clickHandler: handleReplaceAndEdit,
-            disabled: !isShowEdit.value,
-          },
-          {
-            title: 'Preview Sample Card',
-            clickHandler: handlePreviewSampleCard,
-            // disabled: props.hideMagnifier,
-          },
-        ],
-      },
-      {
-        menuList: [
-          {
-            title: 'Delete',
-            icon: 'delete_forever',
-            iconClass: isDeletable.value ? '!text-red-500-v1' : '',
-            titleClass: isDeletable.value ? '!text-red-500-v1' : '',
-            clickHandler: handleDelete,
-            disabled: !isDeletable.value,
-          },
-        ],
-      },
-    ],
+    blockList,
   }
 })
 </script>
